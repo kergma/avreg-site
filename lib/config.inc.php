@@ -365,7 +365,7 @@ if (!headers_sent()) {
 */ 
        $a=sprintf($GLOBALS['access_denided'],$gr_name);
        print_syslog(LOG_CRIT, 'access denided: '.basename($_SERVER['SCRIPT_FILENAME']));
-       print('<img src="'.$conf['prefix'].'/img/password.gif" width="48" height="48" border="0">'.
+       print('<img src="'.$GLOBALS['conf']['prefix'].'/img/password.gif" width="48" height="48" border="0">'.
              '<p><font color="red" size=+1>'.$a.'</font></p>'.
              '</body></html>');
 //			   $GLOBALS['access_denided'], basename($_SERVER['SCRIPT_FILENAME']) );
@@ -741,6 +741,19 @@ function getBinString($bin_str)
   return $ret;
 }
 
+function check_passwd($saved_pw, $pw)
+{
+   if ( $saved_pw == '' && $pw == '')
+      return;
+
+   $z = crypt($saved_pw, $pw);
+   if ( $z !== $pw ) {
+      header('WWW-Authenticate: Basic realm="AVReg server"');
+      header('HTTP/1.0 401 Unauthorized');
+      DENY();
+   }
+}
+
 if ( isset($_SERVER['PHP_AUTH_USER']))
 /* isset($_SERVER['AUTH_TYPE']) && isset($_SERVER['REMOTE_USER']*/
 {
@@ -750,13 +763,13 @@ if ( isset($_SERVER['PHP_AUTH_USER']))
   require_once($wwwdir.'/lib/my_conn.inc.php');
 
   if ( $_SERVER['REMOTE_ADDR'] === '127.0.0.1' )
-    $query = sprintf('SELECT STATUS, LONGNAME '.
+    $query = sprintf('SELECT PASSWD, STATUS, LONGNAME '.
                      'FROM USERS '.
                      'WHERE ( HOST=\'%s\' OR HOST=\'localhost\') '.
                      'AND USER = \'127.0.0.1\'',
                      $_SERVER['REMOTE_USER']);
   else
-    $query = sprintf('SELECT STATUS, LONGNAME '.
+    $query = sprintf('SELECT PASSWD, STATUS, LONGNAME '.
                      'FROM USERS '.
                      'WHERE HOST=\'%s\' AND USER = \'%s\'',
                      $_SERVER['REMOTE_ADDR'], $_SERVER['REMOTE_USER']);
@@ -764,6 +777,7 @@ if ( isset($_SERVER['PHP_AUTH_USER']))
   /* printf($query."\n"); */
   if ( $row = mysql_fetch_array($result, MYSQL_ASSOC) )
   {
+    /* var_dump($row); */
     $login_user = $_SERVER['REMOTE_USER'];
     $user_status = $row['STATUS'];
     settype($user_status,'int');
@@ -773,9 +787,10 @@ if ( isset($_SERVER['PHP_AUTH_USER']))
     if ( $user_status <= $admin_status ) $admin_user = true;
     if ( $user_status <= $arch_status ) $arch_user = true;
     if ( $user_status <= $operator_status ) $operator_user = true;
+    check_passwd($_SERVER['PHP_AUTH_PW'], $row['PASSWD']);
   } else {
     mysql_free_result($result); $result = NULL;
-    $query = sprintf('SELECT STATUS, LONGNAME '.
+    $query = sprintf('SELECT PASSWD, STATUS, LONGNAME '.
                      'FROM USERS '.
                      'WHERE HOST=\'any\' AND USER = \'%s\'',
                      $_SERVER['REMOTE_USER']);
@@ -788,6 +803,7 @@ if ( isset($_SERVER['PHP_AUTH_USER']))
       $user_status = $row['STATUS'];
       $login_user_name = $row['LONGNAME'];
       $login_host = 'any';
+      check_passwd($_SERVER['PHP_AUTH_PW'], $row['PASSWD']);
       if ( $user_status < 2 ) $install_user = true;
       if ( $user_status < 3 ) $admin_user = true;
       if ( $user_status < 4 ) $arch_user = true;
@@ -799,7 +815,7 @@ if ( isset($_SERVER['PHP_AUTH_USER']))
     }
   }
 } else {
-  header('WWW-Authenticate: Basic realm="AVReg LinuxDVR server"');
+  header('WWW-Authenticate: Basic realm="AVReg server"');
   header('HTTP/1.0 401 Unauthorized');
   DENY();
 }
