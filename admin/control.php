@@ -27,7 +27,8 @@ function print_messages()
 
 echo '<h1>' . $r_control . '</h1>' ."\n";
 
-$srun = check_videoserv();
+exec($GLOBALS['conf']['sudo'].' '.$GLOBALS['conf']['daemon'].' status', $outs, $retval);
+$srun = ($retval === 0)?true:false;
 
 $cmd_released=NULL;
 
@@ -90,8 +91,9 @@ if ( isset($cmd) )
 				print_messages();
 			}
 			usleep(300000);
-			$srun = check_videoserv();
-			}
+                        exec($GLOBALS['conf']['sudo'].' '.$GLOBALS['conf']['daemon'].' status', $outs, $retval);
+                        $srun = ($retval === 0)?true:false;
+         		}
 		}
 	} else {
     if ( $cmd == 'start' ) {
@@ -112,6 +114,9 @@ if ( isset($cmd) )
 	} else {
        MYDIE("invalid command");
     }
+        print '<div class="warn">' ."\n";
+        echo '# ' . $GLOBALS['conf']['daemon'].' '.$cmd . '  [?]';
+        print '</div><br />' ."\n";
 	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
 	print '<input type="hidden" name="cmd" value="'.$cmd.'">'."\n";
 	print '<input type="submit" name="confirm_btn" value="'.$strYes.'">'."\n";

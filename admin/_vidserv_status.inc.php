@@ -1,16 +1,21 @@
 <?php
-
+unset($outs);
+$cmd=$GLOBALS['conf']['daemon'].' status';
 print '<div class="warn">' ."\n";
 print $r_conrol_state.' : ';
+exec($GLOBALS['conf']['sudo'].' '.$cmd, $outs, $retval);
+$srun = ($retval === 0)?true:false;
 if ( $srun ) {
-  if ( file_exists ($conf['daemon-pid']) ) {
-    $start_time = strftime('%b %d %Y %H:%M',filemtime($conf['daemon-pid']));
-	} else $start_time = 'unknown';
-	print '<span class="HiLiteBig">' . sprintf($fmtServerWorked,$named,$start_time) . '</span>' ."\n";
-    if (isset($outline))
-    	print '<p>' . $outline . '</p>' ."\n";
+   print '<span class="HiLiteBig">' . sprintf($fmtServerWorked,$named).'</span>' ."\n";
 } else {
-	print '<span class="HiLiteBigErr">' . sprintf($strServerStoped, $named, $sip) . '</span>' ."\n";
+   print '<span class="HiLiteBigErr">'.sprintf($strServerStoped, $named, $sip).'</span>' ."\n";
+}
+if (isset($outs) && is_array($outs)) {
+   echo '<pre>';
+   echo '# '.$cmd."\n";
+   foreach ($outs as $line)
+      echo $line."\n";
+   echo '</pre>' ."\n";
 }
 print '</div><br />' ."\n";
 

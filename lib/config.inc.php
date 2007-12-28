@@ -128,7 +128,9 @@ $operator_user = FALSE;
 
 $chset = 'UTF-8';
 $lang = 'russian';
-setlocale (LC_ALL, 'ru_RU.'.$chset);
+$locale_str='ru_RU.'.$chset;
+setlocale(LC_ALL, $locale_str);
+// @apache_setenv('LANG','ru_RU.'.$chset);
 mb_internal_encoding( 'UTF-8' );
 $lang_dir =  $wwwdir . 'lang/' . $lang . '/'  . strtolower($chset) . '/';
 $lang_module_name   = $lang_dir . 'common.inc.php';
@@ -177,43 +179,34 @@ $patternAllowedIP='/^('.$patternIP.'|any|localhost)$/';
 $patternUser='/^[A-Za-z0-9_\-]{4,16}$/';
 $patternPasswd='/^[A-Za-z0-9_\-]{0,16}$/';
 
-
-
-function check_videoserv()
+function proc_info($proc_name, $__pid=NULL)
 {
-   clearstatcache();
-   if ( is_readable($GLOBALS['conf']['daemon-pid']) )
+   $_cmd = $GLOBALS['conf']['ps'].' -o %cpu,%mem,vsz,rss --no-headers ';
+   if ($__pid)
+      $_cmd .= '-p '.(int)$__pid;
+   else
+      $_cmd .= '-C '.$proc_name;
+   $_cmd .= ' 2>/dev/null';
+
+   exec($_cmd, $lines, $retval);
+
+   if ( $retval !== 0 )
+      return false;
+
+   $pids=count($lines);
+   $cpu=0;
+   for ($i=0; $i< $pids; $i++)
    {
-      $v_pid_lines = file($GLOBALS['conf']['daemon-pid']);
-      if (!empty($v_pid_lines)) {
-        $stat_dir = '/proc/'.trim($v_pid_lines[0]);
-        if ( is_dir($stat_dir) )  return TRUE;
+      $kwds = preg_split('/[\s]+/', trim($lines[$i]));
+      // var_dump($kwds); echo "<br/>";
+      $cpu = $cpu + (float)$kwds[0];
+      if ($i===0) {
+         $mem = $kwds[1];
+         $vsz = $kwds[2];
+         $rss = $kwds[3];
       }
    }
-   return FALSE;
-}
-
-function proc_info($proc_name) 
-{
-  exec($GLOBALS['conf']['ps'].' -o %cpu,%mem,vsz,rss --no-headers -C '.$proc_name .' 2>/dev/null',
-               $lines,
-               $retval);
-  if ( $retval !== 0 )
-    return FALSE;
-  $pids=count($lines);
-  $cpu=0;
-  for ($i=0; $i< $pids; $i++)
-  {
-     $kwds = preg_split('/[\s]+/', trim($lines[$i]));
-     // var_dump($kwds); echo "<br/>";
-     $cpu = $cpu + (float)$kwds[0];
-     if ($i===0) {
-       $mem = $kwds[1];
-       $vsz = $kwds[2];
-       $rss = $kwds[3];
-     }
-  }
-  return array((float)$cpu,(float)$mem,(integer)$vsz,(integer)$rss);
+   return array((float)$cpu,(float)$mem,(integer)$vsz,(integer)$rss);
 }
 
 function filesizeHuman($fsize_KB) {

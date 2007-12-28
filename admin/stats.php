@@ -14,8 +14,8 @@ function color_level ($val, $warn_val, $max_val)
 
 echo '<h1>' . $r_stats . '</h1>' ."\n";
 
-$srun = check_videoserv();
 include_once('_vidserv_status.inc.php');
+
 echo '<h2>' . $r_cpu_stat . '</h2>' ."\n";
 exec($conf['iostat'].' -c 2>/dev/null', $lines, $retval);
 if ( $retval === 0 ) {
@@ -49,46 +49,48 @@ if ( $retval === 0 ) {
  	print '</table><br />'."\n";
 }
 
+function pr_proc_stat($proc_name, $pid=NULL) 
+{
+   $p_info = proc_info($proc_name, $pid);
+   if ($p_info === false) {
+      return false;
+   } else {
+      $cpu = $p_info[0];
+      $mem = $p_info[1];
+      $vsz = $p_info[2];
+      $rss = $p_info[3];
+      print '<tr>'."\n";
+      print '<td>'.$proc_name.'</td>'."\n";
+      print '<td align="center">'.$cpu.'</td>'."\n";
+      print '<td align="center">'.$mem.'</td>'."\n";
+      print '<td align="center">'. $vsz.'</td>'."\n";
+      print '<td align="center">'.$rss.'</td>'."\n";
+      print '</tr>'."\n";
+      return true;
+   }
+}
+
 if ( $srun )
 {
-    $videoserv_info = proc_info('avregd');
-    if ($videoserv_info !== FALSE)
-    {
-       $cpu = $videoserv_info[0];
-       $mem = $videoserv_info[1];
-       $vsz = $videoserv_info[2];
-       $rss = $videoserv_info[3];
-	print '<table cellspacing="0" border="1" cellpadding="5">'."\n";
-	print '<tr bgcolor="'.$header_color.'">'."\n";
-    print '<th>&nbsp;</th>'."\n";
-	print '<th>'.$strCPU.'</th>'."\n";
-	print '<th>'.$strMEM.'</th>'."\n";
-	print '<th>'.$strVSIZE.'</th>'."\n";
-	print '<th>'.$strRSS.'</th>'."\n";
-	print '</tr>'."\n";
-	print '<tr>'."\n";
-    print '<td>'.$videoserv.'</td>'."\n";
-	print '<td align="center">'.$cpu.'</td>'."\n";
-	print '<td align="center">'.$mem.'</td>'."\n";
-	print '<td align="center">'. $vsz.'</td>'."\n";
-	print '<td align="center">'.$rss.'</td>'."\n";
-	print '</tr>'."\n";
-    $monitor_info = proc_info('monitor');
-    if ($monitor_info !== FALSE)
-    {
-       $cpu = $monitor_info[0];
-       $mem = $monitor_info[1];
-       $vsz = $monitor_info[2];
-       $rss = $monitor_info[3];
-    print '<td>monitor</td>'."\n";
-	print '<td align="center">'.$cpu.'</td>'."\n";
-	print '<td align="center">'.$mem.'</td>'."\n";
-	print '<td align="center">'. $vsz.'</td>'."\n";
-	print '<td align="center">'.$rss.'</td>'."\n";
-	print '</tr>'."\n";
-    }
-	print '</table>'."\n";
-    }
+   print '<table cellspacing="0" border="1" cellpadding="5">'."\n";
+   print '<tr bgcolor="'.$header_color.'">'."\n";
+   print '<th>&nbsp;</th>'."\n";
+   print '<th>'.$strCPU.'</th>'."\n";
+   print '<th>'.$strMEM.'</th>'."\n";
+   print '<th>'.$strVSIZE.'</th>'."\n";
+   print '<th>'.$strRSS.'</th>'."\n";
+   print '</tr>'."\n";
+   foreach (@glob('/var/run/avreg/'.$conf['daemon-name'].'*\.pid') as $filename) {
+      if ( is_file($filename) && is_readable($filename)) {
+         $pid_a = @file($filename);
+         $pid = chop($pid_a[0]);
+         if (settype($pid, 'int')) {
+            pr_proc_stat(basename($filename, '.pid'), $pid);
+         }
+      }
+   }
+   pr_proc_stat('avreg-mon');
+   print '</table>'."\n";
 }
 
 echo '<h2>' . $r_mem_stat . '</h2>' ."\n";
@@ -138,17 +140,37 @@ print '<td align="center">'.$swap_free.'</td>'."\n";
 print '</tr>'."\n";
 print '</table>'."\n";
 
-echo '<h2>' . $r_disk_stat . '</h2>' ."\n";
-$dts = round( disk_total_space($conf['storage-dir']) /  (1024*1024*1024) , 1) ;
+echo '<h2>' . sprintf($r_stats_df,$conf['storage-dir'])  . '</h2>' ."\n";
+//$dts = round( disk_total_space($conf['storage-dir']) /  (1024*1024*1024) , 1) ;
 $dfs = round( disk_free_space($conf['storage-dir']) / (1024*1024*1024) , 1);
+
+$cmd = $conf['df'].' -hT '.$conf['storage-dir'];
+unset($outs);
+exec('LANG='.$locale_str.' '.$cmd,$outs,$retval);
+print '<div class="info">' ."\n";
+if ($dfs<$conf['warn-disk-free'])
+   echo '<pre style="color:Red;">';
+else
+   echo '<pre>';
+echo '$ df -hT '.$conf['storage-dir']."\n";
+foreach ($outs as $line)
+   echo $line."\n";
+echo '</pre>' ."\n";
+print '</div>' ."\n";
+
+/*
 $fmt_proc= '%0.1f (%d%%)';
 print '<table cellspacing="0" border="1" cellpadding="5">'."\n";
 print '<tr bgcolor="'.$header_color.'">'."\n";
+print '<th>'.$str_mnt_point.'</th>'."\n";
+print '<th>'.$str_dev.'</th>'."\n";
 print '<th>'.$total_space.', '.$byteUnits[3].'</th>'."\n";
 print '<th>'.$used_space.', '.$byteUnits[3].'</th>'."\n";
 print '<th>'.$total_free.', '.$byteUnits[3].'</th>'."\n";
 print '</tr>'."\n";
 print '<tr>'."\n";
+print '<td align="left">'.$conf['storage-dir'].'</td>'."\n";
+print '<td align="left">'.$allcpu_idle.'</td>'."\n";
 print '<td align="center">'.$dts.'</td>'."\n";
 print '<td align="center">'. sprintf($fmt_proc, $dts - $dfs, round((($dts - $dfs)*100/$dts),1)).'</td>'."\n";
 if ($dfs<$conf['warn-disk-free'])
@@ -166,5 +188,6 @@ print '<pre><div class="tty">'."\n";
 passthru($conf['tail'] . ' -n 150 /var/log/vstat');
 print '</div></pre>'."\n";
 }
+*/
 require ('../foot.inc.php');
 ?>
