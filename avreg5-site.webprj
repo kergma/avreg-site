@@ -153,5 +153,6 @@
     <toolbars>toolbars/</toolbars>
     <item url="lang/russian/utf-8/_admin_key.php" uploadstatus="1" />
     <item url="lang/russian/utf-8/_admin_stats.php" uploadstatus="1" />
+    <item url="lang/russian/utf-8/_admin_control.php" uploadstatus="1" />
   </project>
 </webproject>

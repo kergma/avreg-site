@@ -1,7 +1,9 @@
 <?php
 
 $PrNameEng = 'AVReg';
-require ('/etc/avreg/site-conf.php');
+require ('/etc/avreg/site-defaults.php');
+// $wwwdir = '/usr/share/avreg-site/';
+$wwwdir = '/home/nik/linuxdvr/html/html-5/';
 
 if ($conf['debug']) {
   ini_set ('display_errors', '0' );
@@ -16,6 +18,14 @@ if ($conf['debug']) {
                 E_USER_NOTICE | E_STRICT | E_RECOVERABLE_ERRROR );
 */
 }
+
+/*
+if (empty($conf['prefix']))
+   $wwwdir = $_SERVER['DOCUMENT_ROOT'] . '/';
+else
+   $wwwdir = $_SERVER['DOCUMENT_ROOT'] . $conf['prefix'] . '/';
+*/
+require ($wwwdir . 'lib/grab_globals.lib.php');
 
 function confparse($section=NULL, $path='/etc/avreg/avreg.conf')
 {
@@ -85,19 +95,32 @@ function confparse($section=NULL, $path='/etc/avreg/avreg.conf')
    return ($res)?$ret_array:$res;
 }
 
-$res=confparse();
+$res=confparse('avreg-site');
 if (!$res) {
   die();
 } else 
   $conf = array_merge($conf, $res);
 
 
-if (empty($conf['prefix']))
-   $wwwdir = $_SERVER['DOCUMENT_ROOT'] . '/';
-else
-   $wwwdir = $_SERVER['DOCUMENT_ROOT'] . $conf['prefix'] . '/';
+unset($AVREG_PROFILE);
+if ( preg_match('@^/([^/]+).*@', $_SERVER['REQUEST_URI'], $matches) ) {
+  if ( strcasecmp($matches[1],'avreg') != 0 ) {
+     $res = confparse('avreg-site', $conf['profiles-dir'].'/'.$matches[1]);
+     if (!$res)
+        die("<br /><br />Error: not found active profile ".$conf['profiles-dir'].'/'.$matches[1]);
+     $AVREG_PROFILE = $matches[1];
+// tohtml($res);
+     if (is_array($res)) {
+         $conf = array_merge($conf, $res);
+         $conf['prefix'] = '/'.$AVREG_PROFILE;
+         $conf['daemon-name'] .= '-'.$AVREG_PROFILE;
+     }
+  }
+}
 
-require ($wwwdir . 'lib/grab_globals.lib.php');
+// tohtml($conf);
+
+
 
 $sip = $_SERVER['SERVER_ADDR'];
 if ( $_SERVER['SERVER_ADDR'] === $_SERVER['SERVER_NAME'] )

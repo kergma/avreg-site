@@ -70,7 +70,8 @@ function pr_proc_stat($proc_name, $pid=NULL)
    }
 }
 
-if ( $srun )
+$server_pids = @glob('/var/run/avreg/'.$conf['daemon-name'].'*\.pid');
+if ( $server_pids )
 {
    print '<table cellspacing="0" border="1" cellpadding="5">'."\n";
    print '<tr bgcolor="'.$header_color.'">'."\n";
@@ -80,7 +81,7 @@ if ( $srun )
    print '<th>'.$strVSIZE.'</th>'."\n";
    print '<th>'.$strRSS.'</th>'."\n";
    print '</tr>'."\n";
-   foreach (@glob('/var/run/avreg/'.$conf['daemon-name'].'*\.pid') as $filename) {
+   foreach ($server_pids as $filename) {
       if ( is_file($filename) && is_readable($filename)) {
          $pid_a = @file($filename);
          $pid = chop($pid_a[0]);
