@@ -414,7 +414,7 @@ array(
   'type'    => 'INT',
   'def_val' => 80,
   'desc'    => '<b>Номер порта TCP/IP</b> на котором сетевая камера или видеосервер слушают запросы HTTP.<br />По умолчанию: &quot;<b>80</b>&quot;.',
-  'flags'=>$F_RELOADED | $F_IN_DEF | $F_IN_CAM,
+  'flags'=> $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.1.1',
   'subcats' => NULL,
   'mstatus' => 2,
