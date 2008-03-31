@@ -2,21 +2,8 @@
 <webprojectsession>
   <session usePreviewPrefix="0" previewPrefix="" >
     <itemcursorpositions>
-      <item line="0" column="0" url="lib/my_conn.inc.php" />
-      <item line="0" column="0" url="lang/russian/utf-8/common.inc.php" />
-      <item line="114" column="36" url="lib/config.inc.php" />
-      <item line="36" column="20" url="index.php" />
-      <item line="6" column="38" url="admin/_vidserv_status.inc.php" />
-      <item line="16" column="23" url="admin/stats.php" />
-      <item line="13" column="7" url="admin/control.php" />
-      <item line="3" column="100" url="lang/russian/utf-8/_admin_control.php" />
+      <item line="0" column="0" url="lib/config.inc.php" />
+      <item line="484" column="24" url="lang/russian/utf-8/params.inc.php" />
     </itemcursorpositions>
-    <treestatus>
-      <openfolder url="admin" />
-      <openfolder url="lang" />
-      <openfolder url="lang/russian" />
-      <openfolder url="lang/russian/utf-8" />
-      <openfolder url="lib" />
-    </treestatus>
   </session>
 </webprojectsession>

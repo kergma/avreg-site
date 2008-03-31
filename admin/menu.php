@@ -4,7 +4,7 @@ $MENU=1;
 require('../head.inc.php');
 print '<div align="center"><a href="'.$conf['prefix'].'/" target="_parent">'.$MainPage.'</a></div>'."\n";
 //print '<div align="center"><h2>'.$left_logo.'</h2></div>'."\n";
-print '<br /><div>'. $strYou .': '.$login_user . '@' . $_SERVER['REMOTE_ADDR']. '</div>'."\n";
+print '<br /><div>'. $strYou .': '.$login_user . '@' . $remote_addr .'</div>'."\n";
 print '<hr noshade>'."\n";
 /*
 print '<h3>+&nbsp;<a href="/logout.php" target="content">logout</a></h3>'."\n";
