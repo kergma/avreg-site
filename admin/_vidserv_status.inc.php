@@ -2,6 +2,15 @@
 
 unset($DAEMONS_STATES);
 
+// load avail profiles
+if (isset($AVREG_PROFILE))
+   $profconfs = array($AVREG_PROFILE);
+else {
+   $profconfs = @glob($conf['profiles-dir'] . '/[A-Za-z0-9]*');
+   if ( $profconfs === FALSE || count($profconfs) === 0 )
+      $profconfs = array('');
+}
+
 print '<div class="warn">' ."\n";
 print '<p>' .$r_conrol_state. ":</p>\n";
 foreach ( $profconfs as $path ) {
