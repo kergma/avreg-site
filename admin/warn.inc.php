@@ -9,9 +9,10 @@ if ($dfs<$conf['warn-disk-free']) {
   $warnStr_cnt++;
 }
 
-$ret = filesize($conf['removed-manually']);
+$rmanfile = $conf['storage-dir'].'/'.$conf['removed-manually'];
+$ret = filesize($rmanfile);
 if ( $ret !== FALSE && $ret > 0 ) {
-  $warnStr[$warnStr_cnt]='Обнаружен факт удаления файлов с диска вручную. Их список <a href="'.$conf['prefix'].$conf['media-alias'].'/'.basename($conf['removed-manually']).'" target="_blank">'.$conf['removed-manually'].'</a> ('.filesizeHuman($ret/1024).')';
+  $warnStr[$warnStr_cnt]='Обнаружен факт удаления файлов с диска вручную. Их список <a href="'.$conf['prefix'].$conf['media-alias'].'/'.$conf['removed-manually'].'" target="_blank">'.$rmanfile.'</a> ('.filesizeHuman($ret/1024).')';
   $warnStr_cnt++;
 }
 
