@@ -166,11 +166,9 @@ require ($lang_module_name);
 if (file_exists ($lang_module_name2))
    require ($lang_module_name2);
 
-
-if ( $_SERVER['REMOTE_ADDR'] == '127.0.0.1' )
+$remote_addr = $_SERVER['REMOTE_ADDR'];
+if ( $remote_addr === '127.0.0.1' )
   $remote_addr = 'localhost';
-else 
-  $remote_addr = $_SERVER['REMOTE_ADDR'];
 
 if (file_exists('/etc/linuxdvr-release')) {
   $LDVR_VER=@file('/etc/linuxdvr-release');
@@ -788,8 +786,8 @@ if ( isset($_SERVER['PHP_AUTH_USER']))
   if ( $_SERVER['REMOTE_ADDR'] === '127.0.0.1' )
     $query = sprintf('SELECT PASSWD, STATUS, LONGNAME '.
                      'FROM USERS '.
-                     'WHERE ( HOST=\'%s\' OR HOST=\'localhost\') '.
-                     'AND USER = \'127.0.0.1\'',
+                     'WHERE ( HOST=\'127.0.0.1\' OR HOST=\'localhost\') '.
+                     'AND USER = \'%s\'',
                      $_SERVER['REMOTE_USER']);
   else
     $query = sprintf('SELECT PASSWD, STATUS, LONGNAME '.
