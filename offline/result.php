@@ -1,7 +1,7 @@
 <?php
 if (isset($_POST)) {
    $expire=time()+5184000;
-   $_pg = $_SERVER['SCRIPT_NAME'];
+   $_pg = dirname($_SERVER['SCRIPT_NAME']) . '/query.php' ;
    if (isset($_POST['cams']))
      setcookie('cams[]',implode('-',$_POST['cams']),$expire,$_pg);
    if (isset($_POST['filter']))

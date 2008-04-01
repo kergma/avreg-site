@@ -254,7 +254,6 @@ if (isset($_COOKIE))
         $embed_video_sel=' checked ';
     }
 }
-     
 ?>
 
 <form action="<?php echo $conf['prefix']; ?>/offline/result.php" method="POST" target="result" onsubmit="playlist(0);">
