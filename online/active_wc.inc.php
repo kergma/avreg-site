@@ -5,8 +5,8 @@ require_once ('../lib/my_conn.inc.php');
 echo '<h2 align="center">'.$r_webcam_list.'</h2>' ."\n";
 if ( isset ($wclist_show) ) {
    
-} else if ( isset($_COOKIE['wclist_show']) ) {
-   $wclist_show = $_COOKIE['wclist_show'];
+} else if ( isset($_COOKIE['avreg_wclist_show']) ) {
+   $wclist_show = $_COOKIE['avreg_wclist_show'];
 } else {
    $wclist_show = 1;
 }

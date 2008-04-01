@@ -3,19 +3,19 @@ if (isset($_POST)) {
    $expire=time()+5184000;
    $_pg = dirname($_SERVER['SCRIPT_NAME']) . '/query.php' ;
    if (isset($_POST['cams']))
-     setcookie('cams[]',implode('-',$_POST['cams']),$expire,$_pg);
+     setcookie('avreg_cams[]',implode('-',$_POST['cams']),$expire,$_pg);
    if (isset($_POST['filter']))
-      setcookie('filter[]',implode('-',$_POST['filter']),$expire,$_pg);
+      setcookie('avreg_filter[]',implode('-',$_POST['filter']),$expire,$_pg);
    if (isset($_POST['scale']))
-       setcookie('scale',$_POST['scale'],$expire,$_pg);
+       setcookie('avreg_scale',$_POST['scale'],$expire,$_pg);
    if (isset($_POST['row_max']))
-       setcookie('row_max',$_POST['row_max'],$expire,$_pg);
+       setcookie('avreg_row_max',$_POST['row_max'],$expire,$_pg);
    if (isset($_POST['play_tio']))
-      setcookie('play_tio',$_POST['play_tio'],$expire,$_pg);
+      setcookie('avreg_play_tio',$_POST['play_tio'],$expire,$_pg);
    if (isset($_POST['embed_video']))
-      setcookie('embed_video','1',$expire,$_pg);
+      setcookie('avreg_embed_video','1',$expire,$_pg);
    else
-      setcookie('embed_video','0',$expire,$_pg);
+      setcookie('avreg_embed_video','0',$expire,$_pg);
 }
 
 $JS_file = $conf['prefix'].'/offline/result.js';

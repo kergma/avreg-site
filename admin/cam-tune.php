@@ -2,7 +2,7 @@
 if (isset($_POST)) {
    $expire=time()+5184000;
    if (isset($_POST['par_filter']))
-       setcookie('par_filter',$_POST['par_filter'],$expire,$_SERVER['SCRIPT_NAME']);
+       setcookie('avreg_par_filter',$_POST['par_filter'],$expire,$_SERVER['SCRIPT_NAME']);
 }
 
 require ('../head.inc.php');
@@ -17,8 +17,8 @@ if ( isset ($par_filter) )
    settype($par_filter,'int');
 else
 { 
-    if ( isset($_COOKIE['par_filter']) )
-       $par_filter = (int)$_COOKIE['par_filter'];
+    if ( isset($_COOKIE['avreg_par_filter']) )
+       $par_filter = (int)$_COOKIE['avreg_par_filter'];
     else
        $par_filter=0;
 }

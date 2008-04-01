@@ -44,8 +44,8 @@ switch ($mon_type)
   default:
     die("unknown mon_type=$mon_type");
 }
-$cfts=$mon_type.'_FitToScreen'; 
-$cnm=$mon_type.'_PrintCamNames';
+$cfts = 'avreg_' . $mon_type . '_FitToScreen'; 
+$cnm  = 'avreg_' . $mon_type . '_PrintCamNames';
 $expired = time()+5184000;
 $ca=dirname($_SERVER['SCRIPT_NAME']).'/build_mon.php';
 if (isset($_POST['FitToScreen']))
@@ -59,7 +59,7 @@ else
 
 for ($i=0;$i<$wins_nr;$i++) 
   if (isset($_POST['cams'][$i]))
-     setcookie($mon_type.'_cams['.$i.']',$_POST['cams'][$i],$expired,$ca);
+     setcookie('avreg_' . $mon_type.'_cams['.$i.']',$_POST['cams'][$i],$expired,$ca);
 
 
 $pageTitle = 'WEBcam';

@@ -216,40 +216,40 @@ if ( $num_rows > 0 ) {
 
 if (isset($_COOKIE))
 {
-  if (isset($_COOKIE['cams']))
-     $cams_sel = str_replace('-' ,',', $_COOKIE['cams'][0]);
+  if (isset($_COOKIE['avreg_cams']))
+     $cams_sel = str_replace('-' ,',', $_COOKIE['avreg_cams'][0]);
   else
      $cams_sel = '0,1,2,3';
 
-  if (isset($_COOKIE['filter']))
-     $filter_sel = str_replace('-' ,',', $_COOKIE['filter'][0]);
+  if (isset($_COOKIE['avreg_filter']))
+     $filter_sel = str_replace('-' ,',', $_COOKIE['avreg_filter'][0]);
   else
      $filter_sel = implode(',', array_keys($env_id_ar));
 
-  if (isset($_COOKIE['scale'])) {
-     $_i = $_COOKIE['scale'];
+  if (isset($_COOKIE['avreg_scale'])) {
+     $_i = $_COOKIE['avreg_scale'];
      settype($_i,'int');
      $scale_sel = $scale_array[$_i];
   } else
      $scale_sel = '';
   
-  if (isset($_COOKIE['row_max'])) {
-    $_i = $_COOKIE['row_max'];
+  if (isset($_COOKIE['avreg_row_max'])) {
+    $_i = $_COOKIE['avreg_row_max'];
     settype($_i,'int');
     $row_max_sel = $_i;
   } else
     $row_max_sel=100;
     
-  if (isset($_COOKIE['play_tio'])) {
-    $_i = $_COOKIE['play_tio'];
+  if (isset($_COOKIE['avreg_play_tio'])) {
+    $_i = $_COOKIE['avreg_play_tio'];
     settype($_i,'int');
     $play_tio_sel = $play_tio_ar[$_i];
   } else
     $play_tio_sel=$play_tio_ar[2];
 
     $embed_video_sel='';
-    if (isset($_COOKIE['embed_video'])) {
-      $_i = $_COOKIE['embed_video'];
+    if (isset($_COOKIE['avreg_embed_video'])) {
+      $_i = $_COOKIE['avreg_embed_video'];
       if ( settype($_i,'int') && $_i>0)
         $embed_video_sel=' checked ';
     }

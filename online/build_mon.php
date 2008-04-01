@@ -103,13 +103,13 @@ print '<div align="center">'."\n";
 //var_dump($_COOKIE);
 print '<form id="buildform" action="view.php" method="POST" onSubmit="return validate();"  target="_blank">'."\n";
 $ccams=$mon_type.'_cams';
-if ( isset($_COOKIE[$ccams]) && is_array($_COOKIE[$ccams]) )
+if ( isset($_COOKIE['avreg_'.$ccams]) && is_array($_COOKIE['avreg_'.$ccams]) )
 {
   $aaa = array();
   for ($i=0;$i<$wins_nr;$i++)
   {
-    if (isset($_COOKIE[$ccams][$i])) 
-       $a = $_COOKIE[$ccams][$i];
+    if (isset($_COOKIE['avreg_'.$ccams][$i])) 
+       $a = $_COOKIE['avreg_'.$ccams][$i];
     else
        $a='';
     $aaa[$i] = getSelectHtmlByName('cams[]',$act_wc_nr_ar, FALSE , 1, 1, $a, TRUE, 'sel_change(this);');
@@ -123,14 +123,14 @@ for ($i = 0; $i < $wins_nr; $i++)
   print '<input type="hidden" name="camnames[]" value="" />'."\n";
 
 $cfts=$mon_type.'_FitToScreen';
-if (isset($_COOKIE[$cfts]) && $_COOKIE[$cfts] != 0 )
+if (isset($_COOKIE['avreg_'.$cfts]) && $_COOKIE['avreg_'.$cfts] != 0 )
     $FitToScreen_checked = 'checked';
 else
    $FitToScreen_checked = '';
 print '<br>'.$strFitToScreen.': <input type="checkbox" name="FitToScreen" '.$FitToScreen_checked.' />'."\n";
 
 $cpn=$mon_type.'_PrintCamNames';
-if (isset($_COOKIE[$cpn]) && $_COOKIE[$cpn] != 0 )
+if (isset($_COOKIE['avreg_'.$cpn]) && $_COOKIE['avreg_'.$cpn] != 0 )
     $PrintCamNames = 'checked';
 else
    $PrintCamNames = '';
