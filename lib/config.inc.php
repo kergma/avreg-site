@@ -2,8 +2,8 @@
 
 $PrNameEng = 'AVReg';
 require ('/etc/avreg/site-defaults.php');
-// $wwwdir = '/usr/share/avreg-site/';
-$wwwdir = '/home/nik/linuxdvr/html/html-5/';
+$wwwdir = '/usr/share/avreg-site/';
+// $wwwdir = '/home/nik/linuxdvr/html/html-5/';
 
 if ($conf['debug']) {
   ini_set ('display_errors', '0' );
