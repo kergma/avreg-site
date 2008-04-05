@@ -456,9 +456,8 @@ function br_spec_out() {
 </div>
 <script type="text/javascript" language="JavaScript1.2">
 <!--
-document.write('<div id="canvas" style="position:absolute; top:25px; background-color:#e5e5e5; '+
-'width:100%; height:'+(ietruebody().clientHeight-25)+'px; '+
-'overflow:hidden; margin:0; padding:0;">')
+ch = ((ns6)?document.body.clientHeight:ietruebody().clientHeight) - 25;
+document.write('<div id="canvas" style="position:absolute; top:25px; background-color:#e5e5e5; width:100%; height:' + ch + 'px; overflow:hidden; margin:0; padding:0;">')
 var canvas = ie?document.all['canvas']:document.getElementById('canvas');
 var canvas_w = canvas.clientWidth;
 var canvas_h = canvas.clientHeight;
