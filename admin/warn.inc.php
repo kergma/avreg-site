@@ -24,5 +24,5 @@ if ($warnStr_cnt>0)
      print '<li>'.$warnStr[$__i].'</li>'."\n";
   }
   print '</ol></div>'."\n";
-}  
+}
 ?>
