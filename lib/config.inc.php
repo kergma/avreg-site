@@ -2,8 +2,8 @@
 
 $PrNameEng = 'AVReg';
 require ('/etc/avreg/site-defaults.php');
-$wwwdir = '/usr/share/avreg-site/';
-// $wwwdir = '/home/nik/linuxdvr/html/html-5/';
+# $wwwdir = '/usr/share/avreg-site/';
+$wwwdir = '/home/nik/linuxdvr/html/html-5/';
 
 if ($conf['debug']) {
   ini_set ('display_errors', '0' );
@@ -62,7 +62,7 @@ function confparse($section=NULL, $path='/etc/avreg/avreg.conf')
       if ($skip_section)
          continue;
 
-      if ( preg_match('/^([^\s=]+)[\s="\']*([^\s"\']*)["\']*$/',$line, $matches))
+      if ( preg_match('/^([^\s=]+)[\s="\']*([^"\']*)["\']*$/',$line, $matches))
       {
          $param=$matches[1];
          $value=$matches[2];
@@ -361,37 +361,50 @@ function print_syslog($priority, $message, $additional='')
 
 function DENY($good_status=NULL)
 {
-   $deny=TRUE;
    $user_status=$GLOBALS['user_status'];
-   if ( array_key_exists($user_status,$GLOBALS['grp_ar']))
-      $gr_name=$GLOBALS['grp_ar'][$user_status]['grname'];
-   else
-      $gr_name = 'unknown'; 
-    if (!is_null($good_status))
-    {
-       if (settype($good_status,'int'))
-       {
+   if (!is_null($good_status)) {
+       if (settype($good_status,'int')) {
           if ($user_status <= $good_status)
-            $deny=FALSE;
+            return;
        }
-    }
-    
-    if ($deny) 
-    {
+   }
+
+   if ( array_key_exists($user_status,$GLOBALS['grp_ar'])) {
+      $deny_reason=sprintf($GLOBALS['access_denided'],
+               $GLOBALS['grp_ar'][$user_status]['grname']);
+      if ( isset($GLOBALS['conf']['admin']) && 
+           !empty($GLOBALS['conf']['admin'])) {
+          $deny_reason .= '<br /><br />'."\n";
+          $deny_reason .= sprintf($GLOBALS['fmtContact2Admin'],
+                     htmlentities($GLOBALS['conf']['admin'], ENT_QUOTES));
+        }
+   } else {
+      $deny_reason = sprintf($GLOBALS['fmtAccessDenied'],
+                     htmlentities($_SERVER['PHP_AUTH_USER'], ENT_QUOTES),
+                     $_SERVER['REMOTE_ADDR']);
+      if ( isset($GLOBALS['conf']['admin']) && 
+           !empty($GLOBALS['conf']['admin'])) {
+          $deny_reason .= '<br /><br />'."\n";
+          $deny_reason .= sprintf($GLOBALS['fmtTryOnceMore'],
+                     htmlentities($GLOBALS['conf']['admin'], ENT_QUOTES));
+      }
+   }
+
+
+
+
 /*
 if (!headers_sent()) {
 	header('WWW-Authenticate: Basic realm="LinuxDVR VideoServ"', TRUE);
 	header('HTTP/1.0 401 Authorization Required');
 }
-*/ 
-       $a=sprintf($GLOBALS['access_denided'],$gr_name);
-       print_syslog(LOG_CRIT, 'access denided: '.basename($_SERVER['SCRIPT_FILENAME']));
-       print('<img src="'.$GLOBALS['conf']['prefix'].'/img/password.gif" width="48" height="48" border="0">'.
-             '<p><font color="red" size=+1>'.$a.'</font></p>'.
+*/
+   print_syslog(LOG_CRIT, 'access denided: '.basename($_SERVER['SCRIPT_FILENAME']));
+   print('<img src="'.$GLOBALS['conf']['prefix'].'/img/password.gif" width="48" height="48" border="0">'.
+             '<p><font color="red" size=+1>'.$deny_reason.'</font></p>'.
              '</body></html>');
 //			   $GLOBALS['access_denided'], basename($_SERVER['SCRIPT_FILENAME']) );
-       exit();
-    }        
+   exit();
 }
 
 
@@ -783,7 +796,7 @@ if ( isset($_SERVER['PHP_AUTH_USER']))
 
   require_once($wwwdir.'/lib/my_conn.inc.php');
 
-  if ( $_SERVER['REMOTE_ADDR'] === '127.0.0.1' )
+  if ( c === '127.0.0.1' )
     $query = sprintf('SELECT PASSWD, STATUS, LONGNAME '.
                      'FROM USERS '.
                      'WHERE ( HOST=\'127.0.0.1\' OR HOST=\'localhost\') '.
