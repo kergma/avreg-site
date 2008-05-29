@@ -71,7 +71,7 @@ if (isset($_POST) && is_array($_POST))
 print '</form>'."\n";
 
 $GCP_cam=NULL;
-$GCP_query_param_list=array('work','cam_type','geometry','color','InetCam_URL','v4l_dev','input','Aviosys9100_chan', 'live_view','monitor_live','v4l_pipe','text_left');
+$GCP_query_param_list=array('work','cam_type','geometry','color','InetCam_IP','v4l_dev','input','Aviosys9100_chan', 'live_view','monitor_live','v4l_pipe','text_left');
 require ('../lib/get_cams_params.inc.php');
 
 $active_pipes=array();
@@ -102,22 +102,23 @@ if ( $GCP_cams_nr === 0 ) {
         print '<th>'.$strNotWcReason.'</th>'."\n";
 	print '</tr>'."\n";
   }
-	$r_count = 0;
+    $r_count = 0;
     $c_work=0;
     $c_live=0;
     $c_mon_live=0;
     $c_v4l_pipe='';
-    
-    for ($i=1;$i<=$GCP_cams_nr;$i++)
+
+    reset($GCP_cams_params);
+    while (list($__cam_nr, $cam_detail) = each($GCP_cams_params)) 
     {
-		$cam_name = getCamName($GCP_cams_params[$i]['text_left']);
-        $c_work = intval($GCP_cams_params[$i]['work']);
-        $c_live = intval($GCP_cams_params[$i]['live_view']);
-        $c_mon_live=intval($GCP_cams_params[$i]['monitor_live']);
-        $c_v4l_pipe=&$GCP_cams_params[$i]['v4l_pipe'];
+        $cam_name = getCamName($GCP_cams_params[$__cam_nr]['text_left']);
+        $c_work = intval($GCP_cams_params[$__cam_nr]['work']);
+        $c_live = intval($GCP_cams_params[$__cam_nr]['live_view']);
+        $c_mon_live=intval($GCP_cams_params[$__cam_nr]['monitor_live']);
+        $c_v4l_pipe=&$GCP_cams_params[$__cam_nr]['v4l_pipe'];
 
         if (($c_work && $c_live && $c_mon_live && !empty($c_v4l_pipe))) {
-           $active_pipes[$active_pipes_nr]=$i;
+           $active_pipes[$active_pipes_nr]=$__cam_nr;
            $active_pipes_nr++;
         } else if ($pipes_show==1) {
           // показывать только доступные для просмотра
@@ -131,7 +132,7 @@ if ( $GCP_cams_nr === 0 ) {
           else  
              print "<tr>\n";
           require('../lib/cams_main_detail.inc.php');
-        
+
           if ($pipes_show>1) {
              // показывыть все c причиной почему не доступно
              $off_reason = '&nbsp;';
@@ -150,7 +151,7 @@ if ( $GCP_cams_nr === 0 ) {
     } // for
 
   if ($pipes_show>0)
-  {           
+  {
     print '</table>'. "\n";
     print '</div>'. "\n";
   }

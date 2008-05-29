@@ -79,7 +79,7 @@ if ( isset($mon_nr) && isset($mon_name) && isset($mon_type) )
        'FROM MONITORS '.
        'WHERE BIND_MAC=\'local\' '.
        'AND MON_NR='.$mon_nr;
-       	
+
         $result = mysql_query($query) or die('Query failed: `'. $query . '`');
         if (is_null($result)) die('No result');
         $row = mysql_fetch_row($result);
@@ -91,7 +91,7 @@ if ( isset($mon_nr) && isset($mon_name) && isset($mon_type) )
         /* Free last resultset */
         mysql_free_result($result);
         $result = NULL;
-        
+
         // print "<pre><code>".var_dump($aaa)."</code></pre>";
         print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST"  onSubmit="return validate();">'."\n";
         print '<p class="HiLiteBigWarn">' . $strMonAddInfo2 . '</p>' ."\n"; 
