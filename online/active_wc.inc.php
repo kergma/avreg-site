@@ -25,7 +25,6 @@ if ($wclist_show>0)
   print '<table cellspacing="0" border="1" cellpadding="3">'. "\n";
 }
 
-$GCP_cam=NULL;
 $GCP_query_param_list=array('work','live_view','webcam_live','wc_port', 'text_left','geometry');
 require ('../lib/get_cams_params.inc.php');
 
@@ -53,7 +52,6 @@ if ( $GCP_cams_nr > 0 )
 		print '</tr>'."\n";
     }
 	
-    reset($GCP_cams_list);
    foreach ($GCP_cams_list as $__cam_nr)
    {
 		$wc = &$cams_array[$__cam_nr];

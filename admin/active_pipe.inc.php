@@ -70,7 +70,6 @@ if (isset($_POST) && is_array($_POST))
 }
 print '</form>'."\n";
 
-$GCP_cam=NULL;
 $GCP_query_param_list=array('work','cam_type','geometry','color','InetCam_IP','v4l_dev','input','Aviosys9100_chan', 'live_view','monitor_live','v4l_pipe','text_left');
 require ('../lib/get_cams_params.inc.php');
 

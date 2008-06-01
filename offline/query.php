@@ -187,10 +187,14 @@ $tm2 = localtime();
 $tm1 = localtime (strtotime ('-1 hours'));
 $min1 = $minute_array[0];
 $min2 = $minute_array[count($minute_array) - 1];
+if (empty($GCP_cams_list)) 
+   $camsnr_cond = 'c1.CAM_NR>0';
+else
+   $camsnr_cond = 'c1.CAM_NR IN (' . $GCP_cams_list . ')';
 $query = 'SELECT c1.CAM_NR, c1.VALUE as work, c2.VALUE as text_left '.
 		 'FROM CAMERAS c1 LEFT OUTER JOIN CAMERAS c2 '.
 		'ON (c1.BIND_MAC=c2.BIND_MAC AND c1.CAM_NR = c2.CAM_NR AND c2.PARAM=\'text_left\') '.
-		 'WHERE c1.BIND_MAC=\'local\' AND c1.CAM_NR>0 AND c1.PARAM = \'work\' '.
+		 'WHERE c1.BIND_MAC=\'local\' AND '.$camsnr_cond.' AND c1.PARAM = \'work\' '.
 		 'ORDER BY c1.CAM_NR';
 $result = mysql_query($query) or die("Query failed");
 $num_rows = mysql_num_rows($result);

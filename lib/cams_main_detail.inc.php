@@ -14,7 +14,7 @@ if ( $cam_detail['work'] > 0 )
    print '<td align="center" valign="center" nowrap><b>'. $__cam_nr.'</b></td>' . "\n";
    print '<td valign="center">'. $cam_name.'</td>' . "\n";
 }
-  
+
 if ( $cam_detail['cam_type'] === 'netcam' ) {
    if (!is_null($cam_detail['Aviosys9100_chan']))
        print '<td valign="center"  nowrap>'.
@@ -29,7 +29,7 @@ if ( $cam_detail['cam_type'] === 'netcam' ) {
    print '<td valign="center"  nowrap>/dev/video'. 
      (is_null($cam_detail['v4l_dev'])?'X':$cam_detail['v4l_dev']).
           ' input '.$cam_detail['input'].'</td>' . "\n";
-                 
+
 print '<td align="center" valign="center">'.$cam_detail['geometry'].
                    ' ('.
                    (($cam_detail['color']>0)?'color':'grey').

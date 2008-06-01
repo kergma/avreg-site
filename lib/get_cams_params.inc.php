@@ -1,8 +1,7 @@
 <?php
 
-if (!isset($GCP_cam))
- if (!is_null($GCP_cam) && !is_int($GCP_cam))
-    die('not set cam list');
+if ( isset($GCP_cams_list) && empty($GCP_cams_list))
+   die('not set cam list');
 if (!isset($GCP_query_param_list) || !is_array($GCP_query_param_list))
    die('not set params list');
 
@@ -33,25 +32,25 @@ for ($GCP_i=0;$GCP_i<$PARAMS_NR;$GCP_i++)
 }
 
 /* разбираемся с камерами */
-if (!is_null($GCP_cam))
-  $GCP_sql_cams='  AND (C.CAM_NR=0 OR C.CAM_NR='.$GCP_cam.')  ';  
+if (!is_null($GCP_cams_list))
+$GCP_sql_cams='  AND (C.CAM_NR=0 OR C.CAM_NR IN ('.$GCP_cams_list.')) ';
 
 $query = sprintf(
-	'SELECT C.CAM_NR, C.PARAM, C.VALUE '.
-	'FROM CAMERAS C '.
-	'WHERE C.BIND_MAC=\'local\' '.
-        $GCP_sql_cams.
-	'AND C.PARAM IN ('.$GCP_sql_in_par.') '.
-        'AND  C.VALUE<>"" AND C.VALUE IS NOT NULL '.
-	'ORDER BY C.CAM_NR');
+      'SELECT C.CAM_NR, C.PARAM, C.VALUE '.
+      'FROM CAMERAS C '.
+      'WHERE C.BIND_MAC=\'local\' '.
+      $GCP_sql_cams.
+      'AND C.PARAM IN ('.$GCP_sql_in_par.') '.
+      'AND  C.VALUE<>"" AND C.VALUE IS NOT NULL '.
+      'ORDER BY C.CAM_NR');
 // print_r($query);
 $result = mysql_query($query) or die('Query failed: '. $query);
 while ( $row = mysql_fetch_array($result, MYSQL_ASSOC) )
 {
-    $__cam_nr = intval($row['CAM_NR']);
-    if ($__cam_nr === 0 )
+   $__cam_nr = intval($row['CAM_NR']);
+   if ($__cam_nr === 0 )
          $GCP_def_pars[$row['PARAM']] = $row['VALUE'];
-     else
+   else
          $GCP_cams_params[$__cam_nr][$row['PARAM']] = $row['VALUE'];
 }
 mysql_free_result($result); $result=NULL;
@@ -62,14 +61,14 @@ if ($GCP_cams_nr)
 {
    reset($GCP_cams_list);
    foreach ($GCP_cams_list as $__cam_nr)
-   {  
-       reset($GCP_def_pars);
-       while (list($GCP_parname, $GCP_defval) = each($GCP_def_pars))
-       {
-          if (!array_key_exists($GCP_parname, $GCP_cams_params[$__cam_nr]))
-              $GCP_cams_params[$__cam_nr][$GCP_parname] = $GCP_defval;
-       }
-    }
+   {
+      reset($GCP_def_pars);
+      while (list($GCP_parname, $GCP_defval) = each($GCP_def_pars))
+      {
+         if (!array_key_exists($GCP_parname, $GCP_cams_params[$__cam_nr]))
+            $GCP_cams_params[$__cam_nr][$GCP_parname] = $GCP_defval;
+      }
+   }
 }
 
 /*
