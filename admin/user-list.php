@@ -1,51 +1,42 @@
 <?php
+$lang_file='_admin_users.php';
 require ('../head.inc.php');
 require ('../lib/my_conn.inc.php');
-
-function getCamNameForNum ($_cam_nr)
-{
-	$_ret = $GLOBALS['strNotTextLeft'];
-	/* Performing new SQL query */
-	$_query = 'SELECT VALUE FROM CAMERAS WHERE CAM_NR='.$_cam_nr.' AND PARAM=\'text_left\'';
-	$_result = mysql_query($_query) or die("Query failed");
-	if ( $_row = mysql_fetch_array($_result, MYSQL_ASSOC) )
-		if ( !empty ($_row['VALUE']) )
-			$_ret = $_row['VALUE'];
-    return $_ret;
-}
 
 echo '<h1>' . sprintf($r_users, $named, $sip) . '</h1>' ."\n";
 
 if ( isset($cmd) )
 {
-	if ( !settype ($u_status, 'integer') ) die ('Not set type, crack or hack???');
-	if ( !$admin_user || !($user_status < $u_status) ) die ('Crack or hack???');
-	switch ( $cmd ) {
-		case 'DEL':
-			echo '<p class="HiLiteBigWarn">' . sprintf ($fmtDeleteUserConfirm, $u_name,$u_host,$grp_ar[$u_status]['grname']) . '</p>' ."\n";
-			print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
-			print '<input type="hidden" name="cmd" value="DEL_OK">'."\n";
+   $ui = get_user_info($u_host, $u_name);
+   if ( $ui === FALSE )
+      die('crack?');
+   $u_status = $ui['STATUS'];
+   if ( !$admin_user || !($user_status < $u_status) ) die ('Crack or hack???');
+   switch ( $cmd ) {
+	case 'DEL':
+		echo '<p class="HiLiteBigWarn">' . sprintf ($fmtDeleteUserConfirm, $u_name,$u_host,$grp_ar[$u_status]['grname']) . '</p>' ."\n";
+		print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
+		print '<input type="hidden" name="cmd" value="DEL_OK">'."\n";
     		print '<input type="hidden" name="u_host" value="'.$u_host.'">'."\n";
-			print '<input type="hidden" name="u_name" value="'.$u_name.'">'."\n";
-			print '<input type="hidden" name="u_status" value="'.$u_status.'">'."\n";
-			print '<input type="submit" name="mult_btn" value="'.$strYes.'">'."\n";
-			print '<input type="submit" name="mult_btn" value="'.$strNo.'">'."\n";
- 			print '</form>'."\n";
-			require ('../foot.inc.php');
-			exit;
-			break; /**/
-		case 'DEL_OK':
-			if ( ($mult_btn == $strYes) && isset($u_host) && isset($u_name) && isset($u_status))
-			{
-				$query = sprintf('DELETE FROM USERS WHERE USER="%s" AND HOST="%s" AND STATUS=%u',
-								 $u_name, $u_host, $u_status);
-				mysql_query($query) or die("Query failed");
-				echo '<p class="HiLiteBigWarn">' . sprintf ($fmtDeleteUser, $u_name,$u_host) . 
+		print '<input type="hidden" name="u_name" value="'.$u_name.'">'."\n";
+		print '<input type="submit" name="mult_btn" value="'.$strYes.'">'."\n";
+		print '<input type="submit" name="mult_btn" value="'.$strNo.'">'."\n";
+ 		print '</form>'."\n";
+		require ('../foot.inc.php');
+		exit;
+		break; /**/
+	case 'DEL_OK':
+		if ( ($mult_btn == $strYes) && isset($u_host) && isset($u_name) && isset($u_status))
+		{
+			$query = sprintf('DELETE FROM USERS WHERE USER="%s" AND HOST="%s" AND STATUS=%u',
+			 $u_name, $u_host, $u_status);
+	        	mysql_query($query) or die("Query failed");
+		       echo '<p class="HiLiteBigWarn">' . sprintf ($fmtDeleteUser, $u_name,$u_host) . 
                   '</p>' ."\n";
-			}
-			unset ($u_name);
-		break;
-	}
+		}
+		unset ($u_name);
+	break;
+   }
 }
 
 if ( !isset($u_name) || empty($u_name) )
@@ -90,7 +81,7 @@ if ( !isset($u_name) || empty($u_name) )
 			print '<th>&nbsp;</th>'."\n";
 		    print '<th>&nbsp;</th>'."\n";
 			print '<th>&nbsp;</th>'."\n";
-			print '<th nowrap>'.$strName.'</th>'."\n";
+			print '<th nowrap>'.$strLoginName.'</th>'."\n";
 			print '<th>'.$strHost.'</th>'."\n";
 			print '<th>'.$FIO.'</th>'."\n";
 			print '<th>'.$strUpdateControl.'</th>'."\n";
@@ -100,16 +91,12 @@ if ( !isset($u_name) || empty($u_name) )
 			{
 				print '<tr>'."\n";
 				print '<td>'.$bashnia.'</td>' . "\n";
-				$a_del = sprintf ('%s?cmd=DEL&u_name=%s&u_host=%s&u_status=%u',
+				$a_del = sprintf ('%s?cmd=DEL&u_name=%s&u_host=%s',
 							$_SERVER['PHP_SELF'],
 							urlencode ($row['USER']),
-							urlencode ($row['HOST']),
-							$grp_status);                
-				$a_change = sprintf ('./user-tune.php?u_name=&u_name=%s&u_host=%s&u_status=%u&u_longname=%s',
-												urlencode($row['USER']),
-												urlencode($row['HOST']),
-												$grp_status,
-												urlencode($row['LONGNAME']) );
+							urlencode ($row['HOST']));
+				$a_change = sprintf('./user-tune.php?u_name=%s&u_host=%s',
+                                urlencode($row['USER']), urlencode($row['HOST']));
                 if ( $row['USER'] == $login_user )
                 {
                     print '<td>&nbsp;</td>';
@@ -117,7 +104,7 @@ if ( !isset($u_name) || empty($u_name) )
                 } else {
                 	if ( $admin_user && $user_status < $grp_status)
                     {
-				        print '<td><a href="'.$a_del.'">'. $strDelete . '</a></td>' . "\n";            
+				        print '<td><a href="'.$a_del.'">'. $strDelete . '</a></td>' . "\n";
                         print '<td><a href="'.$a_change.'">'. $strChange . '</a></td>' . "\n";                              } else {
                        print ('<td>&nbsp;</td>');
                        print ('<td>&nbsp;</td>');

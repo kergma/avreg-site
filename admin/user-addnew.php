@@ -1,14 +1,16 @@
 <?php
+$lang_file='_admin_users.php';
 require ('../head.inc.php');
 DENY($admin_status);
 require ('../lib/my_conn.inc.php');
+require_once ('../lib/utils-inet.php');
 ?>
 
 <script type="text/javascript" language="javascript">
 <!--
 function reset_to_list()
 {
-	window.open('<?php echo $conf['prefix']; ?>/admin/user-list.php', target='_self');
+      window.open('<?php echo $conf['prefix']; ?>/admin/user-list.php', target='_self');
 }
 // -->
 </script>
@@ -17,89 +19,63 @@ function reset_to_list()
 
 echo '<h1>' . sprintf($r_users, $named, $sip) . '</h1>' ."\n";
 
-if ( isset($cmd) )
+if ( isset($cmd) ) {
+if ( isset($u_host) && isset($u_name) && isset($groups))
 {
-  require('user-check.inc.php');
-  switch ( $cmd )
-  {
-     case 'ADD_NEW_USER':
-       $query = 'INSERT INTO USERS '.
-       '( HOST, USER, PASSWD, STATUS, LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME) '.
-       "VALUES ( '$u_host', '$u_name', encrypt('$u_pass'), $groups, '$u_longname', '$remote_addr', '$login_user', NOW());";
-        break;
-     default:
-        die('crack');
-  }
-  // print ($query);
-  if ( mysql_query($query) )
-  {
+require('user-check.inc.php');
+switch ( $cmd )
+{
+   case 'ADD_NEW_USER':
+      $query = sprintf('INSERT INTO USERS 
+      ( HOST, USER, PASSWD, STATUS, ALLOW_CAMS,
+      LIMIT_FPS, LIMIT_KBPS, LONGNAME, 
+      CHANGE_HOST, CHANGE_USER, CHANGE_TIME) 
+      VALUES ( \'%s\', \'%s\', encrypt(\'%s\'), %u, \'%s\', %u, %u, \'%s\', \'%s\', \'%s\', NOW())',
+      addslashes($u_host), addslashes($u_name),
+      addslashes($passwd_changed),
+      $groups,
+      addslashes($u_devacl), $limit_fps, $limit_kbps,
+      addslashes($u_longname),addslashes($remote_addr),addslashes($login_user));
+      break;
+   default:
+      die('crack');
+}
+// print ($query);
+if ( mysql_query($query) )
+{
       print '<p class="HiLiteWarn">' . sprintf ($fmtUserAdded, $u_name, $u_host) . '</p>' ."\n";
       print '<br><center><a href="'.$conf['prefix'].'/admin/user-list.php">'.$l_user_list.'</a><center>' ."\n";
-  } else {
+} else {
       print '<p class="HiLiteErr">'.sprintf ($fmtUserAddErr2, $u_name, $u_host, mysql_error() ).
             '</p>' ."\n";
       print_go_back();
-  }
-  require ('../foot.inc.php');
-  exit;
+}
+require ('../foot.inc.php');
+exit;
+} else {
+      print '<p class="HiLiteErr">'.$strInvalidFormParams.'</p>' ."\n";
+}
 }
 
 echo '<h2>' . $r_user_add . '</h2>' ."\n";
 
 if (isset($status)) {
-  if (!settype($status,'int'))
-    die();
+if (!settype($status,'int'))
+   die();
 } else {
-  $status=-1;
+$status=-1;
 }
 
 if ( !isset($u_name) || empty($u_name) )
 {
-	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
-	print '<table cellspacing=0 border=1 cellpadding=5>'."\n";
-	print '<tr>'."\n";
- 	print '<td>'.$strName1.'</td>'."\n";
-	print '<td><input type="text" name="u_name" value="" size="16" maxlength="16">'."\n";
-	print '</tr>'."\n";
-	print '<tr>'."\n";
- 	print '<td>'.$strAllowHost.'</td>'."\n";
-	print '<td><input type="text" name="u_host" value="" size="40" maxlength="60">'."\n";
-	print '</tr>'."\n";
-	print '<tr>'."\n";
- 	print '<td>'.$FIO.'</td>'."\n";
-	print '<td><input type="text" name="u_longname" value="" size="40" maxlength="50">'."\n";
-	print '</tr>'."\n";
-	print '<tr>'."\n";
- 	print '<td>'.$strPassword.'<br>'.$strPasswordAllowed.'</td>'."\n";
-	print '<td><input type="password" name="u_pass" size="16" maxlength="16">'."\n";
-	print '</tr>'."\n";
-	print '<tr>'."\n";
- 	print '<td>'.$strPassword2.'</td>'."\n";
-	print '<td><input type="password" name="u_pass2" size="16" maxlength="16">'."\n";
-	print '</tr>'."\n";
-	print '<tr>'."\n";
- 	print '<td>'.$str_group1.'</td>'."\n";
-	print '<td>'."\n";
-    reset($grp_ar);
-	while (list ( $gr_status, $groups ) = each ($grp_ar) )
-    {
-       if ( $user_status >= $gr_status ) 
-          $addons='disabled';
-       else if ($status === $gr_status)
-          $addons='checked'; 
-       else
-          $addons='';
-       print '<input type="radio" name="groups" '. $addons.
-              ' value="'.$gr_status.'">'.$grp_ar[$gr_status]['grname'].'<br>'."\n";
-	}
-	print '</td>'."\n";
-	print '</tr>'."\n";
-	print '</table>'."\n";
-	print '<br>'."\n";
-	print '<input type="hidden" name="cmd" value="ADD_NEW_USER">'."\n";
-	print '<input type="submit" name="submit_btn" value="'.$strAddUser.'">'."\n";
-	print '<input type="reset" name="reset_btn" value="'.$strRevoke.'" onclick="reset_to_list();">'."\n";
-	print '</form>'."\n";
+      print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
+      print '<table cellspacing=0 border=1 cellpadding=5>'."\n";
+      require '_user_data_tbl.inc.php';
+      print '<br>'."\n";
+      print '<input type="hidden" name="cmd" value="ADD_NEW_USER">'."\n";
+      print '<input type="submit" name="submit_btn" value="'.$strAddUser.'">'."\n";
+      print '<input type="reset" name="reset_btn" value="'.$strRevoke.'" onclick="reset_to_list();">'."\n";
+      print '</form>'."\n";
 }
 
 // phpinfo ();

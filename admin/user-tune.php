@@ -1,4 +1,5 @@
 <?php
+$lang_file='_admin_users.php';
 require ('../head.inc.php');
 DENY($admin_status);
 require ('../lib/my_conn.inc.php');
@@ -8,7 +9,7 @@ require ('../lib/my_conn.inc.php');
 <!--
 function reset_to_list()
 {
-	window.open('<?php echo $conf['prefix']; ?>/admin/user-list.php', target='_self');
+      window.open('<?php echo $conf['prefix']; ?>/admin/user-list.php', target='_self');
 }
 // -->
 </script>
@@ -19,95 +20,70 @@ echo '<h1>' . sprintf($r_users, $named, $sip) . '</h1>' ."\n";
 
 if ( isset($cmd) )
 {
-  require('user-check.inc.php');
-  switch ( $cmd )
-  {
-     case 'UPDATE_USER':
-        $query = sprintf(
-        'UPDATE USERS '.
-        'SET HOST=\'%s\', USER=\'%s\', PASSWD=encrypt(\'%s\'), STATUS=%d, '.
-        'LONGNAME=\'%s\', CHANGE_HOST=\'%s\', CHANGE_USER=\'%s\', CHANGE_TIME=NOW() '.
-        'WHERE HOST=\'%s\' AND USER=\'%s\'',
-        $u_host,$u_name,$u_pass,$groups,
-        $u_longname,$remote_addr,$login_user,
-        $old_u_host,$old_u_name);
-        break;
-     default:
-        die('crack');
-  }
-  // print ($query);
-  if ( mysql_query($query) )
-  {
+require('user-check.inc.php');
+switch ( $cmd )
+{
+   case 'UPDATE_USER':
+         if ( 0 === strcmp($u_pass, $old_u_passwd) )
+            $passwd_changed = '';
+         else
+            $passwd_changed = sprintf('PASSWD=encrypt(\'%s\'), ', $u_pass);
+      $query = sprintf(
+      'UPDATE USERS '.
+      'SET HOST=\'%s\', USER=\'%s\', %s STATUS=%d, '.
+      'ALLOW_CAMS=\'%s\', LIMIT_FPS=%d, LIMIT_KBPS=%d, '.
+      'LONGNAME=\'%s\', CHANGE_HOST=\'%s\', CHANGE_USER=\'%s\', CHANGE_TIME=NOW() '.
+      'WHERE HOST=\'%s\' AND USER=\'%s\'',
+      addslashes($u_host), addslashes($u_name),
+      addslashes($passwd_changed),
+      $groups,
+      addslashes($u_devacl), $limit_fps, $limit_kbps,
+      addslashes($u_longname),addslashes($remote_addr),addslashes($login_user),
+      addslashes($old_u_host),addslashes($old_u_name));
+      break;
+   default:
+      die('crack?');
+}
+// print ($query);
+if ( mysql_query($query) )
+{
       print '<p class="HiLiteWarn">' . sprintf ($fmtUserUpdated, $u_name, $u_host) . '</p>' ."\n";
       print '<br><center><a href="'.$conf['prefix'].'/admin/user-list.php">'.$l_user_list.'</a><center>' ."\n";
-  } else {
+} else {
       print '<p class="HiLiteErr">'.sprintf ($fmtUserUpdated2, $u_name, $u_host, mysql_error() ).
             '</p>' ."\n";
       print '<br><center><a href="javascript:window.history.back();" title="'.$strBack.'">'.
             '<img src="'.$conf['prefix'].'/img/undo_dark.gif" alt="'.$strBack.
             '" width="24" hspace="24" border="0"></a></center>' ."\n";
-  }
-  unset($u_name);
+}
+unset($u_name);
 }
 
 if ( isset($u_name) && !empty($u_name) )
 {
-   if (isset($u_status))
-   {
-     if (!settype($u_status,'int'))
-       die();
-   } else {
-      $u_status=-1;
-   }
-
-	echo '<h2>' . sprintf ($fmtUserTune,$u_name,$u_host) . '</h2>' ."\n";
-	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
-	print '<table cellspacing=0 border=1 cellpadding=5>'."\n";
-	print '<tr>'."\n";
- 	print '<td>'.$strName1.'</td>'."\n";
-	print '<td><input type="text" name="u_name" value="'.$u_name.'" size="16" maxlength="16">'."\n";
-	print '</tr>'."\n";
-	print '<tr>'."\n";
- 	print '<td>'.$strAllowHost.'</td>'."\n";
-	print '<td><input type="text" name="u_host" value="'.$u_host.'" size="40" maxlength="60">'."\n";
-	print '</tr>'."\n";
-	print '<tr>'."\n";
- 	print '<td>'.$FIO.'</td>'."\n";
-	print '<td><input type="text" name="u_longname" value="'.stripslashes (htmlspecialchars($u_longname)).'" size="40" maxlength="50">'."\n";
-	print '</tr>'."\n";
-	print '<tr>'."\n";
- 	print '<td>'.$strPassword.'<br>'.$strPasswordAllowed.'</td>'."\n";
-	print '<td><input type="password" name="u_pass" size="16" maxlength="16">'."\n";
-	print '</tr>'."\n";
-	print '<tr>'."\n";
- 	print '<td>'.$strPassword2.'</td>'."\n";
-	print '<td><input type="password" name="u_pass2" size="16" maxlength="16">'."\n";
-	print '</tr>'."\n";
-	print '<tr>'."\n";
- 	print '<td>'.$str_group1.'</td>'."\n";
-	print '<td>'."\n";
-    reset($grp_ar);
-	while (list ( $gr_status, $groups ) = each ($grp_ar) )
-    {
-       if ( $user_status > $gr_status ) 
-          $addons='disabled';
-       else if ($u_status === $gr_status)
-          $addons='checked'; 
-       else
-          $addons='';
-       print '<input type="radio" name="groups" '. $addons.
-              ' value="'.$gr_status.'">'.$grp_ar[$gr_status]['grname'].'<br>'."\n";
-	}
-	print '</td>'."\n";
-	print '</tr>'."\n";
-	print '</table>'."\n";
-	print '<br>'."\n";
-	print '<input type="hidden" name="cmd" value="UPDATE_USER">'."\n";
-	print '<input type="hidden" name="old_u_name" value="'.$u_name.'">'."\n";
-	print '<input type="hidden" name="old_u_host" value="'.$u_host.'">'."\n";
-	print '<input type="submit" name="submit_btn" value="'.$strSave.'">'."\n";
-	print '<input type="reset" name="reset_btn" value="'.$strRevoke.'" onclick="reset_to_list();">'."\n";
-	print '</form>'."\n";
+   $ui = get_user_info($u_host, $u_name);
+   if ( $ui === FALSE )
+      die('crack?');
+//      tohtml($ui);
+      $user2html = stripslashes (htmlspecialchars($ui['USER']));
+      $host2html = stripslashes (htmlspecialchars($ui['HOST']));
+      $longname2html = stripslashes (htmlspecialchars($ui['LONGNAME']));
+      $passwd2html = stripslashes (htmlspecialchars($ui['PASSWD']));
+      $u_devacl = stripslashes (htmlspecialchars($ui['ALLOW_CAMS']));
+      $u_status = $ui['STATUS'];
+      $limit_fps = $ui['LIMIT_FPS'];
+      $limit_kbps = $ui['LIMIT_KBPS'];
+      echo '<h2>' . sprintf ($fmtUserTune,$ui['USER'],$ui['HOST']) . '</h2>' ."\n";
+      print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
+      require '_user_data_tbl.inc.php';
+      print '<br>'."\n";
+      print '<input type="hidden" name="cmd" value="UPDATE_USER">'."\n";
+      print '<input type="hidden" name="old_u_name" value="'.$user2html.'">'."\n";
+      print '<input type="hidden" name="old_u_host" value="'.$host2html.'">'."\n";
+      print '<input type="hidden" name="old_u_passwd" value="'.$passwd2html.'">'."\n";
+      print '<input type="submit" name="submit_btn" value="'.$strSave.'">'."\n";
+      print '<input type="reset" name="reset_btn" value="'.$strRevoke.'" onclick="reset_to_list();">'."\n";
+      print '</form>'."\n";
 }
 
 // phpinfo ();

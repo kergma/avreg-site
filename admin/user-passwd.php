@@ -1,4 +1,5 @@
 <?php
+$lang_file='_admin_users.php';
 require ('../head.inc.php');
 require ('../lib/my_conn.inc.php');
 ?>
@@ -37,9 +38,11 @@ if ( isset($cmd) )
 				print '<p class="HiLiteErr">' . $strAddUserErr1 . '</p>' ."\n";
                 print_go_back();
 			} else {
-				$query = sprintf("SELECT PASSWD FROM USERS WHERE HOST='%s' AND USER='%s'",
-									$u_host,
-									$u_name);
+                            if ( $u_host === '127.0.0.1' || $u_host === 'localhost' )
+                               $host_cond = '(HOST=\'127.0.0.1\' OR HOST=\'localhost\')';
+                            else
+                                $host_cond = sprintf('\HOST=\'%s\'',$u_host);
+				$query = sprintf("SELECT PASSWD FROM USERS WHERE %s AND USER='%s'", $host_cond, $u_name);
 				$result = mysql_query($query) or die('Query failed: `'. $query . "`\n");
 				if ( $row = mysql_fetch_array($result, MYSQL_ASSOC) )
 					$user_passwd = $row['PASSWD'];
@@ -52,9 +55,9 @@ if ( isset($cmd) )
 				{
 					if ( strcmp($old_pass, $u_pass ) )
 					{
-						$query = sprintf("UPDATE USERS SET PASSWD=ENCRYPT('%s') WHERE HOST='%s' AND USER='%s'",
+						$query = sprintf("UPDATE USERS SET PASSWD=ENCRYPT('%s') WHERE %s AND USER='%s'",
 								 $u_pass,
-								 $u_host,
+								 $host_cond,
 							 	$u_name);
 						//print ($query);
 						if ( mysql_query($query) ) {
