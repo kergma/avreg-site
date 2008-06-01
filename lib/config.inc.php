@@ -216,8 +216,8 @@ $ui['USER'] = $row['USER'];
 $ui['PASSWD'] = $row['PASSWD'];
 $ui['STATUS'] = (int)$row['STATUS'];
 $ui['ALLOW_CAMS'] = $row['ALLOW_CAMS'];
-$ui['LIMIT_FPS'] = (int)$row['LIMIT_FPS'];
-$ui['LIMIT_KBPS'] = (int)$row['LIMIT_KBPS'];
+$ui['LIMIT_FPS'] = is_null($row['LIMIT_FPS'])?NULL:(int)$row['LIMIT_FPS'];
+$ui['LIMIT_KBPS'] = is_null($row['LIMIT_KBPS'])?NULL:(int)$row['LIMIT_KBPS'];;
 $ui['LONGNAME'] = $row['LONGNAME'];
 $ui['CHANGE_HOST'] = $row['CHANGE_HOST'];
 $ui['CHANGE_USER'] = $row['CHANGE_USER'];
@@ -372,6 +372,15 @@ function print_go_back() {
 print '<br><center><a href="javascript:window.history.back();" title="'.$GLOBALS['strBack'].'">'.
 '<img src="'.$conf['prefix'].'/img/undo_dark.gif" alt="'.$GLOBALS['strBack'].
 '" width="24" hspace="24" border="0"></a></center>'."\n";
+}
+
+
+function sql_format_str_val($val) {
+   return empty($val)?'NULL':"'".addslashes($val)."'";
+}
+
+function sql_format_int_val($val) {
+   return empty($val)?'NULL':"'".(Int)$val."'";
 }
 
 function getCamsArray($_sip,$first_defs=FALSE)

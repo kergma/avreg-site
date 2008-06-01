@@ -26,16 +26,24 @@ require('user-check.inc.php');
 switch ( $cmd )
 {
    case 'ADD_NEW_USER':
+      if ( 0 === strcmp($u_pass, $old_u_passwd) )
+         $passwd_changed = '';
+      else
+         $passwd_changed = sprintf('encrypt(\'%s\'), ', $u_pass);
       $query = sprintf('INSERT INTO USERS 
       ( HOST, USER, PASSWD, STATUS, ALLOW_CAMS,
-      LIMIT_FPS, LIMIT_KBPS, LONGNAME, 
+      LIMIT_FPS, LIMIT_KBPS, LONGNAME,
       CHANGE_HOST, CHANGE_USER, CHANGE_TIME) 
-      VALUES ( \'%s\', \'%s\', encrypt(\'%s\'), %u, \'%s\', %u, %u, \'%s\', \'%s\', \'%s\', NOW())',
-      addslashes($u_host), addslashes($u_name),
-      addslashes($passwd_changed),
+      VALUES ( %s, %s, %s %u, %s, %s, %s, %s, %s, %s, NOW())',
+      sql_format_str_val($u_host), sql_format_str_val($u_name),
+      $passwd_changed,
       $groups,
-      addslashes($u_devacl), $limit_fps, $limit_kbps,
-      addslashes($u_longname),addslashes($remote_addr),addslashes($login_user));
+      sql_format_str_val($u_devacl),
+      sql_format_int_val($limit_fps),
+      sql_format_int_val($limit_kbps),
+      sql_format_str_val($u_longname),
+      sql_format_str_val($remote_addr),
+      sql_format_str_val($login_user));
       break;
    default:
       die('crack');
@@ -70,6 +78,7 @@ if ( !isset($u_name) || empty($u_name) )
 {
       print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
       print '<table cellspacing=0 border=1 cellpadding=5>'."\n";
+      $u_status = &$status;
       require '_user_data_tbl.inc.php';
       print '<br>'."\n";
       print '<input type="hidden" name="cmd" value="ADD_NEW_USER">'."\n";

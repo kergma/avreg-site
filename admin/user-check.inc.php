@@ -58,15 +58,19 @@ if ( !isset($groups) || !settype($groups,'int') ) {
    echo '<p class="HiLiteErr">' . sprintf ($fmtEmptyF, $str_groups) . '</p>' ."\n";
 } else $good++;
 
-if ( FALSE === parse_dev_acl($u_devacl) ) {
-   echo '<p class="HiLiteErr">' . sprintf ($fmtEmptyF, 'DeviceACL') . '</p>' ."\n";
+$u_devacl = trim($u_devacl);
+if ( !empty($u_devacl) &&
+     FALSE === parse_dev_acl($u_devacl) ) {
+     echo '<p class="HiLiteErr">' . sprintf ($fmtEmptyF, 'DeviceACL') . '</p>' ."\n";
 } else $good++;
 
-if ( !empty($limit_fps) && !settype($limit_fps,'int') || $limit_fps < 1 || $limit_fps > 30) {
+trim($limit_fps);
+if ( !empty($limit_fps) && ( !settype($limit_fps,'int') || ( $limit_fps < 1 || $limit_fps > 30))) {
    echo '<p class="HiLiteErr">' . sprintf ($fmtEmptyF, 'limit_fps') . '</p>' ."\n";
 } else $good++;
 
-if ( !empty($limit_kbps) && !settype($limit_kbps,'int') || $limit_kbps < 0 || $limit_kbps > 99999 ) {
+trim($limit_kbps);
+if ( !empty($limit_kbps) && ( !settype($limit_kbps,'int') || ($limit_kbps < 0 || $limit_kbps > 99999))) {
    echo '<p class="HiLiteErr">' . sprintf ($fmtEmptyF, 'limit_kbps') . '</p>' ."\n";
 } else $good++;
 

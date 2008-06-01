@@ -30,16 +30,18 @@ switch ( $cmd )
             $passwd_changed = sprintf('PASSWD=encrypt(\'%s\'), ', $u_pass);
       $query = sprintf(
       'UPDATE USERS '.
-      'SET HOST=\'%s\', USER=\'%s\', %s STATUS=%d, '.
-      'ALLOW_CAMS=\'%s\', LIMIT_FPS=%d, LIMIT_KBPS=%d, '.
-      'LONGNAME=\'%s\', CHANGE_HOST=\'%s\', CHANGE_USER=\'%s\', CHANGE_TIME=NOW() '.
-      'WHERE HOST=\'%s\' AND USER=\'%s\'',
-      addslashes($u_host), addslashes($u_name),
-      addslashes($passwd_changed),
+      'SET HOST=%s, USER=%s, %s STATUS=%d, '.
+      'ALLOW_CAMS=%s, LIMIT_FPS=%s, LIMIT_KBPS=%s, '.
+      'LONGNAME=%s, CHANGE_HOST=%s, CHANGE_USER=%s, CHANGE_TIME=NOW() '.
+      'WHERE HOST=%s AND USER=%s',
+      sql_format_str_val($u_host), sql_format_str_val($u_name),
+      $passwd_changed,
       $groups,
-      addslashes($u_devacl), $limit_fps, $limit_kbps,
-      addslashes($u_longname),addslashes($remote_addr),addslashes($login_user),
-      addslashes($old_u_host),addslashes($old_u_name));
+      sql_format_str_val($u_devacl),
+      sql_format_int_val($limit_fps),
+      sql_format_int_val($limit_kbps),
+      sql_format_str_val($u_longname),sql_format_str_val($remote_addr),sql_format_str_val($login_user),
+      sql_format_str_val($old_u_host),sql_format_str_val($old_u_name));
       break;
    default:
       die('crack?');
@@ -64,7 +66,7 @@ if ( isset($u_name) && !empty($u_name) )
    $ui = get_user_info($u_host, $u_name);
    if ( $ui === FALSE )
       die('crack?');
-//      tohtml($ui);
+      //tohtml($ui);
       $user2html = stripslashes (htmlspecialchars($ui['USER']));
       $host2html = stripslashes (htmlspecialchars($ui['HOST']));
       $longname2html = stripslashes (htmlspecialchars($ui['LONGNAME']));
