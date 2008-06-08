@@ -136,6 +136,15 @@ else
    $PrintCamNames = '';
 print '<br>'.$strPrintCamNames.': <input type="checkbox" name="PrintCamNames" '.$PrintCamNames.' />'."\n";
 
+if (false !== strpos($_SERVER['HTTP_USER_AGENT'],'MSIE')) {
+   $ercnt=$mon_type.'_EnableReconnect';
+   if (isset($_COOKIE['avreg_'.$ercnt]) && $_COOKIE['avreg_'.$ercnt] != 0 )
+      $EnableReconnect_checked = 'checked';
+   else
+      $EnableReconnect_checked = '';
+   print '<br>'.$strEnableReconnect.': <input type="checkbox" name="EnableReconnect" '.$EnableReconnect_checked.' />'."\n";
+}
+
 print '<br><br><input type="submit" name="btnShow" value="'.$strShowCam.'" />'."\n";
 print '<input type="hidden" name="mon_type" value="'.$mon_type.'" />'."\n";
 print '</form>'."\n";

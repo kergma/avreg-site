@@ -46,6 +46,7 @@ switch ($mon_type)
 }
 $cfts = 'avreg_' . $mon_type . '_FitToScreen'; 
 $cnm  = 'avreg_' . $mon_type . '_PrintCamNames';
+$ercnt = 'avreg_' . $mon_type . '_EnableReconnect';
 $expired = time()+5184000;
 $ca=dirname($_SERVER['SCRIPT_NAME']).'/build_mon.php';
 if (isset($_POST['FitToScreen']))
@@ -56,6 +57,10 @@ if (isset($_POST['PrintCamNames']))
    setcookie($cnm,  '1', $expired,$ca);
 else
    setcookie($cnm,  '0', $expired,$ca);
+if (isset($_POST['EnableReconnect']))
+   setcookie($ercnt,  '1', $expired,$ca);
+else
+   setcookie($ercnt,  '0', $expired,$ca);
 
 for ($i=0;$i<$wins_nr;$i++) 
   if (isset($_POST['cams'][$i]))
@@ -86,7 +91,12 @@ else
 if (isset($_POST['PrintCamNames']))
   print 'var PrintCamNames = true;'."\n";
 else
-  print 'var PrintCamNames = false;'."\n";
+   print 'var PrintCamNames = false;'."\n";
+
+if (isset($_POST['EnableReconnect']))
+  print 'var EnableReconnect = 1;'."\n";
+else
+  print 'var EnableReconnect = 0;'."\n";
 
 print 'var WINS = new MakeArray('.$wins_nr.')'."\n";
 
@@ -123,7 +133,11 @@ if ($cnames_nr>0) {
 print 'var CNAMES = new MakeArray('.$cnames_nr.')'."\n";
 for ($i=0;$i<$cnames_nr;$i++) 
   print 'CNAMES['.$i.']="'.$camnames[$i].'";'."\n";
-}  
+}
+
+print 'var ___u="'.$_SERVER["PHP_AUTH_USER"]."\"\n";
+print 'var ___p="'.$_SERVER["PHP_AUTH_PW"]."\"\n";
+print 'var ___abenc="'.base64_encode($_SERVER["PHP_AUTH_USER"].':'.$_SERVER["PHP_AUTH_PW"])."\"\n";
 
 ?>
 
@@ -186,7 +200,7 @@ function parse_win_info(wininfo) {
    orig_w = parseInt(win_info[4]);
    orig_h = parseInt(win_info[5]);
  
-   url = 'http:\/\/'+ip+':'+ port;
+   url = 'http:\/\/' + ip + ':' + port + '/video.mjpg';
 }
 
 function img_mouseover(eimg,win_nr,orig_w,orig_h) {
@@ -327,8 +341,6 @@ else if (MSIE)
 else
   br_specific='Вы НЕ пользуетесь браузерами Microsoft Internet Explorer, Firefox, Mozilla, Netscape';         
 function not_show() {
-
-  
    if(help_win == null || help_win.closed)
    {
       help_win = window.open('','_blank','width=510,height=600,menubar=0,toolbar=0,location=0,status=0');
@@ -357,9 +369,8 @@ function not_show() {
 }
 
 function brout(win_nr, cam_w, cam_h) {
-   
    // alert('win ' + win_nr + '[ ' + cam_w + 'x' + cam_h + ' ]');
-   
+
    var splice = WINS[win_nr];
 
    var onoff = parseInt(splice.charAt(0));
@@ -380,13 +391,13 @@ function brout(win_nr, cam_w, cam_h) {
        H=orig_h+'px';
      } else {
        W=cam_w+'px';
-       H=cam_h+'px';       
+       H=cam_h+'px';
      }
    }
    var alt = 'WebCam #' + cam_nr + ' on ' + url + ' , original geo ['+orig_w+'x'+orig_h+']';
    if (GECKO) {
       alt += ' Found Gecko engine browser (Firefox, Mozilla or Netscape).';
-      document.writeln('<img src="'+url+'" id="'+id+'" name="cam" alt="' +alt+'" '+
+      document.writeln('<img src="'+url+'?ab='+___abenc+'" id="'+id+'" name="cam" alt="' +alt+'" '+
       'width="'+W+'" height="'+H+'" ' +
       'align="middle" border="0px" ' +
       'onclick="img_click(this,'+orig_w+', '+orig_h+');" '+
@@ -394,21 +405,27 @@ function brout(win_nr, cam_w, cam_h) {
       'onmouseout="hideddrivetip();" '+
       ' />');
    } else if (MSIE) {
-      
+
       alt += ' Microsoft Internet Explorer on Windows system found. Try ActiveX viewer.';
       document.writeln('<OBJECT ID="'+id+'" name="cam" standby="Axis Media Control Active X not loaded" '+
       ' WIDTH="'+W+'" HEIGHT="'+H+'" border="0px" '+
       ' classid="CLSID:745395C8-D0E1-4227-8586-624CA9A10A8D" '+
 	  ' CODEBASE="amc.cab" \/>');
-      document.writeln('<PARAM NAME="AutoStart" VALUE=1 \/>');
+     document.writeln('<PARAM NAME="AutoStart" VALUE=1 \/>');
 	  document.writeln('<PARAM NAME="NetworkTimeout" VALUE=5000 \/>');
 	  document.writeln('<PARAM NAME="StretchToFit" VALUE=1 \/>');
 	  document.writeln('<PARAM NAME="DisplayMessages" VALUE=1 \/>');
 	  document.writeln('<PARAM NAME="ShowToolbar" VALUE=0 \/>');
 	  document.writeln('<PARAM NAME="MediaType" VALUE="mjpeg-unicast" \/>');
-	  document.writeln('<PARAM NAME="MediaURL" VALUE="'+url+'" />');
-      document.writeln('<br \/>'+alt);
-      document.writeln('<\/OBJECT>');
+     document.writeln('<PARAM NAME="MediaURL" VALUE="'+url+'" />');
+	  document.writeln('<PARAM NAME="MediaUsername" VALUE="'+___u+'" />');
+     document.writeln('<PARAM NAME="MediaPassword" VALUE="'+___p+'" />');
+	  document.writeln('<PARAM NAME="EnableReconnect" VALUE='+EnableReconnect+' \/>');
+     // SetReconnectionStrategy(60000,5000,300000,30000,0,120000, True) 
+     // OnError
+     // OnStatusChange
+     document.writeln('<br \/>'+alt);
+     document.writeln('<\/OBJECT>');
 	  obj=document.all[id];
 	  obj.EnableContextMenu=1;
 	  obj.EnableReconnect=0;
@@ -417,7 +434,7 @@ function brout(win_nr, cam_w, cam_h) {
       'if (document.all[id].FullScreen) document.all[id].FullScreen=0; else document.all[id].FullScreen=1;'+
       '<\/script>');
    } else {
-      alt += ' Unknow browser. Try Java viewer applet - Combozolla.';     
+      alt += ' Unknow browser. Try Java viewer applet - Combozolla.';
       document.writeln('<applet code="com.charliemouse.cambozola.Viewer" archive="cambozola.jar" '+
       'ID="'+id+'" name="cam" '+
       'WIDTH="'+W+'" HEIGHT="'+H+'" border="0px" ' +
