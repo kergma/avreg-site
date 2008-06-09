@@ -26,17 +26,18 @@ require('user-check.inc.php');
 switch ( $cmd )
 {
    case 'ADD_NEW_USER':
-      if ( 0 === strcmp($u_pass, $old_u_passwd) )
-         $passwd_changed = '';
+      if ( empty($u_pass) )
+         $passwd_f = '\'\',';
       else
-         $passwd_changed = sprintf('encrypt(\'%s\'), ', $u_pass);
+         $passwd_f = sprintf('encrypt(\'%s\'), ', $u_pass);
       $query = sprintf('INSERT INTO USERS 
       ( HOST, USER, PASSWD, STATUS, ALLOW_CAMS,
       LIMIT_FPS, LIMIT_KBPS, LONGNAME,
       CHANGE_HOST, CHANGE_USER, CHANGE_TIME) 
       VALUES ( %s, %s, %s %u, %s, %s, %s, %s, %s, %s, NOW())',
-      sql_format_str_val($u_host), sql_format_str_val($u_name),
-      $passwd_changed,
+      sql_format_str_val($u_host),
+      sql_format_str_val($u_name),
+      $passwd_f,
       $groups,
       sql_format_str_val($u_devacl),
       sql_format_int_val($limit_fps),
@@ -52,6 +53,7 @@ switch ( $cmd )
 if ( mysql_query($query) )
 {
       print '<p class="HiLiteWarn">' . sprintf ($fmtUserAdded, $u_name, $u_host) . '</p>' ."\n";
+      print '<div class="warn">'.$strOnUsersUpdateMsg."</div>\n";
       print '<br><center><a href="'.$conf['prefix'].'/admin/user-list.php">'.$l_user_list.'</a><center>' ."\n";
 } else {
       print '<p class="HiLiteErr">'.sprintf ($fmtUserAddErr2, $u_name, $u_host, mysql_error() ).

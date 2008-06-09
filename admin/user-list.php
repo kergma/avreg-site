@@ -31,8 +31,8 @@ if ( isset($cmd) )
 			$query = sprintf('DELETE FROM USERS WHERE USER="%s" AND HOST="%s" AND STATUS=%u',
 			 $u_name, $u_host, $u_status);
 	        	mysql_query($query) or die("Query failed");
-		       echo '<p class="HiLiteBigWarn">' . sprintf ($fmtDeleteUser, $u_name,$u_host) . 
-                  '</p>' ."\n";
+		       echo '<p class="HiLiteBigWarn">' . sprintf ($fmtDeleteUser, $u_name,$u_host) . '</p>' ."\n";
+                     print '<div class="warn">'.$strOnUsersUpdateMsg."</div>\n";
 		}
 		unset ($u_name);
 	break;

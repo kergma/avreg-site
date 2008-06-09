@@ -50,6 +50,7 @@ switch ( $cmd )
 if ( mysql_query($query) )
 {
       print '<p class="HiLiteWarn">' . sprintf ($fmtUserUpdated, $u_name, $u_host) . '</p>' ."\n";
+      print '<div class="warn">'.$strOnUsersUpdateMsg."</div>\n";
       print '<br><center><a href="'.$conf['prefix'].'/admin/user-list.php">'.$l_user_list.'</a><center>' ."\n";
 } else {
       print '<p class="HiLiteErr">'.sprintf ($fmtUserUpdated2, $u_name, $u_host, mysql_error() ).

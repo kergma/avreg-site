@@ -12,27 +12,26 @@ if ( !preg_match ($patternUser, $u_name) ) {
 
 $u_host = trim($u_host);
 $ua = avreg_inet_network($u_host);
+// tohtml($ua);
 if ( FALSE !== $ua ) {
-      $need_check_duplicate = true;
-   if ( isset($old_u_name) && isset($old_u_host) &&
-         0 === strcmp($old_u_name, $u_name) &&
-         0 === strcasecmp($old_u_host, $u_host))
-      $need_check_duplicate = false;
-      if ($need_check_duplicate)
+   $ui = avreg_find_user($ua['addr'], $ua['mask'], $u_name);
+// tohtml($ui);
+   if ( $ui !== FALSE )
    {
-
-         $ui = avreg_find_user($ua['addr'], $ua['mask'], $u_name);
-         if ( $ui !== FALSE ) {
-            print '<p class="HiLiteErr">'.
-               sprintf($fmtDuplicateUserHost, 
-                     stripslashes (htmlspecialchars($u_name)),
-                     stripslashes (htmlspecialchars($u_host)),
-                     $ui['USER'], $ui['HOST'],
-                     stripslashes (htmlspecialchars($ui['LONGNAME'])))
-               . '</p>' ."\n";
-         } else 
-            $good++;
-   } else 
+      /* есть такой */
+     if (isset($old_u_host) && isset($old_u_name) && 
+         0 === strcasecmp($old_u_host, $ui['HOST']) &&
+         0 === strcmp($old_u_name, $ui['USER']))
+        $good++; // себя меняем
+     else
+        print '<p class="HiLiteErr">'.
+              sprintf($fmtDuplicateUserHost, 
+              stripslashes (htmlspecialchars($u_name)),
+              stripslashes (htmlspecialchars($u_host)),
+              $ui['USER'], $ui['HOST'],
+              stripslashes (htmlspecialchars($ui['LONGNAME'])))
+              . '</p>' ."\n";
+   } else
          $good++;
 } else {
    echo '<p class="HiLiteErr">' . sprintf ($fmtEmptyF, $strHost) . '</p>' ."\n";

@@ -256,19 +256,21 @@ function avreg_find_user($addr, $mask, $name)
       $ipacl = avreg_inet_network($ui['HOST']);
       if ( $ipacl === FALSE )
          continue; // FIXME - may be error/warning?
-/*
-syslog(LOG_ERR,sprintf("0x%X/0x%X 0x%X/0x%X", $addr, $mask,
-                              $ipacl['addr'],  $ipacl['mask']));
-*/
+
       $found = avreg_ipv4_cmp( $addr, $mask,
                               $ipacl['addr'],  $ipacl['mask']);
-
-      if ($found) {
+/*
+      syslog(LOG_ERR,sprintf("equal = %d, 0x%X/0x%X 0x%X/0x%X", 
+                              $found,
+                              $addr, $mask,
+                              $ipacl['addr'],  $ipacl['mask']));
+*/
+      if ($found !== FALSE) {
          break;
       }
 }
 
-if ( $conf['debug'] )
+if ( $GLOBALS['conf']['debug'] )
    syslog(LOG_ERR, sprintf('avreg-site: ACL %s %s@%s %s/%s',
             $_found?"success":"failed",
             $name, $remote_addr_str,
