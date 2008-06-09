@@ -136,7 +136,11 @@ for ($i=0;$i<$cnames_nr;$i++)
 }
 
 print 'var ___u="'.$_SERVER["PHP_AUTH_USER"]."\"\n";
-print 'var ___p="'.$_SERVER["PHP_AUTH_PW"]."\"\n";
+if (empty($_SERVER["PHP_AUTH_PW"]))
+    print 'var ___p="empty"'."\n"; // нужно чтобы AMC не запрашивал пароль при пустом пароле
+else
+    print 'var ___p="'.$_SERVER["PHP_AUTH_PW"]."\"\n";
+
 print 'var ___abenc="'.base64_encode($_SERVER["PHP_AUTH_USER"].':'.$_SERVER["PHP_AUTH_PW"])."\"\n";
 
 ?>
@@ -410,25 +414,22 @@ function brout(win_nr, cam_w, cam_h) {
       document.writeln('<OBJECT ID="'+id+'" name="cam" standby="Axis Media Control Active X not loaded" '+
       ' WIDTH="'+W+'" HEIGHT="'+H+'" border="0px" '+
       ' classid="CLSID:745395C8-D0E1-4227-8586-624CA9A10A8D" '+
-	  ' CODEBASE="amc.cab" \/>');
-     document.writeln('<PARAM NAME="AutoStart" VALUE=1 \/>');
+      ' CODEBASE="AMC.cab" \/>');
+      document.writeln('<param name="UIMode" value="none">');
+      document.writeln('<PARAM NAME="AutoStart" VALUE=1 \/>');
 	  document.writeln('<PARAM NAME="NetworkTimeout" VALUE=5000 \/>');
 	  document.writeln('<PARAM NAME="StretchToFit" VALUE=1 \/>');
-	  document.writeln('<PARAM NAME="DisplayMessages" VALUE=1 \/>');
+	  document.writeln('<PARAM NAME="Popups" VALUE=6 \/>');
 	  document.writeln('<PARAM NAME="ShowToolbar" VALUE=0 \/>');
 	  document.writeln('<PARAM NAME="MediaType" VALUE="mjpeg-unicast" \/>');
-     document.writeln('<PARAM NAME="MediaURL" VALUE="'+url+'" />');
-	  document.writeln('<PARAM NAME="MediaUsername" VALUE="'+___u+'" />');
-     document.writeln('<PARAM NAME="MediaPassword" VALUE="'+___p+'" />');
+      document.writeln('<PARAM NAME="MediaURL" VALUE="'+url+'" />');
+      document.writeln('<PARAM NAME="MediaUsername" VALUE="'+___u+'" />');
+      document.writeln('<PARAM NAME="MediaPassword" VALUE="'+___p+'" />');
 	  document.writeln('<PARAM NAME="EnableReconnect" VALUE='+EnableReconnect+' \/>');
-     // SetReconnectionStrategy(60000,5000,300000,30000,0,120000, True) 
-     // OnError
-     // OnStatusChange
-     document.writeln('<br \/>'+alt);
-     document.writeln('<\/OBJECT>');
-	  obj=document.all[id];
-	  obj.EnableContextMenu=1;
-	  obj.EnableReconnect=0;
+      document.writeln('<br \/>'+alt);
+      document.writeln('<\/OBJECT>');
+      obj=document.all[id];
+      obj.EnableContextMenu = 1;
 	  document.writeln('<script language="JavaScript" ' +
       'for="'+id+'" event="OnDoubleClick(btn, shift, x, y)"> '+
       'if (document.all[id].FullScreen) document.all[id].FullScreen=0; else document.all[id].FullScreen=1;'+
