@@ -353,8 +353,9 @@ function not_show() {
 'Если Вы не видите изображения от видеокамер, то возможно:'+
 '<ul>'+
 '<li style="margin:15px;">другие пользователи сейчас смотрят камеры (есть ограничение по количеству одновременных просмотров: параметр wc_limit);<\/li>'+
-'<li style="margin:15px;">сервер videoserv не запущен;<\/li>'+
+'<li style="margin:15px;">сервер avregd не работает;<\/li>'+
 '<li style="margin:15px;">камера не настроена должным образом для просмотра по сети;<\/li>'+
+'<li style="margin:15px;">вам не разрешено смотреть эту(и) камеру(ы);<\/li>'+
 '<li style="margin:15px;">'+br_specific+';<\/li>'+
 '<li style="margin:15px;">в другом окне браузера на Вашем компьютере уже запущен просмотр камер;<\/li>'+
 '<li style="margin:15px;">настройки сетевого экрана firewall на Вашем компьютере блокируют запросы к камерам;<\/li>'+
@@ -422,9 +423,9 @@ function brout(win_nr, cam_w, cam_h) {
 	  document.writeln('<PARAM NAME="Popups" VALUE=6 \/>');
 	  document.writeln('<PARAM NAME="ShowToolbar" VALUE=0 \/>');
 	  document.writeln('<PARAM NAME="MediaType" VALUE="mjpeg-unicast" \/>');
-      document.writeln('<PARAM NAME="MediaURL" VALUE="'+url+'" />');
-      document.writeln('<PARAM NAME="MediaUsername" VALUE="'+___u+'" />');
-      document.writeln('<PARAM NAME="MediaPassword" VALUE="'+___p+'" />');
+      document.writeln('<PARAM NAME="MediaURL" VALUE="'+url+'?ab='+___abenc+'" />');
+      // document.writeln('<PARAM NAME="MediaUsername" VALUE="'+___u+'" />');
+      // document.writeln('<PARAM NAME="MediaPassword" VALUE="'+___p+'" />');
 	  document.writeln('<PARAM NAME="EnableReconnect" VALUE='+EnableReconnect+' \/>');
       document.writeln('<br \/>'+alt);
       document.writeln('<\/OBJECT>');
