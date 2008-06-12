@@ -78,7 +78,7 @@ $status=-1;
 
 if ( !isset($u_name) || empty($u_name) )
 {
-      print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
+      print '<form id="user_info_frm" action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
       print '<table cellspacing=0 border=1 cellpadding=5>'."\n";
       $u_status = &$status;
       require '_user_data_tbl.inc.php';

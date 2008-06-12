@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'WEBcam';
+$pageTitle = 'WebCam';
 require ('../head.inc.php');
 
 print '<div align="center"><b><a href="'.$conf['prefix'].'/" target="_parent">'.$MainPage.'</a></b></div>'."\n";

@@ -187,9 +187,14 @@ function ReadCookie(cookieName)
 <?php
 if ( isset($JS_file) )
    readfile ($wwwdir.$JS_file);
-?>     
+?>
+
 // -->
 </script>
+<?php
+if ( isset($JS_link) )
+   print '<script src="'.$JS_link.'" type="text/javascript"></script>'."\n";
+?>
 </head>
 
 <?php
