@@ -48,7 +48,7 @@
       print '</tr>'."\n";
       print '<tr>'."\n";
       print '<td>'.$strLimitKbps.'</td>'."\n";
-      print '<td><input type="text" name="limit_kbps" value="'.$limit_kbps.'" size="5" maxlength="5">'."\n";
+      print '<td><input disabled readonly type="text" name="limit_kbps" value="'.$limit_kbps.'" size="5" maxlength="5">'."\n";
       print '</tr>'."\n";
       print '</table>'."\n";
 ?>
