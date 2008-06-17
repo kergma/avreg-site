@@ -135,14 +135,14 @@ for ($i=0;$i<$cnames_nr;$i++)
   print 'CNAMES['.$i.']="'.$camnames[$i].'";'."\n";
 }
 
-print 'var ___u="'.$_SERVER["PHP_AUTH_USER"]."\"\n";
-if (empty($_SERVER["PHP_AUTH_PW"]))
+// $user_info config.inc.php
+print 'var ___u="'.$user_info['USER']."\"\n";
+if (empty($user_info['PASSWD']))
     print 'var ___p="empty"'."\n"; // нужно чтобы AMC не запрашивал пароль при пустом пароле
 else
-    print 'var ___p="'.$_SERVER["PHP_AUTH_PW"]."\"\n";
+    print 'var ___p="'.$user_info['PASSWD']."\"\n";
 
-print 'var ___abenc="'.base64_encode($_SERVER["PHP_AUTH_USER"].':'.$_SERVER["PHP_AUTH_PW"])."\"\n";
-
+print 'var ___abenc="'.base64_encode($user_info['USER'].':'.$user_info['PASSWD'])."\"\n";
 ?>
 
 var winX;
