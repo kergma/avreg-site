@@ -29,7 +29,7 @@ select,textarea,input {
  min-width:50px;
 }
 
-select,textarea,input[disabled] {
+select[disabled], textarea[disabled], input[disabled] {
   background-color: #C3C3C3;
 }
 
