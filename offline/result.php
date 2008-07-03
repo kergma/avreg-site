@@ -18,7 +18,7 @@ if (isset($_POST)) {
       setcookie('avreg_embed_video','0',$expire,$_pg);
 }
 
-$JS_file = $conf['prefix'].'/offline/result.js';
+$include_javascripts = array('offline/result.js');
 $pageBgColor='#cccccc';
 $body_onload='first_img();';
 $body_style='margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; ';

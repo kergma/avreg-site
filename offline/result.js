@@ -10,7 +10,7 @@ function mark_row(theRowNum)
 
     var link = document.links[theRowNum];
     var img = document.images[theRowNum];
-    
+
     if (link==null || img==null)
        return false;
 
@@ -64,7 +64,6 @@ function first_img ()
     if (!first_link) 
       return;
     mark_row(0);
-
 }
 
 function mk_obj_hint(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, s16_2, ftype_str, fduration, fname) {

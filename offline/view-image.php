@@ -1,5 +1,5 @@
 <?php
-$JS_file=$conf['prefix'].'/offline/view.js';
+$include_javascripts = array('offline/view.js');
 $body_style='margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; ';
 require ('../head.inc.php');
 require_once ('../lib/my_conn.inc.php');
