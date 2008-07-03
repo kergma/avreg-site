@@ -34,9 +34,12 @@ print '<style type="text/css">'."\n";
 readfile ($wwwdir.'/main.css');
 // print '// -->'."\n";
 print '</style>'."\n";
+
+if ( isset($link_javascripts) && is_array($link_javascripts))
+   foreach ($link_javascripts as &$__js_link)
+      print '<script type="text/javascript" src="'.$conf['prefix'].'/'.$__js_link.'"></script>'."\n";
 ob_end_flush();
 ?>
-
 <script type="text/javascript" language="JavaScript1.2">
 <!--
 <?php echo 'var WwwPrefix="\\'.$conf['prefix'].'";' ?>
@@ -102,7 +105,7 @@ function positiontip(e) {
         ietruebody().clientHeight-event.clientY-offsetypoint :
         window.innerHeight-e.clientY-offsetypoint-20;
      var leftedge=(offsetxpoint<0)? offsetxpoint*(-1) : -1000;
-     
+
      //if the horizontal distance isn't enough to accomodate the width of the context menu
      if (rightedge<tipobj.offsetWidth)
         //move the horizontal position of the menu to the left by it's width
@@ -185,16 +188,16 @@ function ReadCookie(cookieName)
 }
 
 <?php
-if ( isset($JS_file) )
-   readfile ($wwwdir.$JS_file);
+if ( isset($include_javascripts) && is_array($include_javascripts)) {
+   foreach ($include_javascripts as &$__js)
+      if (eregi('.php$', $__js))
+         require ($wwwdir.$__js);
+      else
+         readfile($wwwdir.$__js);
+}
 ?>
-
 // -->
 </script>
-<?php
-if ( isset($JS_link) )
-   print '<script src="'.$JS_link.'" type="text/javascript"></script>'."\n";
-?>
 </head>
 
 <?php
@@ -221,11 +224,14 @@ if (!isset($NOBODY))
 	else
 		$_onload = '';
 
-/*        
+    if ( !isset($body_addons))
+      $body_addons = '';
+
+/*
     if ( isset($body_onunload) && !empty($body_onunload) )
 		$_onload = 'onunload="JavaScript:'.$body_onunload.'"';
 */ 
-    print sprintf('<body style="%s" %s>',$body_style, $_onload)."\n";
+    print sprintf('<body style="%s" %s %s>',$body_style, $_onload, $body_addons)."\n";
 }
 ?>
 <noscript>
