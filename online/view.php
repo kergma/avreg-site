@@ -1,7 +1,7 @@
 <?php
 
 if (!isset($_POST) || !isset($_POST['mon_type']) || !isset($_POST['cams']) || !is_array($_POST['cams']))
-   die('you need start from /online/index.php');
+  die('you need start from /online/index.php');
 
 $ccnt=count($_POST['cams']);
 $ccnr_a=0;
@@ -69,7 +69,8 @@ for ($i=0;$i<$wins_nr;$i++)
 
 $pageTitle = 'WebCam';
 $body_style='overflow: hidden; padding: 0; margin: 0; width: 100%; height: 100%;';
-$link_javascripts=array('lib/js/jquery-1.2.6.min.js');
+$css_links=array('lib/js/jqModal.css');
+$link_javascripts=array('lib/js/jquery-1.2.6.min.js', 'lib/js/jqModal.js');
 $include_javascripts=array('online/view.js.php', 'online/view.js');
 $body_addons='scroll="no"';
 require ('../head.inc.php');
@@ -86,20 +87,43 @@ die();
 ?>
 
 <div id="toolbar" style="position:absolute; height:25px; width:100%; margin:0; padding:0;background-color:#003366;overflow:hidden;">
-<img src="<?echo $conf['prefix']; ?>/img/dvrlogo-134x25.png" width="134" height="25" align="left" border="0">
+<a href="<?echo $conf['prefix']; ?>/online/index.php" title='Назад, к выбору камер.'><img src="<?echo $conf['prefix']; ?>/img/dvrlogo-134x25.png" width="134" height="25" align="left" border="0"></a>
 <table cellspacing="0" border="0" cellpadding="1" align="right">
   <tbody>
     <tr>
       <td>&nbsp;</td>
-      <td><p style="color:white;font-weight:bold;"><script type="text/javascript" language="JavaScript1.2">br_spec_out();</script> &nbsp;&nbsp;Если Вы не видите изображение от видеокамер нажмите <a title="HELP" onclick="not_show(); return false;"  style="cursor: pointer; color:#FF9933;font-weight:bold;">здесь</a></p></td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td><input type="button" value="<? echo $strClose; ?>" class="btnNormal" onClick="window.close();"></td>
+      <td><p style="color:white;font-weight:bold;"><script type="text/javascript">br_spec_out();</script> &nbsp;&nbsp;Нет изображений с камер? Читаем</p></td>
+      <td><a title="HELP" class="jqModal" href="#" style="cursor: pointer; color:#FFA500; font-weight:bold;">справку</a>&nbsp;</td>
     </tr>
   </tbody>
 </table>
 </div>
-<div id="canvas" style="position:absolute; top:25px; background-color:#000000; width:100%; height:0px; overflow:hidden; margin:0; padding:0;"></div>
+<div id="canvas" style="position:absolute; top:25px; background-color:#000; width:100%; height:0px; overflow:hidden; margin:0; padding:0;"></div>
+<div class="jqmWindow" id="dialog" title="Если камеры не кажут...">
+<div style="text-align: right;">
+<span class="jqmClose" style="text-align: center; border: 1px solid #000; font-weight: bold; padding: 5px;"><a href="#">X</a></span>
+</div>
+<hr>
+<p>Если Вы <b>не видите изображения от видеокамер</b>,</br>то возможно:</p>
+<ul>
+<li>другие пользователи сейчас смотрят камеры (есть ограничение по количеству одновременных просмотров: параметр wc_limit);</li>
+<li>сервер avregd не работает;</li>
+<li>камера не настроена должным образом для просмотра по сети;</li>
+<li>вам не разрешено смотреть эту(и) камеру(ы);</li>
+<li>настройки интернет-браузера:
+<ul>
+<li>Firefox: в настройках браузера отключена опция &quot;загружать изображения&quot;.</li>
+<li>Internet Explorer: настройки браузера не позволяют загружать и выполнять компоненты ActiveX. Cпросите у Вашего системного администратора или у нас.';
+<li>Вы НЕ пользуетесь браузерами Microsoft Internet Explorer, Firefox, Mozilla, Netscape.</li>
+</ul>
+<li>в другом окне браузера на Вашем компьютере уже запущен просмотр камер;</li>
+<li>настройки сетевого экрана firewall на Вашем компьютере блокируют запросы к камерам;</li>
+<li><i>возможно просто нужно перезапустить браузер или обновить страницу;</i></li>
+<li>ещё какая-нибудь причина которую мы пока не знаем :-)</li>
+</ul>
+<hr>
+<div style="text-align: right;"><a href="#" class="jqmClose" >Закрыть</a></div>
+</div>
 <?php
 require ('../foot.inc.php');
 ?>

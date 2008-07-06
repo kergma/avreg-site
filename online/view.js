@@ -1,46 +1,3 @@
-var winX;
-var winY;
-if (MSIE) {
-  winX=window.screenLeft;
-  winY=window.screenTop;
-} else if (GECKO) {
-  winX=window.screenX;
-  winY=window.screenY;
-} else {
-  alert ('not supported browser');
-}
-
-if (GECKO) {
-  if (winX>0 || winY>0)
-    window.moveTo(-4,-4);
-} else {
-  if (winX!=0 || winY!=0)
-    window.moveTo(0,0);
-}
-
-/*
-alert(winX+','+winY + '  ' + window.top + 'x' + window.outerHeight + 
-      '  ' + window.screen.availWidth + 'x' + window.screen.availHeight);
-     window.resizeTo(window.screen.availWidth,window.screen.availHeight);
-*/
-
-if (GECKO)
-{
-  if (window.outerWidth < window.screen.availWidth)
-     window.resizeTo(window.screen.availWidth,window.screen.availHeight);
-} else
-  window.resizeTo(window.screen.availWidth,window.screen.availHeight);
-
-if (ie||ns6) {
-  tipobj=document.all? 
-     document.all['tooltip'] :
-     document.getElementById? document.getElementById('tooltip') : '';
-  if (GECKO)
-     document.onmousemove=positiontip;
-}
-
-var help_win=null;
-
 var win_info;
 var cam_nr;
 var ip;
@@ -68,7 +25,7 @@ function img_mouseover(eimg,win_nr,orig_w,orig_h) {
       return;
    parse_win_info(splice);
    
-   var div = eimg.parentNode;
+   var img_jq = $('img',eimg);
    
  hint = '<table style="font-weight:bold;" cellspacing="0" border="0" cellpadding="1"><tbody><tr>\n' +
  '<td align="right">Камера:<\/td>\n' +
@@ -78,7 +35,7 @@ function img_mouseover(eimg,win_nr,orig_w,orig_h) {
  '<td>'+url+'<\/td>\n' +
  '<\/tr><tr>\n' +
  '<td align="right">Размер:<\/td>\n' +
- '<td>'+orig_w+'x'+orig_h+' (исходный), ' + eimg.width+'x'+eimg.height+' (на экране)<\/td>\n' +
+ '<td>'+orig_w+'x'+orig_h+' (исходный), ' + img_jq.width()+'x'+img_jq.height()+' (на экране)<\/td>\n' +
 /*  
  '<\/tr><tr>\n' +
  '<td align="right">CANVAS:<\/td>\n' +
@@ -94,19 +51,9 @@ function img_mouseover(eimg,win_nr,orig_w,orig_h) {
    ddrivetip();
 }
 
-var win_div_left;
-var win_div_top;
-var win_div_w;
-var win_div_h;
-var img_in_div_w;
-var img_in_div_h;
-
-var FS=false;
-
-function img_click(img, orig_w, orig_h) {
-
-   var clicked_div = img.parentNode;
-   var tmp_div=null;
+function img_click(clicked_div, orig_w, orig_h) {
+   var img_jq = $('img',clicked_div);
+   var tmp_div;
    
    var border_w = clicked_div.offsetWidth - clicked_div.clientWidth;
    var border_h = clicked_div.offsetHeight - clicked_div.clientHeight;
@@ -114,38 +61,54 @@ function img_click(img, orig_w, orig_h) {
    var new_h;
    var new_w;
    var i;
-   if (FS) {
-     clicked_div.style.width = win_div_w+'px';
-     clicked_div.style.height = win_div_h+'px';
-     clicked_div.style.left = win_div_left+'px';
-     clicked_div.style.top = win_div_top+'px';
+   if ( FS ) {
+      // current - fullscreen
+     clicked_div.style.width = WIN_DIV_W+'px';
+     clicked_div.style.height = WIN_DIV_H+'px';
+     clicked_div.style.left = WIN_DIV_LEFT+'px';
+     clicked_div.style.top = WIN_DIV_TOP+'px';
 
-     img.width=img_in_div_w;
-     img.height=img_in_div_h;
-     for (i=0;i<WIN_CNT;i++) {
+     img_jq.width(IMG_IN_DIV_W);
+     img_jq.height(IMG_IN_DIV_H);
+     for (i=0;i<WIN_DIVS.length;i++) {
         tmp_div=WIN_DIVS[i];
-        if (tmp_div==clicked_div)
-          continue;
+        if ( tmp_div == clicked_div ) {
+           alert('found');
+           continue;
+        }
         tmp_div.style.visibility='visible';
      }
      FS=false;
    } else {
-      for (i=0;i<WIN_CNT;i++) {
+      // current - NO fullscreen
+      for (i=0;i<WIN_DIVS.length;i++) {
         tmp_div=WIN_DIVS[i];
         tmp_div.style.visibility='hidden';
       }
 
-      win_div_h = clicked_div.clientHeight;
-      win_div_w = clicked_div.clientWidth;
-      win_div_left=clicked_div.offsetLeft;
-      win_div_top=clicked_div.offsetTop;
-      img_in_div_w=img.width;
-      img_in_div_h=img.height;
+/*
+      var cam_geo = new calc_cam_geo(CamsAspectRatio, 1, 1);
+      var i,tmp_div;
+      for (i=WIN_DIVS.length-1; i>=0; i--) {
+         tmp_div=$(WIN_DIVS[i]);
+         tmp_div.css('top', cacl_cam_top(cam_geo, parseInt(i/COLS_NR)));
+         tmp_div.css('left',calc_cam_left(cam_geo, parseInt(i%COLS_NR)));
+         tmp_div.width(cam_geo.width);
+         tmp_div.height(cam_geo.height + NAME_DIV_H);
+         $('label', WIN_DIVS[i]).text( get_geo_str(tmp_div) );
+      }
+*/
+      WIN_DIV_H = clicked_div.clientHeight;
+      WIN_DIV_W = clicked_div.clientWidth;
+      WIN_DIV_LEFT=clicked_div.offsetLeft;
+      WIN_DIV_TOP=clicked_div.offsetTop;
+      IMG_IN_DIV_W=img_jq.width();
+      IMG_IN_DIV_H=img_jq.height();
  
       var cdiv_w_max = CANVAS_W - border_w;
       var cdiv_h_max = CANVAS_H - border_h;
       if (PrintCamNames) 
-        cdiv_h_max -= name_div_h;
+        cdiv_h_max -= NAME_DIV_H;
       
       var ratio = parseFloat(orig_w/orig_h);
       if (ratio == (4/3)) {
@@ -172,7 +135,7 @@ function img_click(img, orig_w, orig_h) {
       if (clicked_div.offsetTop!=0)
          clicked_div.style.top='0px';
       clicked_div.style.width = new_w + 'px';
-      clicked_div.style.height = (new_h+name_div_h) + 'px' ;
+      clicked_div.style.height = (new_h+NAME_DIV_H) + 'px' ;
    
       /*
       alert(CANVAS_W + ' x ' + CANVAS_H +
@@ -182,51 +145,15 @@ function img_click(img, orig_w, orig_h) {
       */
       
 
-      img.width=new_w;
-      img.height=new_h;
+      img_jq.width(new_w);
+      img_jq.height(new_h);
       clicked_div.style.visibility='visible';
  
      FS=true;
    }
 }
 
-var br_specific='';
-if (GECKO)
-  br_specific='в настройках браузера отключена опция &quot;загружать изображения&quot;';
-else if (MSIE) 
-  br_specific='настройки браузера не позволяют загрузать и выполнять компоненты ActiveX - спросите у Вашего системного администратора или у нас';
-else
-  br_specific='Вы НЕ пользуетесь браузерами Microsoft Internet Explorer, Firefox, Mozilla, Netscape';
-function not_show() {
-   if(help_win == null || help_win.closed)
-   {
-      help_win = window.open('','_blank','width=510,height=600,menubar=0,toolbar=0,location=0,status=0');
-      help_win.document.write('<body bgcolor="lightyellow"><br \/>'+
-'<div id="div_help_win" >'+
-'Если Вы не видите изображения от видеокамер, то возможно:'+
-'<ul>'+
-'<li style="margin:15px;">другие пользователи сейчас смотрят камеры (есть ограничение по количеству одновременных просмотров: параметр wc_limit);<\/li>'+
-'<li style="margin:15px;">сервер avregd не работает;<\/li>'+
-'<li style="margin:15px;">камера не настроена должным образом для просмотра по сети;<\/li>'+
-'<li style="margin:15px;">вам не разрешено смотреть эту(и) камеру(ы);<\/li>'+
-'<li style="margin:15px;">'+br_specific+';<\/li>'+
-'<li style="margin:15px;">в другом окне браузера на Вашем компьютере уже запущен просмотр камер;<\/li>'+
-'<li style="margin:15px;">настройки сетевого экрана firewall на Вашем компьютере блокируют запросы к камерам;<\/li>'+
-'<i style="margin:15px;">возможно просто нужно перезапустить браузер или обновить страницу;<\/li>'+
-'<li style="margin:15px;">ещё какая-нибудь причина которую мы пока не знаем :)<\/li>'+
-'<\/ul>'+
-'<br \/>'+
-'<center>'+
-'<input type="submit" name="Close" style="background-color:#ffa500;" value="Закрыть окно" onclick="window.close();" \/>'+
-'<\/center>'+
-'<\/div><\/body>');
-     help_win.document.close();
-   } else {
-     help_win.focus();
-   }
-}
-
-function brout(win_nr, cam_w, cam_h) {
+function brout(win_nr, win_div, cam_geo) {
    // alert('win ' + win_nr + '[ ' + cam_w + 'x' + cam_h + ' ]');
 
    var splice = WINS_DEF[win_nr];
@@ -241,104 +168,111 @@ function brout(win_nr, cam_w, cam_h) {
    var W;
    var H;
    if (FitToScreen) {
-     W=cam_w+'px';
-     H=cam_h+'px';
+     W = cam_geo.width  + 'px';
+     H = cam_geo.height + 'px';
    } else {
-     if (orig_w<=cam_w && orig_h<=cam_h) {
-       W=orig_w+'px';
-       H=orig_h+'px';
+     if (orig_w<=cam_geo.width && orig_h<=cam_geo.height) {
+       W=orig_w + 'px';
+       H=orig_h + 'px';
      } else {
-       W=cam_w+'px';
-       H=cam_h+'px';
+       W=cam_geo.width  + 'px';
+       H=cam_geo.height + 'px';
      }
    }
    var alt = 'WebCam #' + cam_nr + ' on ' + url + ' , original geo ['+orig_w+'x'+orig_h+']';
    if (GECKO) {
-      alt += ' Found Gecko engine browser (Firefox, Mozilla or Netscape).';
-      document.writeln('<img src="'+url+'?ab='+___abenc+'" id="'+id+'" name="cam" alt="' +alt+'" '+
+      $('<img src="'+url+'?ab='+___abenc+'" id="'+id+'" name="cam" alt="' +alt+'" '+
       'width="'+W+'" height="'+H+'" ' +
-      'align="middle" border="0px" ' +
-      'onclick="img_click(this,'+orig_w+', '+orig_h+');" '+
-      'onmouseover="img_mouseover(this,'+win_nr+','+orig_w+','+orig_h+');" '+
-      'onmouseout="hideddrivetip();" '+
-      ' />');
+      'align="middle" border="0px" />').appendTo(win_div);
+      win_div.click( function() { img_click(this, orig_w, orig_h); } ); 
+      win_div.mouseover( function() { img_mouseover(this, win_nr, orig_w, orig_h);} );
+      win_div.mouseout( function() { hideddrivetip(); } ); 
    } else if (MSIE) {
       alt += ' Microsoft Internet Explorer on Windows system found. Try ActiveX viewer.';
-      document.writeln('<OBJECT ID="'+id+'" name="cam" standby="Axis Media Control Active X not loaded" '+
+      $('<OBJECT ID="'+id+'" name="cam" standby="Axis Media Control Active X not loaded" '+
       ' WIDTH="'+W+'" HEIGHT="'+H+'" border="0px" '+
       ' classid="CLSID:745395C8-D0E1-4227-8586-624CA9A10A8D" '+
-      ' CODEBASE="AMC.cab" \/>');
-      document.writeln('<param name="UIMode" value="none">');
-      document.writeln('<PARAM NAME="AutoStart" VALUE=1 \/>');
-	  document.writeln('<PARAM NAME="NetworkTimeout" VALUE=5000 \/>');
-	  document.writeln('<PARAM NAME="StretchToFit" VALUE=1 \/>');
-	  document.writeln('<PARAM NAME="Popups" VALUE=6 \/>');
-	  document.writeln('<PARAM NAME="ShowToolbar" VALUE=0 \/>');
-	  document.writeln('<PARAM NAME="MediaType" VALUE="mjpeg-unicast" \/>');
-      document.writeln('<PARAM NAME="MediaURL" VALUE="'+url+'?ab='+___abenc+'" />');
-      // document.writeln('<PARAM NAME="MediaUsername" VALUE="'+___u+'" />');
-      // document.writeln('<PARAM NAME="MediaPassword" VALUE="'+___p+'" />');
-	  document.writeln('<PARAM NAME="EnableReconnect" VALUE='+EnableReconnect+' \/>');
-      document.writeln('<br \/>'+alt);
-      document.writeln('<\/OBJECT>');
-      obj=document.all[id];
+      ' CODEBASE="AMC.cab" \/>'+
+      '<param name="UIMode" value="none">'+
+      '<PARAM NAME="AutoStart" VALUE=1 \/>'+
+	   '<PARAM NAME="NetworkTimeout" VALUE=5000 \/>'+
+	   '<PARAM NAME="StretchToFit" VALUE=1 \/>'+
+	   '<PARAM NAME="Popups" VALUE=6 \/>'+
+	   '<PARAM NAME="ShowToolbar" VALUE=0 \/>'+
+	   '<PARAM NAME="MediaType" VALUE="mjpeg-unicast" \/>'+
+      '<PARAM NAME="MediaURL" VALUE="'+url+'?ab='+___abenc+'" />'+
+	   '<PARAM NAME="EnableReconnect" VALUE='+EnableReconnect+' \/>'+
+      '<br \/>'+alt+
+      '<\/OBJECT>').appendTo(win_div);
+      obj=document.all[id]; // MSIE only
       obj.EnableContextMenu = 1;
-	  document.writeln('<script language="JavaScript" ' +
-      'for="'+id+'" event="OnDoubleClick(btn, shift, x, y)"> '+
-      'if (document.all[id].FullScreen) document.all[id].FullScreen=0; else document.all[id].FullScreen=1;'+
-      '<\/script>');
+	   //document.writeln('<script language="JavaScript" ' +
+      //'for="'+id+'" event="OnDoubleClick(btn, shift, x, y)"> '+
+      //'if (document.all[id].FullScreen) document.all[id].FullScreen=0; else document.all[id].FullScreen=1;'+
+      //'<\/script>');
    } else {
       alt += ' Unknow browser. Try Java viewer applet - Combozolla.';
-      document.writeln('<applet code="com.charliemouse.cambozola.Viewer" archive="cambozola.jar" '+
+      $('<applet code="com.charliemouse.cambozola.Viewer" archive="cambozola.jar" '+
       'ID="'+id+'" name="cam" '+
       'WIDTH="'+W+'" HEIGHT="'+H+'" border="0px" ' +
-      'onclick="img_click(this,'+orig_w+', '+orig_h+');" >');
-      document.writeln('<PARAM NAME="URL" VALUE="'+url+'" />');
-      document.writeln('<br>'+alt);
-      document.writeln('<\/applet>');
+      '<PARAM NAME="URL" VALUE="'+url+'" />' +
+      '<br>'+ alt +
+      '<\/applet>').appendTo(win_div);
+       win_div.click( function() { img_click(this, orig_w, orig_h); } ); 
    }
 }
 
 function br_spec_out() {
   if (GECKO)
-    document.write('Один клик мышью - окно на весь экран.');
+    document.write('Одинарный клик мышью - окно на весь экран.');
   else if (MSIE)
     document.write('Мышь: двойной клик левой - на весь экран, клик правой - контекст. меню.');
   else
-    document.write('Нужно использовать сл. браузеры: Microsoft Internet Explorer, Firefox, Mozilla, Netscape.');
+    document.write('Нужно использовать браузеры: MS Internet Explorer или Firefox.');
 }
 
 /* global variables */
 var CANVAS;
-var CANVAS_W = 0;
-var CANVAS_H = 0;
+var CANVAS_W = -1;
+var CANVAS_H = -1;
 
 var WIN_DIVS;
-var WIN_CNT = 0;
 
-function calc_cam_geo(aspect_ratio) {
+// global vars for tooltip
+var WIN_DIV_LEFT;
+var WIN_DIV_TOP;
+var WIN_DIV_W;
+var WIN_DIV_H;
+var IMG_IN_DIV_W;
+var IMG_IN_DIV_H;
+var FS=false;
+   
+var NAME_DIV_H = PrintCamNames?20:0;
+
+function calc_cam_geo(aspect_ratio, cols_nr, rows_nr) {
   // aspect ratio 4/3
   var cam_w;
   var cam_h;
-  // create wins
-  var name_div_h=0;
-  var calc_canvas_h=CANVAS_H;
-  if (PrintCamNames) {
-     name_div_h=20;
-     calc_canvas_h -= (name_div_h*ROW_NR);
-  }
 
-  if ( (CANVAS_W/calc_canvas_h) >= (4*COL_NR)/(3*ROW_NR) ) {
-    cam_h = parseInt(calc_canvas_h/ROW_NR);
+  // create wins
+  var calc_canvas_h=CANVAS_H - (NAME_DIV_H*rows_nr);
+
+  if ( (CANVAS_W/calc_canvas_h) >= (4*cols_nr)/(3*rows_nr) ) {
+    cam_h = parseInt(calc_canvas_h/rows_nr);
     cam_h = parseInt(cam_h/3);
     cam_w = cam_h*4;
     cam_h *= 3;
   } else {
-    cam_w = parseInt(CANVAS_W/COL_NR);
+    cam_w = parseInt(CANVAS_W/cols_nr);
     cam_w = parseInt(cam_w/4);
     cam_h = cam_w*3;
     cam_w *= 4;
   }
+
+  this.all_cams_width = cam_w * cols_nr;
+  this.offsetX = parseInt((CANVAS_W - this.all_cams_width)/2);  
+  this.all_cams_height = cam_h * rows_nr;
+  this.offsetY = parseInt((calc_canvas_h - this.all_cams_height)/2);  
 
   if (GECKO) {
     // border out
@@ -349,56 +283,104 @@ function calc_cam_geo(aspect_ratio) {
   this.width  = cam_w; 
   this.height = cam_h;
   this.calc_canvas_h = calc_canvas_h;
-  this.name_div_h = name_div_h;
-}
+} // calc_cam_geo()
 
 
 function calc_cam_left(cam_geo, col) {
+   var ret;
    if (GECKO) 
-      return col*(cam_geo.width+4);
+      ret = col*(cam_geo.width+4);
    else
-      return col*cam_geo.width;
+      ret = col*cam_geo.width;
+   return parseInt(ret + cam_geo.offsetX);
 }
 
 function cacl_cam_top(cam_geo, row) {
+   var ret;
    if (GECKO)
-      return row*(cam_geo.height + cam_geo.name_div_h + 3);
+      ret = row*(cam_geo.height + NAME_DIV_H + 3);
    else
-      return row*(cam_geo.height + cam_geo.name_div_h);
+      ret = row*(cam_geo.height + NAME_DIV_H);
+   return parseInt(ret + cam_geo.offsetY)
 }
 
 function canvas_growth() {
-   CANVAS_W = (($.browser.msie)?ietruebody().clientWidth:window.innerWidth);
-   CANVAS_H = (($.browser.msie)?ietruebody().clientHeight:window.innerHeight) - $('div#toolbar').height();
    var canvas_changed = false;
-   if ( CANVAS_H != CANVAS.height()) {
+   var avail_h = (($.browser.msie)?ietruebody().clientHeight:window.innerHeight) - $('#toolbar').height();
+   var avail_w = (($.browser.msie)?ietruebody().clientWidth:window.innerWidth);
+   if ( avail_h !=  CANVAS_H) {
+      CANVAS_H = avail_h;
       CANVAS.height(CANVAS_H);
       canvas_changed = true;
    }
-   if ( CANVAS_W != CANVAS.width()) {
+   if ( avail_w != CANVAS_W) {
+      CANVAS_W = avail_w;
       CANVAS.width(CANVAS_W);
       canvas_changed = true;
    }
    if (!canvas_changed)
       return;
 
-   var cam_geo = new calc_cam_geo(CamsAspectRatio);
-   alert('new CANVAS is ' + CANVAS.width() + 'x' + CANVAS.height());
+   var cam_geo = new calc_cam_geo(CamsAspectRatio, COLS_NR, ROWS_NR);
+   // alert('new CANVAS is ' + CANVAS.width() + 'x' + CANVAS.height());
 
+   if ( WIN_DIVS == undefined )
+       return;
    var i,tmp_div;
-   for (i=WIN_CNT-1;i>=0;i--) {
-      tmp_div=WIN_DIVS[i];
-      tmp_div.style.top    = cacl_cam_top(cam_geo, i/COL_NR) + 'px';
-      tmp_div.style.left   = calc_cam_left(cam_geo, i%COL_NR) + 'px';
-      tmp_div.style.width  = cam_geo.width + 'px';
-      tmp_div.style.height = (cam_geo.height + cam_geo.name_div_h) + 'px' ;
+   for (i=WIN_DIVS.length-1; i>=0; i--) {
+      tmp_div=$(WIN_DIVS[i]);
+      tmp_div.css('top', cacl_cam_top(cam_geo, parseInt(i/COLS_NR)));
+      tmp_div.css('left',calc_cam_left(cam_geo, parseInt(i%COLS_NR)));
+      tmp_div.width(cam_geo.width);
+      tmp_div.height(cam_geo.height + NAME_DIV_H);
+      $('label', WIN_DIVS[i]).text( get_geo_str(tmp_div) );
    }
 }
 
+function get_geo_str(JQ_elem) {
+    return '[ ' + JQ_elem.css('left') + ',' +  JQ_elem.css('top') + ' : ' +
+                JQ_elem.width() + ' x ' + JQ_elem.height() + ' ]';
+}
 
 $(document).ready( function() {
+
+   var winX;
+   var winY;
+   if (MSIE) {
+     winX=window.screenLeft;
+     winY=window.screenTop;
+   } else if (GECKO) {
+     winX=window.screenX;
+     winY=window.screenY;
+   } else {
+     alert ('not supported browser');
+   }
+
+   if (GECKO) {
+     if (winX>0 || winY>0)
+       window.moveTo(-4,-4);
+   } else {
+     if (winX!=0 || winY!=0)
+       window.moveTo(0,0);
+   }
+
+   if (GECKO)
+   {
+     if (window.outerWidth < window.screen.availWidth)
+        window.resizeTo(window.screen.availWidth,window.screen.availHeight);
+   } else
+     window.resizeTo(window.screen.availWidth,window.screen.availHeight);
+
+   if (ie||ns6) {
+     tipobj=document.all? 
+        document.all['tooltip'] :
+        document.getElementById? document.getElementById('tooltip') : '';
+     if (GECKO)
+        document.onmousemove=positiontip;
+   }
+
    // calc and set  CANVAS width & height
-   CANVAS = $('div#canvas');
+   CANVAS = $('#canvas');
    canvas_growth();
 
    $(window).bind('resize', function() {
@@ -407,7 +389,7 @@ $(document).ready( function() {
 
    $(window).bind('scroll', function(){return false;});
 
-  var cam_geo = new calc_cam_geo(CamsAspectRatio);
+  var cam_geo = new calc_cam_geo(CamsAspectRatio, COLS_NR, ROWS_NR);
 
   // alert('[ ' + CANVAS_W + 'x' + CANVAS_H + ' ] [ ' + cam_w + 'x' + cam_h + ' ]');
   var row=0;
@@ -418,21 +400,16 @@ $(document).ready( function() {
   var win_div;
   var splice;
   var onoff;
-  for (row=0;row<ROW_NR;row++)
+  for (row=0;row<ROWS_NR;row++)
   {
      top = cacl_cam_top(cam_geo, row);
 
-     for (col=0;col<COL_NR;col++)
+     for (col=0;col<COLS_NR;col++)
      {
-         left = calc_cam_left(cam_geo, col);
-
-        /*
-        alert('win_nr=' + win_nr + ', row=' + row + ', col=' + col + "\n" +
-        '[ ' + top + ',' + left + ' ] [ ' + cam_geo.width + 'x' + cam_geo.height + ' ]');
-        */
+        left = calc_cam_left(cam_geo, col);
         win_div = $('<div id="win'+win_nr+'" name="win" class="win" ' + 
         'style="top:'+top+'px; left:'+left+'px; '+
-        ' width:'+cam_geo.width+'px; height:'+(cam_geo.height+cam_geo.name_div_h)+'px; '+
+        ' width:'+cam_geo.width+'px; height:'+(cam_geo.height+NAME_DIV_H)+'px; '+
         '" ></div>');
         win_div.appendTo(CANVAS)
         splice = WINS_DEF[win_nr];
@@ -442,26 +419,31 @@ $(document).ready( function() {
            if (PrintCamNames) {
              $('<div style="vertical-align:bottom; background-color:#666699;'+
              ' padding:0px; margin:0px; overflow:hidden; border:0px;'+
-             ' height:'+cam_geo.name_div_h+'px;"><div style="'+
+             ' height:'+NAME_DIV_H+'px;"><div style="'+
              'padding-left:8px; padding-top:2px; padding-bottom:2px; padding-right:2px;'+
              ' color:White; font-size:14px; font-weight: bold;">'+
              CAMS_NAMES[win_nr]+
              '<\/div><\/div>').appendTo(win_div);
            }
-/*
-           if (GECKO)
-             brout(win_nr, cam_geo.width, cam_geo.height);
-           else 
-             brout(win_nr, cam_geo.width-4, cam_geo.height-3);
-*/
+           brout(win_nr, win_div, cam_geo.width, cam_geo.height);
         }
-        $('<p style="padding:0px; margin:5px;">' + cam_geo.width + ' x ' + (cam_geo.height+cam_geo.name_div_h) + '</p>').appendTo(win_div);
+        $('<label style="padding:0px; margin:5px;">' + get_geo_str(win_div) + '</label>').appendTo(win_div);
         win_nr++;
      }
   }
 
-  WIN_DIVS = document.getElementsByName('win');
-  WIN_CNT = WIN_DIVS.length;
+  WIN_DIVS = $('div.win');
+
+  $('#dialog').jqm({
+      overlay: 75,
+      onShow: function(h) {
+         /* callback executed when a trigger click. Show notice */
+         h.w.css('opacity',0.75).slideDown('fast'); 
+      },
+      onHide: function(h) {
+        /* callback executed on window hide. Hide notice, overlay. */
+        h.w.slideUp('fast',function() { if(h.o) h.o.remove(); }); } 
+      });
 });
 
 

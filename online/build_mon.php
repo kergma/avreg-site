@@ -101,7 +101,7 @@ function sel_change(sel) {
 <?php
 print '<div align="center">'."\n";
 //var_dump($_COOKIE);
-print '<form id="buildform" action="view.php" method="POST" onSubmit="return validate();"  target="_blank">'."\n";
+print '<form id="buildform" action="view.php" method="POST" onSubmit="return validate();" target="_blank">'."\n";
 $ccams=$mon_type.'_cams';
 if ( isset($_COOKIE['avreg_'.$ccams]) && is_array($_COOKIE['avreg_'.$ccams]) )
 {

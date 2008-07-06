@@ -67,37 +67,37 @@ print 'var ___abenc="'.base64_encode($user_info['USER'].':'.$_SERVER["PHP_AUTH_P
 switch ($mon_type)
 {
   case 'ONECAM':
-    print 'var ROW_NR=1;'."\n";
-    print 'var COL_NR=1;'."\n";
+    print 'var ROWS_NR=1;'."\n";
+    print 'var COLS_NR=1;'."\n";
     break;
   case 'QUAD_4_4':
-    print 'var ROW_NR=2;'."\n";
-    print 'var COL_NR=2;'."\n";
+    print 'var ROWS_NR=2;'."\n";
+    print 'var COLS_NR=2;'."\n";
     break;
   case 'QUAD_9_9':
-    print 'var ROW_NR=3;'."\n";
-    print 'var COL_NR=3;'."\n";
+    print 'var ROWS_NR=3;'."\n";
+    print 'var COLS_NR=3;'."\n";
     break;
   case 'QUAD_16_16':
-    print 'var ROW_NR=4;'."\n";
-    print 'var COL_NR=4;'."\n";
+    print 'var ROWS_NR=4;'."\n";
+    print 'var COLS_NR=4;'."\n";
     break;
   case 'QUAD_25_25':
-    print 'var ROW_NR=5;'."\n";
-    print 'var COL_NR=5;'."\n";
+    print 'var ROWS_NR=5;'."\n";
+    print 'var COLS_NR=5;'."\n";
     break;
   case 'POLY_3_2':
-    print 'var ROW_NR=2;'."\n";
-    print 'var COL_NR=3;'."\n";
+    print 'var ROWS_NR=2;'."\n";
+    print 'var COLS_NR=3;'."\n";
     break;
   case 'POLY_4_2':
-    print 'var ROW_NR=2;'."\n";
-    print 'var COL_NR=4;'."\n";
+    print 'var ROWS_NR=2;'."\n";
+    print 'var COLS_NR=4;'."\n";
     break;
 
   case 'POLY_4_3':
-    print 'var ROW_NR=3;'."\n";
-    print 'var COL_NR=4;'."\n";
+    print 'var ROWS_NR=3;'."\n";
+    print 'var COLS_NR=4;'."\n";
     break;
 
   default:
