@@ -201,11 +201,11 @@ if ( $num_rows > 0 )
         if ($CAM_NR !==0 )
         {
             if ( $EVT_ID === 23 /*video avi*/ )
-                print '<td valign="middle"><a href="javascript:mark_row('.$good_link.');"><img id="'.$EVT_ID.'" src="'.$conf['prefix'].'/img/movie.gif" width="20" height="22" border="0" name="'.$for_js.'" onmouseover="mouse_img ('.$good_link.');" onmouseout="mouse_img();"></a></td>'."\n";
+                print '<td valign="middle"><a name="video" href="javascript:mark_row('.$good_link.');"><img id="'.$EVT_ID.'" src="'.$conf['prefix'].'/img/movie.gif" width="20" height="22" border="0" name="'.$for_js.'" onmouseover="mouse_img ('.$good_link.');" onmouseout="mouse_img();"></a></td>'."\n";
              else if ( $EVT_ID === 32 /*audio*/ )
-                print '<td valign="middle"><a href="javascript:mark_row('.$good_link.');"><img id="'.$EVT_ID.'" src="'.$conf['prefix'].'/img/audio.gif" width="20" height="22" border="0" name="'.$for_js.'" onmouseover="mouse_img ('.$good_link.');" onmouseout="mouse_img();"></a></td>'."\n";
+                print '<td valign="middle"><a name="audio" href="javascript:mark_row('.$good_link.');"><img id="'.$EVT_ID.'" src="'.$conf['prefix'].'/img/audio.gif" width="20" height="22" border="0" name="'.$for_js.'" onmouseover="mouse_img ('.$good_link.');" onmouseout="mouse_img();"></a></td>'."\n";
              else if ( $EVT_ID >= 15 && $EVT_ID <= 22 /*jpeg*/ )
-                 print '<td valign="middle"><a href="javascript:mark_row('.$good_link.');"><img id="'.$EVT_ID.'" src="'.$conf['prefix'].'/img/camera.gif" width="22" height="22" border="0" name="'.$for_js.'" onmouseover="mouse_img ('.$good_link.');" onmouseout="mouse_img();"></a></td>'."\n";
+                 print '<td valign="middle"><a name="jpeg" href="javascript:mark_row('.$good_link.');"><img id="'.$EVT_ID.'" src="'.$conf['prefix'].'/img/camera.gif" width="22" height="22" border="0" name="'.$for_js.'" onmouseover="mouse_img ('.$good_link.');" onmouseout="mouse_img();"></a></td>'."\n";
              else 
                 die("unsupported evt_id_type $EVT_ID");
           $good_link++;

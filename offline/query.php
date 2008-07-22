@@ -58,7 +58,7 @@ function ActionHelp()
 
 function get_links_array()
 {
-   var img_link_array = window.parent.frames['result'].document.links;
+   var img_link_array = window.parent.frames['result'].document.links; //getElementsByName('jpeg');
    links_count = img_link_array.length;
 
    if ( links_count == 0  )
