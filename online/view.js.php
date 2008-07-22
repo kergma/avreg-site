@@ -1,4 +1,60 @@
 <?php
+
+function calcAspectForGeo($w,$h) {
+
+   foreach ($GLOBALS['WellKnownAspects'] as &$pair) {
+      if ( 0 === $w % $pair[0] &&  0 === $h % $pair[1] ) {
+         if ( $w/$pair[0] === $h/$pair[1] )
+            return $pair;
+      }
+      if ( $h % $pair[0] &&  $w % $pair[1] ) {
+         if ( $h/$pair[0] === $w/$pair[1] )
+            return array($pair[1],$pair[0]);
+      }
+   }
+
+   $ar = array($w,$h);
+   $_stop = ($w>$h)?$h:$w;
+   for ($i=1; $i<=$_stop; $i++) {
+      if ( 0 === $w%$i && 0 === $h%$i ) {
+         $ar[0] = $w/$i;
+         $ar[1] = $h/$i;
+      }
+   }
+
+   return $ar;
+}
+
+print 'var WINS_DEF = new MakeArray('.$wins_nr.')'."\n";
+$first_win_cam_geo = null;
+for ($i=0;$i<$wins_nr;$i++)
+{
+  if (!empty($cams[$i])) {
+     if (!preg_match("/^cam (\d*) on (\d*\.\d*\.\d*\.\d*|[a-zA-Z-_0-9\.]+):(\d+) \[(\d+)x(\d+)\]/i",
+            $cams[$i], $matches) )
+           MYDIE("preg_match($cams[$i]) failed",__FILE__,__LINE__);
+    $cam_nr = $matches[1];settype($cam_nr,'int');
+    $_sip = $matches[2];
+    $w_port = $matches[3];settype($w_port,'int');
+    $_ww=$matches[4]; settype($_ww,'int');
+    $_wh=$matches[5]; settype($_wh,'int');
+    if (is_null($first_win_cam_geo))
+       $first_win_cam_geo = array($_ww, $_wh);
+
+
+    printf('WINS_DEF[%d]={
+       cam: {
+              nr: %s,
+              name: "%s",
+              url: "http://%s:%u/video.mjpg", /* FIXME Why only http */
+              orig_w: %u,
+              orig_h: %u
+           }
+   };%s', $i, $cam_nr, $camnames[$i], $_sip, $w_port, $_ww, $_wh, "\n" );
+ }
+
+}
+
 if (isset($_POST['FitToScreen']))
   print 'var FitToScreen = true;'."\n";
 else
@@ -14,46 +70,34 @@ if (isset($_POST['EnableReconnect']))
 else
   print 'var EnableReconnect = 0;'."\n";
 
-if (isset($_POST['CamsAspectRatio']))
-  print 'var CamsAspectRatio = parseFloat('.$_POST['CamsAspectRatio'].");\n";
+if (isset($_POST['AspectRatio'])) {
+   if ( 0 === strpos($_POST['AspectRatio'], 'calc') ) {
+      $ar = calcAspectForGeo($first_win_cam_geo[0], $first_win_cam_geo[1]);
+      printf("var CamsAspectRatio = { num: %d, den: %d };\n", $ar[0], $ar[1]);
+   } else if (preg_match('/^(\d+):(\d+)$/', $_POST['AspectRatio'], $m)) {
+      printf("var CamsAspectRatio = { num: %d, den: %d };\n", $m[1], $m[2]);
+   } else
+      print 'var CamsAspectRatio = \'fs\';'."\n";
+} else
+  print 'var CamsAspectRatio = \'fs\';'."\n";
+
+if (isset($_POST['BorderLeft']))
+  print 'var BorderLeft = parseInt('.$_POST['BorderLeft'].");\n";
 else
-  print 'var CamsAspectRatio = 0; // autodetect '."\n";
+   print 'var BorderLeft = 2;' . "\n";
+if (isset($_POST['BorderRight']))
+  print 'var BorderRight = parseInt('.$_POST['BorderRight'].");\n";
+else
+  print 'var BorderRight = 2;'. "\n";
+if (isset($_POST['BorderTop']))
+  print 'var BorderTop = parseInt('.$_POST['BorderTop'].");\n";
+else
+  print 'var BorderTop = 2;' . "\n";
+if (isset($_POST['BorderBottom']))
+  print 'var BorderBottom = parseInt('.$_POST['BorderBottom'].");\n";
+else
+  print 'var BorderBottom = 1;' . "\n";
 
-print 'var WINS_DEF = new MakeArray('.$wins_nr.')'."\n";
-
-$CAMS=array();
-for ($i=0;$i<$wins_nr;$i++)
-{
-  $tmp=array();
-  if (empty($cams[$i])) {
-    $tmp['set']=0;
-  } else {
-     if (!preg_match("/^cam (\d*) on (\d*\.\d*\.\d*\.\d*|[a-zA-Z-_0-9\.]+):(\d+) \[(\d+)x(\d+)\]/i",
-            $cams[$i], $matches) )
-           MYDIE("preg_match($cams[$i]) failed",__FILE__,__LINE__);
-    $cam_nr = $matches[1];settype($cam_nr,'int');
-    $_sip = $matches[2];
-    $w_port = $matches[3];settype($w_port,'int');
-    $_ww=$matches[4]; settype($_ww,'int');
-    $_wh=$matches[5]; settype($_wh,'int');
-    $tmp['set']=1;
-    $tmp['cam_nr']=$cam_nr;
-    $tmp['ip']=$_sip;
-    $tmp['port']=$w_port;
-    $tmp['orig_w']=$_ww;
-    $tmp['orig_h']=$_wh;
- }
- $tmpstr=implode('=',$tmp);
- print 'WINS_DEF['.$i.']="'.$tmpstr.'";'."\n";
- $CAMS[$i] = $tmp;
-}
-
-$cnames_nr = count($camnames);
-if ($cnames_nr>0) {
-print 'var CAMS_NAMES = new MakeArray('.$cnames_nr.')'."\n";
-for ($i=0;$i<$cnames_nr;$i++) 
-  print 'CAMS_NAMES['.$i.']="'.$camnames[$i].'";'."\n";
-}
 
 // $user_info config.inc.php
 print 'var ___u="'.$user_info['USER']."\"\n";

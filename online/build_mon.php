@@ -1,5 +1,8 @@
 <?php
 $pageTitle = 'WebCam';
+$lang_file='_online.php';
+$link_javascripts=array('lib/js/jquery-1.2.6.min.js');
+$include_javascripts=array('online/build_mon.js');
 require ('../head.inc.php');
 print '<div align="center"><b><a href="'.$conf['prefix'].'/" target="_parent">'.$MainPage.'</a></b></div>'."\n";
 require ('./active_wc.inc.php');
@@ -8,7 +11,6 @@ if ($tot_wc_nr===0) {
   die();
 }
 require ('../admin/mon-type.inc.php');
-
 
 if (!isset($mon_type) || empty($mon_type)) 
    MYDIE('not set $mon_type',__FILE__,__LINE__);
@@ -45,60 +47,7 @@ switch ($mon_type)
   default:
     MYDIE("unknown mon_type=$mon_type",__FILE__,__LINE__);  
 }
-?>
 
-<script type="text/javascript" language="JavaScript1.2">
-<!--
-function validate(){
-   var cams_selects = document.getElementsByName('cams[]');
-   var camnames_inputs = document.getElementsByName('camnames[]');
-   if (typeof(cams_selects) == 'undefined' || typeof(camnames_inputs) == 'undefined') 
-     return false;
-   var cams_select=null;
-   var i;
-   var choised=0;
-   for(i=0;i<cams_selects.length;i++) {
-      cams_select = cams_selects[i];
-      if (cams_select.selectedIndex>0 )
-      {
-        choised++;
-        camnames_inputs[i].value=CNAMES[cams_select.selectedIndex-1];
-      }
-   }
-   if (choised>0)
-     return true;
-   else {
-     alert('Сначала Вы должны выбрать камеры для просмотра в форме.');
-     return false;
-   }
-}
-
-function sel_change(sel) {
-  if (sel.selectedIndex==0)
-    return true;
-  var cams_selects = document.getElementsByName('cams[]');
-  if (typeof(cams_selects) == 'undefined') 
-     return false;
-   var cams_select=null;
-   var i;
-   var choised=0;
-   for(i=0;i<cams_selects.length;i++) {
-      cams_select = cams_selects[i];
-      if (cams_select != sel)
-      {
-         if ( cams_select.selectedIndex == sel.selectedIndex ) {
-            alert(sel.options[sel.selectedIndex].text + "\n\n" + ' уже выбрана  в другом окне' );
-            sel.selectedIndex=0;
-            break;
-         }
-      }
-   }  
-  return false;
-}
-// -->
-</script>
-
-<?php
 print '<div align="center">'."\n";
 //var_dump($_COOKIE);
 print '<form id="buildform" action="view.php" method="POST" onSubmit="return validate();" target="_blank">'."\n";
@@ -122,19 +71,23 @@ if ( isset($_COOKIE['avreg_'.$ccams]) && is_array($_COOKIE['avreg_'.$ccams]) )
 for ($i = 0; $i < $wins_nr; $i++)
   print '<input type="hidden" name="camnames[]" value="" />'."\n";
 
-$cfts=$mon_type.'_FitToScreen';
-if (isset($_COOKIE['avreg_'.$cfts]) && $_COOKIE['avreg_'.$cfts] != 0 )
-    $FitToScreen_checked = 'checked';
+print '<br /><table border="0" cellpadding="4">'."\n";
+
+$car=$mon_type.'_AspectRatio';
+if (isset($_COOKIE["avreg_$car"]))
+   $AspectRatio = $_COOKIE["avreg_$car"];
 else
-   $FitToScreen_checked = '';
-print '<br>'.$strFitToScreen.': <input type="checkbox" name="FitToScreen" '.$FitToScreen_checked.' />'."\n";
+   $AspectRatio = 'calc';
+print '<tr><td align="right">'.$strAspectRatio.":</td>\n";
+print '<td align="left">'.getSelectByAssocAr('AspectRatio', $AspectRatioArray, false , 1, 1, $AspectRatio, false)."</td></tr>\n";
 
 $cpn=$mon_type.'_PrintCamNames';
 if (isset($_COOKIE['avreg_'.$cpn]) && $_COOKIE['avreg_'.$cpn] != 0 )
     $PrintCamNames = 'checked';
 else
    $PrintCamNames = '';
-print '<br>'.$strPrintCamNames.': <input type="checkbox" name="PrintCamNames" '.$PrintCamNames.' />'."\n";
+print '<tr><td align="right">'.$strPrintCamNames.":</td>\n";
+print '<td align="left"><input type="checkbox" name="PrintCamNames" '.$PrintCamNames.' />'."</td></tr>\n";
 
 if (false !== strpos($_SERVER['HTTP_USER_AGENT'],'MSIE')) {
    $ercnt=$mon_type.'_EnableReconnect';
@@ -142,10 +95,20 @@ if (false !== strpos($_SERVER['HTTP_USER_AGENT'],'MSIE')) {
       $EnableReconnect_checked = 'checked';
    else
       $EnableReconnect_checked = '';
-   print '<br>'.$strEnableReconnect.': <input type="checkbox" name="EnableReconnect" '.$EnableReconnect_checked.' />'."\n";
+   print '<tr><td align="right">'.$strEnableReconnect.":</td>\n";
+   print '<td align="left"><input type="checkbox" name="EnableReconnect" '.$EnableReconnect_checked.' />'."</td></tr>\n";
 }
 
-print '<br><br><input type="submit" name="btnShow" value="'.$strShowCam.'" />'."\n";
+$cblank=$mon_type.'_OpenInBlankPage';
+if (isset($_COOKIE["avreg_$cblank"]) && $_COOKIE["avreg_$cblank"] != 0 )
+   $OpenInBlankPage = 'checked';
+else
+   $OpenInBlankPage = '';
+print '<tr><td align="right">'.$strOpenInBlank.":</td>\n";
+print '<td align="left"><input type="checkbox" name="OpenInBlankPage" '.$OpenInBlankPage.' />'."</td></tr>\n";
+print "</table>\n";
+print '<br /><input type="submit" name="btnShow" value="'.$strShowCam.'" />'."\n";
+
 print '<input type="hidden" name="mon_type" value="'.$mon_type.'" />'."\n";
 print '</form>'."\n";
 print '</div>'."\n";

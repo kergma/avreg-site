@@ -1,35 +1,17 @@
-var win_info;
-var cam_nr;
-var ip;
-var port;
-var orig_w;
-var orig_h;
-var url;
-
-function parse_win_info(wininfo) {
-   win_info = wininfo.split('=');
-   cam_nr = parseInt(win_info[1]);
-   ip = win_info[2];
-   port = parseInt(win_info[3]);
-   orig_w = parseInt(win_info[4]);
-   orig_h = parseInt(win_info[5]);
- 
-   url = 'http:\/\/' + ip + ':' + port + '/video.mjpg';
-}
-
-function img_mouseover(eimg,win_nr,orig_w,orig_h) {
- 
-   var splice = WINS_DEF[win_nr];
-   var onoff = parseInt(splice.charAt(0));
-   if ( onoff == 0 )
+function img_mouseover(eimg, win_nr) {
+   if ( WINS_DEF[win_nr] == undefined )
       return;
-   parse_win_info(splice);
    
    var img_jq = $('img',eimg);
-   
+
+   var cam_nr = WINS_DEF[win_nr].cam.nr;
+   var orig_w = WINS_DEF[win_nr].cam.orig_w;
+   var orig_h = WINS_DEF[win_nr].cam.orig_h;
+   var url = WINS_DEF[win_nr].cam.url;
+
  hint = '<table style="font-weight:bold;" cellspacing="0" border="0" cellpadding="1"><tbody><tr>\n' +
  '<td align="right">Камера:<\/td>\n' +
- '<td>#'+cam_nr+' ' + CAMS_NAMES[win_nr] + '<\/td>\n' +
+ '<td>#'+cam_nr+' ' +  WINS_DEF[win_nr].cam.name + '<\/td>\n' +
  '<\/tr><tr>\n' +
  '<td align="right">URL:<\/td>\n' +
  '<td>'+url+'<\/td>\n' +
@@ -51,146 +33,103 @@ function img_mouseover(eimg,win_nr,orig_w,orig_h) {
    ddrivetip();
 }
 
-function img_click(clicked_div, orig_w, orig_h) {
+function img_click(clicked_div) {
    var img_jq = $('img',clicked_div);
    var tmp_div;
-   
-   var border_w = clicked_div.offsetWidth - clicked_div.clientWidth;
-   var border_h = clicked_div.offsetHeight - clicked_div.clientHeight;
-
-   var new_h;
-   var new_w;
+   var clicked_div_jq = $(clicked_div);
+   var win_geo; 
    var i;
-   if ( FS ) {
+   if ( FS_WIN_DIV ) {
       // current - fullscreen
-     clicked_div.style.width = WIN_DIV_W+'px';
-     clicked_div.style.height = WIN_DIV_H+'px';
-     clicked_div.style.left = WIN_DIV_LEFT+'px';
-     clicked_div.style.top = WIN_DIV_TOP+'px';
+     
+      if ( WIN_DIV_W == undefined ) {
+         /* в момент FS было изменение CANVAS */
+         change_wins_geo();
+      } else {
+         var border_w = clicked_div.offsetWidth - clicked_div.clientWidth;
+         var border_h = clicked_div.offsetHeight - clicked_div.clientHeight;
+         clicked_div.style.width = WIN_DIV_W + border_w + 'px';
+         clicked_div.style.height = WIN_DIV_H + border_h + 'px';
+         clicked_div.style.left = WIN_DIV_LEFT + 'px';
+         clicked_div.style.top = WIN_DIV_TOP + 'px';
+         img_jq.css('width', IMG_IN_DIV_W);
+         img_jq.css('height', IMG_IN_DIV_H);
+      }
 
-     img_jq.width(IMG_IN_DIV_W);
-     img_jq.height(IMG_IN_DIV_H);
-     for (i=0;i<WIN_DIVS.length;i++) {
+      for (i=0;i<WIN_DIVS.length;i++) {
         tmp_div=WIN_DIVS[i];
-        if ( tmp_div == clicked_div ) {
-           alert('found');
+        if ( tmp_div == clicked_div )
            continue;
-        }
         tmp_div.style.visibility='visible';
-     }
-     FS=false;
+      }
+      FS_WIN_DIV = undefined;
    } else {
       // current - NO fullscreen
       for (i=0;i<WIN_DIVS.length;i++) {
         tmp_div=WIN_DIVS[i];
+        if ( tmp_div == clicked_div )
+           continue;
         tmp_div.style.visibility='hidden';
       }
 
-/*
-      var cam_geo = new calc_cam_geo(CamsAspectRatio, 1, 1);
-      var i,tmp_div;
-      for (i=WIN_DIVS.length-1; i>=0; i--) {
-         tmp_div=$(WIN_DIVS[i]);
-         tmp_div.css('top', cacl_cam_top(cam_geo, parseInt(i/COLS_NR)));
-         tmp_div.css('left',calc_cam_left(cam_geo, parseInt(i%COLS_NR)));
-         tmp_div.width(cam_geo.width);
-         tmp_div.height(cam_geo.height + NAME_DIV_H);
-         $('label', WIN_DIVS[i]).text( get_geo_str(tmp_div) );
-      }
-*/
       WIN_DIV_H = clicked_div.clientHeight;
       WIN_DIV_W = clicked_div.clientWidth;
       WIN_DIV_LEFT=clicked_div.offsetLeft;
       WIN_DIV_TOP=clicked_div.offsetTop;
       IMG_IN_DIV_W=img_jq.width();
       IMG_IN_DIV_H=img_jq.height();
- 
-      var cdiv_w_max = CANVAS_W - border_w;
-      var cdiv_h_max = CANVAS_H - border_h;
-      if (PrintCamNames) 
-        cdiv_h_max -= NAME_DIV_H;
-      
-      var ratio = parseFloat(orig_w/orig_h);
-      if (ratio == (4/3)) {
-        new_w=parseInt(cdiv_w_max/4);
-        new_h=new_w*3;
-        new_w*=4;
-        if (new_h>cdiv_h_max) {
-           new_h=parseInt(cdiv_h_max/3);
-           new_w=new_h*4;
-           new_h*=3;
-        }
-        
-      } else {
-        new_w=cdiv_w_max;
-        new_h=parseInt(new_w/ratio);
-        if (new_h>cdiv_h_max) {
-           new_h=cdiv_h_max;
-           new_w=parseInt(new_h*ratio);
-        }
-      }
-      // alert(clicked_div.style.left + ' ' + clicked_div.style.top + ' ' + clicked_div.offsetLeft + ' ' + clicked_div.offsetTop);
-      if (clicked_div.offsetLeft!=0)
-         clicked_div.style.left='0px';
-      if (clicked_div.offsetTop!=0)
-         clicked_div.style.top='0px';
-      clicked_div.style.width = new_w + 'px';
-      clicked_div.style.height = (new_h+NAME_DIV_H) + 'px' ;
-   
-      /*
-      alert(CANVAS_W + ' x ' + CANVAS_H +
-      "\n" + img.width + ' x ' +img.height +
-      "\n" + clicked_div.clientWidth + ' x ' +clicked_div.clientHeight+ 
-      "\n" + clicked_div.style.width + ' x ' +clicked_div.style.height);
-      */
-      
 
-      img_jq.width(new_w);
-      img_jq.height(new_h);
+  
+      win_geo = new calc_win_geo(CamsAspectRatio, 1, 1);
+
+      clicked_div_jq.css('top',  calc_win_top (win_geo, 0));
+      clicked_div_jq.css('left', calc_win_left(win_geo, 0));
+      clicked_div_jq.width(win_geo.win_w);
+      clicked_div_jq.height(win_geo.win_h);
+      $('img',clicked_div_jq).width(win_geo.cam_w).height(win_geo.cam_h)
+         // .attr('alt',win_geo.cam_w + 'x' + win_geo.cam_h);
+
       clicked_div.style.visibility='visible';
  
-     FS=true;
+      FS_WIN_DIV = clicked_div;
    }
-}
+} // img_click()
 
-function brout(win_nr, win_div, cam_geo) {
-   // alert('win ' + win_nr + '[ ' + cam_w + 'x' + cam_h + ' ]');
-
-   var splice = WINS_DEF[win_nr];
-
-   var onoff = parseInt(splice.charAt(0));
-   if ( onoff == 0 )
+function brout(win_nr, win_div, win_geo) {
+   if ( WINS_DEF[win_nr] == undefined )
       return;
-  
-   parse_win_info(splice);
+   var cam_nr = WINS_DEF[win_nr].cam.nr;
    var id='cam'+cam_nr;
-   var obj=null;
+   var orig_w = WINS_DEF[win_nr].cam.orig_w;
+   var orig_h = WINS_DEF[win_nr].cam.orig_h;
+   var url = WINS_DEF[win_nr].cam.url;
+   var ob;
    var W;
    var H;
-   if (FitToScreen) {
-     W = cam_geo.width  + 'px';
-     H = cam_geo.height + 'px';
-   } else {
-     if (orig_w<=cam_geo.width && orig_h<=cam_geo.height) {
-       W=orig_w + 'px';
-       H=orig_h + 'px';
-     } else {
-       W=cam_geo.width  + 'px';
-       H=cam_geo.height + 'px';
-     }
-   }
+   W=win_geo.cam_w;
+   H=win_geo.cam_h;
+
    var alt = 'WebCam #' + cam_nr + ' on ' + url + ' , original geo ['+orig_w+'x'+orig_h+']';
    if (GECKO) {
+      // $('<img src="/640x480r.png" id="'+id+'" name="cam" alt="' +alt+'" '+
       $('<img src="'+url+'?ab='+___abenc+'" id="'+id+'" name="cam" alt="' +alt+'" '+
-      'width="'+W+'" height="'+H+'" ' +
-      'align="middle" border="0px" />').appendTo(win_div);
-      win_div.click( function() { img_click(this, orig_w, orig_h); } ); 
-      win_div.mouseover( function() { img_mouseover(this, win_nr, orig_w, orig_h);} );
+      'width="'+orig_w+'px" height="'+orig_h+'px" ' +
+      'align="middle" border="0px" />').appendTo(win_div).width(W).height(H);
+      win_div.click( function() { img_click(this); } ); 
+      win_div.mouseover( function() { img_mouseover(this, win_nr);} );
       win_div.mouseout( function() { hideddrivetip(); } ); 
    } else if (MSIE) {
+      /*
+      $('<img src="/640x480r.png" id="'+id+'" name="cam" alt="' +alt+'" '+
+      'width="'+W+'px" height="'+H+'px" ' +
+      'align="middle" border="0px" />').appendTo(win_div).width(W).height(H);
+      win_div.click( function() { img_click(this); } );
+      win_div.mouseover( function() { img_mouseover(this, win_nr);} );
+      win_div.mouseout( function() { hideddrivetip(); } );
+      */
       alt += ' Microsoft Internet Explorer on Windows system found. Try ActiveX viewer.';
-      $('<OBJECT ID="'+id+'" name="cam" standby="Axis Media Control Active X not loaded" '+
-      ' WIDTH="'+W+'" HEIGHT="'+H+'" border="0px" '+
+      $('<OBJECT ID="'+id+'" name="cam" standby="'+alt+'" '+
+      ' WIDTH="100%" HEIGHT="100%" border=0 HSPACE=0 VSPACE=0'+
       ' classid="CLSID:745395C8-D0E1-4227-8586-624CA9A10A8D" '+
       ' CODEBASE="AMC.cab" \/>'+
       '<param name="UIMode" value="none">'+
@@ -202,14 +141,14 @@ function brout(win_nr, win_div, cam_geo) {
 	   '<PARAM NAME="MediaType" VALUE="mjpeg-unicast" \/>'+
       '<PARAM NAME="MediaURL" VALUE="'+url+'?ab='+___abenc+'" />'+
 	   '<PARAM NAME="EnableReconnect" VALUE='+EnableReconnect+' \/>'+
-      '<br \/>'+alt+
       '<\/OBJECT>').appendTo(win_div);
-      obj=document.all[id]; // MSIE only
-      obj.EnableContextMenu = 1;
-	   //document.writeln('<script language="JavaScript" ' +
-      //'for="'+id+'" event="OnDoubleClick(btn, shift, x, y)"> '+
-      //'if (document.all[id].FullScreen) document.all[id].FullScreen=0; else document.all[id].FullScreen=1;'+
-      //'<\/script>');
+      //obj=$(id);
+      //obj.EnableContextMenu = 1;
+      
+	   $('<script language="JavaScript" ' +
+         'for="'+id+'" event="OnDoubleClick(btn, shift, x, y)"> '+
+         'if (document.all[id].FullScreen) document.all[id].FullScreen=0; else document.all[id].FullScreen=1;'+
+      '<\/script>').appendTo(document);
    } else {
       alt += ' Unknow browser. Try Java viewer applet - Combozolla.';
       $('<applet code="com.charliemouse.cambozola.Viewer" archive="cambozola.jar" '+
@@ -218,15 +157,15 @@ function brout(win_nr, win_div, cam_geo) {
       '<PARAM NAME="URL" VALUE="'+url+'" />' +
       '<br>'+ alt +
       '<\/applet>').appendTo(win_div);
-       win_div.click( function() { img_click(this, orig_w, orig_h); } ); 
+       win_div.click( function() { img_click(this); } ); 
    }
 }
 
 function br_spec_out() {
   if (GECKO)
-    document.write('Одинарный клик мышью - окно на весь экран.');
+    document.write('Одинарный клик мышью - камеру на весь экран. &nbsp;F11 - полноэкранный режим.');
   else if (MSIE)
-    document.write('Мышь: двойной клик левой - на весь экран, клик правой - контекст. меню.');
+    document.write('Мышь: двойной клик левой - камеру на весь экран, клик правой - контекст. меню. &nbsp;F11 - полноэкранный режим.');
   else
     document.write('Нужно использовать браузеры: MS Internet Explorer или Firefox.');
 }
@@ -245,64 +184,102 @@ var WIN_DIV_W;
 var WIN_DIV_H;
 var IMG_IN_DIV_W;
 var IMG_IN_DIV_H;
-var FS=false;
+var FS_WIN_DIV;
    
 var NAME_DIV_H = PrintCamNames?20:0;
 
-function calc_cam_geo(aspect_ratio, cols_nr, rows_nr) {
-  // aspect ratio 4/3
+
+// XXX need ie box model 
+function calc_win_geo(img_aspect_ratio, cols_nr, rows_nr) {
   var cam_w;
   var cam_h;
 
+  if ( img_aspect_ratio == undefined || 
+       img_aspect_ratio == 'fs' ) {
+     /* соотношение сторон видеоизображения нас не волнует,
+        растягиваем окна камер и сами изображения по всему CANVAS */
+     cam_w = parseInt(CANVAS_W/cols_nr) - BorderLeft - BorderRight;
+     cam_h = parseInt(CANVAS_H/rows_nr) - NAME_DIV_H - BorderTop - BorderBottom;
+  } else {
+     
   // create wins
-  var calc_canvas_h=CANVAS_H - (NAME_DIV_H*rows_nr);
-
-  if ( (CANVAS_W/calc_canvas_h) >= (4*cols_nr)/(3*rows_nr) ) {
+  var calc_canvas_h = CANVAS_H - ((NAME_DIV_H + BorderTop + BorderBottom) *rows_nr);
+  
+  if ( (CANVAS_W/calc_canvas_h) >= 
+        (img_aspect_ratio.num*cols_nr)/(img_aspect_ratio.den*rows_nr) ) {
     cam_h = parseInt(calc_canvas_h/rows_nr);
-    cam_h = parseInt(cam_h/3);
-    cam_w = cam_h*4;
-    cam_h *= 3;
+    cam_h = parseInt(cam_h/img_aspect_ratio.den);
+    cam_w = cam_h*img_aspect_ratio.num;
+    cam_h *= img_aspect_ratio.den;
   } else {
     cam_w = parseInt(CANVAS_W/cols_nr);
-    cam_w = parseInt(cam_w/4);
-    cam_h = cam_w*3;
-    cam_w *= 4;
+    cam_w = parseInt(cam_w/img_aspect_ratio.num);
+    cam_h = cam_w*img_aspect_ratio.den;
+    cam_w *= img_aspect_ratio.num;
+  }
   }
 
-  this.all_cams_width = cam_w * cols_nr;
+  this.win_w = cam_w + BorderLeft + BorderRight;
+  this.win_h = cam_h + NAME_DIV_H + BorderTop + BorderBottom;
+
+  this.all_cams_width = this.win_w * cols_nr;
   this.offsetX = parseInt((CANVAS_W - this.all_cams_width)/2);  
-  this.all_cams_height = cam_h * rows_nr;
-  this.offsetY = parseInt((calc_canvas_h - this.all_cams_height)/2);  
+  this.all_cams_height = this.win_h * rows_nr;
+  this.offsetY = parseInt((CANVAS_H - this.all_cams_height)/2);  
 
-  if (GECKO) {
-    // border out
-    cam_w-=4;
-    cam_h-=3;
-  }
-
-  this.width  = cam_w; 
-  this.height = cam_h;
-  this.calc_canvas_h = calc_canvas_h;
-} // calc_cam_geo()
+  this.cam_w = cam_w; 
+  this.cam_h = cam_h;
+} // calc_win_geo()
 
 
-function calc_cam_left(cam_geo, col) {
-   var ret;
-   if (GECKO) 
-      ret = col*(cam_geo.width+4);
-   else
-      ret = col*cam_geo.width;
-   return parseInt(ret + cam_geo.offsetX);
+function calc_win_left(win_geo, col) {
+   var _left = parseInt(col*win_geo.win_w + win_geo.offsetX);
+   return _left;
 }
 
-function cacl_cam_top(cam_geo, row) {
-   var ret;
-   if (GECKO)
-      ret = row*(cam_geo.height + NAME_DIV_H + 3);
-   else
-      ret = row*(cam_geo.height + NAME_DIV_H);
-   return parseInt(ret + cam_geo.offsetY)
+function calc_win_top(win_geo, row) {
+   var _top = parseInt( row*win_geo.win_h + win_geo.offsetY );
+   return _top; 
 }
+
+
+function change_fs_win_geo(fs_win) {
+   var win_geo = new calc_win_geo(CamsAspectRatio, 1, 1);
+   var fs_win_div_jq = $(fs_win);
+   fs_win_div_jq.css('top',  calc_win_top (win_geo, 0));
+   fs_win_div_jq.css('left', calc_win_left(win_geo, 0));
+   fs_win_div_jq.width(win_geo.win_w);
+   fs_win_div_jq.height(win_geo.win_h);
+   if ( GECKO ) {
+      $('img',fs_win_div_jq).width(win_geo.cam_w).height(win_geo.cam_h)
+         // .attr('alt',win_geo.cam_w + 'x' + win_geo.cam_h);
+   } else if (MSIE) {
+      $('object',fs_win_div_jq).width(win_geo.cam_w).height(win_geo.cam_h)
+         // .text(win_geo.cam_w + 'x' + win_geo.cam_h)
+   }
+
+} // change_fs_win_geo()
+
+function change_wins_geo() {
+   var win_geo = new calc_win_geo(CamsAspectRatio, COLS_NR, ROWS_NR);
+   var i,tmp_div;
+   for (i=WIN_DIVS.length-1; i>=0; i--) {
+      tmp_div=$(WIN_DIVS[i]);
+      tmp_div.css('top',  calc_win_top (win_geo, parseInt(i/COLS_NR)));
+      tmp_div.css('left', calc_win_left(win_geo, parseInt(i%COLS_NR)));
+      tmp_div.width(win_geo.win_w);
+      tmp_div.height(win_geo.win_h);
+      if ( GECKO ) {
+         $('img',tmp_div).width(win_geo.cam_w).height(win_geo.cam_h)
+          // attr('alt',win_geo.cam_w + 'x' + win_geo.cam_h);
+      } else if (MSIE) {
+         $('object',tmp_div).width(win_geo.cam_w).height(win_geo.cam_h)
+            // .text(win_geo.cam_w + 'x' + win_geo.cam_h)
+      } else {
+         $('applet',tmp_div).width(win_geo.cam_w).height(win_geo.cam_h)
+      }
+   } // for(allwin)
+} // change_wins_geo()
 
 function canvas_growth() {
    var canvas_changed = false;
@@ -320,25 +297,21 @@ function canvas_growth() {
    }
    if (!canvas_changed)
       return;
-
-   var cam_geo = new calc_cam_geo(CamsAspectRatio, COLS_NR, ROWS_NR);
-   // alert('new CANVAS is ' + CANVAS.width() + 'x' + CANVAS.height());
-
    if ( WIN_DIVS == undefined )
        return;
-   var i,tmp_div;
-   for (i=WIN_DIVS.length-1; i>=0; i--) {
-      tmp_div=$(WIN_DIVS[i]);
-      tmp_div.css('top', cacl_cam_top(cam_geo, parseInt(i/COLS_NR)));
-      tmp_div.css('left',calc_cam_left(cam_geo, parseInt(i%COLS_NR)));
-      tmp_div.width(cam_geo.width);
-      tmp_div.height(cam_geo.height + NAME_DIV_H);
-      $('label', WIN_DIVS[i]).text( get_geo_str(tmp_div) );
-   }
-}
+
+   WIN_DIV_W = undefined;
+
+   if ( FS_WIN_DIV ) {
+      change_fs_win_geo(FS_WIN_DIV);
+   } else {
+      change_wins_geo();
+   } // if ( FS_WIN_DIV )
+} // canvas_growth()
 
 function get_geo_str(JQ_elem) {
-    return '[ ' + JQ_elem.css('left') + ',' +  JQ_elem.css('top') + ' : ' +
+    return JQ_elem.attr('nodeName') + '#' +  JQ_elem.attr('id') +
+       ': [ ' + JQ_elem.css('left') + ',' +  JQ_elem.css('top') + ' : ' +
                 JQ_elem.width() + ' x ' + JQ_elem.height() + ' ]';
 }
 
@@ -389,7 +362,7 @@ $(document).ready( function() {
 
    $(window).bind('scroll', function(){return false;});
 
-  var cam_geo = new calc_cam_geo(CamsAspectRatio, COLS_NR, ROWS_NR);
+  var win_geo = new calc_win_geo(CamsAspectRatio, COLS_NR, ROWS_NR);
 
   // alert('[ ' + CANVAS_W + 'x' + CANVAS_H + ' ] [ ' + cam_w + 'x' + cam_h + ' ]');
   var row=0;
@@ -398,23 +371,20 @@ $(document).ready( function() {
   var top=0;
   var left=0;
   var win_div;
-  var splice;
-  var onoff;
   for (row=0;row<ROWS_NR;row++)
   {
-     top = cacl_cam_top(cam_geo, row);
+     top = calc_win_top(win_geo, row);
 
      for (col=0;col<COLS_NR;col++)
      {
-        left = calc_cam_left(cam_geo, col);
+        left = calc_win_left(win_geo, col);
         win_div = $('<div id="win'+win_nr+'" name="win" class="win" ' + 
         'style="top:'+top+'px; left:'+left+'px; '+
-        ' width:'+cam_geo.width+'px; height:'+(cam_geo.height+NAME_DIV_H)+'px; '+
-        '" ></div>');
+        ' width:'+win_geo.win_w+'px; height:'+win_geo.win_h+'px;'+
+        ' z-index=-'+win_nr+';'+
+        '"></div>');
         win_div.appendTo(CANVAS)
-        splice = WINS_DEF[win_nr];
-        onoff = parseInt(splice.charAt(0));
-        if ( onoff > 0 )
+        if (  WINS_DEF[win_nr] != undefined )
         {
            if (PrintCamNames) {
              $('<div style="vertical-align:bottom; background-color:#666699;'+
@@ -422,12 +392,12 @@ $(document).ready( function() {
              ' height:'+NAME_DIV_H+'px;"><div style="'+
              'padding-left:8px; padding-top:2px; padding-bottom:2px; padding-right:2px;'+
              ' color:White; font-size:14px; font-weight: bold;">'+
-             CAMS_NAMES[win_nr]+
+             WINS_DEF[win_nr].cam.name+
              '<\/div><\/div>').appendTo(win_div);
            }
-           brout(win_nr, win_div, cam_geo.width, cam_geo.height);
+           brout(win_nr, win_div, win_geo);
         }
-        $('<label style="padding:0px; margin:5px;">' + get_geo_str(win_div) + '</label>').appendTo(win_div);
+        // $('<label></label>').appendTo(win_div).text(get_geo_str(win_div));
         win_nr++;
      }
   }
@@ -435,10 +405,10 @@ $(document).ready( function() {
   WIN_DIVS = $('div.win');
 
   $('#dialog').jqm({
-      overlay: 75,
+      overlay: 90,
       onShow: function(h) {
          /* callback executed when a trigger click. Show notice */
-         h.w.css('opacity',0.75).slideDown('fast'); 
+         h.w.css('opacity',0.9).slideDown('fast'); 
       },
       onHide: function(h) {
         /* callback executed on window hide. Hide notice, overlay. */

@@ -203,6 +203,16 @@ $patternAllowedIP='/^('.$patternIP.'|any|localhost)$/';
 $patternUser='/^[A-Za-z0-9_\-]{4,16}$/';
 $patternPasswd='/^[A-Za-z0-9_\-]{0,16}$/';
 
+$WellKnownAspects = array(
+  array( 4, 3),
+  array(10, 8),
+  array(11, 9),
+  array( 3, 2),
+  array(16, 9),
+  array(16,10),
+  array( 5, 4)
+);
+
 require($wwwdir.'/lib/my_conn.inc.php');
 $query = 'SELECT HOST, USER, PASSWD, STATUS, ALLOW_CAMS, LIMIT_FPS, LIMIT_KBPS, LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME FROM USERS ORDER BY STATUS';
 $result = mysql_query($query) or die('SQL query failed: `'. mysql_error() ."`\n");
@@ -701,7 +711,6 @@ function getSelectHtml($_name, $value_array, $_multiple=FALSE , $_size = 1, $sta
 
       if ($first_empty) $a .= '<option></option>'."\n";
       $_cnt = $start_val;
-      reset($value_array);
       foreach ($value_array as $_element)
       {
                if ( $selected != '' )
@@ -732,7 +741,6 @@ function getSelectHtml($_name, $value_array, $_multiple=FALSE , $_size = 1, $sta
                } else {  // not selected
                         $a .= '<option value="'.$_cnt.'">'.$_element.'</option>'."\n";
                }
-               
                $_cnt++;
       }
       $a .= '</select>'."\n";
@@ -764,7 +772,6 @@ function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
 
       if ($first_empty) $a .= '<option></option>'."\n";
       $_cnt = $start_val;
-      reset($value_array);
       foreach ($value_array as $_element)
       {
                if ( $selected != '' )
@@ -829,7 +836,7 @@ function getSelectByAssocAr($_name, $assoc_array, $_multiple=FALSE ,
                   $onch);
 
       if ($first_empty) $a .= '<option></option>'."\n";
-   
+
    reset($assoc_array);
    for ($i=0; $i<$array_cnt; $i++)
       {

@@ -16,6 +16,8 @@ header('Pragma: no-cache'); // HTTP/1.0
 // Define the charset to be used
 header('Content-Type: text/html; charset=' . $chset);
 
+if ( isset($ie6_quirks_mode) && $ie6_quirks_mode && preg_match('/MSIE\s*6/',$_SERVER['HTTP_USER_AGENT']) )
+   print '<?xml version="1.0" encoding="'.$chset.'"?>'."\n";
 print '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'."\n";
 print '<html><head>'."\n";
 print '<link rel="SHORTCUT ICON" href="'.$conf['prefix'].'/favicon.ico">'."\n";
@@ -89,7 +91,7 @@ function ddrivetip(thetext, thecolor, thewidth) {
     if (thewidth || typeof thewidth!='undefined') 
         tipobj.style.width=thewidth+'px';
     if (thecolor && typeof thecolor!='undefined' && thecolor!='')
-           tipobj.style.backgroundColor=thecolor;
+       tipobj.style.backgroundColor=thecolor;
     enabletip=true;
     return false;
   }
@@ -126,7 +128,7 @@ function positiontip(e) {
             window.pageYOffset+e.clientY-tipobj.offsetHeight-offsetypoint+"px";
     else
        tipobj.style.top=curY+offsetypoint+"px";
-    tipobj.style.visibility="visible";
+     tipobj.style.visibility="visible";
   }
 }
 
@@ -242,3 +244,4 @@ if (!isset($NOBODY))
 Включите поддержку JavaScript и перегрузите/обновите эту страницу.</div></center>
 </noscript>
 <div id="tooltip"></div>
+

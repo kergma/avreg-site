@@ -44,15 +44,16 @@ switch ($mon_type)
   default:
     die("unknown mon_type=$mon_type");
 }
-$cfts = 'avreg_' . $mon_type . '_FitToScreen'; 
+$сb = 'avreg_' . $mon_type . '_OpenInBlankPage'; 
 $cnm  = 'avreg_' . $mon_type . '_PrintCamNames';
 $ercnt = 'avreg_' . $mon_type . '_EnableReconnect';
+$car = 'avreg_' . $mon_type . '_AspectRatio';
 $expired = time()+5184000;
 $ca=dirname($_SERVER['SCRIPT_NAME']).'/build_mon.php';
-if (isset($_POST['FitToScreen']))
-   setcookie($cfts,  '1', $expired,$ca);
+if (isset($_POST['OpenInBlankPage']))
+   setcookie($сb,  '1', $expired,$ca);
 else
-   setcookie($cfts,  '0', $expired,$ca);
+   setcookie($сb,  '0', $expired,$ca);
 if (isset($_POST['PrintCamNames']))
    setcookie($cnm,  '1', $expired,$ca);
 else
@@ -61,6 +62,8 @@ if (isset($_POST['EnableReconnect']))
    setcookie($ercnt,  '1', $expired,$ca);
 else
    setcookie($ercnt,  '0', $expired,$ca);
+if (isset($_POST['AspectRatio']))
+   setcookie($car,  $_POST['AspectRatio'], $expired,$ca);
 
 for ($i=0;$i<$wins_nr;$i++) 
   if (isset($_POST['cams'][$i]))
@@ -68,11 +71,13 @@ for ($i=0;$i<$wins_nr;$i++)
 
 
 $pageTitle = 'WebCam';
-$body_style='overflow: hidden; padding: 0; margin: 0; width: 100%; height: 100%;';
+$body_style='overflow: hidden;  overflow-y: hidden !important; padding: 0; margin: 0; width: 100%; height: 100%;';
 $css_links=array('lib/js/jqModal.css');
 $link_javascripts=array('lib/js/jquery-1.2.6.min.js', 'lib/js/jqModal.js');
 $include_javascripts=array('online/view.js.php', 'online/view.js');
 $body_addons='scroll="no"';
+$ie6_quirks_mode = true;
+$lang_file='_online.php';
 require ('../head.inc.php');
 if ( !isset($cams) || !is_array($cams)) 
    MYDIE('not set cams',__FILE__,__LINE__);
@@ -83,23 +88,30 @@ var_dump($cams);
 var_dump($camnames);
 print '</pre>'."\n";
 die();
-*/
+ */
 ?>
 
-<div id="toolbar" style="position:absolute; height:25px; width:100%; margin:0; padding:0;background-color:#003366;overflow:hidden;">
-<a href="<?echo $conf['prefix']; ?>/online/index.php" title='Назад, к выбору камер.'><img src="<?echo $conf['prefix']; ?>/img/dvrlogo-134x25.png" width="134" height="25" align="left" border="0"></a>
-<table cellspacing="0" border="0" cellpadding="1" align="right">
-  <tbody>
-    <tr>
-      <td>&nbsp;</td>
-      <td><p style="color:white;font-weight:bold;"><script type="text/javascript">br_spec_out();</script> &nbsp;&nbsp;Нет изображений с камер? Читаем</p></td>
-      <td><a title="HELP" class="jqModal" href="#" style="cursor: pointer; color:#FFA500; font-weight:bold;">справку</a>&nbsp;</td>
-    </tr>
-  </tbody>
+<div id="toolbar" style="position:absolute; height:25px; width:100%; margin:0; padding:0; background-color:#003366; overflow:hidden; color:#E0E0E0;" >
+<table width="100%" cellspacing="0" border="0" cellpadding="0">
+<tr style="height: 25px; overflow: hidden;">
+<td width="150px">
+<a href="<?echo $conf['prefix']; ?>/online/index.php" title='Назад, к выбору камер.'>
+<img src="<?echo $conf['prefix']; ?>/img/dvrlogo-134x25.png" width="134" height="25" border="0">
+</a>
+</td>
+<td width="90%" style="color: #E0E0E0; text-align: right; height: 25px; overflow: hidden;">
+<script type="text/javascript">br_spec_out();</script>
+&nbsp;&nbsp;Нет изображений с камер?
+</td>
+<td style="color: #E0E0E0; text-align: right;" nowrap="true">
+&nbsp;Читаем&nbsp;
+<a title="HELP" class="jqModal" href="#" style="cursor: pointer; color:#FFA500; font-weight:bold;">справку!</a>&nbsp;
+</td>
+</tr>
 </table>
 </div>
 <div id="canvas" style="position:absolute; top:25px; background-color:#000; width:100%; height:0px; overflow:hidden; margin:0; padding:0;"></div>
-<div class="jqmWindow" id="dialog" title="Если камеры не кажут...">
+<div class="jqmWindow" id="dialog">
 <div style="text-align: right;">
 <span class="jqmClose" style="text-align: center; border: 1px solid #000; font-weight: bold; padding: 5px;"><a href="#">X</a></span>
 </div>

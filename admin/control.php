@@ -95,14 +95,15 @@ if ( isset($cmd) )
                         if (isset($profile))
                            $fullcmd .= ' ' . $profile;
 			print_syslog (LOG_WARNING, sprintf ('command `%s\'', $fullcmd));
-			$outline = exec($conf['sudo'] . ' ' . $fullcmd, $outs, $retval);
+			unset($outs);
+			exec($conf['sudo'] . ' ' . $fullcmd . ' 2>&1', $outs, $retval);
 			if ( $retval === 0 ) {
 				print 'OK</font></p>' ."\n";
 				$cmd_released=TRUE;
 				// print '<p>' . $outline . '</p>' ."\n";
 			} else {
 				print $strError. '</font></p>' ."\n";
-				print '<p><font size="+1" color="Red">' . $outline . '</font></p>' ."\n";
+				print '<p><font size="+1" color="Red">' . implode('<br />',$outs) . '</font></p>' ."\n";
 				$cmd_released=FLASE;
 				print '<div style="color:Red;">'.$strCheckLog.'</div>';
 				print_messages();
