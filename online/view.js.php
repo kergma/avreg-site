@@ -27,12 +27,16 @@ function calcAspectForGeo($w,$h) {
 
 print 'var WINS_DEF = new MakeArray('.$wins_nr.')'."\n";
 $first_win_cam_geo = null;
-for ($i=0;$i<$wins_nr;$i++)
+$msie_addons_scripts=array();
+for ($i=0; $i<$wins_nr; $i++)
 {
-  if (!empty($cams[$i])) {
-     if (!preg_match("/^cam (\d*) on (\d*\.\d*\.\d*\.\d*|[a-zA-Z-_0-9\.]+):(\d+) \[(\d+)x(\d+)\]/i",
+    if (empty($cams[$i]))
+        continue;
+
+    if (!preg_match("/^cam (\d*) on (\d*\.\d*\.\d*\.\d*|[a-zA-Z-_0-9\.]+):(\d+) \[(\d+)x(\d+)\]/i",
             $cams[$i], $matches) )
-           MYDIE("preg_match($cams[$i]) failed",__FILE__,__LINE__);
+            MYDIE("preg_match($cams[$i]) failed",__FILE__,__LINE__);
+
     $cam_nr = $matches[1];settype($cam_nr,'int');
     $_sip = $matches[2];
     $w_port = $matches[3];settype($w_port,'int');
@@ -50,9 +54,16 @@ for ($i=0;$i<$wins_nr;$i++)
               orig_w: %u,
               orig_h: %u
            }
-   };%s', $i, $cam_nr, $camnames[$i], $_sip, $w_port, $_ww, $_wh, "\n" );
- }
+    };%s', $i, $cam_nr, $camnames[$i], $_sip, $w_port, $_ww, $_wh, "\n" );
 
+    if ( $MSIE )
+        $msie_addons_scripts[] = sprintf('<script for="cam%d" event="OnClick()">
+            var amc = this;
+            if (amc.FullScreen) 
+                amc.FullScreen=0;
+            else
+                amc.FullScreen=1;
+           </script>', $cam_nr);
 }
 
 if (isset($_POST['FitToScreen']))
@@ -97,7 +108,6 @@ if (isset($_POST['BorderBottom']))
   print 'var BorderBottom = parseInt('.$_POST['BorderBottom'].");\n";
 else
   print 'var BorderBottom = 1;' . "\n";
-
 
 // $user_info config.inc.php
 print 'var ___u="'.$user_info['USER']."\"\n";

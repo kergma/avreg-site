@@ -103,57 +103,43 @@ function brout(win_nr, win_div, win_geo) {
    var orig_w = WINS_DEF[win_nr].cam.orig_w;
    var orig_h = WINS_DEF[win_nr].cam.orig_h;
    var url = WINS_DEF[win_nr].cam.url;
-   var ob;
-   var W;
-   var H;
-   W=win_geo.cam_w;
-   H=win_geo.cam_h;
 
    var alt = 'WebCam #' + cam_nr + ' on ' + url + ' , original geo ['+orig_w+'x'+orig_h+']';
    if (GECKO) {
-      // $('<img src="/640x480r.png" id="'+id+'" name="cam" alt="' +alt+'" '+
+       // $('<img src="/640x480r.png" id="'+id+'" name="cam" alt="' +alt+'" '+
       $('<img src="'+url+'?ab='+___abenc+'" id="'+id+'" name="cam" alt="' +alt+'" '+
       'width="'+orig_w+'px" height="'+orig_h+'px" ' +
-      'align="middle" border="0px" />').appendTo(win_div).width(W).height(H);
+      'align="middle" border="0px" />').appendTo(win_div).width(win_geo.cam_w).height(win_geo.cam_h);
       win_div.click( function() { img_click(this); } ); 
       win_div.mouseover( function() { img_mouseover(this, win_nr);} );
       win_div.mouseout( function() { hideddrivetip(); } ); 
    } else if (MSIE) {
-      /*
-      $('<img src="/640x480r.png" id="'+id+'" name="cam" alt="' +alt+'" '+
-      'width="'+W+'px" height="'+H+'px" ' +
-      'align="middle" border="0px" />').appendTo(win_div).width(W).height(H);
-      win_div.click( function() { img_click(this); } );
-      win_div.mouseover( function() { img_mouseover(this, win_nr);} );
-      win_div.mouseout( function() { hideddrivetip(); } );
-      */
-      alt += ' Microsoft Internet Explorer on Windows system found. Try ActiveX viewer.';
-      $('<OBJECT ID="'+id+'" name="cam" standby="'+alt+'" '+
-      ' WIDTH="100%" HEIGHT="100%" border=0 HSPACE=0 VSPACE=0'+
-      ' classid="CLSID:745395C8-D0E1-4227-8586-624CA9A10A8D" '+
-      ' CODEBASE="AMC.cab" \/>'+
-      '<param name="UIMode" value="none">'+
-      '<PARAM NAME="AutoStart" VALUE=1 \/>'+
-	   '<PARAM NAME="NetworkTimeout" VALUE=5000 \/>'+
-	   '<PARAM NAME="StretchToFit" VALUE=1 \/>'+
-	   '<PARAM NAME="Popups" VALUE=6 \/>'+
-	   '<PARAM NAME="ShowToolbar" VALUE=0 \/>'+
-	   '<PARAM NAME="MediaType" VALUE="mjpeg-unicast" \/>'+
-      '<PARAM NAME="MediaURL" VALUE="'+url+'?ab='+___abenc+'" />'+
-	   '<PARAM NAME="EnableReconnect" VALUE='+EnableReconnect+' \/>'+
-      '<\/OBJECT>').appendTo(win_div);
-      //obj=$(id);
-      //obj.EnableContextMenu = 1;
-      
-	   $('<script language="JavaScript" ' +
-         'for="'+id+'" event="OnDoubleClick(btn, shift, x, y)"> '+
-         'if (document.all[id].FullScreen) document.all[id].FullScreen=0; else document.all[id].FullScreen=1;'+
-      '<\/script>').appendTo(document);
+      var amc = document.createElement('object');
+      amc.id = id;
+      amc.alt = alt + ' Microsoft Internet Explorer on Windows system found. Try ActiveX viewer.';
+      amc.border = 0;
+      amc.hspace = 0;
+      amc.vspace = 0;
+      amc.width = win_geo.cam_w;
+      amc.height = win_geo.cam_h;
+      win_div.get(0).appendChild(amc);
+      amc.codeBase = "AMC.cab#Version=5,2,13,12";
+      amc.classid = "clsid:745395C8-D0E1-4227-8586-624CA9A10A8D";
+      amc.UIMode = "none";
+      amc.ShowToolbar = false;
+      amc.ShowStatusBar = false;
+      amc.StretchToFit = true;
+      amc.Popups = 6;
+      amc.EnableReconnect = EnableReconnect;
+      amc.EnableContextMenu = 1;
+      amc.MediaType = "mjpeg-unicast";
+      amc.MediaURL = url+'?ab='+___abenc;
+      amc.AutoStart = true;
    } else {
       alt += ' Unknow browser. Try Java viewer applet - Combozolla.';
       $('<applet code="com.charliemouse.cambozola.Viewer" archive="cambozola.jar" '+
       'ID="'+id+'" name="cam" '+
-      'WIDTH="'+W+'" HEIGHT="'+H+'" border="0px" ' +
+      'WIDTH="'+win_geo.cam_w+'" HEIGHT="'+win_geo.cam_h+'" border="0px" ' +
       '<PARAM NAME="URL" VALUE="'+url+'" />' +
       '<br>'+ alt +
       '<\/applet>').appendTo(win_div);
@@ -165,9 +151,9 @@ function br_spec_out() {
   if (GECKO)
     document.write('Одинарный клик мышью - камеру на весь экран. &nbsp;F11 - полноэкранный режим.');
   else if (MSIE)
-    document.write('Мышь: двойной клик левой - камеру на весь экран, клик правой - контекст. меню. &nbsp;F11 - полноэкранный режим.');
+    document.write('Мышь: одинарный клик левой - камеру на весь экран, клик правой - контекст. меню. &nbsp;F11 - полноэкранный режим.');
   else
-    document.write('Нужно использовать браузеры: MS Internet Explorer или Firefox.');
+    document.write('Необходимо использовать браузеры: MS Internet Explorer или Firefox.');
 }
 
 /* global variables */
@@ -201,31 +187,28 @@ function calc_win_geo(img_aspect_ratio, cols_nr, rows_nr) {
      cam_w = parseInt(CANVAS_W/cols_nr) - BorderLeft - BorderRight;
      cam_h = parseInt(CANVAS_H/rows_nr) - NAME_DIV_H - BorderTop - BorderBottom;
   } else {
-     
-  // create wins
-  var calc_canvas_h = CANVAS_H - ((NAME_DIV_H + BorderTop + BorderBottom) *rows_nr);
+     // create wins
+     var calc_canvas_h = CANVAS_H - ((NAME_DIV_H + BorderTop + BorderBottom) *rows_nr);
   
-  if ( (CANVAS_W/calc_canvas_h) >= 
+     if ( (CANVAS_W/calc_canvas_h) >= 
         (img_aspect_ratio.num*cols_nr)/(img_aspect_ratio.den*rows_nr) ) {
-    cam_h = parseInt(calc_canvas_h/rows_nr);
-    cam_h = parseInt(cam_h/img_aspect_ratio.den);
-    cam_w = cam_h*img_aspect_ratio.num;
-    cam_h *= img_aspect_ratio.den;
-  } else {
-    cam_w = parseInt(CANVAS_W/cols_nr);
-    cam_w = parseInt(cam_w/img_aspect_ratio.num);
-    cam_h = cam_w*img_aspect_ratio.den;
-    cam_w *= img_aspect_ratio.num;
-  }
+        cam_h = parseInt(calc_canvas_h/rows_nr);
+        cam_h = parseInt(cam_h/img_aspect_ratio.den);
+        cam_w = cam_h*img_aspect_ratio.num;
+        cam_h *= img_aspect_ratio.den;
+      } else {
+        cam_w = parseInt(CANVAS_W/cols_nr - BorderLeft - BorderRight);
+        cam_w = parseInt(cam_w/img_aspect_ratio.num);
+        cam_h = cam_w*img_aspect_ratio.den;
+        cam_w *= img_aspect_ratio.num;
+      }
   }
 
   this.win_w = cam_w + BorderLeft + BorderRight;
   this.win_h = cam_h + NAME_DIV_H + BorderTop + BorderBottom;
 
-  this.all_cams_width = this.win_w * cols_nr;
-  this.offsetX = parseInt((CANVAS_W - this.all_cams_width)/2);  
-  this.all_cams_height = this.win_h * rows_nr;
-  this.offsetY = parseInt((CANVAS_H - this.all_cams_height)/2);  
+  this.offsetX = parseInt((CANVAS_W - this.win_w * cols_nr)/2);  
+  this.offsetY = parseInt((CANVAS_H - this.win_h * rows_nr)/2);  
 
   this.cam_w = cam_w; 
   this.cam_h = cam_h;
@@ -253,9 +236,10 @@ function change_fs_win_geo(fs_win) {
    if ( GECKO ) {
       $('img',fs_win_div_jq).width(win_geo.cam_w).height(win_geo.cam_h)
          // .attr('alt',win_geo.cam_w + 'x' + win_geo.cam_h);
-   } else if (MSIE) {
-      $('object',fs_win_div_jq).width(win_geo.cam_w).height(win_geo.cam_h)
+   } else if ( MSIE ) {
+      var r = $('object',fs_win_div_jq).width(win_geo.cam_w).height(win_geo.cam_h)
          // .text(win_geo.cam_w + 'x' + win_geo.cam_h)
+      alert(r);
    }
 
 } // change_fs_win_geo()
@@ -273,6 +257,7 @@ function change_wins_geo() {
          $('img',tmp_div).width(win_geo.cam_w).height(win_geo.cam_h)
           // attr('alt',win_geo.cam_w + 'x' + win_geo.cam_h);
       } else if (MSIE) {
+         // $('img',tmp_div).width(win_geo.cam_w).height(win_geo.cam_h)
          $('object',tmp_div).width(win_geo.cam_w).height(win_geo.cam_h)
             // .text(win_geo.cam_w + 'x' + win_geo.cam_h)
       } else {
@@ -299,6 +284,7 @@ function canvas_growth() {
       return;
    if ( WIN_DIVS == undefined )
        return;
+   // alert("canvas changed");
 
    WIN_DIV_W = undefined;
 
@@ -378,9 +364,16 @@ $(document).ready( function() {
      for (col=0;col<COLS_NR;col++)
      {
         left = calc_win_left(win_geo, col);
-        win_div = $('<div id="win'+win_nr+'" name="win" class="win" ' + 
-        'style="top:'+top+'px; left:'+left+'px; '+
-        ' width:'+win_geo.win_w+'px; height:'+win_geo.win_h+'px;'+
+        win_div = $('<div id="win' + win_nr + '" name="win" class="win" ' + 
+        ' style="position: absolute; '+
+        ' top:'+top+'px;'+
+        ' left:'+left+'px; '+
+        ' width:'+win_geo.win_w+'px;'+
+        ' height:'+win_geo.win_h+'px;'+
+        ' border-top: '+BorderTop+'px solid  #ffa500;' +
+	    ' border-left: '+BorderLeft+'px solid  #ffa500;' +
+	    ' border-bottom: '+BorderBottom+'px solid  #ffa500;' +
+	    ' border-right: '+BorderRight+'px solid  #ffa500;' + 
         ' z-index=-'+win_nr+';'+
         '"></div>');
         win_div.appendTo(CANVAS)
@@ -391,7 +384,7 @@ $(document).ready( function() {
              ' padding:0px; margin:0px; overflow:hidden; border:0px;'+
              ' height:'+NAME_DIV_H+'px;"><div style="'+
              'padding-left:8px; padding-top:2px; padding-bottom:2px; padding-right:2px;'+
-             ' color:White; font-size:14px; font-weight: bold;">'+
+             ' color:White; font-size:14px; font-weight: bold; width:100%; overflow:hidden;">'+
              WINS_DEF[win_nr].cam.name+
              '<\/div><\/div>').appendTo(win_div);
            }

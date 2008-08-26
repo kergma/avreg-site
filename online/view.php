@@ -110,7 +110,7 @@ die();
 </tr>
 </table>
 </div>
-<div id="canvas" style="position:absolute; top:25px; background-color:#000; width:100%; height:0px; overflow:hidden; margin:0; padding:0;"></div>
+<div id="canvas" style="position:absolute; -ms-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; top:25px; background-color:#000; width:100%; height:0px; overflow:hidden; margin:0; padding:0;"></div>
 <div class="jqmWindow" id="dialog">
 <div style="text-align: right;">
 <span class="jqmClose" style="text-align: center; border: 1px solid #000; font-weight: bold; padding: 5px;"><a href="#">X</a></span>
@@ -137,5 +137,10 @@ die();
 <div style="text-align: right;"><a href="#" class="jqmClose" >Закрыть</a></div>
 </div>
 <?php
+if ( !empty($msie_addons_scripts) || is_array($msie_addons_scripts) )  {
+    foreach ($msie_addons_scripts as $value)
+        print "$value\n";
+}
+
 require ('../foot.inc.php');
 ?>
