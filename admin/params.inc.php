@@ -63,31 +63,57 @@ switch ( $parname )
                $viddev_nums = array();
                if (is_dir('/proc/video/dev'))
                {
-               /* 2.4 kernel */
+               /* 2.4 kernel = LinuxDVRv4.x */
                         if ($dh = opendir('/proc/video/dev'))
                         {
                               while (($file = readdir($dh)) !== false) {
                                        if ( preg_match ('/^video(\d{1,2})$/', $file, $matches)) {
                                        // print "A match was found.";
                                                 if ( $dev_code == WhatViddev('/proc/video/dev/'.$file) )
-                                                      array_push ( $viddev_nums, $matches[1]);
+                                                     $viddev_nums[] = $matches[1];
                                        }
                               }
                               closedir($dh);
                         }
+                        sort($viddev_nums, SORT_NUMERIC);
                } else {
-                        /* 2.6 kernel */
-                        /* считаем что vloopback загружен начиная с dev_offset=15 */
-                        $__viddev_nums=($dev_code === 1)?glob('/dev/video[0-9]') : glob('/dev/video[0-9][13579]');
-                        foreach ($__viddev_nums as $file) {
-                              if ( preg_match ('/^\/dev\/video(\d+)$/', $file, $matches))
-                                       array_push ( $viddev_nums, $matches[1]);
-                        }
-               }
+                   /* 2.6 kernel */
+                   $all_v4l_devs = glob('/dev/video[0-9]*');
+                   if ( FALSE === $all_v4l_devs ) {
+                       $ret = '<p style="color:"'.$GLOBALS['error_color'].';">'. $GLOBALS['notVidDevs'] .'</p>'."\n";
+                       break; 
+                   }
+
+                   $all_v4l_devs_nrs = array();
+                   foreach ($all_v4l_devs as $file) {
+                       if ( preg_match ('/^\/dev\/video(\d+)$/', $file, $matches))
+                           $all_v4l_devs_nrs[] =  (int) $matches[1];
+                   }
+                   sort($all_v4l_devs_nrs, SORT_NUMERIC);
+
+                   if ( isset($GLOBALS['conf']['v4loop_start_nr']) ) 
+                       $_v4loop_start_nr = (int)$GLOBALS['conf']['v4loop_start_nr'];
+                   else
+                       $_v4loop_start_nr = 15; /* считаем что vloopback загружен начиная с dev_offset=15 */
+                   $c=0;
+                   foreach ($all_v4l_devs_nrs as $_dev_nr) {
+                       $c++;
+                       if ( $dev_code === 1  /* v4l capturing dev */ ) {
+                           if ( $_dev_nr < $_v4loop_start_nr)
+                               $viddev_nums[] = $_dev_nr;
+                       } else /* v4l pipes */ {
+                           if ( $c % 2 /*через одного */ && $_dev_nr >= $_v4loop_start_nr)
+                               $viddev_nums[] = $_dev_nr;
+                       }
+                   }
+
+               } /* 2.6 kernel */
+
                if ( count($viddev_nums) > 0 ) {
-                        sort($viddev_nums,SORT_NUMERIC);
-                        $ret = getSelectHtmlByName('fields['.$parname.']', $viddev_nums, FALSE, 1, 0, $parval, TRUE, FALSE, '/dev/video');
-               } else $ret = '<p><font color="'.$GLOBALS['error_color'].'">'. $GLOBALS['notVidDevs'] .'</font></p>'."\n";
+                   $ret = getSelectHtmlByName('fields['.$parname.']', $viddev_nums, FALSE, 1, 0, $parval, TRUE, FALSE,
+                       '/dev/video');
+               } else 
+                   $ret = '<p style="color:"'.$GLOBALS['error_color'].';">'. $GLOBALS['notVidDevs'] .'</p>'."\n";
                break;
       case 'norm':
                if ( $parval == '' || is_null($parval))
