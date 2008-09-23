@@ -38,8 +38,8 @@ echo '<h2>' . $r_mon_list . '</h2>' ."\n";
 if ( !isset($mon_nr) || $mon_nr =='')
 {
 	/* Performing new SQL query */
-	$query = 'SELECT MON_NR, MON_TYPE, MON_NAME, IS_DEFAULT, ' .
-	'WIN1, WIN2, WIN3, WIN4, WIN5, WIN6, WIN7, WIN8, WIN9, WIN10, WIN11, WIN12, WIN13, WIN14, WIN15, WIN16, '.
+	$query = 'SELECT MON_NR, DISPLAY, MON_TYPE, MON_NAME, IS_DEFAULT, ' .
+	'WIN1, WIN2, WIN3, WIN4, WIN5, WIN6, WIN7, WIN8, WIN9, WIN10, WIN11, WIN12, WIN13, WIN14, WIN15, WIN16, WIN17, WIN18, WIN19, WIN20, WIN21, WIN22, WIN23, WIN24, WIN25, '.
 	'CHANGE_HOST, CHANGE_USER, CHANGE_TIME '.
 	'FROM MONITORS '.
 	'WHERE BIND_MAC=\'local\' '.
@@ -68,10 +68,7 @@ if ( !isset($mon_nr) || $mon_nr =='')
 	while ( $row = mysql_fetch_array($result, MYSQL_ASSOC) )
 	{
 		// $cam_name = getCamName($row['CAM_NR']);
-		$wins_array = array ($row['WIN1'],  $row['WIN2'],  $row['WIN3'],  $row['WIN4'],
-							 $row['WIN5'],  $row['WIN6'],  $row['WIN7'],  $row['WIN8'],
-							 $row['WIN9'],  $row['WIN10'], $row['WIN11'], $row['WIN12'],
-							 $row['WIN13'], $row['WIN14'], $row['WIN15'], $row['WIN16']);
+		$wins_array = array ($row['WIN1'],  $row['WIN2'],  $row['WIN3'],  $row['WIN4'], $row['WIN5'],  $row['WIN6'],  $row['WIN7'],  $row['WIN8'], $row['WIN9'],  $row['WIN10'], $row['WIN11'], $row['WIN12'], $row['WIN13'], $row['WIN14'], $row['WIN15'], $row['WIN16'], $row['WIN17'],  $row['WIN18'], $row['WIN19'], $row['WIN20'], $row['WIN21'], $row['WIN22'], $row['WIN23'], $row['WIN24'], $row['WIN25']);
 		$r_count++;
 		print "<tr>\n";
 		if ( $admin_user ) 
@@ -80,7 +77,7 @@ if ( !isset($mon_nr) || $mon_nr =='')
 			print '<td><a href="'.$conf['prefix'].'/admin/mon-tune.php?mon_nr='.$row['MON_NR'].'&mon_name='.$row['MON_NAME'].'&mon_type='.$row['MON_TYPE'].'">'. $strEdit . '</a></td>' . "\n";
         } 
 		print '<td nowrap><b>'. $left_monitors . ' #' . $row['MON_NR'] . '<br>' . $row['MON_NAME'] .'</b></td>' . "\n";
-       
+
 		print '<td>'; show_mon_type ( $row['MON_TYPE'], 128, $wins_array ); print '</td>'. "\n";
 		$ts = $row['CHANGE_TIME'];
 		$ut = mktime (substr($ts,8,2),substr($ts,10,2),substr($ts,12,2), substr($ts,4,2), substr($ts,6,2) ,substr($ts,0,4));

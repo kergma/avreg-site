@@ -39,7 +39,7 @@ if ( isset($cmd) )
                         //print('<pre><code>');print_r($a);print('</code></pre>');
 						print '<form action="'.$_SERVER['PHP_SELF'].
                         '"  onSubmit="return validate();" method="POST">'."\n";
-						show_mon_type ( $mon_type, 400, NULL,  $a);
+						show_mon_type ( $mon_type, ($mon_type == 'QUAD_25_25')? 500:400, NULL,  $a);
 						print '<input type="hidden" name="cmd" value="_ADD_NEW_MON_OK_">'."\n";
 	    				print '<input type="hidden" name="mon_nr" value="'.$mon_nr.'">'."\n";
 						print '<input type="hidden" name="mon_name" value="'.$mon_name.'">'."\n";
@@ -120,7 +120,8 @@ if ( !isset($mon_nr) || $mon_nr =='')
 		print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
 		print getSelectHtmlByName('mon_nr',$allow_mons, FALSE , 1, 0, $allow_mons[0], FALSE, FALSE, $left_monitors . ' ') . "\n";
 		print '&nbsp;&nbsp;&nbsp;'.$strNamed.': <input type="text" name="mon_name" size=16 maxlength=16 value="">'."\n";
-		$wins = array (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16);
+		$wins = range(1, 25);
+
 ?>
 <br><br>
 <table cellspacing="0" border="1" cellpadding="5">
@@ -142,14 +143,14 @@ if ( !isset($mon_nr) || $mon_nr =='')
 	<td><input type="radio" name="mon_type" value="MULTI_10_16"><?php echo $strMULTI_10_16 ; ?></td>
 	<td><input type="radio" name="mon_type" value="MULTI_13_16"><?php echo $strMULTI_13_16 ; ?></td>
 	<td><input type="radio" name="mon_type" value="QUAD_16_16"><?php echo $strQUAD_16_16 ; ?></td>
-	<td>&nbsp;</td>
+	<td><input type="radio" name="mon_type" value="QUAD_25_25"><?php echo $strQUAD_25_25 ; ?></td>
 </tr>
 <tr>
 	<td><?php show_mon_type ( 'QUAD_9_9', 128, $wins ); ?></td>
 	<td><?php show_mon_type ( 'MULTI_10_16', 128, $wins ); ?></td>
 	<td><?php show_mon_type ( 'MULTI_13_16', 128, $wins ); ?></td>
 	<td><?php show_mon_type ( 'QUAD_16_16', 128, $wins ); ?></td>
-	<td>&nbsp;</td>
+	<td><?php show_mon_type ( 'QUAD_25_25', 128, $wins ); ?></td>
 </tr>
 </table>
 <br>

@@ -73,8 +73,7 @@ if ( isset($mon_nr) && isset($mon_name) && isset($mon_type) )
         $aaa = array();
        /* Performing new SQL query */
        $query = 'SELECT MON_NR, MON_TYPE, MON_NAME, IS_DEFAULT, ' .
-       'WIN1, WIN2, WIN3, WIN4, WIN5, WIN6, WIN7, WIN8, WIN9, WIN10, WIN11, WIN12, WIN13, WIN14, WIN15,
-       WIN16, '.
+       'WIN1, WIN2, WIN3, WIN4, WIN5, WIN6, WIN7, WIN8, WIN9, WIN10, WIN11, WIN12, WIN13, WIN14, WIN15, WIN16, WIN17, WIN18, WIN19, WIN20, WIN21, WIN22, WIN23, WIN24, WIN25, '.
        'CHANGE_HOST, CHANGE_USER, CHANGE_TIME '.
        'FROM MONITORS '.
        'WHERE BIND_MAC=\'local\' '.
@@ -83,7 +82,7 @@ if ( isset($mon_nr) && isset($mon_name) && isset($mon_type) )
         $result = mysql_query($query) or die('Query failed: `'. $query . '`');
         if (is_null($result)) die('No result');
         $row = mysql_fetch_row($result);
-        for ($i=4; $i<20; $i++)
+        for ($i=4; $i<29; $i++)
         {
            $a = getSelectHtmlByName('mon_wins[]',$wins_array, FALSE , 1, 1, $row[$i], TRUE, 'sel_change(this);','cam ');
            array_push($aaa, $a );
@@ -95,8 +94,8 @@ if ( isset($mon_nr) && isset($mon_name) && isset($mon_type) )
         // print "<pre><code>".var_dump($aaa)."</code></pre>";
         print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST"  onSubmit="return validate();">'."\n";
         print '<p class="HiLiteBigWarn">' . $strMonAddInfo2 . '</p>' ."\n"; 
-        print '&nbsp;&nbsp;&nbsp;'.$strName.': <input type="text" name="mon_name" size=16 maxlength=16 value="'.$mon_name.'">'."\n";    
-        show_mon_type ( $mon_type, 400, $aaa);
+        print '&nbsp;&nbsp;&nbsp;'.$strName.': <input type="text" name="mon_name" size=16 maxlength=16 value="'.$mon_name.'">'."\n";
+        show_mon_type ( $mon_type, ($mon_type == 'QUAD_25_25')? 500:400, $aaa);
         print '<input type="hidden" name="cmd" value="_ADD_NEW_MON_OK_">'."\n";
         print '<input type="hidden" name="mon_nr" value="'.$mon_nr.'">'."\n";
         print '<input type="hidden" name="mon_type" value="'.$mon_type.'">'."\n";
