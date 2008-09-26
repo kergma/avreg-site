@@ -242,7 +242,7 @@ function show_mon_type ( $mon_type, $max_width, $win_text_array = array(), $win_
 				print $t_start_4 . $text_in_win . $t_end;
 				if (!$win_text) $text_in_win = $win_text_array[2];
 				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[4];
+				if (!$win_text) $text_in_win = $win_text_array[3];
 				print $t_start_4 . $text_in_win . $t_end;
 			print $r_end;
 			print $r_start;
