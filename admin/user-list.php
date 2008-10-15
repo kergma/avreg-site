@@ -114,9 +114,10 @@ if ( !isset($u_name) || empty($u_name) )
 				print '<td valign="center" nowrap><b>'. $row['USER'] . '</b></td>' . "\n";
 				print '<td valign="center" nowrap><b>'. $row['HOST'] . '</b></td>' . "\n";
 				print '<td>'. htmlspecialchars( $row['LONGNAME'] ) . '</td>' . "\n";
-				$ts = $row['CHANGE_TIME'];
-				$ut = mktime (substr($ts,8,2),substr($ts,10,2),substr($ts,12,2), substr($ts,4,2), substr($ts,6,2) ,substr($ts,0,4));
-				print '<td>'. $row['CHANGE_HOST'] . '<br>' .$row['CHANGE_USER'] . '<br>' . strftime ( "%d.%m.%y %H:%M" , $ut) .'</td>' . "\n";
+                                 if ( empty($row['CHANGE_TIME']) )
+                                      print "<td align=\"center\">-</td>\n";
+                                 else
+                                    print '<td>'. $row['CHANGE_USER'].'@'.$row['CHANGE_HOST'] . '<br>'. $row['CHANGE_TIME'] .'</td>' . "\n";
 				print "</tr>\n";
 			}
 			print '</table><br>'."\n";

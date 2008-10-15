@@ -90,13 +90,13 @@ require ('./param-grp.inc.php');
 if ( isset($categories) )
 {
    if ($cam_nr === 0 )
-      $query = sprintf('SELECT PARAM, VALUE, CHANGE_HOST, CHANGE_USER, CHANGE_TIME '.
-                                 'FROM CAMERAS '.
-                                 'WHERE BIND_MAC=\'local\' AND CAM_NR=0');
+      $query = sprintf('SELECT PARAM, VALUE, CHANGE_HOST, CHANGE_USER, CHANGE_TIME'.
+                                 ' FROM CAMERAS '.
+                                 ' WHERE BIND_MAC=\'local\' AND CAM_NR=0');
    else
-      $query = sprintf('SELECT CAM_NR, PARAM, VALUE, CHANGE_HOST, CHANGE_USER, CHANGE_TIME '.
-                                 'FROM CAMERAS '.
-         'WHERE BIND_MAC=\'local\' AND (CAM_NR=0 OR CAM_NR=%d)', $cam_nr);
+      $query = sprintf('SELECT CAM_NR, PARAM, VALUE, CHANGE_HOST, CHANGE_USER, CHANGE_TIME'.
+                                 ' FROM CAMERAS '.
+         ' WHERE BIND_MAC=\'local\' AND (CAM_NR=0 OR CAM_NR=%d)', $cam_nr);
    $result = mysql_query($query) or die('Query failed: `'. mysql_error() . '\'');
    $cam_params = array();
    $def_params   = array();
@@ -246,14 +246,10 @@ if ( isset($categories) )
                }
                print '</div></div></td>'."\n";
                print '<td>'. $COMMENT . '</td>' . "\n";
-
-               $ts = $CHANGE_TIME;
-               if ( !is_null($ts) ) {
-                        $ut = mktime (substr($ts,8,2),substr($ts,10,2),substr($ts,12,2), substr($ts,4,2), substr($ts,6,2) ,substr($ts,0,4));
-                        print '<td nowrap>'. $CHANGE_HOST . '<br>' .$CHANGE_USER . '<br>' . strftime ( "%d.%m.%y %H:%M" , $ut) . "\n";
-               } else {
-                        print '<td align="center" nowrap>-'."\n";
-               }
+               if (empty($CHANGE_TIME))
+                  print "<td align=\"center\">-</td>\n";
+               else
+                print '<td align="center" nowrap>'. $CHANGE_USER . '@' . $CHANGE_HOST . '<br>' .(empty($CHANGE_TIME)?'-':$CHANGE_TIME)."\n";
                print '<input type="hidden" name="types['.$parname1.']" value="'.$VAL_TYPE.'">' . "\n";
                print '<input type="hidden" name="olds['.$parname1.']" value="'.$val.'">' . "\n";
       print '</td>'."\n";

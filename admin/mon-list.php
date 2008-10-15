@@ -79,9 +79,10 @@ if ( !isset($mon_nr) || $mon_nr =='')
 		print '<td nowrap><b>'. $left_monitors . ' #' . $row['MON_NR'] . '<br>' . $row['MON_NAME'] .'</b></td>' . "\n";
 
 		print '<td>'; show_mon_type ( $row['MON_TYPE'], 128, $wins_array ); print '</td>'. "\n";
-		$ts = $row['CHANGE_TIME'];
-		$ut = mktime (substr($ts,8,2),substr($ts,10,2),substr($ts,12,2), substr($ts,4,2), substr($ts,6,2) ,substr($ts,0,4));
-		print '<td>'. $row['CHANGE_HOST'] . '<br>' .$row['CHANGE_USER'] . '<br>' . strftime ( "%d.%m.%y %H:%M" , $ut) .'</td>' . "\n";
+                if ( empty($row['CHANGE_TIME']) ) 
+                  print "<td align=\"center\">-</td>\n";
+                else
+		   print '<td>'. $row['CHANGE_USER'] . '@' .$row['CHANGE_HOST'] . '<br>' . $row['CHANGE_TIME'] .'</td>' . "\n";
 		print "</tr>\n";
 	}
 	print "</table>\n";

@@ -365,12 +365,6 @@ else
    return sprintf('%d сек', $sec);
 }
 
-function UnixTime($mysql_time) {
-   list($_year, $_month, $_day, $_hour, $_min, $_sec) = sscanf($mysql_time, "%4d%2d%2d%2d%2d%2d");
-   return mktime ($_hour, $_min, $_sec, $_month, $_day, $_year);
-
-}
-
 function getCamName ($_text_left)
 {
       if ( empty ($_text_left) )
