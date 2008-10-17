@@ -55,13 +55,8 @@ if ( !isset($mon_nr) || $mon_nr =='')
 	}
 	print $tabletag . "\n";
 	print '<tr bgcolor="'.$header_color.'">'."\n";
-	if ( $admin_user ) {
-        print '<th>&nbsp;</th>'."\n";
-        print '<th>&nbsp;</th>'."\n";
-    }
-	print '<th>'.$strOrder.'<br>'.$strName.'</th>'."\n";
+	print '<th>'.$strOrder.' '.$strName.'<br>'.$strUpdateControl.'</th>'."\n";
 	print '<th>'.$strCamPosition.'</th>'."\n";
-	print '<th>'.$strUpdateControl.'</th>'."\n";
 	print '</tr>'."\n";
 	
 	$r_count = 0;
@@ -70,19 +65,17 @@ if ( !isset($mon_nr) || $mon_nr =='')
 		// $cam_name = getCamName($row['CAM_NR']);
 		$wins_array = array ($row['WIN1'],  $row['WIN2'],  $row['WIN3'],  $row['WIN4'], $row['WIN5'],  $row['WIN6'],  $row['WIN7'],  $row['WIN8'], $row['WIN9'],  $row['WIN10'], $row['WIN11'], $row['WIN12'], $row['WIN13'], $row['WIN14'], $row['WIN15'], $row['WIN16'], $row['WIN17'],  $row['WIN18'], $row['WIN19'], $row['WIN20'], $row['WIN21'], $row['WIN22'], $row['WIN23'], $row['WIN24'], $row['WIN25']);
 		$r_count++;
-		print "<tr>\n";
-		if ( $admin_user ) 
-        {
-			print '<td><a href="'.$_SERVER['PHP_SELF'].'?cmd=DEL&mon_nr='.$row['MON_NR'].'&mon_name='.$row['MON_NAME'].'">'. $strDelete . '</a></td>' . "\n";
-			print '<td><a href="'.$conf['prefix'].'/admin/mon-tune.php?mon_nr='.$row['MON_NR'].'&mon_name='.$row['MON_NAME'].'&mon_type='.$row['MON_TYPE'].'">'. $strEdit . '</a></td>' . "\n";
-        } 
-		print '<td nowrap><b>'. $left_monitors . ' #' . $row['MON_NR'] . '<br>' . $row['MON_NAME'] .'</b></td>' . "\n";
-
+		print "<tr><td>\n";
+		print '<span class="HiLiteBig"># '.$row['MON_NR']."</span>\n";
+                if ( !empty($row['MON_NAME']))
+                     print ' &#171;'.$row['MON_NAME']."&#187;\n";
+		if ( $admin_user ) {
+			print '<br><a href="'.$_SERVER['PHP_SELF'].'?cmd=DEL&mon_nr='.$row['MON_NR'].'&mon_name='.$row['MON_NAME'].'">'. $strDelete . '</a>&nbsp;/&nbsp;<a href="'.$conf['prefix'].'/admin/mon-tune.php?mon_nr='.$row['MON_NR'].'&mon_name='.$row['MON_NAME'].'&mon_type='.$row['MON_TYPE'].'">'. $strEdit . '</a>' . "\n";
+        }
+                if ( !empty($row['CHANGE_TIME']) ) 
+		   print '<br><br>'. $strUpdateControl.': '.$row['CHANGE_USER'] . '@' .$row['CHANGE_HOST'] . '<br>' . $row['CHANGE_TIME'];
+                print '</td>' . "\n";
 		print '<td>'; layout2table ( $row['MON_TYPE'], 160, $wins_array ); print '</td>'. "\n";
-                if ( empty($row['CHANGE_TIME']) ) 
-                  print "<td align=\"center\">-</td>\n";
-                else
-		   print '<td>'. $row['CHANGE_USER'] . '@' .$row['CHANGE_HOST'] . '<br>' . $row['CHANGE_TIME'] .'</td>' . "\n";
 		print "</tr>\n";
 	}
 	print "</table>\n";
