@@ -95,7 +95,7 @@ if ( isset($mon_nr) && isset($mon_name) && isset($mon_type) )
         print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST"  onSubmit="return validate();">'."\n";
         print '<p class="HiLiteBigWarn">' . $strMonAddInfo2 . '</p>' ."\n"; 
         print '&nbsp;&nbsp;&nbsp;'.$strName.': <input type="text" name="mon_name" size=16 maxlength=16 value="'.$mon_name.'">'."\n";
-        show_mon_type ( $mon_type, ($mon_type == 'QUAD_25_25')? 500:400, $aaa);
+        layout2table ( $mon_type, ($mon_type == 'QUAD_25_25')? 500:400, $aaa);
         print '<input type="hidden" name="cmd" value="_ADD_NEW_MON_OK_">'."\n";
         print '<input type="hidden" name="mon_nr" value="'.$mon_nr.'">'."\n";
         print '<input type="hidden" name="mon_type" value="'.$mon_type.'">'."\n";

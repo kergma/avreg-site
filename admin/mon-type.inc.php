@@ -1,292 +1,222 @@
 <?php
 
-function print_poly($row_nr, $col_nr, $win_text, $win_text_array,
-                    $tbl_start, $tbl_end,
-                    $tr_start, $tr_end,
-                    $td_start, $td_end)
-{
-   if (!empty($win_text))
-      $text_in_win = &$win_text;
-      print $tbl_start;
-      for ($r=0; $r<$row_nr; $r++) {
-         print $tr_start;
-         for ($c=0; $c<$col_nr; $c++) {
-         if (!$win_text) 
-            $text_in_win = $win_text_array[ $r*$col_nr + $c];
-            print $td_start . $text_in_win . $td_end;
-         }
-      print $tr_end;
-   }
-   print $tbl_end;
-}
+$onecam_wins = array( array(0,0,1,1) );
+$quad_4_4_wins = array(
+   array(0,0,1,1), array(0,1,1,1),
+   array(1,0,1,1), array(1,1,1,1),
+);
+$quad_9_9_wins = array(
+   array(0,0,1,1), array(0,1,1,1), array(0,2,1,1),
+   array(1,0,1,1), array(1,1,1,1), array(1,2,1,1),
+   array(2,0,1,1), array(2,1,1,1), array(2,2,1,1),
+);
+$quad_16_16_wins = array( 
+   array(0,0,1,1), array(0,1,1,1), array(0,2,1,1), array(0,3,1,1),
+   array(1,0,1,1), array(1,1,1,1), array(1,2,1,1), array(1,3,1,1),
+   array(2,0,1,1), array(2,1,1,1), array(2,2,1,1), array(2,3,1,1),
+   array(3,0,1,1), array(3,1,1,1), array(3,2,1,1), array(3,3,1,1),
+);
 
-function show_mon_type ( $mon_type, $max_width, $win_text_array = array(), $win_text = '' )
+$quad_25_25_wins = array( 
+   array(0,0,1,1), array(0,1,1,1), array(0,2,1,1), array(0,3,1,1), array(0,4,1,1),
+   array(1,0,1,1), array(1,1,1,1), array(1,2,1,1), array(1,3,1,1), array(1,4,1,1),
+   array(2,0,1,1), array(2,1,1,1), array(2,2,1,1), array(2,3,1,1), array(2,4,1,1),
+   array(3,0,1,1), array(3,1,1,1), array(3,2,1,1), array(3,3,1,1), array(3,4,1,1),
+   array(4,0,1,1), array(4,1,1,1), array(4,2,1,1), array(4,3,1,1), array(4,4,1,1),
+);
+
+$multi_6_9_wins = array( 
+   array(0,0,2,2),                 array(0,2,1,1),
+                                   array(1,2,1,1),
+   array(2,0,1,1), array(2,1,1,1), array(2,2,1,1),
+);
+$multi_7_16_wins = array(
+   array(0,0,2,2),            array(0,2,2,2),
+
+   array(2,0,2,2),            array(2,2,1,1), array(2,3,1,1),
+                              array(3,2,1,1), array(3,3,1,1),
+);
+
+$multi_8_16_wins = array( 
+   array(0,0,3,3),                                 array(0,3,1,1),
+                                                   array(1,3,1,1),
+                                                   array(2,3,1,1),
+   array(3,0,1,1), array(3,1,1,1), array(3,2,1,1), array(3,3,1,1),
+);
+$multi_10_16_wins = array(
+   array(0,0,2,2),                 array(0,2,2,2),
+
+   array(2,0,1,1), array(2,1,1,1), array(2,2,1,1), array(2,3,1,1),
+   array(3,0,1,1), array(3,1,1,1), array(3,2,1,1), array(3,3,1,1),
+);
+$multi_13_16_wins = array(
+   array(0,0,1,1), array(0,1,1,1), array(0,2,1,1), array(0,3,1,1),
+   array(1,0,1,1), array(1,1,2,2),                 array(1,3,1,1),
+   array(2,0,1,1),                                 array(2,3,1,1),
+   array(3,0,1,1), array(3,1,1,1), array(3,2,1,1), array(3,3,1,1),
+);
+$multi_13_25_wins = array( 
+   array(0,0,2,2),                 array(0,2,2,2),                 array(0,4,1,1),
+                                                                   array(1,4,1,1),
+   array(2,0,2,2),                 array(2,2,2,2),                 array(2,4,1,1),
+                                                                   array(3,4,1,1),
+   array(4,0,1,1), array(4,1,1,1), array(4,2,1,1), array(4,3,1,1), array(4,4,1,1),
+);
+$multi_16_25_wins = array( 
+   array(0,0,1,1), array(0,1,2,2),                 array(0,3,1,1), array(0,4,1,1),
+   array(1,0,1,1),                                 array(1,3,1,1), array(1,4,1,1),
+   array(2,0,2,2),                 array(2,2,2,2),                 array(2,4,1,1),
+                                                                   array(3,4,1,1),
+   array(4,0,1,1), array(4,1,1,1), array(4,2,1,1), array(4,3,1,1), array(4,4,1,1),
+);
+$multi_17_25_wins = array(
+   array(0,0,1,1), array(0,1,1,1), array(0,2,1,1), array(0,3,1,1), array(0,4,1,1),
+   array(1,0,1,1), array(1,1,3,3),                                 array(1,4,1,1),
+   array(2,0,1,1),                                                 array(2,4,1,1),
+   array(3,0,1,1),                                                 array(3,4,1,1),
+   array(4,0,1,1), array(4,1,1,1), array(4,2,1,1), array(4,3,1,1), array(4,4,1,1),
+);
+$multi_19_25_wins = array(
+   array(0,0,1,1), array(0,1,1,1), array(0,2,1,1), array(0,3,1,1), array(0,4,1,1),
+   array(1,0,2,2),                 array(1,2,2,2),                 array(1,4,1,1),
+                                                                   array(2,4,1,1),
+   array(3,0,1,1), array(3,1,1,1), array(3,2,1,1), array(3,3,1,1), array(3,4,1,1),
+   array(4,0,1,1), array(4,1,1,1), array(4,2,1,1), array(4,3,1,1), array(4,4,1,1),
+);
+$multi_22_25_wins = array(
+   array(0,0,1,1), array(0,1,1,1), array(0,2,1,1), array(0,3,1,1), array(0,4,1,1),
+   array(1,0,1,1), array(1,1,2,2),                 array(1,3,1,1), array(1,4,1,1),
+   array(2,0,1,1),                                 array(2,3,1,1), array(2,4,1,1),
+   array(3,0,1,1), array(3,1,1,1), array(3,2,1,1), array(3,3,1,1), array(3,4,1,1),
+   array(4,0,1,1), array(4,1,1,1), array(4,2,1,1), array(4,3,1,1), array(4,4,1,1),
+);
+$poly_2x3_wins = array(
+   array(0,0,1,1), array(0,1,1,1), array(0,2,1,1),
+   array(1,0,1,1), array(1,1,1,1), array(1,2,1,1),
+);
+$poly_3x4_wins = array(
+   array(0,0,1,1), array(0,1,1,1), array(0,2,1,1),
+   array(1,0,1,1), array(1,1,1,1), array(1,2,1,1),
+);
+$poly_2x4_wins = array( 
+   array(0,0,1,1), array(0,1,1,1), array(0,2,1,1), array(0,3,1,1),
+   array(1,0,1,1), array(1,1,1,1), array(1,2,1,1), array(1,3,1,1),
+);
+$poly_3x4_wins = array( 
+   array(0,0,1,1), array(0,1,1,1), array(0,2,1,1), array(0,3,1,1),
+   array(1,0,1,1), array(1,1,1,1), array(1,2,1,1), array(1,3,1,1),
+   array(2,0,1,1), array(2,1,1,1), array(2,2,1,1), array(2,3,1,1),
+);
+$layouts_defs = array(
+   'ONECAM'       => array(  1,   1, 1,  &$onecam_wins,       1 ),
+   'QUAD_4_4'     => array(  4,   2, 2,  &$quad_4_4_wins,     1 ),
+   'MULTI_6_9'    => array(  6,   3, 3,  &$multi_6_9_wins,    1 ),
+   'QUAD_9_9'     => array(  9,   3, 3,  &$quad_9_9_wins,     5 ),
+   'MULTI_7_16'   => array(  7,   4, 4,  &$multi_7_16_wins,   1 ),
+   'MULTI_8_16'   => array(  8,   4, 4,  &$multi_8_16_wins,   1 ),
+   'MULTI_10_16'  => array( 10,   4, 4,  &$multi_10_16_wins,  1 ),
+   'MULTI_13_16'  => array( 13,   4, 4,  &$multi_13_16_wins,  6 ),
+   'QUAD_16_16'   => array( 16,   4, 4,  &$quad_16_16_wins,   6 ),
+   'MULTI_13_25'  => array( 13,   5, 5,  &$multi_13_25_wins,  6 ),
+   'MULTI_16_25'  => array( 16,   5, 5,  &$multi_16_25_wins,  9 ),
+   'MULTI_17_25'  => array( 17,   5, 5,  &$multi_17_25_wins,  7 ),
+   'MULTI_19_25'  => array( 19,   5, 5,  &$multi_19_25_wins,  7 ),
+   'MULTI_22_25'  => array( 22,   5, 5,  &$multi_22_25_wins,  7 ),
+   'QUAD_25_25'   => array( 25,   5, 5,  &$quad_25_25_wins,  13 ),
+   'POLY_2x3'     => array(  6,   2, 3,  &$poly_2x3_wins,     2 ),
+   'POLY_2x4'     => array(  8,   2, 4,  &$poly_2x4_wins,     2 ),
+   'POLY_3x4'     => array( 12,   3, 4,  &$poly_3x4_wins,     6 ),
+);
+
+
+function layout2table ( $mon_type, $max_width, $win_text_array = array(), $win_text = '' )
 {
 	// print "<pre>".var_dump($win_text_array)."</pre>";
 
-	$brdcol = '#99FFFF';
-	$bgcol = '#000099';
-	if (empty($max_width)) {
+   if ( !array_key_exists($mon_type, $GLOBALS['layouts_defs']) ) {
+         print '<p style="color:' . $GLOBALS['error_color'] . ';">Not Defined Monitors Type. Asc to developers.</p>' ."\n";
+         return;
+   }
+
+   $l_defs = &$GLOBALS['layouts_defs'][$mon_type];
+
+   $brdcol = '#99FFFF';
+   $bgcol = '#000099';
+
+   if (empty($max_width)) {
     	$cp =  20; $cs = 0;
     	$brd = 2;
     } else {
     	$cp = 2; $cs = 0;
     	$brd = $max_width >> 6;
 		$k = (int) floor( $max_width >> 2 );
-		$w =  $k << 2; ; $h = $k * 3;
-		$w2 = (int) floor ( $w / 2); $h2 = (int) floor ( $h / 2);
-		$w3 = (int) floor ( $w / 3); $h3 = (int) floor ( $h / 3);
-		$w4 = (int) floor ( $w / 4); $h4 = (int) floor ( $h / 4);
-		$w5 = (int) floor ( $w / 5); $h5 = (int) floor ( $h / 5);
-	}	
-	$tbl_start = '<table cellspacing="'.$cs.'" border="'.$brd.'" cellpadding="'.$cp.'" style="border-color:'.$brdcol.';">'."\n";
-	$tbl_end = '</table>'."\n";
-	$r_start = '<tr>'."\n";
-	$r_end = '</tr>'."\n";
+		$win =  $k << 2; ; $h = $k * 3;
+		$w2 = (int) floor ( $win / 2); $h2 = (int) floor ( $h / 2);
+		$w3 = (int) floor ( $win / 3); $h3 = (int) floor ( $h / 3);
+		$w4 = (int) floor ( $win / 4); $h4 = (int) floor ( $h / 4);
+		$w5 = (int) floor ( $win / 5); $h5 = (int) floor ( $h / 5);
+    }	
+   $tbl_start = '<table cellspacing="0" border="0" cellpadding="0">'."\n";
+   $tbl_end = '</table>'."\n";
+   $r_start = '<tr>'."\n";
+   $r_end   = '</tr>'."\n";
 
-    if (empty($max_width))
-    {
+   if (empty($max_width))
+   {
 	$t_start_1 = '<td align="center" valign="middle" bgcolor="'.$bgcol.'"><font color="white"><b>&nbsp;';
 	$t_start_2 = &$t_start_1;
 	$t_start_3 = &$t_start_1;
 	$t_start_4 = &$t_start_1;
 	$t_start_5 = &$t_start_1;
     } else {
-	$t_start_1 = '<td width="'.$w.'" height="'.$h.'" align="center" valign="middle" bgcolor="'.$bgcol.'"><font color="white"><b>&nbsp;';
+	$t_start_1 = '<td width="'.$win.'" height="'.$h.'" align="center" valign="middle" bgcolor="'.$bgcol.'"><font color="white"><b>&nbsp;';
 	$t_start_2 = '<td width="'.$w2.'" height="'.$h2.'" align="center" valign="middle" bgcolor="'.$bgcol.'"><font color="white"><b>&nbsp;';
 	$t_start_3 = '<td width="'.$w3.'" height="'.$h3.'" align="center" valign="middle" bgcolor="'.$bgcol.'"><font color="white"><b>&nbsp;';
 	$t_start_4 = '<td width="'.$w4.'" height="'.$h4.'" align="center" valign="middle" bgcolor="'.$bgcol.'"><font color="white"><b>&nbsp;';
 	$t_start_5 = '<td width="'.$w5.'" height="'.$h5.'" align="center" valign="middle" bgcolor="'.$bgcol.'"><font color="white"><b>&nbsp;';
-	}
-	$t_end = '&nbsp;</b></font></td>'."\n";
-	
-	switch ( $mon_type )
-	{
-		case 'ONECAM':
-			print $tbl_start . $r_start;
-			$text_in_win = ($win_text) ? $win_text : $win_text_array[0];
-			print $t_start_1 . $text_in_win . $t_end;
-			print $r_end . $tbl_end;
-			break;
-		case 'QUAD_4_4':
-                    print_poly(2, 2, $win_text, $win_text_array,
-                    $tbl_start, $tbl_end,
-                    $r_start, $r_end,
-                    $t_start_2, $td_end);
-			break;
-		case 'POLY_3_2':
-                    print_poly(2, 3, $win_text, $win_text_array,
-                    $tbl_start, $tbl_end,
-                    $r_start, $r_end,
-                    $t_start_3, $td_end);
-                     break;
-		case 'POLY_4_2':
-                    print_poly(2, 4, $win_text, $win_text_array,
-                    $tbl_start, $tbl_end,
-                    $r_start, $r_end,
-                    $t_start_3, $td_end);
-                     break;
-		case 'MULTI_6_9':
-			print $tbl_start;
-			print $r_start;
-			$text_in_win = ($win_text) ? $win_text : $win_text_array[0];
-			print '<td rowspan="2" colspan="2" align="center" valign="middle" bgcolor="'.$bgcol.'"><font color="white"><b>&nbsp;'.$text_in_win.'&nbsp;</b></font></td>'."\n";
-			if (!$win_text) $text_in_win = $win_text_array[1];
-			print $t_start_3 . $text_in_win . $t_end;
-			print $r_end;
-			print $r_start;
-			if (!$win_text) $text_in_win = $win_text_array[2];
-			print $t_start_3 . $text_in_win . $t_end;
-			print $r_end;
-			print $r_start;
-			if (!$win_text) $text_in_win = $win_text_array[3];
-			print $t_start_3 . $text_in_win . $t_end;
-			if (!$win_text) $text_in_win = $win_text_array[4];
-			print $t_start_3 . $text_in_win . $t_end;
-			if (!$win_text) $text_in_win = $win_text_array[5];
-			print $t_start_3 . $text_in_win . $t_end;
-			print $r_end;
-			print $tbl_end;
-			break;
-		case 'MULTI_7_16':
-			print $tbl_start;
-			print $r_start;
-			$text_in_win = ($win_text) ? $win_text : $win_text_array[0];
-			print '<td width="'. ($w4 << 1) .'" colspan="2" height="'. ($h4 << 1) .'" rowspan="2" align="center" valign="middle" bgcolor="'.$bgcol.'"><font color="white"><b>&nbsp;'.$text_in_win.'&nbsp;</b></font></td>'."\n";
-			if (!$win_text) $text_in_win = $win_text_array[1];
-			print '<td colspan="2" rowspan="2" align="center" valign="middle" bgcolor="'.$bgcol.'"><font color="white"><b>&nbsp;'.$text_in_win.'&nbsp;</b></font></td>'."\n";
-			print $r_end;
-			print $r_start . $r_end;
-			print $r_start;
-			if (!$win_text) $text_in_win = $win_text_array[2];
-			print '<td colspan="2" rowspan="2" align="center" valign="middle" bgcolor="'.$bgcol.'"><font color="white"><b>&nbsp;'.$text_in_win.'&nbsp;</b></font></td>'."\n";
-			if (!$win_text) $text_in_win = $win_text_array[3];
-			print $t_start_4 . $text_in_win . $t_end;
-			if (!$win_text) $text_in_win = $win_text_array[4];
-			print $t_start_4 . $text_in_win . $t_end;
-			print $r_end;
-			print $r_start;
-			if (!$win_text) $text_in_win = $win_text_array[5];
-			print $t_start_4 . $text_in_win . $t_end;
-			if (!$win_text) $text_in_win = $win_text_array[6];
-			print $t_start_4 . $text_in_win . $t_end;
-			print $r_end;
-			print $tbl_end;
-			break;
-		case 'MULTI_8_16':
-			print $tbl_start;
-			print $r_start;
-			$text_in_win = ($win_text) ? $win_text : $win_text_array[0];
-			print '<td width="'. ($w4 << 1) .'" colspan="3" height="'. ($h4 << 1) .'" rowspan="3" align="center" valign="middle" bgcolor="'.$bgcol.'"><font color="white"><b>&nbsp;'.$text_in_win.'&nbsp;</b></font></td>'."\n";
-			if (!$win_text) $text_in_win = $win_text_array[1];
-			print $t_start_4 . $text_in_win . $t_end;
-			print $r_end;
-			print $r_start;
-			if (!$win_text) $text_in_win = $win_text_array[2];
-			print $t_start_4 . $text_in_win . $t_end;
-			print $r_end;
-			print $r_start;
-			if (!$win_text) $text_in_win = $win_text_array[3];
-			print $t_start_4 . $text_in_win . $t_end;
-			print $r_end;
-			print $r_start;
-			if (!$win_text) $text_in_win = $win_text_array[4];
-			print $t_start_4 . $text_in_win . $t_end;
-			if (!$win_text) $text_in_win = $win_text_array[5];
-			print $t_start_4 . $text_in_win . $t_end;
-			if (!$win_text) $text_in_win = $win_text_array[6];
-			print $t_start_4 . $text_in_win . $t_end;
-			if (!$win_text) $text_in_win = $win_text_array[7];
-			print $t_start_4 . $text_in_win . $t_end;
-			print $r_end;
-			print $tbl_end;
-			break;
-		case 'QUAD_9_9':
-                    print_poly(3, 3, $win_text, $win_text_array,
-                    $tbl_start, $tbl_end,
-                    $r_start, $r_end,
-                    $t_start_3, $td_end);
-			break;
-		case 'MULTI_10_16':
-			print $tbl_start;
-			print $r_start;
-				$text_in_win = ($win_text) ? $win_text : $win_text_array[0];
-				print '<td colspan="2" height="'. ($h4 << 1) .'" rowspan="2" align="center" valign="middle" bgcolor="'.$bgcol.'"><font color="white"><b>&nbsp;'.$text_in_win.'&nbsp;</b></font></td>'."\n";
-				if (!$win_text) $text_in_win = $win_text_array[1];
-				print '<td colspan="2" height="'. ($h4 << 1) .'" rowspan="2" align="center" valign="middle" bgcolor="'.$bgcol.'"><font color="white"><b>&nbsp;'.$text_in_win.'&nbsp;</b></font></td>'."\n";
-			print $r_end;
-			print $r_start.$r_end;
-			print $r_start;
-				if (!$win_text) $text_in_win = $win_text_array[2];
-				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[3];
-				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[4];
-				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[5];
-				print $t_start_4 . $text_in_win . $t_end;
-			print $r_end;
-			print $r_start;
-				if (!$win_text) $text_in_win = $win_text_array[6];
-				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[7];
-				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[8];
-				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[9];
-				print $t_start_4 . $text_in_win . $t_end;
-			print $r_end;
-			print $tbl_end;
-			break;
-		case 'POLY_4_3':
-			print $tbl_start;
-			print $r_start;
-				$text_in_win = ($win_text) ? $win_text : $win_text_array[0];
-				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[1];
-				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[2];
-				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[3];
-				print $t_start_4 . $text_in_win . $t_end;
-			print $r_end;
-			print $r_start;
-				if (!$win_text) $text_in_win = $win_text_array[4];
-				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[5];
-				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[6];
-				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[7];
-				print $t_start_4 . $text_in_win . $t_end;
-			print $r_end;
-			print $r_start;
-				if (!$win_text) $text_in_win = $win_text_array[8];
-				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[9];
-				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[10];
-				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[11];
-				print $t_start_4 . $text_in_win . $t_end;
-			print $r_end;
-			print $tbl_end;
-		break;
+    }
 
-		case 'MULTI_13_16':
-			print $tbl_start;
-			print $r_start;
-				if (!$win_text) $text_in_win = $win_text_array[0];
-				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[1];
-				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[2];
-				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[3];
-				print $t_start_4 . $text_in_win . $t_end;
-			print $r_end;
-			print $r_start;
-				if (!$win_text) $text_in_win = $win_text_array[4];
-				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[5];
-				print '<td colspan="2" height="'. ($h4 << 1) .'" rowspan="2" align="center" valign="middle" bgcolor="'.$bgcol.'"><font color="white"><b>&nbsp;'.$text_in_win.'&nbsp;</b></font></td>'."\n";
-				if (!$win_text) $text_in_win = $win_text_array[6];
-				print $t_start_4 . $text_in_win . $t_end;
-			print $r_end;
-			print $r_start;
-				if (!$win_text) $text_in_win = $win_text_array[7];
-				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[8];
-				print $t_start_4 . $text_in_win . $t_end;
-			print $r_end;
-			print $r_start;
-				if (!$win_text) $text_in_win = $win_text_array[9];
-				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[10];
-				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[11];
-				print $t_start_4 . $text_in_win . $t_end;
-				if (!$win_text) $text_in_win = $win_text_array[12];
-				print $t_start_4 . $text_in_win . $t_end;
-			print $r_end;
-			print $tbl_end;
-		break;
-		case 'QUAD_16_16':
-                    print_poly(4, 4, $win_text, $win_text_array,
-                    $tbl_start, $tbl_end,
-                    $r_start, $r_end,
-                    $t_start_4, $td_end);
-		break;
+   $t_end = '&nbsp;</b></font></td>'."\n";
+   
+$max_width/
+   $wins_in_layout = $l_defs[0];
+   $rows = $l_defs[1];
+   $cols = $l_defs[2];
+   $wins = &$l_defs[3];
+   $major_win = $l_defs[4] - 1;
 
-		case 'QUAD_25_25':
-                    print_poly(5, 5, $win_text, $win_text_array,
-                    $tbl_start, $tbl_end,
-                    $r_start, $r_end,
-                    $t_start_5, $td_end);
-		break;
+   $w1 = $max_width/$cols - 4 /* 2xborder */;
+   $h1 =  $w1 * 3 / 4;
+   print $tbl_start;
+   for ($win=0; $win<$wins_in_layout; $win++ ) {
+      $text_in_win = (empty($win_text))? $win_text_array[$win] : $win_text;
+      if (empty($text_in_win))
+         $text_in_win = '&nbsp;';
+      list($row, $col, $rowspan, $colspan) = $wins[$win];
+      if ( $col === 0 ) {
+         print $r_start;
+         $max_rowspan = 1;
+         $min_rowspan = 999;
+      }
+      if ( $rowspan > $max_rowspan )
+            $max_rowspan = $rowspan;
+      if ( $rowspan < $min_rowspan )
+            $min_rowspan = $rowspan;
 
-		default:
-			print '<font color="' . $GLOBALS['error_color'] . '"><p>Not Defined Monitors Type. Asc to developers.</p></font>' ."\n";	
-	} //case
+      $sz = sprintf('width=%d height=%d', $w1*$colspan, $h1*$rowspan);
+      $e = ( $win == $major_win )?'th':'td';
+      if ($colspan > 1 || $rowspan > 1 ) {
+         print "<$e $sz class=\"layout\" colspan=\"$colspan\" rowspan=\"$rowspan\"   align=\"center\" valign=\"middle\">$text_in_win</$e>\n";
+      } else
+         print "<$e $sz class=\"layout\" align=\"center\" valign=\"middle\">$text_in_win</$e>\n";
+
+      if ( ($col + $colspan) >= $cols ) {
+         /* закрываем строку */
+         print $r_end;
+         if ( $max_rowspan > 1 && $max_rowspan == $min_rowspan)
+            print $r_start.$r_end;
+      }
+   }
+   print $tbl_end;
 }
 ?>

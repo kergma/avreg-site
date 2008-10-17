@@ -389,17 +389,21 @@ $strNamed = 'с названием';
 $strONECAM = '1 камера';
 $strQUAD_4_4 = '4 камеры';
 $strMULTI_6_9 = '6 камер';
-$strPOLY_3_2=&$strMULTI_6_9;
+$strPOLY_2x3=&$strMULTI_6_9;
 $strMULTI_7_16 = '7 камер';
 $strMULTI_8_16 = '8 камер';
-$strPOLY_4_2=&$strMULTI_8_16;
+$strPOLY_2x4=&$strMULTI_8_16;
 $strQUAD_9_9 = '9 камер';
 $strMULTI_10_16 = '10 камер';
-$strPOLY_4_3='12 камер';
+$strPOLY_3x4='12 камер';
 $strMULTI_13_16 = '13 камер';
+$strMULTI_13_25 = &$strMULTI_13_16;
+$strMULTI_17_25 = '17 камер';
+$strMULTI_19_25 = '19 камер';
+$strMULTI_22_25 = '22 камеры';
 $strQUAD_16_16 = '16 камер';
+$strMULTI_16_25 = &$strQUAD_16_16;
 $strQUAD_25_25 = '25 камер';
-$strQUAD_16_16x2 = '32 камеры(2 монитора)';
 $strCamPosition = 'Расположение камер';
 
 

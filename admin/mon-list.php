@@ -78,7 +78,7 @@ if ( !isset($mon_nr) || $mon_nr =='')
         } 
 		print '<td nowrap><b>'. $left_monitors . ' #' . $row['MON_NR'] . '<br>' . $row['MON_NAME'] .'</b></td>' . "\n";
 
-		print '<td>'; show_mon_type ( $row['MON_TYPE'], 128, $wins_array ); print '</td>'. "\n";
+		print '<td>'; layout2table ( $row['MON_TYPE'], 160, $wins_array ); print '</td>'. "\n";
                 if ( empty($row['CHANGE_TIME']) ) 
                   print "<td align=\"center\">-</td>\n";
                 else

@@ -271,3 +271,19 @@ table.paramstbl {
 th.query {
  font-size: 11px;
 }
+
+td.layout {
+   color: #FFFFCC;
+   font-weight: bold;
+   background-color:#666699;
+   border: 2px solid #303030;
+   padding: 2px;
+}
+
+th.layout {
+   color: #FFFFCC;
+   font-weight: bold;
+   background-color:#666699;
+   border: 2px solid #FFA858;
+   padding: 2px;
+}

@@ -23,16 +23,16 @@ switch ($mon_type)
   case 'QUAD_4_4':
     $wins_nr=4;
     break;
-  case 'POLY_3_2':
+  case 'POLY_2x3':
     $wins_nr=6;
     break;
-  case 'POLY_4_2':
+  case 'POLY_2x4':
     $wins_nr=8;
     break;
   case 'QUAD_9_9':
     $wins_nr=9;
     break;
-  case 'POLY_4_3':
+  case 'POLY_3x4':
     $wins_nr=12;
     break;
   case 'QUAD_16_16':
@@ -63,10 +63,10 @@ if ( isset($_COOKIE['avreg_'.$ccams]) && is_array($_COOKIE['avreg_'.$ccams]) )
        $a='';
     $aaa[$i] = getSelectHtmlByName('cams[]',$act_wc_nr_ar, FALSE , 1, 1, $a, TRUE, 'sel_change(this);');
   }
-   show_mon_type ($mon_type, 0, $aaa);
+   layout2table ($mon_type, 500, $aaa);
 } else {
    $a=getSelectHtmlByName('cams[]',$act_wc_nr_ar, FALSE , 1, 1, '', TRUE, 'sel_change(this);');
-   show_mon_type ($mon_type, 0, NULL, $a);
+   layout2table ($mon_type, 500, NULL, $a);
 }
 for ($i = 0; $i < $wins_nr; $i++)
   print '<input type="hidden" name="camnames[]" value="" />'."\n";
