@@ -63,8 +63,8 @@ $multi_13_25_wins = array(
    array(4,0,1,1), array(4,1,1,1), array(4,2,1,1), array(4,3,1,1), array(4,4,1,1),
 );
 $multi_16_25_wins = array( 
-   array(0,0,1,1), array(0,1,2,2),                 array(0,3,1,1), array(0,4,1,1),
-   array(1,0,1,1),                                 array(1,3,1,1), array(1,4,1,1),
+	array(0,0,1,1), array(0,1,1,1), array(0,2,2,2),                 array(0,4,1,1),
+   array(1,0,1,1), array(1,1,1,1),                                 array(1,4,1,1),
    array(2,0,2,2),                 array(2,2,2,2),                 array(2,4,1,1),
                                                                    array(3,4,1,1),
    array(4,0,1,1), array(4,1,1,1), array(4,2,1,1), array(4,3,1,1), array(4,4,1,1),
