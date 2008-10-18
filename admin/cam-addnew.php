@@ -55,7 +55,7 @@ if ( isset($cmd) && $cmd == '_ADD_NEW_CAM_' )
 
 /* GET LAST NOT DEFINED CAM NUMBER */
 /* Performing new SQL query */
-		$query = 'SELECT MAX(CAM_NR) AS LAST_NUM FROM CAMERAS WHERE BIND_MAC=\'local\'';
+$query = 'SELECT MAX(CAM_NR) AS LAST_NUM FROM CAMERAS WHERE BIND_MAC=\'local\'';
 $result = mysql_query($query) or die("Query failed");
 $num_rows = mysql_num_rows($result);
 if ( $row = mysql_fetch_array($result, MYSQL_ASSOC) )

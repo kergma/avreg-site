@@ -55,11 +55,7 @@ if ( isset($tab) && ($tab == 'cameras')){
 }
 
 if ( isset($tab) && ($tab == 'monitors')){
-	print '<div class="menu0active">-&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php" target="menu">'.$left_monitors.'</a>'."\n";
-	print '<div class="menu1">&nbsp;&nbsp;-&nbsp;<a href="'.$conf['prefix'].'/admin/mon-list.php">'.$l_mon_list.'</a></div>'."\n";
-	if ( $admin_user )
-		print '<div class="menu1">&nbsp;&nbsp;-&nbsp;<a href="'.$conf['prefix'].'/admin/mon-addnew.php">'.$l_mon_addnew.'</a></div>'."\n";
-    print '</div>'."\n";
+	print '<div class="menu0active">-&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php?tab=monitors&#038;load='.$conf['prefix'].'/admin/mon-list.php" target="menu">'.$left_monitors.'</a></div>'."\n";
 } else {
 	print '<div class="menu0">+&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php?tab=monitors&#038;load='.$conf['prefix'].'/admin/mon-list.php" target="menu">'.$left_monitors.'</a></div>'."\n";
 }
