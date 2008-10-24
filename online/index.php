@@ -1,6 +1,17 @@
 <?php
 $pageTitle = 'WebCam';
 $lang_file='_online.php';
+
+$wclist_show = $_POST['wclist_show'];
+if ( isset ($wclist_show) ) {
+   settype($wclist_show, 'int');
+   setcookie('avreg_wclist_show',  $wclist_show, time()+5184000);
+} else if ( isset($_COOKIE['avreg_wclist_show']) ) {
+   $wclist_show = (Integer)$_COOKIE['avreg_wclist_show'];
+} else {
+   $wclist_show = 1;
+}
+
 require ('../head.inc.php');
 
 print '<div align="center"><b><a href="'.$conf['prefix'].'/" target="_parent">'.$MainPage.'</a></b></div>'."\n";

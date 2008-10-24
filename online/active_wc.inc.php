@@ -3,13 +3,6 @@ require_once ('../lib/my_conn.inc.php');
 /* phpinfo(); */
 
 echo '<h2 align="center">'.$r_webcam_list.'</h2>' ."\n";
-if ( isset ($wclist_show) ) {
-   
-} else if ( isset($_COOKIE['avreg_wclist_show']) ) {
-   $wclist_show = $_COOKIE['avreg_wclist_show'];
-} else {
-   $wclist_show = 1;
-}
 print '<form action="'.$PHP_SELF.'" method="POST">'."\n";
 print '<p align="center">'.$strWcListShow.getSelectHtml('wclist_show', $WcListShow, FALSE, 1, 0, $WcListShow[$wclist_show], FALSE, TRUE)."</p>\n";
 if (isset($mon_type))

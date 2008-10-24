@@ -51,8 +51,7 @@ function sel_change(sel) {
 require_once ('../lib/my_conn.inc.php');
 
 echo '<h2 align="center">'.$r_moncam_list.'</h2>' ."\n";
-if ( !isset ($pipes_show) )
-{
+if ( !isset ($pipes_show) ) {
    $pipes_show = 1;
 } else {
   settype($pipes_show,'int');

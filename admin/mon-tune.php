@@ -1,4 +1,13 @@
 <?php
+$pipes_show = $_POST['pipes_show'];
+if ( isset ($pipes_show) ) {
+   settype($pipes_show, 'int');
+   setcookie('avreg_pipes_show',  $pipes_show, time()+5184000);
+} else if ( isset($_COOKIE['avreg_pipes_show']) ) {
+   $pipes_show = (Integer)$_COOKIE['avreg_pipes_show'];
+} else {
+   $pipes_show = 1;
+}
 require ('../head.inc.php');
 
 DENY($admin_status);
