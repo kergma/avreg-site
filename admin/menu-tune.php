@@ -55,9 +55,9 @@ if ( isset($tab) && ($tab == 'cameras')){
 }
 
 if ( isset($tab) && ($tab == 'monitors')){
-	print '<div class="menu0active">-&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php?tab=monitors&#038;load='.$conf['prefix'].'/admin/mon-list.php" target="menu">'.$left_monitors.'</a></div>'."\n";
+	print '<div class="menu0active">-&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php?tab=monitors&#038;load='.$conf['prefix'].'/admin/mon-list.php" target="menu"  title="'.$left_monitors_title.'">'.$left_monitors.'</a></div>'."\n";
 } else {
-	print '<div class="menu0">+&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php?tab=monitors&#038;load='.$conf['prefix'].'/admin/mon-list.php" target="menu">'.$left_monitors.'</a></div>'."\n";
+	print '<div class="menu0">+&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php?tab=monitors&#038;load='.$conf['prefix'].'/admin/mon-list.php" target="menu"  title="'.$left_monitors_title.'">'.$left_monitors.'</a></div>'."\n";
 }
 
 print '<br><br><br><hr noshade>'."\n";
