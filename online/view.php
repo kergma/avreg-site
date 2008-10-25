@@ -20,16 +20,16 @@ switch ($mon_type)
   case 'QUAD_4_4':
     $wins_nr=4;
     break;
-  case 'POLY_3_2':
+  case 'POLY_2x3':
     $wins_nr=6;
     break;
-  case 'POLY_4_2':
+  case 'POLY_2x4':
     $wins_nr=8;
     break;
   case 'QUAD_9_9':
     $wins_nr=9;
     break;
-  case 'POLY_4_3':
+  case 'POLY_3x4':
     $wins_nr=12;
     break;
   case 'QUAD_16_16':

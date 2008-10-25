@@ -33,7 +33,7 @@ for ($i=0; $i<$wins_nr; $i++)
     if (empty($cams[$i]))
         continue;
 
-    if (!preg_match("/^cam (\d*) on (\d*\.\d*\.\d*\.\d*|[a-zA-Z-_0-9\.]+):(\d+) \[(\d+)x(\d+)\]/i",
+    if (!preg_match("/^(\d+);(\d*\.\d*\.\d*\.\d*|[a-zA-Z-_0-9\.]+);(\d+);(\d+)x(\d+)/i",
             $cams[$i], $matches) )
             MYDIE("preg_match($cams[$i]) failed",__FILE__,__LINE__);
 
@@ -140,16 +140,16 @@ switch ($mon_type)
     print 'var ROWS_NR=5;'."\n";
     print 'var COLS_NR=5;'."\n";
     break;
-  case 'POLY_3_2':
+  case 'POLY_2x3':
     print 'var ROWS_NR=2;'."\n";
     print 'var COLS_NR=3;'."\n";
     break;
-  case 'POLY_4_2':
+  case 'POLY_2x4':
     print 'var ROWS_NR=2;'."\n";
     print 'var COLS_NR=4;'."\n";
     break;
 
-  case 'POLY_4_3':
+  case 'POLY_3x4':
     print 'var ROWS_NR=3;'."\n";
     print 'var COLS_NR=4;'."\n";
     break;

@@ -96,7 +96,7 @@ if (isset($cmd)) {
       if (is_null($result)) die('No result');
       $row = mysql_fetch_row($result);
       for ($i=4; $i<29; $i++) {
-           $a = getSelectHtmlByName('mon_wins[]',$wins_array, FALSE , 1, 1, $row[$i], TRUE, 'sel_change(this);','cam ');
+           $a = getSelectHtmlByName('mon_wins[]',$wins_array, FALSE , 1, 1, $row[$i], TRUE, 'sel_change(this);');
            array_push($aaa, $a );
       }
       /* Free last resultset */
@@ -107,7 +107,7 @@ if (isset($cmd)) {
       print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST"  onSubmit="return validate();">'."\n";
       print '<p class="HiLiteBigWarn">' . $strMonAddInfo2 . '</p>' ."\n";
       print '&nbsp;&nbsp;&nbsp;'.$strName.': <input type="text" name="mon_name" size=16 maxlength=16 value="'.$mon_name.'">'."\n";
-      layout2table ( $mon_type, ($mon_type == 'QUAD_25_25')? 500:400, $aaa);
+      layout2table ( $mon_type, ($mon_type == 'QUAD_25_25')? 400:300, $aaa);
       print '<input type="hidden" name="cmd" value="_ADD_NEW_MON_OK_">'."\n";
 		print '<input type="hidden" name="display" value="'.$display.'">'."\n";
       print '<input type="hidden" name="mon_nr" value="'.$mon_nr.'">'."\n";

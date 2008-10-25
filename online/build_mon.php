@@ -58,6 +58,7 @@ switch ($mon_type)
 }
 
 print '<div align="center">'."\n";
+print "<h3>$sWcDefLayout</h3>\n";
 //var_dump($_COOKIE);
 print '<form id="buildform" action="view.php" method="POST" onSubmit="return validate();" target="_blank">'."\n";
 $ccams=$mon_type.'_cams';
@@ -70,12 +71,12 @@ if ( isset($_COOKIE['avreg_'.$ccams]) && is_array($_COOKIE['avreg_'.$ccams]) )
        $a = $_COOKIE['avreg_'.$ccams][$i];
     else
        $a='';
-    $aaa[$i] = getSelectHtmlByName('cams[]',$act_wc_nr_ar, FALSE , 1, 1, $a, TRUE, 'sel_change(this);');
+    $aaa[$i] = getSelectByAssocAr('cams[]',$act_wc_nr_ar, FALSE , 1, 1, $a, TRUE, 'sel_change(this);', null, null, true);
   }
-   layout2table ($mon_type, 500, $aaa);
+  layout2table ($mon_type, 400, $aaa);
 } else {
-   $a=getSelectHtmlByName('cams[]',$act_wc_nr_ar, FALSE , 1, 1, '', TRUE, 'sel_change(this);');
-   layout2table ($mon_type, 500, NULL, $a);
+	$a=getSelectByAssocAr('cams[]',$act_wc_nr_ar, FALSE , 1, 1, '', TRUE, 'sel_change(this);', null, null, true);
+   layout2table ($mon_type, 400, NULL, $a);
 }
 for ($i = 0; $i < $wins_nr; $i++)
   print '<input type="hidden" name="camnames[]" value="" />'."\n";

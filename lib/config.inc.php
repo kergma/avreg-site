@@ -372,6 +372,13 @@ function getCamName ($_text_left)
    else
       return $_text_left;
 }
+/*
+function PrettyCamName($cam_desc=null)
+{
+	if (empty($cam_desc) || !is_array($cam_desc))
+		return '';
+}
+*/
 
 function print_go_back() {
 print '<br><center><a href="javascript:window.history.back();" title="'.$GLOBALS['strBack'].'">'.
@@ -804,24 +811,25 @@ function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
 }
 
 function getSelectByAssocAr($_name, $assoc_array, $_multiple=FALSE ,
-                                                               $_size = 1, $start_val=NULL, $selected=NULL,
-                                                               $first_empty=TRUE, $onch=FALSE, $text_prefix = NULL,$TITLE=NULL)
+                            $_size = 1, $start_val=NULL, $selected=NULL,
+                            $first_empty=TRUE, $onch=FALSE,
+                            $text_prefix = NULL,$TITLE=NULL, 
+									 $reverse=false)
 {
-      $array_cnt = count($assoc_array);
-   if ( $array_cnt == 0 ) return '';
-   
-      if ($_multiple) {$m = 'multiple="multiple"';} else {$m = '';}
-   if ($onch===TRUE)
-      $onch = 'onchange="this.form.submit()"';
-   else if (!empty($onch))
-      $onch = 'onchange="'.$onch.'"';
-   else
-      $onch='';
-   if (!empty($TITLE))
-      $_title='title="'.$TITLE.'"';
-   else
-      $_title='';
-   $a = sprintf('<select name="%s" id="%s" %s size="%d" %s %s>'."\n",
+  $array_cnt = count($assoc_array);
+  if ( $array_cnt == 0 ) return '';
+  if ($_multiple) {$m = 'multiple="multiple"';} else {$m = '';}
+  if ($onch===TRUE)
+    $onch = 'onchange="this.form.submit()"';
+  else if (!empty($onch))
+    $onch = 'onchange="'.$onch.'"';
+  else
+    $onch='';
+  if (!empty($TITLE))
+     $_title='title="'.$TITLE.'"';
+  else
+     $_title='';
+  $a = sprintf('<select name="%s" id="%s" %s size="%d" %s %s>'."\n",
                   $_name,
                   $_name,
                   $m,
@@ -829,45 +837,51 @@ function getSelectByAssocAr($_name, $assoc_array, $_multiple=FALSE ,
                   $_title,
                   $onch);
 
-      if ($first_empty) $a .= '<option></option>'."\n";
+  if ($first_empty) $a .= '<option></option>'."\n";
 
-   reset($assoc_array);
-   for ($i=0; $i<$array_cnt; $i++)
-      {
-               list($key, $value) = each($assoc_array);
-               settype($key,'string');
-               if ( $selected != '' )
-               {
-                        if ($_multiple)
-                        {
-                              $_y = FALSE;
-                              $ar = explode(',', $selected);
-                              foreach ($ar as $sss)
-                              {
-                                       if ($key == $sss)
-                                       {
-                                                $_y = TRUE;
-                                                break;
-                                       }
-                              }
-                              if ($_y)
-                                       $a .= '<option value="'.$key.'" selected>'.$text_prefix.$value.'</option>'."\n";
-                              else
-                                       $a .= '<option value="'.$key.'">'.$text_prefix.$value.'</option>'."\n";
-                        } else {
-                        /* not multiple */
-                              if ($key == $selected)
-                                       $a .= '<option value="'.$key.'" selected>'.$text_prefix.$value.'</option>'."\n";
-                              else
-                                       $a .= '<option value="'.$key.'">'.$text_prefix.$value.'</option>'."\n";
-                        }
-               } else {  // not selected
-                        $a .= '<option value="'.$key.'">'.$text_prefix.$value.'</option>'."\n";
-               }
-      }
-   
-      $a .= '</select>'."\n";
-      return $a;
+	foreach ($assoc_array as $k => $v)
+	{
+		settype($key,'string');
+		if ( $reverse ) {
+			$key = &$v;
+			$value = &$k;
+		} else {
+			$key = &$k;
+			$value = &$v;			
+		}
+
+     if ( $selected != '' )
+     {
+       if ($_multiple)
+       {
+          $_y = FALSE;
+          $ar = explode(',', $selected);
+          foreach ($ar as $sss)
+          {
+             if ($key == $sss)
+             {
+                $_y = TRUE;
+                break;
+             }
+          }
+          if ($_y)
+             $a .= '<option value="'.$key.'" selected>'.$text_prefix.$value.'</option>'."\n";
+          else
+             $a .= '<option value="'.$key.'">'.$text_prefix.$value.'</option>'."\n";
+          } else {
+             /* not multiple */
+             if ($key == $selected)
+                $a .= '<option value="'.$key.'" selected>'.$text_prefix.$value.'</option>'."\n";
+             else
+                $a .= '<option value="'.$key.'">'.$text_prefix.$value.'</option>'."\n";
+             }
+           } else {  // not selected
+              $a .= '<option value="'.$key.'">'.$text_prefix.$value.'</option>'."\n";
+           }
+  }
+
+  $a .= '</select>'."\n";
+  return $a;
 }
 
 

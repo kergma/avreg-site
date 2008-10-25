@@ -56,7 +56,7 @@ if ( isset($cmd) ) {
 			if ( count($wins_array) > 0 ) {
 				print '<p class="HiLiteBigWarn">' . sprintf ($fmtMonAddInfo,$mon_type, $mon_nr, $mon_name, $display=='R'?$sRightDisplay1:$sLeftDisplay1) . '</p>' ."\n";
 				print '<p class="HiLiteBigWarn">' . $strMonAddInfo2 . '</p>' ."\n";
-				$a = getSelectHtmlByName('mon_wins[]',	$wins_array, FALSE , 1, 1, '', TRUE, 'sel_change(this);','cam ');
+				$a = getSelectHtmlByName('mon_wins[]',	$wins_array, FALSE , 1, 1, '', TRUE, 'sel_change(this);');
 				//print('<pre><code>');print_r($a);print('</code></pre>');
 				print '<form action="'.$_SERVER['PHP_SELF'].'"  onSubmit="return validate();" method="POST">'."\n";
 				layout2table ( $mon_type, ($mon_type == 'QUAD_25_25')? 500:400, NULL,  $a);

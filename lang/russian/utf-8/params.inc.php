@@ -155,8 +155,8 @@ array(
 
  array(
     'id'=>'5.1.1',
-    'name'=>'text overlay',
-    'desc'=>'Текст, &#171;накладываемый&#187; на изображение',
+    'name'=>'наложение текста на кадр',
+    'desc'=>'Текст, &#171;врезаемый&#187; в видеокадры',
     'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
     'mstatus'=> 2,
     'help_page'=> NULL

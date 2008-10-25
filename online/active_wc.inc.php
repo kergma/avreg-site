@@ -18,7 +18,7 @@ if ($wclist_show>0)
   print '<table cellspacing="0" border="1" cellpadding="3">'. "\n";
 }
 
-$GCP_query_param_list=array('work','live_view','webcam_live','wc_port', 'text_left','geometry');
+$GCP_query_param_list=array('work','live_view','webcam_live','wc_port', 'text_left','geometry','cam_type','color','InetCam_IP','v4l_dev','input','Aviosys9100_chan');
 require ('../lib/get_cams_params.inc.php');
 
 $local_cam_nr = -1;
@@ -37,11 +37,11 @@ if ( $GCP_cams_nr > 0 )
     if ($wclist_show>0)
     {
 		print '<tr style="background-color:'.$rowHiLight.';">'."\n";
-		print '<td><img src="'.$conf['prefix'].'/img/comps/local-server.gif" width="48" height="48" border="0"></td>'."\n";
-		print '<th nowrap>'.$_SERVER['SERVER_ADDR'].'</th>'."\n";
-		print '<th>'.$_SERVER['SERVER_NAME'].'</th>'."\n";
+		print '<th>&nbsp;</th>'."\n";
+		print '<th nowrap>'.$strOrder.'</th>'."\n";
+		print '<th>'.$sInformation.'</th>'."\n";
         if ($wclist_show>1)
-		   print '<th>'.$strNotWcReason.'</th>'."\n";
+			  print '<th>'.$sUnavailableReason.'</th>'."\n";
 		print '</tr>'."\n";
     }
 	
@@ -102,7 +102,7 @@ for ($i = 0; $i < $tot_wc_nr; $i++)
 	list($ww,$wh) = explode('x',$geo);
 	if (empty($ww)) $ww=384;
 	if (empty($wh)) $wh=288;
-	$act_wc_nr_ar[$i]=sprintf('cam %d on %s:%d [%s]', $cam_nr,  $_SERVER['HTTP_HOST'], $w_port, $geo);
+	$act_wc_nr_ar[$cam_nr]=sprintf('%u;%s;%u;%s', $cam_nr,  $_SERVER['HTTP_HOST'], $w_port, $geo);
     print 'CNAMES['.$i.']="'.$cam_name.'";'."\n";
 }
 print '// -->'."\n";
