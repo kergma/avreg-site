@@ -80,7 +80,7 @@ function img_click(clicked_div) {
       IMG_IN_DIV_H=img_jq.height();
 
   
-      win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, 1, 1);
+      win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, 1, 1, 1);
 
       clicked_div_jq.css('top',  calc_win_top (win_geo, 0));
       clicked_div_jq.css('left', calc_win_left(win_geo, 0));
@@ -176,19 +176,22 @@ var NAME_DIV_H = PrintCamNames?20:0;
 
 
 // XXX need ie box model 
-function calc_win_geo(_canvas_w, _canvas_h, img_aspect_ratio, _rows_nr, _cols_nr) {
+function calc_win_geo(_canvas_w, _canvas_h, img_aspect_ratio, _rows_nr, _cols_nr, _rowspan) {
   var cam_w;
   var cam_h;
+
+  if (_rowspan == undefined)
+     _rowspan = 1;
 
   if ( img_aspect_ratio == undefined || 
        img_aspect_ratio == 'fs' ) {
      /* соотношение сторон видеоизображения нас не волнует,
         растягиваем окна камер и сами изображения по всему CANVAS */
      cam_w = parseInt(_canvas_w/_cols_nr) - BorderLeft - BorderRight;
-     cam_h = parseInt(_canvas_h/_rows_nr) - NAME_DIV_H - BorderTop - BorderBottom;
+     cam_h = parseInt(_canvas_h/_rows_nr) - NAME_DIV_H*_rowspan - BorderTop - BorderBottom;
   } else {
      // create wins
-     var calc_canvas_h = _canvas_h - ((NAME_DIV_H + BorderTop + BorderBottom) * _rows_nr);
+     var calc_canvas_h = _canvas_h - ((NAME_DIV_H*_rowspan + BorderTop + BorderBottom) * _rows_nr);
   
      if ( (_canvas_w/calc_canvas_h) >= 
         (img_aspect_ratio.num*_cols_nr)/(img_aspect_ratio.den*_rows_nr) ) {
@@ -205,7 +208,7 @@ function calc_win_geo(_canvas_w, _canvas_h, img_aspect_ratio, _rows_nr, _cols_nr
   }
 
   this.win_w = cam_w + BorderLeft + BorderRight;
-  this.win_h = cam_h + NAME_DIV_H + BorderTop + BorderBottom;
+  this.win_h = cam_h + NAME_DIV_H*_rowspan + BorderTop + BorderBottom;
 
   this.offsetX = parseInt((_canvas_w - this.win_w * _cols_nr)/2);  
   this.offsetY = parseInt((_canvas_h - this.win_h * _rows_nr)/2);  
@@ -227,7 +230,7 @@ function calc_win_top(win_geo, row) {
 
 
 function change_fs_win_geo(fs_win) {
-   var win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, 1, 1);
+   var win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, 1, 1, 1);
    var fs_win_div_jq = $(fs_win);
    fs_win_div_jq.css('top',  calc_win_top (win_geo, 0));
    fs_win_div_jq.css('left', calc_win_left(win_geo, 0));
@@ -244,7 +247,7 @@ function change_fs_win_geo(fs_win) {
 } // change_fs_win_geo()
 
 function change_wins_geo() {
-   var base_win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, ROWS_NR, COLS_NR);
+   var base_win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, ROWS_NR, COLS_NR, 1);
    var win_geo;
    var i,tmp_div,win_def,win_nr,win_id;
    for (i=WIN_DIVS.length-1; i>=0; i--) {
@@ -261,7 +264,7 @@ function change_wins_geo() {
       else
          win_geo = new calc_win_geo(base_win_geo.win_w*win_def.colspan,
               base_win_geo.win_h*win_def.rowspan,
-              CamsAspectRatio, 1, 1);
+              CamsAspectRatio, 1, 1, win_def.rowspan);
       tmp_div.css('top',  calc_win_top (base_win_geo, win_def.row));
       tmp_div.css('left', calc_win_left(base_win_geo, win_def.col));
       tmp_div.width(win_geo.win_w);
@@ -361,7 +364,7 @@ $(document).ready( function() {
 
    $(window).bind('scroll', function(){return false;});
 
-  var base_win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, ROWS_NR, COLS_NR);
+  var base_win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, ROWS_NR, COLS_NR, 1);
   var win_geo;
   // alert('[ ' + CANVAS_W + 'x' + CANVAS_H + ' ] [ ' + cam_w + 'x' + cam_h + ' ]');
   var win_nr;
@@ -380,7 +383,7 @@ $(document).ready( function() {
      else
         win_geo = new calc_win_geo(base_win_geo.win_w*win_def.colspan,
               base_win_geo.win_h*win_def.rowspan,
-              CamsAspectRatio, 1, 1);
+              CamsAspectRatio, 1, 1, win_def.rowspan);
      _top  = calc_win_top(base_win_geo, win_def.row);
      _left = calc_win_left(base_win_geo, win_def.col);
      win_div = $('<div id="win' + win_nr + '" name="win" class="win" ' + 
@@ -398,13 +401,13 @@ $(document).ready( function() {
      win_div.appendTo(CANVAS);
 
      if (PrintCamNames) {
-        $('<div style="vertical-align:bottom; background-color:#666699;'+
+        $('<div style="background-color:#666699;'+
              ' padding:0px; margin:0px; overflow:hidden; border:0px;'+
-             ' height:'+ NAME_DIV_H +'px;"><div style="'+
-             'padding-left:8px; padding-top:2px; padding-bottom:2px; padding-right:2px;'+
-             ' color:White; font-size:14px; font-weight: bold; width:100%; overflow:hidden;">'+
+             ' height:'+ NAME_DIV_H*win_def.rowspan +'px;"><span style="'+
+             'vertical-align: middle; padding-left:8px; padding-top:2px; padding-bottom:2px; padding-right:2px;'+
+             ' color:#e5e5e5; font-size:'+14*win_def.rowspan+'px; font-weight: bold; width:100%; overflow:hidden;">'+
              WINS_DEF[win_nr].cam.name+
-             '<\/div><\/div>').appendTo(win_div);
+             '<\/span><\/div>').appendTo(win_div);
      }
      brout(win_nr, win_div, win_geo);
   }
