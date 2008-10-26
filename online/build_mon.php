@@ -19,43 +19,12 @@ if ($tot_wc_nr===0) {
   require ('../foot.inc.php');
   die();
 }
+
 require ('../admin/mon-type.inc.php');
-
-if (!isset($mon_type) || empty($mon_type)) 
-   MYDIE('not set $mon_type',__FILE__,__LINE__);
-
-switch ($mon_type)
-{
-  case 'ONECAM':
-    $wins_nr=1;
-    break;
-  case 'QUAD_4_4':
-    $wins_nr=4;
-    break;
-  case 'POLY_2x3':
-    $wins_nr=6;
-    break;
-  case 'POLY_2x4':
-    $wins_nr=8;
-    break;
-  case 'QUAD_9_9':
-    $wins_nr=9;
-    break;
-  case 'POLY_3x4':
-    $wins_nr=12;
-    break;
-  case 'QUAD_16_16':
-    $wins_nr=16;
-    break;
-  case 'QUAD_25_25':
-    $wins_nr=25;
-    break;
-  case 'QUAD_36_36':
-    $wins_nr=36;
-    break;
-  default:
-    MYDIE("unknown mon_type=$mon_type",__FILE__,__LINE__);  
-}
+if (!isset($mon_type) || empty($mon_type) || !array_key_exists($mon_type, $layouts_defs) ) 
+   MYDIE("not set ot invalid \$mon_type=\"$mon_type\"",__FILE__,__LINE__);
+$l_defs = &$layouts_defs[$mon_type];
+$wins_nr = $l_defs[0];
 
 print '<div align="center">'."\n";
 print "<h3>$sWcDefLayout</h3>\n";

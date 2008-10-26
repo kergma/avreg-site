@@ -36,7 +36,7 @@ function sel_change(sel) {
       if (cams_select != sel)
       {
          if ( cams_select.selectedIndex == sel.selectedIndex ) {
-            alert(sel.options[sel.selectedIndex].text + "\n\n" + ' уже выбрана  в другом окне' );
+            alert('Камера №' + sel.options[sel.selectedIndex].text + ' уже выбрана  в другом окне!' );
             sel.selectedIndex=0;
             break;
          }

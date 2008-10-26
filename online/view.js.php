@@ -26,8 +26,10 @@ function calcAspectForGeo($w,$h) {
 }
 
 print 'var WINS_DEF = new MakeArray('.$wins_nr.')'."\n";
-$first_win_cam_geo = null;
+
+$major_win_cam_geo = null;
 $msie_addons_scripts=array();
+
 for ($i=0; $i<$wins_nr; $i++)
 {
     if (empty($cams[$i]))
@@ -42,19 +44,25 @@ for ($i=0; $i<$wins_nr; $i++)
     $w_port = $matches[3];settype($w_port,'int');
     $_ww=$matches[4]; settype($_ww,'int');
     $_wh=$matches[5]; settype($_wh,'int');
-    if (is_null($first_win_cam_geo))
-       $first_win_cam_geo = array($_ww, $_wh);
+    if (is_null($major_win_cam_geo) || $l_defs[4] === $i )
+       $major_win_cam_geo = array($_ww, $_wh);
+    
+    $l_wins = &$l_defs[3][$i];
 
-
-    printf('WINS_DEF[%d]={
-       cam: {
-              nr: %s,
-              name: "%s",
-              url: "http://%s:%u/video.mjpg", /* FIXME Why only http */
-              orig_w: %u,
-              orig_h: %u
-           }
-    };%s', $i, $cam_nr, $camnames[$i], $_sip, $w_port, $_ww, $_wh, "\n" );
+    printf(
+'WINS_DEF[%d]={
+   row: %u,
+   col: %u,
+   rowspan: %u,
+   colspan: %u,
+   cam: {
+      nr: %s,
+      name: "%s",
+      url: "http://%s:%u/video.mjpg", /* FIXME Why only http */
+      orig_w: %u,
+      orig_h: %u,
+      },
+};%s', $i, $l_wins[0], $l_wins[1],$l_wins[2],$l_wins[3], $cam_nr, $camnames[$i], $_sip, $w_port, $_ww, $_wh, "\n" );
 
     if ( $MSIE )
         $msie_addons_scripts[] = sprintf('<script for="cam%d" event="OnClick()">
@@ -83,7 +91,7 @@ else
 
 if (isset($_POST['AspectRatio'])) {
    if ( 0 === strpos($_POST['AspectRatio'], 'calc') ) {
-      $ar = calcAspectForGeo($first_win_cam_geo[0], $first_win_cam_geo[1]);
+      $ar = calcAspectForGeo($major_win_cam_geo[0], $major_win_cam_geo[1]);
       printf("var CamsAspectRatio = { num: %d, den: %d };\n", $ar[0], $ar[1]);
    } else if (preg_match('/^(\d+):(\d+)$/', $_POST['AspectRatio'], $m)) {
       printf("var CamsAspectRatio = { num: %d, den: %d };\n", $m[1], $m[2]);
@@ -118,43 +126,10 @@ else
 
 print 'var ___abenc="'.base64_encode($user_info['USER'].':'.$_SERVER["PHP_AUTH_PW"])."\"\n";
 
-switch ($mon_type)
-{
-  case 'ONECAM':
-    print 'var ROWS_NR=1;'."\n";
-    print 'var COLS_NR=1;'."\n";
-    break;
-  case 'QUAD_4_4':
-    print 'var ROWS_NR=2;'."\n";
-    print 'var COLS_NR=2;'."\n";
-    break;
-  case 'QUAD_9_9':
-    print 'var ROWS_NR=3;'."\n";
-    print 'var COLS_NR=3;'."\n";
-    break;
-  case 'QUAD_16_16':
-    print 'var ROWS_NR=4;'."\n";
-    print 'var COLS_NR=4;'."\n";
-    break;
-  case 'QUAD_25_25':
-    print 'var ROWS_NR=5;'."\n";
-    print 'var COLS_NR=5;'."\n";
-    break;
-  case 'POLY_2x3':
-    print 'var ROWS_NR=2;'."\n";
-    print 'var COLS_NR=3;'."\n";
-    break;
-  case 'POLY_2x4':
-    print 'var ROWS_NR=2;'."\n";
-    print 'var COLS_NR=4;'."\n";
-    break;
+/* other php layout_defs to javascript vars */
 
-  case 'POLY_3x4':
-    print 'var ROWS_NR=3;'."\n";
-    print 'var COLS_NR=4;'."\n";
-    break;
+print "var WINS_NR = $wins_nr;\n";
+print "var ROWS_NR = $l_defs[1];\n";
+print "var COLS_NR = $l_defs[2];\n";
 
-  default:
-    MYDIE("unknown mon_type=$mon_type",__FILE__,__LINE__);
-}
 ?>

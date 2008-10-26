@@ -140,7 +140,7 @@ function brout(win_nr, win_div, win_geo) {
       $('<applet code="com.charliemouse.cambozola.Viewer" archive="cambozola.jar" '+
       'ID="'+id+'" name="cam" '+
       'WIDTH="'+win_geo.cam_w+'" HEIGHT="'+win_geo.cam_h+'" border="0px" ' +
-      '<PARAM NAME="URL" VALUE="'+url+'" />' +
+      '<PARAM NAME="URL" VALUE="'+url+'?ab='+___abenc+'" />' +
       '<br>'+ alt +
       '<\/applet>').appendTo(win_div);
        win_div.click( function() { img_click(this); } ); 
@@ -239,18 +239,25 @@ function change_fs_win_geo(fs_win) {
    } else if ( MSIE ) {
       var r = $('object',fs_win_div_jq).width(win_geo.cam_w).height(win_geo.cam_h)
          // .text(win_geo.cam_w + 'x' + win_geo.cam_h)
-      alert(r);
    }
 
 } // change_fs_win_geo()
 
 function change_wins_geo() {
    var win_geo = new calc_win_geo(CamsAspectRatio, COLS_NR, ROWS_NR);
-   var i,tmp_div;
+   var i,tmp_div,win_def,win_nr,win_id;
    for (i=WIN_DIVS.length-1; i>=0; i--) {
+      win_id = WIN_DIVS[i].id;
+      win_nr = parseInt(win_id.substr(3));
+      if ( win_nr == NaN ) {
+         alert('Error: win.id="' + WIN_DIVS[i].id + '"');
+         return;
+      }
       tmp_div=$(WIN_DIVS[i]);
-      tmp_div.css('top',  calc_win_top (win_geo, parseInt(i/COLS_NR)));
-      tmp_div.css('left', calc_win_left(win_geo, parseInt(i%COLS_NR)));
+      win_def = WINS_DEF[win_nr];
+
+      tmp_div.css('top',  calc_win_top (win_geo, win_def.row));
+      tmp_div.css('left', calc_win_left(win_geo, win_def.col));
       tmp_div.width(win_geo.win_w);
       tmp_div.height(win_geo.win_h);
       if ( GECKO ) {
@@ -351,23 +358,22 @@ $(document).ready( function() {
   var win_geo = new calc_win_geo(CamsAspectRatio, COLS_NR, ROWS_NR);
 
   // alert('[ ' + CANVAS_W + 'x' + CANVAS_H + ' ] [ ' + cam_w + 'x' + cam_h + ' ]');
-  var row=0;
-  var col=0;
-  var win_nr=0;
-  var top=0;
-  var left=0;
+  var win_nr;
+  var _top=0;
+  var _left=0;
   var win_div;
-  for (row=0;row<ROWS_NR;row++)
-  {
-     top = calc_win_top(win_geo, row);
+  var win_def;
 
-     for (col=0;col<COLS_NR;col++)
-     {
-        left = calc_win_left(win_geo, col);
-        win_div = $('<div id="win' + win_nr + '" name="win" class="win" ' + 
+  for (win_nr = 0; win_nr < WINS_NR; win_nr++ ) {
+     if (  WINS_DEF[win_nr] == undefined )
+        continue;
+     win_def = WINS_DEF[win_nr];
+     _top  = calc_win_top(win_geo, win_def.row);
+     _left = calc_win_left(win_geo, win_def.col);
+     win_div = $('<div id="win' + win_nr + '" name="win" class="win" ' + 
         ' style="position: absolute; '+
-        ' top:'+top+'px;'+
-        ' left:'+left+'px; '+
+        ' top:'+_top+'px;'+
+        ' left:'+_left+'px; '+
         ' width:'+win_geo.win_w+'px;'+
         ' height:'+win_geo.win_h+'px;'+
         ' border-top: '+BorderTop+'px solid  #ffa500;' +
@@ -376,23 +382,18 @@ $(document).ready( function() {
 	    ' border-right: '+BorderRight+'px solid  #ffa500;' + 
         ' z-index=-'+win_nr+';'+
         '"></div>');
-        win_div.appendTo(CANVAS)
-        if (  WINS_DEF[win_nr] != undefined )
-        {
-           if (PrintCamNames) {
-             $('<div style="vertical-align:bottom; background-color:#666699;'+
+     win_div.appendTo(CANVAS);
+
+     if (PrintCamNames) {
+        $('<div style="vertical-align:bottom; background-color:#666699;'+
              ' padding:0px; margin:0px; overflow:hidden; border:0px;'+
              ' height:'+NAME_DIV_H+'px;"><div style="'+
              'padding-left:8px; padding-top:2px; padding-bottom:2px; padding-right:2px;'+
              ' color:White; font-size:14px; font-weight: bold; width:100%; overflow:hidden;">'+
              WINS_DEF[win_nr].cam.name+
              '<\/div><\/div>').appendTo(win_div);
-           }
-           brout(win_nr, win_div, win_geo);
-        }
-        // $('<label></label>').appendTo(win_div).text(get_geo_str(win_div));
-        win_nr++;
      }
+     brout(win_nr, win_div, win_geo);
   }
 
   WIN_DIVS = $('div.win');
