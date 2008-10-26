@@ -105,54 +105,30 @@ if ( isset($cmd) ) {
 
 	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
 	print $strNamed.': <input type="text" name="mon_name" size=16 maxlength=16 value="">'."\n";
-	$wins = range(1, 25);
-?>
-<br><br>
-<table cellspacing="0" border="1" cellpadding="5">
-<tr bgcolor="#f4f0f4">
-<td><input type="radio" name="mon_type" value="ONECAM"><?php echo $strONECAM ; ?></td>
-<td><input type="radio" name="mon_type" value="QUAD_4_4"><?php echo $strQUAD_4_4 ; ?></td>
-<td><input type="radio" name="mon_type" value="MULTI_6_9"><?php echo $strMULTI_6_9 ; ?></td>
-<td><input type="radio" name="mon_type" value="MULTI_7_16"><?php echo $strMULTI_7_16 ; ?></td>
-<td><input type="radio" name="mon_type" value="MULTI_8_16"><?php echo $strMULTI_8_16 ; ?></td>
-</tr>
-<tr>
-<td><?php layout2table ( 'ONECAM', 160, $wins ); ?></td>
-<td><?php layout2table ( 'QUAD_4_4', 160, $wins ); ?></td>
-<td><?php layout2table ( 'MULTI_6_9', 160, $wins ); ?></td>
-<td><?php layout2table ( 'MULTI_7_16', 160, $wins ); ?></td>
-<td><?php layout2table ( 'MULTI_8_16', 160, $wins ); ?></td>
-<tr bgcolor="#f4f0f4">
-<td><input type="radio" name="mon_type" value="QUAD_9_9"><?php echo $strQUAD_9_9 ; ?></td>
-<td><input type="radio" name="mon_type" value="MULTI_10_16"><?php echo $strMULTI_10_16 ; ?></td>
-<td><input type="radio" name="mon_type" value="MULTI_13_16"><?php echo $strMULTI_13_16 ; ?></td>
-<td><input type="radio" name="mon_type" value="MULTI_13_25"><?php echo $strMULTI_13_25 ; ?></td>
-<td><input type="radio" name="mon_type" value="QUAD_16_16"><?php echo $strQUAD_16_16 ; ?></td>
-</tr>
-<tr>
-<td><?php layout2table ( 'QUAD_9_9', 160, $wins ); ?></td>
-<td><?php layout2table ( 'MULTI_10_16', 160, $wins ); ?></td>
-<td><?php layout2table ( 'MULTI_13_16', 160, $wins ); ?></td>
-<td><?php layout2table ( 'MULTI_13_25', 160, $wins ); ?></td>
-<td><?php layout2table ( 'QUAD_16_16', 160, $wins ); ?></td>
-</tr>
-<tr bgcolor="#f4f0f4">
-<td><input type="radio" name="mon_type" value="MULTI_16_25"><?php echo $strMULTI_16_25 ; ?></td>
-<td><input type="radio" name="mon_type" value="MULTI_17_25"><?php echo $strMULTI_17_25 ; ?></td>
-<td><input type="radio" name="mon_type" value="MULTI_19_25"><?php echo $strMULTI_19_25 ; ?></td>
-<td><input type="radio" name="mon_type" value="MULTI_22_25"><?php echo $strMULTI_22_25 ; ?></td>
-<td><input type="radio" name="mon_type" value="QUAD_25_25"><?php echo $strQUAD_25_25 ; ?></td>
-</tr>
-<tr>
-<td><?php layout2table ( 'MULTI_16_25', 160, $wins ); ?></td>
-<td><?php layout2table ( 'MULTI_17_25', 160, $wins ); ?></td>
-<td><?php layout2table ( 'MULTI_19_25', 160, $wins ); ?></td>
-<td><?php layout2table ( 'MULTI_22_25', 160, $wins ); ?></td>
-<td><?php layout2table ( 'QUAD_25_25', 160, $wins ); ?></td>
-</tr>
-</table>
-<br>
-<?php
+   $wins = range(1, 25);
+   $lm = count($layouts_defs);
+   $mc = 5; // 5 столбцов
+   $mr = $lm / $mc;
+   if ( $lm % $mc )
+      $mr++;
+   reset($layouts_defs);
+   print '<table cellspacing="0" border="0" cellpadding="5">'."\n";
+   for ($r=0; $r<$mr; $r++) {
+      print '<tr>'."\n";
+      for ($c=0; $c<$mc; $c++) {
+         list($lname, $ldef ) = each($layouts_defs);
+         print  '<td  align="center" valign="top">'."\n";
+         if (empty($lname)) {
+            print('&nbsp;');
+         } else {
+            printf('<input type="radio" name="mon_type" value="%s">&nbsp;%s<br />',$lname, $ldef[5]);
+            layout2table ( $lname, 140, $wins );
+         }
+         print  '<br /></td>'."\n";
+      }
+      print '</tr>'."\n";
+   }
+   print '</table>'."\n";
 	print '<input type="hidden" name="cmd" value="_ADD_NEW_MON_">'."\n";
 	print '<input type="hidden" name="display" value="'.$display.'">'."\n";
 	print '<input type="hidden" name="mon_nr" value="'.$mon_nr.'">'."\n";
