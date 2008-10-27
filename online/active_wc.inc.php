@@ -40,7 +40,7 @@ if ( $GCP_cams_nr > 0 )
 		print '<th>&nbsp;</th>'."\n";
 		print '<th nowrap>'.$strOrder.'</th>'."\n";
 		print '<th>'.$sInformation.'</th>'."\n";
-        if ($wclist_show>1)
+        if ($wclist_show>1 && $admin_user)
 			  print '<th>'.$sUnavailableReason.'</th>'."\n";
 		print '</tr>'."\n";
     }
@@ -59,14 +59,14 @@ if ( $GCP_cams_nr > 0 )
 				// print '<td align="center" valign="center"><input type="checkbox" name="cams[]" value="'.$webcam_def.'">&nbsp;</td>' . "\n";
 				print '<td align="center"><img src="'.$conf['prefix'].'/img/camera-red.gif" alt="'.$flags[1].'" width="22" height="22" border="0"></td>' . "\n";
 				print '<td align="center" valign="middle" nowrap><b>'.$__cam_nr . '</b></td>' . "\n";
-				print '<td>'. $cam_name .'</td>' . "\n";
-                if ($wclist_show>1)
+				print '<td>'.$cam_name.' ('.$wc['geometry'].')</td>' . "\n";
+                if ($wclist_show>1 && $admin_user)
 				   print '<td>&nbsp;</td></tr>' . "\n";
                 }
 				array_push($tot_act_cams_ar,$webcam_def);
 				$total_active_cams++;
 			} else {
-            if ($wclist_show>1) {
+            if ($wclist_show>1 && $admin_user) {
                 print "<tr>\n";
 				// print '<td align="center" valign="center"><input type="checkbox" disabled name="cams[]" value="'.$webcam_def.'">&nbsp;</td>' . "\n";
 				print '<td align="center"><img src="'.$conf['prefix'].'/img/camera.gif" alt="'.$flags[1].'" width="22" height="22" border="0"></td>' . "\n";
