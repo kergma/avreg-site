@@ -416,13 +416,16 @@ $(document).ready( function() {
 
   $('#dialog').jqm({
       overlay: 90,
+      /*
       onShow: function(h) {
-         /* callback executed when a trigger click. Show notice */
+         // callback executed when a trigger click. Show notice
          h.w.css('opacity',0.9).slideDown('fast'); 
       },
       onHide: function(h) {
-        /* callback executed on window hide. Hide notice, overlay. */
-        h.w.slideUp('fast',function() { if(h.o) h.o.remove(); }); } 
+        // callback executed on window hide. Hide notice, overlay.
+        h.w.slideUp('fast',function() { if(h.o) h.o.remove(); }); 
+        }
+        */
       });
 });
 
