@@ -28,6 +28,7 @@ function calcAspectForGeo($w,$h) {
 print 'var WINS_DEF = new MakeArray('.$wins_nr.')'."\n";
 
 $major_win_cam_geo = null;
+$major_win_nr = $l_defs[4] - 1;
 $msie_addons_scripts=array();
 
 for ($i=0; $i<$wins_nr; $i++)
@@ -44,9 +45,9 @@ for ($i=0; $i<$wins_nr; $i++)
     $w_port = $matches[3];settype($w_port,'int');
     $_ww=$matches[4]; settype($_ww,'int');
     $_wh=$matches[5]; settype($_wh,'int');
-    if (is_null($major_win_cam_geo) || $l_defs[4] === $i )
+    if (is_null($major_win_cam_geo) || $major_win_nr === $i )
        $major_win_cam_geo = array($_ww, $_wh);
-    
+
     $l_wins = &$l_defs[3][$i];
 
     printf(
