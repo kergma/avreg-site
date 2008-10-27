@@ -247,6 +247,7 @@ function change_fs_win_geo(fs_win) {
 } // change_fs_win_geo()
 
 function change_wins_geo() {
+return;
    var base_win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, ROWS_NR, COLS_NR, 1);
    var win_geo;
    var i,tmp_div,win_def,win_nr,win_id;
@@ -318,7 +319,6 @@ function get_geo_str(JQ_elem) {
 }
 
 $(document).ready( function() {
-
    var winX;
    var winY;
    if (MSIE) {
@@ -415,17 +415,7 @@ $(document).ready( function() {
   WIN_DIVS = $('div.win');
 
   $('#dialog').jqm({
-      overlay: 90,
-      /*
-      onShow: function(h) {
-         // callback executed when a trigger click. Show notice
-         h.w.css('opacity',0.9).slideDown('fast'); 
-      },
-      onHide: function(h) {
-        // callback executed on window hide. Hide notice, overlay.
-        h.w.slideUp('fast',function() { if(h.o) h.o.remove(); }); 
-        }
-        */
+      overlay: 90
       });
 });
 

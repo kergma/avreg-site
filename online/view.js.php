@@ -61,8 +61,8 @@ for ($i=0; $i<$wins_nr; $i++)
       name: "%s",
       url: "http://%s:%u/video.mjpg", /* FIXME Why only http */
       orig_w: %u,
-      orig_h: %u,
-      },
+      orig_h: %u
+      }
 };%s', $i, $l_wins[0], $l_wins[1],$l_wins[2],$l_wins[3], $cam_nr, $camnames[$i], $_sip, $w_port, $_ww, $_wh, "\n" );
 
     if ( $MSIE )
@@ -121,11 +121,11 @@ else
 // $user_info config.inc.php
 print 'var ___u="'.$user_info['USER']."\"\n";
 if (empty($user_info['PASSWD']) /* задан пароль */)
-    print 'var ___p="empty"'."\n"; // нужно чтобы AMC не запрашивал пароль при пустом пароле
+    print 'var ___p="empty"'.";\n"; // нужно чтобы AMC не запрашивал пароль при пустом пароле
 else
-    print 'var ___p="'.$_SERVER["PHP_AUTH_PW"]."\"\n";
+    print 'var ___p="'.$_SERVER["PHP_AUTH_PW"]."\";\n";
 
-print 'var ___abenc="'.base64_encode($user_info['USER'].':'.$_SERVER["PHP_AUTH_PW"])."\"\n";
+print 'var ___abenc="'.base64_encode($user_info['USER'].':'.$_SERVER["PHP_AUTH_PW"])."\";\n";
 
 /* other php layout_defs to javascript vars */
 
