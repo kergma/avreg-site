@@ -31,7 +31,7 @@ if ( empty($conf['key']) || !file_exists($conf['key']) ) {
         $key_opts = $matches[1];
         break;
       }
-      $key_array[] = htmlentities($line, ENT_QUOTES,'UTF-8').'<br />'."\n";
+      $key_array[] = htmlentities($line, ENT_QUOTES, $chset).'<br />'."\n";
   }
   fclose($keyfile);
 

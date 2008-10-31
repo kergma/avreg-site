@@ -113,7 +113,7 @@ if ( !isset($u_name) || empty($u_name) )
                 
 				print '<td valign="center" nowrap><b>'. $row['USER'] . '</b></td>' . "\n";
 				print '<td valign="center" nowrap><b>'. $row['HOST'] . '</b></td>' . "\n";
-				print '<td>'. htmlspecialchars( $row['LONGNAME'] ) . '</td>' . "\n";
+				print '<td>'. htmlspecialchars( $row['LONGNAME'], ENT_QUOTES, $chset ) . '</td>' . "\n";
                                  if ( empty($row['CHANGE_TIME']) )
                                       print "<td align=\"center\">-</td>\n";
                                  else

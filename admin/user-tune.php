@@ -68,11 +68,11 @@ if ( isset($u_name) && !empty($u_name) )
    if ( $ui === FALSE )
       die('crack?');
       //tohtml($ui);
-      $user2html = stripslashes (htmlspecialchars($ui['USER']));
-      $host2html = stripslashes (htmlspecialchars($ui['HOST']));
-      $longname2html = stripslashes (htmlspecialchars($ui['LONGNAME']));
-      $passwd2html = stripslashes (htmlspecialchars($ui['PASSWD']));
-      $u_devacl = stripslashes (htmlspecialchars($ui['ALLOW_CAMS']));
+      $user2html = stripslashes (htmlspecialchars($ui['USER'], ENT_QUOTES, $chset));
+      $host2html = stripslashes (htmlspecialchars($ui['HOST'], ENT_QUOTES, $chset));
+      $longname2html = stripslashes (htmlspecialchars($ui['LONGNAME'], ENT_QUOTES, $chset));
+      $passwd2html = stripslashes (htmlspecialchars($ui['PASSWD'], ENT_QUOTES, $chset));
+      $u_devacl = stripslashes (htmlspecialchars($ui['ALLOW_CAMS'], ENT_QUOTES, $chset));
       $u_status = $ui['STATUS'];
       $limit_fps = $ui['LIMIT_FPS'];
       $limit_kbps = $ui['LIMIT_KBPS'];

@@ -481,30 +481,25 @@ function DENY($good_status=NULL, $http_status=403)
       }
    }
 
+   $aname = &$GLOBALS['conf']['admin-name'];
+   $amail = &$GLOBALS['conf']['admin-mail'];
+   $atel   = &$GLOBALS['conf']['admin-tel'];
    if ( array_key_exists($user_status,$GLOBALS['grp_ar'])) {
       $deny_reason=sprintf($GLOBALS['access_denided'],
                $GLOBALS['grp_ar'][$user_status]['grname']);
-      if ( isset($GLOBALS['conf']['admin']) && 
-         !empty($GLOBALS['conf']['admin'])) {
-         $deny_reason .= '<br /><br />'."\n";
-         $deny_reason .= sprintf($GLOBALS['fmtContact2Admin'],
-                     htmlentities($GLOBALS['conf']['admin'], ENT_QUOTES));
-      }
+      $action = &$GLOBALS['fmtServerAdmin'];
    } else {
       $deny_reason = sprintf($GLOBALS['fmtAccessDenied'],
-                     htmlentities($_SERVER['PHP_AUTH_USER'], ENT_QUOTES),
+                     htmlentities($_SERVER['PHP_AUTH_USER'], ENT_QUOTES, $GLOBALS['chset']),
                      $_SERVER['REMOTE_ADDR']);
-      if ( isset($GLOBALS['conf']['admin']) && 
-         !empty($GLOBALS['conf']['admin'])) {
-         $deny_reason .= '<br /><br />'."\n";
-         $deny_reason .= sprintf($GLOBALS['fmtTryOnceMore'],
-                     htmlentities($GLOBALS['conf']['admin'], ENT_QUOTES));
-      }
+      $action = &$GLOBALS['fmtTryOnceMore'];
    }
 
-
-
-
+  if (!empty($aname) || !empty($amail) || !empty($atel)) {
+    $deny_reason .= '<br /><br />'."\n";
+    $deny_reason .= sprintf($action,
+           '&#034;'.htmlentities($aname, ENT_QUOTES, $GLOBALS['chset']).'&#034; &#060;'.htmlentities($amail, ENT_QUOTES, $GLOBALS['chset']).'&#062; , tel: '.htmlentities($atel, ENT_QUOTES, $GLOBALS['chset']));
+  }
 
    if (!headers_sent()) {
       switch ($http_status) {
@@ -603,32 +598,6 @@ if ( $int == NULL or $h < $min or $h > $max) {
 } else {
    return TRUE;
 }
-}
-
-function getSQLVal ($par)
-{
-$a = getParVal ($par);
-if ( $a == NULL ) {
-   return 'NULL';
-} else {
-   return "'$a'";
-}
-}
-
-function getParVal ($par)
-{
-$a = explode('&', $_SERVER['QUERY_STRING']);
-$i = 0; $j = 0;
-$retval = FALSE;
-while ($i < count($a)) {
-      $b = split('=', $a[$i]);
-      if (!strcasecmp($par, htmlspecialchars(urldecode($b[0])))) {
-      $rrr[] = htmlspecialchars(urldecode($b[1]));
-      }
-      $i++;
-}
-$retval = implode (',', (array)$rrr);
-return $retval;
 }
 
 function getMonth ($m)
@@ -893,7 +862,6 @@ $ret = str_replace("\x08", '\b', $ret);
 $ret = str_replace("\x0a", '\n', $ret);
 $ret = str_replace("\x0d", '\r', $ret);
 $ret = str_replace("\x1a", '\Z', $ret);
-/* $ret = htmlspecialchars($ret); */
 return $ret;
 }
 

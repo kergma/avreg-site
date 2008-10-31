@@ -26,10 +26,10 @@ if ( FALSE !== $ua ) {
      else
         print '<p class="HiLiteErr">'.
               sprintf($fmtDuplicateUserHost, 
-              stripslashes (htmlspecialchars($u_name)),
-              stripslashes (htmlspecialchars($u_host)),
+              stripslashes (htmlspecialchars($u_name, ENT_QUOTES, $chset)),
+              stripslashes (htmlspecialchars($u_host, ENT_QUOTES, $chset)),
               $ui['USER'], $ui['HOST'],
-              stripslashes (htmlspecialchars($ui['LONGNAME'])))
+              stripslashes (htmlspecialchars($ui['LONGNAME'], ENT_QUOTES, $chset)))
               . '</p>' ."\n";
    } else
          $good++;

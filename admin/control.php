@@ -22,14 +22,14 @@ function print_messages()
 
    $logfile = popen($_cmd.' 2>&1', 'r');
    print '<div class="tty">'."\n";
-   print '<span style="color: #66FF00;">' . '$ '. htmlspecialchars(str_replace(array('/bin/','/usr'),'',$_cmd),ENT_QUOTES) . '</span><br>'. "\n";
+   print '<span style="color: #66FF00;">' . '$ '. htmlspecialchars(str_replace(array('/bin/','/usr'),'',$_cmd),ENT_QUOTES, $chset) . '</span><br>'. "\n";
    while (!feof ($logfile))
    {
       $buffer = fgets($logfile, 1024);
 		if ( preg_match('/crit|err|fail|invalid|bad|unable|warn|notice|could`t|cannot|can`t|not|duplicate|reset|reject|drop|unsupport/i', $buffer) )
-			print '<font color="#FFFF99">'.htmlspecialchars($buffer,ENT_QUOTES).'</font><br>';
+			print '<font color="#FFFF99">'.htmlspecialchars($buffer,ENT_QUOTES, $chset).'</font><br>';
 		else
-			print htmlspecialchars($buffer,ENT_QUOTES).'<br>';
+		    print htmlspecialchars($buffer,ENT_QUOTES, $chset).'<br>';
 	}
 	pclose($logfile);
 	print '</div><br />'."\n";
