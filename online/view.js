@@ -123,7 +123,7 @@ function brout(win_nr, win_div, win_geo) {
       amc.width = win_geo.cam_w;
       amc.height = win_geo.cam_h;
       win_div.get(0).appendChild(amc);
-      amc.codeBase = "AMC.cab#Version=5,2,13,12";
+      amc.codeBase = "AMC.cab#Version=5,4,17,11";
       amc.classid = "clsid:745395C8-D0E1-4227-8586-624CA9A10A8D";
       amc.UIMode = "none";
       amc.ShowToolbar = false;
