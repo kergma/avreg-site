@@ -80,7 +80,7 @@ switch ( $parname )
                    /* 2.6 kernel */
                    $all_v4l_devs = glob('/dev/video[0-9]*');
                    if ( FALSE === $all_v4l_devs ) {
-                       $ret = '<p style="color:"'.$GLOBALS['error_color'].';">'. $GLOBALS['notVidDevs'] .'</p>'."\n";
+                       $ret = '<p style="color:'.$GLOBALS['error_color'].';">'. $GLOBALS['notVidDevs'] .'</p>'."\n";
                        break; 
                    }
 
@@ -91,18 +91,20 @@ switch ( $parname )
                    }
                    sort($all_v4l_devs_nrs, SORT_NUMERIC);
 
-                   if ( isset($GLOBALS['conf']['v4loop_start_nr']) ) 
-                       $_v4loop_start_nr = (int)$GLOBALS['conf']['v4loop_start_nr'];
-                   else
-                       $_v4loop_start_nr = 15; /* считаем что vloopback загружен начиная с dev_offset=15 */
+                   if ( isset($GLOBALS['conf']['v4loop-dev-offset']) ) 
+                       $_v4loop_dev_offset = (int)$GLOBALS['conf']['v4loop-dev-offset'];
+                   else {
+                       $ret = '<p style="color:'.$GLOBALS['error_color'].';">not defined "v4loop-dev-offset"</p>'."\n";
+                       break;
+                   }
                    $c=0;
                    foreach ($all_v4l_devs_nrs as $_dev_nr) {
                        $c++;
                        if ( $dev_code === 1  /* v4l capturing dev */ ) {
-                           if ( $_dev_nr < $_v4loop_start_nr)
+                           if ( $_dev_nr < $_v4loop_dev_offset)
                                $viddev_nums[] = $_dev_nr;
                        } else /* v4l pipes */ {
-                           if ( $c % 2 /*через одного */ && $_dev_nr >= $_v4loop_start_nr)
+                           if ( $c % 2 /*через одного */ && $_dev_nr >= $_v4loop_dev_offset)
                                $viddev_nums[] = $_dev_nr;
                        }
                    }
