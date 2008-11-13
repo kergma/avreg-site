@@ -12,14 +12,15 @@ function getmacs()
 
 echo '<h1>' . sprintf($r_key, $named) . '</h1>' ."\n";
 
-echo '<h2>' . sprintf($r_key_state,$conf['key']) . '</h2>' ."\n";
-clearstatcache();
-
-if ( empty($conf['key']) || !file_exists($conf['key']) ) {
+if ( !isset($conf['key']) || empty($conf['key']) ) {
+  echo '<div class="error">key file not defined, see "key" param in avreg.conf</div>'."\n";
+} else if ( !file_exists($conf['key']) ) {
   echo '<div class="error">'.sprintf($key_not_found,$conf['key']).'</div>'."\n";
 } else if ( !is_readable($conf['key']) ) {
   echo '<div class="error">'.sprintf($key_not_rd,$conf['key']).'</div>'."\n";
 } else {
+  echo '<h2>' . sprintf($r_key_state,$conf['key']) . '</h2>' ."\n";
+  clearstatcache();
   $keyfile = fopen($conf['key'], 'r');
   if (false === $keyfile)
       die();
