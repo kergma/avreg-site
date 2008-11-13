@@ -268,12 +268,9 @@ if (isset($_COOKIE))
 	<?php
 	print '<th class="query" valign="bottom">'.$strTimeMode.'&nbsp;<a href="javascript:void(0);" onclick="TimeModeHelp();"><sup>help</sup></a></th>'."\n";
 	?>
-	<th class="query" valign="bottom"><?php echo $strYear; ?></th>
-	<th class="query" valign="bottom"><?php echo $strMonth; ?></th>
-	<th class="query" valign="bottom"><?php echo $strDay; ?></th>
+	<th class="query" valign="bottom"><?php echo "$strYear / $strMonth / $strDay"; ?></th>
 	<th class="query" valign="bottom"><?php echo $strDayOfWeek; ?>&nbsp;<a href="javascript:void(0);" onclick="TimeModeHelp2();"><sup>help</sup></a></th>
-	<th class="query" valign="bottom"><?php echo $strHour; ?></th>
-	<th class="query" valign="bottom"><?php echo $strMinute; ?></th>
+	<th class="query" valign="bottom"><?php echo "$strHour:$strMinute"; ?></th>
 	<th class="query" valign="bottom"><?php echo $strFilter; ?>&nbsp;<a href="javascript:void(0);" onclick="FilterHelp();"><sup>help</sup></a></th>
 	<th class="query" valign="bottom"><?php echo $strOptions; ?></th>
 	<th class="query" valign="bottom"><?php echo $strAction; ?>&nbsp;<a href="javascript:void(0);" onclick="ActionHelp();"><sup>help</sup></a></th>
@@ -290,33 +287,28 @@ if (isset($_COOKIE))
 <br><br>
 <input type="radio" name="timemode" value="2" onclick="swtch_timemode();"><?php echo $strBreak; ?>
 </td>
-<td align="left">
-<?php print getSelectHtml('year1', $year_array, FALSE, 1, 0, $tm1[5]+1900, FALSE, FALSE); ?>
-<br>
-<?php print getSelectHtml('year2', $year_array, FALSE, 1, 0, $tm2[5]+1900, FALSE, FALSE); ?>
-</td>
-<td align="left">
-<?php print getSelectHtml('month1', $month_array, FALSE, 1, 1, $month_array[$tm1[4]], FALSE, FALSE); ?>
-<br>
-<?php print getSelectHtml('month2', $month_array, FALSE, 1, 1, $month_array[$tm2[4]], FALSE, FALSE); ?>
-</td>
-<td align="left">
-<?php print getSelectHtml('day1', $day_array, FALSE, 1, 1, $tm1[3], FALSE, FALSE); ?>
-<br>
-<?php print getSelectHtml('day2', $day_array, FALSE, 1, 1, $tm2[3], FALSE, FALSE); ?>
+<td align="left" nowrap>
+<?php
+print getSelectHtml('year1', $year_array, FALSE, 1, 0, $tm1[5]-100, FALSE, FALSE);
+print getSelectHtml('month1', $month_array, FALSE, 1, 1, $month_array[$tm1[4]], FALSE, FALSE);
+print getSelectHtml('day1', $day_array, FALSE, 1, 1, $tm1[3], FALSE, FALSE);
+print '<br /><br />'."\n";
+print getSelectHtml('year2', $year_array, FALSE, 1, 0, $tm2[5]-100, FALSE, FALSE);
+print getSelectHtml('month2', $month_array, FALSE, 1, 1, $month_array[$tm2[4]], FALSE, FALSE);
+print getSelectHtml('day2', $day_array, FALSE, 1, 1, $tm2[3], FALSE, FALSE);
+?>
 </td>
 <td align="center">
 <?php print getSelectHtml('dayofweek[]', $day_of_week, TRUE, 7, 0, '0,1,2,3,4,5,6', FALSE, FALSE); ?>
 </td>
-<td align="left">
-<?php print getSelectHtml('hour1', $hour_array, FALSE, 1, 0, $tm1[2], FALSE, FALSE); ?>
-<br>
-<?php print getSelectHtml('hour2', $hour_array, FALSE, 1, 0, $tm2[2], FALSE, FALSE); ?>
-</td>
-<td align="left">
-<?php print getSelectHtml('minute1', $minute_array, FALSE, 1, 0, $min1, FALSE, FALSE); ?>
-<br>
-<?php print getSelectHtml('minute2', $minute_array, FALSE, 1, 0, $min2, FALSE, FALSE); ?>
+<td align="left" nowrap>
+<?php
+print getSelectHtml('hour1', $hour_array, FALSE, 1, 0, $tm1[2], FALSE, FALSE);
+print getSelectHtml('minute1', $minute_array, FALSE, 1, 0, $min1, FALSE, FALSE);
+print '<br /><br />'."\n";
+print getSelectHtml('hour2', $hour_array, FALSE, 1, 0, $tm2[2], FALSE, FALSE);
+print getSelectHtml('minute2', $minute_array, FALSE, 1, 0, $min2, FALSE, FALSE);
+?>
 </td>
 <td>
 <?php print getSelectByAssocAr('filter[]', $env_id_ar, TRUE, 7, 1, $filter_sel, FALSE, FALSE); ?>
@@ -324,10 +316,8 @@ if (isset($_COOKIE))
 <td>
 <?php
 print $strScale.'<br>'.getSelectHtml('scale', $scale_array, FALSE, 1, 0, $scale_sel, TRUE, FALSE,$strScaleTitle);
-if (false !== strpos($_SERVER['HTTP_USER_AGENT'],'MSIE')) {
 print '<br><hr size="1" noshade>';
 print $strEmbdedVideo.'&nbsp;&nbsp;<input type="checkbox" '.$embed_video_sel.' name="embed_video" id="embed_video" title="'.$str_embed_Title.'">'."\n";
-}
 ?>
 </td>
 <td>

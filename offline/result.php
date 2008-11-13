@@ -74,8 +74,8 @@ if (!isset ($cams) || !isset ($filter))
 	/* Performing new SQL query */
 	require ('../lib/my_conn.inc.php');
 	if ( isset($timemode) && $timemode == 1) {
-		$timebegin = sprintf('%04u-%02u-%02u %02u:%02u:00',$year_array[$year1],$month1,$day1,$hour1,$minute_array[$minute1]);
-		$timeend   = sprintf('%04u-%02u-%02u %02u:%02u:59',$year_array[$year2],$month2,$day2,$hour2,$minute_array[$minute2]);
+		$timebegin = sprintf('20%02s-%02u-%02u %02u:%02u:00',$year_array[$year1],$month1,$day1,$hour1,$minute_array[$minute1]);
+		$timeend   = sprintf('20%02s-%02u-%02u %02u:%02u:59',$year_array[$year2],$month2,$day2,$hour2,$minute_array[$minute2]);
 		$query = 'select UNIX_TIMESTAMP(DT1) as UDT1, UNIX_TIMESTAMP(DT2) as UDT2,'.
              ' CAM_NR,EVT_ID,SER_NR,FILESZ_KB,FRAMES,U16_1,U16_2,EVT_CONT from EVENTS where '.
 			 ' ( (DT1 between \''.$timebegin.'\' and \''.$timeend.'\') or (DT2 between \''.$timebegin.'\' and \''.$timeend.'\') ) '.
@@ -84,8 +84,8 @@ if (!isset ($cams) || !isset ($filter))
 			 ' order by DT1 '.
 			 " limit $row_start, $row_max";
 	} else {
-		$timebegin = sprintf('%04u-%02u-%02u 0:0:0',$year_array[$year1],$month1,$day1);
-		$timeend   = sprintf('%04u-%02u-%02u 23:59:59',$year_array[$year2],$month2,$day2);
+		$timebegin = sprintf('20%02s-%02u-%02u 0:0:0',$year_array[$year1],$month1,$day1);
+		$timeend   = sprintf('20%02s-%02u-%02u 23:59:59',$year_array[$year2],$month2,$day2);
         $min1=&$minute_array[$minute1];
         $min2=&$minute_array[$minute2];
 		$time_in_day_begin = sprintf('%02u:%02u:00',$hour1,$min1);

@@ -1,5 +1,7 @@
 <?php
 $include_javascripts = array('offline/view.js');
+$link_javascripts=array('lib/js/jquery-1.2.6.min.js');
+$ie6_quirks_mode = true;
 $body_style='margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; ';
 require ('../head.inc.php');
 require_once ('../lib/my_conn.inc.php');
@@ -21,8 +23,6 @@ document.onmousemove=positiontip;
  onmouseover="ddrivetip();" onmouseout="hideddrivetip();">
 
 <?php
-
-
 if (!isset ($src) || empty($src))
 {
 	print '<h4 align="center"><br><br><br><br><br><br>'.$strViewFrame.'</h4>'."\n";
