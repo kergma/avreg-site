@@ -396,8 +396,8 @@ $(document).ready( function() {
 	    ' border-left: '+BorderLeft+'px solid  #ffa500;' +
 	    ' border-bottom: '+BorderBottom+'px solid  #ffa500;' +
 	    ' border-right: '+BorderRight+'px solid  #ffa500;' + 
-        ' z-index=-'+win_nr+';'+
-        '"></div>');
+        ' z-index=-' + win_nr + ';' +
+        '"><\/div>');
      win_div.appendTo(CANVAS);
 
      if (PrintCamNames) {
