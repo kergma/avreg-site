@@ -1,4 +1,5 @@
-var PLAYER;
+// document.write('[ ' + window.screenX + ',' + window.screenY + ' ' + window.innerWidth + ',' + window.innerHeight + ' ]');
+
 var g_camname;
 var g_fname;
 var g_fsize;
@@ -115,35 +116,9 @@ function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, 
 
            var embed = ie?document.all['embed']:document.getElementById('embed');
            if (embed==null) {
-               if (ie)
-                  cdiv.innerHTML =
-'<OBJECT classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921"'+
-'  codebase="http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab#Version=0,8,6,0"'+
-'  width="640"'+
-'  height="480"'+
-'  id="vlc"'+
-'  events="True">'+
-'  <param name="MRL" value="" \/>'+
-'  <param name="ShowDisplay" value="True" \/>'+
-'  <param name="AutoLoop" value="False" \/>'+
-'  <param name="AutoPlay" value="False" \/>'+
-'  <param name="Volume" value="50" \/>'+
-'  <param name="StartTime" value="0" \/>'+
-'<\/OBJECT>';
-              else
-                 cdiv.innerHTML =
-'<EMBED pluginspage="http://www.videolan.org"'+
-'  type="application/x-vlc-plugin"'+
-'  progid="VideoLAN.VLCPlugin.2"'+
-'  width="640"'+
-'  height="480"'+
-'  id="player" name="vlc"'+
-'  ><NOEMBED>See http://downloads.videolan.org/pub/videolan/vlc/lastest/win32/<\/NOEMBED>'+
-'<\/EMBED>';
-//              cdiv.innerHTML = '<embed id="embed" src="'+link+'" ' + scaletext + '  xonload="obj_loaded(this);">'+
+              cdiv.innerHTML = '<embed id="embed" src="'+link+'" ' + scaletext + '  onload="obj_loaded(this);">'+
+  '<NOEMBED>NOEMBED<\/NOEMBED>';
              // alert(cdiv.innerHTML);
-              PLAYER=$('#vlc');
-              alert(PLAYER)
            } else {
              if (scale_factor.length > 0) {
                   embed.src='';
@@ -217,8 +192,3 @@ function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, 
    
    return true;
 }
-
-$(document).ready( function() {
-  // alert("doc ready");
-});
-
