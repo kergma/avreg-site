@@ -26,7 +26,14 @@ else
 */
 require($wwwdir . 'lib/grab_globals.lib.php');
 
-function confparse($section=NULL, $path='/etc/avreg/avreg.conf')
+function tohtml($var)
+{
+      print '<div class="dump"><pre class="dump">'."\n";
+      var_dump($var);
+      print '</pre></div>'."\n";
+}
+
+function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf')
 {
    $confile = fopen($path, 'r');
    if (false === $confile)
@@ -42,8 +49,8 @@ function confparse($section=NULL, $path='/etc/avreg/avreg.conf')
       if (empty($line)) 
          continue;
    
-      if ( preg_match('/^[;#]/', $line) )
-         continue;
+      if ( preg_match('/^\s*[;#]/', $line) )
+         continue; /* skip comments */
    
       if ( preg_match('/^([^\s=]+)[\s=]*\{$/', $line, $matches)) {
          # begin section
@@ -61,44 +68,71 @@ function confparse($section=NULL, $path='/etc/avreg/avreg.conf')
       if ($skip_section)
          continue;
 
-      if ( preg_match('/^([^\s=]+)[\s="\']*([^"\']*)["\']*$/',$line, $matches))
-      {
-         $param=$matches[1];
-         $value=$matches[2];
-         // нашли параметр
-         // echo ("file $path:$linenr => $param = \"$value\"\n");
-         if ( 0 === strcasecmp($param, 'include') ) {
+      if ( 1 !== preg_match("/^[\s]*([^\s#;=]+)[\s=]+([\"']?)(.*?)(?<!\\\)([\"']?)\s*$/Su",$line, $matches)) {
+         $res = false; break;
+      }
+      // var_dump($matches);
+
+      $start_quote = &$matches[2];
+      $end_quote = &$matches[4];
+      if ( $start_quote !== $end_quote ) {
+         $res = false; break;
+      }
+
+      $param = &$matches[1];
+      $value = stripslashes($matches[3]);
+
+      // нашли параметр
+      // echo ("file $path:$linenr => $param = \"$value\"\n");
+      if ( 0 === strcasecmp($param, 'include') ) {
          // вложенный файл 
-         $res = confparse($section, $value);
+         $res = confparse($_conf, $section, $value);
          if (!$res) {
             echo "ERROR INCLUDE FILE \"$value\" from $path:$linenr\n";
-            $res=false;
-            break;
+            $res=false;  break;
          } else {
             $ret_array = array_merge($ret_array, $res);
          }
+      } else {
+         /* обычное параметр = значение */
+         /* проверяем парамет - а мож это массив */
+         if ( 1 === preg_match("/^([^\[]+)\[([\"']?)([^\]]*?)([\"']?)\]$/Su",$param,$match2) ) {
+            /* наш параметр -- массив */
+            $param = $match2[1];
+            $key = $match2[3];
+            $vt = gettype($_conf[$param]);
+            if ( 0 !== strcasecmp($vt, 'array')) {
+               $res=false;  break;
+            }
+            $ret_array[$param][$key] = $value;
          } else {
+            /* простое параметр, не массив */
+            /* пробуем установить тип значения с учётом дефолтного $conf[param] */
+            $vt = gettype($_conf[$param]);
+            if ( $vt !== 'NULL' && !settype($value, $vt) ) {
+               $res = false; break;
+            }
             $ret_array[$param] = $value;
          }
-      } else { 
-         // invalid pair
-         echo ("INVALID LINE in file $path:$linenr => \"$line\"\n");
-         $res=false;
-         break;
       }
-
-
    } // while eof
-   
+
    fclose($confile);
-   return ($res)?$ret_array:$res;
+
+   if ( $res ) {
+      return $ret_array;
+   } else {
+      // invalid pair param = value
+      echo ("INVALID LINE in file $path:$linenr => [ $line ]\n");
+      return false;
+   }
 }
 
-$res=confparse('avreg-site');
+$res=confparse($conf, 'avreg-site');
 if (!$res) {
-die();
-} else 
-$conf = array_merge($conf, $res);
+   die();
+} else
+   $conf = array_merge($conf, $res);
 
 
 unset($AVREG_PROFILE);
@@ -116,10 +150,6 @@ if ( strcasecmp($matches[1],'avreg') != 0 ) {
    }
 }
 }
-
-// tohtml($conf);
-
-
 
 $sip = $_SERVER['SERVER_ADDR'];
 if ( $_SERVER['SERVER_ADDR'] === $_SERVER['SERVER_NAME'] )
@@ -440,13 +470,6 @@ function MYDIE($errstr='internal error', $file='', $line='')
          print '</body>'."\n";
    print '</html>'."\n";
       exit(1);
-}
-
-function tohtml($var)
-{
-      print '<div class="dump"><pre class="dump">'."\n";
-      var_dump($var);
-      print '</pre></div>'."\n";
 }
 
 function print_syslog($priority, $message)
