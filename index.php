@@ -100,5 +100,8 @@ print '<br />'.$DEV_FIRMS."\n";
 print '<br /><a href="http://avreg.net/" target="_blank">http://avreg.net</a>'."\n";
 print '</p>'."\n";
 
+if ( $conf['debug'] )
+   tohtml($conf);
+
 require ($wwwdir.'/foot.inc.php');
 ?>
