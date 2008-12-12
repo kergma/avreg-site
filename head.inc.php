@@ -15,7 +15,8 @@ header('Cache-Control: no-store, no-cache, must-revalidate, pre-check=0, post-ch
 header('Pragma: no-cache'); // HTTP/1.0
 // Define the charset to be used
 header('Content-Type: text/html; charset=' . $chset);
-$MSIE = stristr($_SERVER['HTTP_USER_AGENT'], 'msie');
+$MSIE  = stristr($_SERVER['HTTP_USER_AGENT'], 'msie');
+$OPERA = stristr($_SERVER['HTTP_USER_AGENT'], 'opera');
 if ( isset($ie6_quirks_mode) && $ie6_quirks_mode && preg_match('/MSIE\s*6/',$_SERVER['HTTP_USER_AGENT']) )
    print '<?xml version="1.0" encoding="'.$chset.'"?>'."\n";
 print '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'."\n";
@@ -42,13 +43,15 @@ if ( isset($css_links) && is_array($css_links))
 if ( isset($link_javascripts) && is_array($link_javascripts))
    foreach ($link_javascripts as &$__js_link)
       print '<script type="text/javascript" src="'.$conf['prefix'].'/'.$__js_link.'"></script>'."\n";
+if ( $conf['debug'] && ($MSIE || $OPERA) )
+   print '<script type="text/javascript" src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script>'."\n";
 ob_end_flush();
 ?>
 <script type="text/javascript" language="JavaScript1.2">
 <!--
 <?php echo 'var WwwPrefix="\\'.$conf['prefix'].'";' ?>
 
-var MSIE=false;
+var MSIE=false; // FIXME double calc with php
 var GECKO=false;
 var UA = navigator.userAgent.toLowerCase();
 if (UA.indexOf('msie') >=0 )
