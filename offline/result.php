@@ -100,8 +100,9 @@ if (!isset ($cams) || !isset ($filter))
 			 ' order by DT1 '.
 			 " limit $row_start, $row_max";
 	}
-	
-   /* print '<div class="help"  style="font-size:85%">'.$query.'</div>'."\n"; */
+   
+    if ( $conf['debug'] )
+       print '<div class="help"  style="font-size:85%">'.$query.'</div>'."\n";
 	 $result = mysql_query($query) or die('Query failed:`'.mysql_error().'`');
     $num_rows = 0;
     $res_array=array();
@@ -169,8 +170,6 @@ if ( $num_rows > 0 )
 
         if ($CAM_NR !==0 )
         {
-           $full_path = $conf['storage-dir'].'/'.$EVT_CONT;
-           $adr = $conf['prefix'].$conf['media-alias'] .'/'. $EVT_CONT;
 
            $f_duration_str=DeltaTimeHuman($UDT2-$UDT1);
                 
@@ -187,7 +186,7 @@ if ( $num_rows > 0 )
                        $row['U16_2'].'~'.
                        $ftype_str.'~'.
                        $f_duration_str.'~'.
-                       $adr;
+                       $EVT_CONT;
             /*
          print_r($for_js);
          die;
