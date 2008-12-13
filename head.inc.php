@@ -43,14 +43,18 @@ if ( isset($css_links) && is_array($css_links))
 if ( isset($link_javascripts) && is_array($link_javascripts))
    foreach ($link_javascripts as &$__js_link)
       print '<script type="text/javascript" src="'.$conf['prefix'].'/'.$__js_link.'"></script>'."\n";
-if ( $conf['debug'] && ($MSIE || $OPERA) )
-   print '<script type="text/javascript" src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script>'."\n";
+/* if ( $conf['debug'] && ($MSIE || $OPERA) )
+   print '<script type="text/javascript" src="'.$conf['prefix'].'/lib/js/firebug-lite-compressed.js"></script>'."\n";
+ */
 ob_end_flush();
 ?>
 <script type="text/javascript" language="JavaScript1.2">
 <!--
-<?php echo 'var WwwPrefix="\\'.$conf['prefix'].'";' ?>
-
+<?php 
+printf("var StorageDir = '%s';\n", addcslashes($conf['storage-dir'], '\'"/\\'));
+printf("var WwwPrefix = '%s';\n", addcslashes($conf['prefix'], '\'"/\\'));
+printf("var MediaAlias = '%s';\n", addcslashes($conf['media-alias'], '\'"/\\'));
+?>
 var MSIE=false; // FIXME double calc with php
 var GECKO=false;
 var UA = navigator.userAgent.toLowerCase();
