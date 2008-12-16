@@ -16,6 +16,52 @@ if (ie||ns6)
      document.getElementById? document.getElementById('tooltip') : '';
 
 document.onmousemove=positiontip;
+
+<?php
+/* вычисляем протокол доступа к медиа-файлам 
+   на основании адреса клиента и правил в конфиге */
+
+if ( 0 === strpos($_SERVER['SERVER_ADDR'], $_SERVER['REMOTE_ADDR']) ) {
+   /* считаем (?) что такое может быть только для локального клиента */
+   print 'var MediaUrlPref = \'file:\/\/\' + StorageDir + \'\/\';'."\n";
+} else {
+   require_once($wwwdir . 'lib/utils-inet.php');
+   $remote_ip = ip2long($_SERVER['REMOTE_ADDR']);
+   /* удалённый клиент */
+   $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
+
+   if ( $MSIE /* only win */ )
+      $platform = 'win'; 
+   else if ( false !== strpos($ua, 'linux') ||
+      false !== strpos($ua, 'solaris') ||
+      false !== strpos($ua, 'bsd') ||
+      false !== strpos($ua, 'mac os x') )
+      $platform = 'nix';
+   else 
+      $platform = 'other';
+
+   $_done = false;
+   $_ipacl_list = array_keys(&$conf["murl-pre-$platform"]);
+   foreach ( $_ipacl_list as &$_ipacl_str ) {
+      $_ipacl = avreg_inet_network($_ipacl_str);
+      if ( $_ipacl === false ) {
+         /* неправильно задан IP ACL */
+         printf("alert(\"invalid IP ACL [%s] for murl-pre-$platform param (see avreg.conf)\");\n",
+           addcslashes($_ipacl_str, '\'"/\\'));
+         break;
+      }
+      if ( true === avreg_ipv4_cmp( $remote_ip, -1, $_ipacl['addr'],  $_ipacl['mask']) ) {
+         printf('var MediaUrlPref = \'%s/\';'."\n",
+            addcslashes($conf["murl-pre-$platform"][$_ipacl_str], '\'"/\\'));
+         $_done = true;
+         break;
+      }
+   }
+
+   if ( !$_done /* не нашли совпадения по ACL */ )
+      print 'var MediaUrlPref = location.protocol + \'\/\/\' + location.host + WwwPrefix + MediaAlias + \'\/\';'."\n";
+}
+?>
 // -->
 </script>
 
