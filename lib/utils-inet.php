@@ -30,7 +30,7 @@ avreg_inet_network($ip_addr_or_acl=NULL)
 
     if ( 0 === strcasecmp($ip_addr_or_acl, 'localhost') ) {
         $ret['addr_a'] = '127.0.0.1';
-    }  else if ( 0 === strcasecmp($ip_addr_or_acl, 'any') ) {
+    }  else if ( 0 === strcasecmp($ip_addr_or_acl, 'any') || $ip_addr_or_acl === '*' ) {
         $ret['addr_a'] = '0.0.0.0.0'; // INADDR_ANY
         $ret['mask_a'] = '0.0.0.0.0';
         $ret['addr'] = 0; // INADDR_ANY
