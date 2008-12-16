@@ -153,11 +153,23 @@ if ( strcasecmp($matches[1],'avreg') != 0 ) {
 
 $sip = $_SERVER['SERVER_ADDR'];
 if ( $_SERVER['SERVER_ADDR'] === $_SERVER['SERVER_NAME'] )
-$named = $_SERVER['SERVER_ADDR'];
+  $named = $_SERVER['SERVER_ADDR'];
 else
-$named = $_SERVER['SERVER_NAME'];
-
+  $named = $_SERVER['SERVER_NAME'];
 $localip = ip2long($sip);
+
+$ua = strtolower($_SERVER['HTTP_USER_AGENT']);
+$MSIE = $GECKO  = $PRESTO = $WEBKIT = false;
+
+if ( false !== strpos($ua, 'msie') )
+   $MSIE  = true;
+else if ( false !== strpos($ua, 'gecko') )
+   $GECKO = true;
+else if ( false !== strpos($ua, 'presto') )
+   $PRESTO = true;
+else if ( false !== strpos($ua, 'webkit') || false !== strpos($ua, 'khtml') )
+   $WEBKIT = true;
+
 
 $login_user = 'unknown';
 $login_user_name = 'unknown';
@@ -199,9 +211,10 @@ if (isset($lang_file)) {
 if (file_exists ($lang_module_name2))
    require ($lang_module_name2);
 
-$remote_addr = $_SERVER['REMOTE_ADDR'];
-if ( $remote_addr === '127.0.0.1' )
-$remote_addr = 'localhost';
+if ( $_SERVER['REMOTE_ADDR'] === '127.0.0.1' ) 
+   $remote_addr = 'localhost';
+else
+   $remote_addr = &$_SERVER['REMOTE_ADDR'];
 
 if (file_exists('/etc/linuxdvr-release')) {
 $LDVR_VER=@file('/etc/linuxdvr-release');
@@ -229,7 +242,7 @@ $left_bgcolor = '#D0DCE0';
 $tabletag = '<table cellspacing="0" border="1" cellpadding="2" align="center">';
 
 $patternIP='[1-9]\d{1,2}\.\d{1,3}\.\d{1,3}\.\d{1,3}';
-$patternAllowedIP='/^('.$patternIP.'|any|localhost)$/';
+$patternAllowedIP='/^('.$patternIP.'|any|localhost|*)$/';
 $patternUser='/^[A-Za-z0-9_\-]{4,16}$/';
 $patternPasswd='/^[A-Za-z0-9_\-]{0,16}$/';
 

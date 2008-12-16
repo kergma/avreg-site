@@ -15,8 +15,6 @@ header('Cache-Control: no-store, no-cache, must-revalidate, pre-check=0, post-ch
 header('Pragma: no-cache'); // HTTP/1.0
 // Define the charset to be used
 header('Content-Type: text/html; charset=' . $chset);
-$MSIE  = stristr($_SERVER['HTTP_USER_AGENT'], 'msie');
-$OPERA = stristr($_SERVER['HTTP_USER_AGENT'], 'opera');
 if ( isset($ie6_quirks_mode) && $ie6_quirks_mode && preg_match('/MSIE\s*6/',$_SERVER['HTTP_USER_AGENT']) )
    print '<?xml version="1.0" encoding="'.$chset.'"?>'."\n";
 print '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'."\n";
