@@ -56,6 +56,11 @@ function ActionHelp()
 	alert("<?php echo $strActionHelp; ?>");
 }
 
+function OptionHelp()
+{
+	alert("<?php echo $strOptionHelp; ?>");
+}
+
 function get_links_array()
 {
    var img_link_array = window.parent.frames['result'].document.links; //getElementsByName('jpeg');
@@ -272,7 +277,7 @@ if (isset($_COOKIE))
 	<th class="query" valign="bottom"><?php echo $strDayOfWeek; ?>&nbsp;<a href="javascript:void(0);" onclick="TimeModeHelp2();"><sup>help</sup></a></th>
 	<th class="query" valign="bottom"><?php echo "$strHour:$strMinute"; ?></th>
 	<th class="query" valign="bottom"><?php echo $strFilter; ?>&nbsp;<a href="javascript:void(0);" onclick="FilterHelp();"><sup>help</sup></a></th>
-	<th class="query" valign="bottom"><?php echo $strOptions; ?></th>
+	<th class="query" valign="bottom"><?php echo $strOptions; ?>&nbsp;<a href="javascript:void(0);" onclick="OptionHelp();"><sup>help</sup></a></th>
 	<th class="query" valign="bottom"><?php echo $strAction; ?>&nbsp;<a href="javascript:void(0);" onclick="ActionHelp();"><sup>help</sup></a></th>
 	<th  class="query"  valign="bottom"><a href="<?php echo $conf['prefix']; ?>/" target="_parent"><?php echo $MainPage; ?></a></th>
 </tr>
@@ -289,10 +294,11 @@ if (isset($_COOKIE))
 </td>
 <td align="left" nowrap>
 <?php
+print "$sFromDate<br />\n";
 print getSelectHtml('year1', $year_array, FALSE, 1, 0, $tm1[5]-100, FALSE, FALSE);
 print getSelectHtml('month1', $month_array, FALSE, 1, 1, $month_array[$tm1[4]], FALSE, FALSE);
 print getSelectHtml('day1', $day_array, FALSE, 1, 1, $tm1[3], FALSE, FALSE);
-print '<br /><br />'."\n";
+print "<br /><br />$sToDate<br />\n";
 print getSelectHtml('year2', $year_array, FALSE, 1, 0, $tm2[5]-100, FALSE, FALSE);
 print getSelectHtml('month2', $month_array, FALSE, 1, 1, $month_array[$tm2[4]], FALSE, FALSE);
 print getSelectHtml('day2', $day_array, FALSE, 1, 1, $tm2[3], FALSE, FALSE);
@@ -303,9 +309,10 @@ print getSelectHtml('day2', $day_array, FALSE, 1, 1, $tm2[3], FALSE, FALSE);
 </td>
 <td align="left" nowrap>
 <?php
+print "$sFromTime<br />\n";
 print getSelectHtml('hour1', $hour_array, FALSE, 1, 0, $tm1[2], FALSE, FALSE);
 print getSelectHtml('minute1', $minute_array, FALSE, 1, 0, $min1, FALSE, FALSE);
-print '<br /><br />'."\n";
+print "<br /><br />$sToTime<br />\n";
 print getSelectHtml('hour2', $hour_array, FALSE, 1, 0, $tm2[2], FALSE, FALSE);
 print getSelectHtml('minute2', $minute_array, FALSE, 1, 0, $min2, FALSE, FALSE);
 ?>
@@ -315,14 +322,14 @@ print getSelectHtml('minute2', $minute_array, FALSE, 1, 0, $min2, FALSE, FALSE);
 </td>
 <td>
 <?php
-print $strScale.'<br>'.getSelectHtml('scale', $scale_array, FALSE, 1, 0, $scale_sel, TRUE, FALSE,$strScaleTitle);
+print $strScale.'<br>'.getSelectHtml('scale', $scale_array, FALSE, 1, 0, $scale_sel, TRUE, FALSE, $strScaleTitle);
 print '<br><hr size="1" noshade>';
 print $strEmbdedVideo.'&nbsp;&nbsp;<input type="checkbox" '.$embed_video_sel.' name="embed_video" id="embed_video" title="'.$str_embed_Title.'">'."\n";
 ?>
 </td>
 <td>
-<br><?php print getSelectHtmlByName('row_max', $row_max_ar, FALSE, 1, 0, $row_max_sel, FALSE, FALSE,NULL, $str_row_maxTitle); ?>
-<input type="submit" name="btOk" value="<?php echo $strDisplay; ?>">
+<?php print getSelectHtmlByName('row_max', $row_max_ar, FALSE, 1, 0, $row_max_sel, FALSE, FALSE,NULL, $str_row_maxTitle); ?>
+<br><input type="submit" name="btOk" value="<?php echo $strDisplay; ?>">
 <br><br>
 <input type="reset" name="btClear" value="<?php echo $strReset; ?>">
 </td>
