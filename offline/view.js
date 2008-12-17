@@ -5,6 +5,7 @@ var g_fname;
 var g_fsize;
 var g_fdate1;
 var g_fdate2;
+var g_player;
 
 function obj_loaded(e) {
    var PlayTimer = window.parent.frames['query'].PlayTimer;
@@ -83,8 +84,8 @@ function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, 
    g_fdate2 = Date2.toLocaleString();
    g_fname = fname.substr(fname.lastIndexOf('/')+1);
    g_fsize = fsize;
-   
-   var link = location.protocol + '//' + location.host + encodeURI(fname);
+
+   var link = MediaUrlPref + encodeURI(fname);
 
    g_camname = cams.options[cam_nr-1].text;
    
@@ -114,25 +115,27 @@ function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, 
            if (scale_factor.length > 0)
               var scaletext = ' width="'+ scale_factor + '%" height="'+ scale_factor + '%"';
 
-           var embed = ie?document.all['embed']:document.getElementById('embed');
-           if (embed==null) {
-              cdiv.innerHTML = '<embed id="embed" src="'+link+'" ' + scaletext + '  onload="obj_loaded(this);">'+
-  '<NOEMBED>NOEMBED<\/NOEMBED>';
-             // alert(cdiv.innerHTML);
+           g_player = ie?document.all['Player']:document.getElementById('Player');
+           if (typeof(g_player) == 'undefined' || g_player == null /* always if clear_innerHTML(cdiv) before */) {
+              cdiv.innerHTML = '<embed id="Player" src="'+link+'" ' +
+                   scaletext +
+                   '  onload="obj_loaded(this);">' +
+                   ' <NOEMBED>ERROR: EMBED TAG IS NOT SUPPORTED<\/NOEMBED>';
            } else {
+             alert('its impossible, Player obj ' + g_player);
              if (scale_factor.length > 0) {
-                  embed.src='';
-                  embed.width = parseInt(cdiv.clientWidth*(scale_factor/100));
-                  embed.height = parseInt(cdiv.clientHeight*(scale_factor/100));
+                  g_player.URL='';
+                  g_player.width = parseInt(cdiv.clientWidth*(scale_factor/100));
+                  g_player.height = parseInt(cdiv.clientHeight*(scale_factor/100));
                   // alert(jpeg.width + ' x ' + jpeg.height);
              } else {
-                 if (embed.getAttribute('width')) {
-                    embed.src='';
-                    embed.removeAttribute('width');
-                    embed.removeAttribute('height');
+                 if (g_player.getAttribute('width')) {
+                    g_player.URL='';
+                    g_player.removeAttribute('width');
+                    g_player.removeAttribute('height');
                  }
              }
-             embed.src=link;
+             g_player.src=link;
            }
     } else {
         cdiv.innerHTML = '<div align="center">\n' +
