@@ -22,7 +22,9 @@ document.onmousemove=positiontip;
    на основании адреса клиента и правил в конфиге */
 
 if ( 0 === strpos($_SERVER['SERVER_ADDR'], $_SERVER['REMOTE_ADDR']) ) {
-   /* считаем (?) что такое может быть только для локального клиента */
+   /* считаем (?) что такое может быть только для локального клиента 
+    * а вот и не так, также будет если проксик на том же сервере 
+    * и клиенты через него тупо(в той же подсети) работают */
    print 'var MediaUrlPref = \'file:\/\/\' + StorageDir + \'\/\';'."\n";
 } else {
    require_once($wwwdir . 'lib/utils-inet.php');
@@ -30,7 +32,7 @@ if ( 0 === strpos($_SERVER['SERVER_ADDR'], $_SERVER['REMOTE_ADDR']) ) {
    /* удалённый клиент */
    $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
 
-   if ( $MSIE /* only win */ )
+   if ( $MSIE /* only win */ || false !== strpos($ua, 'windows') )
       $platform = 'win'; 
    else if ( false !== strpos($ua, 'linux') ||
       false !== strpos($ua, 'solaris') ||
