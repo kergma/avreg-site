@@ -5,12 +5,11 @@ DENY($admin_status);
 if (!isset($cmd))
   die('crack?');
 
-if ( !preg_match('/(date$|ifconfig$|netstat)/',
-            $cmd) )
+if ( !preg_match('/(date$|ifconfig$|netstat)/', $cmd) )
     die('crack?');
-            
+
 print '<pre class="tty">'."\n";
-print 'v-serv@root: '.$cmd."\n";
+print 'avreg@root # '.$cmd."\n";
 @passthru($cmd);
 print '</pre>'."\n";
 
