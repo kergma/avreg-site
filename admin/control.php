@@ -115,20 +115,20 @@ if ( isset($cmd) )
 		}
 	} else {
     if ( $cmd == 'start' ) {
- 		print '<p><font size="+1" color="' . $warn_color . '">' . sprintf ($fnmWarnControl,$strRunW) . '</font></p>' ."\n";
+ 		print '<p class="HiLiteBigWarn">' . sprintf ($fnmWarnControl,$strRunW) . '</p>' ."\n";
 	} elseif ( $cmd == 'restart' ) {
-        print '<p><font size="+1" color="' . $error_color . '">' . $mon_exit . '</font></p>' ."\n";
-		print '<p><font size="+1" color="' . $warn_color . '">' . sprintf ($fnmWarnControl,$strRestartW) . '</font></p>' ."\n";
+        print '<p class="HiLiteBigWarn">' . $sViewerRestartWarn . '</p>' ."\n";
+		print '<p class="HiLiteBigWarn">' . sprintf ($fnmWarnControl,$strRestartW) . '</p>' ."\n";
 /*
 	} elseif ( $cmd == 'condrestart' ) {
 		$strwarning = $strCondRestartW;
 */
 	} elseif ( $cmd == 'reload' ) {
-        print '<p><font size="+1" color="' . $warn_color . '">' . $strReloadW.'</font></p>' ."\n";
+        print '<p class="HiLiteBigWarn">' . $strReloadW.'</p>' ."\n";
 	} elseif ( $cmd == 'snapshot' ) {
- 		print '<p><font size="+1" color="' . $warn_color . '">'. $strSnapshotW .'</font></p>' ."\n";
+ 		print '<p class="HiLiteBigWarn">'. $strSnapshotW .'</p>' ."\n";
         } elseif ( $cmd == 'stop' ) {
- 		print '<p><font size="+1" color="' . $warn_color . '">' . sprintf ($fnmWarnControl,$strStopW) .'</font></p>' ."\n";
+ 		print '<p class="HiLiteBigWarn">' . sprintf ($fnmWarnControl,$strStopW) .'</p>' ."\n";
 	} else {
        MYDIE("invalid command");
     }
