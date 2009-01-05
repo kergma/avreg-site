@@ -247,7 +247,6 @@ function change_fs_win_geo(fs_win) {
 } // change_fs_win_geo()
 
 function change_wins_geo() {
-return;
    var base_win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, ROWS_NR, COLS_NR, 1);
    var win_geo;
    var i,tmp_div,win_def,win_nr,win_id;
