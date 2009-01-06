@@ -99,13 +99,15 @@ switch ( $parname )
                    }
                    $c=0;
                    foreach ($all_v4l_devs_nrs as $_dev_nr) {
-                       $c++;
                        if ( $dev_code === 1  /* v4l capturing dev */ ) {
                            if ( $_dev_nr < $_v4loop_dev_offset)
                                $viddev_nums[] = $_dev_nr;
                        } else /* v4l pipes */ {
-                           if ( $c % 2 /*через одного */ && $_dev_nr >= $_v4loop_dev_offset)
-                               $viddev_nums[] = $_dev_nr;
+                          if ( $_dev_nr >= $_v4loop_dev_offset ) {
+                             $c++;
+                             if ( $c % 2 /*через одного */ )
+                                $viddev_nums[] = $_dev_nr;
+                          }
                        }
                    }
 
