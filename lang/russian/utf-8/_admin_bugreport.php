@@ -8,7 +8,7 @@ $bugs_rules = <<<EOD
 <ol>
 <li>Получить/собрать лог-файлы как можно скорее с момента возникновения ошибки.</li>
 <li>Детально и точно описать ситуацию с указанием времени возникновения ошибки.</li>
-<li>Отправить архивом лог-файлов (1) с сопроводительным текстом (2) на e-mail <a href="mailto:avreg-support@mail.ru?subject=bugreport" title="AVReg bug report">avreg-support@mail.ru</a>.</li>
+<li>Отправить архивом лог-файлов (1) с сопроводительным текстом (2) на e-mail <a href="mailto:avreg-support@mail.ru?subject=bugreport" title="AVReg bug report">avreg-support@mail.ru</a></li>
 </ol>
 EOD;
 
