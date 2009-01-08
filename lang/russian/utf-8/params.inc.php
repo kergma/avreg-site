@@ -316,12 +316,23 @@ array(
   'mstatus' => 2,
 ),
 
+array(
+  'name'    => 'text_left',
+  'type'    => 'STRING',
+  'max_len' => 30,
+  'def_val' => NULL,
+  'desc'    => 'Название камеры или зоны наблюдения.',
+  'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_CAM,
+  'cats'    => '3',
+  'subcats' => '3.1;3.2',
+  'mstatus' => 2,
+),
 
 array(
   'name'    => 'cam_type',
   'type'    => 'CHECK',
   'def_val' => 'netcam',
-  'desc'    => '<b>Тип  видеокамеры</b>:<ul><li><b>netcam</b> - сетевые IP-камеры или видеосервера, работающие по протоколу MJPEG или JPEG;</li><li><b>v4l</b> - (video for linux) аналоговые видеокамеры, подключенные через PCI-платы видеозахвата или ТВ-тюнеры.</li></ul>По умолчанию: &quot;<b>netcam</b>&quot;.',
+  'desc'    => '<b>Тип  видеокамеры</b>:<ul><li><b>netcam</b> - сетевые IP-камеры или видеосервера;</li><li><b>v4l</b> - (video for linux) аналоговые видеокамеры, подключенные через PCI-платы видеозахвата или ТВ-тюнеры.</li></ul>По умолчанию: &quot;<b>netcam</b>&quot;.',
   'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3',
   'subcats' => '3.1;3.2',
