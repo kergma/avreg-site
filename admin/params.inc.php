@@ -206,6 +206,7 @@ return $ret;
 /* CorrectParVal($parname, &$parval) */
 function CorrectParVal($parname, $parval)
 {
+   return; /* disable function */
    switch ( $parname )
    {
       case 'text_left':
@@ -217,9 +218,9 @@ function CorrectParVal($parname, $parval)
 function checkExec ( $parname, $parval )
 {
    $ret = '<input type="text" name="fields['.$parname.']" value="'.getBinString($parval).'" size=20 maxlength=200>' . "\n";
-   if ( FALSE === file_exists('/usr/local/sbin/'.$parval) )
-      $ret .= '<br/><p><font color="'.$GLOBALS['error_color'].'">'.$parval.
-                  ' - not found in /usr/local/sbin</font></p>'."\n";
+   if ( FALSE === file_exists($parval) )
+      $ret .= '<br/><p><font color="'.$GLOBALS['error_color'].'&#171;>'.$parval.
+                  '&#187; - could\'t be found.</font></p>'."\n";
    return $ret;
 }
 ?>
