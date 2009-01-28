@@ -17,7 +17,7 @@ function reset_to_list()
 
 <?php
 
-		echo '<h1>' . sprintf($r_cam, $named, $sip) . '</h1>' ."\n";
+echo '<h1>' . sprintf($r_cam, $named, $sip) . '</h1>' ."\n";
 
 if ( isset($cmd) && $cmd == '_ADD_NEW_CAM_' )
 {
@@ -66,7 +66,7 @@ mysql_free_result($result); $result = NULL;
 
 echo '<h2>' . sprintf ($r_cam_addnew, $cam_nr, $named, $sip) . '</h2>' ."\n";
 print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
-print $strCam.': '.'<input type="text" name="cam_text" size=15 maxlength=15 value="Camera '.$cam_nr.'"><br>'."\n";
+print $strNamed.': '.'<input type="text" name="cam_text" size=15 maxlength=15 value="'.$strCam.'_'.$cam_nr.'"><br>'."\n";
 print '<input type="hidden" name="cmd" value="_ADD_NEW_CAM_">'."\n";
 print '<input type="hidden" name="cam_nr" value="'.$cam_nr.'">'."\n";
 print '<br><input type="submit" name="btn" value="'.$l_cam_addnew.'" >'."\n";
