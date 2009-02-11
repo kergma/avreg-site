@@ -56,34 +56,6 @@ if ( isset($_FILES) && is_array($_FILES) )
                }
                break;
 
-               case 'sound_on_first':
-                  $suff = 'sof';
-               case 'sound_on_end':
-                  if ( !isset($suff) )
-                     $suff = 'soe';
-               if ( !$defPAR )
-                  $_val = sprintf('%s/cam%03d_%s.wav', $conf['sounds-dir'], $cam_nr, $suff);
-               else
-                  $_val = sprintf('%s/def_%s.wav', $conf['sounds-dir'], $suff);
-               // сохраняем файл и преобразовываем
-               if ( !move_uploaded_file($uplfile['tmp_name'], $uploadfile) ) {
-                  die(sprintf('<p class="HiLiteErr">Upload file `%s\' error: %s</p>',
-                  $uplfile['name'], $upload_status[$uplfile['error']]));
-               } else {
-                  $sox = sprintf('%s %s -sw %s 2>&1 >/dev/null', 
-                     $conf['sox'], $uploadfile, $_val);
-                  // tohtml($sox);
-                  exec($sox, $output, $retval);
-                  if ( $retval != 0 )
-                  {
-                     echo ('<p class="HiLiteErr">SOUND FILE `'.$uplfile['name'].'\': WAV conversion error:');
-                     if (is_array($output))
-                        foreach ($output as &$line) 
-                           echo '<br />'.$line."\n";
-                     die('</p>');
-                  }
-               }
-               break;
             default:
                MYDIE($_parname.' not supported', __FILE__, __LINE__);
          } // switch (parname)
