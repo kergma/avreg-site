@@ -39,7 +39,7 @@ if ( isset($_FILES) && is_array($_FILES) )
                   die(sprintf('<p class="HiLiteErr">Upload file `%s\' error: %s</p>',
                      $uplfile['name'], $upload_status[$uplfile['error']]));
                } else {
-                  $djpeg = sprintf('%s -grayscale -pnm -outfile %s %s 2>&1 >/dev/null',
+                  $djpeg = sprintf('%s -grayscale -pnm -outfile \'%s\' \'%s\' 2>&1 >/dev/null',
                      $conf['djpeg'], $_val, $uploadfile);
                   // tohtml($djpeg);
                   exec($djpeg, $output, $retval);
