@@ -100,8 +100,8 @@ for ($i = 0; $i < $tot_wc_nr; $i++)
 {
 	list($cam_nr, $_sip, $w_port, $geo, $cam_name) = explode(';', $tot_act_cams_ar[$i]);
 	list($ww,$wh) = explode('x',$geo);
-	if (empty($ww)) $ww=384;
-	if (empty($wh)) $wh=288;
+	if (empty($ww)) $ww=640;
+	if (empty($wh)) $wh=480;
 	$act_wc_nr_ar[$cam_nr]=sprintf('%u;%s;%u;%s', $cam_nr,  $_SERVER['HTTP_HOST'], $w_port, $geo);
     print 'CNAMES['.$i.']="'.$cam_name.'";'."\n";
 }
