@@ -10,6 +10,8 @@ $vid_standarts = array ('PAL (цв.в/к)', 'NTSC (цв.в/к)', 'SECAM (не д
 $strCamType = array('netcam', 'v4l');
 $strNetProto = array('http');
 $strFileFmt = array('jpeg', 'avi/mjpeg', 'avi/mpeg4', 'mov', 'flv');
+
+/* AUDIO
 $str_audio_force_fmt = array(
 'PCM_MULAW',
 'PCM_ALAW',
@@ -26,6 +28,7 @@ $str_audio_save_fmt = array(
 'M4A',
 'MOV',
 );
+*/
 
 $geometry = array(
 '176x144',
@@ -173,6 +176,7 @@ array(
     'help_page'=> $conf['docs-prefix'].'motion-detector.html'
     ),
 
+/* AUDIO
  array(
     'id'=>'5.2',
     'name'=>'аудио',
@@ -190,7 +194,7 @@ array(
     'mstatus'=> 2,
     'help_page'=> NULL,
     ),
-
+*/
 
 array(
     'id'=>'11',
@@ -209,7 +213,7 @@ array(
     'mstatus'=> 2,
     'help_page'=> NULL
     ),
-
+/* AUDIO
 array(
     'id'=>'11.2',
     'name'=>'аудио',
@@ -223,11 +227,12 @@ array(
     'id'=>'11.3',
     'name'=>'видео + аудио',
     'desc'=>'Совместно: видео + аудио',
-    'flags'=>/* $F_BASEPAR | */ $F_IN_DEF | $F_IN_CAM,
+    'flags'=> $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
     'mstatus'=> 2,
     'help_page'=> NULL
     ),
- 
+*/
+
 array(
     'id'=>'15',
     'name'=>'Наблюдение',
@@ -490,6 +495,7 @@ array(
   'mstatus' => 2,
 ),
 
+/*
 array(
   'name'    => 'A.http_get',
   'type'    => 'STRING_200',
@@ -522,6 +528,7 @@ array(
   'subcats' => NULL,
   'mstatus' => 2,
 ),
+*/
 
 array(
   'name'    => 'http_user_agent',
@@ -926,7 +933,7 @@ array(
 ),
 
 
-/* AUDIO */
+/* AUDIO
 array(
   'name'    => 'save_audio',
   'type'    => 'BOOL',
@@ -984,7 +991,7 @@ array(
   'subcats' => NULL,
   'mstatus' => 2,
 ),
-
+*/
 
 array(
   'name'    => 'save_dir_fmt',
