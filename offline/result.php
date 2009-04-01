@@ -96,7 +96,7 @@ if (!isset ($cams) || !isset ($filter))
                         ' and (CAM_NR in (0,'.implode(',', $cams).'))'.
                         ' and (EVT_ID in ('.implode(',', $ftypes).'))'.
             ' and (WEEKDAY(DT1) in ('.implode(',', $dayofweek).') or WEEKDAY(DT2) in ('.implode(',', $dayofweek).')) '.
-            ' and (( TIME(DT1) between \''.$time_in_day_begin.'\') and \''.$time_in_day_end.'\'  or TIME(DT2) between \''.$time_in_day_begin.'\') and \''.$time_in_day_end.'\')) '.
+            ' and (( TIME(DT1) between \''.$time_in_day_begin.'\' and \''.$time_in_day_end.'\'  or TIME(DT2) between \''.$time_in_day_begin.'\' and \''.$time_in_day_end.'\')) '.
                         ' order by DT1 '.
                         " limit $row_start, $row_max";
         }
