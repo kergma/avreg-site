@@ -156,19 +156,8 @@ switch ( $parname )
       case 'V.save_fmt':
                $ret = getSelectHtmlByName('fields['.$parname.']', $GLOBALS['strFileFmt'], FALSE, 1, 0, $parval, TRUE, FALSE);
       break;
-      case 'play-on-first':
-      case 'play-on-end':
-               if (empty($parval) )
-                        $ret = $GLOBALS['strEmpted'] . '<br>';
-               else {
-                        $ret = '<a href="'.$GLOBALS['conf']['prefix'].'/sounds/'.basename($parval).'" target="_blank">'.basename($parval).'</a><br>'."\n";
-         $ret .= $GLOBALS['strDelete'].' &nbsp;&nbsp;<input type="checkbox" name="'.$parname.'_del"><br>'."\n";
-      }
-               $ret .= '<input type="hidden" name="MAX_FILE_SIZE" value="500000">'."\n";
-               $ret .= '<input type="file" name="'.$parname.'" size=20 maxlength=200>'."\n";
-               break;
    case 'input':
-      $ret = getSelectHtml('fields['.$parname.']', array(0,1,2,3), FALSE, 1, 0, $parval, TRUE, FALSE);  
+      $ret = getSelectHtml('fields['.$parname.']', array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15), FALSE, 1, 0, $parval, TRUE, FALSE);
       break;
       case 'jpeg_reconnect':
                $ret = getSelectHtmlByName('fields['.$parname.']', $GLOBALS['Snap_Reconnect_array'], FALSE, 1, 0, $parval, TRUE, FALSE);
@@ -188,13 +177,6 @@ switch ( $parname )
                else
                         $sel = $GLOBALS['flip_type'][$parval-1];
                $ret = getSelectHtml('fields['.$parname.']', $GLOBALS['flip_type'], FALSE, 1, 1, $sel, TRUE, FALSE);
-               break;
-      case 'OnAlarm':
-               if ( $parval == '' )
-                        $sel = '';
-               else
-                        $sel = $GLOBALS['syslog_levels'][$parval];
-               $ret = getSelectHtml('fields['.$parname.']', $GLOBALS['syslog_levels'], FALSE, 1, 0, $sel, TRUE, FALSE);
                break;
       default:
       $ret = '<p><font color="'.$GLOBALS['error_color'].'">'. sprintf($GLOBALS['unknownCheckParams'], $parname) .'</font></p>'."\n";
