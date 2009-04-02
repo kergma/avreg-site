@@ -217,6 +217,11 @@ if ( isset($categories) )
                $b = $max_len?$max_len:6;
                               print '<input type="text" name="fields['.$parname1.']" value="' . $a . '" size=6 maxlength=' .$b .'>';
                               break;
+                        case 'INT%':
+                              $a = ( $val === '' || is_null($val))?'':$val;
+                              $b = $max_len?$max_len:6;
+                              print '<input type="text" name="fields['.$parname1.']" value="' . $a . '" size=6 maxlength=' .$b .'>';
+                              break;
                         case 'STRING':
                               $a = getBinString($val);
                $b = $max_len?$max_len:60;
