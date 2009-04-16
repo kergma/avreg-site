@@ -90,7 +90,7 @@ $Snap_Reconnect_array = array(2000, 1500, 1200, 1000, 900,800,700,600, 500, 400,
 
 $flip_type = array('зеркально', 'вращение 180');
 
-$ScriptMayBeInstalled='Скрипт должен быть <nobr><a href="'.$conf['prefix'].'/admin/systems-conf.php#user_scripts">предварительно установлен &gt;&gt;</a></nobr>';
+$v4l_int_cntrl='<p>Допустимые значения: 0 или &#171;пусто&#187; - не&nbsp;устанавливать или не&nbsp;подстраивать значение этого параметра; или установить значение  [1(мин.)..5(средн.)..9(макс.)].</p>По умолчанию: &#171;<b>пусто</b>&#187; (не&nbsp;подстраивать).';
 
 // $PAR_CATEGORY, $COMMENT, $VIEW_ON_DEF, $VIEW_ON_CAM, $MASTER_STATUS, $HELP_PAGE
 $PAR_GROUPS = array(
@@ -120,7 +120,7 @@ array(
     'mstatus'=> 2,
     'help_page'=> $conf['docs-prefix'].'apps-ipcam-capture.html'
     ),
-    
+
 array(
     'id'=>'3.1.1',
 	 'name'=>'протокол &#171;http://&#187;',
@@ -612,44 +612,10 @@ array(
 ),
 
 array(
-  'name'    => 'brightness',
-  'type'    => 'INT',
-  'def_val' => 5,
-  'desc'    => '<b>Яркость</b>. Мин.: 1, макс.: 9. По умолчанию: <b>5</b> (среднее).',
-  'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
-  'cats'    => '3.2',
-  'subcats' => NULL,
-  'mstatus' => 2,
-),
-
-array(
-  'name'    => 'contrast',
-  'type'    => 'INT',
-  'def_val' => 5,
-  'desc'    => '<b>Контраст</b>. Мин.: 1, макс.: 9.<br />Для плат на Connexant CX2388x оптимально значение 2 или 3 (по нашему мнению)<br />По умолчанию: <b>5</b> (среднее).',
-  'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
-  'cats'    => '3.2',
-  'subcats' => NULL,
-  'mstatus' => 2,
-),
-
-array(
-  'name'    => 'auto_brightness',
-  'type'    => 'BOOL',
-  'def_val' => 0,
-  'desc'    => 'Режим <b>автоматической регулировки яркости</b>.<p>Подстройка осуществляется каждые 5 секунд, только при включенном &#171;<span class="param">brightness_control</span>&#187; и только когда не фиксируется движение.</p>По умолчанию: <b>Выкл</b>.',
-  'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
-  'cats'    => '3.2',
-  'subcats' => NULL,
-  'mstatus' => 2,
-),
-
-
-array(
   'name'    => 'skip_frames',
   'type'    => 'INT',
   'def_val' => 1,
-  'desc'    => '<b>Перед захватом кадра, пропускать это количество кадров</b>.
+  'desc'    => '<b>Пропускать это количество кадров перед захватом кадого кадра</b>.
 <p>Напрямую влияет на <b>скорость (fps) видеозахвата</b>.</p>
 <p><b>Скорость захвата с немультиплексируемых камер</b> (к одному видеодекодеру BT878/SAA71xx/CX2388x подключена только 1 камера) будет равна <b>25/(1+skip_frames)</b>.
 Т.е. skip_frames=0 - fps=25, skip_frames=2 - fps=12, skip_frames=3 - fps=6, и т.д.</p>
@@ -657,6 +623,17 @@ array(
 возникающих из-за сбоев синхронизации видеодекодера при после переключения каналов, <b>настоятельно не&nbsp;рекомендуется устанавливать значение менее чем 3. В этом случае, максимальная скорость: 5-6 fps при 2-х камерах на видеодекодер, 3-4 при 3-х и 2 fps при 4-х</b>.</p>
 По умолчанию: <b>1</b>.',
   'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
+  'cats'    => '3.2',
+  'subcats' => NULL,
+  'mstatus' => 2,
+),
+
+array(
+  'name'    => 'switch_filter',
+  'type'    => 'INT',
+  'def_val' => 10,
+  'desc'    => 'Специальный параметр для режимов мультиплексирования. В сочетании с skip_frames используется для отсеивания &quot;битых&quot; или &quot;дрожащих&quot; кадров в режиме переключения каналов. Мин=1, Макс=20.<br>По умолчанию <b>10</b>.',
+  'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.2',
   'subcats' => NULL,
   'mstatus' => 2,
@@ -674,15 +651,49 @@ array(
 ),
 
 array(
-  'name'    => 'switch_filter',
-  'type'    => 'INT',
-  'def_val' => 10,
-  'desc'    => 'Специальный параметр для режимов мультиплексирования. В сочетании с skip_frames используется для отсеивания &quot;битых&quot; или &quot;дрожащих&quot; кадров в режиме переключения каналов. Мин=1, Макс=20.<br>По умолчанию <b>10</b>.',
-  'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
+  'name'    => 'auto_brightness',
+  'type'    => 'BOOL',
+  'def_val' => 0,
+  'desc'    => 'Режим <b>автоматической регулировки яркости</b>.<p>Подстройка осуществляется каждые 5 секунд, только при включенном &#171;<span class="param">brightness_control</span>&#187; и только когда не фиксируется движение.</p>По умолчанию: <b>Выкл</b>.',
+  'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.2',
   'subcats' => NULL,
   'mstatus' => 2,
 ),
+
+array(
+  'name'    => 'brightness',
+  'type'    => 'INT',
+  'def_val' => NULL,
+  'desc'    => '<b>Яркость</b> ' . $v4l_int_cntrl . ' <br><br>Прим.: другие многочисленные (обычно менее применимые) video4linux-параметры можно устанавливать до запуска демона &#171;'.$conf['daemon-name'].'&#187;, определяя параметры запуска модулей ядра устройств видеозахвата или с помощью таких утилит, как &#171;<span class="cmd">v4lctl</span>&#187;.',
+  'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
+  'cats'    => '3.2',
+  'subcats' => NULL,
+  'mstatus' => 2,
+),
+
+array(
+  'name'    => 'contrast',
+  'type'    => 'INT',
+  'def_val' => NULL,
+  'desc'    => "<b>Контраст</b>. $v4l_int_cntrl",
+  'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
+  'cats'    => '3.2',
+  'subcats' => NULL,
+  'mstatus' => 2,
+),
+
+array(
+  'name'    => 'saturation',
+  'type'    => 'INT',
+  'def_val' => NULL,
+  'desc'    => "<b>Насыщенность цвета</b>. $v4l_int_cntrl",
+  'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
+  'cats'    => '3.2',
+  'subcats' => NULL,
+  'mstatus' => 2,
+),
+
 
 /*
 array(
