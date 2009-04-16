@@ -324,8 +324,8 @@ function avreg_find_user($addr, $mask, $name)
 
 if ( $GLOBALS['conf']['debug'] )
    syslog(LOG_ERR, sprintf('avreg-site: ACL %s %s@%s %s/%s',
-            $_found?"success":"failed",
-            $name, $remote_addr_str,
+            $found?"success":"failed",
+            $name, long2ip($addr),
             $ipacl['addr_a'], $ipacl['mask_a']));
 
    return ($found)?$ui:FALSE;
