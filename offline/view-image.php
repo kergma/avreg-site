@@ -3,6 +3,7 @@ $include_javascripts = array('offline/view.js');
 $link_javascripts=array('lib/js/jquery-1.2.6.min.js');
 $ie6_quirks_mode = true;
 $body_style='margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; ';
+$lang_file = '_offline.php';
 require ('../head.inc.php');
 require_once ('../lib/my_conn.inc.php');
 DENY($arch_status);
@@ -71,9 +72,8 @@ if ( 0 === strpos($_SERVER['SERVER_ADDR'], $_SERVER['REMOTE_ADDR']) ) {
  onmouseover="ddrivetip();" onmouseout="hideddrivetip();">
 
 <?php
-if (!isset ($src) || empty($src))
-{
-	print '<h4 align="center"><br><br><br><br><br><br>'.$strViewFrame.'</h4>'."\n";
+if (!isset ($src) || empty($src)) {
+  print "<div style=\"padding: 50px 30px 5px 30px; font-size: 110%;\">$strViewFrame1</div><div style=\"padding: 5px 30px 30px 30px;  font-size: 110%;\">$strViewFrame2</div>\n";
 } 
 print  '</div>'."\n";
 

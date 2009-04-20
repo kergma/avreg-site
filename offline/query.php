@@ -3,6 +3,7 @@
 $pageTitle = 'strRunQuery';
 $pageBgColor = '#D0DCE0';
 $body_onload='swtch_timemode();';
+$lang_file = '_offline.php';
 require ('../head.inc.php');
 DENY($arch_status);
 require ('../lib/my_conn.inc.php');
@@ -25,8 +26,8 @@ function swtch_timemode() {
       if (!weekday_sel.disabled) 
          weekday_sel.disabled=true;
     } else {
-       if (weekday_sel.disabled) 
-         weekday_sel.disabled=false;     
+       if (weekday_sel.disabled)
+         weekday_sel.disabled=false; 
     }
 }
 

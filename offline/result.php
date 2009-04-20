@@ -22,6 +22,7 @@ $include_javascripts = array('offline/result.js');
 $pageBgColor='#cccccc';
 $body_onload='first_img();';
 $body_style='margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; ';
+$lang_file = '_offline.php';
 require ('../head.inc.php');
 DENY($arch_status);
 ?>
