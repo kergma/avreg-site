@@ -1,7 +1,7 @@
 <?php
 if (isset($_POST)) {
   $expire=time()+5184000;
-  $_pg = dirname($_SERVER['SCRIPT_NAME']) . '/query.php' ;
+  $_pg = dirname($_SERVER['SCRIPT_NAME']) . '/' ;
   if (isset($_POST['cams']))
     setcookie('avreg_cams[]',implode('-',$_POST['cams']),$expire,$_pg);
   if (isset($_POST['filter']))
@@ -104,7 +104,7 @@ if (!isset ($cams) || !isset ($filter))
   
     if ( $conf['debug'] )
       print '<div class="help"  style="font-size:85%">'.$query.'</div>'."\n";
-        $result = mysql_query($query) or die('Query failed:`'.mysql_error().'`');
+    $result = mysql_query($query) or die('Query failed: `'.mysql_error().'`');
     $num_rows = 0;
     $res_array=array();
         while ( $row = mysql_fetch_array($result, MYSQL_ASSOC) )
@@ -122,7 +122,7 @@ if (!isset ($cams) || !isset ($filter))
         if ( $num_rows == 0 && $page == 0 ) {
                 print '<div class="warn"><h3>'.$strNotSavedPict.'</h3></div>'."\n";
         } else {
-        
+
         print '<div class="help" style="text-align:center;">';
         printf($fmtSavedPict,
                   isset($first_savetime)?strftime('%a, %d %b %H:%M',$first_savetime):'?',
@@ -166,16 +166,16 @@ if ( $num_rows > 0 )
         $U16_1 = (int)$row['U16_1'];
         $U16_2 = (int)$row['U16_2'];
         $EVT_CONT = &$row['EVT_CONT'];
-        
+
         $ftype_str = (isset($env_id_ar[$EVT_ID]))?$env_id_ar[$EVT_ID]:'unknown';
 
         if ($CAM_NR !==0 )
         {
 
           $f_duration_str=DeltaTimeHuman($UDT2-$UDT1);
-                
+ 
           /* _cam_nr, _evt_id, _utime1, _utime2, _ser_nr, _fsize, _frames, _u16_1, _u16_2, _ftype_str, _fduration, _fname */
-        
+
           $for_js=$row['CAM_NR'].'~'.
                       $row['EVT_ID'].'~'.
                       $row['UDT1'].'~'.

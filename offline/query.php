@@ -2,7 +2,7 @@
 
 $pageTitle = 'strRunQuery';
 $pageBgColor = '#D0DCE0';
-$body_onload='swtch_timemode();';
+$body_onload='switch_timemode();';
 $lang_file = '_offline.php';
 require ('../head.inc.php');
 DENY($arch_status);
@@ -15,7 +15,7 @@ require ('../lib/my_conn.inc.php');
 var PlayTimer = null;
 var play_direction=0;
 
-function swtch_timemode() {
+function switch_timemode() {
      var tm_radio = ie?
                  document.all['timemode']:
                  document.getElementById('timemode');
@@ -31,34 +31,22 @@ function swtch_timemode() {
     }
 }
 
-function TimeModeHelp()
-{
+function TimeModeHelp(){
 	alert("<?php echo $strTimeModeHelp; ?>");
 }
-
-function TimeModeHelp2()
-{
+function TimeModeHelp2(){
 	alert("<?php echo $strTimeModeHelp2; ?>");
 }
-
-
-function CamChoiseHelp()
-{
+function CamChoiseHelp(){
 	alert("<?php echo $strCamChoiseHelp; ?>");
 }
-
-function FilterHelp()
-{
+function FilterHelp(){
 	alert("<?php echo $strFilterHelp; ?>");
 }
-
-function ActionHelp()
-{
+function ActionHelp(){
 	alert("<?php echo $strActionHelp; ?>");
 }
-
-function OptionHelp()
-{
+function OptionHelp(){
 	alert("<?php echo $strOptionHelp; ?>");
 }
 
@@ -173,21 +161,6 @@ function playlist(direction) {
 </script>
 
 <?php
-function getNearestUIntVal($val_array, $val){
-	$delta = 999999;
-	$ret = 0;
-	$i = 0;
-	reset($val_array);
-	foreach ($val_array as $_val) {
-		$tt = abs ( $val - $_val );
-		if ( $delta >  $tt) {
-			$ret = $_val;
-			$delta = $tt;
-		}
-		$i++;
-	}
-	return $ret;
-}
 
 $tm2 = localtime();
 $tm1 = localtime (strtotime ('-1 hours'));
@@ -289,9 +262,9 @@ if (isset($_COOKIE))
 <?php print getSelectHtml('cams[]', $conf_cams_array, TRUE, 7, 1, $cams_sel, FALSE, FALSE); ?>
 </td>
 <td align="left">
-<input type="radio" checked name="timemode" id="timemode" value="1" onclick="swtch_timemode();"><?php echo $strUnBreak; ?>
+<input type="radio" checked name="timemode" id="timemode" value="1" onclick="switch_timemode();"><?php echo $strUnBreak; ?>
 <br><br>
-<input type="radio" name="timemode" value="2" onclick="swtch_timemode();"><?php echo $strBreak; ?>
+<input type="radio" name="timemode" value="2" onclick="switch_timemode();"><?php echo $strBreak; ?>
 </td>
 <td align="left" nowrap>
 <?php
