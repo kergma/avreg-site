@@ -541,18 +541,24 @@ function DENY($good_status=NULL, $http_status=403)
       switch ($http_status) {
          case 401:
             header('WWW-Authenticate: Basic realm="AVReg server"', true, 401);
-         break;
+            exit();
 
          case 403:
          default:
+            header('Content-Type: text/html; charset=' . $chset);
             header('Connection: close', true, 403);
       }
    }
 
    print_syslog(LOG_CRIT, 'access denided: '. basename($_SERVER['SCRIPT_FILENAME']));
-   print('<img src="'.$GLOBALS['conf']['prefix'].'/img/password.gif" width="48" height="48" border="0">'.
-            '<p><font color="red" size=+1>'.$deny_reason.'</font></p>'.
-            '</body></html>');
+   print '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'."\n";
+   print '<html><head>'."\n";
+   print '<link rel="SHORTCUT ICON" href="'.$conf['prefix'].'/favicon.ico">'."\n";
+   print '<title>403 error::Access Denided</title>'."\n";
+   print '<meta http-equiv="Content-Type" content="text/html; charset='.$GLOBALS['chset'].'">'."\n";
+   print "</head><body>\n";
+   print '<img src="'.$GLOBALS['conf']['prefix'].'/img/password.gif" width="48" height="48" border="0"><p><font color="red" size=+1>'.$deny_reason.'</font></p>'."\n";
+   print "</body></html>\r\n";
    exit();
 }
 
