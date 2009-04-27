@@ -33,7 +33,8 @@ function tohtml($var)
       print '</pre></div>'."\n";
 }
 
-function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf')
+/* $params строковй массив, список параметров, которые нужно читать из файла */
+function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params=NULL)
 {
    $confile = fopen($path, 'r');
    if (false === $confile)
@@ -48,10 +49,10 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf')
       $linenr++;
       if (empty($line)) 
          continue;
-   
+
       if ( preg_match('/^\s*[;#]/', $line) )
          continue; /* skip comments */
-   
+
       if ( preg_match('/^([^\s=]+)[\s=]*\{$/', $line, $matches)) {
          # begin section
          if ( empty($section) || 0 !== strcasecmp ($matches[1],$section) ) {
@@ -68,8 +69,10 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf')
       if ($skip_section)
          continue;
 
-      if ( 1 !== preg_match("/^[\s]*([^\s#;=]+)[\s=]+([\"']?)(.*?)(?<!\\\)([\"']?)\s*$/Su",$line, $matches)) {
-         $res = false; break;
+      if ( 1 !== preg_match("/^[\s]*([^\s#;=]+)[\s=]+([\"']?)(.*?)(?<!\\\)([\"']?)\s*$/Su",
+                  $line, $matches)) {
+         $res = false;
+         break;
       }
       // var_dump($matches);
 
@@ -81,6 +84,10 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf')
 
       $param = &$matches[1];
       $value = stripslashes($matches[3]);
+
+      if (is_array($params))
+          if (FALSE === array_search($param, $params))
+            continue;
 
       // нашли параметр
       // echo ("file $path:$linenr => $param = \"$value\"\n");
@@ -323,7 +330,7 @@ function avreg_find_user($addr, $mask, $name)
 }
 
 if ( $GLOBALS['conf']['debug'] )
-   syslog(LOG_ERR, sprintf('avreg-site: ACL %s %s@%s %s/%s',
+   syslog(LOG_ERR, sprintf('ACL %s %s@%s %s/%s',
             $found?"success":"failed",
             $name, long2ip($addr),
             $ipacl['addr_a'], $ipacl['mask_a']));
@@ -582,7 +589,7 @@ function GetCamPar($_param, $_cam_nr=-1)
       $row = mysql_fetch_array($res, MYSQL_ASSOC);
       $value = $row['VALUE'];
       mysql_free_result($res);
-      
+
       if ( is_null($value) )
                $ret =  $def_value;
       else
