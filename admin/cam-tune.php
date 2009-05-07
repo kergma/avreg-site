@@ -210,6 +210,7 @@ if ( isset($categories) )
                }
       print '</span><br /><br /><div>'."\n";
       $max_len = (isset($PARAMS[$i]['max_len'])) ? $PARAMS[$i]['max_len'] : 0;
+      $str_f_len = ($max_len > 25)?25:$max_len;
                switch ( $VAL_TYPE )
                {
                         case 'INT':
@@ -224,18 +225,18 @@ if ( isset($categories) )
                               break;
                         case 'STRING':
                               $a = getBinString($val);
-               $b = $max_len?$max_len:60;
-                              print '<input type="text" name="fields['.$parname1.']" value="' . $a .'" size=25 maxlength=' .$b .'>';
+                              $b = $max_len?$max_len:60;
+                              print '<input type="text" name="fields['.$parname1.']" value="' . $a .'" size='.$str_f_len.' maxlength=' .$b .'>';
                               break;
                         case 'STRING_200':
                               $a = getBinString($val);
-               $b = $max_len?$max_len:200;
-                              print '<input type="text" name="fields['.$parname1.']" value="' . $a .'" size=25 maxlength=' .$b .'>';
+                              $b = $max_len?$max_len:200;
+                              print '<input type="text" name="fields['.$parname1.']" value="' . $a .'" size='.$str_f_len.' maxlength=' .$b .'>';
                               break;
                         case 'PASSWORD':
                               $a = getBinString($val);
-               $b = $max_len?$max_len:60;
-                              print '<input type="password" name="fields['.$parname1.']" value="' . $a .'" size=25 maxlength=' .$b .'>';
+                              $b = $max_len?$max_len:60;
+                              print '<input type="password" name="fields['.$parname1.']" value="' . $a .'" size='.$str_f_len.' maxlength=' .$b .'>';
                               break;
                         case 'CHECK':
                               print checkParam($parname1, $val);
