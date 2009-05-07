@@ -45,7 +45,7 @@ if (isset($cmd)) {
      exec($GLOBALS['conf']['sudo'].' '.$GLOBALS['conf']['daemon'].' status '. $profile, $outs, $retval);
   else
      exec($GLOBALS['conf']['sudo'].' '.$GLOBALS['conf']['daemon'].' status', $outs, $retval);
-  
+
   $srun = ($retval === 0)?true:false;
 
   if ($srun)
