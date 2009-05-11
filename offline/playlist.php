@@ -14,6 +14,7 @@ require ('../lib/my_conn.inc.php');
 
 var ie = document.all;
 var t = null;
+var do_wait = false;
 
 function switch_timemode() {
      var tm_radio = ie?
@@ -31,15 +32,16 @@ function switch_timemode() {
     }
 }
 
-function on_submit_click(btn) 
+function on_submit()
 {
-   var its_good = false;
-   /* validate form */
-   btn.value='<?php echo $strWait; ?> ...';
-   btn.disabled = true;
+   if ( do_wait )
+		return false;
+   var btsubmit = ie? document.all['btSubmit']: document.getElementById('btSubmit');
    var btclr = ie? document.all['btClear']: document.getElementById('btClear');
+   btsubmit.value='<?php echo $strWait; ?> ...';
    btclr.disabled = true;
    t = setTimeout("window.location.reload()", 3000);
+   do_wait = true;
    return true;
 }
 
@@ -184,7 +186,7 @@ if ( isset($_SESSION) && isset($_SESSION['error'])/* ошибка */ )
 
 ?>
 
-<form action="<?php echo $conf['prefix']; ?>/offline/_playlist.php" method="POST">
+<form action="<?php echo $conf['prefix']; ?>/offline/_playlist.php" method="POST" onclick="return(on_submit())">
 <fieldset>
 <legend><?php echo $left_tune; ?>&nbsp;<a href="javascript:void(0);" onclick="CamChoiseHelp();"><sup>help</sup></a></legend>
 <table cellspacing="0" border="0" cellpadding="5">
@@ -261,7 +263,7 @@ print getSelectHtml('minute2', $minute_array, FALSE, 1, 0, $minute_array[$minute
 </fieldset>
 <br>
 <fieldset>
-<input type="submit" id="btSubmit" value="<?php echo $GetPlaylistStr; ?>" onclick="return on_submit_click(this);">
+<input type="submit" id="btSubmit" value="<?php echo $GetPlaylistStr; ?>">
 &nbsp;&nbsp;
 <input type="reset" id="btClear" value="<?php echo $strReset; ?>">
 &nbsp;&nbsp;
