@@ -186,7 +186,7 @@ if ( isset($_SESSION) && isset($_SESSION['error'])/* ошибка */ )
 
 ?>
 
-<form action="<?php echo $conf['prefix']; ?>/offline/_playlist.php" method="POST" onclick="return(on_submit())">
+<form action="<?php echo $conf['prefix']; ?>/offline/_playlist.php" method="POST" onsubmit="return(on_submit())">
 <fieldset>
 <legend><?php echo $left_tune; ?>&nbsp;<a href="javascript:void(0);" onclick="CamChoiseHelp();"><sup>help</sup></a></legend>
 <table cellspacing="0" border="0" cellpadding="5">
