@@ -273,7 +273,7 @@ array(
     'desc'=>'Скрипты и плагины',
     'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
     'mstatus'=> 2,
-    'help_page'=> 'http://avreg.net/manual_applications_external.html'
+    'help_page'=> 'http://avreg.net/manual_applications_avregd-event-collector.html'
     ),
 );
 
