@@ -1375,7 +1375,7 @@ array(
 Под скриптом понимается любое исполняемое приложение, которое может быть написано вами на любом языке программирования (shell, python, perl, ruby, php, java и даже на С).
 </p>
 <p>
-Кроме установки параметра &#171;<span class="param">events2pipe</span>&#187; в &#171;Вкл.&#187;, вы должны иметь исполняемый файл в каталоге &#171;<span class="path">/etc/avreg/scripts/</span>&#187; и прописать полный путь до него в конфигурационном файле &#171;<span class="path">avreg.conf</span>&#187; в параметре &#171;<span class="param">event-collector</span>&#187;.
+Кроме установки параметра &#171;<span class="param">events2pipe</span>&#187; в &#171;Вкл.&#187;, вы должны поместить свой скрипт в каталог &#171;<span class="path">/etc/avreg/scripts/</span>&#187; и прописать полный путь до него в конфигурационном файле &#171;<span class="path">avreg.conf</span>&#187; в параметре &#171;<span class="param">event-collector</span>&#187;.
 </p>
 Поддерживаются такие события, как:
 <ul>
@@ -1387,7 +1387,7 @@ array(
 </ul>
 <p>
 Полный перечень событий, способ их получения (чтения), а также передаваемые параметры,
-смотрите в примерах скриптов, расположенных в каталоге &#171;<span class="path">/usr/share/doc/avregd/examples/event-collector/</span>&#187;.
+смотрите в нашем примере скрипта в каталоге &#171;<span class="path">/usr/share/doc/avregd/examples/scripts/</span>&#187;.
 </p>
 <div>
 Дополнительно, ознакомьтесь с:
