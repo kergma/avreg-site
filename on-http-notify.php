@@ -58,8 +58,8 @@ else
        $CAM_NR, $cmd_params));
 
 /* include user scripts */
-if (!empty($conf['on-http-events']))
-  @include ($conf['on-http-events']);
+if (!empty($conf['on-http-notify']))
+  @include ($conf['on-http-notify']);
 
 echo "<h1>Received!</h1>\r\n</body></html>\r\n";
 ?>
