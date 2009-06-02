@@ -102,7 +102,7 @@ for ($i = 0; $i < $tot_wc_nr; $i++)
 	list($ww,$wh) = explode('x',$geo);
 	if (empty($ww)) $ww=640;
 	if (empty($wh)) $wh=480;
-	$act_wc_nr_ar[$cam_nr]=sprintf('%u;%s;%u;%s', $cam_nr,  $_SERVER['HTTP_HOST'], $w_port, $geo);
+	$act_wc_nr_ar[$cam_nr]=sprintf('%u;%s;%u;%s', $cam_nr,  $_SERVER['SERVER_NAME'], $w_port, $geo);
     print 'CNAMES['.$i.']="'.$cam_name.'";'."\n";
 }
 print '// -->'."\n";
