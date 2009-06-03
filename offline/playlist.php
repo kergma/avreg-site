@@ -39,6 +39,7 @@ function on_submit()
    var btsubmit = ie? document.all['btSubmit']: document.getElementById('btSubmit');
    var btclr = ie? document.all['btClear']: document.getElementById('btClear');
    btsubmit.value='<?php echo $strWait; ?> ...';
+   btsubmit.style.backgroundColor = '#DCDCDC';
    btclr.disabled = true;
    t = setTimeout("window.location.reload()", 3000);
    do_wait = true;
