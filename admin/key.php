@@ -10,7 +10,7 @@ function getmacs()
   return $mac;
 }
 
-echo '<h1>' . sprintf($r_key, $named) . '</h1>' ."\n";
+echo '<h1>' . $r_key . '</h1>' ."\n";
 
 if ( !isset($conf['key']) || empty($conf['key']) ) {
   echo '<div class="error">key file not defined, see "key" param in avreg.conf</div>'."\n";
@@ -68,6 +68,11 @@ if ( !isset($conf['key']) || empty($conf['key']) ) {
       }
   }
 }
+print '<p align="center" style="font-weight:bold;">'."\n";
+print $DEV_FIRMS."\n";
+print '<br /><a href="http://avreg.net/" target="_blank">http://avreg.net</a>'."\n";
+print '</p>'."\n";
+
 
 // phpinfo();
 require ('../foot.inc.php');

@@ -2,7 +2,8 @@
 require ('./head.inc.php');
 $_SERVER['user_status']=$user_status;
 
-echo '<h2 align="center">' . sprintf($fmtVidServ, $named, $sip) .'</h2>' ."\n";
+echo '<h2 align="center">' . sprintf($fmtVidServ, $named, $sip) .
+   '&nbsp;&nbsp;(<a style="font-size: 85%;" href="'.sprintf($conf['prefix'].'/admin/key.php?sip=%s&amp;named=%s',$sip,$named).'">'.$license.'</a>)</h2>' ."\n";
 
 /*
 if (empty($_SERVER['SSL_PROTO']))
@@ -76,7 +77,7 @@ print '</tbody>'."\n";
 print '</table>'."\n";
 
 print '<p align="center" style="font-weight:bold;">'."\n";
-print '<br />'.$DEV_FIRMS."\n";
+print $DEV_FIRMS."\n";
 print '<br /><a href="http://avreg.net/" target="_blank">http://avreg.net</a>'."\n";
 print '</p>'."\n";
 
