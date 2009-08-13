@@ -105,6 +105,8 @@ $range_checked='checked';
 $intervals_checked='';
 $xspf_checked = 'checked';
 $m3u_checked  = '';
+$ftype_video_checked = 'checked';
+$ftype_audio_checked = 'checked';
 
 // tohtml($_COOKIE);
 // tohtml($_SESSION);
@@ -115,6 +117,13 @@ if (isset($_COOKIE))
      $cams_sel = str_replace('-' ,',', $_COOKIE['avreg_cams'][0]);
   else
      $cams_sel = '0,1,2,3';
+  if (isset($_COOKIE['avreg_ftypes'])) {
+    $_ftypes = explode('-', $_COOKIE['avreg_ftypes'][0]);
+    if ( FALSE === array_search('23', $_ftypes))
+      $ftype_video_checked = '';
+    if ( FALSE === array_search('32', $_ftypes))
+      $ftype_audio_checked = '';
+  }
 
   if (isset($_COOKIE['avreg_timemode'])) {
       if ( $_COOKIE['avreg_timemode'] == '2' ) {
@@ -196,15 +205,13 @@ if ( isset($_SESSION) && isset($_SESSION['error'])/* ошибка */ )
 <?php print getSelectHtml('cams[]', $conf_cams_array, TRUE, 7, 1, $cams_sel, FALSE, FALSE); ?>
 </td>
 <td>
-<!--
 <fieldset>
-<legend><?php echo $strPlFmtTitle; ?></legend>
-<input type="checkbox" checked name="filter[]" value="12"><?php echo $env_id_ar[1]; ?>
+<legend><?php echo $strFTypeTitle; ?></legend>
+<input type="checkbox" <?php echo $ftype_video_checked; ?> name="ftypes[]" value="23"><?php echo $env_id_ar[23]; ?>
 <br>
-<input type="checkbox" checked name="filter[]" value="2"><?php echo $env_id_ar[2]; ?>
+<input type="checkbox" <?php echo $ftype_audio_checked; ?> name="ftypes[]" value="32"><?php echo $env_id_ar[32]; ?>
 </fieldset>
 </td>
-// !-->
 </tr>
 </table>
 </fieldset>

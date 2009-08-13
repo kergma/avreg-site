@@ -298,7 +298,7 @@ print getSelectHtml('minute2', $minute_array, FALSE, 1, 0, $min2, FALSE, FALSE);
 <?php
 print $strScale.'<br>'.getSelectHtml('scale', $scale_array, FALSE, 1, 0, $scale_sel, TRUE, FALSE, $strScaleTitle);
 print '<br><hr size="1" noshade>';
-print $strEmbdedVideo.'&nbsp;&nbsp;<input type="checkbox" '.$embed_video_sel.' name="embed_video" id="embed_video" title="'.$str_embed_Title.'">'."\n";
+print $strEmbdedVideo.'<br><input type="checkbox" '.$embed_video_sel.' name="embed_video" id="embed_video" title="'.$str_embed_Title.'">'."\n";
 ?>
 </td>
 <td>

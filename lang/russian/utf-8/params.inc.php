@@ -11,24 +11,19 @@ $strCamType = array('netcam', 'v4l');
 $strNetProto = array('http');
 $strFileFmt = array('jpeg', 'avi/mjpeg', 'avi/mpeg4', 'mov', 'flv');
 
-/* AUDIO
+
 $str_audio_force_fmt = array(
-'PCM_MULAW',
-'PCM_ALAW',
-'G726_32K',
-'G726_24K',
-'PCM_S8',
-'PCM_U8',
-'PCM_S16LE',
+'pcm_mulaw',
+'pcm_alaw',
+'g726_32k',
+'g726_24k',
+'pcm_s8',
+'pcm_u8',
+'pcm_s16le',
 );
 
-$str_audio_save_fmt = array(
-'MP2',
-'MP3',
-'M4A',
-'MOV',
-);
-*/
+$str_audio_save_fmt = array('mp2','m4a','mov');
+
 
 $geometry = array(
 '176x144',
@@ -114,7 +109,7 @@ array(
  
 array(
     'id'=>'3.1',
-	 'name'=>'ip-камеры',
+    'name'=>'ip-камеры',
     'desc'=>'Параметры доступа к сетевым IP-камерам и IP-видеосерверам',
     'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
     'mstatus'=> 2,
@@ -124,12 +119,29 @@ array(
 array(
     'id'=>'3.1.1',
 	 'name'=>'протокол &#171;http://&#187;',
-    'desc'=>'Протокол доступа &#171;http://&#187; (форматы видео: jpeg/mjpeg, аудио: pcm,adpcm,G.72x,aac)',
+    'desc'=>'захват по протоколу &#171;http://&#187;',
     'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
     'mstatus'=> 2,
     'help_page'=> NULL
     ),
 
+array(
+    'id'=>'3.1.1.1',
+    'name'=>'видео',
+    'desc'=>'захват в форматах mjpeg или jpeg по &#171;http://&#187;',
+    'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
+    'mstatus'=> 2,
+    'help_page'=> NULL
+    ),
+
+array(
+    'id'=>'3.1.1.2',
+    'name'=>'аудио',
+    'desc'=>'захват в форматах pcm,adpcm,G.72x или aac (Axis) по &#171;http://&#187;',
+    'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
+    'mstatus'=> 2,
+    'help_page'=> NULL
+    ),
 
 array(
     'id'=>'3.2',
@@ -183,7 +195,7 @@ array(
     'help_page'=> NULL
     ),
 
-/* AUDIO
+/*
  array(
     'id'=>'5.2',
     'name'=>'аудио',
@@ -220,7 +232,7 @@ array(
     'mstatus'=> 2,
     'help_page'=> NULL
     ),
-/* AUDIO
+
 array(
     'id'=>'11.2',
     'name'=>'аудио',
@@ -230,6 +242,7 @@ array(
     'help_page'=> NULL
     ),
 
+/*
 array(
     'id'=>'11.3',
     'name'=>'видео + аудио',
@@ -379,7 +392,7 @@ array(
   'type'    => 'STRING',
   'max_len' => 15,
   'def_val' => NULL,
-  'desc'    => '<b>IP-адрес</b> сетевой видеокамеры или видеосерверов (например AXIS, Planet, D-Link,  Aviosys, Panasonic, Samsung, Pixord, Vivotek, Moxa).<br><br>По умолчанию: <b>не установлено</b>.',
+  'desc'    => '<b>IP-адрес</b> сетевой видеокамеры или видеосерверов (например Axis, Planet, D-Link, Panasonic, Beward, Aviosys и т.п. ).<br><br>По умолчанию: <b>не установлено</b>.',
   'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.1',
   'subcats' => NULL,
@@ -475,7 +488,7 @@ array(
 '<br /><br />Не знаете запрос для Вашей камеры - читайте <a href="'.$conf['docs-prefix'].'apps-ipcam-capture.html" target="_blank">здесь &gt;&gt;</a>'.
 '<br /><br />По умолчанию: <b>&quot;не установлено&quot; - не захватывать видео</b>',
   'flags'=>$F_BASEPAR | $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
-  'cats'    => '3.1.1',
+  'cats'    => '3.1.1.1',
   'subcats' => NULL,
   'mstatus' => 2,
 ),
@@ -486,7 +499,7 @@ array(
   'def_val' => 200,
   'desc'    => '<b>Если</b> на запрос video_http_get <b>камера выдает одиночный JPEG</b> и разрывает соединение (режим <b>snapshot</b> или still image), то значение параметра - <b>таймаут в миллисекундах до следующего запроса</b> к камере. Такой режим менее предпочтителен, по сравнению с потоковым Motion JPEG.<br /><br />По умолчанию: &quot;<b>200 ms</b>&quot;.',
   'flags'=>$F_BASEPAR | $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
-  'cats'    => '3.1.1',
+  'cats'    => '3.1.1.1',
   'subcats' => NULL,
   'mstatus' => 2,
 ),
@@ -497,22 +510,21 @@ array(
   'def_val' => NULL,
   'desc'    => '<b>Только для шлюзов Aviosys 9100 (B/RK/A) в режиме roundrobin</b>.<br><br><b>Номер камеры/канала [0,1,2,3]</b> на шлюзе при захвате в режиме roundrobin.<br><br>По умолчанию: <b>не установлено</b> - не Aviosys 9100 в roundrobin.',
   'flags'=> $F_IN_CAM,
-  'cats'    => '3.1.1',
+  'cats'    => '3.1.1.1',
   'subcats' => NULL,
   'mstatus' => 2,
 ),
 
-/*
 array(
   'name'    => 'A.http_get',
   'type'    => 'STRING_200',
   'def_val' => '/',
-  'desc'    => '<b>Строка запроса GET</b> протокола HTTP на получение аудио-потока в форматах pcm G.5.2.1 mu-law 64kbit/s, adpcm G.726 32kbit/s или G.723 24kbit/s.<br><br>
+  'desc'    => '<b>Строка запроса GET</b> протокола HTTP на получение аудио-потока в форматах pcm G.711 64kbit/s, adpcm G.726 32kbit/s, G.723 24kbit/s или MPEG4 AAC (rtp over http, Axis).<br><br>
 Например для Axis: &quot;<b>/axis-cgi/audio/receive.cgi</b>&quot;
 <br /><br />Не знаете запрос для Вашей камеры - читайте <a href="'.$conf['docs-prefix'].'apps-ipcam-capture.html" target="_blank">здесь &gt;&gt;</a>'.
 '<br /><br />По умолчанию: <b>&quot;не установлено&quot; - не захватывать аудио</b>',
   'flags'=>$F_BASEPAR | $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
-  'cats'    => '3.1.1',
+  'cats'    => '3.1.1.2',
   'subcats' => NULL,
   'mstatus' => 2,
 ),
@@ -521,21 +533,20 @@ array(
   'name'    => 'A.force_fmt',
   'type'    => 'CHECK',
   'def_val' => NULL,
-  'desc'    => '<b>Принудительно использовать этот аудио формат</b> для камер, которые не передают информацию о формате или передают неправильно.<br />'.
+  'desc'    => '<b>Принудительно использовать этот аудио формат</b> для входящего аудиопотока с камер, которые не передают информацию о формате или передают её неправильно.<br />'.
 '<ul>'.
-'<li>PCM_MULAW - pcm mu-law 8bit 64kbit/s</li>'.
-'<li>PCM_ALAW - pcm a-law 8bit 64kbit/s</li>'.
-'<li>PCM_S8 - pcm signed linear (2`s complement) 8bit 64kbit/s</li>'.
-'<li>PCM_U8 - pcm unsigned linear 8bit 64kbit/s</li>'.
-'<li>G726_32K - adpcm g726 4bit 32kbit/s</li>'.
-'<li>G726_24K - adpcm g726 3bit 24kbit/s</li>'.
+'<li>pcm_mulaw - pcm mu-law 8bit 64kbit/s</li>'.
+'<li>pcm_alaw - pcm a-law 8bit 64kbit/s</li>'.
+'<li>pcm_s8 - pcm signed linear (2`s complement) 8bit 64kbit/s</li>'.
+'<li>pcm_u8 - pcm unsigned linear 8bit 64kbit/s</li>'.
+'<li>g726_32k - adpcm g726 4bit 32kbit/s</li>'.
+'<li>g726_24k - adpcm g726 3bit 24kbit/s</li>'.
 '</ul>По умолчанию: &quot;<b>не установлено</b>&quot; - формат ожидается в заголовке',
   'flags'=>$F_RELOADED | $F_IN_DEF | $F_IN_CAM,
-  'cats'    => '3.1.1',
+  'cats'    => '3.1.1.2',
   'subcats' => NULL,
   'mstatus' => 2,
 ),
-*/
 
 array(
   'name'    => 'http_user_agent',
@@ -986,7 +997,7 @@ array(
   'name'    => 'V.save_fmt',
   'type'    => 'CHECK',
   'def_val' => '',
-  'desc'    => '<b>Формат и видеокодек файла</b> для записи на жесткий диск в архив.
+  'desc'    => 'Формат файла/видеокодек</b> для записи видео на жесткий диск в архив.
 <ul>
 <li><b>Если значение параметра не установлено</b>, то программа <b>автоматически</b> самостоятельно выберет формат и видеокодек:
 <ul><li><b>&#171;avi/mpeg4</b>&#187; - при захвате с PCI-плат видеозахвата (аналоговые  видеокамеры);<li>
@@ -1066,8 +1077,6 @@ array(
   'mstatus' => 2,
 ),
 
-
-/* AUDIO
 array(
   'name'    => 'save_audio',
   'type'    => 'BOOL',
@@ -1084,19 +1093,19 @@ array(
   'name'    => 'A.save_fmt',
   'type'    => 'CHECK',
   'def_val' => NULL,
-  'desc'    => '<b>Формат файла/аудиокодек</b> для записи аудиоданных.<br>'.
-  'Параметры bitrate/sample_rate копируются с входного потока аудиозахвата (принцип: если исходное качество плохое, то никакими параметрами перекодирования его лучше не сделать) и могут быть немного скорректированы в зависимости от выбранного формата.'.
-  '<ul>'.
-  '<li>MP2 - MPEG audio layer 2 (.mp2);</li>'.
-  '<li>MP3 - MPEG audio layer 3 (.mp3);</li>'.
-  '<li>M4A - AAC Advanced Audio Codec MPEG4 part3 (.m4a)  ;</li>'.
-  '<li>MOV - AAC Advanced Audio Codec формат файла QuickTime (.mov);</li>'.
-  '</ul>'.
-  'С невысокими требованиями к качеству (не музыку же пишите):<ul>'.
-  '<li>размеры получаемых файлов у всех кодеков примерно одинаковы,</li>'.
-  '<li>скорость кодирования заметно больше при кодировании кодеком MP2 (соответственно нагрузка на CPU меньше),</li>'.
-  '<li>качество несколько лучше при кодировании кодеком AAC.</li>'.
-  '</ul>По умолчанию: <b>не установлено - запись в оригинальном формате аудиозахвата без преобразований.</b>',
+
+  'desc'    => 
+'<b>Формат файла/аудиокодек</b> для записи аудиоданных на жесткий диск в архив.
+<ul>
+<li><b>Если значение параметра не установлено</b>, то программа <b>автоматически</b> самостоятельно выберет формат и аудиоокодек:
+<ul><li><b>&#171;m4a</b>&#187; - при захвате аудиопотока сжатого AAC (MPEG4 part3);<li>
+<li><b>&#171;mp2</b>&#187; - при захвате аудиопотоков, закодированных/сжатых другими кодеками (например, pcm и adpcm).</li></ul>
+<li>любое перекодирование аудиоданных приведёт к некоторому ухудшению качества;</li>
+<li>на низких битрейтах размеры получаемых файлов у всех кодеков примерно одинаковы;</li>
+<li>скорость кодирования заметно выше, а нагрузка на CPU ниже, при кодировании кодеком MPEG audio layer 2 (mp2);</li>
+<li>несколько лучшее качество получается при кодировании кодеком AAC, однако ниже скорость кодирования и выше нагрузка на CPU;</li>
+</ul>
+По умолчанию: <b>не установлено - &#171;авто.&#187;</b>',
   'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '11.2',
   'subcats' => NULL,
@@ -1125,7 +1134,6 @@ array(
   'subcats' => NULL,
   'mstatus' => 2,
 ),
-*/
 
 array(
   'name'    => 'save_dir_fmt',

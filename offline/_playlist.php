@@ -28,7 +28,13 @@ foreach ($cams as &$value) {
 }
 setcookie('avreg_cams[]', implode('-',$cams), $expire,$_pg);
 
-$ftypes = array(23,32); // FIXME video, audio
+if (!is_array($ftypes) || (count($ftypes) === 0) )
+  input_data_invalid('ftypes');
+foreach ($cams as &$value) {
+  if ( !settype($value,'int') )
+    input_data_invalid('ftypes');
+}
+setcookie('avreg_ftypes[]', implode('-',$ftypes), $expire,$_pg);
 
 $int_vals=array('timemode',
 'year1', 'month1', 'day1', 'hour1', 'minute1',
@@ -206,20 +212,29 @@ for ($i=1; $i<=$num_rows; $i++)
 {
   $row = &$res_array[$i-1];
   $location = $MediaUrlPref . '/' .$row['EVT_CONT'];
+  if ( $row['EVT_ID'] == '23' )
+     $_media_str = '(video)';
+  else if ( $row['EVT_ID'] == '32' )
+     $_media_str = '(audio)';
+  else if ( $row['EVT_ID'] == '12' )
+     $_media_str = '(video+audio)';
+  else
+    $_media_str = 'unknown';
+
   if ( $xspf ) {
-    $title = strftime('%a, %d %b %H:%M:%S', (int)$row['UDT1']);
+    $title =  strftime('%a, %d %b %H:%M:%S', (int)$row['UDT1']);
     $duration = ((int)$row['UDT2'] - (int)$row['UDT1'])*1000;
     echo "\t\t<track>$CRLF";
     echo "\t\t\t<location>$location</location>$CRLF";
     echo "\t\t\t<title>$title</title>$CRLF";
-    printf("\t\t\t<creator>cam #%02u</creator>$CRLF",(int)$row['CAM_NR']);
+    printf("\t\t\t<creator>cam #%02u %s</creator>$CRLF", (int)$row['CAM_NR'], $_media_str);
     echo "\t\t\t<annotation>".filesizeHuman((int)$row['FILESZ_KB']).', '. $row['FRAMES'] ." frames</annotation>$CRLF";
     echo "\t\t\t<duration>$duration</duration>$CRLF";
-    echo "\t\t\t<album>". $row['EVT_ID'] ."</album>$CRLF";
+    // echo "\t\t\t<album>". $row['EVT_ID'] ."</album>$CRLF";
     echo "\t\t\t<trackNum>$i</trackNum>$CRLF";
     echo "\t\t</track>$CRLF";
   } else {
-    $title = sprintf('cam #%02u - ', (int)$row['CAM_NR']) . date('Y-m-d H:i:s', (int)$row['UDT1']);
+    $title = sprintf('cam #%02u %s - ', (int)$row['CAM_NR'], $_media_str) . date('Y-m-d H:i:s', (int)$row['UDT1']);
     $duration = (int)$row['UDT2'] - (int)$row['UDT1'];
     echo "#EXTINF:$duration,$title$CRLF";
     echo "$location$CRLF";

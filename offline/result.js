@@ -31,7 +31,7 @@ function mark_row(theRowNum)
     var fduration = img_info[10]
     var fname = img_info[11];
 
-	if ( img_cursor >= 0) 
+    if ( img_cursor >= 0) 
     {
        ftype = document.images[img_cursor].id;
       if ( ftype == 23 )
@@ -42,9 +42,9 @@ function mark_row(theRowNum)
          document.images[img_cursor].src = WwwPrefix+'/img/camera.gif';
       else 
           document.images[img_cursor].src = WwwPrefix+'/img/unknown.gif';
-    } 
-    
-    ftype = document.images[theRowNum].id;  
+    }
+
+    ftype = document.images[theRowNum].id;
     if ( ftype == 23 )
            document.images[theRowNum].src = WwwPrefix+'/img/movie.on.gif';
     else if ( ftype == 32 )
@@ -53,7 +53,7 @@ function mark_row(theRowNum)
          document.images[theRowNum].src = WwwPrefix+'/img/camera-red.gif';
     else 
           document.images[theRowNum].src = WwwPrefix+'/img/unknown.gif';
-     
+
     img_cursor = theRowNum;
     window.parent.frames['view'].show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, s16_2, ftype_str, fduration, fname);
 }
@@ -88,14 +88,14 @@ function mk_obj_hint(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_
 
    if (evt_id == 23) 
    {
-      fn += '  [ ' + s16_1 + 'x' + s16_2 + ' ] ';
+      fn += ' [ ' + s16_1 + 'x' + s16_2 + ' ] ';
       icon_48x52 = WwwPrefix+'/img/mpeg4.gif';
       fs += ', ' + fduration + ', ' + frames + ' кадров';
       dt_info='<tr><td align="right">Начат:<\/td><td>'+Date1.toLocaleString()+'<\/td><\/tr><tr><td align="right">Закрыт:<\/td><td>'+Date2.toLocaleString()+'<\/td><\/tr>\n';
   } else if ( evt_id == 32 ) {
-      fn += '  [ битрейт ] ';
+      fn += ' [ ' + s16_1 + ' канал ]';
       icon_48x52 = WwwPrefix+'/img/audio.gif';
-      fs += ', самплов';
+      fs += ', битрейт ' + frames; // + ', cэмплрейт ' + s16_2;
       dt_info='<tr><td align="right">Начат:<\/td><td>'+Date1.toLocaleString()+'<\/td><\/tr><tr><td align="right">Закрыт:<\/td><td>'+Date2.toLocaleString()+'<\/td><\/tr>\n';     
   } else if ( evt_id >= 15 || evt_id <= 21 ) {
       /* jpeg */

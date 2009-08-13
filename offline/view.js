@@ -60,7 +60,8 @@ function obj_loaded(e) {
 }
 
 
-function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, s16_2, ftype_str, fduration, fname) {
+function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, s16_2, ftype_str, fduration, fname)
+{
    var cdiv = ie?
                  document.all['content']:
                  document.getElementById('content');
@@ -71,13 +72,12 @@ function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, 
    var embed_chkbox = ie?
                 window.parent.frames['query'].document.all['embed_video']:
                 window.parent.frames['query'].document.getElementById('embed_video');
-   
+
    if (embed_chkbox == null )
       var embed_video = false;
-   else    
+   else
       var embed_video = embed_chkbox.checked;
 
-      
    var Date1 = new Date(utime1 * 1000);
    var Date2 = new Date(utime2 * 1000);
    g_fdate1 = Date1.toLocaleString();
@@ -88,20 +88,21 @@ function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, 
    var link = MediaUrlPref + encodeURI(fname);
 
    g_camname = cams.options[cam_nr-1].text;
-   
+
    var icon_48x52 ='';
-   var duration_info='';
    if (evt_id==23) {
       icon_48x52 = WwwPrefix+'/img/mpeg4.gif';
-      duration_info='<tr><td align="right">Продолжительность<\/td><td>'+fduration+'<\/td><\/tr>\n';
-   }
- 
-   hint=null;
-   if ( evt_id == 23 ) 
-   {
       g_fname += '  [ ' + s16_1 + 'x' + s16_2 + ' ] ';
       g_fsize += ', ' + fduration + ', ' + frames + ' кадров';
-      
+   } else if ( evt_id == 32 ) {
+      icon_48x52 = WwwPrefix+'/img/audio48x48.gif';
+      g_fname += '  [ ' + s16_1 + ' канал ] ';
+      g_fsize += ', ' + fduration + ', битрейт ' + frames;
+   }
+
+   hint=null;
+   if ( evt_id == 23 || evt_id == 32 )
+   {
       clear_innerHTML(cdiv);
       var link_target='';
       if (ie && !embed_video)
@@ -141,7 +142,7 @@ function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, 
         cdiv.innerHTML = '<div align="center">\n' +
  '<br /><br />\n' + 
  '<a href="'+link+'" '+link_target+'>\n' + 
- '<img src="'+ icon_48x52 +'" width="48" height="52" border="0">' +
+ '<img src="'+ icon_48x52 +'" border="0">' +
  '<\/a>\n' +
  '<table class="help" cellspacing="0" border="1" cellpadding="2"><tbody><tr>\n' +
  '<td align="right">Камера<\/td>\n' +
@@ -153,8 +154,8 @@ function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, 
  '<td align="right">Размер<\/td>\n' +
  '<td>'+g_fsize+'<\/td>\n' +
  '<\/tr><tr>\n' +
-'<td align="right">Начат:<\/td><td>'+g_fdate1+'<\/td><\/tr>\n' +
-'<tr><td align="right">Закрыт:<\/td><td>'+g_fdate2+'<\/td>\n' +
+'<td align="right">Начат<\/td><td>'+g_fdate1+'<\/td><\/tr>\n' +
+'<tr><td align="right">Закрыт<\/td><td>'+g_fdate2+'<\/td>\n' +
  '<\/tr><\/tbody><\/table>\n' + 
  '<br /><a href="'+link+'" '+link_target+'>зазгрузить файл ( ' + g_fsize +
  ' )<br />и открыть в медиа проигрывателе &gt;&gt;<\/a>\n' +
@@ -162,6 +163,7 @@ function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, 
         obj_loaded(null);
      }
    } else {
+     /* only signle jpeg ? */
      g_fsize += '  [ ' + s16_1 + 'x' + s16_2 + ' ] ' ;
      var scale = ie?
                  window.parent.frames['query'].document.all['scale']:
@@ -170,7 +172,7 @@ function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, 
      var scaletext='';
      if (scale_factor.length > 0)
        var scaletext = ' width="'+ scale_factor + '%" height="'+ scale_factor + '%"';
-    
+
      var jpeg = ie?document.all['jpeg']:document.getElementById('jpeg');
      if ( jpeg == null ) {
           cdiv.innerHTML = '<img id="jpeg" src="'+link+'" border="0" ' + scaletext +
@@ -192,6 +194,6 @@ function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, 
         jpeg.src=link;
      }
    }
-   
+
    return true;
 }

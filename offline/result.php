@@ -206,10 +206,10 @@ if ( $num_rows > 0 )
             } else if ( $EVT_ID === 32 /*audio*/ ) {
                 print '<td valign="middle"><a name="audio" href="javascript:mark_row('.$good_link.');"><img id="'.$EVT_ID.'" src="'.$conf['prefix'].'/img/audio.gif" width="20" height="22" border="0" name="'.$for_js.'" onmouseover="mouse_img ('.$good_link.');" onmouseout="mouse_img();"></a></td>'."\n";
                 $good_link++;
-            } else if ( $EVT_ID >= 15 && $EVT_ID <= 22 /*jpeg*/ ) {
+            } else if ( $EVT_ID >= 15 && $EVT_ID <= 22 /* jpeg */ ) {
                 print '<td valign="middle"><a name="jpeg" href="javascript:mark_row('.$good_link.');"><img id="'.$EVT_ID.'" src="'.$conf['prefix'].'/img/camera.gif" width="22" height="22" border="0" name="'.$for_js.'" onmouseover="mouse_img ('.$good_link.');" onmouseout="mouse_img();"></a></td>'."\n";
                 $good_link++;
-            } else 
+            } else
                 print '<td valign="middle">&nbsp;</td>'."\n";
           print '<td align="center" valign="middle" nowrap>- '.$CAM_NR.' -</td>'."\n";
         } else {
