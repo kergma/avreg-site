@@ -18,7 +18,7 @@ if ($wclist_show>0)
   print '<table cellspacing="0" border="1" cellpadding="3">'. "\n";
 }
 
-$GCP_query_param_list=array('work','live_view','webcam_live','wc_port', 'text_left','geometry','cam_type','color','InetCam_IP','v4l_dev','input','Aviosys9100_chan');
+$GCP_query_param_list=array('work','live_view','webcam_live','wc_port', 'text_left','geometry','Hx2','cam_type','color','InetCam_IP','v4l_dev','input','Aviosys9100_chan');
 require ('../lib/get_cams_params.inc.php');
 
 $local_cam_nr = -1;
@@ -49,9 +49,10 @@ if ( $GCP_cams_nr > 0 )
    {
 		$wc = &$cams_array[$__cam_nr];
 		$cam_name = getCamName($wc['text_left']);
-		// $cam_nr, $_sip, $w_port, $geo, $cam_name, $_named
-		$webcam_def = sprintf('%u;%s;%u;%s;%s',
-			$__cam_nr, $_SERVER['SERVER_NAME'], $wc['wc_port'], $wc['geometry'], $cam_name);
+
+		// $cam_nr, $_sip, $w_port, $geo, $Hx2, $cam_name, $_named
+		$webcam_def = sprintf('%u;%s;%u;%s;%u;%s',
+			$__cam_nr, $_SERVER['SERVER_NAME'], $wc['wc_port'], $wc['geometry'], $wc['Hx2'], $cam_name);
 		if ( $wc['work'] && $wc['live_view'] && $wc['webcam_live'] && $wc['wc_port'] )
 		{
               if ($wclist_show>0) {
@@ -98,11 +99,12 @@ print '<!--'."\n";
 print 'var CNAMES = new MakeArray('.$tot_wc_nr.')'."\n";
 for ($i = 0; $i < $tot_wc_nr; $i++)
 {
-	list($cam_nr, $_sip, $w_port, $geo, $cam_name) = explode(';', $tot_act_cams_ar[$i]);
+	list($cam_nr, $_sip, $w_port, $geo, $Hx2, $cam_name) = explode(';', $tot_act_cams_ar[$i]);
 	list($ww,$wh) = explode('x',$geo);
 	if (empty($ww)) $ww=640;
 	if (empty($wh)) $wh=480;
-	$act_wc_nr_ar[$cam_nr]=sprintf('%u;%s;%u;%s', $cam_nr,  $_SERVER['SERVER_NAME'], $w_port, $geo);
+        if ($Hx2) $wh *= 2;
+	$act_wc_nr_ar[$cam_nr]=sprintf('%u;%s;%u;%ux%u', $cam_nr,  $_SERVER['SERVER_NAME'], $w_port, $ww,$wh);
     print 'CNAMES['.$i.']="'.$cam_name.'";'."\n";
 }
 print '// -->'."\n";
