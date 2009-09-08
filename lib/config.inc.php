@@ -599,10 +599,10 @@ function GetCamPar($_param, $_cam_nr=-1)
       {
                switch ( $val_type )
                {
-                        case 'INT':
+                        case $INT_VAL:
                               settype($ret, 'int');
                               break;
-                        case 'BOOL':
+                        case $BOOL_VAL:
                               settype($ret, 'bool');
                               break;
                         default:
@@ -619,14 +619,14 @@ function CheckParVal($_param, $_value, $_val_type, $_cam_nr=-1)
       return $ret;
       switch ( $_val_type )
       {
-                        case 'INT':
+                        case $INT_VAL:
                         if ( !is_numeric($_value) )
                         {
                               $ret = FALSE;
                               $str = '';
                         }
                         break;
-                        case 'BOOL':
+                        case $BOOL_VAL:
                               if ( !($_value == '0' || $_value == '1'))
                               {
                                        $ret = FALSE;

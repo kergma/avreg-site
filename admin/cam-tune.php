@@ -213,32 +213,32 @@ if ( isset($categories) )
       $str_f_len = ($max_len > 25)?25:$max_len;
                switch ( $VAL_TYPE )
                {
-                        case 'INT':
+                        case $INT_VAL:
                               $a = ( $val === '' || is_null($val))?'':(integer)$val;
                $b = $max_len?$max_len:6;
                               print '<input type="text" name="fields['.$parname1.']" value="' . $a . '" size=6 maxlength=' .$b .'>';
                               break;
-                        case 'INT%':
+                        case $INTPROC_VAL:
                               $a = ( $val === '' || is_null($val))?'':$val;
                               $b = $max_len?$max_len:6;
                               print '<input type="text" name="fields['.$parname1.']" value="' . $a . '" size=6 maxlength=' .$b .'>';
                               break;
-                        case 'STRING':
+                        case $STRING_VAL:
                               $a = getBinString($val);
                               $b = $max_len?$max_len:60;
                               print '<input type="text" name="fields['.$parname1.']" value="' . $a .'" size='.$str_f_len.' maxlength=' .$b .'>';
                               break;
-                        case 'STRING_200':
+                        case $STRING200_VAL:
                               $a = getBinString($val);
                               $b = $max_len?$max_len:200;
                               print '<input type="text" name="fields['.$parname1.']" value="' . $a .'" size='.$str_f_len.' maxlength=' .$b .'>';
                               break;
-                        case 'PASSWORD':
+                        case $PASSWORD_VAL:
                               $a = getBinString($val);
                               $b = $max_len?$max_len:60;
                               print '<input type="password" name="fields['.$parname1.']" value="' . $a .'" size='.$str_f_len.' maxlength=' .$b .'>';
                               break;
-                        case 'CHECK':
+                        case $CHECK_VAL:
                               print checkParam($parname1, $val);
                               break;
                         case 'EXECNAME':
