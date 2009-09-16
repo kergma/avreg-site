@@ -178,8 +178,15 @@ switch ( $parname )
                         $sel = $GLOBALS['flip_type'][$parval-1];
                $ret = getSelectHtml('fields['.$parname.']', $GLOBALS['flip_type'], FALSE, 1, 1, $sel, TRUE, FALSE);
                break;
+      case 'v4l_hack':
+               if ( $parval == '' || is_null($parval) || $parval == '0' )
+                        $sel = '';
+               else
+                        $sel = $GLOBALS['v4l_hacks'][$parval-1];
+               $ret = getSelectHtml('fields['.$parname.']', $GLOBALS['v4l_hacks'], FALSE, 1, 1, $sel, TRUE, FALSE);
+               break;
       default:
-      $ret = '<p><font color="'.$GLOBALS['error_color'].'">'. sprintf($GLOBALS['unknownCheckParams'], $parname) .'</font></p>'."\n";
+      $ret = '<p style="color: '.$GLOBALS['error_color'].'">'. sprintf($GLOBALS['unknownCheckParams'], $parname) .'</p>'."\n";
 } // switch
 
 return $ret;
