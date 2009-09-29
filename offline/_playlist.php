@@ -64,14 +64,14 @@ if ( $timemode === 2 ) {
 } else
     input_data_invalid('timemode');
 
-$xspf = false;
 if ( empty($pl_fmt) )
     input_data_invalid('pl_fmt');
 if ( 0 == strcasecmp('XSPF', $pl_fmt)) {
-  $xspf = true;
   setcookie('avreg_pl_fmt', 'XSPF', $expire,$_pg);
 } elseif ( 0 == strcasecmp('M3U', $pl_fmt)) {
   setcookie('avreg_pl_fmt','M3U',$expire,$_pg);
+} elseif ( 0 == strcasecmp('TXT', $pl_fmt)) {
+  setcookie('avreg_pl_fmt','TXT',$expire,$_pg);
 } else
   input_data_invalid('pl_fmt' . $pl_fmt);
 
@@ -148,7 +148,7 @@ function getDayName($n) {
 
 $CRLF="\r\n";
 $fname="avreg_cams-$cams_csv";
-if ( $xspf ) {
+if ( $pl_fmt === 'XSPF' ) {
   header('Content-Type: application/xspf+xml');
   header("Content-Disposition: attachment; filename=\"$fname.xspf\"");
   echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>$CRLF";
@@ -169,10 +169,13 @@ if ( $xspf ) {
   $tz = substr_replace ($tz, ':', 3, 0);
   echo "\t<date>$main_date$tz</date>$CRLF";
   echo "\t<trackList>$CRLF";
-} else {
+} elseif ( $pl_fmt === 'M3U' ) {
   header('Content-Type: audio/x-mpegurl');
   header("Content-Disposition: attachment; filename=\"$fname.m3u\"");
   echo "#EXTM3U$CRLF";
+} else {
+  header('Content-Type: text/plain');
+  header("Content-Disposition: attachment; filename=\"$fname.txt\"");
 }
 
 while (@ob_end_flush());
@@ -187,9 +190,10 @@ if ( $MSIE /* only win */ || false !== strpos($ua, 'windows') )
 else if ( false !== strpos($ua, 'linux') ||
   false !== strpos($ua, 'solaris') ||
   false !== strpos($ua, 'bsd') ||
-  false !== strpos($ua, 'mac os x') )
+  false !== strpos($ua, 'mac os x') ) {
     $platform = 'nix';
-else
+    if ($lineending == 'AUTO' || $lineending == 'CR') $CRLF="\n";
+} else
   $platform = 'other';
 
 $_ipacl_list = array_keys(&$conf["murl-pre-$platform"]);
@@ -221,7 +225,7 @@ for ($i=1; $i<=$num_rows; $i++)
   else
     $_media_str = 'unknown';
 
-  if ( $xspf ) {
+  if ( $pl_fmt === 'XSPF' ) {
     $title =  strftime('%a, %d %b %H:%M:%S', (int)$row['UDT1']);
     $duration = ((int)$row['UDT2'] - (int)$row['UDT1'])*1000;
     echo "\t\t<track>$CRLF";
@@ -234,14 +238,16 @@ for ($i=1; $i<=$num_rows; $i++)
     echo "\t\t\t<trackNum>$i</trackNum>$CRLF";
     echo "\t\t</track>$CRLF";
   } else {
-    $title = sprintf('cam #%02u %s - ', (int)$row['CAM_NR'], $_media_str) . date('Y-m-d H:i:s', (int)$row['UDT1']);
-    $duration = (int)$row['UDT2'] - (int)$row['UDT1'];
-    echo "#EXTINF:$duration,$title$CRLF";
+    if ( $pl_fmt === 'M3U' ) {
+       $title = sprintf('cam #%02u %s - ', (int)$row['CAM_NR'], $_media_str) . date('Y-m-d H:i:s', (int)$row['UDT1']);
+       $duration = (int)$row['UDT2'] - (int)$row['UDT1'];
+       echo "#EXTINF:$duration,$title$CRLF";
+    }
     echo "$location$CRLF";
   }
 }
 
-if ( $xspf ) {
+if ( $pl_fmt === 'XSPF' ) {
   echo "\t</trackList>$CRLF";
   echo "</playlist>$CRLF";
 }

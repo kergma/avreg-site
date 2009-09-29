@@ -105,6 +105,7 @@ $range_checked='checked';
 $intervals_checked='';
 $xspf_checked = 'checked';
 $m3u_checked  = '';
+$txt_checked  = '';
 $ftype_video_checked = 'checked';
 $ftype_audio_checked = 'checked';
 
@@ -135,6 +136,9 @@ if (isset($_COOKIE))
   if (isset($_COOKIE['avreg_pl_fmt'])) {
       if ( 0 == strcasecmp('M3U', $_COOKIE['avreg_pl_fmt']) ) {
          $m3u_checked = 'checked';
+         $xspf_checked = '';
+      } elseif ( 0 == strcasecmp('TXT', $_COOKIE['avreg_pl_fmt']) ) {
+         $txt_checked = 'checked';
          $xspf_checked = '';
       }
   }
@@ -268,6 +272,15 @@ print getSelectHtml('minute2', $minute_array, FALSE, 1, 0, $minute_array[$minute
 <input type="radio" <?php echo $xspf_checked; ?>  name="pl_fmt" value="XSPF"><?php echo $strXSPF; ?>
 <br>
 <input type="radio" name="pl_fmt" <?php echo $m3u_checked; ?> value="M3U"><?php echo $strM3U; ?>
+<br>
+<input type="radio" name="pl_fmt" <?php echo $txt_checked; ?> value="TXT"><?php echo $strTXT; ?>
+<br>
+<?php echo $strLinesEnding ?>
+<input type="radio" checked  name="lineending" value="AUTO"> Auto
+&nbsp;&nbsp;
+<input type="radio" name="lineending" value="CRLF"> Windows
+&nbsp;&nbsp;
+<input type="radio" name="lineending" value="CR"> Unix
 </fieldset>
 <br>
 <fieldset>
