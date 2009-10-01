@@ -190,7 +190,7 @@ if ( isset($categories) )
                         // не установленное поле
                         if ( $VALUE != $def_val )
                         {
-                              print '<font color="'.$ParDefColor.'">'. $parname1 . '<sup>**</sup>';
+                              print '<font color="'.$ParDefColor.'">'. $parname1 . '<sup>**</sup></font>';
                               $val = $def_val;
                         } else {
                               print '<font color="'.$NotSetParColor.'">'. $parname1 . '<sup>*</sup></font>';

@@ -159,10 +159,13 @@ switch ( $parname )
    case 'input':
       $ret = getSelectHtml('fields['.$parname.']', array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15), FALSE, 1, 0, $parval, TRUE, FALSE);
       break;
-      case 'jpeg_reconnect':
-               $ret = getSelectHtmlByName('fields['.$parname.']', $GLOBALS['Snap_Reconnect_array'], FALSE, 1, 0, $parval, TRUE, FALSE);
+      case 'save_video':
+           if ( $parval == '' || is_null($parval) )
+              $sel = '';
+           else
+              $sel = $GLOBALS['save_video_modes'][$parval];
+           $ret = getSelectHtml('fields['.$parname.']', $GLOBALS['save_video_modes'], FALSE, 1, 0, $sel, TRUE, FALSE);
                break;
-
       case 'A.force_fmt':
                $ret = getSelectHtmlByName('fields['.$parname.']', $GLOBALS['str_audio_force_fmt'], FALSE, 1, 0, $parval, TRUE, FALSE);
                break;
