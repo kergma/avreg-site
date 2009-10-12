@@ -95,7 +95,7 @@ function mk_obj_hint(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_
   } else if ( evt_id == 32 ) {
       fn += ' [ ' + s16_1 + ' канал ]';
       icon_48x52 = WwwPrefix+'/img/audio.gif';
-      fs += ', битрейт ' + frames; // + ', cэмплрейт ' + s16_2;
+      fs += ', битрейт ' + frames/1000 + 'kbps'; // + ', cэмплрейт ' + s16_2;
       dt_info='<tr><td align="right">Начат:<\/td><td>'+Date1.toLocaleString()+'<\/td><\/tr><tr><td align="right">Закрыт:<\/td><td>'+Date2.toLocaleString()+'<\/td><\/tr>\n';     
   } else if ( evt_id >= 15 || evt_id <= 21 ) {
       /* jpeg */

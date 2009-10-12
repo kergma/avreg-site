@@ -77,5 +77,4 @@ var_dump($GCP_def_pars);
 var_dump($GCP_cams_params);
 echo "</pre>\n";
 */
-
 ?>

@@ -69,7 +69,7 @@ if (isset($_POST) && is_array($_POST))
 }
 print '</form>'."\n";
 
-$GCP_query_param_list=array('work','cam_type','geometry','color','InetCam_IP','v4l_dev','input','Aviosys9100_chan', 'live_view','monitor_live','v4l_pipe','text_left');
+$GCP_query_param_list=array('work','cam_type','geometry','color','InetCam_IP','v4l_dev','input', 'V.http_get', 'A.http_get', 'Aviosys9100_chan', 'live_view','monitor_live','v4l_pipe','text_left');
 require ('../lib/get_cams_params.inc.php');
 
 $active_pipes=array();
@@ -80,24 +80,23 @@ if ( $GCP_cams_nr === 0 ) {
 } else 
 {
   // строим список активных для просмотра пайпов
-  
   if ($pipes_show>0)
   {
 /*
     print '<div align="center"><pre style="text-align:left;">'. "\n";
     var_dump($_POST);
     print '</pre></div>'. "\n";
-*/     
+*/
     print '<div align="center">'. "\n";
     print '<table cellspacing="0" border="1" cellpadding="3">'. "\n";
     print '<tr bgcolor="'.$header_color.'">'."\n";
-	print '<th>&nbsp;</th>'."\n";
-	print '<th nowrap>'.$strCam.'</th>'."\n";
-	print '<th>'.$strName.'</th>'."\n";
+	 print '<th>&nbsp;</th>'."\n";
+	 print '<th nowrap>'.$strCam.'</th>'."\n";
+	 print '<th>'.$strName.'</th>'."\n";
     print '<th>'.$strType.'</th>'."\n";
     print '<th>'.$strGeo.'</th>'."\n";
     if ($pipes_show>1)
-        print '<th>'.$strNotWcReason.'</th>'."\n";
+	 print '<th>'.$sUnavailableReason.'</th>'."\n";
 	print '</tr>'."\n";
   }
     $r_count = 0;
@@ -127,7 +126,7 @@ if ( $GCP_cams_nr === 0 ) {
 		  $r_count++;
           if($r_count%2)
              print '<tr style="background-color:#FCFCFC">'."\n";
-          else  
+          else
              print "<tr>\n";
           require('../lib/cams_main_detail.inc.php');
 

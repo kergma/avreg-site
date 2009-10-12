@@ -38,7 +38,8 @@ if ( !isset($cam_nr) )
 {
    echo '<div class="warn">' . $r_cam_tips1 . '</div>' ."\n";
    $GCP_query_param_list=array('work','cam_type','geometry','color',
-         'text_left','InetCam_IP','v4l_dev','input','Aviosys9100_chan');
+         'text_left','InetCam_IP','v4l_dev','input',
+         'V.http_get','A.http_get','Aviosys9100_chan');
    require ('../lib/get_cams_params.inc.php');
       if ( $admin_user )
          print '<p align="center"><a href="'.$conf['prefix'].'/admin/cam-addnew.php">'.$l_cam_addnew.'</a></p>'."\n";
@@ -64,31 +65,9 @@ if ( !isset($cam_nr) )
             print '<td>&nbsp;</td>'."\n";
             print '<td><a href="./cam-tune.php?cam_nr=0">'.$strTune.'</td>' . "\n";
          }
-         print '<td colspan="2" align="center" nowrap><b>For ALL</b></td>'."\n";
-         print '<td><b>'.$r_cam_defs2.'</b></td>'."\n";
-
-         if ( $GCP_def_pars['cam_type'] === 'netcam' )
-         {
-            if (!is_null($GCP_def_pars['Aviosys9100_chan']))
-               print '<td valign="center"  nowrap>'.
-                     (is_null($GCP_def_pars['InetCam_IP'])?'http://not_defined':$GCP_def_pars['InetCam_IP']).
-                  '&nbsp; chan '.$GCP_def_pars['Aviosys9100_chan'].'</td>' . "\n";
-            else
-               print '<td valign="center"  nowrap>'.
-                  (is_null($GCP_def_pars['InetCam_IP'])?'http://not_defined':$GCP_def_pars['InetCam_IP']).
-                  '</td>' . "\n";
-         } else {
-            print '<td valign="center"  nowrap>/dev/video'.
-            (is_null($GCP_def_pars['v4l_dev'])?'X':$GCP_def_pars['v4l_dev']).
-            ' input '.$GCP_def_pars['input'].'</td>' . "\n";
-         }
-
-         print '<td align="center" valign="center">'.
-                  $GCP_def_pars['geometry'].
-                  ' ('.
-                  (($GCP_def_pars['color']>0)?'color':'grey').
-                  ')</td>' . "\n";
-         print '</tr>'."\n";
+			$__cam_nr = 0;
+			require('../lib/cams_main_detail.inc.php');
+			print "</tr>\n";
 
          $r_count = 0;
          reset($GCP_cams_params);

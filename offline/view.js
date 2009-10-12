@@ -97,7 +97,7 @@ function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, 
    } else if ( evt_id == 32 ) {
       icon_48x52 = WwwPrefix+'/img/audio48x48.gif';
       g_fname += '  [ ' + s16_1 + ' канал ] ';
-      g_fsize += ', ' + fduration + ', битрейт ' + frames;
+      g_fsize += ', ' + fduration + ', битрейт ' + frames/1000 + 'kbps';
    }
 
    hint=null;
