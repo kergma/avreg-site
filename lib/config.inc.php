@@ -821,7 +821,6 @@ function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
                } else {  // not selected
                         $a .= '<option value="'.$_element.'">'.$text_prefix.$_element.'</option>'."\n";
                }
-               
                $_cnt++;
       }
       $a .= '</select>'."\n";

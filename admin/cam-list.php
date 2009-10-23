@@ -1,4 +1,5 @@
 <?php
+$lang_file = '_admin_cams.php';
 require ('../head.inc.php');
 require ('../lib/my_conn.inc.php');
 

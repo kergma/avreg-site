@@ -4,7 +4,7 @@ if (isset($_POST)) {
    if (isset($_POST['par_filter']))
       setcookie('avreg_par_filter',$_POST['par_filter'],$expire,$_SERVER['SCRIPT_NAME']);
 }
-
+$lang_file = '_admin_cams.php';
 require ('../head.inc.php');
 DENY($admin_status);
 require_once ($wwwdir.'/lib/my_conn.inc.php');
