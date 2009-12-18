@@ -110,7 +110,6 @@ if ( !isset($u_name) || empty($u_name) )
                        print ('<td>&nbsp;</td>');
                     }
 				}
-                
 				print '<td valign="center" nowrap><b>'. $row['USER'] . '</b></td>' . "\n";
 				print '<td valign="center" nowrap><b>'. $row['HOST'] . '</b></td>' . "\n";
 				print '<td>'. htmlspecialchars( $row['LONGNAME'], ENT_QUOTES, $chset ) . '</td>' . "\n";

@@ -32,16 +32,20 @@ switch ( $cmd )
          $passwd_f = sprintf('encrypt(\'%s\'), ', $u_pass);
       $query = sprintf('INSERT INTO USERS 
       ( HOST, USER, PASSWD, STATUS, ALLOW_CAMS,
-      LIMIT_FPS, LIMIT_KBPS, LONGNAME,
-      CHANGE_HOST, CHANGE_USER, CHANGE_TIME) 
-      VALUES ( %s, %s, %s %u, %s, %s, %s, %s, %s, %s, NOW())',
+		LIMIT_FPS, NONMOTION_FPS, LIMIT_KBPS,
+		SESSION_TIME, SESSION_VOLUME,
+		LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME) 
+		VALUES ( %s, %s, %s %u, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())',
       sql_format_str_val($u_host),
       sql_format_str_val($u_name),
       $passwd_f,
       $groups,
       sql_format_str_val($u_devacl),
       sql_format_int_val($limit_fps),
-      sql_format_int_val($limit_kbps),
+		sql_format_str_val($nonmotion_fps),
+		sql_format_int_val($limit_kbps),
+		sql_format_str_val($session_time),
+		sql_format_str_val($session_volume),
       sql_format_str_val($u_longname),
       sql_format_str_val($remote_addr),
       sql_format_str_val($login_user));

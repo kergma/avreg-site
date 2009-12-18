@@ -264,7 +264,11 @@ $WellKnownAspects = array(
 );
 
 require($wwwdir.'/lib/my_conn.inc.php');
-$query = 'SELECT HOST, USER, PASSWD, STATUS, ALLOW_CAMS, LIMIT_FPS, LIMIT_KBPS, LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME FROM USERS ORDER BY STATUS';
+$query = 'SELECT HOST, USER, PASSWD, STATUS, ALLOW_CAMS,
+ LIMIT_FPS, NONMOTION_FPS, LIMIT_KBPS,
+ SESSION_TIME, SESSION_VOLUME,
+ LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME
+ FROM USERS ORDER BY STATUS';
 $result = mysql_query($query) or die('SQL query failed: `'. mysql_error() ."`\n");
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC) )
 {
@@ -276,7 +280,10 @@ $ui['PASSWD'] = $row['PASSWD'];
 $ui['STATUS'] = (int)$row['STATUS'];
 $ui['ALLOW_CAMS'] = $row['ALLOW_CAMS'];
 $ui['LIMIT_FPS'] = is_null($row['LIMIT_FPS'])?NULL:(int)$row['LIMIT_FPS'];
-$ui['LIMIT_KBPS'] = is_null($row['LIMIT_KBPS'])?NULL:(int)$row['LIMIT_KBPS'];;
+$ui['NONMOTION_FPS'] = is_null($row['NONMOTION_FPS'])?NULL:$row['NONMOTION_FPS'];
+$ui['LIMIT_KBPS'] = is_null($row['LIMIT_KBPS'])?NULL:(int)$row['LIMIT_KBPS'];
+$ui['SESSION_TIME'] = is_null($row['SESSION_TIME'])?NULL:$row['SESSION_TIME'];
+$ui['SESSION_VOLUME'] = is_null($row['SESSION_VOLUME'])?NULL:$row['SESSION_VOLUME'];
 $ui['LONGNAME'] = $row['LONGNAME'];
 $ui['CHANGE_HOST'] = $row['CHANGE_HOST'];
 $ui['CHANGE_USER'] = $row['CHANGE_USER'];

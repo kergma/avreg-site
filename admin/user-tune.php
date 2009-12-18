@@ -31,17 +31,25 @@ switch ( $cmd )
       $query = sprintf(
       'UPDATE USERS '.
       'SET HOST=%s, USER=%s, %s STATUS=%d, '.
-      'ALLOW_CAMS=%s, LIMIT_FPS=%s, LIMIT_KBPS=%s, '.
+		'ALLOW_CAMS=%s, LIMIT_FPS=%s, NONMOTION_FPS=%s, LIMIT_KBPS=%s, '.
+		'SESSION_TIME=%s, SESSION_VOLUME=%s, '.
       'LONGNAME=%s, CHANGE_HOST=%s, CHANGE_USER=%s, CHANGE_TIME=NOW() '.
       'WHERE HOST=%s AND USER=%s',
-      sql_format_str_val($u_host), sql_format_str_val($u_name),
+      sql_format_str_val($u_host),
+		sql_format_str_val($u_name),
       $passwd_changed,
       $groups,
       sql_format_str_val($u_devacl),
       sql_format_int_val($limit_fps),
+		sql_format_str_val($nonmotion_fps),
       sql_format_int_val($limit_kbps),
-      sql_format_str_val($u_longname),sql_format_str_val($remote_addr),sql_format_str_val($login_user),
-      sql_format_str_val($old_u_host),sql_format_str_val($old_u_name));
+		sql_format_str_val($session_time),
+		sql_format_str_val($session_volume),
+      sql_format_str_val($u_longname),
+		sql_format_str_val($remote_addr),
+		sql_format_str_val($login_user),
+      sql_format_str_val($old_u_host),
+		sql_format_str_val($old_u_name));
       break;
    default:
       die('crack?');
@@ -75,7 +83,10 @@ if ( isset($u_name) && !empty($u_name) )
       $u_devacl = stripslashes (htmlspecialchars($ui['ALLOW_CAMS'], ENT_QUOTES, $chset));
       $u_status = $ui['STATUS'];
       $limit_fps = $ui['LIMIT_FPS'];
+		$nonmotion_fps = $ui['NONMOTION_FPS'];
       $limit_kbps = $ui['LIMIT_KBPS'];
+		$session_time = $ui['SESSION_TIME'];
+		$session_volume = $ui['SESSION_VOLUME'];
       echo '<h2>' . sprintf ($fmtUserTune,$ui['USER'],$ui['HOST']) . '</h2>' ."\n";
       print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
       require '_user_data_tbl.inc.php';
