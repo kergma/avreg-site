@@ -69,7 +69,7 @@ if (isset($_POST) && is_array($_POST))
 }
 print '</form>'."\n";
 
-$GCP_query_param_list=array('work','cam_type','geometry','color','InetCam_IP','v4l_dev','input', 'V.http_get', 'A.http_get', 'Aviosys9100_chan', 'live_view','monitor_live','v4l_pipe','text_left');
+$GCP_query_param_list=array('work','cam_type','geometry','color','InetCam_IP','v4l_dev','input', 'V.http_get', 'A.http_get', 'Aviosys9100_chan','allow_local','v4l_pipe','text_left');
 require ('../lib/get_cams_params.inc.php');
 
 $active_pipes=array();
@@ -101,7 +101,6 @@ if ( $GCP_cams_nr === 0 ) {
   }
     $r_count = 0;
     $c_work=0;
-    $c_live=0;
     $c_mon_live=0;
     $c_v4l_pipe='';
 
@@ -110,11 +109,10 @@ if ( $GCP_cams_nr === 0 ) {
     {
         $cam_name = getCamName($GCP_cams_params[$__cam_nr]['text_left']);
         $c_work = intval($GCP_cams_params[$__cam_nr]['work']);
-        $c_live = intval($GCP_cams_params[$__cam_nr]['live_view']);
-        $c_mon_live=intval($GCP_cams_params[$__cam_nr]['monitor_live']);
+        $c_mon_live=intval($GCP_cams_params[$__cam_nr]['allow_local']);
         $c_v4l_pipe=&$GCP_cams_params[$__cam_nr]['v4l_pipe'];
 
-        if (($c_work && $c_live && $c_mon_live && !empty($c_v4l_pipe))) {
+        if (($c_work && $c_mon_live && !empty($c_v4l_pipe))) {
            $active_pipes[$active_pipes_nr]=$__cam_nr;
            $active_pipes_nr++;
         } else if ($pipes_show==1) {
@@ -135,12 +133,10 @@ if ( $GCP_cams_nr === 0 ) {
              $off_reason = '&nbsp;';
              if ($c_work===0)
               $off_reason .= 'work="'.$flags[0].'";&nbsp;&nbsp;';
-             if ($c_live===0)
-              $off_reason .= 'live_view="'.$flags[0].'";&nbsp;&nbsp;'; 
              if ($c_mon_live===0)
-              $off_reason .= 'monitor_live="'.$flags[0].'";&nbsp;&nbsp;'; 
+              $off_reason .= 'allow_local="'.$flags[0].'";&nbsp;&nbsp;';
               if (empty($c_v4l_pipe))
-              $off_reason .= 'v4l_pipe="'.$srtUndef.'";'; 
+              $off_reason .= 'v4l_pipe="'.$srtUndef.'";';
               print '<td>'. $off_reason .'</td>' . "\n";
            }
            print '</tr>'."\n";

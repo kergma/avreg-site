@@ -29,22 +29,18 @@ switch ( $cmd )
          else
             $passwd_changed = sprintf('PASSWD=encrypt(\'%s\'), ', $u_pass);
       $query = sprintf(
-      'UPDATE USERS '.
-      'SET HOST=%s, USER=%s, %s STATUS=%d, '.
-		'ALLOW_CAMS=%s, LIMIT_FPS=%s, NONMOTION_FPS=%s, LIMIT_KBPS=%s, '.
-		'SESSION_TIME=%s, SESSION_VOLUME=%s, '.
-      'LONGNAME=%s, CHANGE_HOST=%s, CHANGE_USER=%s, CHANGE_TIME=NOW() '.
-      'WHERE HOST=%s AND USER=%s',
+      'UPDATE USERS SET HOST=%s, USER=%s, %s STATUS=%d, ALLOW_CAMS=%s, SESSIONS_PER_CAM=%s, LIMIT_FPS=%s, NONMOTION_FPS=%s, LIMIT_KBPS=%s, SESSION_TIME=%s, SESSION_VOLUME=%s, LONGNAME=%s, CHANGE_HOST=%s, CHANGE_USER=%s, CHANGE_TIME=NOW() WHERE HOST=%s AND USER=%s',
       sql_format_str_val($u_host),
 		sql_format_str_val($u_name),
       $passwd_changed,
       $groups,
       sql_format_str_val($u_devacl),
+      sql_format_int_val($sessions_per_cam),
       sql_format_int_val($limit_fps),
-		sql_format_str_val($nonmotion_fps),
+		sql_format_float_val($nonmotion_fps),
       sql_format_int_val($limit_kbps),
-		sql_format_str_val($session_time),
-		sql_format_str_val($session_volume),
+		sql_format_int_val($session_time),
+		sql_format_int_val($session_volume),
       sql_format_str_val($u_longname),
 		sql_format_str_val($remote_addr),
 		sql_format_str_val($login_user),
@@ -54,7 +50,8 @@ switch ( $cmd )
    default:
       die('crack?');
 }
-// print ($query);
+
+// tohtml($query);
 if ( mysql_query($query) )
 {
       print '<p class="HiLiteWarn">' . sprintf ($fmtUserUpdated, $u_name, $u_host) . '</p>' ."\n";
@@ -82,6 +79,7 @@ if ( isset($u_name) && !empty($u_name) )
       $passwd2html = stripslashes (htmlspecialchars($ui['PASSWD'], ENT_QUOTES, $chset));
       $u_devacl = stripslashes (htmlspecialchars($ui['ALLOW_CAMS'], ENT_QUOTES, $chset));
       $u_status = $ui['STATUS'];
+      $sessions_per_cam = $ui['SESSIONS_PER_CAM'];
       $limit_fps = $ui['LIMIT_FPS'];
 		$nonmotion_fps = $ui['NONMOTION_FPS'];
       $limit_kbps = $ui['LIMIT_KBPS'];

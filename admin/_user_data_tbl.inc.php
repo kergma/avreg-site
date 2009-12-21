@@ -41,11 +41,15 @@
       print '<td colspan="2">'.$strDeviceACL.'</td>'."\n";
       print '<td><input type="text" name="u_devacl" size="40" maxlength="100" value="'.$u_devacl.'">'."\n";
       print '</tr>'."\n";
+		print '<tr>'."\n";
+		print '<td colspan="2">'.$sSessionsPerCamInfo.'</td>'."\n";
+		print '<td><input type="text" name="sessions_per_cam" size="2" maxlength="2"  value="'.$sessions_per_cam.'">'."\n";
+      print '</tr>'."\n";
       print '<tr>'."\n";
 		print '<td rowspan="3">'.$strRateLimitsInfo.'</td>'."\n";
       print '<td>'.$strLimitFps.'</td>'."\n";
       print '<td><input type="text" name="limit_fps" value="'.$limit_fps.'" size="2" maxlength="2">'."\n";
-      print '</tr>'."\n";
+		print '<tr>'."\n";
 		print '<td>'.$sNonMotionFps.'</td>'."\n";
 		print '<td><input type="text" name="nonmotion_fps" value="'.$nonmotion_fps.'" size="3" maxlength="3">'."\n";
       print '</tr>'."\n";
@@ -53,8 +57,7 @@
 		print '<td>'.$strLimitKbps.'</td>'."\n";
 		print '<td><input disabled readonly type="text" name="limit_kbps" value="'.$limit_kbps.'" size="6" maxlength="6">'."\n";
 		print '</tr>'."\n";
-		print '<tr>'."\n";	
-	print '<tr>'."\n";
+		print '<tr>'."\n";
 		print '<td rowspan="2">'.$sSessionLimitsInfo.'</td>'."\n";
 		print '<td>'.$sSessionTime.'</td>'."\n";
 		print '<td><input type="text" name="session_time" value="'.$session_time.'" size="6" maxlength="6">'."\n";

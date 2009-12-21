@@ -18,7 +18,8 @@ if ($wclist_show>0)
   print '<table cellspacing="0" border="1" cellpadding="3">'. "\n";
 }
 
-$GCP_query_param_list=array('work','live_view','webcam_live','wc_port', 'text_left','geometry','Hx2','cam_type','color','InetCam_IP','v4l_dev','input','Aviosys9100_chan');
+$GCP_query_param_list=array('work','allow_networks', 'text_left','geometry','Hx2','cam_type','color','InetCam_IP',
+'v4l_dev','input','Aviosys9100_chan');
 require ('../lib/get_cams_params.inc.php');
 
 $local_cam_nr = -1;
@@ -52,8 +53,8 @@ if ( $GCP_cams_nr > 0 )
 
 		// $cam_nr, $_sip, $w_port, $geo, $Hx2, $cam_name, $_named
 		$webcam_def = sprintf('%u;%s;%u;%s;%u;%s',
-			$__cam_nr, $_SERVER['SERVER_NAME'], $wc['wc_port'], $wc['geometry'], $wc['Hx2'], $cam_name);
-		if ( $wc['work'] && $wc['live_view'] && $wc['webcam_live'] && $wc['wc_port'] )
+			$__cam_nr, $_SERVER['SERVER_NAME'], 2007, $wc['geometry'], $wc['Hx2'], $cam_name);
+		if ( $wc['work'] && $wc['allow_networks'] )
 		{
               if ($wclist_show>0) {
                 print "<tr>\n";
@@ -76,13 +77,9 @@ if ( $GCP_cams_nr > 0 )
                 $off_reason = '';
                 if ($wc['work']==0)
                    $off_reason .= 'work="'.$flags[0].'";&nbsp;&nbsp;';
-                if ($wc['live_view']==0)
-                   $off_reason .= 'live_view="'.$flags[0].'";&nbsp;&nbsp;'; 
-                if ($wc['webcam_live']==0)
-                   $off_reason .= 'webcam_live="'.$flags[0].'";&nbsp;&nbsp;'; 
-                if ($wc['wc_port']==0)
-                   $off_reason .= 'wc_port="'.$srtUndef.'";'; 
-				print '<td>'. $off_reason .'</td></tr>' . "\n";
+                if ($wc['allow_networks']==0)
+                   $off_reason .= 'allow_networks="'.$flags[0].'";&nbsp;&nbsp;';
+					print '<td>'. $off_reason .'</td></tr>' . "\n";
                 }
 			}
 		}

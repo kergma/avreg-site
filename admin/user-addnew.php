@@ -31,7 +31,7 @@ switch ( $cmd )
       else
          $passwd_f = sprintf('encrypt(\'%s\'), ', $u_pass);
       $query = sprintf('INSERT INTO USERS 
-      ( HOST, USER, PASSWD, STATUS, ALLOW_CAMS,
+		( HOST, USER, PASSWD, STATUS, ALLOW_CAMS, SESSIONS_PER_CAM,
 		LIMIT_FPS, NONMOTION_FPS, LIMIT_KBPS,
 		SESSION_TIME, SESSION_VOLUME,
 		LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME) 
@@ -41,11 +41,12 @@ switch ( $cmd )
       $passwd_f,
       $groups,
       sql_format_str_val($u_devacl),
+		sql_format_int_val($sessions_per_cam),
       sql_format_int_val($limit_fps),
-		sql_format_str_val($nonmotion_fps),
+		sql_format_float_val($nonmotion_fps),
 		sql_format_int_val($limit_kbps),
-		sql_format_str_val($session_time),
-		sql_format_str_val($session_volume),
+		sql_format_int_val($session_time),
+		sql_format_int_val($session_volume),
       sql_format_str_val($u_longname),
       sql_format_str_val($remote_addr),
       sql_format_str_val($login_user));
@@ -53,7 +54,7 @@ switch ( $cmd )
    default:
       die('crack');
 }
-// print ($query);
+ // print ($query);
 if ( mysql_query($query) )
 {
       print '<p class="HiLiteWarn">' . sprintf ($fmtUserAdded, $u_name, $u_host) . '</p>' ."\n";
