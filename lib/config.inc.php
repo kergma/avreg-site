@@ -218,6 +218,9 @@ if (isset($lang_file)) {
 if (file_exists ($lang_module_name2))
    require ($lang_module_name2);
 
+if ( $_SERVER['REMOTE_ADDR'] === '::1' )
+   $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+
 if ( $_SERVER['REMOTE_ADDR'] === '127.0.0.1' ) 
    $remote_addr = 'localhost';
 else
