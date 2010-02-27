@@ -23,9 +23,9 @@ avreg_inet_network($ip_addr_or_acl=NULL)
    if ( is_null($ip_addr_or_acl) && empty($ip_addr_or_acl) )
       return FALSE;
    $ret = array(
-      'addr'   =>  nil,
+      'addr'   =>  NULL,
       'addr_a' =>  '',
-      'mask'   =>  nil,
+      'mask'   =>  NULL,
       'mask_a' => '255.255.255.255');
 
     if ( 0 === strcasecmp($ip_addr_or_acl, 'localhost') ) {

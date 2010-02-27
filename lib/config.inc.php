@@ -943,7 +943,11 @@ $login_user = $_SERVER['REMOTE_USER'];
 $user_status = $user_info['STATUS'];
 $login_user_name = $row['LONGNAME'];
 $login_host = &$remote_addr;
-$GCP_cams_list = @implode(',', parse_dev_acl($user_info['ALLOW_CAMS']));
+$allow_cams = parse_dev_acl($user_info['ALLOW_CAMS']);
+if ( is_array($allow_cams) && count($allow_cams) > 0 )
+   $GCP_cams_list = @implode(',', $allow_cams);
+else
+   $GCP_cams_list = '';
 if ( $user_status <= $install_status ) $install_user = true;
 if ( $user_status <= $admin_status ) $admin_user = true;
 if ( $user_status <= $arch_status ) $arch_user = true;
