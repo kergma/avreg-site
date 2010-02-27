@@ -81,16 +81,16 @@ $query = 'SELECT c1.CAM_NR, c1.VALUE as work, c2.VALUE as text_left '.
 $result = mysql_query($query) or die("Query failed");
 $num_rows = mysql_num_rows($result);
 if ( $num_rows > 0 ) {
-	$conf_cams = '';
+   $conf_cams_array = array();
 	while ( $row = mysql_fetch_array($result, MYSQL_ASSOC) )
-	{
-		if ( empty($row['text_left']) ) 
-			$conf_cams .= 'cam ' .$row['CAM_NR'] .',';
+   {
+      if ( empty($row['text_left']) )
+         $_cam_short = "cam $row[CAM_NR]";
 		else
-			$conf_cams .= $row['text_left'].'('.$row['CAM_NR'] .')'.',';
+         $_cam_short = "$row[text_left]($row[CAM_NR])";
+
+      $conf_cams_array[$row['CAM_NR']] = $_cam_short;
 	}
-	
-	$conf_cams_array = explode(',', substr($conf_cams,0,strlen($conf_cams)-1));
 } else {
 	print '<p><b>' . $strNotCamsDef2 . '</b></p>' . "\n";
 
@@ -197,7 +197,6 @@ if ( isset($_SESSION) && isset($_SESSION['error'])/* ошибка */ )
   }
   echo "</div>\n";
 }
-
 ?>
 
 <form action="<?php echo $conf['prefix']; ?>/offline/_playlist.php" method="POST" onsubmit="return(on_submit())">
@@ -206,7 +205,7 @@ if ( isset($_SESSION) && isset($_SESSION['error'])/* ошибка */ )
 <table cellspacing="0" border="0" cellpadding="5">
 <tr valign="top">
 <td>
-<?php print getSelectHtml('cams[]', $conf_cams_array, TRUE, 7, 1, $cams_sel, FALSE, FALSE); ?>
+<?php print getSelectByAssocAr('cams[]', $conf_cams_array, TRUE, 7, 1, $cams_sel, FALSE, FALSE); ?>
 </td>
 <td>
 <fieldset>

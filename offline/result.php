@@ -40,11 +40,22 @@ document.onmousemove=positiontip;
 </script>
 
 <?php
-
 if (!isset ($cams) || !isset ($filter))
 {
     echo '<div class="help" style="font-size:125%">'.$strNotCamsChoice.'</div>'."\n";
 } else {
+   /* check cams on allow_cams */
+   foreach ($cams as &$value) {
+      if ( !settype($value,'int') )
+         die('crack or hack?');
+   }
+   if ( !empty($GCP_cams_list) ) {
+      $a = array_intersect($allow_cams, $cams);
+      $cams = array_values($a);
+      if ( count($cams) === 0  )
+         die('crack or hack?');
+   }
+
     if ((isset($timemode) && $timemode > 1) && (!isset($dayofweek) || count($dayofweek)===0)) 
     {
         print '<div class="help" style="font-size:125%">'.$strNotCamsChoice.'</div>'."\n";

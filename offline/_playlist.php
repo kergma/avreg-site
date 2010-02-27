@@ -26,6 +26,12 @@ foreach ($cams as &$value) {
   if ( !settype($value,'int') )
     input_data_invalid('cams');
 }
+if ( !empty($GCP_cams_list) ) {
+   $a = array_intersect($allow_cams, $cams);
+   $cams = array_values($a);
+   if ( count($cams) === 0  )
+      input_data_invalid('cams');
+}
 setcookie('avreg_cams[]', implode('-',$cams), $expire,$_pg);
 
 if (!is_array($ftypes) || (count($ftypes) === 0) )
