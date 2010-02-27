@@ -183,7 +183,7 @@ $login_user_name = 'unknown';
 $remote_addr = 'unknown';
 $login_host = 'unknown';
 $users = array();
-$user_info = nil;
+$user_info = NULL;
 
 $link=NULL;
 
