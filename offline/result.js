@@ -91,12 +91,12 @@ function mk_obj_hint(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_
       fn += ' [ ' + s16_1 + 'x' + s16_2 + ' ] ';
       icon_48x52 = WwwPrefix+'/img/mpeg4.gif';
       fs += ', ' + fduration + ', ' + frames + ' кадров';
-      dt_info='<tr><td align="right">Начат:<\/td><td>'+Date1.toLocaleString()+'<\/td><\/tr><tr><td align="right">Закрыт:<\/td><td>'+Date2.toLocaleString()+'<\/td><\/tr>\n';
+      dt_info='<tr><td align="right">Начиная с:<\/td><td>'+Date2.toLocaleString()+'<\/td><\/tr><tr><td align="right">по:<\/td><td>'+Date1.toLocaleString()+'<\/td><\/tr>\n';
   } else if ( evt_id == 32 ) {
       fn += ' [ ' + s16_1 + ' канал ]';
       icon_48x52 = WwwPrefix+'/img/audio.gif';
       fs += ', битрейт ' + frames/1000 + 'kbps'; // + ', cэмплрейт ' + s16_2;
-      dt_info='<tr><td align="right">Начат:<\/td><td>'+Date1.toLocaleString()+'<\/td><\/tr><tr><td align="right">Закрыт:<\/td><td>'+Date2.toLocaleString()+'<\/td><\/tr>\n';     
+      dt_info='<tr><td align="right">Начиная с:<\/td><td>'+Date2.toLocaleString()+'<\/td><\/tr><tr><td align="right">по:<\/td><td>'+Date1.toLocaleString()+'<\/td><\/tr>\n';     
   } else if ( evt_id >= 15 || evt_id <= 21 ) {
       /* jpeg */
       fs += '  [ ' + s16_1 + 'x' + s16_2 + ' ] ' ;

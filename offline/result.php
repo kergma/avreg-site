@@ -63,56 +63,32 @@ if (!isset ($cams) || !isset ($filter))
         die;
     }
         $commentSQL = '';
-        $ftypes = array();
+        $events = array();
         if (isset($filter) && is_array($filter))
         {
                 reset($filter);
                 while( list($key, $val) = each($filter) )
                 {
                         if (!settype($val,'int')) die('bad filter set');
-                        array_push($ftypes, $val);
+                        array_push($events, $val);
                 }
         }
-    if (count($ftypes)==0) 
+    if (count($events)==0) 
     {
         print '<div class="help" style="font-size:125%">'.$strNotCamsChoice.'</div>'."\n";
         require ('../foot.inc.php');
         die;
     }
-        if (!isset($page)) $page = 0;
-        if (isset($btNext)) $page++;
-        if (isset($btLast)) $page--;
-        $row_start = $page * $row_max;
-        /* Performing new SQL query */
-        require ('../lib/my_conn.inc.php');
-        if ( isset($timemode) && $timemode == 1) {
-                $timebegin = sprintf('20%02s-%02u-%02u %02u:%02u:00',$year_array[$year1],$month1,$day1,$hour1,$minute_array[$minute1]);
-                $timeend   = sprintf('20%02s-%02u-%02u %02u:%02u:59',$year_array[$year2],$month2,$day2,$hour2,$minute_array[$minute2]);
-                $query = 'select UNIX_TIMESTAMP(DT1) as UDT1, UNIX_TIMESTAMP(DT2) as UDT2,'.
-            ' CAM_NR,EVT_ID,SER_NR,FILESZ_KB,FRAMES,U16_1,U16_2,EVT_CONT from EVENTS where '.
-                        ' ( (DT1 between \''.$timebegin.'\' and \''.$timeend.'\') or (DT2 between \''.$timebegin.'\' and \''.$timeend.'\') ) '.
-                        ' and (CAM_NR in (0,'.implode(',', $cams).'))'.
-                        ' and (EVT_ID in ('.implode(',', $ftypes).'))'.
-                        ' order by DT1 '.
-                        " limit $row_start, $row_max";
-        } else {
-                $timebegin = sprintf('20%02s-%02u-%02u 0:0:0',$year_array[$year1],$month1,$day1);
-                $timeend   = sprintf('20%02s-%02u-%02u 23:59:59',$year_array[$year2],$month2,$day2);
-        $min1=&$minute_array[$minute1];
-        $min2=&$minute_array[$minute2];
-                $time_in_day_begin = sprintf('%02u:%02u:00',$hour1,$min1);
-                $time_in_day_end   = sprintf('%02u:%02u:59',$hour2,$min2);
-                $query =  'select UNIX_TIMESTAMP(DT1) as UDT1, UNIX_TIMESTAMP(DT2) as UDT2,'.
-            ' CAM_NR,EVT_ID,SER_NR,FILESZ_KB,FRAMES,U16_1,U16_2,EVT_CONT from EVENTS where '.
-            ' ( (DT1 between \''.$timebegin.'\' and \''.$timeend.'\') or (DT2 between \''.$timebegin.'\' and \''.$timeend.'\') ) '.
-                        ' and (CAM_NR in (0,'.implode(',', $cams).'))'.
-                        ' and (EVT_ID in ('.implode(',', $ftypes).'))'.
-            ' and (WEEKDAY(DT1) in ('.implode(',', $dayofweek).') or WEEKDAY(DT2) in ('.implode(',', $dayofweek).')) '.
-            ' and ((TIME(DT1) between \''.$time_in_day_begin.'\' and \''.$time_in_day_end.'\') or (TIME(DT2) between \''.$time_in_day_begin.'\' and \''.$time_in_day_end.'\')) '.
-                        ' order by DT1 '.
-                        " limit $row_start, $row_max";
-        }
-  
+   
+    if (!isset($page)) $page = 0;
+    if (isset($btNext)) $page++;
+    if (isset($btLast)) $page--;
+    $row_start = $page * $row_max;
+    /* Performing new SQL query */
+    require ('../lib/my_conn.inc.php');
+    require ('./_events_select_query.inc.php');
+    $query .= "\nlimit $row_start,$row_max";
+
     if ( $conf['debug'] )
       print '<div class="help"  style="font-size:85%">'.$query.'</div>'."\n";
     $result = mysql_query($query) or die('Query failed: `'.mysql_error().'`');
@@ -183,7 +159,7 @@ if ( $num_rows > 0 )
         if ($CAM_NR !==0 )
         {
 
-          $f_duration_str=DeltaTimeHuman($UDT2-$UDT1);
+          $f_duration_str=DeltaTimeHuman($UDT1-$UDT2);
  
           /* _cam_nr, _evt_id, _utime1, _utime2, _ser_nr, _fsize, _frames, _u16_1, _u16_2, _ftype_str, _fduration, _fname */
 

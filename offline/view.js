@@ -52,8 +52,8 @@ function obj_loaded(e) {
  '<td align="right">Размер:<\/td>\n' +
  '<td>'+g_fsize+'<\/td>\n' +
  '<\/tr><tr>\n' +
- '<td align="right">Начат:<\/td><td>'+g_fdate1+'<\/td><\/tr>\n' +
-'<tr><td align="right">Закрыт:<\/td><td>'+g_fdate2+'<\/td>\n' +
+ '<td align="right">Начиная с:<\/td><td>'+g_fdate2+'<\/td><\/tr>\n' +
+'<tr><td align="right">по:<\/td><td>'+g_fdate1+'<\/td>\n' +
  '<\/tr><\/tbody><\/table>\n';
        }
    }
@@ -154,8 +154,8 @@ function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, 
  '<td align="right">Размер<\/td>\n' +
  '<td>'+g_fsize+'<\/td>\n' +
  '<\/tr><tr>\n' +
-'<td align="right">Начат<\/td><td>'+g_fdate1+'<\/td><\/tr>\n' +
-'<tr><td align="right">Закрыт<\/td><td>'+g_fdate2+'<\/td>\n' +
+'<td align="right">Начиная с <\/td><td>'+g_fdate2+'<\/td><\/tr>\n' +
+'<tr><td align="right">по <\/td><td>'+g_fdate1+'<\/td>\n' +
  '<\/tr><\/tbody><\/table>\n' + 
  '<br /><a href="'+link+'" '+link_target+'>загрузить файл ( ' + g_fsize +
  ' )<br />и открыть в медиа проигрывателе &gt;&gt;<\/a>\n' +

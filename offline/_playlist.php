@@ -88,40 +88,10 @@ if (($_POST['cams_ordered']))
       setcookie('avreg_cams_ordered','0',$expire,$_pg);
 */
 
-/* build SQL query */
-$cams_csv = implode(',', $cams);
-if ( $timemode === 1 ) {
-  $timebegin = sprintf('20%02s-%02u-%02u %02u:%02u:00',
-                $year_array[$year1],$month1,$day1,$hour1,$minute_array[$minute1]);
-  $timeend   = sprintf('20%02s-%02u-%02u %02u:%02u:59',
-                $year_array[$year2],$month2,$day2,$hour2,$minute_array[$minute2]);
-  $query = 'select UNIX_TIMESTAMP(DT1) as UDT1, UNIX_TIMESTAMP(DT2) as UDT2,'.
-            ' CAM_NR,EVT_ID,SER_NR,FILESZ_KB,FRAMES,U16_1,U16_2,EVT_CONT'.
-            ' from EVENTS where '.
-            ' ( (DT1 between \''.$timebegin.'\' and \''.$timeend.'\') or (DT2 between \''.$timebegin.'\' and \''.$timeend.'\') ) '.
-            ' and (CAM_NR in ('.$cams_csv.'))'.
-            ' and (EVT_ID in ('.implode(',', $ftypes).'))'.
-            ' order by DT1';
-} else {
-  $timebegin = sprintf('20%02s-%02u-%02u 00:00:00', $year_array[$year1],$month1,$day1);
-  $timeend   = sprintf('20%02s-%02u-%02u 23:59:59', $year_array[$year2],$month2,$day2);
-  $min1=&$minute_array[$minute1];
-  $min2=&$minute_array[$minute2];
-  $time_in_day_begin = sprintf('%02u:%02u:00',$hour1,$min1);
-  $time_in_day_end   = sprintf('%02u:%02u:59',$hour2,$min2);
-  $query =  'select UNIX_TIMESTAMP(DT1) as UDT1, UNIX_TIMESTAMP(DT2) as UDT2,'.
-            ' CAM_NR,EVT_ID,SER_NR,FILESZ_KB,FRAMES,U16_1,U16_2,EVT_CONT'.
-            ' from EVENTS where '.
-            ' ( (DT1 between \''.$timebegin.'\' and \''.$timeend.'\') or (DT2 between \''.$timebegin.'\' and \''.$timeend.'\') ) '.
-                        ' and (CAM_NR in ('.$cams_csv.'))'.
-                        ' and (EVT_ID in ('.implode(',', $ftypes).'))'.
-            ' and (WEEKDAY(DT1) in ('.implode(',', $dayofweek).') or WEEKDAY(DT2) in ('.implode(',', $dayofweek).')) '.
-            ' and ((TIME(DT1) between \''.$time_in_day_begin.'\' and \''.$time_in_day_end.'\') or (TIME(DT2) between \''.$time_in_day_begin.'\' and \''.$time_in_day_end.'\')) '.
-            ' order by DT1';
-}
-
-/* Performing new SQL query */
 require ('../lib/my_conn.inc.php');
+$events = &$ftypes;
+require ('./_events_select_query.inc.php');
+
 $result = mysql_query($query) or die('SQL query failed: ' . mysql_error());
 $num_rows = 0;
 $res_array=array();
@@ -152,45 +122,12 @@ function getDayName($n) {
   return $GLOBALS['day_of_week'][$n];
 }
 
-$CRLF="\r\n";
-$fname="avreg_cams-$cams_csv";
-if ( $pl_fmt === 'XSPF' ) {
-  header('Content-Type: application/xspf+xml');
-  header("Content-Disposition: attachment; filename=\"$fname.xspf\"");
-  echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>$CRLF";
-  echo "<playlist version=\"0\" xmlns=\"http://xspf.org/ns/0/\">$CRLF";
-  if ( $timemode === 2 )
-     printf("\t<title>time: [%s - %s], [%s], [%s-%s]</title>$CRLF",
-        substr($timebegin,0,-9), substr($timeend,0,-9),
-        implode(',', array_map("getDayName", $dayofweek)),
-        substr($time_in_day_begin,0,-3), substr($time_in_day_end,0,-3));
-  else
-     printf("\t<title>[%s - %s]</title>$CRLF",
-        substr($timebegin,0,-3), substr($timeend,0,-3));
-  echo "\t<creator>cams: [".$cams_csv."]</creator>$CRLF";
-  echo "\t<annotation>$query</annotation>$CRLF";
-  echo "\t<info>http://avreg.net</info>$CRLF";
-  $main_date = gmdate("Y-m-d\TH:i:s", $now_ts);
-  $tz = date("O", $timestamp);
-  $tz = substr_replace ($tz, ':', 3, 0);
-  echo "\t<date>$main_date$tz</date>$CRLF";
-  echo "\t<trackList>$CRLF";
-} elseif ( $pl_fmt === 'M3U' ) {
-  header('Content-Type: audio/x-mpegurl');
-  header("Content-Disposition: attachment; filename=\"$fname.m3u\"");
-  echo "#EXTM3U$CRLF";
-} else {
-  header('Content-Type: text/plain');
-  header("Content-Disposition: attachment; filename=\"$fname.txt\"");
-}
-
-while (@ob_end_flush());
-
 /* вычисляем протокол доступа к медиа-файлам 
    на основании адреса клиента и правил в конфиге */
 require_once($wwwdir . 'lib/utils-inet.php');
 $remote_ip = ip2long($_SERVER['REMOTE_ADDR']);
 $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
+$CRLF="\r\n";
 if ( $MSIE /* only win */ || false !== strpos($ua, 'windows') )
   $platform = 'win';
 else if ( false !== strpos($ua, 'linux') ||
@@ -217,6 +154,38 @@ foreach ( $_ipacl_list as &$_ipacl_str ) {
 if ( !isset($MediaUrlPref) /* не нашли совпадения по ACL */ )
    $MediaUrlPref = 'http://' . $_SERVER['HTTP_HOST'] . $conf['prefix'] . $conf['media-alias'];
 
+$fname="avreg_cams-$_cams_csv";
+if ( $pl_fmt === 'XSPF' ) {
+  header('Content-Type: application/xspf+xml');
+  header("Content-Disposition: attachment; filename=\"$fname.xspf\"");
+  echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>$CRLF";
+  echo "<playlist version=\"0\" xmlns=\"http://xspf.org/ns/0/\">$CRLF";
+  if ( $timemode === 2 )
+     printf("\t<title>time: [%s - %s], [%s], [%s-%s]</title>$CRLF",
+        substr($timebegin,0,-9), substr($timeend,0,-9),
+        implode(',', array_map("getDayName", $dayofweek)),
+        substr($time_in_day_begin,0,-3), substr($time_in_day_end,0,-3));
+  else
+     printf("\t<title>[%s - %s]</title>$CRLF",
+        substr($timebegin,0,-3), substr($timeend,0,-3));
+  echo "\t<creator>cams: [".$_cams_csv."]</creator>$CRLF";
+  echo "\t<annotation>$query</annotation>$CRLF";
+  echo "\t<info>http://avreg.net</info>$CRLF";
+  $main_date = gmdate("Y-m-d\TH:i:s", $now_ts);
+  $tz = date("O", $timestamp);
+  $tz = substr_replace ($tz, ':', 3, 0);
+  echo "\t<date>$main_date$tz</date>$CRLF";
+  echo "\t<trackList>$CRLF";
+} elseif ( $pl_fmt === 'M3U' ) {
+  header('Content-Type: audio/x-mpegurl');
+  header("Content-Disposition: attachment; filename=\"$fname.m3u\"");
+  echo "#EXTM3U$CRLF";
+} else {
+  header('Content-Type: text/plain');
+  header("Content-Disposition: attachment; filename=\"$fname.txt\"");
+}
+
+while (@ob_end_flush());
 
 for ($i=1; $i<=$num_rows; $i++)
 {
@@ -229,11 +198,12 @@ for ($i=1; $i<=$num_rows; $i++)
   else if ( $row['EVT_ID'] == '12' )
      $_media_str = '(video+audio)';
   else
-    $_media_str = 'unknown';
+     $_media_str = 'unknown';
 
+  $duration = (int)$row['UDT1'] - (int)$row['UDT2'];
   if ( $pl_fmt === 'XSPF' ) {
-    $title =  strftime('%a, %d %b %H:%M:%S', (int)$row['UDT1']);
-    $duration = ((int)$row['UDT2'] - (int)$row['UDT1'])*1000;
+    $title =  strftime('%a, %d %b %H:%M:%S', (int)$row['UDT2']);
+    $duration *= 1000;
     echo "\t\t<track>$CRLF";
     echo "\t\t\t<location>$location</location>$CRLF";
     echo "\t\t\t<title>$title</title>$CRLF";
@@ -245,8 +215,7 @@ for ($i=1; $i<=$num_rows; $i++)
     echo "\t\t</track>$CRLF";
   } else {
     if ( $pl_fmt === 'M3U' ) {
-       $title = sprintf('cam #%02u %s - ', (int)$row['CAM_NR'], $_media_str) . date('Y-m-d H:i:s', (int)$row['UDT1']);
-       $duration = (int)$row['UDT2'] - (int)$row['UDT1'];
+       $title = sprintf('cam #%02u %s - ', (int)$row['CAM_NR'], $_media_str) . date('Y-m-d H:i:s', (int)$row['UDT2']);
        echo "#EXTINF:$duration,$title$CRLF";
     }
     echo "$location$CRLF";
