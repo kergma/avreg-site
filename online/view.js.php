@@ -59,11 +59,11 @@ for ($i=0; $i<$wins_nr; $i++)
    cam: {
       nr: %s,
       name: "%s",
-      url: "http://%s:%u/video.mjpg", /* FIXME Why only http */
+      url: "http://%s:%u/mjpg/%u/video.mjpg",
       orig_w: %u,
       orig_h: %u
       }
-};%s', $i, $l_wins[0], $l_wins[1],$l_wins[2],$l_wins[3], $cam_nr, $camnames[$i], $_sip, $w_port, $_ww, $_wh, "\n" );
+};%s', $i, $l_wins[0], $l_wins[1],$l_wins[2],$l_wins[3], $cam_nr, $camnames[$i], $_sip, $w_port, $cam_nr, $_ww, $_wh, "\n" );
 
     if ( $MSIE )
         $msie_addons_scripts[] = sprintf('<script for="cam%d" event="OnClick()">

@@ -6,14 +6,6 @@ $F_RELOADED = 0x0004;
 
 $F_BASEPAR  = 0x0100;
 
-$BOOL_VAL = 1;
-$INT_VAL  = 2;
-$INTPROC_VAL  = 3; // int or %
-$CHECK_VAL = 4;
-$STRING_VAL = 5;
-$STRING200_VAL = 6;
-$PASSWORD_VAL = 7;
-
 $vid_standarts = array ('PAL (цв.в/к)', 'NTSC (цв.в/к)', 'SECAM (не для в/к)', 'PAL NC (ч/б в/к)' );
 $strCamType = array('netcam', 'v4l');
 $strNetProto = array('http');

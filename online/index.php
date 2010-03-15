@@ -2,7 +2,8 @@
 $pageTitle = 'WebCam';
 $lang_file='_online.php';
 
-$wclist_show = $_POST['wclist_show'];
+if ( isset($_POST) && isset($_POST['wclist_show']) )
+   $wclist_show = $_POST['wclist_show'];
 if ( isset ($wclist_show) ) {
    settype($wclist_show, 'int');
    setcookie('avreg_wclist_show',  $wclist_show, time()+5184000);

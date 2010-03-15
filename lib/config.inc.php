@@ -26,6 +26,14 @@ else
 */
 require($wwwdir . 'lib/grab_globals.lib.php');
 
+$BOOL_VAL = 1;
+$INT_VAL  = 2;
+$INTPROC_VAL  = 3; // int or %
+$CHECK_VAL = 4;
+$STRING_VAL = 5;
+$STRING200_VAL = 6;
+$PASSWORD_VAL = 7;
+
 function tohtml($var)
 {
       print '<div class="dump"><pre class="dump">'."\n";
@@ -547,7 +555,7 @@ function DENY($good_status=NULL, $http_status=403)
       $action = &$GLOBALS['fmtServerAdmin'];
    } else {
       $deny_reason = sprintf($GLOBALS['fmtAccessDenied'],
-                     htmlentities($_SERVER['PHP_AUTH_USER'], ENT_QUOTES, $GLOBALS['chset']),
+                     htmlentities(isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : "unknown user", ENT_QUOTES, $GLOBALS['chset']),
                      $_SERVER['REMOTE_ADDR']);
       $action = &$GLOBALS['fmtTryOnceMore'];
    }
@@ -586,72 +594,72 @@ function DENY($good_status=NULL, $http_status=403)
 
 function GetCamPar($_param, $_cam_nr=-1)
 {
-      $def_value = NULL;
-      $value = NULL;
-      $val_type =NULL;
-      $ret = NULL;
-      // читаемт значение по умолчанию
-      $sql = sprintf('SELECT VAL_TYPE, DEF_VALUE AS VALUE FROM PARAMS WHERE PARAM=\'%s\'', $_param);
-      $res = mysql_query($sql) or die('Query failed:`'.$sql.'`');
-      $row = mysql_fetch_array($res, MYSQL_ASSOC);
-      $def_value = $row['VALUE'];
-      $val_type = $row['VAL_TYPE'];
-      mysql_free_result($res);
-      // читаем параметры камеры
-      $sql = sprintf('SELECT VALUE FROM CAMERAS WHERE PARAM=\'%s\' AND CAM_NR=%d', $_param, $_cam_nr);
-      $res = mysql_query($sql) or die('Query failed:`'.$sql.'`');
-      $row = mysql_fetch_array($res, MYSQL_ASSOC);
-      $value = $row['VALUE'];
-      mysql_free_result($res);
+   $def_value = NULL;
+   $value = NULL;
+   $val_type =NULL;
+   $ret = NULL;
+   // читаемт значение по умолчанию
+   $sql = sprintf('SELECT VAL_TYPE, DEF_VALUE AS VALUE FROM PARAMS WHERE PARAM=\'%s\'', $_param);
+   $res = mysql_query($sql) or die('Query failed:`'.$sql.'`');
+   $row = mysql_fetch_array($res, MYSQL_ASSOC);
+   $def_value = $row['VALUE'];
+   $val_type = $row['VAL_TYPE'];
+   mysql_free_result($res);
+   // читаем параметры камеры
+   $sql = sprintf('SELECT VALUE FROM CAMERAS WHERE PARAM=\'%s\' AND CAM_NR=%d', $_param, $_cam_nr);
+   $res = mysql_query($sql) or die('Query failed:`'.$sql.'`');
+   $row = mysql_fetch_array($res, MYSQL_ASSOC);
+   $value = $row['VALUE'];
+   mysql_free_result($res);
 
-      if ( is_null($value) )
-               $ret =  $def_value;
-      else
-               $ret = $value;
+   if ( is_null($value) )
+      $ret =  $def_value;
+   else
+      $ret = $value;
 
-      if ( !is_null($ret) )
+   if ( !is_null($ret) )
+   {
+      switch ( $val_type )
       {
-               switch ( $val_type )
-               {
-                        case $INT_VAL:
-                              settype($ret, 'int');
-                              break;
-                        case $BOOL_VAL:
-                              settype($ret, 'bool');
-                              break;
-                        default:
-                              settype($ret, 'string');
-               }
+      case $GLOBALS['INT_VAL']:
+            settype($ret, 'int');
+            break;
+         case $GLOBALS['BOOL_VAL']:
+            settype($ret, 'bool');
+            break;
+         default:
+            settype($ret, 'string');
       }
-      return  $ret;
+   }
+   return  $ret;
 }
 
 function CheckParVal($_param, $_value, $_val_type, $_cam_nr=-1)
 {
-      $ret = TRUE;
-      if ( $_value === '' || is_null($_value) )
+   $ret = TRUE;
+   if ( $_value === '' || is_null($_value) )
       return $ret;
-      switch ( $_val_type )
-      {
-                        case $INT_VAL:
-                        if ( !is_numeric($_value) )
-                        {
-                              $ret = FALSE;
-                              $str = '';
-                        }
-                        break;
-                        case $BOOL_VAL:
-                              if ( !($_value == '0' || $_value == '1'))
-                              {
-                                       $ret = FALSE;
-                                       $str = '';
-                              }
-                              break;
-      }
-      if ( !$ret ) 
-               print '<font color="'.$GLOBALS['error_color'].'"><b><p>'. sprintf($GLOBALS['strParInvalid'], $_value, $_param) .'</p></b></font>'."\n";
+   switch ( $_val_type )
+   {
+      case $GLOBALS['INT_VAL']:
+         if ( !is_numeric($_value) )
+         {
+            $ret = FALSE;
+            $str = '';
+         }
+         break;
+      case $GLOBALS['BOOL_VAL']:
+         if ( !($_value == '0' || $_value == '1'))
+         {
+            $ret = FALSE;
+            $str = '';
+         }
+         break;
+   }
+   if ( !$ret ) 
+      print '<font color="'.$GLOBALS['error_color'].'"><b><p>'. sprintf($GLOBALS['strParInvalid'], $_value, $_param) .'</p></b></font>'."\n";
 
-      return $ret;
+   return $ret;
 }
 
 function checkIntRange ($int, $min, $max)
@@ -717,8 +725,6 @@ if ($_weekday == '') {
 }
 return $retval;
 }
-
-
 
 function getSelectHtml($_name, $value_array, $_multiple=FALSE , $_size = 1, $start_val=1, $selected='', $first_empty=TRUE, $onch=FALSE, $TITLE=NULL)
 {

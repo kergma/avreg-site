@@ -105,15 +105,7 @@ function brout(win_nr, win_div, win_geo) {
    var url = WINS_DEF[win_nr].cam.url;
 
    var alt = 'WebCam #' + cam_nr + ' on ' + url + ' , original geo ['+orig_w+'x'+orig_h+']';
-   if (GECKO) {
-       // $('<img src="/640x480r.png" id="'+id+'" name="cam" alt="' +alt+'" '+
-      $('<img src="'+url+'?ab='+___abenc+'" id="'+id+'" name="cam" alt="' +alt+'" '+
-      'width="'+orig_w+'px" height="'+orig_h+'px" ' +
-      'align="middle" border="0px" />').appendTo(win_div).width(win_geo.cam_w).height(win_geo.cam_h);
-      win_div.click( function() { img_click(this); } ); 
-      win_div.mouseover( function() { img_mouseover(this, win_nr);} );
-      win_div.mouseout( function() { hideddrivetip(); } ); 
-   } else if (MSIE) {
+   if (MSIE) {
       var amc = document.createElement('object');
       amc.id = id;
       amc.alt = alt + ' Microsoft Internet Explorer on Windows system found. Try ActiveX viewer.';
@@ -136,14 +128,13 @@ function brout(win_nr, win_div, win_geo) {
       amc.MediaURL = url+'?ab='+___abenc;
       amc.AutoStart = true;
    } else {
-      alt += ' Unknow browser. Try Java viewer applet - Combozolla.';
-      $('<applet code="com.charliemouse.cambozola.Viewer" archive="cambozola.jar" '+
-      'ID="'+id+'" name="cam" '+
-      'WIDTH="'+win_geo.cam_w+'" HEIGHT="'+win_geo.cam_h+'" border="0px" ' +
-      '<PARAM NAME="URL" VALUE="'+url+'?ab='+___abenc+'" />' +
-      '<br>'+ alt +
-      '<\/applet>').appendTo(win_div);
-       win_div.click( function() { img_click(this); } ); 
+       // $('<img src="/640x480r.png" id="'+id+'" name="cam" alt="' +alt+'" '+
+      $('<img src="'+url+'?ab='+___abenc+'" id="'+id+'" name="cam" alt="' +alt+'" '+
+      'width="'+orig_w+'px" height="'+orig_h+'px" ' +
+      'align="middle" border="0px" />').appendTo(win_div).width(win_geo.cam_w).height(win_geo.cam_h);
+      win_div.click( function() { img_click(this); } ); 
+      win_div.mouseover( function() { img_mouseover(this, win_nr);} );
+      win_div.mouseout( function() { hideddrivetip(); } ); 
    }
 }
 
@@ -323,11 +314,9 @@ $(document).ready( function() {
    if (MSIE) {
      winX=window.screenLeft;
      winY=window.screenTop;
-   } else if (GECKO) {
+   } else { /* else if (GECKO) { */
      winX=window.screenX;
      winY=window.screenY;
-   } else {
-     alert ('not supported browser');
    }
 
    if (GECKO) {

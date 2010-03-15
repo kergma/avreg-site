@@ -3,7 +3,8 @@ $pageTitle = 'WebCam';
 $lang_file='_online.php';
 $link_javascripts=array('lib/js/jquery-1.2.6.min.js');
 $include_javascripts=array('online/build_mon.js');
-$wclist_show = $_POST['wclist_show'];
+if ( isset($_POST) && isset($_POST['wclist_show']) )
+   $wclist_show = $_POST['wclist_show'];
 if ( isset ($wclist_show) ) {
    settype($wclist_show, 'int');
    setcookie('avreg_wclist_show',  $wclist_show, time()+5184000);
