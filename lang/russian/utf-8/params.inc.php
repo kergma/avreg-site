@@ -495,6 +495,17 @@ array(
 ),
 
 array(
+  'name'    => 'http/1.0',
+  'type'    => $BOOL_VAL,
+  'def_val' => FALSE,
+  'desc'    => '<b>Использовать устаревшую версию 1.0 протокола HTTP для исходящих соединений.</b> В частности, может быть полезно при работе с ip-камерами с некорректной реализацией протокола HTTP в режиме захвата одиночных кадров (snapshot mode).<br />По умолчанию: &quot;<b>Выкл.</b>&quot; - используется версия http/1.1 c поддержкой persistent connection.',
+  'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
+  'cats'    => '3.1.1',
+  'subcats' => NULL,
+  'mstatus' => 2,
+),
+
+array(
   'name'    => 'nc_conn_tries_period',
   'type'    => $INT_VAL,
   'def_val' => 5,
