@@ -53,6 +53,46 @@ function WhatViddev ( $dev_file )
       return $ret;
 }
 
+function find_param_defs($par_name) {
+   $d = NULL;
+   foreach ( $GLOBALS['PARAMS'] as &$d ) {
+      if ( $d['name'] == $par_name)
+         return $d;
+   }
+   return NULL;
+}
+
+function CheckParVal($_param, $_value)
+{
+   $ret = TRUE;
+   if ( $_value === '' || is_null($_value) )
+      return $ret;
+   $par_defs = find_param_defs($_param);
+   if ( NULL == $par_defs )
+      die("Invalid param name: " . $_param);
+
+   if ( !empty($par_defs['valid_preg']) ) {
+      if ( !preg_match($par_defs['valid_preg'], $_value) )
+         $ret = FALSE;
+   } else {
+      switch ( $par_defs['type'] )
+      {
+         case $GLOBALS['INT_VAL']:
+            if ( !is_numeric($_value) )
+               $ret = FALSE;
+            break;
+         case $GLOBALS['BOOL_VAL']:
+            if ( !($_value == '0' || $_value == '1'))
+               $ret = FALSE;
+            break;
+      }
+   }
+   if ( !$ret ) 
+      print '<div class="error">'. sprintf($GLOBALS['strParInvalid'], $_value, $_param) .'</div>'."\n";
+
+   return $ret;
+}
+
 function checkParam ( $parname, $parval )
 {
 switch ( $parname )
@@ -125,9 +165,6 @@ switch ( $parname )
                else
                         $sel = $GLOBALS['vid_standarts'][$parval];
                $ret = getSelectHtml('fields['.$parname.']', $GLOBALS['vid_standarts'], FALSE, 1, 0, $sel, TRUE, FALSE);
-               break;
-      case 'geometry':
-               $ret = getSelectHtmlByName('fields['.$parname.']', $GLOBALS['geometry'], FALSE, 1, 0, $parval, TRUE, FALSE);
                break;
       case 'deinterlacer':
                if ( $parval == '' )
@@ -205,14 +242,5 @@ function CorrectParVal($parname, $parval)
          $parval = translit_ru($parval);
       break;
    }
-}
-
-function checkExec ( $parname, $parval )
-{
-   $ret = '<input type="text" name="fields['.$parname.']" value="'.getBinString($parval).'" size=20 maxlength=200>' . "\n";
-   if ( FALSE === file_exists($parval) )
-      $ret .= '<br/><p><font color="'.$GLOBALS['error_color'].'&#171;>'.$parval.
-                  '&#187; - could\'t be found.</font></p>'."\n";
-   return $ret;
 }
 ?>

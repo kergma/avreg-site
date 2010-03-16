@@ -3,7 +3,7 @@ $lang_file = '_admin_cams.php';
 require ('../head.inc.php');
 require ('../lib/my_conn.inc.php');
 
-echo '<h1>' . sprintf($r_cam,$named, $sip) . '</h1>' ."\n";
+echo '<h1>' . sprintf($r_cam_list, $named, $sip) . '</h1>' ."\n";
 
 if ( isset($cmd) )
 {
@@ -32,8 +32,6 @@ if ( isset($cmd) )
                break;
       }
 }
-
-echo '<h2>' . $r_cam_list . '</h2>' ."\n";
 
 if ( !isset($cam_nr) )
 {
@@ -66,7 +64,8 @@ if ( !isset($cam_nr) )
             print '<td>&nbsp;</td>'."\n";
             print '<td><a href="./cam-tune.php?cam_nr=0">'.$strTune.'</td>' . "\n";
          }
-			$__cam_nr = 0;
+         $__cam_nr = 0;
+         $cam_detail = &$GCP_def_pars;
 			require('../lib/cams_main_detail.inc.php');
 			print "</tr>\n";
 

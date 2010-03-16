@@ -78,7 +78,7 @@ if ( $cam_detail['cam_type'] === 'netcam' ) {
 	}
 }
 
-if ($cam_has_video)
+if ( $cam_has_video || $__cam_nr == 0 )
 	print '<td align="center" valign="center">'.$cam_detail['geometry'].
                    ' ('.
                    ((empty($cam_detail['color']) || $cam_detail['color']>0)?'color':'grey').

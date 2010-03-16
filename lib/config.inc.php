@@ -592,76 +592,6 @@ function DENY($good_status=NULL, $http_status=403)
 }
 
 
-function GetCamPar($_param, $_cam_nr=-1)
-{
-   $def_value = NULL;
-   $value = NULL;
-   $val_type =NULL;
-   $ret = NULL;
-   // читаемт значение по умолчанию
-   $sql = sprintf('SELECT VAL_TYPE, DEF_VALUE AS VALUE FROM PARAMS WHERE PARAM=\'%s\'', $_param);
-   $res = mysql_query($sql) or die('Query failed:`'.$sql.'`');
-   $row = mysql_fetch_array($res, MYSQL_ASSOC);
-   $def_value = $row['VALUE'];
-   $val_type = $row['VAL_TYPE'];
-   mysql_free_result($res);
-   // читаем параметры камеры
-   $sql = sprintf('SELECT VALUE FROM CAMERAS WHERE PARAM=\'%s\' AND CAM_NR=%d', $_param, $_cam_nr);
-   $res = mysql_query($sql) or die('Query failed:`'.$sql.'`');
-   $row = mysql_fetch_array($res, MYSQL_ASSOC);
-   $value = $row['VALUE'];
-   mysql_free_result($res);
-
-   if ( is_null($value) )
-      $ret =  $def_value;
-   else
-      $ret = $value;
-
-   if ( !is_null($ret) )
-   {
-      switch ( $val_type )
-      {
-      case $GLOBALS['INT_VAL']:
-            settype($ret, 'int');
-            break;
-         case $GLOBALS['BOOL_VAL']:
-            settype($ret, 'bool');
-            break;
-         default:
-            settype($ret, 'string');
-      }
-   }
-   return  $ret;
-}
-
-function CheckParVal($_param, $_value, $_val_type, $_cam_nr=-1)
-{
-   $ret = TRUE;
-   if ( $_value === '' || is_null($_value) )
-      return $ret;
-   switch ( $_val_type )
-   {
-      case $GLOBALS['INT_VAL']:
-         if ( !is_numeric($_value) )
-         {
-            $ret = FALSE;
-            $str = '';
-         }
-         break;
-      case $GLOBALS['BOOL_VAL']:
-         if ( !($_value == '0' || $_value == '1'))
-         {
-            $ret = FALSE;
-            $str = '';
-         }
-         break;
-   }
-   if ( !$ret ) 
-      print '<font color="'.$GLOBALS['error_color'].'"><b><p>'. sprintf($GLOBALS['strParInvalid'], $_value, $_param) .'</p></b></font>'."\n";
-
-   return $ret;
-}
-
 function checkIntRange ($int, $min, $max)
 {
 if ( $int == NULL or $h < $min or $h > $max) {
@@ -924,13 +854,13 @@ function getSelectByAssocAr($_name, $assoc_array, $_multiple=FALSE ,
 
 function getBinString($bin_str)
 {
-if ( strlen ($bin_str) == 0 ) return $bin_str;
-$ret = str_replace("\x00", '\0', $bin_str);
-$ret = str_replace("\x08", '\b', $ret);
-$ret = str_replace("\x0a", '\n', $ret);
-$ret = str_replace("\x0d", '\r', $ret);
-$ret = str_replace("\x1a", '\Z', $ret);
-return $ret;
+   if ( strlen ($bin_str) == 0 ) return $bin_str;
+   $ret = str_replace("\x00", '\0', $bin_str);
+   $ret = str_replace("\x08", '\b', $ret);
+   $ret = str_replace("\x0a", '\n', $ret);
+   $ret = str_replace("\x0d", '\r', $ret);
+   $ret = str_replace("\x1a", '\Z', $ret);
+   return $ret;
 }
 
 function check_passwd($saved_pw, $pw)

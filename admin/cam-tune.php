@@ -24,44 +24,44 @@ else
 }
 if ( isset($cmd) )
 {
-      if ( $cmd == 'UPDATE_PARAM' ) 
+   if ( $cmd == 'UPDATE_PARAM' ) 
+   {
+      require ('./upload.inc.php');
+      if ( isset($fields) && isset($types) && isset($olds)) 
       {
-               require ('./upload.inc.php');
-               if ( isset($fields) && isset($types) && isset($olds)) 
-               {
-                        $cmd = 'SHOW_PARAM';
-                        reset($fields);
-                        while (list($param, $value) = each($fields))
-                        {
-                              if (!isset($types[$param])) die ('Error in post data!');
-                              if (!isset($olds[$param])) die ('Error in post data!');
-                              $value = trim(rawurldecode($value));
-                              // print "<p>'$param'='$value' old='$olds[$param]' types='$types[$param]'</p>\n";
-                              if ( ($olds[$param] != $value) && CheckParVal($param, $value, $types[$param]) )
-                              {
-                                 CorrectParVal($param, &$value);
-                                 if ($value == '')
-                                   $_val = 'NULL';
-                                 else
-                                    $_val = '\''. html_entity_decode($value).'\'';
-                                 $query = sprintf('REPLACE CAMERAS '.
-                                    '(BIND_MAC, CAM_NR, PARAM,  VALUE, CHANGE_HOST, CHANGE_USER) '.
-                                    'VALUES (\'%s\', %d, \'%s\', %s, \'%s\', \'%s\')',
-                                    'local', $cam_nr, $param, $_val, $remote_addr, $login_user);
-                                       // print '<p>'.$query.'</p>'."\n";
-                                 mysql_query($query) or die('Query failed:`'.mysql_error().'`');
-                                 if ($cam_nr===0)
-                                    print_syslog(LOG_NOTICE,
-                                                sprintf('for cam[ALL] on [%s] set param `%s\' to %s, old value `%s\'',
-                                                               $sip, $param, $_val, $olds[$param] ));
-                                 else
-                                    print_syslog(LOG_NOTICE,
-                                                sprintf('for cam[%d] on [%s] set param `%s\' to %s, old value `%s\'',
-                                                               $cam_nr, $sip, $param, $_val, $olds[$param] ));
-                              }
-                        }
-               }
+         $cmd = 'SHOW_PARAM';
+         reset($fields);
+         while (list($param, $value) = each($fields))
+         {
+            if (!isset($types[$param]) && !isset($olds[$param]))
+               die ('Error in post data!');
+            $value = trim(rawurldecode($value));
+            // print "<p>'$param'='$value' old='$olds[$param]' types='$types[$param]'</p>\n";
+            if ( ($olds[$param] != $value) && CheckParVal($param, $value) )
+            {
+               CorrectParVal($param, &$value);
+               if ($value == '')
+                  $_val = 'NULL';
+               else
+                  $_val = '\''. html_entity_decode($value).'\'';
+               $query = sprintf('REPLACE CAMERAS '.
+                  '(BIND_MAC, CAM_NR, PARAM,  VALUE, CHANGE_HOST, CHANGE_USER) '.
+                  'VALUES (\'%s\', %d, \'%s\', %s, \'%s\', \'%s\')',
+                     'local', $cam_nr, $param, $_val, $remote_addr, $login_user);
+               // print '<p>'.$query.'</p>'."\n";
+               mysql_query($query) or die('Query failed:`'.mysql_error().'`');
+               if ($cam_nr===0)
+                  print_syslog(LOG_NOTICE,
+                     sprintf('for cam[ALL] on [%s] set param `%s\' to %s, old value `%s\'',
+                     $sip, $param, $_val, $olds[$param] ));
+               else
+                  print_syslog(LOG_NOTICE,
+                     sprintf('for cam[%d] on [%s] set param `%s\' to %s, old value `%s\'',
+                     $cam_nr, $sip, $param, $_val, $olds[$param] ));
+            }
+         }
       }
+   }
 }
 
 $__cam_arr = getCamsArray($sip,TRUE);
@@ -143,6 +143,7 @@ if ( isset($categories) )
       {
       $parname1 = &$PARAMS[$i]['name'];
       $VAL_TYPE = &$PARAMS[$i]['type'];
+      $VALID_PREG = &$PARAMS[$i]['valid_preg'];
       $DEF_VAL_IN_SOFT = &$PARAMS[$i]['def_val'];
       $COMMENT = &$PARAMS[$i]['desc'];
       $FLAGS = &$PARAMS[$i]['flags'];
@@ -211,55 +212,54 @@ if ( isset($categories) )
       print '</span><br /><br /><div>'."\n";
       $max_len = (isset($PARAMS[$i]['max_len'])) ? $PARAMS[$i]['max_len'] : 0;
       $str_f_len = ($max_len > 25)?25:$max_len;
-               switch ( $VAL_TYPE )
-               {
-                        case $INT_VAL:
-                              $a = ( $val === '' || is_null($val))?'':(integer)$val;
-               $b = $max_len?$max_len:6;
-                              print '<input type="text" name="fields['.$parname1.']" value="' . $a . '" size=6 maxlength=' .$b .'>';
-                              break;
-                        case $INTPROC_VAL:
-                              $a = ( $val === '' || is_null($val))?'':$val;
-                              $b = $max_len?$max_len:6;
-                              print '<input type="text" name="fields['.$parname1.']" value="' . $a . '" size=6 maxlength=' .$b .'>';
-                              break;
-                        case $STRING_VAL:
-                              $a = getBinString($val);
-                              $b = $max_len?$max_len:60;
-                              print '<input type="text" name="fields['.$parname1.']" value="' . $a .'" size='.$str_f_len.' maxlength=' .$b .'>';
-                              break;
-                        case $STRING200_VAL:
-                              $a = getBinString($val);
-                              $b = $max_len?$max_len:200;
-                              print '<input type="text" name="fields['.$parname1.']" value="' . $a .'" size='.$str_f_len.' maxlength=' .$b .'>';
-                              break;
-                        case $PASSWORD_VAL:
-                              $a = getBinString($val);
-                              $b = $max_len?$max_len:60;
-                              print '<input type="password" name="fields['.$parname1.']" value="' . $a .'" size='.$str_f_len.' maxlength=' .$b .'>';
-                              break;
-                        case $CHECK_VAL:
-                              print checkParam($parname1, $val);
-                              break;
-                        case 'EXECNAME':
-                              print checkExec($parname1, $val);
-                              break;
-                        default: /* BOOL*/
-                              if ($val === '' || is_null($val))
-                                       print getSelectHtml('fields['.$parname1.']',$flags, FALSE , 1, 0, NULL, TRUE, FALSE);
-                              else
-                                       print getSelectHtml('fields['.$parname1.']',$flags, FALSE , 1, 0, $flags[(integer)$val], TRUE, FALSE);
-               }
-               print '</div></div></td>'."\n";
-               print '<td>'. $COMMENT . '</td>' . "\n";
-               if (empty($CHANGE_TIME))
-                  print "<td align=\"center\">-</td>\n";
-               else
-                print '<td align="center" nowrap>'. $CHANGE_USER . '@' . $CHANGE_HOST . '<br>' .(empty($CHANGE_TIME)?'-':$CHANGE_TIME)."\n";
-               print '<input type="hidden" name="types['.$parname1.']" value="'.$VAL_TYPE.'">' . "\n";
-               print '<input type="hidden" name="olds['.$parname1.']" value="'.$val.'">' . "\n";
-      print '</td>'."\n";
-               print '</tr>'."\n";
+      switch ( $VAL_TYPE )
+      {
+         case $INT_VAL:
+            $a = ( $val === '' || is_null($val))?'':(integer)$val;
+            $b = $max_len?$max_len:6;
+            print '<input type="text" name="fields['.$parname1.']" value="' . $a . '" size=6 maxlength=' .$b .'>';
+            break;
+         case $INTPROC_VAL:
+            $a = ( $val === '' || is_null($val))?'':$val;
+            $b = $max_len?$max_len:6;
+            print '<input type="text" name="fields['.$parname1.']" value="' . $a . '" size=6 maxlength=' .$b .'>';
+            break;
+         case $STRING_VAL:
+            $a = getBinString($val);
+            $b = $max_len?$max_len:60;
+            if ( !empty($a) && !empty($VALID_PREG) && !preg_match($VALID_PREG, $a) )
+               printf('<p style="color: '.$GLOBALS['error_color'].';">'.$fmtEINVAL.'</p>',$a);
+            print '<input type="text" name="fields['.$parname1.']" value="' . $a .'" size='.$str_f_len.' maxlength=' .$b .'>';
+            break;
+         case $STRING200_VAL:
+            $a = getBinString($val);
+            $b = $max_len?$max_len:200;
+            print '<input type="text" name="fields['.$parname1.']" value="' . $a .'" size='.$str_f_len.' maxlength=' .$b .'>';
+            break;
+         case $PASSWORD_VAL:
+            $a = getBinString($val);
+            $b = $max_len?$max_len:60;
+            print '<input type="password" name="fields['.$parname1.']" value="' . $a .'" size='.$str_f_len.' maxlength=' .$b .'>';
+            break;
+         case $CHECK_VAL:
+            print checkParam($parname1, $val);
+            break;
+         default: /* BOOL*/
+            if ($val === '' || is_null($val))
+               print getSelectHtml('fields['.$parname1.']',$flags, FALSE , 1, 0, NULL, TRUE, FALSE);
+            else
+               print getSelectHtml('fields['.$parname1.']',$flags, FALSE , 1, 0, $flags[(integer)$val], TRUE, FALSE);
+         }
+         print '</div></div></td>'."\n";
+         print '<td>'. $COMMENT . '</td>' . "\n";
+         if (empty($CHANGE_TIME))
+            print "<td align=\"center\">-</td>\n";
+         else
+            print '<td align="center" nowrap>'. $CHANGE_USER . '@' . $CHANGE_HOST . '<br>' .(empty($CHANGE_TIME)?'-':$CHANGE_TIME)."\n";
+         print '<input type="hidden" name="types['.$parname1.']" value="'.$VAL_TYPE.'">' . "\n";
+         print '<input type="hidden" name="olds['.$parname1.']" value="'.$val.'">' . "\n";
+         print '</td>'."\n";
+         print '</tr>'."\n";
       }
       print "</table>\n";
       print '<input type="hidden" name="cmd" value="UPDATE_PARAM">'."\n";
