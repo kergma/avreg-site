@@ -66,9 +66,10 @@ if ( !isset($u_name) || empty($u_name) )
 		switch ($grp_status)
 		{
 			case 1: $bashnia = '<img src="'.$conf['prefix'].'/img/mozilla-icon.gif" border=0>'; break;
-			case 2: $bashnia = '<img src="'.$conf['prefix'].'/img/gnome-xbill.gif" border=0>'; break;
-			case 3: $bashnia = '<img src="'.$conf['prefix'].'/img/gnome-gnobots2.gif" border=0>'; break;
-			case 4: $bashnia = '<img src="'.$conf['prefix'].'/img/gnome-eyes.gif" border=0>'; break;
+         case 2: $bashnia = '<img src="'.$conf['prefix'].'/img/gnome-xbill.gif" border=0>'; break;
+         case 3: $bashnia = '<img src="'.$conf['prefix'].'/img/video-x-generic.gif" border=0>'; break;
+			case 4: $bashnia = '<img src="'.$conf['prefix'].'/img/gnome-gnobots2.gif" border=0>'; break;
+         case 5: $bashnia = '<img src="'.$conf['prefix'].'/img/gnome-eyes.gif" border=0>'; break;
 			default:
 				$bashnia = '<img src="'.$conf['prefix'].'/img/nobody.gif" border=0>';
 		}

@@ -45,7 +45,7 @@ if ( empty($u_longname) ) {
 
 $u_pass = trim($u_pass);
 $u_pass2 = trim($u_pass2);
-if ( $u_pass[0] != '*' && !preg_match ( $patternPasswd , $u_pass) ) {
+if ( !empty($u_pass) && $u_pass[0] != '*' && !preg_match ( $patternPasswd , $u_pass) ) {
    print '<p class="HiLiteErr">' . sprintf ($fmtPasswdBadChar, $u_name, $u_host) . '</p>' ."\n";
 } else $good++;
 

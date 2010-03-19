@@ -348,7 +348,7 @@ function avreg_find_user($addr, $mask, $name)
       }
 }
 
-if ( $GLOBALS['conf']['debug'] )
+if ( $found && $GLOBALS['conf']['debug'] )
    syslog(LOG_ERR, sprintf('ACL %s %s@%s %s/%s',
             $found?"success":"failed",
             $name, long2ip($addr),
@@ -450,9 +450,9 @@ function PrettyCamName($cam_desc=null)
 */
 
 function print_go_back() {
-print '<br><center><a href="javascript:window.history.back();" title="'.$GLOBALS['strBack'].'">'.
-'<img src="'.$conf['prefix'].'/img/undo_dark.gif" alt="'.$GLOBALS['strBack'].
-'" width="24" hspace="24" border="0"></a></center>'."\n";
+   print '<br><center><a href="javascript:window.history.back();" title="'.$GLOBALS['strBack'].'">'.
+      '<img src="'.$GLOBALS['conf']['prefix'].'/img/undo_dark.gif" alt="'.$GLOBALS['strBack'].
+      '" width="24" hspace="24" border="0"></a></center>'."\n";
 }
 
 
