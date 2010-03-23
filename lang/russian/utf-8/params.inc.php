@@ -999,13 +999,11 @@ array(
 ),
 
 array(
-  'name'    => 'marasmus_snap_int',
+  'name'    => 'paranoid_snap',
   'type'    => $INT_VAL,
   'def_val' => 0,
   'desc'    => '<b>Дополнительно</b>, абсолютно без каких-либо условий,
-записывать кадры-отметки <b>JPEG через каждые marasmus_snap_int минут</b>.
-<br>
-По умолчанию: <b>0 - не записывать.</b>.',
+записывать кадры-отметки <b>JPEG через каждые paranoid_snap минут</b>. По умолчанию: <b>0 - не записывать</b>.',
   'flags'=>$F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '11.1',
   'subcats' => NULL,
