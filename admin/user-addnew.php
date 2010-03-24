@@ -8,10 +8,10 @@ require_once ('../lib/utils-inet.php');
 
 <script type="text/javascript" language="javascript">
 <!--
-function reset_to_list()
-{
+   function reset_to_list()
+   {
       window.open('<?php echo $conf['prefix']; ?>/admin/user-list.php', target='_self');
-}
+   }
 // -->
 </script>
 
@@ -24,34 +24,35 @@ if ( isset($cmd) && isset($u_host) && isset($u_name) && isset($groups) )
    require('user-check.inc.php');
    switch ( $cmd )
    {
-      case 'ADD_NEW_USER':
-         if ( empty($u_pass) )
-            $passwd_f = '\'\',';
-         else
-            $passwd_f = sprintf('encrypt(\'%s\'), ', $u_pass);
-         $query = sprintf('INSERT INTO USERS 
-            ( HOST, USER, PASSWD, STATUS, ALLOW_CAMS, SESSIONS_PER_CAM,
-            LIMIT_FPS, NONMOTION_FPS, LIMIT_KBPS,
-            SESSION_TIME, SESSION_VOLUME,
-            LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME) 
-            VALUES ( %s, %s, %s %u, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())',
-               sql_format_str_val($u_host),
-               sql_format_str_val($u_name),
-               $passwd_f,
-               $groups,
-               sql_format_str_val($u_devacl),
-               sql_format_int_val($sessions_per_cam),
-               sql_format_int_val($limit_fps),
-               sql_format_float_val($nonmotion_fps),
-               sql_format_int_val($limit_kbps),
-               sql_format_int_val($session_time),
-               sql_format_int_val($session_volume),
-               sql_format_str_val($u_longname),
-               sql_format_str_val($remote_addr),
-               sql_format_str_val($login_user));
-         break;
-      default:
-         die('crack');
+   case 'ADD_NEW_USER':
+      if ( empty($u_pass) )
+         $passwd_f = '\'\',';
+      else
+         $passwd_f = sprintf('encrypt(\'%s\'), ', $u_pass);
+      $query = sprintf('INSERT INTO USERS 
+         ( HOST, USER, PASSWD, STATUS, ALLOW_CAMS, FORCED_SAVING_LIMIT, SESSIONS_PER_CAM,
+         LIMIT_FPS, NONMOTION_FPS, LIMIT_KBPS,
+         SESSION_TIME, SESSION_VOLUME,
+         LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME) 
+         VALUES ( %s, %s, %s %u, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())',
+            sql_format_str_val($u_host),
+            sql_format_str_val($u_name),
+            $passwd_f,
+            $groups,
+            sql_format_str_val($u_devacl),
+            sql_format_int_val($u_forced_saving_limit),
+            sql_format_int_val($sessions_per_cam),
+            sql_format_int_val($limit_fps),
+            sql_format_float_val($nonmotion_fps),
+            sql_format_int_val($limit_kbps),
+            sql_format_int_val($session_time),
+            sql_format_int_val($session_volume),
+            sql_format_str_val($u_longname),
+            sql_format_str_val($remote_addr),
+            sql_format_str_val($login_user));
+      break;
+   default:
+      die('crack');
    }
    // print ($query);
    if ( mysql_query($query) )
@@ -84,8 +85,8 @@ if ( !isset($u_name) || empty($u_name) )
    print '<form id="user_info_frm" action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
    print '<table cellspacing=0 border=1 cellpadding=5>'."\n";
    $u_status = &$status;
-   $user2html = $host2html = $longname2html = $passwd2html = $u_devacl = NULL;
-   $sessions_per_cam = $limit_fps = $nonmotion_fps = $limit_kbps = $session_time  = $session_volume = NULL; 
+   $user2html = $host2html = $longname2html = $passwd2html = $u_devacl = $u_forced_saving_limit = NULL;
+   $sessions_per_cam = $limit_fps = $nonmotion_fps = $limit_kbps = $session_time = $session_volume = NULL; 
    require '_user_data_tbl.inc.php';
    print '<br>'."\n";
    print '<input type="hidden" name="cmd" value="ADD_NEW_USER">'."\n";

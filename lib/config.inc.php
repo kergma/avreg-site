@@ -276,6 +276,7 @@ $WellKnownAspects = array(
 
 require($wwwdir.'/lib/my_conn.inc.php');
 $query = 'SELECT HOST, USER, PASSWD, STATUS, ALLOW_CAMS,
+ FORCED_SAVING_LIMIT,
  SESSIONS_PER_CAM, LIMIT_FPS, NONMOTION_FPS, LIMIT_KBPS,
  SESSION_TIME, SESSION_VOLUME,
  LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME
@@ -290,6 +291,7 @@ $ui['USER'] = $row['USER'];
 $ui['PASSWD'] = $row['PASSWD'];
 $ui['STATUS'] = (int)$row['STATUS'];
 $ui['ALLOW_CAMS'] = $row['ALLOW_CAMS'];
+$ui['FORCED_SAVING_LIMIT'] = is_null($row['FORCED_SAVING_LIMIT'])?NULL:(int)$row['FORCED_SAVING_LIMIT'];
 $ui['SESSIONS_PER_CAM'] = is_null($row['SESSIONS_PER_CAM'])?NULL:(int)$row['SESSIONS_PER_CAM'];
 $ui['LIMIT_FPS'] = is_null($row['LIMIT_FPS'])?NULL:(int)$row['LIMIT_FPS'];
 $ui['NONMOTION_FPS'] = is_null($row['NONMOTION_FPS'])?NULL:(float)$row['NONMOTION_FPS'];
