@@ -1,63 +1,63 @@
 all,body,h1,h2,h3,h4,h5,table,a {
-	color: #585858;
-	font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;
-	font-size: 13px;
-	text-decoration: none;
+   color: #585858;
+   font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;
+   font-size: 13px;
+   text-decoration: none;
 }
 
 strong,b{
-  font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;
+   font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;
 }
 
 p,div,td,th {
-	color: #585858;
-	font-family: Arial, sans-serif;
-	font-size: 13px;
-	text-decoration: none;
+   color: #585858;
+   font-family: Arial, sans-serif;
+   font-size: 13px;
+   text-decoration: none;
 }
 
 li {
-  margin-top: 5px;
+   margin-top: 5px;
 }
 
 select,textarea,input {
- color: black;
- background-color: lightyellow;
- font-family: Arial, sans-serif;
- font-size: 13px;
- text-decoration: none;
- min-width:50px;
+   color: black;
+   background-color: lightyellow;
+   font-family: Arial, sans-serif;
+   font-size: 13px;
+   text-decoration: none;
+   min-width:50px;
 }
 
 select[disabled], textarea[disabled], input[disabled] {
-  background-color: #C3C3C3;
+   background-color: #C3C3C3;
 }
 
 h1 {
-  font-size:16px;
-  color: gray;
+   font-size:16px;
+   color: gray;
 }
 
 h2 {
-	font-size: 15px;
-	color: gray;
+   font-size: 15px;
+   color: gray;
 }
 
 h3 {
-	font-size: 14px;
-	color: gray;
+   font-size: 14px;
+   color: gray;
 }
 
 h4 {
-	font-size:13px;
-	color: gray;
+   font-size:13px;
+   color: gray;
 }
 
 a {
-	color:#196bba;
-	font-size: inherit;
-	font-weight: bold;
-	text-decoration: none;
+   color:#196bba;
+   font-size: inherit;
+   font-weight: bold;
+   text-decoration: none;
 }
 
 a:hover,a:active {
@@ -66,51 +66,51 @@ a:hover,a:active {
 }
 
 input.enabled {
-  min-width:90px;
-  width:90px;
-  margin:2px;
-  color: #009900;
-  font-weight: bold;
-  font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;  
+   min-width:90px;
+   width:90px;
+   margin:2px;
+   color: #009900;
+   font-weight: bold;
+   font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;  
 }
 
 input.disabled {
-  min-width:90px;
-  width:90px;
-  margin:2px;
-  color: #A0A0A0;
-  font-weight: bold;
-  font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;  
+   min-width:90px;
+   width:90px;
+   margin:2px;
+   color: #A0A0A0;
+   font-weight: bold;
+   font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;  
 }
 
 .menu0 {
-    padding:4px;
-    margin-top: 6px;
-	margin-left: 2px;
-	margin-bottom: 1px;
-	margin-right: 2px;
+   padding:4px;
+   margin-top: 6px;
+   margin-left: 2px;
+   margin-bottom: 1px;
+   margin-right: 2px;
 }
 
 .menu0active {
-    padding:4px;
-    margin-top: 6px;
-	margin-left: 2px;
-	margin-bottom: 1px;
-	margin-right: 2px;
-    border: 1px solid #000000;
-    background-color: #F5F5F5;
-    color: Red;
+   padding:4px;
+   margin-top: 6px;
+   margin-left: 2px;
+   margin-bottom: 1px;
+   margin-right: 2px;
+   border: 1px solid #000000;
+   background-color: #F5F5F5;
+   color: Red;
 }
 
 .menu1 {
- margin:2px;
- padding:2px;
+   margin:2px;
+   padding:2px;
 }
 
 .menu1active{
- margin:2px;
- padding:2px;
- color: Red;
+   margin:2px;
+   padding:2px;
+   color: Red;
 }
 
 .small_text{
@@ -118,93 +118,93 @@ input.disabled {
 }
 
 .HiLite {
-  color: #009900;
-  font-weight: bold;
-  font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;  
+   color: #009900;
+   font-weight: bold;
+   font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;  
 }
 
 .HiLiteBig {
-  color: #009900;
-  font-size: 14px;
-  font-weight: bold;
-  font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;
+   color: #009900;
+   font-size: 14px;
+   font-weight: bold;
+   font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;
 }
 
 .HiLiteErr {
-  color: #FF0000;
-  font-weight: bold;
-  font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;
+   color: #FF0000;
+   font-weight: bold;
+   font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;
 }
 
 div.error {
-  font-weight: bold;
-  font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;
-  border-left:5px;
-  border-left-color:#FF0000;
-  border-left-style:solid;
-  margin-left:10px;
-  padding-left:10px;
-  padding-top:15px;
-  padding-bottom:25px;
+   font-weight: bold;
+   font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;
+   border-left:5px;
+   border-left-color:#FF0000;
+   border-left-style:solid;
+   margin-left:10px;
+   padding-left:10px;
+   padding-top:15px;
+   padding-bottom:25px;
 }
 
 .HiLiteBigErr {
-  color: #FF0000;
-  font-size: 14px;
-  font-weight: bold;
-  font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;
+   color: #FF0000;
+   font-size: 14px;
+   font-weight: bold;
+   font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;
 }
 
 .HiLiteWarn {
-  color: #003366;
-  font-weight: bold;
-  font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;
+   color: #003366;
+   font-weight: bold;
+   font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;
 }
 
 .HiLiteBigWarn {
-  color: #003366;
-  font-size: 14px;
-  font-weight: bold;
-  font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;
+   color: #003366;
+   font-size: 14px;
+   font-weight: bold;
+   font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;
 }
 
 .help {
-color: #303030;
-background-color: lightyellow;
-padding: 5px;
-margin: 10px;
-border: 1px solid black;
-min-width:150px;
-font-size: 13px;
+   color: #303030;
+   background-color: lightyellow;
+   padding: 5px;
+   margin: 10px;
+   border: 1px solid black;
+   min-width:150px;
+   font-size: 13px;
 }
 
 .warn {
-color: #303030;
-background-color: lightyellow;
-padding: 5px;
-margin: 10px;
-border: 1px solid Red;
-min-width:150px;
-font-size: 13px;
+   color: #303030;
+   background-color: lightyellow;
+   padding: 5px;
+   margin: 10px;
+   border: 1px solid Red;
+   min-width:150px;
+   font-size: 13px;
 }
 
 .info {
-  color: #3C0050;
-  background-color: #F4F4F8;
-  padding-top: 10px;
-  padding-right: 10px;
-  padding-bottom: 10px;
-  padding-left: 10px;
-  border:1px dotted Red;
+   color: #3C0050;
+   background-color: #F4F4F8;
+   padding-top: 10px;
+   padding-right: 10px;
+   padding-bottom: 10px;
+   padding-left: 10px;
+   border:1px dotted Red;
 }
 
 .tty {
-    color: #DCDCDC;
-    background-color: #333333;
-    font-family: monospace;
-    font-size: 12px;
-    margin: 0px;
-    padding: 5px;
+   color: #DCDCDC;
+   background-color: #333333;
+   font-family: monospace;
+   font-size: 12px;
+   margin: 0px;
+   padding: 5px;
 }
 
 .listing {
@@ -212,21 +212,21 @@ font-size: 13px;
 }
 
 .dump {
- font-family: monospace;
- font-size: x-small; 
+   font-family: monospace;
+   font-size: x-small; 
 }
 
 .cmd {
- margin:1px;
- padding-top:1px;
- padding-bottom:1px;
- padding-left:5px;
- padding-right:5px;
- background-color: #FFDCA8;
- border: 1px solid black;
- font-weight: bold;
- font-family: monospace;
- white-space:nowrap;
+   margin:1px;
+   padding-top:1px;
+   padding-bottom:1px;
+   padding-left:5px;
+   padding-right:5px;
+   background-color: #FFDCA8;
+   border: 1px solid black;
+   font-weight: bold;
+   font-family: monospace;
+   white-space:nowrap;
 }
 
 .path {
@@ -263,13 +263,13 @@ font-size: 13px;
 }
 
 table.paramstbl {
- margin-top:7px;
- margin-bottom:7px;
- width:100%;
+   margin-top:7px;
+   margin-bottom:7px;
+   width:100%;
 }
 
 th.query {
- font-size: 11px;
+   font-size: 11px;
 }
 
 td.layout {
@@ -291,5 +291,4 @@ th.layout {
 .param {
    font-weight: bold;
    font-style: italic;
-
 }
