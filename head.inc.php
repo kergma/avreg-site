@@ -38,12 +38,15 @@ print '</style>'."\n";
 if ( isset($css_links) && is_array($css_links))
    foreach ($css_links as &$__css_link)
       print '<link href="'.$conf['prefix'].'/'.$__css_link.'" rel="stylesheet" type="text/css" />'."\n";
+if ( isset($USE_JQUERY) ) {
+   if ( $conf['debug'] )
+      print '<script type="text/javascript" src="'.$conf['prefix'].'/lib/js/jquery-1.4.2.js"></script>'."\n";
+   else
+      print '<script type="text/javascript" src="'.$conf['prefix'].'/lib/js/jquery-1.4.2.min.js"></script>'."\n";
+}
 if ( isset($link_javascripts) && is_array($link_javascripts))
    foreach ($link_javascripts as &$__js_link)
       print '<script type="text/javascript" src="'.$conf['prefix'].'/'.$__js_link.'"></script>'."\n";
-/* if ( $conf['debug'] && ($MSIE || $OPERA) )
-   print '<script type="text/javascript" src="'.$conf['prefix'].'/lib/js/firebug-lite-compressed.js"></script>'."\n";
- */
 ob_end_flush();
 ?>
 <script type="text/javascript" language="JavaScript1.2">

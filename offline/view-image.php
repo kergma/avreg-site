@@ -1,6 +1,6 @@
 <?php
 $include_javascripts = array('offline/view.js');
-$link_javascripts=array('lib/js/jquery-1.2.6.min.js');
+$USE_JQUERY = true;
 $ie6_quirks_mode = true;
 $body_style='margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; ';
 $lang_file = '_offline.php';

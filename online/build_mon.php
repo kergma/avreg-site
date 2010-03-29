@@ -1,7 +1,7 @@
 <?php
 $pageTitle = 'WebCam';
 $lang_file='_online.php';
-$link_javascripts=array('lib/js/jquery-1.2.6.min.js');
+$USE_JQUERY = true;
 $include_javascripts=array('online/build_mon.js');
 if ( isset($_POST) && isset($_POST['wclist_show']) )
    $wclist_show = $_POST['wclist_show'];

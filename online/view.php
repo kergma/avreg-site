@@ -47,7 +47,8 @@ for ($i=0;$i<$wins_nr;$i++)
 $pageTitle = 'WebCam';
 $body_style='overflow: hidden;  overflow-y: hidden !important; padding: 0; margin: 0; width: 100%; height: 100%;';
 $css_links=array('lib/js/jqModal.css');
-$link_javascripts=array('lib/js/jquery-1.2.6.min.js', 'lib/js/jqModal.js');
+$USE_JQUERY = true;
+$link_javascripts=array('lib/js/jqModal.js');
 $include_javascripts=array('online/view.js.php', 'online/view.js');
 $body_addons='scroll="no"';
 $ie6_quirks_mode = true;
