@@ -87,11 +87,13 @@ function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, 
 
    var link = MediaUrlPref + encodeURI(fname);
 
-   g_camname = cams.options[cam_nr-1].text;
+   g_camname = window.parent.frames['query'].CAM_NAMES[cam_nr];
 
    var icon_48x52 ='';
+   var duration_info='';
    if (evt_id==23) {
       icon_48x52 = WwwPrefix+'/img/mpeg4.gif';
+      duration_info='<tr><td align="right">Продолжительность<\/td><td>'+fduration+'<\/td><\/tr>\n';
       g_fname += '  [ ' + s16_1 + 'x' + s16_2 + ' ] ';
       g_fsize += ', ' + fduration + ', ' + frames + ' кадров';
    } else if ( evt_id == 32 ) {
@@ -103,6 +105,10 @@ function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, 
    hint=null;
    if ( evt_id == 23 || evt_id == 32 )
    {
+      if ( evt_id == 23 ) {
+         g_fname += '  [ ' + s16_1 + 'x' + s16_2 + ' ] ';
+         g_fsize += ', ' + fduration + ', ' + frames + ' кадров';
+      }
       clear_innerHTML(cdiv);
       var link_target='';
       if (ie && !embed_video)

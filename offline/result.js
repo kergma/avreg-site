@@ -66,12 +66,15 @@ function first_img ()
     mark_row(0);
 }
 
-function mk_obj_hint(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, s16_2, ftype_str, fduration, fname) {
+function on_body_load ()
+{
+   if ( window.parent.frames['query'].CAM_NAMES )
+      first_img();
+}
 
-   var cams = document.all?
-                 window.parent.frames['query'].document.all['cams[]']:
-                 window.parent.frames['query'].document.getElementById('cams[]');
 
+function mk_obj_hint(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, s16_2, ftype_str, fduration, fname)
+{
    var Date1 = new Date(utime1 * 1000);
    var Date2 = new Date(utime2 * 1000);
    
@@ -81,7 +84,7 @@ function mk_obj_hint(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_
       link +=':'+location.port;
    link += fname;
  
-   var camname = cams.options[cam_nr-1].text;
+   var camname = window.parent.frames['query'].CAM_NAMES[cam_nr];
   
    var dt_info='';
    var fs =  fsize;
