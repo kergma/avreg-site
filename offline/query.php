@@ -3,7 +3,7 @@
 $pageTitle = 'strRunQuery';
 $pageBgColor = '#D0DCE0';
 $lang_file = '_offline.php';
-$link_javascripts=array('lib/js/jquery-1.2.6.min.js');
+$USE_JQUERY = true;
 require ('../head.inc.php');
 DENY($arch_status);
 require ('../lib/my_conn.inc.php');
