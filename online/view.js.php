@@ -59,7 +59,7 @@ for ($i=0; $i<$wins_nr; $i++)
    cam: {
       nr: %s,
       name: "%s",
-      url: "http://%s:%u/mjpg/%u/video.mjpg",
+      url: "http://%s:%u/avreg-cgi/mjpg/video.cgi?camera=%u",
       orig_w: %u,
       orig_h: %u
       }

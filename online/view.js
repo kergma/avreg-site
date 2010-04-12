@@ -125,11 +125,11 @@ function brout(win_nr, win_div, win_geo) {
       amc.EnableReconnect = EnableReconnect;
       amc.EnableContextMenu = 1;
       amc.MediaType = "mjpeg-unicast";
-      amc.MediaURL = url+'?ab='+___abenc;
+      amc.MediaURL = url+'&ab='+___abenc;
       amc.AutoStart = true;
    } else {
        // $('<img src="/640x480r.png" id="'+id+'" name="cam" alt="' +alt+'" '+
-      $('<img src="'+url+'?ab='+___abenc+'" id="'+id+'" name="cam" alt="' +alt+'" '+
+      $('<img src="'+url+'&ab='+___abenc+'" id="'+id+'" name="cam" alt="' +alt+'" '+
       'width="'+orig_w+'px" height="'+orig_h+'px" ' +
       'align="middle" border="0px" />').appendTo(win_div).width(win_geo.cam_w).height(win_geo.cam_h);
       win_div.click( function() { img_click(this); } ); 
