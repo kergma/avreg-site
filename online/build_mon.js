@@ -46,7 +46,7 @@ function sel_change(sel) {
 }
 
 $(document).ready( function() {
-      $('input[@name=OpenInBlankPage]').change(function () {
+      $(':input[name=OpenInBlankPage]').change(function () {
          $('#buildform').attr('target', this.checked?'_blank':'_parent');
       }).trigger('change');
 });

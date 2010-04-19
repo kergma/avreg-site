@@ -41,6 +41,27 @@ function tohtml($var)
       print '</pre></div>'."\n";
 }
 
+function parse_csv_numlist($str) {
+   $res = Array();
+   foreach ( explode(',', $str) as $value ) {
+      if ( is_numeric($value) ) {
+         $res[] = (int)$value;
+      } else {
+         /* check range */
+            if ( preg_match('/^\s*(\d+)\s*-\s*(\d+)\s*$/', $value, $matches)) {
+               $start = (int)$matches[1];
+               $end   = (int)$matches[2];
+               if ($start >= $end)
+                  return false;
+               for(; $start <= $end; $start++)
+                  $res[] = (int)$start;
+         } else
+            return false; /* Error */
+      }
+   }
+   return $res;
+} /* parse_csv_numlist() */
+
 /* $params строковй массив, список параметров, которые нужно читать из файла */
 function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params=NULL)
 {
@@ -115,7 +136,7 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
             /* наш параметр -- массив */
             $param = $match2[1];
             $key = $match2[3];
-            $vt = gettype($_conf[$param]);
+            $vt = gettype(@$_conf[$param]);
             if ( 0 !== strcasecmp($vt, 'array')) {
                $res=false;  break;
             }
@@ -123,7 +144,7 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
          } else {
             /* простое параметр, не массив */
             /* пробуем установить тип значения с учётом дефолтного $conf[param] */
-            $vt = gettype($_conf[$param]);
+            $vt = gettype(@$_conf[$param]);
             if ( $vt !== 'NULL' && !settype($value, $vt) ) {
                $res = false; break;
             }
@@ -141,7 +162,7 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
       echo ("INVALID LINE in file $path:$linenr => [ $line ]\n");
       return false;
    }
-}
+} /* confparse() */
 
 $res=confparse($conf, 'avreg-site');
 if (!$res) {
@@ -149,22 +170,45 @@ if (!$res) {
 } else
    $conf = array_merge($conf, $res);
 
-
+unset($EXISTS_PROFILES);
 unset($AVREG_PROFILE);
 if ( preg_match('@^/([^/]+).*@', $_SERVER['REQUEST_URI'], $matches) ) {
-if ( strcasecmp($matches[1],'avreg') != 0 ) {
-   $res = confparse('avreg-site', $conf['profiles-dir'].'/'.$matches[1]);
-   if (!$res)
-      die("<br /><br />Error: not found active profile ".$conf['profiles-dir'].'/'.$matches[1]);
-   $AVREG_PROFILE = $matches[1];
-// tohtml($res);
-   if (is_array($res)) {
-         $conf = array_merge($conf, $res);
-         $conf['prefix'] = '/'.$AVREG_PROFILE;
-         $conf['daemon-name'] .= '-'.$AVREG_PROFILE;
+   if ( strcasecmp($matches[1],'avreg') === 0 ) {
+      $EXISTS_PROFILES = glob($conf['profiles-dir'].'/[A-Za-z0-9][A-Za-z0-9_-:]*', GLOB_NOSORT);
+   } else {
+      $res = confparse($conf, 'avreg-site', $conf['profiles-dir'].'/'.$matches[1]);
+      if (!$res)
+         die("<br /><br />Error: not found active profile ".$conf['profiles-dir'].'/'.$matches[1]);
+      $AVREG_PROFILE = $matches[1];
+   // tohtml($res);
+      if (is_array($res)) {
+            $conf = array_merge($conf, $res);
+            $conf['prefix'] = '/'.$AVREG_PROFILE;
+            $conf['daemon-name'] .= '-'.$AVREG_PROFILE;
+      }
    }
 }
-}
+
+function load_profiles_cams_confs()
+{
+   if ( !empty($AVREG_PROFILE) || empty($GLOBALS['EXISTS_PROFILES']) )
+      return false;
+   
+   $cams_profiles = Array();
+   $profiles_conf = Array();
+   $i=0;
+   foreach( $GLOBALS['EXISTS_PROFILES'] as &$profile) {
+      $a = confparse($GLOBALS['conf'], 'avreg-site', $profile);
+      if ( empty($a) || !array_key_exists('devlist', $a) )
+         continue;
+      $profiles_conf[$i] = $a;
+      $b = parse_csv_numlist($a['devlist']);
+      foreach($b as &$c)
+         $cams_profiles[$c] = &$profiles_conf[$i];
+      $i++;
+   }
+   return $cams_profiles;
+} /* get_profiles_cams_confs() */
 
 $sip = $_SERVER['SERVER_ADDR'];
 if ( $_SERVER['SERVER_ADDR'] === $_SERVER['SERVER_NAME'] )

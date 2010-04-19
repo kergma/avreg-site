@@ -31,24 +31,32 @@ $major_win_cam_geo = null;
 $major_win_nr = $l_defs[4] - 1;
 $msie_addons_scripts=array();
 
+$cams_subconf = load_profiles_cams_confs();
+
+$_a = $conf['avregd-httpd'];
+eval("\$__sip = \"$_a\";");
+
 for ($i=0; $i<$wins_nr; $i++)
 {
     if (empty($cams[$i]))
         continue;
 
-    if (!preg_match("/^(\d+);(\d*\.\d*\.\d*\.\d*|[a-zA-Z-_0-9\.]+);(\d+);(\d+)x(\d+)/i",
+    if (!preg_match("/^(\d+);(\d+)x(\d+)/i",
             $cams[$i], $matches) )
             MYDIE("preg_match($cams[$i]) failed",__FILE__,__LINE__);
 
     $cam_nr = $matches[1];settype($cam_nr,'int');
-    $_sip = $matches[2];
-    $w_port = $matches[3];settype($w_port,'int');
-    $_ww=$matches[4]; settype($_ww,'int');
-    $_wh=$matches[5]; settype($_wh,'int');
+    $_ww=$matches[2]; settype($_ww,'int');
+    $_wh=$matches[3]; settype($_wh,'int');
     if (is_null($major_win_cam_geo) || $major_win_nr === $i )
        $major_win_cam_geo = array($_ww, $_wh);
-
     $l_wins = &$l_defs[3][$i];
+    
+    if ( $cams_subconf && isset($cams_subconf[$cam_nr]) && !empty($cams_subconf[$cam_nr]['avregd-httpd'])) {
+       $_a = &$cams_subconf[$cam_nr]['avregd-httpd'];
+       eval("\$_sip = \"$_a\";");
+    } else
+       $_sip = &$__sip;
 
     printf(
 'WINS_DEF[%d]={
@@ -59,11 +67,15 @@ for ($i=0; $i<$wins_nr; $i++)
    cam: {
       nr: %s,
       name: "%s",
-      url: "http://%s:%u/avreg-cgi/mjpg/video.cgi?camera=%u",
+      url: "%s%s?camera=%u",
       orig_w: %u,
       orig_h: %u
       }
-};%s', $i, $l_wins[0], $l_wins[1],$l_wins[2],$l_wins[3], $cam_nr, $camnames[$i], $_sip, $w_port, $cam_nr, $_ww, $_wh, "\n" );
+};%s',
+   $i, $l_wins[0], $l_wins[1],$l_wins[2],$l_wins[3],
+   $cam_nr, $camnames[$i],
+   $_sip, $conf['avregd-mjpeg-path'],
+   $cam_nr, $_ww, $_wh, "\n" );
 
     if ( $MSIE )
         $msie_addons_scripts[] = sprintf('<script for="cam%d" event="OnClick()">

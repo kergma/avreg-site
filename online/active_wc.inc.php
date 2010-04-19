@@ -50,9 +50,9 @@ if ( $GCP_cams_nr > 0 )
       $cam_name = getCamName($wc['text_left']);
       $is_netcam = ( $wc['cam_type'] == 'netcam' );
 
-		// $cam_nr, $_sip, $w_port, $geo, $Hx2, $cam_name, $_named
-      $webcam_def = sprintf('%u;%s;%u;%s;%u;%s',
-         $__cam_nr, $_SERVER['SERVER_NAME'], 880, $wc['geometry'], $wc['Hx2'], $cam_name);
+		// $cam_nr, $geo, $Hx2, $cam_name, $_named
+      $webcam_def = sprintf('%u;%s;%u;%s',
+         $__cam_nr, $wc['geometry'], $wc['Hx2'], $cam_name);
       if ( $wc['work'] && $wc['allow_networks'] &&
            ($is_netcam && ($wc['InetCam_IP'] && $wc['V.http_get'])) || (!$is_netcam && $wc['v4l_dev']) )
       {
@@ -100,18 +100,18 @@ require ('../lib/my_close.inc.php');
 $act_wc_nr_ar = array();
 $tot_wc_nr = count($tot_act_cams_ar);
 if ($tot_wc_nr>0){
-print '<script type="text/javascript" language="JavaScript1.2">'."\n";
+print '<script type="text/javascript">'."\n";
 print '<!--'."\n";
 print 'var CNAMES = new MakeArray('.$tot_wc_nr.')'."\n";
 for ($i = 0; $i < $tot_wc_nr; $i++)
 {
-	list($cam_nr, $_sip, $w_port, $geo, $Hx2, $cam_name) = explode(';', $tot_act_cams_ar[$i]);
+	list($cam_nr, $geo, $Hx2, $cam_name) = explode(';', $tot_act_cams_ar[$i]);
 	list($ww,$wh) = explode('x',$geo);
 	if (empty($ww)) $ww=640;
 	if (empty($wh)) $wh=480;
-        if ($Hx2) $wh *= 2;
-	$act_wc_nr_ar[$cam_nr]=sprintf('%u;%s;%u;%ux%u', $cam_nr,  $_SERVER['SERVER_NAME'], $w_port, $ww,$wh);
-    print 'CNAMES['.$i.']="'.$cam_name.'";'."\n";
+   if ($Hx2) $wh *= 2;
+   $act_wc_nr_ar[$cam_nr]=sprintf('%u;%ux%u', $cam_nr, $ww, $wh);
+   print 'CNAMES['.$i.']="'.$cam_name.'";'."\n";
 }
 print '// -->'."\n";
 print '</script>'."\n";
