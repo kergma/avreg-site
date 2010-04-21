@@ -50,5 +50,3 @@ $(document).ready( function() {
          $('#buildform').attr('target', this.checked?'_blank':'_parent');
       }).trigger('change');
 });
-
-
