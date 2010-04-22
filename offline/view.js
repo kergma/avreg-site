@@ -105,10 +105,6 @@ function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, 
    hint=null;
    if ( evt_id == 23 || evt_id == 32 )
    {
-      if ( evt_id == 23 ) {
-         g_fname += '  [ ' + s16_1 + 'x' + s16_2 + ' ] ';
-         g_fsize += ', ' + fduration + ', ' + frames + ' кадров';
-      }
       clear_innerHTML(cdiv);
       var link_target='';
       if (ie && !embed_video)
