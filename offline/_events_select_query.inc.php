@@ -76,7 +76,7 @@ $query = <<<_EOL_
 select UNIX_TIMESTAMP(DT1) as UDT1, UNIX_TIMESTAMP(DT2) as UDT2,
 CAM_NR,EVT_ID,SER_NR,FILESZ_KB,FRAMES,U16_1,U16_2,EVT_CONT from EVENTS
 where (CAM_NR in (0, $_cams_csv))
-and $events_where
+and ($events_where)
 order by DT1
 _EOL_;
 ?>
