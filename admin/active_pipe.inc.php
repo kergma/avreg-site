@@ -115,7 +115,7 @@ if ( $GCP_cams_nr === 0 ) {
         $c_mon_live=intval($GCP_cams_params[$__cam_nr]['monitor_live']);
         $c_v4l_pipe=&$GCP_cams_params[$__cam_nr]['v4l_pipe'];
 
-        if (($c_work && $c_live && $c_mon_live && !empty($c_v4l_pipe))) {
+        if (($c_work && $c_live && $c_mon_live && isset($c_v4l_pipe))) {
            $active_pipes[$active_pipes_nr]=$__cam_nr;
            $active_pipes_nr++;
         } else if ($pipes_show==1) {
@@ -140,7 +140,7 @@ if ( $GCP_cams_nr === 0 ) {
               $off_reason .= 'live_view="'.$flags[0].'";&nbsp;&nbsp;'; 
              if ($c_mon_live===0)
               $off_reason .= 'monitor_live="'.$flags[0].'";&nbsp;&nbsp;'; 
-              if (empty($c_v4l_pipe))
+              if (!isset($c_v4l_pipe))
               $off_reason .= 'v4l_pipe="'.$srtUndef.'";'; 
               print '<td>'. $off_reason .'</td>' . "\n";
            }
