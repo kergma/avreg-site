@@ -112,7 +112,7 @@ if ( $GCP_cams_nr === 0 ) {
         $c_mon_live=intval($GCP_cams_params[$__cam_nr]['allow_local']);
         $c_v4l_pipe=&$GCP_cams_params[$__cam_nr]['v4l_pipe'];
 
-        if (($c_work && $c_mon_live && !empty($c_v4l_pipe))) {
+        if (($c_work && $c_mon_live && isset($c_v4l_pipe))) {
            $active_pipes[$active_pipes_nr]=$__cam_nr;
            $active_pipes_nr++;
         } else if ($pipes_show==1) {
@@ -135,9 +135,9 @@ if ( $GCP_cams_nr === 0 ) {
               $off_reason .= 'work="'.$flags[0].'";&nbsp;&nbsp;';
              if ($c_mon_live===0)
               $off_reason .= 'allow_local="'.$flags[0].'";&nbsp;&nbsp;';
-              if (empty($c_v4l_pipe))
+             if (!isset($c_v4l_pipe))
               $off_reason .= 'v4l_pipe="'.$srtUndef.'";';
-              print '<td>'. $off_reason .'</td>' . "\n";
+             print '<td>'. $off_reason .'</td>' . "\n";
            }
            print '</tr>'."\n";
        }
