@@ -58,17 +58,17 @@ if ( $cam_detail['cam_type'] === 'netcam' ) {
    $proto_scheme='http://';
    if (!is_null($cam_detail['Aviosys9100_chan']))
 		print '<td valign="center"  nowrap>'.$proto_scheme.
-          (is_null($cam_detail['InetCam_IP'])?
+          (empty($cam_detail['InetCam_IP'])?
              'not_defined':$cam_detail['InetCam_IP']).
              '&nbsp; chan '.$cam_detail['Aviosys9100_chan'].'</td>' . "\n";
    else
 		print '<td valign="center"  nowrap>'.$proto_scheme.
-			(is_null($cam_detail['InetCam_IP'])?'not_defined':$cam_detail['InetCam_IP']).
+			(empty($cam_detail['InetCam_IP'])?'not_defined':$cam_detail['InetCam_IP']).
             '</td>' . "\n";
 } else {
 	if ($cam_has_video) {
 		print '<td valign="center"  nowrap>v4l://';
-		if ( $cam_detail['v4l_dev'] )
+		if ( isset($cam_detail['v4l_dev']) )
 			echo '/dev/video',$cam_detail['v4l_dev'];
 		else
 			echo '/dev/no_device';
