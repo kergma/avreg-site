@@ -4,7 +4,8 @@ $_SERVER['user_status']=$user_status;
 
 echo '<h2 align="center">' . sprintf($fmtVidServ, $named, $sip) .
    '&nbsp;&nbsp;(<a style="font-size: 85%;" href="'.sprintf($conf['prefix'].'/admin/key.php?sip=%s&amp;named=%s',$sip,$named).'">'.$license.'</a>)</h2>' ."\n";
-
+?>
+<?php
 /*
 if (empty($_SERVER['SSL_PROTO']))
   echo '<h2 align="center">' . sprintf($fmtVidServ, $named, $sip) . 
@@ -49,6 +50,12 @@ if ( (width < 1024) || (height < 768) )
 print '<table width="600" cellspacing="20" border="0" cellpadding="0" align="center">'."\n";
 print '<tbody>'."\n";
 print '<tr>'."\n";
+?>
+<td align="center" valign="middle" rowspan="2">
+<a href="pda/"><img src="img/pda.gif" border="0px" />
+<a href="pda/">PDA-версия</a>
+</td>
+<?php
 print '<td align="center" valign="top">'."\n";
 // $href1 = sprintf('/online/index.php?sip=%s&named=%s', urlencode($sip), urlencode($named));
 print '<a href="'.$conf['prefix'].'/online/index.php" title="'.$a_webcam.'"><img src="'.$conf['prefix'].'/img/online.jpg" width="206" height="165" border="0"></a>'."\n";

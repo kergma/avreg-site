@@ -1,88 +1,119 @@
 <?php
 
-$cam_has_video = false;
-$cam_has_audio = false;
-if ( $cam_detail['cam_type'] === 'netcam' ) {
-	if ( $cam_detail['V.http_get'] ) {
-		$cam_has_video = true;
-	}
-	if ( $cam_detail['A.http_get'] ) {
-		$cam_has_audio = true;
-	}
-} else {
-	$cam_has_video = true;
-}
+$__DEF_CAM_DETAIL_COLUMNS = array(
+   'ICONS'  => true,
+   'CAM_NR' => true,
+   'NAME'   => true,
+   'SRC'    => true,
+   'CAPS'   => true,
+);
 
-// print icons
-if ( $cam_detail['work'] > 0 )
+function print_cam_detail_row($conf, $cam_nr, $cam_detail, $columns = null)
 {
-	print '<td>';
-	if ($cam_has_video)
-		print '<img src="'.$conf['prefix'].'/img/camera-red.gif" alt="'
-                .$flags[1].
-                '" width="22" height="22" border="0">' . "\n";
-	else
-		print '<span style="margin-left: 22px"></span>' . "\n";
-	if ($cam_has_audio)
-		print '<img src="'.$conf['prefix'].'/img/audio.on.gif" alt="'
-				 .$flags[1].
-				'" width="20" height="22" border="0">' . "\n";
-	print '</td>';
-	print '<td align="center" valign="center" nowrap><b><font color="Red">'.
-               $__cam_nr. '</font></b></td>' . "\n";
-	if ($__cam_nr > 0 )
-		print '<td valign="center"><b>'.$cam_name.'</b></td>' . "\n";
-	else
-		print '<td><b>'.$r_cam_defs2.'</b></td>'."\n";
-} else {
-	print '<td>';
-	if ($cam_has_video)
-		print '<img src="'.$conf['prefix'].'/img/camera.gif" alt="'
-					.$flags[0].
-					'" width="22" height="22" border="0">' . "\n";
-	else
-		print '<span style="margin-left: 22px"></span>' . "\n";
-	if ($cam_has_audio)
-		print '<img src="'.$conf['prefix'].'/img/audio.gif" alt="'
-						.$flags[0].
-						'" width="20" height="22" border="0">' . "\n";
-	print '</td>';
-	print '<td align="center" valign="center" nowrap><b>'. $__cam_nr.'</b></td>' . "\n";
-	if ($__cam_nr > 0 )
-		print '<td valign="center">'.$cam_name.'</td>' . "\n";
-	else
-		print '<td>'.$r_cam_defs2.'</td>'."\n";
-}
-
-if ( $cam_detail['cam_type'] === 'netcam' ) {
-   $proto_scheme='http://';
-   if (!is_null($cam_detail['Aviosys9100_chan']))
-		print '<td valign="center"  nowrap>'.$proto_scheme.
-          (empty($cam_detail['InetCam_IP'])?
-             'not_defined':$cam_detail['InetCam_IP']).
-             '&nbsp; chan '.$cam_detail['Aviosys9100_chan'].'</td>' . "\n";
+   if (isset($columns))
+      $_cols = &$columns;
    else
-		print '<td valign="center"  nowrap>'.$proto_scheme.
-			(empty($cam_detail['InetCam_IP'])?'not_defined':$cam_detail['InetCam_IP']).
-            '</td>' . "\n";
-} else {
-	if ($cam_has_video) {
-		print '<td valign="center"  nowrap>v4l://';
-		if ( isset($cam_detail['v4l_dev']) )
-			echo '/dev/video',$cam_detail['v4l_dev'];
-		else
-			echo '/dev/no_device';
-		if ( $cam_detail['input'] )
-			echo ':',$cam_detail['input'];
-		echo '</td>' . "\n";
-	}
-}
+      $_cols = &$GLOBALS['__DEF_CAM_DETAIL_COLUMNS'];
+   $cam_active = ($cam_detail['work'] > 0);
+   if ( $cam_nr > 0 )
+      $cam_name = &$cam_detail['text_left'];
+   else
+      $cam_name = $GLOBALS['r_cam_defs2'];
+   $cam_has_video = false;
+   $cam_has_audio = false;
+   if ( isset($cam_detail['cam_type']) && $cam_detail['cam_type'] === 'netcam' ) {
+      if ( $cam_detail['V.http_get'] ) {
+         $cam_has_video = true;
+      }
+      if ( isset($cam_detail['A.http_get']) && $cam_detail['A.http_get'] ) {
+         $cam_has_audio = true;
+      }
+   } else
+      $cam_has_video = true;
 
-if ( $cam_has_video || $__cam_nr == 0 )
-	print '<td align="center" valign="center">'.$cam_detail['geometry'].
-                   ' ('.
-                   ((empty($cam_detail['color']) || $cam_detail['color']>0)?'color':'grey').
-                   ')</td>' . "\n";
-else
-	print '<td>&nbsp;</td>' . "\n";	
+   /* print icons <td> */
+   if ( isset($_cols['ICONS']) && $_cols['ICONS'] ) {
+      print '<td>';
+      if ($cam_has_video)
+         printf('<img src="'.$conf['prefix'].'%s" alt="%s" width="22" height="22" border="0">' . "\n",
+            $cam_active ? '/img/camera-red.gif' : '/img/camera.gif',
+            $cam_active ? $GLOBALS['flags'][1] : $GLOBALS['flags'][0]
+         );
+      else
+         print '<span style="margin-left: 22px"></span>' . "\n";
+
+      if ($cam_has_audio)
+         printf('<img src="'.$conf['prefix'].'%s" alt="%s" width="20" height="22" border="0">' . "\n",
+            $cam_active ? '/img/audio.on.gif' : '/img/camera.gif',
+            $cam_active ? $GLOBALS['flags'][1] : $GLOBALS['flags'][0]
+         );
+      print '</td>';
+
+   }
+
+   /* print cameras number <td> */
+   if ( isset($_cols['CAM_NR']) && $_cols['CAM_NR'] ) {
+      if ( $cam_active )
+         print '<td align="center" valign="center" nowrap><div style="font-weight: bold;">'.$cam_nr. '</div></td>' . "\n";
+      else
+         print '<td align="center" valign="center" nowrap><div>'. $cam_nr.'</div></td>' . "\n";
+   }
+
+   /* print cameras name <td> */
+   if ( isset($_cols['NAME']) && $_cols['NAME'] ) {
+      print '<td align="left" valign="center" nowrap>';
+      if ( !empty($_cols['NAME']['href']) ) {
+         $tag_a_cont = sprintf('href="%s?camera=%d" title="%s"',
+                       $_cols['NAME']['href'], $cam_nr, $_cols['NAME']['title']);
+         if ( $cam_active )
+            print '<a '.$tag_a_cont.' style="font-weight: bold;">'.$cam_name. '</a>' . "\n";
+         else
+            print '<a '.$tag_a_cont.'>'. $cam_name.'</a>' . "\n";
+      } else {
+         if ( $cam_active )
+            print '<div style="font-weight: bold;">'.$cam_name. '</div>' . "\n";
+         else
+            print '<div>'. $cam_name.'</div>' . "\n";
+      }
+      print "</div></td>\n";
+   }
+
+   /* print cameras source/type <td> */
+   if ( isset($_cols['SRC']) && $_cols['SRC'] ) {
+      if ( $cam_detail['cam_type'] === 'netcam' ) {
+         $proto_scheme='http://';
+         if (!is_null($cam_detail['Aviosys9100_chan']))
+            print '<td valign="center"  nowrap>'.$proto_scheme.
+            (empty($cam_detail['InetCam_IP'])?
+            'not_defined':$cam_detail['InetCam_IP']).
+            '&nbsp; chan '.$cam_detail['Aviosys9100_chan'].'</td>' . "\n";
+         else
+            print '<td valign="center"  nowrap>'.$proto_scheme.
+            (empty($cam_detail['InetCam_IP'])?'not_defined':$cam_detail['InetCam_IP']).
+            '</td>' . "\n";
+      } else {
+         if ($cam_has_video) {
+            print '<td valign="center"  nowrap>';
+            if ( isset($cam_detail['v4l_dev']) )
+               echo '/dev/video',$cam_detail['v4l_dev'];
+            else
+               echo '/dev/no_device';
+            if ( isset($cam_detail['input']) )
+               echo ':',$cam_detail['input'];
+            echo '</td>' . "\n";
+         }
+      }
+   }
+
+   /* print cameras short capabilities <td> */
+   if ( isset($_cols['CAPS']) && $_cols['CAPS']) {
+      if ( $cam_has_video || $cam_nr == 0 )
+         print '<td align="center" valign="center">'.$cam_detail['geometry'].
+         ' ('.
+         ((empty($cam_detail['color']) || $cam_detail['color']>0)?'color':'grey').
+         ')</td>' . "\n";
+      else
+         print '<td>&nbsp;</td>' . "\n";
+   }
+}
 ?>

@@ -1,7 +1,8 @@
 <?php
 $lang_file = '_admin_cams.php';
-require ('../head.inc.php');
-require ('../lib/my_conn.inc.php');
+require('../head.inc.php');
+require('../lib/my_conn.inc.php');
+require('../lib/cams_main_detail.inc.php');
 
 echo '<h1>' . sprintf($r_cam_list, $named, $sip) . '</h1>' ."\n";
 
@@ -66,7 +67,7 @@ if ( !isset($cam_nr) )
          }
          $__cam_nr = 0;
          $cam_detail = &$GCP_def_pars;
-			require('../lib/cams_main_detail.inc.php');
+         print_cam_detail_row(&$conf, $__cam_nr, &$cam_detail);
 			print "</tr>\n";
 
          $r_count = 0;
@@ -94,7 +95,7 @@ if ( !isset($cam_nr) )
                      $__cam_nr, $cam_name, $strTune);
                      print '<td>'.$ggg.'</td>' . "\n";
             }
-            require('../lib/cams_main_detail.inc.php');
+            print_cam_detail_row(&$conf, $__cam_nr, &$cam_detail);
             print "</tr>\n";
          }
          print "</table>\n";

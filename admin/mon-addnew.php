@@ -1,5 +1,6 @@
 <?php
-$pipes_show = $_POST['pipes_show'];
+if (isset($_POST['pipes_show']))
+   $pipes_show = $_POST['pipes_show'];
 if ( isset ($pipes_show) ) {
    settype($pipes_show, 'int');
    setcookie('avreg_pipes_show',  $pipes_show, time()+5184000);

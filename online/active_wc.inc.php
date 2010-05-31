@@ -3,7 +3,7 @@ require_once ('../lib/my_conn.inc.php');
 /* phpinfo(); */
 
 echo '<h2 align="center">'.$r_webcam_list.'</h2>' ."\n";
-print '<form action="'.$PHP_SELF.'" method="POST">'."\n";
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
 print '<p align="center">'.$strWcListShow.getSelectHtml('wclist_show', $WcListShow, FALSE, 1, 0, $WcListShow[$wclist_show], FALSE, TRUE)."</p>\n";
 if (isset($mon_type))
    print '<input type="hidden" name="mon_type" value="'.$mon_type.'">'."\n";
@@ -54,7 +54,7 @@ if ( $GCP_cams_nr > 0 )
       $webcam_def = sprintf('%u;%s;%u;%s',
          $__cam_nr, $wc['geometry'], $wc['Hx2'], $cam_name);
       if ( $wc['work'] && $wc['allow_networks'] &&
-           ($is_netcam && ($wc['InetCam_IP'] && $wc['V.http_get'])) || (!$is_netcam && $wc['v4l_dev']) )
+           ($is_netcam && ($wc['InetCam_IP'] && $wc['V.http_get'])) || (!$is_netcam && isset($wc['v4l_dev'])) )
       {
          if ($wclist_show>0) {
             print "<tr>\n";
@@ -85,7 +85,7 @@ if ( $GCP_cams_nr > 0 )
                if (empty($wc['V.http_get']))
                   $off_reason .= 'V.http_get is empty;&nbsp;&nbsp;';
             } else {
-               if (empty($wc['v4l_dev']))
+               if (!isset($wc['v4l_dev']))
                   $off_reason .= 'v4l_dev is empty;&nbsp;&nbsp;';
             }
             print '<td>'. $off_reason .'</td></tr>' . "\n";
