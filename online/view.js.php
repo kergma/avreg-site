@@ -31,10 +31,7 @@ $major_win_cam_geo = null;
 $major_win_nr = $l_defs[4] - 1;
 $msie_addons_scripts=array();
 
-$cams_subconf = load_profiles_cams_confs();
-
-$_a = $conf['avregd-httpd'];
-eval("\$__sip = \"$_a\";");
+require_once('../lib/get_cam_url.php');
 
 for ($i=0; $i<$wins_nr; $i++)
 {
@@ -51,12 +48,6 @@ for ($i=0; $i<$wins_nr; $i++)
     if (is_null($major_win_cam_geo) || $major_win_nr === $i )
        $major_win_cam_geo = array($_ww, $_wh);
     $l_wins = &$l_defs[3][$i];
-    
-    if ( $cams_subconf && isset($cams_subconf[$cam_nr]) && !empty($cams_subconf[$cam_nr]['avregd-httpd'])) {
-       $_a = &$cams_subconf[$cam_nr]['avregd-httpd'];
-       eval("\$_sip = \"$_a\";");
-    } else
-       $_sip = &$__sip;
 
     printf(
 'WINS_DEF[%d]={
@@ -65,17 +56,17 @@ for ($i=0; $i<$wins_nr; $i++)
    rowspan: %u,
    colspan: %u,
    cam: {
-      nr: %s,
+      nr:   %s,
       name: "%s",
-      url: "%s%s?camera=%u",
+      url:  "%s",
       orig_w: %u,
       orig_h: %u
       }
 };%s',
    $i, $l_wins[0], $l_wins[1],$l_wins[2],$l_wins[3],
    $cam_nr, $camnames[$i],
-   $_sip, $conf['avregd-mjpeg-path'],
-   $cam_nr, $_ww, $_wh, "\n" );
+   get_cam_http_url(&$conf, $cam_nr, 'mjpeg'),
+   $_ww, $_wh, "\n" );
 
     if ( $MSIE )
         $msie_addons_scripts[] = sprintf('<script for="cam%d" event="OnClick()">
