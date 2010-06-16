@@ -110,7 +110,7 @@ function print_cam_detail_row($conf, $cam_nr, $cam_detail, $columns = null)
       if ( $cam_has_video || $cam_nr == 0 )
          print '<td align="center" valign="center">'.$cam_detail['geometry'].
          ' ('.
-         ((empty($cam_detail['color']) || $cam_detail['color']>0)?'color':'grey').
+         ((!isset($cam_detail['color']) || $cam_detail['color']>0)?'color':'grey').
          ')</td>' . "\n";
       else
          print '<td>&nbsp;</td>' . "\n";

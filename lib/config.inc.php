@@ -5,17 +5,17 @@ require ('/etc/avreg/site-defaults.php');
 $wwwdir = $conf['site-dir'] . '/';
 
 if ($conf['debug']) {
-ini_set ('display_errors', '0' );
-ini_set ('log_errors', '1');
-ini_set ('html_errors', '0');
-error_reporting(E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_CORE_WARNING | 
-               E_COMPILE_ERROR | E_COMPILE_WARNING | E_USER_ERROR | E_USER_WARNING | 
-               E_USER_NOTICE);
+   ini_set ('display_errors', '0' );
+   ini_set ('log_errors', '1');
+   ini_set ('html_errors', '0');
+   error_reporting(E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_CORE_WARNING | 
+      E_COMPILE_ERROR | E_COMPILE_WARNING | E_USER_ERROR | E_USER_WARNING | 
+      E_USER_NOTICE);
 /*
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE | E_CORE_ERROR | E_CORE_WARNING | 
                E_COMPILE_ERROR | E_COMPILE_WARNING | E_USER_ERROR | E_USER_WARNING |
                E_USER_NOTICE | E_STRICT | E_RECOVERABLE_ERRROR );
-*/
+ */
 }
 
 /*
@@ -23,7 +23,7 @@ if (empty($conf['prefix']))
    $wwwdir = $_SERVER['DOCUMENT_ROOT'] . '/';
 else
    $wwwdir = $_SERVER['DOCUMENT_ROOT'] . $conf['prefix'] . '/';
-*/
+ */
 require($wwwdir . 'lib/grab_globals.lib.php');
 
 $BOOL_VAL = 1;
@@ -36,9 +36,9 @@ $PASSWORD_VAL = 7;
 
 function tohtml($var)
 {
-      print '<div class="dump"><pre class="dump">'."\n";
-      var_dump($var);
-      print '</pre></div>'."\n";
+   print '<div class="dump"><pre class="dump">'."\n";
+   var_dump($var);
+   print '</pre></div>'."\n";
 }
 
 function parse_csv_numlist($str) {
@@ -48,13 +48,13 @@ function parse_csv_numlist($str) {
          $res[] = (int)$value;
       } else {
          /* check range */
-            if ( preg_match('/^\s*(\d+)\s*-\s*(\d+)\s*$/', $value, $matches)) {
-               $start = (int)$matches[1];
-               $end   = (int)$matches[2];
-               if ($start >= $end)
-                  return false;
-               for(; $start <= $end; $start++)
-                  $res[] = (int)$start;
+         if ( preg_match('/^\s*(\d+)\s*-\s*(\d+)\s*$/', $value, $matches)) {
+            $start = (int)$matches[1];
+            $end   = (int)$matches[2];
+            if ($start >= $end)
+               return false;
+            for(; $start <= $end; $start++)
+               $res[] = (int)$start;
          } else
             return false; /* Error */
       }
@@ -99,10 +99,10 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
          continue;
 
       if ( 1 !== preg_match("/^[\s]*([^\s#;=]+)[\s=]+([\"']?)(.*?)(?<!\\\)([\"']?)\s*$/Su",
-                  $line, $matches)) {
-         $res = false;
-         break;
-      }
+         $line, $matches)) {
+            $res = false;
+            break;
+         }
       // var_dump($matches);
 
       $start_quote = &$matches[2];
@@ -115,7 +115,7 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
       $value = stripslashes($matches[3]);
 
       if (is_array($params))
-          if (FALSE === array_search($param, $params))
+         if (FALSE === array_search($param, $params))
             continue;
 
       // нашли параметр
@@ -180,25 +180,25 @@ if ( preg_match('@^/([^/]+).*@', $_SERVER['REQUEST_URI'], $matches) ) {
       if (!$res)
          die("<br /><br />Error: not found active profile ".$conf['profiles-dir'].'/'.$matches[1]);
       $AVREG_PROFILE = $matches[1];
-   // tohtml($res);
+      // tohtml($res);
       if (is_array($res)) {
-            $conf = array_merge($conf, $res);
-            $conf['prefix'] = '/'.$AVREG_PROFILE;
-            $conf['daemon-name'] .= '-'.$AVREG_PROFILE;
+         $conf = array_merge($conf, $res);
+         $conf['prefix'] = '/'.$AVREG_PROFILE;
+         $conf['daemon-name'] .= '-'.$AVREG_PROFILE;
       }
    }
 }
 
-function load_profiles_cams_confs()
+function load_profiles_cams_confs($application='avreg-site')
 {
    if ( !empty($AVREG_PROFILE) || empty($GLOBALS['EXISTS_PROFILES']) )
       return false;
-   
+
    $cams_profiles = Array();
    $profiles_conf = Array();
    $i=0;
    foreach( $GLOBALS['EXISTS_PROFILES'] as &$profile) {
-      $a = confparse($GLOBALS['conf'], 'avreg-site', $profile);
+      $a = confparse($GLOBALS['conf'], $application, $profile);
       if ( empty($a) || !array_key_exists('devlist', $a) )
          continue;
       $profiles_conf[$i] = $a;
@@ -212,9 +212,9 @@ function load_profiles_cams_confs()
 
 $sip = $_SERVER['SERVER_ADDR'];
 if ( $_SERVER['SERVER_ADDR'] === $_SERVER['SERVER_NAME'] )
-  $named = $_SERVER['SERVER_ADDR'];
+   $named = $_SERVER['SERVER_ADDR'];
 else
-  $named = $_SERVER['SERVER_NAME'];
+   $named = $_SERVER['SERVER_NAME'];
 $localip = ip2long($sip);
 
 $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
@@ -279,9 +279,9 @@ else
    $remote_addr = &$_SERVER['REMOTE_ADDR'];
 
 if (file_exists('/etc/linuxdvr-release')) {
-$LDVR_VER=@file('/etc/linuxdvr-release');
+   $LDVR_VER=@file('/etc/linuxdvr-release');
 } else
-$LDVR_VER=false;
+   $LDVR_VER=false;
 
 
 $font_family = 'sans-serif';
@@ -309,44 +309,44 @@ $patternUser='/^[A-Za-z0-9_\-]{4,16}$/';
 $patternPasswd='/^[A-Za-z0-9_\-]{0,16}$/';
 
 $WellKnownAspects = array(
-  array( 4, 3),
-  array(10, 8),
-  array(11, 9),
-  array( 3, 2),
-  array(16, 9),
-  array(16,10),
-  array( 5, 4)
+   array( 4, 3),
+   array(10, 8),
+   array(11, 9),
+   array( 3, 2),
+   array(16, 9),
+   array(16,10),
+   array( 5, 4)
 );
 
 require($wwwdir.'/lib/my_conn.inc.php');
 $query = 'SELECT HOST, USER, PASSWD, STATUS, ALLOW_CAMS,
- FORCED_SAVING_LIMIT,
- SESSIONS_PER_CAM, LIMIT_FPS, NONMOTION_FPS, LIMIT_KBPS,
- SESSION_TIME, SESSION_VOLUME,
- LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME
- FROM USERS ORDER BY STATUS';
+   FORCED_SAVING_LIMIT,
+   SESSIONS_PER_CAM, LIMIT_FPS, NONMOTION_FPS, LIMIT_KBPS,
+   SESSION_TIME, SESSION_VOLUME,
+   LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME
+   FROM USERS ORDER BY STATUS';
 $result = mysql_query($query) or die('SQL query failed: `'. mysql_error() ."`\n");
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC) )
 {
-/* var_dump($row); */
-$ui = array();
-$ui['HOST'] = $row['HOST'];
-$ui['USER'] = $row['USER'];
-$ui['PASSWD'] = $row['PASSWD'];
-$ui['STATUS'] = (int)$row['STATUS'];
-$ui['ALLOW_CAMS'] = $row['ALLOW_CAMS'];
-$ui['FORCED_SAVING_LIMIT'] = is_null($row['FORCED_SAVING_LIMIT'])?NULL:(int)$row['FORCED_SAVING_LIMIT'];
-$ui['SESSIONS_PER_CAM'] = is_null($row['SESSIONS_PER_CAM'])?NULL:(int)$row['SESSIONS_PER_CAM'];
-$ui['LIMIT_FPS'] = is_null($row['LIMIT_FPS'])?NULL:(int)$row['LIMIT_FPS'];
-$ui['NONMOTION_FPS'] = is_null($row['NONMOTION_FPS'])?NULL:(float)$row['NONMOTION_FPS'];
-$ui['LIMIT_KBPS'] = is_null($row['LIMIT_KBPS'])?NULL:(int)$row['LIMIT_KBPS'];
-$ui['SESSION_TIME'] = is_null($row['SESSION_TIME'])?NULL:(int)$row['SESSION_TIME'];
-$ui['SESSION_VOLUME'] = is_null($row['SESSION_VOLUME'])?NULL:(int)$row['SESSION_VOLUME'];
-$ui['LONGNAME'] = $row['LONGNAME'];
-$ui['CHANGE_HOST'] = $row['CHANGE_HOST'];
-$ui['CHANGE_USER'] = $row['CHANGE_USER'];
-$ui['CHANGE_TIME'] = $row['CHANGE_TIME'];
-$users[] = $ui;
+   /* var_dump($row); */
+   $ui = array();
+   $ui['HOST'] = $row['HOST'];
+   $ui['USER'] = $row['USER'];
+   $ui['PASSWD'] = $row['PASSWD'];
+   $ui['STATUS'] = (int)$row['STATUS'];
+   $ui['ALLOW_CAMS'] = $row['ALLOW_CAMS'];
+   $ui['FORCED_SAVING_LIMIT'] = is_null($row['FORCED_SAVING_LIMIT'])?NULL:(int)$row['FORCED_SAVING_LIMIT'];
+   $ui['SESSIONS_PER_CAM'] = is_null($row['SESSIONS_PER_CAM'])?NULL:(int)$row['SESSIONS_PER_CAM'];
+   $ui['LIMIT_FPS'] = is_null($row['LIMIT_FPS'])?NULL:(int)$row['LIMIT_FPS'];
+   $ui['NONMOTION_FPS'] = is_null($row['NONMOTION_FPS'])?NULL:(float)$row['NONMOTION_FPS'];
+   $ui['LIMIT_KBPS'] = is_null($row['LIMIT_KBPS'])?NULL:(int)$row['LIMIT_KBPS'];
+   $ui['SESSION_TIME'] = is_null($row['SESSION_TIME'])?NULL:(int)$row['SESSION_TIME'];
+   $ui['SESSION_VOLUME'] = is_null($row['SESSION_VOLUME'])?NULL:(int)$row['SESSION_VOLUME'];
+   $ui['LONGNAME'] = $row['LONGNAME'];
+   $ui['CHANGE_HOST'] = $row['CHANGE_HOST'];
+   $ui['CHANGE_USER'] = $row['CHANGE_USER'];
+   $ui['CHANGE_TIME'] = $row['CHANGE_TIME'];
+   $users[] = $ui;
 }
 mysql_free_result($result); unset($result);
 
@@ -382,23 +382,23 @@ function avreg_find_user($addr, $mask, $name)
          continue; // FIXME - may be error/warning?
 
       $found = avreg_ipv4_cmp( $addr, $mask,
-                              $ipacl['addr'],  $ipacl['mask']);
+         $ipacl['addr'],  $ipacl['mask']);
 /*
       syslog(LOG_ERR,sprintf("equal = %d, 0x%X/0x%X 0x%X/0x%X", 
                               $found,
                               $addr, $mask,
                               $ipacl['addr'],  $ipacl['mask']));
-*/
+ */
       if ($found !== FALSE) {
          break;
       }
-}
+   }
 
-if ( $found && $GLOBALS['conf']['debug'] )
-   syslog(LOG_ERR, sprintf('ACL %s %s@%s %s/%s',
-            $found?"success":"failed",
-            $name, long2ip($addr),
-            $ipacl['addr_a'], $ipacl['mask_a']));
+   if ( $found && $GLOBALS['conf']['debug'] )
+      syslog(LOG_ERR, sprintf('ACL %s %s@%s %s/%s',
+         $found?"success":"failed",
+         $name, long2ip($addr),
+         $ipacl['addr_a'], $ipacl['mask_a']));
 
    return ($found)?$ui:FALSE;
 }
@@ -458,31 +458,92 @@ function proc_info($proc_name, $__pid=NULL)
 }
 
 function filesizeHuman($fsize_KB) {
-      if ($fsize_KB >= 1048576 )
-               return sprintf("%0.1f %s", $fsize_KB/1048576,$GLOBALS['byteUnits'][3]);
-      else if ($fsize_KB >= 1024 )
-               return sprintf("%0.1f %s", $fsize_KB/1024,$GLOBALS['byteUnits'][2]);
-      else if ($fsize_KB >= 1)
-               return sprintf("%d %s", $fsize_KB,$GLOBALS['byteUnits'][1]);
+   if ($fsize_KB >= 1048576 )
+      return sprintf("%0.1f %s", $fsize_KB/1048576,$GLOBALS['byteUnits'][3]);
+   else if ($fsize_KB >= 1024 )
+      return sprintf("%0.1f %s", $fsize_KB/1024,$GLOBALS['byteUnits'][2]);
+   else if ($fsize_KB >= 1)
+      return sprintf("%d %s", $fsize_KB,$GLOBALS['byteUnits'][1]);
    else 
-               return sprintf("%d %s", $fsize_KB*1024,$GLOBALS['byteUnits'][0]);
+      return sprintf("%d %s", $fsize_KB*1024,$GLOBALS['byteUnits'][0]);
 }
 
 function DeltaTimeHuman($sec) {
-settype($sec,'int');
-if ($sec >= 86400)
-   return sprintf('%.1f дня', $sec / 86400);
-else if ($sec >= 3600 )
-   return sprintf('%.1f час', $sec / 3600);
-else if ($sec >= 60 )
-   return sprintf('%.1f мин', $sec / 60);
-else
-   return sprintf('%d сек', $sec);
+   settype($sec,'int');
+   if ($sec >= 86400)
+      return sprintf('%.1f дня', $sec / 86400);
+   else if ($sec >= 3600 )
+      return sprintf('%.1f час', $sec / 3600);
+   else if ($sec >= 60 )
+      return sprintf('%.1f мин', $sec / 60);
+   else
+      return sprintf('%d сек', $sec);
+}
+/* Estimated Time of Arrival */
+function ETA($sec) {
+   settype($sec,'int');
+   if ( $sec < 0 )
+      return '--:--:--';
+   else if ( $sec === 0 )
+      return '00:00:00';
+   $_sec = $sec % 60;
+   $_min  = (int)($sec / 60) % 60;
+   $_hour = (int)($sec / 3600);
+   return sprintf('%02u:%02u:%02u', $_hour, $_min, $_sec);
+}
+
+/* $start,$finish - unix timestamp */
+function TimeRangeHuman($start, $finish, $print_year=false, $print_sec=false)
+{
+   if ( $print_sec )
+      $time_fmt = '%02u:%02u:%02u';
+   else
+      $time_fmt = '%02u:%02u';
+
+   $start_tm   = localtime($start, true);
+   $finish_tm  = localtime($finish,true);
+   $same_year  = ( $start_tm['tm_year'] === $finish_tm['tm_year'] );
+   $same_month = $same_year  && ( $start_tm['tm_mon'] === $finish_tm['tm_mon'] );
+   $same_day   = $same_month && ( $start_tm['tm_mday'] === $finish_tm['tm_mday'] );
+
+   $const_str = '';
+   $diff_str  = '';
+
+   if ( $print_sec ) {
+      $start_time  = sprintf('%02u:%02u:%02u', $start_tm['tm_hour'],  $start_tm['tm_min'],  $start_tm['tm_sec']);
+      $finish_time = sprintf('%02u:%02u:%02u', $finish_tm['tm_hour'], $finish_tm['tm_min'], $finish_tm['tm_sec']);
+   } else {
+      $start_time  = sprintf('%02u:%02u', $start_tm['tm_hour'],  $start_tm['tm_min']);
+      $finish_time = sprintf('%02u:%02u', $finish_tm['tm_hour'], $finish_tm['tm_min']);
+   }
+
+   if ( $finish < $start /* $finish = null or 0 */ ) {
+      $_date = strftime($print_year ? '%Y %b %d(%a)' : '%b %d(%a)', $start);
+      return ("[ $_date $start_time - ??? ]");
+   }
+
+   if ( $same_day ) {
+      $const_str = strftime( $print_year ? '%Y %b %d(%a) ' : '%b %d(%a) ', $start);
+      $diff_str  = sprintf('%s - %s', $start_time, $finish_time);
+   } else {
+      if ( $same_month ) {
+         $const_str = strftime($print_year ? '%Y %b ' : '%b ', $start);
+         $date_fmt = '%d(%a)';
+      } else if ( $same_year ) {
+         if ( $print_year )
+            $const_str = sprintf('%04u ', $start_tm['tm_year'] + 1900);
+         $date_fmt = '%b %d(%a)';
+      } else
+         $date_fmt = '%Y %b %d(%a)';
+      $diff_str  = sprintf("%s $start_time - %s $finish_time",
+         strftime($date_fmt, $start), strftime($date_fmt, $finish));
+   }
+   return ($const_str . '[ ' . $diff_str . ' ]');
 }
 
 function getCamName ($_text_left)
 {
-      if ( empty ($_text_left) )
+   if ( empty ($_text_left) )
       return $GLOBALS['strNotTextLeft'];
    else
       return $_text_left;
@@ -490,10 +551,10 @@ function getCamName ($_text_left)
 /*
 function PrettyCamName($cam_desc=null)
 {
-	if (empty($cam_desc) || !is_array($cam_desc))
-		return '';
+   if (empty($cam_desc) || !is_array($cam_desc))
+      return '';
 }
-*/
+ */
 
 function print_go_back() {
    print '<br><center><a href="javascript:window.history.back();" title="'.$GLOBALS['strBack'].'">'.
@@ -515,71 +576,71 @@ function sql_format_float_val($val) {
 
 function getCamsArray($_sip,$first_defs=FALSE)
 {
-      /* Performing new SQL query */
-      $query = 'SELECT c1.CAM_NR, c1.VALUE as work , c2.VALUE as text_left, '.
+   /* Performing new SQL query */
+   $query = 'SELECT c1.CAM_NR, c1.VALUE as work , c2.VALUE as text_left, '.
       'c1.CHANGE_HOST, c1.CHANGE_USER, c1.CHANGE_TIME '.
       'FROM CAMERAS c1 LEFT OUTER JOIN CAMERAS c2 '.
       'ON ( c1.CAM_NR = c2.CAM_NR AND c1.BIND_MAC=c2.BIND_MAC AND c2.PARAM = \'text_left\' ) '.
       'WHERE c1.BIND_MAC=\'local\' AND c1.CAM_NR>0 AND c1.PARAM = \'work\' '.
       'ORDER BY c1.CAM_NR';
-      // print '<p>'.$query.'</p>'."\n";
-      $result = mysql_query($query) or die("Query failed");
-      $num_rows = mysql_num_rows($result);
-      if ( $num_rows == 0 )
+   // print '<p>'.$query.'</p>'."\n";
+   $result = mysql_query($query) or die("Query failed");
+   $num_rows = mysql_num_rows($result);
+   if ( $num_rows == 0 )
    {
-               mysql_free_result($result);
+      mysql_free_result($result);
       unset ($result);
-               return NULL;
+      return NULL;
    }
    $arr=array();
    if ($first_defs)
       $arr[0]=$GLOBALS['r_cam_defs3'];
-      while ( $row = mysql_fetch_array($result, MYSQL_ASSOC) )
+   while ( $row = mysql_fetch_array($result, MYSQL_ASSOC) )
    {
-               $_cam_name = getCamName($row['text_left']);
+      $_cam_name = getCamName($row['text_left']);
       $_cam_nr = $row['CAM_NR'];
       settype($_cam_nr,'int');
       $arr[$_cam_nr] = $_cam_name;
    }
-      mysql_free_result($result);
-      unset ($result);
+   mysql_free_result($result);
+   unset ($result);
    return $arr;  
 }
 
 function MYDIE($errstr='internal error', $file='', $line='')
 {
-      if (empty($file))
-               $file = basename($_SERVER['SCRIPT_FILENAME']);
-      print '<div><font color="'.$GLOBALS['error_color'].'">'."\n";
-      printf ('Error in %s:%d<br>',$file, $line);
-      print $errstr;
-      print '</font></div>'."\n";
+   if (empty($file))
+      $file = basename($_SERVER['SCRIPT_FILENAME']);
+   print '<div><font color="'.$GLOBALS['error_color'].'">'."\n";
+   printf ('Error in %s:%d<br>',$file, $line);
+   print $errstr;
+   print '</font></div>'."\n";
    if ( !isset($GLOBALS['NOBODY']) ) 
-         print '</body>'."\n";
+      print '</body>'."\n";
    print '</html>'."\n";
-      exit(1);
+   exit(1);
 }
 
 function print_syslog($priority, $message)
 {
-      if (!isset($GLOBALS['syslog_opened'])) {
-            $GLOBALS['syslog_opened'] = 1;
-            define_syslog_variables();
-            openlog('avreg-site', 0, LOG_DAEMON);
-      }
-      if ( $GLOBALS['login_user'] === 'unknown' ) {
-            if ( isset($_SERVER['PHP_AUTH_USER']) )
-               $luser = $_SERVER['PHP_AUTH_USER'];
-            elseif (isset($_SERVER['REMOTE_USER']) )
-               $luser = $_SERVER['REMOTE_USER'];
-            else $luser = 'unknown';
-      } else
-               $luser = $GLOBALS['login_user'];
-      if ( $GLOBALS['remote_addr'] === 'unknown' )
-               $raddr = $_SERVER['REMOTE_ADDR'];
-      else
-               $raddr = $GLOBALS['remote_addr'];
-      syslog($priority, sprintf ('%s@%s: %s', $luser, $raddr, $message));
+   if (!isset($GLOBALS['syslog_opened'])) {
+      $GLOBALS['syslog_opened'] = 1;
+      define_syslog_variables();
+      openlog('avreg-site', 0, LOG_DAEMON);
+   }
+   if ( $GLOBALS['login_user'] === 'unknown' ) {
+      if ( isset($_SERVER['PHP_AUTH_USER']) )
+         $luser = $_SERVER['PHP_AUTH_USER'];
+      elseif (isset($_SERVER['REMOTE_USER']) )
+         $luser = $_SERVER['REMOTE_USER'];
+      else $luser = 'unknown';
+   } else
+      $luser = $GLOBALS['login_user'];
+   if ( $GLOBALS['remote_addr'] === 'unknown' )
+      $raddr = $_SERVER['REMOTE_ADDR'];
+   else
+      $raddr = $GLOBALS['remote_addr'];
+   syslog($priority, sprintf ('%s@%s: %s', $luser, $raddr, $message));
 }
 
 function DENY($good_status=NULL, $http_status=403)
@@ -597,31 +658,31 @@ function DENY($good_status=NULL, $http_status=403)
    $atel   = &$GLOBALS['conf']['admin-tel'];
    if ( array_key_exists($user_status,$GLOBALS['grp_ar'])) {
       $deny_reason=sprintf($GLOBALS['access_denided'],
-               $GLOBALS['grp_ar'][$user_status]['grname']);
+         $GLOBALS['grp_ar'][$user_status]['grname']);
       $action = &$GLOBALS['fmtServerAdmin'];
    } else {
       $deny_reason = sprintf($GLOBALS['fmtAccessDenied'],
-                     htmlentities(isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : "unknown user", ENT_QUOTES, $GLOBALS['chset']),
-                     $_SERVER['REMOTE_ADDR']);
+         htmlentities(isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : "unknown user", ENT_QUOTES, $GLOBALS['chset']),
+         $_SERVER['REMOTE_ADDR']);
       $action = &$GLOBALS['fmtTryOnceMore'];
    }
 
-  if (!empty($aname) || !empty($amail) || !empty($atel)) {
-    $deny_reason .= '<br /><br />'."\n";
-    $deny_reason .= sprintf($action,
-           '&#034;'.htmlentities($aname, ENT_QUOTES, $GLOBALS['chset']).'&#034; &#060;'.htmlentities($amail, ENT_QUOTES, $GLOBALS['chset']).'&#062; , tel: '.htmlentities($atel, ENT_QUOTES, $GLOBALS['chset']));
-  }
+   if (!empty($aname) || !empty($amail) || !empty($atel)) {
+      $deny_reason .= '<br /><br />'."\n";
+      $deny_reason .= sprintf($action,
+         '&#034;'.htmlentities($aname, ENT_QUOTES, $GLOBALS['chset']).'&#034; &#060;'.htmlentities($amail, ENT_QUOTES, $GLOBALS['chset']).'&#062; , tel: '.htmlentities($atel, ENT_QUOTES, $GLOBALS['chset']));
+   }
 
    if (!headers_sent()) {
       switch ($http_status) {
-         case 401:
-            header('WWW-Authenticate: Basic realm="AVReg server"', true, 401);
-            exit();
+      case 401:
+         header('WWW-Authenticate: Basic realm="AVReg server"', true, 401);
+         exit();
 
-         case 403:
-         default:
-            header('Content-Type: text/html; charset=' . $chset);
-            header('Connection: close', true, 403);
+      case 403:
+      default:
+         header('Content-Type: text/html; charset=' . $chset);
+         header('Connection: close', true, 403);
       }
    }
 
@@ -640,133 +701,72 @@ function DENY($good_status=NULL, $http_status=403)
 
 function checkIntRange ($int, $min, $max)
 {
-if ( $int == NULL or $h < $min or $h > $max) {
-   return FALSE;
-} else {
-   return TRUE;
-}
+   if ( $int == NULL or $h < $min or $h > $max) {
+      return FALSE;
+   } else {
+      return TRUE;
+   }
 }
 
 function getMonth ($m)
 {
-if (empty ($m) or (($m < 0) or ($m > 12))) {
-   $retval = $GLOBALS['charNull'];
-} else {
-   $retval = $GLOBALS['month_array'][$m-1];
-}
-return $retval;
+   if (empty ($m) or (($m < 0) or ($m > 12))) {
+      $retval = $GLOBALS['charNull'];
+   } else {
+      $retval = $GLOBALS['month_array'][$m-1];
+   }
+   return $retval;
 }
 
 function getDay ($d)
 {
-if (empty ($d) or (($d < 1) or ($d > 31))) {
-   $retval = $GLOBALS['charNull'];
-} else {
-   $retval = sprintf ('%02u' ,$d);
-}
-return $retval;
+   if (empty ($d) or (($d < 1) or ($d > 31))) {
+      $retval = $GLOBALS['charNull'];
+   } else {
+      $retval = sprintf ('%02u' ,$d);
+   }
+   return $retval;
 }
 
 function getHour ($h)
 {
-if ( $h == NULL or $h < 0 or $h > 23) {
-   $retval = $GLOBALS['charNull'];
-} else {
-   $retval = sprintf ('%02u' ,$h);
-}
-return $retval;
+   if ( $h == NULL or $h < 0 or $h > 23) {
+      $retval = $GLOBALS['charNull'];
+   } else {
+      $retval = sprintf ('%02u' ,$h);
+   }
+   return $retval;
 }
 
 function getMinute ($_min)
 {
-if ( $_min == NULL or $_min < 0 or $_min > 59 ) {
-   $retval = $GLOBALS['charNull'];
-} else {
-   $retval = sprintf ('%02u' ,$_min);
-}
-return  $retval;
+   if ( $_min == NULL or $_min < 0 or $_min > 59 ) {
+      $retval = $GLOBALS['charNull'];
+   } else {
+      $retval = sprintf ('%02u' ,$_min);
+   }
+   return  $retval;
 }
 
 function getWeekday ($_weekday)
 {
-$retval = '';
-if ($_weekday == '') {
-   $retval = $GLOBALS['charNull'];
-} else {
-   $pieces = explode(",", $_weekday);
-   foreach ($pieces as $_day) {
-      $rrr[] = $GLOBALS['day_of_week'][$_day];
+   $retval = '';
+   if ($_weekday == '') {
+      $retval = $GLOBALS['charNull'];
+   } else {
+      $pieces = explode(",", $_weekday);
+      foreach ($pieces as $_day) {
+         $rrr[] = $GLOBALS['day_of_week'][$_day];
+      }
+      $retval = implode (",",$rrr);
    }
-   $retval = implode (",",$rrr);
-}
-return $retval;
+   return $retval;
 }
 
 function getSelectHtml($_name, $value_array, $_multiple=FALSE , $_size = 1, $start_val=1, $selected='', $first_empty=TRUE, $onch=FALSE, $TITLE=NULL)
 {
-      settype($selected,'string');
-      if ($_multiple) {$m = 'multiple="multiple"';} else {$m = '';}
-      if ($onch===TRUE)
-      $onch = 'onchange="this.form.submit()"';
-   else if (!empty($onch))
-      $onch = 'onchange="'.$onch.'"';
-   else
-      $onch='';
-   if (!empty($TITLE))
-      $_title='title="'.$TITLE.'"';
-   else
-      $_title='';
-   $a = sprintf('<select name="%s" id="%s" %s size="%d" %s %s>'."\n",
-                  $_name,
-                  $_name,
-                  $m,
-                  $_size,
-                  $_title,
-                  $onch);
-
-      if ($first_empty) $a .= '<option></option>'."\n";
-      $_cnt = $start_val;
-      foreach ($value_array as $_element)
-      {
-               if ( $selected != '' )
-               {
-                        if ($_multiple)
-                        {
-                              $_y = FALSE;
-                              $ar = explode(',', $selected);
-                              foreach ($ar as $sss)
-                              {
-                                       if ($_cnt == $sss)
-                                       {
-                                                $_y = TRUE;
-                                                break;
-                                       }
-                              }
-                              if ($_y)
-                                       $a .= '<option value="'.$_cnt.'" selected>'.$_element.'</option>'."\n";
-                              else
-                                       $a .= '<option value="'.$_cnt.'">'.$_element.'</option>'."\n";
-                        } else {
-                        /* not multiple */
-                              if ($_element == $selected)
-                                       $a .= '<option value="'.$_cnt.'" selected>'.$_element.'</option>'."\n";
-                              else
-                                       $a .= '<option value="'.$_cnt.'">'.$_element.'</option>'."\n";
-                        }
-               } else {  // not selected
-                        $a .= '<option value="'.$_cnt.'">'.$_element.'</option>'."\n";
-               }
-               $_cnt++;
-      }
-      $a .= '</select>'."\n";
-      return $a;
-}
-
-function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
-                                                               $_size = 1, $start_val=0, $selected='',
-                                                               $first_empty=TRUE, $onch=FALSE, $text_prefix = '',$TITLE=NULL)
-{
-      if ($_multiple) {$m = 'multiple="multiple"';} else {$m = '';}
+   settype($selected,'string');
+   if ($_multiple) {$m = 'multiple="multiple"';} else {$m = '';}
    if ($onch===TRUE)
       $onch = 'onchange="this.form.submit()"';
    else if (!empty($onch))
@@ -778,123 +778,184 @@ function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
    else
       $_title='';
    $a = sprintf('<select name="%s" id="%s" %s size="%d" %s %s>'."\n",
-                  $_name,
-                  $_name,
-                  $m,
-                  $_size,
-                  $_title,
-                  $onch);
+      $_name,
+      $_name,
+      $m,
+      $_size,
+      $_title,
+      $onch);
 
-      if ($first_empty) $a .= '<option></option>'."\n";
-      $_cnt = $start_val;
-      foreach ($value_array as $_element)
+   if ($first_empty) $a .= '<option></option>'."\n";
+   $_cnt = $start_val;
+   foreach ($value_array as $_element)
+   {
+      if ( $selected != '' )
       {
-               if ( $selected != '' )
+         if ($_multiple)
+         {
+            $_y = FALSE;
+            $ar = explode(',', $selected);
+            foreach ($ar as $sss)
+            {
+               if ($_cnt == $sss)
                {
-                        if ($_multiple)
-                        {
-                              $_y = FALSE;
-                              $ar = explode(',', $selected);
-                              foreach ($ar as $sss)
-                              {
-                                       if ($_cnt == $sss)
-                                       {
-                                                $_y = TRUE;
-                                                break;
-                                       }
-                              }
-                              if ($_y)
-                                       $a .= '<option value="'.$_element.'" selected>'.$text_prefix.$_element.'</option>'."\n";
-                              else
-                                       $a .= '<option value="'.$_element.'">'.$text_prefix.$_element.'</option>'."\n";
-                        } else {
-                        /* not multiple */
-                              if ($_element == $selected)
-                                       $a .= '<option value="'.$_element.'" selected>'.$text_prefix.$_element.'</option>'."\n";
-                              else
-                                       $a .= '<option value="'.$_element.'">'.$text_prefix.$_element.'</option>'."\n";
-                        }
-               } else {  // not selected
-                        $a .= '<option value="'.$_element.'">'.$text_prefix.$_element.'</option>'."\n";
+                  $_y = TRUE;
+                  break;
                }
-               $_cnt++;
+            }
+            if ($_y)
+               $a .= '<option value="'.$_cnt.'" selected>'.$_element.'</option>'."\n";
+            else
+               $a .= '<option value="'.$_cnt.'">'.$_element.'</option>'."\n";
+         } else {
+            /* not multiple */
+            if ($_element == $selected)
+               $a .= '<option value="'.$_cnt.'" selected>'.$_element.'</option>'."\n";
+            else
+               $a .= '<option value="'.$_cnt.'">'.$_element.'</option>'."\n";
+         }
+      } else {  // not selected
+         $a .= '<option value="'.$_cnt.'">'.$_element.'</option>'."\n";
       }
-      $a .= '</select>'."\n";
-      return $a;
+      $_cnt++;
+   }
+   $a .= '</select>'."\n";
+   return $a;
+}
+
+function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
+   $_size = 1, $start_val=0, $selected='',
+   $first_empty=TRUE, $onch=FALSE, $text_prefix = '',$TITLE=NULL)
+{
+   if ($_multiple) {$m = 'multiple="multiple"';} else {$m = '';}
+      if ($onch===TRUE)
+         $onch = 'onchange="this.form.submit()"';
+      else if (!empty($onch))
+         $onch = 'onchange="'.$onch.'"';
+      else
+         $onch='';
+   if (!empty($TITLE))
+      $_title='title="'.$TITLE.'"';
+   else
+      $_title='';
+   $a = sprintf('<select name="%s" id="%s" %s size="%d" %s %s>'."\n",
+      $_name,
+      $_name,
+      $m,
+      $_size,
+      $_title,
+      $onch);
+
+   if ($first_empty) $a .= '<option></option>'."\n";
+   $_cnt = $start_val;
+   foreach ($value_array as $_element)
+   {
+      if ( $selected != '' )
+      {
+         if ($_multiple)
+         {
+            $_y = FALSE;
+            $ar = explode(',', $selected);
+            foreach ($ar as $sss)
+            {
+               if ($_cnt == $sss)
+               {
+                  $_y = TRUE;
+                  break;
+               }
+            }
+            if ($_y)
+               $a .= '<option value="'.$_element.'" selected>'.$text_prefix.$_element.'</option>'."\n";
+            else
+               $a .= '<option value="'.$_element.'">'.$text_prefix.$_element.'</option>'."\n";
+         } else {
+            /* not multiple */
+            if ($_element == $selected)
+               $a .= '<option value="'.$_element.'" selected>'.$text_prefix.$_element.'</option>'."\n";
+            else
+               $a .= '<option value="'.$_element.'">'.$text_prefix.$_element.'</option>'."\n";
+         }
+      } else {  // not selected
+         $a .= '<option value="'.$_element.'">'.$text_prefix.$_element.'</option>'."\n";
+      }
+      $_cnt++;
+   }
+   $a .= '</select>'."\n";
+   return $a;
 }
 
 function getSelectByAssocAr($_name, $assoc_array, $_multiple=FALSE ,
-                            $_size = 1, $start_val=NULL, $selected=NULL,
-                            $first_empty=TRUE, $onch=FALSE,
-                            $text_prefix = NULL,$TITLE=NULL, 
-									 $reverse=false)
+   $_size = 1, $start_val=NULL, $selected=NULL,
+   $first_empty=TRUE, $onch=FALSE,
+   $text_prefix = NULL,$TITLE=NULL, 
+   $reverse=false)
 {
-  $array_cnt = count($assoc_array);
-  if ( $array_cnt == 0 ) return '';
-  if ($_multiple) {$m = 'multiple="multiple"';} else {$m = '';}
-  if ($onch===TRUE)
-    $onch = 'onchange="this.form.submit()"';
-  else if (!empty($onch))
-    $onch = 'onchange="'.$onch.'"';
-  else
-    $onch='';
-  if (!empty($TITLE))
-     $_title='title="'.$TITLE.'"';
-  else
-     $_title='';
-  $a = sprintf('<select name="%s" id="%s" %s size="%d" %s %s>'."\n",
-                  $_name,
-                  $_name,
-                  $m,
-                  $_size,
-                  $_title,
-                  $onch);
+   $array_cnt = count($assoc_array);
+   if ( $array_cnt == 0 ) return '';
+   if ($_multiple) {$m = 'multiple="multiple"';} else {$m = '';}
+   if ($onch===TRUE)
+      $onch = 'onchange="this.form.submit()"';
+   else if (!empty($onch))
+      $onch = 'onchange="'.$onch.'"';
+   else
+      $onch='';
+   if (!empty($TITLE))
+      $_title='title="'.$TITLE.'"';
+   else
+      $_title='';
+   $a = sprintf('<select name="%s" id="%s" %s size="%d" %s %s>'."\n",
+      $_name,
+      $_name,
+      $m,
+      $_size,
+      $_title,
+      $onch);
 
-  if ($first_empty) $a .= '<option></option>'."\n";
+   if ($first_empty) $a .= '<option></option>'."\n";
 
-	foreach ($assoc_array as $k => $v)
-	{
-		settype($key,'string');
-		if ( $reverse ) {
-			$key = &$v;
-			$value = &$k;
-		} else {
-			$key = &$k;
-			$value = &$v;			
-		}
+   foreach ($assoc_array as $k => $v)
+   {
+      settype($key,'string');
+      if ( $reverse ) {
+         $key = &$v;
+         $value = &$k;
+      } else {
+         $key = &$k;
+         $value = &$v;			
+      }
 
-     if ( $selected != '' )
-     {
-       if ($_multiple)
-       {
-          $_y = FALSE;
-          $ar = explode(',', $selected);
-          foreach ($ar as $sss)
-          {
-             if ($key == $sss)
-             {
-                $_y = TRUE;
-                break;
-             }
-          }
-          if ($_y)
-             $a .= '<option value="'.$key.'" selected>'.$text_prefix.$value.'</option>'."\n";
-          else
-             $a .= '<option value="'.$key.'">'.$text_prefix.$value.'</option>'."\n";
-          } else {
-             /* not multiple */
-             if ($key == $selected)
-                $a .= '<option value="'.$key.'" selected>'.$text_prefix.$value.'</option>'."\n";
-             else
-                $a .= '<option value="'.$key.'">'.$text_prefix.$value.'</option>'."\n";
-             }
-           } else {  // not selected
-              $a .= '<option value="'.$key.'">'.$text_prefix.$value.'</option>'."\n";
-           }
-  }
+      if ( $selected != '' )
+      {
+         if ($_multiple)
+         {
+            $_y = FALSE;
+            $ar = explode(',', $selected);
+            foreach ($ar as $sss)
+            {
+               if ($key == $sss)
+               {
+                  $_y = TRUE;
+                  break;
+               }
+            }
+            if ($_y)
+               $a .= '<option value="'.$key.'" selected>'.$text_prefix.$value.'</option>'."\n";
+            else
+               $a .= '<option value="'.$key.'">'.$text_prefix.$value.'</option>'."\n";
+         } else {
+            /* not multiple */
+            if ($key == $selected)
+               $a .= '<option value="'.$key.'" selected>'.$text_prefix.$value.'</option>'."\n";
+            else
+               $a .= '<option value="'.$key.'">'.$text_prefix.$value.'</option>'."\n";
+         }
+      } else {  // not selected
+         $a .= '<option value="'.$key.'">'.$text_prefix.$value.'</option>'."\n";
+      }
+   }
 
-  $a .= '</select>'."\n";
-  return $a;
+   $a .= '</select>'."\n";
+   return $a;
 }
 
 
@@ -923,29 +984,29 @@ if ( isset($_SERVER['PHP_AUTH_USER']))
 {
    require_once($wwwdir . 'lib/utils-inet.php');
    if (!isset($_SERVER['REMOTE_USER']))
-   $_SERVER['REMOTE_USER'] = $_SERVER['PHP_AUTH_USER'];
+      $_SERVER['REMOTE_USER'] = $_SERVER['PHP_AUTH_USER'];
 
-$user_info = avreg_find_user(ip2long($_SERVER['REMOTE_ADDR']), -1, $_SERVER['PHP_AUTH_USER']);
-if ($user_info !== FALSE)
-   check_passwd($_SERVER['PHP_AUTH_PW'], $user_info['PASSWD']);
-else
-   DENY(null,403);
+   $user_info = avreg_find_user(ip2long($_SERVER['REMOTE_ADDR']), -1, $_SERVER['PHP_AUTH_USER']);
+   if ($user_info !== FALSE)
+      check_passwd($_SERVER['PHP_AUTH_PW'], $user_info['PASSWD']);
+   else
+      DENY(null,403);
 
-$login_user = $_SERVER['REMOTE_USER'];
-$user_status = $user_info['STATUS'];
-$login_user_name = $row['LONGNAME'];
-$login_host = &$remote_addr;
-$allow_cams = parse_dev_acl($user_info['ALLOW_CAMS']);
-if ( is_array($allow_cams) && count($allow_cams) > 0 )
-   $GCP_cams_list = @implode(',', $allow_cams);
-else
-   $GCP_cams_list = NULL;
-if ( $user_status <= $install_status ) $install_user = true;
-if ( $user_status <= $admin_status ) $admin_user = true;
-if ( $user_status <= $arch_status ) $arch_user = true;
-if ( $user_status <= $operator_status ) $operator_user = true;
+   $login_user = $_SERVER['REMOTE_USER'];
+   $user_status = $user_info['STATUS'];
+   $login_user_name = $row['LONGNAME'];
+   $login_host = &$remote_addr;
+   $allow_cams = parse_dev_acl($user_info['ALLOW_CAMS']);
+   if ( is_array($allow_cams) && count($allow_cams) > 0 )
+      $GCP_cams_list = @implode(',', $allow_cams);
+   else
+      $GCP_cams_list = NULL;
+   if ( $user_status <= $install_status ) $install_user = true;
+   if ( $user_status <= $admin_status ) $admin_user = true;
+   if ( $user_status <= $arch_status ) $arch_user = true;
+   if ( $user_status <= $operator_status ) $operator_user = true;
 } else {
-DENY(null,401);
+   DENY(null,401);
 }
 
 ?>
