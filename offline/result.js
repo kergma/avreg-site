@@ -48,7 +48,7 @@ function mark_row(theRowNum)
     if ( ftype == 23 )
            document.images[theRowNum].src = WwwPrefix+'/img/movie.on.gif';
     else if ( ftype == 32 )
-           document.images[theRowNum].src = WwwPrefix+'/img/audio.on.gif';
+           document.images[theRowNum].src = WwwPrefix+'/img/audio.gif';
     else if (ftype >= 15 || ftype <= 21)
          document.images[theRowNum].src = WwwPrefix+'/img/camera-red.gif';
     else 

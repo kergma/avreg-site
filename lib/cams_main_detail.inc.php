@@ -44,7 +44,7 @@ function print_cam_detail_row($conf, $cam_nr, $cam_detail, $columns = null)
 
       if ($cam_has_audio)
          printf('<img src="'.$conf['prefix'].'%s" alt="%s" width="20" height="22" border="0">' . "\n",
-            $cam_active ? '/img/audio.on.gif' : '/img/camera.gif',
+            $cam_active ? '/img/audio.gif' : '/img/audio-off.gif',
             $cam_active ? $GLOBALS['flags'][1] : $GLOBALS['flags'][0]
          );
       print '</td>';
