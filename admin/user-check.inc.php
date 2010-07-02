@@ -64,8 +64,13 @@ if ( !empty($u_devacl) &&
 } else $good++;
 
 trim($limit_fps);
-if ( !empty($limit_fps) && ( !settype($limit_fps,'int') || ( $limit_fps < 1 || $limit_fps > 30))) {
+if ( !empty($limit_fps) && !preg_match('/\A\d+(\s*[x:\/]\s*\d+)*\Z/', $limit_fps) ) {
    echo '<p class="HiLiteErr">' . sprintf ($fmtEmptyF, 'limit_fps') . '</p>' ."\n";
+} else $good++;
+
+trim($nonmotion_fps);
+if ( !empty($nonmotion_fps) && !preg_match('/\A\d+(\s*[x:\/]\s*\d+)*\Z/', $nonmotion_fps) ) {
+   echo '<p class="HiLiteErr">' . sprintf ($fmtEmptyF, 'nonmotion_fps') . '</p>' ."\n";
 } else $good++;
 
 trim($limit_kbps);
@@ -73,7 +78,7 @@ if ( !empty($limit_kbps) && ( !settype($limit_kbps,'int') || ($limit_kbps < 0 ||
    echo '<p class="HiLiteErr">' . sprintf ($fmtEmptyF, 'limit_kbps') . '</p>' ."\n";
 } else $good++;
 
-if ($good<9) {
+if ($good<10) {
    print '<p class="HiLiteErr">' . $strAddUserErr1 . '</p>' ."\n";
    print_go_back();
    require ('../foot.inc.php');
