@@ -35,16 +35,16 @@ function print_cam_detail_row($conf, $cam_nr, $cam_detail, $columns = null)
    if ( isset($_cols['ICONS']) && $_cols['ICONS'] ) {
       print '<td>';
       if ($cam_has_video)
-         printf('<img src="'.$conf['prefix'].'%s" alt="%s" width="22" height="22" border="0">' . "\n",
-            $cam_active ? '/img/camera-red.gif' : '/img/camera.gif',
+         printf('<img src="'.$conf['prefix'].'%s" title="video" alt="%s" width="35" height="32" border="0">' . "\n",
+            $cam_active ? '/img/cam_on_35x32.gif' : '/img/cam_off_35x32.gif',
             $cam_active ? $GLOBALS['flags'][1] : $GLOBALS['flags'][0]
          );
       else
-         print '<span style="margin-left: 22px"></span>' . "\n";
+         print '<span style="margin-left: 32px"></span>' . "\n";
 
       if ($cam_has_audio)
-         printf('<img src="'.$conf['prefix'].'%s" alt="%s" width="20" height="22" border="0">' . "\n",
-            $cam_active ? '/img/audio.gif' : '/img/audio-off.gif',
+         printf('<img src="'.$conf['prefix'].'%s" title="audio" alt="%s" width="32" height="32" border="0">' . "\n",
+            $cam_active ? '/img/mic_on_32x32.gif' : '/img/mic_off_32x32.gif',
             $cam_active ? $GLOBALS['flags'][1] : $GLOBALS['flags'][0]
          );
       print '</td>';

@@ -106,7 +106,7 @@ array(
     'name'=>'Захват',
     'desc'=>'Выбор типа устройства и настройка параметров аудио/видео захвата',
     'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
-    'mstatus'=> 2,
+    'mstatus'=> 1,
     'help_page'=> $conf['docs-prefix'].'apps-quick-conf.html'
     ),
  
@@ -115,7 +115,7 @@ array(
     'name'=>'ip-камеры',
     'desc'=>'Параметры доступа к сетевым IP-камерам и IP-видеосерверам',
     'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
-    'mstatus'=> 2,
+    'mstatus'=> 1,
     'help_page'=> $conf['docs-prefix'].'apps-ipcam-capture.html'
     ),
 
@@ -124,7 +124,7 @@ array(
 	 'name'=>'протокол &#171;http://&#187;',
     'desc'=>'захват по протоколу &#171;http://&#187;',
     'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
-    'mstatus'=> 2,
+    'mstatus'=> 1,
     'help_page'=> NULL
     ),
 
@@ -133,7 +133,7 @@ array(
     'name'=>'видео',
     'desc'=>'захват в форматах mjpeg или jpeg по &#171;http://&#187;',
     'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
-    'mstatus'=> 2,
+    'mstatus'=> 1,
     'help_page'=> NULL
     ),
 
@@ -142,7 +142,7 @@ array(
     'name'=>'аудио',
     'desc'=>'захват в форматах pcm,adpcm,G.72x или aac (Axis) по &#171;http://&#187;',
     'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
-    'mstatus'=> 2,
+    'mstatus'=> 1,
     'help_page'=> NULL
     ),
 
@@ -151,7 +151,7 @@ array(
     'name'=>'video4linux',
     'desc'=>'Настройки PCI-плат видеозахвата и USB-камер',
     'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
-    'mstatus'=> 2,
+    'mstatus'=> 1,
     'help_page'=> 'http://avreg.net/howto_linux-capture-cards.html'
     ),
 
@@ -178,7 +178,7 @@ array(
     'name'=>'наложение текста на кадр',
     'desc'=>'Текст, &#171;врезаемый&#187; в видеокадры',
     'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
-    'mstatus'=> 2,
+    'mstatus'=> 1,
     'help_page'=> NULL
     ),
  array(
@@ -186,7 +186,7 @@ array(
     'name'=>'контроль яркости',
     'desc'=>'Контроль средней яркости изображения (засветка, затемнение)',
     'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
-    'mstatus'=> 2,
+    'mstatus'=> 1,
     'help_page'=> NULL
     ),
  array(
@@ -194,7 +194,7 @@ array(
     'name'=>'детектор',
     'desc'=>'Настройка детектора движения',
     'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
-    'mstatus'=> 2,
+    'mstatus'=> 1,
     'help_page'=> NULL
     ),
 
@@ -232,7 +232,7 @@ array(
     'name'=>'видео',
     'desc'=>'Только видео (без аудио)',
     'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
-    'mstatus'=> 2,
+    'mstatus'=> 1,
     'help_page'=> NULL
     ),
 
@@ -241,7 +241,7 @@ array(
     'name'=>'аудио',
     'desc'=>'Только аудио (без видео)',
     'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
-    'mstatus'=> 2,
+    'mstatus'=> 1,
     'help_page'=> NULL
     ),
 
@@ -251,7 +251,7 @@ array(
     'name'=>'видео + аудио',
     'desc'=>'Совместно: видео + аудио',
     'flags'=> $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
-    'mstatus'=> 2,
+    'mstatus'=> 1,
     'help_page'=> NULL
     ),
 */
@@ -270,7 +270,7 @@ array(
     'name'=>'локальное',
     'desc'=>'Локальный просмотр на сервере с помощью программы monitor (avreg-mon)',
     'flags'=>$F_BASEPAR | $F_IN_CAM,
-    'mstatus'=> 2,
+    'mstatus'=> 1,
     'help_page'=> $conf['docs-prefix'].'work-monitor.html'
     ),
 
@@ -279,7 +279,7 @@ array(
     'name'=>'по сети',
     'desc'=>'Удаленный просмотр по сети (в интернет-браузере или &quot;вышестоящим&quot; видеосервером AVReg или другим DVR)',
     'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
-    'mstatus'=> 2,
+    'mstatus'=> 1,
     'help_page'=> NULL
     ), 
 
@@ -288,7 +288,7 @@ array(
     'name'=>'События',
     'desc'=>'Внешние обработчики событий',
     'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
-    'mstatus'=> 2,
+    'mstatus'=> 1,
     'help_page'=> 'http://avreg.net/manual_applications_avregd-event-collector.html'
     ),
 );
@@ -317,7 +317,7 @@ array(
   'flags'   => $F_RELOADED | $F_IN_CAM,
   'cats'    => '1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -329,7 +329,7 @@ array(
   'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_CAM,
   'cats'    => '3',
   'subcats' => '3.1;3.2',
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -340,7 +340,7 @@ array(
   'flags'   => $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3',
   'subcats' => '3.1;3.2',
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -376,7 +376,7 @@ array(
   'flags'   => $F_BASEPAR | $F_IN_DEF | $F_IN_CAM | $F_RELOADED,
   'cats'    => '3',
   'subcats' => '3.1;3.2',
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -389,7 +389,7 @@ array(
   'flags'   => $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3',
   'subcats' => '3.1;3.2',
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -400,7 +400,7 @@ array(
   'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3',
   'subcats' => '3.1;3.2',
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -411,7 +411,7 @@ array(
   'flags'   => $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3',
   'subcats' => '3.1;3.2',
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -422,7 +422,7 @@ array(
   'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3',
   'subcats' => '3.1;3.2',
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -435,7 +435,7 @@ array(
   'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3',
   'subcats' => '3.1;3.2',
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 /* настройки сетевых камер */
@@ -448,7 +448,7 @@ array(
   'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -460,7 +460,7 @@ array(
   'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -471,7 +471,7 @@ array(
   'flags'=>$F_BASEPAR | $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -482,7 +482,7 @@ array(
   'flags'=>$F_BASEPAR | $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -493,7 +493,7 @@ array(
   'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.1.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -504,7 +504,7 @@ array(
   'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.1.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -515,7 +515,7 @@ array(
   'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.1.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -526,7 +526,7 @@ array(
   'flags'=>$F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.1.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -537,7 +537,7 @@ array(
   'flags'=>$F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.1.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -548,7 +548,7 @@ array(
   'flags'=>$F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.1.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 
@@ -565,7 +565,7 @@ array(
   'flags'=>$F_BASEPAR | $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.1.1.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -576,7 +576,7 @@ array(
   'flags'=> $F_IN_CAM,
   'cats'    => '3.1.1.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -590,7 +590,7 @@ array(
   'flags'=>$F_BASEPAR | $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.1.1.2',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -609,7 +609,7 @@ array(
   'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.1.1.2',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -620,7 +620,7 @@ array(
   'flags'=>$F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.1.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -631,7 +631,7 @@ array(
   'flags'=>$F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.1.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 /*
@@ -645,7 +645,7 @@ array(
   'in_cam'  => 1,
   'cats'    => '3.1.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 */
 
@@ -659,7 +659,7 @@ array(
   'flags'   => $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.2',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -673,7 +673,7 @@ array(
   'flags'   => $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.2',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -684,7 +684,7 @@ array(
   'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.2',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -697,7 +697,7 @@ array(
   'flags'   => $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.2',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -708,7 +708,7 @@ array(
   'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.2',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -719,7 +719,7 @@ array(
   'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.2',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -730,7 +730,7 @@ array(
   'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.2',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -741,7 +741,7 @@ array(
   'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.2',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 
@@ -811,7 +811,7 @@ array(
   'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '5.1.2',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -824,7 +824,7 @@ array(
   'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '5.1.2',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -842,7 +842,7 @@ array(
   'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '5.1.2',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -858,7 +858,7 @@ array(
   'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_CAM,
   'cats'    => '5.1.3',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -885,7 +885,7 @@ array(
   'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '5.1.3',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -898,7 +898,7 @@ array(
   'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '5.1.3',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -911,7 +911,7 @@ array(
   'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '5.1.3',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -927,7 +927,7 @@ array(
   'flags'=>$F_IN_DEF | $F_IN_CAM,
   'cats'    => '5.1.3',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -938,7 +938,7 @@ array(
   'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '5.1.3',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -950,7 +950,7 @@ array(
   'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_CAM,
   'cats'    => '5.1.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -963,7 +963,7 @@ array(
   'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '5.1.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -980,7 +980,7 @@ array(
   'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '5.1.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -1022,7 +1022,7 @@ array(
   'flags'   => $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '11',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 
@@ -1035,7 +1035,7 @@ array(
   'flags'=>$F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '11.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -1056,7 +1056,7 @@ array(
   'flags'   => $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '11.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -1067,7 +1067,7 @@ array(
   'flags'   => $F_IN_DEF | $F_IN_CAM,
   'cats'    => '11.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -1078,7 +1078,7 @@ array(
   'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '11.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -1095,7 +1095,7 @@ array(
   'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '11.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -1108,7 +1108,7 @@ array(
   'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '11.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -1121,7 +1121,7 @@ array(
   'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '11.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -1136,7 +1136,7 @@ array(
   'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '11.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -1148,7 +1148,7 @@ array(
   'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '11.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -1159,7 +1159,7 @@ array(
   'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '11.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -1171,7 +1171,7 @@ array(
   'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '11.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -1184,7 +1184,7 @@ array(
   'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '11.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -1206,7 +1206,7 @@ array(
   'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '11.2',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 
@@ -1218,7 +1218,7 @@ array(
   'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '11.2',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -1229,7 +1229,7 @@ array(
   'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '11.2',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -1250,7 +1250,7 @@ array(
   'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '11',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 /*
@@ -1287,7 +1287,7 @@ array(
   'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_CAM,
   'cats'    => '15.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -1298,7 +1298,7 @@ array(
   'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '15.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -1309,7 +1309,7 @@ array(
   'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '15.1',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -1320,7 +1320,7 @@ array(
   'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '15.2',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 array(
@@ -1331,7 +1331,7 @@ array(
   'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '15.2',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 
@@ -1370,7 +1370,7 @@ array(
   'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '20',
   'subcats' => NULL,
-  'mstatus' => 2,
+  'mstatus' => 1,
 ),
 
 

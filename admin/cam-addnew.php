@@ -1,7 +1,7 @@
 <?php
 $lang_file = '_admin_cams.php';
 require ('../head.inc.php');
-DENY($admin_status);
+DENY($install_status);
 require ('../lib/my_conn.inc.php');
 
 ?>

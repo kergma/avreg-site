@@ -59,7 +59,7 @@ if ( $GCP_cams_nr > 0 )
          if ($wclist_show>0) {
             print "<tr>\n";
             // print '<td align="center" valign="center"><input type="checkbox" name="cams[]" value="'.$webcam_def.'">&nbsp;</td>' . "\n";
-         	print '<td align="center"><img src="'.$conf['prefix'].'/img/camera-red.gif" alt="'.$flags[1].'" width="22" height="22" border="0"></td>' . "\n";
+         	print '<td align="center"><img src="'.$conf['prefix'].'/img/cam_on_35x32.gif" alt="'.$flags[1].'" width="35" height="32" border="0"></td>' . "\n";
             print '<td align="center" valign="middle" nowrap><b>'.$__cam_nr . '</b></td>' . "\n";
             print '<td>'.$cam_name.' ('.$wc['geometry'].')</td>' . "\n";
             if ($wclist_show>1 && $admin_user)
@@ -71,7 +71,7 @@ if ( $GCP_cams_nr > 0 )
          if ($wclist_show>1 && $admin_user) {
             print "<tr>\n";
 				// print '<td align="center" valign="center"><input type="checkbox" disabled name="cams[]" value="'.$webcam_def.'">&nbsp;</td>' . "\n";
-				print '<td align="center"><img src="'.$conf['prefix'].'/img/camera.gif" alt="'.$flags[1].'" width="22" height="22" border="0"></td>' . "\n";
+				print '<td align="center"><img src="'.$conf['prefix'].'/img/cam_off_35x32.gif" alt="'.$flags[1].'" width="35" height="32" border="0"></td>' . "\n";
 				print '<td align="center" valign="middle" nowrap><b>'. $__cam_nr . '</b></td>' . "\n";
             print '<td>'. $cam_name .'</td>' . "\n";
             $off_reason = '';
