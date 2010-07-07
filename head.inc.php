@@ -4,6 +4,23 @@ ob_start();
 
 require_once('lib/config.inc.php');
 
+/* redirect from main page */
+if ( 0 === strpos($conf['prefix'].'/index.php', $PHP_SELF) ) {
+   $redir_page = NULL;
+   if ( $user_status >= $viewer_status /* config.inc.php */ )
+      $redir_page = '/online/index.php';
+   $https = (0 === strpos($_SERVER['SERVER_PROTOCOL'], 'HTTPS'));
+   if ( $redir_page ) {
+      header(sprintf('Location: %s://%s%s%s%s',
+         $https ? 'https' : 'http',
+         $_SERVER['SERVER_NAME'],
+         ($https || ($_SERVER['SERVER_PORT'] != 80)) ? (':'.$_SERVER['SERVER_PORT']) : '',
+         $conf['prefix'],
+         '/online/index.php'));
+      exit();
+   }
+}
+
 /**
  * Send http headers
  */

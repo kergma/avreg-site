@@ -244,11 +244,13 @@ $install_status = 1;
 $admin_status = 2;
 $arch_status = 3;
 $operator_status = 4;
+$viewer_status = 5;
 
 $install_user = FALSE;
 $admin_user = FALSE;
 $arch_user = FALSE;
 $operator_user = FALSE;
+$viewer_user = FALSE;
 
 $chset = 'UTF-8';
 $lang = 'russian';
@@ -1005,6 +1007,7 @@ if ( isset($_SERVER['PHP_AUTH_USER']))
    if ( $user_status <= $admin_status ) $admin_user = true;
    if ( $user_status <= $arch_status ) $arch_user = true;
    if ( $user_status <= $operator_status ) $operator_user = true;
+   if ( $user_status <= $viewer_status ) $viewer_user = true;
 } else {
    DENY(null,401);
 }

@@ -249,7 +249,7 @@ $strInvalidParams = 'Ошибка в параметрах.';
 
 $a_adminv = 'Настройки и управление';
 $a_webcam = 'Наблюдение в реальном времени';
-$a_archive = 'Архив&nbsp;::&nbsp;поиск событий и файлов';
+$a_archive = 'Архив&nbsp;::&nbsp;поиск';
 $a_archive_playlist = 'Архив&nbsp;::&nbsp;плейлист';
 
 
