@@ -58,14 +58,14 @@ print '<tr>'."\n";
 <?php
 print '<td align="center" valign="top">'."\n";
 // $href1 = sprintf('/online/index.php?sip=%s&named=%s', urlencode($sip), urlencode($named));
-print '<a href="'.$conf['prefix'].'/online/index.php" title="'.$a_webcam.'"><img src="'.$conf['prefix'].'/img/online.jpg" width="206" height="165" border="0"></a>'."\n";
+print '<a href="'.$conf['prefix'].'/online/index.php" title="'.$a_webcam.'"><img src="'.$conf['prefix'].'/img/online.jpg" width="251" height="165" border="0"></a>'."\n";
 print '<p><a href="'.$conf['prefix'].'/online/index.php">'.$a_webcam.'</a></p>'."\n";
 print '</td>'."\n";
 
 print '<td align="center" valign="top">'."\n";
 if ( $admin_user /* config.inc.php */ ) {
    $href3=sprintf($conf['prefix'].'/admin/index.php?sip=%s&amp;named=%s',$sip,$named);
-   print '<a href="'.$href3.'" title="'.$a_adminv.'"><img src="'.$conf['prefix'].'/img/admin.jpg" width="206" height="158" border="0"></a>'."\n";
+   print '<a href="'.$href3.'" title="'.$a_adminv.'"><img src="'.$conf['prefix'].'/img/admin.jpg" width="251" height="165" border="0"></a>'."\n";
    print '<p align="center"><a href="'.$href3.'">'.$a_adminv.'</a></p>'."\n";
 } else {
    print "&nbsp;\n";
@@ -81,7 +81,7 @@ if ( $arch_user /* config.inc.php */) {
    print '<p><a href="'.$conf['prefix'].'/offline/index.php">'.$a_archive.'</a></p>'."\n";
    print '</td>'."\n";
    print '<td align="center" valign="middle">'."\n";
-   print '<a href="'.$conf['prefix'].'/offline/playlist.php"><img src="'.$conf['prefix'].'/img/offline_playlist.jpg" width="251" height="159" border="0"></a>'."\n";
+   print '<a href="'.$conf['prefix'].'/offline/playlist.php"><img src="'.$conf['prefix'].'/img/offline_playlist.jpg" width="251" height="165" border="0"></a>'."\n";
    print '<p align="center"><a href="'.$conf['prefix'].'/offline/playlist.php">'.$a_archive_playlist.'</a></p>'."\n";
    print '</td>'."\n";
    print '</tr>'."\n";
