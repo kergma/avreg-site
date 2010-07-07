@@ -65,6 +65,7 @@ function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, 
    var cdiv = ie?
                  document.all['content']:
                  document.getElementById('content');
+
    var cams = ie?
                  window.parent.frames['query'].document.all['cams[]']:
                  window.parent.frames['query'].document.getElementById('cams[]');
@@ -116,13 +117,17 @@ function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, 
            var scale_factor = scale.options[scale.selectedIndex].text;
            var scaletext='';
            if (scale_factor.length > 0)
-              var scaletext = ' width="'+ scale_factor + '%" height="'+ scale_factor + '%"';
+              scaletext = ' width="'+ scale_factor + '%" height="'+ scale_factor + '%"';
+           else {
+              TOTEM_CONTROLS_HEIGHT = 28; // FIXME if no Totems
+              if ( cdiv.clientWidth >= s16_1 && cdiv.clientHeight >= ( s16_2 + TOTEM_CONTROLS_HEIGHT) )
+                 scaletext = ' width="' + s16_1 + '" height="' + ( s16_2 + TOTEM_CONTROLS_HEIGHT) + '"';
+           }
 
            g_player = ie?document.all['Player']:document.getElementById('Player');
            if (typeof(g_player) == 'undefined' || g_player == null /* always if clear_innerHTML(cdiv) before */) {
               cdiv.innerHTML = '<embed id="Player" src="'+link+'" ' +
-                   scaletext +
-                   '  onload="obj_loaded(this);">' +
+                   scaletext + '  onload="obj_loaded(this);">' +
                    ' <NOEMBED>ERROR: EMBED TAG IS NOT SUPPORTED<\/NOEMBED>';
            } else {
              alert('its impossible, Player obj ' + g_player);
