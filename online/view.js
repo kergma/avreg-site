@@ -308,31 +308,33 @@ function get_geo_str(JQ_elem) {
                 JQ_elem.width() + ' x ' + JQ_elem.height() + ' ]';
 }
 
-$(document).ready( function() {
+function try_fs() {
    var winX;
    var winY;
    if (MSIE) {
-     winX=window.screenLeft;
-     winY=window.screenTop;
+      winX=window.screenLeft;
+      winY=window.screenTop;
    } else { /* else if (GECKO) { */
-     winX=window.screenX;
-     winY=window.screenY;
+      winX=window.screenX;
+      winY=window.screenY;
    }
 
    if (GECKO) {
-     if (winX>0 || winY>0)
-       window.moveTo(-4,-4);
+      if (winX>0 || winY>0)
+         window.moveTo(-4,-4);
    } else {
-     if (winX!=0 || winY!=0)
-       window.moveTo(0,0);
+      if (winX!=0 || winY!=0)
+         window.moveTo(0,0);
    }
-
    if (GECKO)
    {
-     if (window.outerWidth < window.screen.availWidth)
-        window.resizeTo(window.screen.availWidth,window.screen.availHeight);
+      if (window.outerWidth < window.screen.availWidth)
+         window.resizeTo(window.screen.availWidth,window.screen.availHeight);
    } else
-     window.resizeTo(window.screen.availWidth,window.screen.availHeight);
+      window.resizeTo(window.screen.availWidth,window.screen.availHeight);
+}
+
+$(document).ready( function() {
 
    if (ie||ns6) {
      tipobj=document.all? 
@@ -341,6 +343,8 @@ $(document).ready( function() {
      if (GECKO)
         document.onmousemove=positiontip;
    }
+
+   // try_fs();
 
    // calc and set  CANVAS width & height
    CANVAS = $('#canvas');
