@@ -982,6 +982,25 @@ function check_passwd($saved_pw, $pw)
       DENY(null,401);
 }
 
+if ( !empty($logout) ) {
+   print_syslog(LOG_CRIT, '_COOKIE[avreg_logout]: [' . $_COOKIE['avreg_logout'] . ']');
+   if ( isset($_COOKIE) && empty($_COOKIE['avreg_logout']) ) {
+      // ob_start();
+      header('WWW-Authenticate: Basic realm="AVReg server"', true, 401);
+      setcookie('avreg_logout', 1 ); // FIXME google не воспринимает
+   } else {
+      $https = (0 === strpos($_SERVER['SERVER_PROTOCOL'], 'HTTPS'));
+      header(sprintf('Location: %s://%s%s%s%s',
+         !empty($_SERVER['SSL_PROTO']) ? 'https' : 'http',
+         $_SERVER['SERVER_NAME'],
+         (!empty($_SERVER['SSL_PROTO']) || ($_SERVER['SERVER_PORT'] != 80)) ? (':'.$_SERVER['SERVER_PORT']) : '',
+         $conf['prefix'],
+         '/index.php'));
+      setcookie('avreg_logout', 0 );
+   }
+   exit();
+}
+
 if ( isset($_SERVER['PHP_AUTH_USER']))
 {
    require_once($wwwdir . 'lib/utils-inet.php');
@@ -1003,11 +1022,11 @@ if ( isset($_SERVER['PHP_AUTH_USER']))
       $GCP_cams_list = @implode(',', $allow_cams);
    else
       $GCP_cams_list = NULL;
-   if ( $user_status <= $install_status ) $install_user = true;
-   if ( $user_status <= $admin_status ) $admin_user = true;
-   if ( $user_status <= $arch_status ) $arch_user = true;
+   if ( $user_status <= $install_status )  $install_user = true;
+   if ( $user_status <= $admin_status )    $admin_user = true;
+   if ( $user_status <= $arch_status )     $arch_user = true;
    if ( $user_status <= $operator_status ) $operator_user = true;
-   if ( $user_status <= $viewer_status ) $viewer_user = true;
+   if ( $user_status <= $viewer_status )   $viewer_user = true;
 } else {
    DENY(null,401);
 }

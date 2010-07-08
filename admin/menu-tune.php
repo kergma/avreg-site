@@ -4,7 +4,7 @@ $MENU=1;
 $BaseTarget='content';
 require('../head.inc.php');
 print '<div align="center"><a href="'.$conf['prefix'].'/" target="_parent">'.$MainPage.'</a></div>'."\n";
-print '<br /><div>'. $strYou .': '.$login_user . '@' . $_SERVER['REMOTE_ADDR']. '</div>'."\n";
+print "<br /><div>$strYou: <a href='../index.php?logout=1' target='_top' title='$strLogout'>$login_user@$remote_addr</a></div>\n";
 // print '<div align="center">'.$tune_logo.'</div>'."\n";
 print '<hr noshade>'."\n";
 

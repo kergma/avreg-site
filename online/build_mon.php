@@ -14,7 +14,8 @@ if ( isset ($wclist_show) ) {
    $wclist_show = 1;
 }
 require ('../head.inc.php');
-print '<div align="center"><b><a href="'.$conf['prefix'].'/" target="_parent">'.$MainPage.'</a></b></div>'."\n";
+if ( $user_status < $operator_status )
+   print '<div align="center"><b><a href="'.$conf['prefix'].'/" target="_parent">'.$MainPage.'</a></b></div>'."\n";
 require ('./active_wc.inc.php');
 if ($tot_wc_nr===0) {
   require ('../foot.inc.php');

@@ -5,18 +5,18 @@ ob_start();
 require_once('lib/config.inc.php');
 
 /* redirect from main page */
-if ( 0 === strpos($conf['prefix'].'/index.php', $PHP_SELF) ) {
+if ( !empty($check_redirect) ) {
    $redir_page = NULL;
-   if ( $user_status >= $viewer_status /* config.inc.php */ )
+   if ( $user_status >= $operator_status /* config.inc.php */ )
       $redir_page = '/online/index.php';
-   $https = (0 === strpos($_SERVER['SERVER_PROTOCOL'], 'HTTPS'));
    if ( $redir_page ) {
       header(sprintf('Location: %s://%s%s%s%s',
-         $https ? 'https' : 'http',
+         !empty($_SERVER['SSL_PROTO']) ? 'https' : 'http',
          $_SERVER['SERVER_NAME'],
-         ($https || ($_SERVER['SERVER_PORT'] != 80)) ? (':'.$_SERVER['SERVER_PORT']) : '',
+         (!empty($_SERVER['SSL_PROTO']) || ($_SERVER['SERVER_PORT'] != 80)) ? (':'.$_SERVER['SERVER_PORT']) : '',
          $conf['prefix'],
          '/online/index.php'));
+      ob_end_flush();
       exit();
    }
 }

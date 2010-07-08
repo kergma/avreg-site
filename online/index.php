@@ -1,30 +1,17 @@
 <?php
-$pageTitle = 'WebCam';
+$pageTitle = 'strWcMons';
 $lang_file='_online.php';
 
-if ( isset($_POST) && isset($_POST['wclist_show']) )
-   $wclist_show = $_POST['wclist_show'];
-if ( isset ($wclist_show) ) {
-   settype($wclist_show, 'int');
-   setcookie('avreg_wclist_show',  $wclist_show, time()+5184000);
-} else if ( isset($_COOKIE['avreg_wclist_show']) ) {
-   $wclist_show = (Integer)$_COOKIE['avreg_wclist_show'];
-} else {
-   $wclist_show = 1;
-}
-
 require ('../head.inc.php');
-
-print '<div align="center"><b><a href="'.$conf['prefix'].'/" target="_parent">'.$MainPage.'</a></b></div>'."\n";
-require ('./active_wc.inc.php');
-if ($tot_wc_nr===0) {
-  require ('../foot.inc.php');
-  die();
-}
+print '<div align="center">';
+if ( $user_status < $operator_status )
+   print '<b><a href="'.$conf['prefix'].'/" target="_parent">'.$MainPage.'</a>&nbsp;&nbsp;::&nbsp;&nbsp;</b>';
+print "$strYou: <a href='../index.php?logout=1' title='$strLogout'>$login_user@$remote_addr</a>";
+print "</div>\n";
 require ('../admin/mon-type.inc.php');
 
 print '<div align="center">'. "\n";
-echo '<h4 align="center">'.$strWcMons.'</h4>' ."\n";
+echo '<h2 align="center">'.$strWcMons2.'</h3>' ."\n";
 
 $wins = range(1, 25);
 $lm = count($layouts_defs);
@@ -52,6 +39,7 @@ for ($r=0; $r<$mr; $r++) {
 print '</table>'."\n";
 print '</div>'."\n";
 /* choice number cam */
-print '<br><br><div align="center"><b><a href="'.$conf['prefix'].'/" target="_parent">'.$MainPage.'</a></b></div>'."\n";
+if ( $user_status < $operator_status )
+   print '<br><div align="center"><b><a href="'.$conf['prefix'].'/" target="_parent">'.$MainPage.'</a></b></div>'."\n";
 require ('../foot.inc.php');
 ?>
