@@ -556,12 +556,16 @@ array(
   'name'    => 'V.http_get',
   'type'    => $STRING200_VAL,
   'def_val' => NULL,
-  'desc'    => '<b>Строка запроса GET</b> протокола HTTP на получение потокового видео MJPEG (live) или одиночного кадра JPEG (snapshot).<br><br>Например для Axis:<br />'.
-'mjpg: &quot;<b>/axis-cgi/mjpg/video.cgi?resolution=640x480&amp;color=1&amp;fps=5</b>&quot;'.
-'<br />'.
-'jpeg: &quot;<b>/axis-cgi/jpg/image.cgi?resolution=320x240&amp;camera=1&amp;compression=25</b>&quot;'.
-'<br /><br />Не знаете запрос для вашей камеры - читайте <a href="'.$conf['docs-prefix'].'apps-ipcam-capture.html" target="_blank">здесь &gt;&gt;</a>'.
-'<br /><br />По умолчанию: <b>&quot;не установлено&quot; - не захватывать видео</b>',
+  'desc'    => '<b>Строка запроса GET</b> протокола HTTP на получение потокового видео MJPEG (live) или одиночного кадра JPEG (snapshot).<br><br>Например для Axis:<br />
+mjpg: <b>/axis-cgi/mjpg/video.cgi?resolution=640x480&amp;color=1&amp;fps=5</b>
+<br />
+jpeg: <b>/axis-cgi/jpg/image.cgi?resolution=320x240&amp;camera=1&amp;compression=25</b>
+<br><br>для удалённого AVReg:<br />
+mjpg: <b>/avreg-cgi/mjpg/video.cgi?camera=5&fps=5</b>
+<br />
+jpeg: <b>/avreg-cgi/jpg/image.cgi?camera=1</b>
+<br /><br />Не знаете запрос для вашей камеры - читайте <a href="'.$conf['docs-prefix'].'apps-ipcam-capture.html" target="_blank">здесь &gt;&gt;</a>
+<br /><br />По умолчанию: <b>&quot;не установлено&quot; - не захватывать видео</b>',
   'flags'=>$F_BASEPAR | $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
   'cats'    => '3.1.1.1',
   'subcats' => NULL,
