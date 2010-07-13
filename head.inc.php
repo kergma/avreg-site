@@ -64,13 +64,12 @@ if ( isset($USE_JQUERY) ) {
 if ( isset($link_javascripts) && is_array($link_javascripts))
    foreach ($link_javascripts as &$__js_link)
       print '<script type="text/javascript" src="'.$conf['prefix'].'/'.$__js_link.'"></script>'."\n";
-ob_end_flush();
 ?>
-<script type="text/javascript" language="JavaScript1.2">
+   <script type="text/javascript" language="JavaScript1.2">
 <!--
 <?php 
 printf("var StorageDir = '%s';\n", addcslashes($conf['storage-dir'], '\'"/\\'));
-printf("var WwwPrefix = '%s';\n", addcslashes($conf['prefix'], '\'"/\\'));
+printf("var WwwPrefix  = '%s';\n", addcslashes($conf['prefix'], '\'"/\\'));
 printf("var MediaAlias = '%s';\n", addcslashes($conf['media-alias'], '\'"/\\'));
 ?>
 var MSIE=false; // FIXME double calc with php
@@ -262,6 +261,7 @@ if (!isset($NOBODY))
       $_onload = 'onunload="JavaScript:'.$body_onunload.'"';
  */ 
    print sprintf('<body style="%s" %s %s>',$body_style, $_onload, $body_addons)."\n";
+   @include($conf['customize-dir'] . preg_replace('%^/[^/]+(/.+)\.php%', '\1_header.inc.php', $_SERVER['SCRIPT_NAME']));
 }
 ?>
 <noscript>
@@ -271,3 +271,7 @@ if (!isset($NOBODY))
 </noscript>
 <div id="tooltip"></div>
 
+<?php
+  // чтобы из включений customize/PAGE_header.inc.php можно было другой http-ответ послать, например redirect
+  while (@ob_end_flush());
+?>

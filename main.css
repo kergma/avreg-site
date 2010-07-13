@@ -253,7 +253,7 @@ div.error {
 
 .win {
    position:absolute;
-   /* background-color:#e5e5e5; */
+   background-color:#e5e5e5;
    margin:0;
    padding:0;
    z-index:3;

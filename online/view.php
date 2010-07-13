@@ -63,55 +63,20 @@ var_dump($cams);
 var_dump($camnames);
 print '</pre>'."\n";
 die();
- */
-?>
 
 <div id="toolbar" style="position:absolute; height:25px; width:100%; margin:0; padding:0; background-color:#003366; overflow:hidden; color:#E0E0E0;" >
-<table width="100%" cellspacing="0" border="0" cellpadding="0">
-<tr style="height: 25px; overflow: hidden;">
-<td width="150px">
-<a href="<?echo $conf['prefix']; ?>/online/index.php" title='Назад, к выбору камер.'>
-<img src="<?echo $conf['prefix']; ?>/img/dvrlogo-134x25.png" width="134" height="25" border="0">
-</a>
-</td>
-<td width="90%" style="color: #E0E0E0; text-align: right; height: 25px; overflow: hidden;">
-<script type="text/javascript">br_spec_out();</script>
-&nbsp;&nbsp;Нет изображений с камер?
-</td>
-<td style="color: #E0E0E0; text-align: right;" nowrap="true">
-&nbsp;Читаем&nbsp;
-<a title="HELP" class="jqModal" href="#" style="cursor: pointer; color:#FFA500; font-weight:bold;">справку!</a>&nbsp;
-</td>
-</tr>
-</table>
+
+<div id="canvas"
+     style="position:absolute; top:25px; background-color:#000; width:100%; height:0px; overflow:hidden; margin:0; padding:0;
+           -ms-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; -webkit-box-sizing: border-box;">
 </div>
-<div id="canvas" style="position:absolute; -ms-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; -webkit-box-sizing: border-box; top:25px; background-color:#000; width:100%; height:0px; overflow:hidden; margin:0; padding:0;"></div>
-<div class="jqmWindow" id="dialog">
-<div style="text-align: right;">
-<span class="jqmClose" style="text-align: center; border: 1px solid #000; font-weight: bold; padding: 5px;"><a href="#">X</a></span>
+ */
+?>
+<div id="canvas"
+     style="position:relative; background-color:#000000; width:100%; height:0px; margin:0; padding:0;
+           -ms-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; -webkit-box-sizing: border-box;">
 </div>
-<hr>
-<p>Если вы <b>не видите изображения от видеокамер</b>,</br>то возможно:</p>
-<ul>
-<li>нет или остановлен видеозахват с этой камеры (попросите администратора проверить лог-файлы);</li>
-<li>демон avregd не работает;</li>
-<li>другие пользователи сейчас смотрят камеры и сработало ограничение по количеству одновременных просмотров (параметр wc_limit);</li>
-<li>в другом окне браузера на вашем компьютере уже запущен просмотр камер;</li>
-<li>камера не настроена должным образом для просмотра по сети;</li>
-<li>вам не разрешено смотреть эту(и) камеру(ы);</li>
-<li>проблемы в настройках интернет-браузера:
-<ul>
-<li>Firefox: в настройках браузера отключена опция &quot;загружать изображения&quot;.</li>
-<li>Internet Explorer: настройки браузера не позволяют загружать и выполнять компоненты ActiveX. Cпросите у вашего системного администратора или у нас.;</li>
-<li>вы НЕ пользуетесь браузерами Microsoft Internet Explorer или Mozilla Firefox.</li>
-</ul>
-<li>настройки сетевого экрана firewall на вашем компьютере блокируют запросы к камерам;</li>
-<li><i>возможно просто нужно перезапустить браузер или обновить страницу;</i></li>
-<li>ещё какая-нибудь причина которую мы пока не знаем :-)</li>
-</ul>
-<hr>
-<div style="text-align: right;"><a href="#" class="jqmClose" >Закрыть</a></div>
-</div>
+
 <?php
 if ( !empty($msie_addons_scripts) || is_array($msie_addons_scripts) )  {
     foreach ($msie_addons_scripts as $value)
