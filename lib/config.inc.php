@@ -4,19 +4,6 @@ $PrNameEng = 'AVReg';
 require ('/etc/avreg/site-defaults.php');
 $wwwdir = $conf['site-dir'] . '/';
 
-if ($conf['debug']) {
-   ini_set ('display_errors', '0' );
-   ini_set ('log_errors', '1');
-   ini_set ('html_errors', '0');
-   error_reporting(E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_CORE_WARNING | 
-      E_COMPILE_ERROR | E_COMPILE_WARNING | E_USER_ERROR | E_USER_WARNING | 
-      E_USER_NOTICE);
-/*
-error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE | E_CORE_ERROR | E_CORE_WARNING | 
-               E_COMPILE_ERROR | E_COMPILE_WARNING | E_USER_ERROR | E_USER_WARNING |
-               E_USER_NOTICE | E_STRICT | E_RECOVERABLE_ERRROR );
- */
-}
 
 /*
 if (empty($conf['prefix']))
@@ -119,7 +106,7 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
             continue;
 
       // нашли параметр
-      // echo ("file $path:$linenr => $param = \"$value\"\n");
+      // printf('file %s:%d : %s => %s (%s)<br>', $path, $linenr, $param, $value, gettype(@$_conf[$param]));
       if ( 0 === strcasecmp($param, 'include') ) {
          // вложенный файл 
          $res = confparse($_conf, $section, $value);
@@ -187,6 +174,14 @@ if ( preg_match('@^/([^/]+).*@', $_SERVER['REQUEST_URI'], $matches) ) {
          $conf['daemon-name'] .= '-'.$AVREG_PROFILE;
       }
    }
+}
+if ($conf['debug']) {
+   ini_set ('display_errors', '1' );
+   ini_set ('log_errors', '1');
+   ini_set ('html_errors', '1');
+   error_reporting(E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_CORE_WARNING | 
+      E_COMPILE_ERROR | E_COMPILE_WARNING | E_USER_ERROR | E_USER_WARNING | 
+      E_USER_NOTICE);
 }
 
 function load_profiles_cams_confs($application='avreg-site')
