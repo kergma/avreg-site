@@ -18,8 +18,8 @@ if ( $user_status < $operator_status )
    print '<div align="center"><b><a href="'.$conf['prefix'].'/" target="_parent">'.$MainPage.'</a></b></div>'."\n";
 require ('./active_wc.inc.php');
 if ($tot_wc_nr===0) {
-  require ('../foot.inc.php');
-  die();
+   require ('../foot.inc.php');
+   die();
 }
 
 require ('../admin/mon-type.inc.php');
@@ -35,22 +35,22 @@ print '<form id="buildform" action="view.php" method="POST" onSubmit="return val
 $ccams=$mon_type.'_cams';
 if ( isset($_COOKIE['avreg_'.$ccams]) && is_array($_COOKIE['avreg_'.$ccams]) )
 {
-  $aaa = array();
-  for ($i=0;$i<$wins_nr;$i++)
-  {
-    if (isset($_COOKIE['avreg_'.$ccams][$i])) 
-       $a = $_COOKIE['avreg_'.$ccams][$i];
-    else
-       $a='';
-    $aaa[$i] = getSelectByAssocAr('cams[]',$act_wc_nr_ar, FALSE , 1, 1, $a, TRUE, 'sel_change(this);', null, null, true);
-  }
-  layout2table ($mon_type, 400, $aaa);
+   $aaa = array();
+   for ($i=0;$i<$wins_nr;$i++)
+   {
+      if (isset($_COOKIE['avreg_'.$ccams][$i])) 
+         $a = $_COOKIE['avreg_'.$ccams][$i];
+      else
+         $a='';
+      $aaa[$i] = getSelectByAssocAr('cams[]',$act_wc_nr_ar, FALSE , 1, 1, $a, TRUE, 'sel_change(this);', null, null, true);
+   }
+   layout2table ($mon_type, 400, $aaa);
 } else {
-	$a=getSelectByAssocAr('cams[]',$act_wc_nr_ar, FALSE , 1, 1, '', TRUE, 'sel_change(this);', null, null, true);
+   $a=getSelectByAssocAr('cams[]',$act_wc_nr_ar, FALSE , 1, 1, '', TRUE, 'sel_change(this);', null, null, true);
    layout2table ($mon_type, 400, NULL, $a);
 }
 for ($i = 0; $i < $wins_nr; $i++)
-  print '<input type="hidden" name="camnames[]" value="" />'."\n";
+   print '<input type="hidden" name="camnames[]" value="" />'."\n";
 
 print '<br /><table border="0" cellpadding="4">'."\n";
 
@@ -64,7 +64,7 @@ print '<td align="left">'.getSelectByAssocAr('AspectRatio', $AspectRatioArray, f
 
 $cpn=$mon_type.'_PrintCamNames';
 if (isset($_COOKIE['avreg_'.$cpn]) && $_COOKIE['avreg_'.$cpn] != 0 )
-    $PrintCamNames = 'checked';
+   $PrintCamNames = 'checked';
 else
    $PrintCamNames = '';
 print '<tr><td align="right">'.$strPrintCamNames.":</td>\n";

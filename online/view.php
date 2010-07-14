@@ -1,7 +1,7 @@
 <?php
 
 if (!isset($_POST) || !isset($_POST['mon_type']) || !isset($_POST['cams']) || !is_array($_POST['cams']))
-  die('you need start from /online/index.php');
+   die('you need start from /online/index.php');
 
 $ccnt=count($_POST['cams']);
 $ccnr_a=0;
@@ -40,8 +40,8 @@ if (isset($_POST['AspectRatio']))
    setcookie($car,  $_POST['AspectRatio'], $expired,$ca);
 
 for ($i=0;$i<$wins_nr;$i++) 
-  if (isset($_POST['cams'][$i]))
-     setcookie('avreg_' . $mon_type.'_cams['.$i.']',$_POST['cams'][$i],$expired,$ca);
+   if (isset($_POST['cams'][$i]))
+      setcookie('avreg_' . $mon_type.'_cams['.$i.']',$_POST['cams'][$i],$expired,$ca);
 
 
 $pageTitle = 'WebCam';
@@ -79,8 +79,8 @@ die();
 
 <?php
 if ( !empty($msie_addons_scripts) || is_array($msie_addons_scripts) )  {
-    foreach ($msie_addons_scripts as $value)
-        print "$value\n";
+   foreach ($msie_addons_scripts as $value)
+      print "$value\n";
 }
 
 require ('../foot.inc.php');

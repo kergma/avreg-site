@@ -1,7 +1,7 @@
 function img_mouseover(eimg, win_nr) {
    if ( WINS_DEF[win_nr] == undefined )
       return;
-   
+
    var img_jq = $('img',eimg);
 
    var cam_nr = WINS_DEF[win_nr].cam.nr;
@@ -9,26 +9,26 @@ function img_mouseover(eimg, win_nr) {
    var orig_h = WINS_DEF[win_nr].cam.orig_h;
    var url = WINS_DEF[win_nr].cam.url;
 
- hint = '<table style="font-weight:bold;" cellspacing="0" border="0" cellpadding="1"><tbody><tr>\n' +
- '<td align="right">Камера:<\/td>\n' +
- '<td>#'+cam_nr+' ' +  WINS_DEF[win_nr].cam.name + '<\/td>\n' +
- '<\/tr><tr>\n' +
- '<td align="right">URL:<\/td>\n' +
- '<td>'+url+'<\/td>\n' +
- '<\/tr><tr>\n' +
- '<td align="right">Размер:<\/td>\n' +
- '<td>'+orig_w+'x'+orig_h+' (исходный), ' + img_jq.width()+'x'+img_jq.height()+' (на экране)<\/td>\n' +
-/*  
- '<\/tr><tr>\n' +
- '<td align="right">CANVAS:<\/td>\n' +
- '<td>'+CANVAS_W+'x'+CANVAS_H+'<\/td>\n' +
- '<\/tr><tr>\n' +
- '<td align="right">win div:<\/td>\n' +
- '<td>'+div.offsetTop+','+div.offsetLeft+ '  cl=' +div.clientWidth+'x'+div.clientHeight+'  Off='+
- div.offsetWidth+'x'+div.offsetHeight+'  Scr='+
- div.scrollWidth+'x'+div.scrollHeight+'  wh='+div.style.width+' x '+div.style.height+'<\/td>\n' +
-*/
- '<\/tr><\/tbody><\/table>\n';
+   hint = '<table style="font-weight:bold;" cellspacing="0" border="0" cellpadding="1"><tbody><tr>\n' +
+      '<td align="right">Камера:<\/td>\n' +
+      '<td>#'+cam_nr+' ' +  WINS_DEF[win_nr].cam.name + '<\/td>\n' +
+      '<\/tr><tr>\n' +
+      '<td align="right">URL:<\/td>\n' +
+      '<td>'+url+'<\/td>\n' +
+      '<\/tr><tr>\n' +
+      '<td align="right">Размер:<\/td>\n' +
+      '<td>'+orig_w+'x'+orig_h+' (исходный), ' + img_jq.width()+'x'+img_jq.height()+' (на экране)<\/td>\n' +
+      /*  
+          '<\/tr><tr>\n' +
+          '<td align="right">CANVAS:<\/td>\n' +
+          '<td>'+CANVAS_W+'x'+CANVAS_H+'<\/td>\n' +
+          '<\/tr><tr>\n' +
+          '<td align="right">win div:<\/td>\n' +
+          '<td>'+div.offsetTop+','+div.offsetLeft+ '  cl=' +div.clientWidth+'x'+div.clientHeight+'  Off='+
+          div.offsetWidth+'x'+div.offsetHeight+'  Scr='+
+          div.scrollWidth+'x'+div.scrollHeight+'  wh='+div.style.width+' x '+div.style.height+'<\/td>\n' +
+          */
+      '<\/tr><\/tbody><\/table>\n';
 
    ddrivetip();
 }
@@ -41,7 +41,7 @@ function img_click(clicked_div) {
    var i;
    if ( FS_WIN_DIV ) {
       // current - fullscreen
-     
+
       if ( WIN_DIV_W == undefined ) {
          /* в момент FS было изменение CANVAS */
          change_wins_geo();
@@ -57,19 +57,19 @@ function img_click(clicked_div) {
       }
 
       for (i=0;i<WIN_DIVS.length;i++) {
-        tmp_div=WIN_DIVS[i];
-        if ( tmp_div == clicked_div )
-           continue;
-        tmp_div.style.visibility='visible';
+         tmp_div=WIN_DIVS[i];
+         if ( tmp_div == clicked_div )
+            continue;
+         tmp_div.style.visibility='visible';
       }
       FS_WIN_DIV = undefined;
    } else {
       // current - NO fullscreen
       for (i=0;i<WIN_DIVS.length;i++) {
-        tmp_div=WIN_DIVS[i];
-        if ( tmp_div == clicked_div )
-           continue;
-        tmp_div.style.visibility='hidden';
+         tmp_div=WIN_DIVS[i];
+         if ( tmp_div == clicked_div )
+            continue;
+         tmp_div.style.visibility='hidden';
       }
 
       WIN_DIV_H = clicked_div.clientHeight;
@@ -79,7 +79,7 @@ function img_click(clicked_div) {
       IMG_IN_DIV_W=img_jq.width();
       IMG_IN_DIV_H=img_jq.height();
 
-  
+
       win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, 1, 1, 1);
 
       clicked_div_jq.css('top',  calc_win_top (win_geo, 0));
@@ -89,8 +89,8 @@ function img_click(clicked_div) {
       $('img',clicked_div_jq).width(win_geo.cam_w).height(win_geo.cam_h)
          // .attr('alt',win_geo.cam_w + 'x' + win_geo.cam_h);
 
-      clicked_div.style.visibility='visible';
- 
+         clicked_div.style.visibility='visible';
+
       FS_WIN_DIV = clicked_div;
    }
 } // img_click()
@@ -128,10 +128,10 @@ function brout(win_nr, win_div, win_geo) {
       amc.MediaURL = url+'&ab='+___abenc;
       amc.AutoStart = true;
    } else {
-       // $('<img src="/640x480r.png" id="'+id+'" name="cam" alt="' +alt+'" '+
+      // $('<img src="/640x480r.png" id="'+id+'" name="cam" alt="' +alt+'" '+
       $('<img src="'+url+'&ab='+___abenc+'" id="'+id+'" name="cam" alt="' +alt+'" '+
-      'width="'+orig_w+'px" height="'+orig_h+'px" ' +
-      'align="middle" border="0px" />').appendTo(win_div).width(win_geo.cam_w).height(win_geo.cam_h);
+            'width="'+orig_w+'px" height="'+orig_h+'px" ' +
+            'align="middle" border="0px" />').appendTo(win_div).width(win_geo.cam_w).height(win_geo.cam_h);
       win_div.click( function() { img_click(this); } ); 
       win_div.mouseover( function() { img_mouseover(this, win_nr);} );
       win_div.mouseout( function() { hideddrivetip(); } ); 
@@ -139,12 +139,12 @@ function brout(win_nr, win_div, win_geo) {
 }
 
 function br_spec_out() {
-  if (GECKO)
-    document.write('Одинарный клик мышью - камеру на весь экран. &nbsp;F11 - полноэкранный режим.');
-  else if (MSIE)
-    document.write('Мышь: одинарный клик левой - камеру на весь экран, клик правой - контекст. меню. &nbsp;F11 - полноэкранный режим.');
-  else
-    document.write('Необходимо использовать браузеры: MS Internet Explorer или Firefox.');
+   if (GECKO)
+      document.write('Одинарный клик мышью - камеру на весь экран. &nbsp;F11 - полноэкранный режим.');
+   else if (MSIE)
+      document.write('Мышь: одинарный клик левой - камеру на весь экран, клик правой - контекст. меню. &nbsp;F11 - полноэкранный режим.');
+   else
+      document.write('Необходимо использовать браузеры: MS Internet Explorer или Firefox.');
 }
 
 /* global variables */
@@ -162,50 +162,50 @@ var WIN_DIV_H;
 var IMG_IN_DIV_W;
 var IMG_IN_DIV_H;
 var FS_WIN_DIV;
-   
+
 var NAME_DIV_H = PrintCamNames?20:0;
 
 
 // XXX need ie box model 
 function calc_win_geo(_canvas_w, _canvas_h, img_aspect_ratio, _rows_nr, _cols_nr, _rowspan) {
-  var cam_w;
-  var cam_h;
+   var cam_w;
+   var cam_h;
 
-  if (_rowspan == undefined)
-     _rowspan = 1;
+   if (_rowspan == undefined)
+      _rowspan = 1;
 
-  if ( img_aspect_ratio == undefined || 
-       img_aspect_ratio == 'fs' ) {
-     /* соотношение сторон видеоизображения нас не волнует,
-        растягиваем окна камер и сами изображения по всему CANVAS */
-     cam_w = parseInt(_canvas_w/_cols_nr) - BorderLeft - BorderRight;
-     cam_h = parseInt(_canvas_h/_rows_nr) - NAME_DIV_H*_rowspan - BorderTop - BorderBottom;
-  } else {
-     // create wins
-     var calc_canvas_h = _canvas_h - ((NAME_DIV_H*_rowspan + BorderTop + BorderBottom) * _rows_nr);
-  
-     if ( (_canvas_w/calc_canvas_h) >= 
-        (img_aspect_ratio.num*_cols_nr)/(img_aspect_ratio.den*_rows_nr) ) {
-        cam_h = parseInt(calc_canvas_h/_rows_nr);
-        cam_h = parseInt(cam_h/img_aspect_ratio.den);
-        cam_w = cam_h*img_aspect_ratio.num;
-        cam_h *= img_aspect_ratio.den;
+   if ( img_aspect_ratio == undefined || 
+         img_aspect_ratio == 'fs' ) {
+      /* соотношение сторон видеоизображения нас не волнует,
+         растягиваем окна камер и сами изображения по всему CANVAS */
+      cam_w = parseInt(_canvas_w/_cols_nr) - BorderLeft - BorderRight;
+      cam_h = parseInt(_canvas_h/_rows_nr) - NAME_DIV_H*_rowspan - BorderTop - BorderBottom;
+   } else {
+      // create wins
+      var calc_canvas_h = _canvas_h - ((NAME_DIV_H*_rowspan + BorderTop + BorderBottom) * _rows_nr);
+
+      if ( (_canvas_w/calc_canvas_h) >= 
+            (img_aspect_ratio.num*_cols_nr)/(img_aspect_ratio.den*_rows_nr) ) {
+         cam_h = parseInt(calc_canvas_h/_rows_nr);
+         cam_h = parseInt(cam_h/img_aspect_ratio.den);
+         cam_w = cam_h*img_aspect_ratio.num;
+         cam_h *= img_aspect_ratio.den;
       } else {
-        cam_w = parseInt(_canvas_w/_cols_nr - BorderLeft - BorderRight);
-        cam_w = parseInt(cam_w/img_aspect_ratio.num);
-        cam_h = cam_w*img_aspect_ratio.den;
-        cam_w *= img_aspect_ratio.num;
+         cam_w = parseInt(_canvas_w/_cols_nr - BorderLeft - BorderRight);
+         cam_w = parseInt(cam_w/img_aspect_ratio.num);
+         cam_h = cam_w*img_aspect_ratio.den;
+         cam_w *= img_aspect_ratio.num;
       }
-  }
+   }
 
-  this.win_w = cam_w + BorderLeft + BorderRight;
-  this.win_h = cam_h + NAME_DIV_H*_rowspan + BorderTop + BorderBottom;
+   this.win_w = cam_w + BorderLeft + BorderRight;
+   this.win_h = cam_h + NAME_DIV_H*_rowspan + BorderTop + BorderBottom;
 
-  this.offsetX = parseInt((_canvas_w - this.win_w * _cols_nr)/2);  
-  this.offsetY = parseInt((_canvas_h - this.win_h * _rows_nr)/2);  
+   this.offsetX = parseInt((_canvas_w - this.win_w * _cols_nr)/2);  
+   this.offsetY = parseInt((_canvas_h - this.win_h * _rows_nr)/2);  
 
-  this.cam_w = cam_w; 
-  this.cam_h = cam_h;
+   this.cam_w = cam_w; 
+   this.cam_h = cam_h;
 } // calc_win_geo()
 
 
@@ -254,15 +254,15 @@ function change_wins_geo() {
          win_geo = base_win_geo;
       else
          win_geo = new calc_win_geo(base_win_geo.win_w*win_def.colspan,
-              base_win_geo.win_h*win_def.rowspan,
-              CamsAspectRatio, 1, 1, win_def.rowspan);
+               base_win_geo.win_h*win_def.rowspan,
+               CamsAspectRatio, 1, 1, win_def.rowspan);
       tmp_div.css('top',  calc_win_top (base_win_geo, win_def.row));
       tmp_div.css('left', calc_win_left(base_win_geo, win_def.col));
       tmp_div.width(win_geo.win_w);
       tmp_div.height(win_geo.win_h);
       if ( GECKO ) {
          $('img',tmp_div).width(win_geo.cam_w).height(win_geo.cam_h)
-          // attr('alt',win_geo.cam_w + 'x' + win_geo.cam_h);
+            // attr('alt',win_geo.cam_w + 'x' + win_geo.cam_h);
       } else if (MSIE) {
          // $('img',tmp_div).width(win_geo.cam_w).height(win_geo.cam_h)
          $('object',tmp_div).width(win_geo.cam_w).height(win_geo.cam_h)
@@ -290,7 +290,7 @@ function canvas_growth() {
    if (!canvas_changed)
       return;
    if ( WIN_DIVS == undefined )
-       return;
+      return;
    // alert("canvas changed");
 
    WIN_DIV_W = undefined;
@@ -303,9 +303,9 @@ function canvas_growth() {
 } // canvas_growth()
 
 function get_geo_str(JQ_elem) {
-    return JQ_elem.attr('nodeName') + '#' +  JQ_elem.attr('id') +
-       ': [ ' + JQ_elem.css('left') + ',' +  JQ_elem.css('top') + ' : ' +
-                JQ_elem.width() + ' x ' + JQ_elem.height() + ' ]';
+   return JQ_elem.attr('nodeName') + '#' +  JQ_elem.attr('id') +
+      ': [ ' + JQ_elem.css('left') + ',' +  JQ_elem.css('top') + ' : ' +
+      JQ_elem.width() + ' x ' + JQ_elem.height() + ' ]';
 }
 
 function try_fs() {
@@ -332,83 +332,83 @@ function try_fs() {
          window.resizeTo(window.screen.availWidth,window.screen.availHeight);
    } else
       window.resizeTo(window.screen.availWidth,window.screen.availHeight);
-}
-
-$(document).ready( function() {
-
-   if (ie||ns6) {
-     tipobj=document.all? 
-        document.all['tooltip'] :
-        document.getElementById? document.getElementById('tooltip') : '';
-     if (GECKO)
-        document.onmousemove=positiontip;
    }
 
-   // try_fs();
+   $(document).ready( function() {
 
-   // calc and set  CANVAS width & height
-   CANVAS = $('#canvas');
-   canvas_growth();
+         if (ie||ns6) {
+         tipobj=document.all? 
+         document.all['tooltip'] :
+         document.getElementById? document.getElementById('tooltip') : '';
+         if (GECKO)
+         document.onmousemove=positiontip;
+         }
 
-   $(window).bind('resize', function() {
-     canvas_growth();
-   });
+         // try_fs();
 
-   $(window).bind('scroll', function(){return false;});
+         // calc and set  CANVAS width & height
+         CANVAS = $('#canvas');
+         canvas_growth();
 
-  var base_win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, ROWS_NR, COLS_NR, 1);
-  var win_geo;
-  // alert('[ ' + CANVAS_W + 'x' + CANVAS_H + ' ] [ ' + cam_w + 'x' + cam_h + ' ]');
-  var win_nr;
-  var _top=0;
-  var _left=0;
-  var win_div;
-  var win_def;
+         $(window).bind('resize', function() {
+            canvas_growth();
+            });
 
-  for (win_nr = 0; win_nr < WINS_NR; win_nr++ ) {
-     if (  WINS_DEF[win_nr] == undefined )
-        continue;
-     win_def = WINS_DEF[win_nr];
+         $(window).bind('scroll', function(){return false;});
 
-     if ( win_def.rowspan == 1 && win_def.colspan == 1 )
-        win_geo = base_win_geo;
-     else
-        win_geo = new calc_win_geo(base_win_geo.win_w*win_def.colspan,
-              base_win_geo.win_h*win_def.rowspan,
-              CamsAspectRatio, 1, 1, win_def.rowspan);
-     _top  = calc_win_top(base_win_geo, win_def.row);
-     _left = calc_win_left(base_win_geo, win_def.col);
-     win_div = $('<div id="win' + win_nr + '" name="win" class="win" ' + 
-        ' style="position: absolute; '+
-        ' top:'+_top+'px;'+
-        ' left:'+_left+'px; '+
-        ' width:'+ win_geo.win_w +'px;'+
-        ' height:'+ win_geo.win_h +'px;'+
-        ' border-top: '+BorderTop+'px solid  #ffa500;' +
-	    ' border-left: '+BorderLeft+'px solid  #ffa500;' +
-	    ' border-bottom: '+BorderBottom+'px solid  #ffa500;' +
-	    ' border-right: '+BorderRight+'px solid  #ffa500;' + 
-        ' z-index=-' + win_nr + ';' +
-        '"><\/div>');
-     win_div.appendTo(CANVAS);
+         var base_win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, ROWS_NR, COLS_NR, 1);
+         var win_geo;
+         // alert('[ ' + CANVAS_W + 'x' + CANVAS_H + ' ] [ ' + cam_w + 'x' + cam_h + ' ]');
+         var win_nr;
+         var _top=0;
+         var _left=0;
+         var win_div;
+         var win_def;
 
-     if (PrintCamNames) {
-        $('<div style="background-color:#666699;'+
-             ' padding:0px; margin:0px; overflow:hidden; border:0px;'+
-             ' height:'+ NAME_DIV_H*win_def.rowspan +'px;"><span style="'+
-             'vertical-align: middle; padding-left:8px; padding-top:2px; padding-bottom:2px; padding-right:2px;'+
-             ' color:#e5e5e5; font-size:'+14*win_def.rowspan+'px; font-weight: bold; width:100%; overflow:hidden;">'+
-             WINS_DEF[win_nr].cam.name+
-             '<\/span><\/div>').appendTo(win_div);
-     }
-     brout(win_nr, win_div, win_geo);
-  }
+         for (win_nr = 0; win_nr < WINS_NR; win_nr++ ) {
+            if (  WINS_DEF[win_nr] == undefined )
+               continue;
+            win_def = WINS_DEF[win_nr];
 
-  WIN_DIVS = $('div.win');
+            if ( win_def.rowspan == 1 && win_def.colspan == 1 )
+               win_geo = base_win_geo;
+            else
+               win_geo = new calc_win_geo(base_win_geo.win_w*win_def.colspan,
+                     base_win_geo.win_h*win_def.rowspan,
+                     CamsAspectRatio, 1, 1, win_def.rowspan);
+            _top  = calc_win_top(base_win_geo, win_def.row);
+            _left = calc_win_left(base_win_geo, win_def.col);
+            win_div = $('<div id="win' + win_nr + '" name="win" class="win" ' + 
+                  ' style="position: absolute; '+
+                  ' top:'+_top+'px;'+
+                  ' left:'+_left+'px; '+
+                  ' width:'+ win_geo.win_w +'px;'+
+                  ' height:'+ win_geo.win_h +'px;'+
+                  ' border-top: '+BorderTop+'px solid  #ffa500;' +
+                  ' border-left: '+BorderLeft+'px solid  #ffa500;' +
+                  ' border-bottom: '+BorderBottom+'px solid  #ffa500;' +
+                  ' border-right: '+BorderRight+'px solid  #ffa500;' + 
+                  ' z-index=-' + win_nr + ';' +
+                  '"><\/div>');
+            win_div.appendTo(CANVAS);
 
-  $('#dialog').jqm({
-      overlay: 90
-      });
+            if (PrintCamNames) {
+               $('<div style="background-color:#666699;'+
+                     ' padding:0px; margin:0px; overflow:hidden; border:0px;'+
+                     ' height:'+ NAME_DIV_H*win_def.rowspan +'px;"><span style="'+
+                     'vertical-align: middle; padding-left:8px; padding-top:2px; padding-bottom:2px; padding-right:2px;'+
+                     ' color:#e5e5e5; font-size:'+14*win_def.rowspan+'px; font-weight: bold; width:100%; overflow:hidden;">'+
+                     WINS_DEF[win_nr].cam.name+
+                     '<\/span><\/div>').appendTo(win_div);
+            }
+            brout(win_nr, win_div, win_geo);
+         }
+
+         WIN_DIVS = $('div.win');
+
+         $('#dialog').jqm({
+overlay: 90
+});
 });
 
 

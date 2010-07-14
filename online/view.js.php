@@ -35,46 +35,46 @@ require_once('../lib/get_cam_url.php');
 
 for ($i=0; $i<$wins_nr; $i++)
 {
-    if (empty($cams[$i]))
-        continue;
+   if (empty($cams[$i]))
+      continue;
 
-    if (!preg_match("/^(\d+);(\d+)x(\d+)/i",
-            $cams[$i], $matches) )
-            MYDIE("preg_match($cams[$i]) failed",__FILE__,__LINE__);
+   if (!preg_match("/^(\d+);(\d+)x(\d+)/i",
+      $cams[$i], $matches) )
+      MYDIE("preg_match($cams[$i]) failed",__FILE__,__LINE__);
 
-    $cam_nr = $matches[1];settype($cam_nr,'int');
-    $_ww=$matches[2]; settype($_ww,'int');
-    $_wh=$matches[3]; settype($_wh,'int');
-    if (is_null($major_win_cam_geo) || $major_win_nr === $i )
-       $major_win_cam_geo = array($_ww, $_wh);
-    $l_wins = &$l_defs[3][$i];
+   $cam_nr = $matches[1];settype($cam_nr,'int');
+   $_ww=$matches[2]; settype($_ww,'int');
+   $_wh=$matches[3]; settype($_wh,'int');
+   if (is_null($major_win_cam_geo) || $major_win_nr === $i )
+      $major_win_cam_geo = array($_ww, $_wh);
+   $l_wins = &$l_defs[3][$i];
 
-    printf(
-'WINS_DEF[%d]={
-   row: %u,
-   col: %u,
-   rowspan: %u,
-   colspan: %u,
-   cam: {
-      nr:   %s,
-      name: "%s",
-      url:  "%s",
-      orig_w: %u,
-      orig_h: %u
-      }
+   printf(
+      'WINS_DEF[%d]={
+         row: %u,
+            col: %u,
+            rowspan: %u,
+            colspan: %u,
+            cam: {
+               nr:   %s,
+                  name: "%s",
+                  url:  "%s",
+                  orig_w: %u,
+                  orig_h: %u
+}
 };%s',
    $i, $l_wins[0], $l_wins[1],$l_wins[2],$l_wins[3],
    $cam_nr, $camnames[$i],
    get_cam_http_url(&$conf, $cam_nr, 'mjpeg'),
    $_ww, $_wh, "\n" );
 
-    if ( $MSIE )
-        $msie_addons_scripts[] = sprintf('<script for="cam%d" event="OnClick()">
-            var amc = this;
-            if (amc.FullScreen) 
-                amc.FullScreen=0;
-            else
-                amc.FullScreen=1;
+if ( $MSIE )
+   $msie_addons_scripts[] = sprintf('<script for="cam%d" event="OnClick()">
+   var amc = this;
+if (amc.FullScreen) 
+   amc.FullScreen=0;
+else
+   amc.FullScreen=1;
            </script>', $cam_nr);
 }
 
