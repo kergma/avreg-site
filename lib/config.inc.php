@@ -1,9 +1,7 @@
 <?php
 
-$PrNameEng = 'AVReg';
 require ('/etc/avreg/site-defaults.php');
 $wwwdir = $conf['site-dir'] . '/';
-
 
 /*
 if (empty($conf['prefix']))

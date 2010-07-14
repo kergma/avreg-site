@@ -1,5 +1,5 @@
 <?php
-echo '<h2 align="center">' . sprintf($fmtVidServ, $named, $sip) .
+echo '<h2 align="center">' . sprintf($fmtVidServ, $named) .
 '&nbsp;&nbsp;(<a style="font-size: 85%;" href="'.sprintf($conf['prefix'].'/admin/key.php?sip=%s&amp;named=%s',$sip,$named).'">'.$license.'</a>)</h2>' ."\n";
 print "<div align='center'>$strYou: <a href='index.php?logout=1' title='$strLogout'>$login_user@$remote_addr</a></div>\n";
 

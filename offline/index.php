@@ -22,7 +22,7 @@ DENY($arch_status);
 <html>
 <head>
 <link rel="SHORTCUT ICON" href="<?php echo $conf['prefix']; ?>/favicon.ico">
-<title><?php echo($PrNameEng . '['.$named.']::Архив'); ?></title>
+<title><?php echo($conf['server-name'] . '['.$named.']::Архив'); ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $GLOBALS['charset']; ?>" />
 <meta name="author" content="Andrey Nikitin &lt;nik-a at mail dot ru&gt;">
 <style type="text/css">

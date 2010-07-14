@@ -29,7 +29,7 @@ print '<title>';
 if ( isset($GLOBALS['pageTitle']) )
    print($GLOBALS['pageTitle'] . ' ['.$named.']');
 else
-   print('PDA версия ' . $PrNameEng . '['.$named.']');
+   print('PDA версия ' . $conf['server-name'] . '['.$named.']');
 print '</title>'."\n";
 print '<meta http-equiv="Content-Type" content="text/html; charset='.$chset.'">'."\n";
 print '<meta name="author" content="Andrey Nikitin &lt;nik-a at mail dot ru&gt;">'."\n";

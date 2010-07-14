@@ -39,9 +39,9 @@ print '<html><head>'."\n";
 print '<link rel="SHORTCUT ICON" href="'.$conf['prefix'].'/favicon.ico">'."\n";
 print '<title>';
 if ( isset($GLOBALS['pageTitle']) )
-   print($PrNameEng . '['.$named.']::'. $GLOBALS[$GLOBALS['pageTitle']]);
+   print($conf['server-name'] . '['.$named.']::'. $GLOBALS[$GLOBALS['pageTitle']]);
 else
-   print($PrNameEng . '['.$named.']');
+   print($conf['server-name'] . '['.$named.']');
 print '</title>'."\n";
 print '<meta http-equiv="Content-Type" content="text/html; charset='.$chset.'">'."\n";
 print '<meta name="author" content="Andrey Nikitin &lt;nik-a at mail dot ru&gt;">'."\n";
