@@ -1,7 +1,6 @@
 function validate(){
-   var cams_selects = document.getElementsByName('cams[]');
-   var camnames_inputs = document.getElementsByName('camnames[]');
-   if (typeof(cams_selects) == 'undefined' || typeof(camnames_inputs) == 'undefined') 
+   var cams_selects = document.getElementsByName('cams_in_wins[]');
+   if ( typeof(cams_selects) == 'undefined' )
       return false;
    var cams_select=null;
    var i;
@@ -9,14 +8,12 @@ function validate(){
    for(i=0;i<cams_selects.length;i++) {
       cams_select = cams_selects[i];
       if (cams_select.selectedIndex>0 )
-      {
          choised++;
-         camnames_inputs[i].value=CNAMES[cams_select.selectedIndex-1];
-      }
    }
-   if (choised>0)
+   if (choised>0) {
+      $('#buildform').attr('target', $(':input[name=OpenInBlankPage]').attr('checked') ? '_blank' : '_parent');
       return true;
-   else {
+   } else {
       alert('Сначала Вы должны выбрать камеры для просмотра в форме.');
       return false;
    }
@@ -25,7 +22,7 @@ function validate(){
 function sel_change(sel) {
    if (sel.selectedIndex==0)
       return true;
-   var cams_selects = document.getElementsByName('cams[]');
+   var cams_selects = document.getElementsByName('cams_in_wins[]');
    if (typeof(cams_selects) == 'undefined') 
       return false;
    var cams_select=null;
@@ -45,8 +42,10 @@ function sel_change(sel) {
    return false;
 }
 
+/*
 $(document).ready( function() {
       $(':input[name=OpenInBlankPage]').change(function () {
          $('#buildform').attr('target', this.checked?'_blank':'_parent');
          }).trigger('change');
       });
+*/

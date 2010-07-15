@@ -65,7 +65,7 @@ if ( isset($link_javascripts) && is_array($link_javascripts))
    foreach ($link_javascripts as &$__js_link)
       print '<script type="text/javascript" src="'.$conf['prefix'].'/'.$__js_link.'"></script>'."\n";
 ?>
-   <script type="text/javascript" language="JavaScript1.2">
+<script type="text/javascript" language="JavaScript1.2">
 <!--
 <?php 
 printf("var StorageDir = '%s';\n", addcslashes($conf['storage-dir'], '\'"/\\'));
@@ -177,8 +177,8 @@ monthNames[2] = "Фев";
 monthNames[3] = "Мар";
 monthNames[4] = "Апр";
 monthNames[5] = "Мая";
-monthNames[6] = "Июн"
-   monthNames[7] = "Июл";
+monthNames[6] = "Июн";
+monthNames[7] = "Июл";
 monthNames[8] = "Авг";
 monthNames[9] = "Сен";
 monthNames[10] = "Окт";
@@ -273,5 +273,6 @@ if (!isset($NOBODY))
 
 <?php
   // чтобы из включений customize/PAGE_header.inc.php можно было другой http-ответ послать, например redirect
-  while (@ob_end_flush());
+if ( empty($NO_OB_END_FLUSH) )
+   while (@ob_end_flush());
 ?>

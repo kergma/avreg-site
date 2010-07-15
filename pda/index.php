@@ -8,7 +8,6 @@ require('../lib/cams_main_detail.inc.php');
 
 $GCP_query_param_list=array('work', 'allow_networks', 'text_left', 'geometry', 'Hx2');
 require('../lib/get_cams_params.inc.php');
-
 if ( $GCP_cams_nr == 0 )
    die('There are no available cameras!');
 

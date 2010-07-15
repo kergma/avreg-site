@@ -31,60 +31,43 @@ $wins_nr = $l_defs[0];
 print '<div align="center">'."\n";
 print "<h3>$sWcDefLayout</h3>\n";
 //var_dump($_COOKIE);
-print '<form id="buildform" action="view.php" method="POST" onSubmit="return validate();" target="_blank">'."\n";
-$ccams=$mon_type.'_cams';
-if ( isset($_COOKIE['avreg_'.$ccams]) && is_array($_COOKIE['avreg_'.$ccams]) )
-{
+$cookie_name = "avreg_$mon_type";
+if ( !empty($_COOKIE[$cookie_name]) ) {
+   $a = explode('-', $_COOKIE[$cookie_name]);
+   $_cams_in_wins = explode('.', $a[0]);
+   $OpenInBlankPage  = empty($a[1]) ? '' : 'checked';
+   $PrintCamNames    = empty($a[2]) ? '' : 'checked';
+   $EnableReconnect  = empty($a[3]) ? '' : 'checked';
+   $AspectRatio = empty($a[4]) ? 'calc' : $a[4];
+}
+
+
+print '<form id="buildform" action="view.php" method="POST" onSubmit="return validate();">'."\n";
+
+if ( !empty($_cams_in_wins) && is_array($_cams_in_wins) ) {
    $aaa = array();
-   for ($i=0;$i<$wins_nr;$i++)
-   {
-      if (isset($_COOKIE['avreg_'.$ccams][$i])) 
-         $a = $_COOKIE['avreg_'.$ccams][$i];
-      else
-         $a='';
-      $aaa[$i] = getSelectByAssocAr('cams[]',$act_wc_nr_ar, FALSE , 1, 1, $a, TRUE, 'sel_change(this);', null, null, true);
+   for ($win_nr=0; $win_nr<$wins_nr; $win_nr++ ) {
+      $b = empty($_cams_in_wins[$win_nr]) ? '' : (int)$_cams_in_wins[$win_nr];
+      $aaa[$win_nr] = getSelectHtmlByName('cams_in_wins[]', $tot_act_cams_ar, FALSE , 1, 1, $b, TRUE, 'sel_change(this);', null, null, true);
    }
    layout2table ($mon_type, 400, $aaa);
 } else {
-   $a=getSelectByAssocAr('cams[]',$act_wc_nr_ar, FALSE , 1, 1, '', TRUE, 'sel_change(this);', null, null, true);
+   $a=getSelectHtmlByName('cams_in_wins[]',$tot_act_cams_ar, FALSE , 1, 1, '', TRUE, 'sel_change(this);', null, null, true);
    layout2table ($mon_type, 400, NULL, $a);
 }
-for ($i = 0; $i < $wins_nr; $i++)
-   print '<input type="hidden" name="camnames[]" value="" />'."\n";
 
 print '<br /><table border="0" cellpadding="4">'."\n";
-
-$car=$mon_type.'_AspectRatio';
-if (isset($_COOKIE["avreg_$car"]))
-   $AspectRatio = $_COOKIE["avreg_$car"];
-else
-   $AspectRatio = 'calc';
 print '<tr><td align="right">'.$strAspectRatio.":</td>\n";
 print '<td align="left">'.getSelectByAssocAr('AspectRatio', $AspectRatioArray, false , 1, 1, $AspectRatio, false)."</td></tr>\n";
 
-$cpn=$mon_type.'_PrintCamNames';
-if (isset($_COOKIE['avreg_'.$cpn]) && $_COOKIE['avreg_'.$cpn] != 0 )
-   $PrintCamNames = 'checked';
-else
-   $PrintCamNames = '';
 print '<tr><td align="right">'.$strPrintCamNames.":</td>\n";
 print '<td align="left"><input type="checkbox" name="PrintCamNames" '.$PrintCamNames.' />'."</td></tr>\n";
 
-if (false !== strpos($_SERVER['HTTP_USER_AGENT'],'MSIE')) {
-   $ercnt=$mon_type.'_EnableReconnect';
-   if (isset($_COOKIE['avreg_'.$ercnt]) && $_COOKIE['avreg_'.$ercnt] != 0 )
-      $EnableReconnect_checked = 'checked';
-   else
-      $EnableReconnect_checked = '';
+if ( $MSIE ) {
    print '<tr><td align="right">'.$strEnableReconnect.":</td>\n";
-   print '<td align="left"><input type="checkbox" name="EnableReconnect" '.$EnableReconnect_checked.' />'."</td></tr>\n";
+   print '<td align="left"><input type="checkbox" name="EnableReconnect" '.$EnableReconnect.' />'."</td></tr>\n";
 }
 
-$cblank=$mon_type.'_OpenInBlankPage';
-if (isset($_COOKIE["avreg_$cblank"]) && $_COOKIE["avreg_$cblank"] != 0 )
-   $OpenInBlankPage = 'checked';
-else
-   $OpenInBlankPage = '';
 print '<tr><td align="right">'.$strOpenInBlank.":</td>\n";
 print '<td align="left"><input type="checkbox" name="OpenInBlankPage" '.$OpenInBlankPage.' />'."</td></tr>\n";
 print "</table>\n";

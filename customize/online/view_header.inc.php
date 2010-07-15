@@ -1,3 +1,13 @@
+<script type="application/javascript">
+function br_spec_out() {
+   if (GECKO)
+      document.write('Одинарный клик мышью - камеру на весь экран. &nbsp;F11 - полноэкранный режим.');
+   else if (MSIE)
+      document.write('Мышь: одинарный клик левой - камеру на весь экран, клик правой - контекст. меню. &nbsp;F11 - полноэкранный режим.');
+   else
+      document.write('Необходимо использовать браузеры: MS Internet Explorer или Firefox.');
+}
+</script>
 <div id="toolbar" style="height:25px; width:100%; margin:0; padding:0; background-color:#003366; color:#E0E0E0;" >
 <table width="100%" cellspacing="0" border="0" cellpadding="0">
 <tr style="height: 25px; overflow: hidden;">

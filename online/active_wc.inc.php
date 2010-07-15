@@ -9,7 +9,6 @@ if (isset($mon_type))
    print '<input type="hidden" name="mon_type" value="'.$mon_type.'">'."\n";
 print '</form>'."\n";
 
-$total_active_cams=0;
 $tot_act_cams_ar=array();
 if ($wclist_show>0)
 {
@@ -51,22 +50,18 @@ if ( $GCP_cams_nr > 0 )
       $is_netcam = ( $wc['cam_type'] == 'netcam' );
 
       // $cam_nr, $geo, $Hx2, $cam_name, $_named
-      $webcam_def = sprintf('%u;%s;%u;%s',
-         $__cam_nr, $wc['geometry'], $wc['Hx2'], $cam_name);
       if ( $wc['work'] && $wc['allow_networks'] &&
          ($is_netcam && ($wc['InetCam_IP'] && $wc['V.http_get'])) || (!$is_netcam && isset($wc['v4l_dev'])) )
       {
          if ($wclist_show>0) {
             print "<tr>\n";
-            // print '<td align="center" valign="center"><input type="checkbox" name="cams[]" value="'.$webcam_def.'">&nbsp;</td>' . "\n";
             print '<td align="center"><img src="'.$conf['prefix'].'/img/cam_on_35x32.gif" alt="'.$flags[1].'" width="35" height="32" border="0"></td>' . "\n";
             print '<td align="center" valign="middle" nowrap><b>'.$__cam_nr . '</b></td>' . "\n";
             print '<td>'.$cam_name.' ('.$wc['geometry'].')</td>' . "\n";
             if ($wclist_show>1)
                print '<td>&nbsp;</td></tr>' . "\n";
          }
-         array_push($tot_act_cams_ar,$webcam_def);
-         $total_active_cams++;
+         array_push($tot_act_cams_ar, $__cam_nr);
       } else {
          if ($wclist_show>1) {
             print "<tr>\n";
@@ -97,37 +92,14 @@ if ( $GCP_cams_nr > 0 )
 if ($wclist_show>0)
    print "</table>\n";
 require ('../lib/my_close.inc.php');
-$act_wc_nr_ar = array();
-$tot_wc_nr = count($tot_act_cams_ar);
-if ($tot_wc_nr>0){
-   print '<script type="text/javascript">'."\n";
-   print '<!--'."\n";
-   print 'var CNAMES = new MakeArray('.$tot_wc_nr.')'."\n";
-   for ($i = 0; $i < $tot_wc_nr; $i++)
-   {
-      list($cam_nr, $geo, $Hx2, $cam_name) = explode(';', $tot_act_cams_ar[$i]);
-      list($ww,$wh) = explode('x',$geo);
-      if (empty($ww)) $ww=640;
-      if (empty($wh)) $wh=480;
-      if ($Hx2) $wh *= 2;
-      $act_wc_nr_ar[$cam_nr]=sprintf('%u;%ux%u', $cam_nr, $ww, $wh);
-      print 'CNAMES['.$i.']="'.$cam_name.'";'."\n";
-   }
-   print '// -->'."\n";
-   print '</script>'."\n";
-}
+
+
+echo '<p align="center">'.(($tot_wc_nr>0)?sprintf($fmtActiveWEBCAMS, count($tot_act_cams_ar)):$srtNoActiveWEBCAMS).'</p>' ."\n";
+print '</div>'."\n";
+
 /*
 print '<br><pre style="text-align:left;">'."\n";
 var_dump($tot_act_cams_ar);
-var_dump($act_wc_nr_ar);
-var_dump($tot_wc_nr);
 print '</pre>'."\n";
- */
-echo '<p align="center">'.(($tot_wc_nr>0)?sprintf($fmtActiveWEBCAMS, $total_active_cams):$srtNoActiveWEBCAMS).'</p>' ."\n";
-print '</div>'."\n";
-/*
-echo '<pre>'."\n";
-print_r($tot_act_cams_ar);
-echo '<pre>'."\n";
- */
+*/
 ?>

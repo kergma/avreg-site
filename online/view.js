@@ -138,15 +138,6 @@ function brout(win_nr, win_div, win_geo) {
    }
 }
 
-function br_spec_out() {
-   if (GECKO)
-      document.write('Одинарный клик мышью - камеру на весь экран. &nbsp;F11 - полноэкранный режим.');
-   else if (MSIE)
-      document.write('Мышь: одинарный клик левой - камеру на весь экран, клик правой - контекст. меню. &nbsp;F11 - полноэкранный режим.');
-   else
-      document.write('Необходимо использовать браузеры: MS Internet Explorer или Firefox.');
-}
-
 /* global variables */
 var CANVAS;
 var CANVAS_W = -1;

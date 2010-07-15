@@ -8,7 +8,7 @@ require ('../lib/my_conn.inc.php');
 if ( !isset($cams) || empty($cams))
    die('should use "cams" cgi param');
 if (is_string($cams))
-   $cams = explode(',', $cams);
+   $cams = explode('.', $cams);
 foreach ($cams as &$value)
    settype($value, 'int');
 $one_cam = ( count($cams) === 1 );
