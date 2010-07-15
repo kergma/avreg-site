@@ -47,7 +47,7 @@ function parse_csv_numlist($str) {
    return $res;
 } /* parse_csv_numlist() */
 
-/* $params строковй массив, список параметров, которые нужно читать из файла */
+/* $params строковый массив, список параметров, которые нужно читать из файла */
 function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params=NULL)
 {
    $confile = fopen($path, 'r');
@@ -1006,9 +1006,9 @@ if ( isset($_SERVER['PHP_AUTH_USER']))
    else
       DENY(null,403);
 
-   $login_user = $_SERVER['REMOTE_USER'];
-   $user_status = $user_info['STATUS'];
-   $login_user_name = $row['LONGNAME'];
+   $login_user = &$_SERVER['REMOTE_USER'];
+   $user_status = &$user_info['STATUS'];
+   $login_user_name = &$row['LONGNAME'];
    $login_host = &$remote_addr;
    $allow_cams = parse_dev_acl($user_info['ALLOW_CAMS']);
    if ( is_array($allow_cams) && count($allow_cams) > 0 )

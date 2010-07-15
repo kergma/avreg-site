@@ -1,4 +1,46 @@
 <?php
+
+/* redirect from main page */
+$redir_page = NULL;
+if ( $user_status >= $operator_status /* config.inc.php */ ) {
+   /* перенаправляем пользователей гпрупп "Операторы" и "Только просмотр"
+    *  сразу к выбору раскладки просмотра */
+   $redir_page = '/online/index.php';
+
+/* А этим грязным хаком вы можете всегда перенаправлять группу или конкретного пользователя
+ * сразу на страницу просмотра видео в реальном времени с конкретной (единственной) раскладкой.
+ * Пример для одного конкретного пользователя:
+ * if ( $login_user == 'operator' ) // например только для одного пользователя
+ *       $redir_page = '/online/view.php?mon_type=QUAD_4_4&cams_in_wins=5.6.7.8&PrintCamNames=1';
+ * Описание CGI-параметров:
+ *   mon_type - тип раскладки: ONECAM, QUAD_4_4, MULTI_6_9, MULTI_7_16, MULTI_8_16, QUAD_9_9,
+ *                             MULTI_10_16, MULTI_13_16, MULTI_13_25, QUAD_16_16, MULTI_16_25,
+ *                             MULTI_17_25, MULTI_19_25, MULTI_22_25, QUAD_25_25
+ *   cams_in_wins - номера камер в раскладке, перечисленные через точку(.),
+ *                  если в каких-то позициях нет камер, то нужно указывать номер камеры 0
+ *                  например 1.2.3.0.4 - в четвёртом окне ничего нет камеры,
+ *                  нумерацию окон в раскладках см. на online/index.php.
+ *   PrintCamNames - выводить крупно название камеры в шапке окна камеры или нет;
+ *                   [0,1], по-умолчанию - 0(нет).
+ *   EnableReconnect - автореконнект оборванного потока, только для IE; [0,1], по-умолчанию - 0(нет).
+ *   AspectRatio - cоотношение сторон окон камер;
+ *                 "calc" (по умолчанию) - как у камеры в главном окне (см. online/build_mon.php?mon_type=xxxx)
+ *                 "fs" - растянуть по размеру окна браузера.
+ */
+}
+
+if ( $redir_page ) {
+   ob_end_clean(); // удаляем всё что /header.inc.php в хедеры и тело записал
+   header(sprintf('Location: %s://%s%s%s%s',
+      !empty($_SERVER['SSL_PROTO']) ? 'https' : 'http',
+      $_SERVER['SERVER_NAME'],
+      (!empty($_SERVER['SSL_PROTO']) || ($_SERVER['SERVER_PORT'] != 80)) ? (':'.$_SERVER['SERVER_PORT']) : '',
+      $conf['prefix'],
+      $redir_page));
+   while (@ob_end_flush());
+   exit();
+}
+
 echo '<h2 align="center">' . sprintf($fmtVidServ, $named) .
 '&nbsp;&nbsp;(<a style="font-size: 85%;" href="'.sprintf($conf['prefix'].'/admin/key.php?sip=%s&amp;named=%s',$sip,$named).'">'.$license.'</a>)</h2>' ."\n";
 print "<div align='center'>$strYou: <a href='index.php?logout=1' title='$strLogout'>$login_user@$remote_addr</a></div>\n";

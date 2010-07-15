@@ -4,23 +4,6 @@ ob_start();
 
 require_once('lib/config.inc.php');
 
-/* redirect from main page */
-if ( !empty($check_redirect) ) {
-   $redir_page = NULL;
-   if ( $user_status >= $operator_status /* config.inc.php */ )
-      $redir_page = '/online/index.php';
-   if ( $redir_page ) {
-      header(sprintf('Location: %s://%s%s%s%s',
-         !empty($_SERVER['SSL_PROTO']) ? 'https' : 'http',
-         $_SERVER['SERVER_NAME'],
-         (!empty($_SERVER['SSL_PROTO']) || ($_SERVER['SERVER_PORT'] != 80)) ? (':'.$_SERVER['SERVER_PORT']) : '',
-         $conf['prefix'],
-         '/online/index.php'));
-      ob_end_flush();
-      exit();
-   }
-}
-
 /**
  * Send http headers
  */
@@ -261,7 +244,9 @@ if (!isset($NOBODY))
       $_onload = 'onunload="JavaScript:'.$body_onunload.'"';
  */ 
    print sprintf('<body style="%s" %s %s>',$body_style, $_onload, $body_addons)."\n";
-   @include($conf['customize-dir'] . preg_replace('%^/[^/]+(/.+)\.php%', '\1_header.inc.php', $_SERVER['SCRIPT_NAME']));
+   $customize_header = $conf['customize-dir'] . preg_replace('%^/[^/]+(/.+)\.php%', '\1_header.inc.php', $_SERVER['SCRIPT_NAME']);
+   if ( file_exists($customize_header) )
+      include($customize_header);
 }
 ?>
 <noscript>
