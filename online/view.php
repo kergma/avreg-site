@@ -32,17 +32,6 @@ $_cookie_value = sprintf('%s-%u-%u-%u-%s',
 setcookie("avreg_$mon_type", $_cookie_value, time()+5184000, dirname($_SERVER['SCRIPT_NAME']).'/build_mon.php');
 while (@ob_end_flush());
 
-/*
-print '<pre>';
-var_dump($cams_in_wins);
-var_dump($camnames);
-$GCP_query_param_list=array('work', 'allow_networks', 'text_left', 'geometry', 'Hx2');
-require('../lib/get_cams_params.inc.php');
-var_dump($GCP_cams_params);
-print '</pre>'."\n";
-die();
- */
-
 ?>
 <div id="canvas"
      style="position:relative; background-color:#000000; width:100%; height:0px; margin:0; padding:0;
@@ -86,16 +75,7 @@ $GCP_query_param_list=array('work', 'allow_networks', 'text_left', 'geometry', '
 require('../lib/get_cams_params.inc.php');
 if ( $GCP_cams_nr == 0 )
    die('There are no available cameras!');
-$cam_params = array_merge_recursive($GCP_def_pars, $GCP_cams_params);
 require_once('../lib/get_cam_url.php');
-
-echo "/*\n GCP_cams_params";
-var_dump($GCP_cams_params);
-echo "\n\n GCP_def_pars";
-var_dump($GCP_def_pars);
-echo "\n\n merged";
-var_dump($cam_params);
-echo "*/\n";
 
 print 'var WINS_DEF = new MakeArray('.$wins_nr.')'."\n";
 
@@ -106,14 +86,14 @@ for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
 
    $cam_nr = $cams_in_wins[$win_nr];
 
-   list($ww,$wh) = explode('x', $cam_params[$cam_nr]['geometry']);
-   settype($ww, 'integer'); settype($wh, 'integer');
-   if (empty($ww)) $ww=640;
-   if (empty($wh)) $wh=480;
-   if (!empty($cam_params[$cam_nr]['Hx2'])) $wh *= 2;
+   list($width,$height) = explode('x', $GCP_cams_params[$cam_nr]['geometry']);
+   settype($width, 'integer'); settype($height, 'integer');
+   if ( empty($width)  )  $width  = 640;
+   if ( empty($height) )  $height = 480;
+   if ( !empty($GCP_cams_params[$cam_nr]['Hx2']) ) $height *= 2;
 
    if (is_null($major_win_cam_geo) || $major_win_nr === $win_nr )
-      $major_win_cam_geo = array($_ww, $_wh);
+      $major_win_cam_geo = array($width, $height);
    $l_wins = &$l_defs[3][$win_nr];
 
    printf(
@@ -131,9 +111,9 @@ for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
    }
 };%s',
    $win_nr, $l_wins[0], $l_wins[1],$l_wins[2],$l_wins[3],
-   $cam_nr, getCamName($cam_params[$cam_nr]['text_left']),
+   $cam_nr, getCamName($GCP_cams_params[$cam_nr]['text_left']),
    get_cam_http_url(&$conf, $cam_nr, 'mjpeg'),
-   $ww, $wh, "\n" );
+   $width, $height, "\n" );
 
 if ( $MSIE )
    $msie_addons_scripts[] = sprintf('<script for="cam%d" event="OnClick()">

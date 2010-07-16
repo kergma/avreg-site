@@ -104,7 +104,7 @@ function brout(win_nr, win_div, win_geo) {
    var orig_h = WINS_DEF[win_nr].cam.orig_h;
    var url = WINS_DEF[win_nr].cam.url;
 
-   var alt = 'WebCam #' + cam_nr + ' on ' + url + ' , original geo ['+orig_w+'x'+orig_h+']';
+   var alt = 'Camera #' + cam_nr + ' ' + WINS_DEF[win_nr].cam.name + ' ['+orig_w+'x'+orig_h+'] ' + url;
    if (MSIE) {
       var amc = document.createElement('object');
       amc.id = id;
