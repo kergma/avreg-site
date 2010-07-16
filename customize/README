@@ -1,0 +1,20 @@
+In this directory you can place your headers and footers
+for almost any page in the Web interface AVReg:
+   - upper (HEADER), the template RELDIR/BASE_header.inc.php
+   - lower (FOOTER), template RELDIR/BASE_footer.inc.php
+where:
+  RELDIR - path part of a target page URL;
+  BASE   - target page file name without the extension.
+
+Example:
+  target page URL - "/avreg/online/view.php"
+  RELDIR = "online"
+  BASE   = "view"
+  HEADER = "online/view_header.inc.php"
+  FOOTER = "online/view_footer.inc.php"
+
+In the HEADER and FOOTER you can add arbitrary rectangular blocks
+with your own text and images.
+In the HEADER you can append/override the css-styles,
+add your own scripts and even to redirect to another pages
+(only from the main page).
