@@ -26,7 +26,7 @@ function print_messages()
    while (!feof ($logfile))
    {
       $buffer = fgets($logfile, 1024);
-      if ( preg_match('/crit|err|fail|invalid|bad|unable|warn|notice|could`t|cannot|can`t|not|duplicate|reset|reject|drop|unsupport/i', $buffer) )
+      if ( preg_match('/crit|err|fail|error|failure|warn|warning|invalid|wrong|bad|unable|notice|could`t|could not| no |cannot|can`t|not|duplicate|reset|reject|drop|unsupport/i', $buffer) )
          print '<font color="#FFFF99">'.htmlspecialchars($buffer,ENT_QUOTES, $chset).'</font><br>';
       else
          print htmlspecialchars($buffer,ENT_QUOTES, $chset).'<br>';
