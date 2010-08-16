@@ -189,7 +189,14 @@ function checkParam ( $parname, $parval )
    case 'InetCam_Proto':
       $ret = getSelectHtmlByName('fields['.$parname.']', $GLOBALS['strNetProto'], FALSE, 1, 0, $parval, TRUE, FALSE);
       break; 
+   case 'recording':
+      if ( $parval == '' || is_null($parval))
+         $sel = '';
+      else
+         $sel = $GLOBALS['recording_mode'][$parval];
+      $ret = getSelectHtml('fields['.$parname.']', $GLOBALS['recording_mode'], FALSE, 1, 0, $sel, TRUE, FALSE);
 
+      break;
    case 'V.save_fmt':
       $ret = getSelectHtmlByName('fields['.$parname.']', $GLOBALS['strFileFmt'], FALSE, 1, 0, $parval, TRUE, FALSE);
       break;
