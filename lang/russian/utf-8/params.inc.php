@@ -455,7 +455,6 @@ $PARAMS = array(
       array(
          'name'    => 'InetCam_IP',
          'type'    => $STRING_VAL,
-         'max_len' => 15,
          'def_val' => NULL,
          'desc'    => '<b>IP-адрес</b> сетевой видеокамеры или видеосерверов (например Axis, Planet, D-Link, Panasonic, Beward, Aviosys и т.п. ).<br><br>По умолчанию: <b>не установлено</b>.',
          'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
