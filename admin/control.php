@@ -17,8 +17,7 @@ function print_messages()
 {
    $_cmd = $GLOBALS['conf']['sudo'] . ' ' .
       $GLOBALS['conf']['tail'] . ' -n 200 ' . $GLOBALS['conf']['daemon-log'] .
-      ' | ' . $GLOBALS['conf']['grep'] . ' ' . $GLOBALS['conf']['daemon-name'] .
-      ' | ' . $GLOBALS['conf']['tail'] . ' -n 50';
+      ' | ' . $GLOBALS['conf']['grep'] . ' avreg | ' . $GLOBALS['conf']['tail'] . ' -n 50';
 
    $logfile = popen($_cmd.' 2>&1', 'r');
    print '<div class="tty">'."\n";
