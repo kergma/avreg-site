@@ -39,6 +39,11 @@ if ( !empty($_COOKIE[$cookie_name]) ) {
    $PrintCamNames    = empty($a[2]) ? '' : 'checked';
    $EnableReconnect  = empty($a[3]) ? '' : 'checked';
    $AspectRatio = empty($a[4]) ? 'calc' : $a[4];
+} else {
+   $OpenInBlankPage  = '';
+   $PrintCamNames    = 'checked';
+   $EnableReconnect  = '';
+   $AspectRatio      = 'calc';
 }
 
 

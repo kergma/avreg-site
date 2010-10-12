@@ -24,11 +24,9 @@ $local_cam_nr = -1;
 $cams_count = 0;
 unset($cams_array);
 $cams_array = &$GCP_cams_params;
-/*
-echo '<pre style="text-align:left;">'."\n";
-print_r($cams_array);
-echo '</pre>'."\n";
- */
+// echo '<pre style="text-align:left;">'."\n";
+// print_r($cams_array);
+// echo '</pre>'."\n";
 
 if ( $GCP_cams_nr > 0 )
 {
@@ -51,7 +49,7 @@ if ( $GCP_cams_nr > 0 )
 
       // $cam_nr, $geo, $Hx2, $cam_name, $_named
       if ( $wc['work'] && $wc['allow_networks'] &&
-         ($is_netcam && ($wc['InetCam_IP'] && $wc['V.http_get'])) || (!$is_netcam && isset($wc['v4l_dev'])) )
+         (($is_netcam && ($wc['InetCam_IP'] && $wc['V.http_get'])) || (!$is_netcam && isset($wc['v4l_dev']))) )
       {
          if ($wclist_show>0) {
             print "<tr>\n";
@@ -93,8 +91,11 @@ if ($wclist_show>0)
    print "</table>\n";
 require ('../lib/my_close.inc.php');
 
-
-echo '<p align="center">'.(($tot_wc_nr>0)?sprintf($fmtActiveWEBCAMS, count($tot_act_cams_ar)):$srtNoActiveWEBCAMS).'</p>' ."\n";
+$tot_wc_nr = count($tot_act_cams_ar);
+if ( $tot_wc_nr )
+   echo '<p align="center">'.sprintf($fmtActiveWEBCAMS, $tot_wc_nr).'</p>' ."\n";
+else
+   echo '<p align="center" class="HiLiteErr">'.$srtNoActiveWEBCAMS.'</p>' ."\n";
 print '</div>'."\n";
 
 /*
