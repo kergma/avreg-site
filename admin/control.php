@@ -104,7 +104,7 @@ if ( isset($cmd) )
             } else {
                print ' ' . $strError. '</font></p>' ."\n";
                print '<p><font size="+1" color="Red">' . implode('<br />',$outs) . '</font></p>' ."\n";
-               $cmd_released=FLASE;
+               $cmd_released=FALSE;
                print '<div style="color:Red;">'.$strCheckLog.'</div>';
                print_messages();
             }
@@ -191,7 +191,7 @@ if ( ! $DAEMONS_STATES[$sel_profile] )
 }
 print '</FIELDSET></form>'."\n";
 
-if ($cmd_released !== FLASE) {
+if ($cmd_released !== FALSE) {
    if ($srun)
       print '<div>'.$strCheckLog.'</div>';
    else 
