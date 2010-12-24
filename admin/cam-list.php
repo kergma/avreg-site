@@ -36,7 +36,11 @@ if ( isset($cmd) )
 
 if ( !isset($cam_nr) )
 {
-   echo '<div class="warn">' . $r_cam_tips1 . '</div>' ."\n";
+   if ( $install_user )
+      echo '<div class="warn">' . $r_cam_tips_installers . '</div>' ."\n";
+   else if ( $admin_user )
+      echo '<div class="warn">' . $r_cam_tips_admins . '</div>' ."\n";
+
    $GCP_query_param_list=array('work','cam_type','geometry','color',
       'text_left','InetCam_IP','v4l_dev','input',
       'V.http_get','A.http_get','Aviosys9100_chan');
