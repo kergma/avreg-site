@@ -9,15 +9,19 @@ $charset = mysql_client_encoding($link);
 printf ("current character set is %s\n", $charset);
  */
 
-// override REQUEST 'profile'
 if ( isset($AVREG_PROFILE) )
    $profile = &$AVREG_PROFILE;
 
 function print_messages()
 {
+   if ( isset($GLOBALS['profile']) )
+      $avreg_flt = ' avreg | ' . $GLOBALS['conf']['grep'] . ' ' . $GLOBALS['profile'] . ' | ';
+   else
+      $avreg_flt = ' avreg | ';
+
    $_cmd = $GLOBALS['conf']['sudo'] . ' ' .
       $GLOBALS['conf']['tail'] . ' -n 200 ' . $GLOBALS['conf']['daemon-log'] .
-      ' | ' . $GLOBALS['conf']['grep'] . ' avreg | ' . $GLOBALS['conf']['tail'] . ' -n 50';
+      ' | ' . $GLOBALS['conf']['grep'] . $avreg_flt . $GLOBALS['conf']['tail'] . ' -n 50';
 
    $logfile = popen($_cmd.' 2>&1', 'r');
    print '<div class="tty">'."\n";
