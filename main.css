@@ -198,6 +198,14 @@ div.error {
    border:1px dotted Red;
 }
 
+.legend {
+   color: #3C0050;
+   background-color: #F4F4F8;
+   padding: 0px;
+   margin: 0px;
+   border:1px dotted Red;
+}
+
 .tty {
    color: #DCDCDC;
    background-color: #333333;

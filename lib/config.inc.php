@@ -157,7 +157,7 @@ if (!$res) {
 
 unset($EXISTS_PROFILES);
 unset($AVREG_PROFILE);
-if ( preg_match('@^/([^/]+).*@', $_SERVER['REQUEST_URI'], $matches) ) {
+if ( !empty($conf['prefix']) && preg_match('@^/([^/]+).*@', $_SERVER['REQUEST_URI'], $matches) ) {
    if ( strcasecmp($matches[1],'avreg') === 0 ) {
       $EXISTS_PROFILES = glob($conf['profiles-dir'].'/[A-Za-z0-9][A-Za-z0-9_-:]*', GLOB_NOSORT);
    } else {

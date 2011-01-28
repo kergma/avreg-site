@@ -244,9 +244,15 @@ if (!isset($NOBODY))
       $_onload = 'onunload="JavaScript:'.$body_onunload.'"';
  */ 
    print sprintf('<body style="%s" %s %s>',$body_style, $_onload, $body_addons)."\n";
-   $customize_header = $conf['customize-dir'] . preg_replace('%^/[^/]+(/.+)\.php%', '\1_header.inc.php', $_SERVER['SCRIPT_NAME']);
-   if ( file_exists($customize_header) )
-      include($customize_header);
+   $custom_header = preg_replace('%^'.$conf['prefix'].'(/.+)\.php$%', '\1_header.inc.php', $_SERVER['SCRIPT_NAME']);
+   if ( 0 != strcmp($_SERVER['SCRIPT_NAME'], $custom_header ) ) {
+      if ($conf['debug'])
+         print '<div class="legend"><span class="legend">@include "'. $conf['customize-dir'] . $custom_header . "\"</span>\n";
+      #tohtml($_SERVER['SCRIPT_NAME']);
+      @include($conf['customize-dir'] . $custom_header);
+      if ($conf['debug'])
+         print "</div>\n";
+   }
 }
 ?>
 <noscript>
