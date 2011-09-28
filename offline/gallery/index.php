@@ -2,6 +2,7 @@
 		<div id="matrix_load" style="display: none;"><img src="gallery/img/loading.gif"></div>
 		
 			<div id="sidebar">
+	
 				
 				<!-- sidebar inner block -->
 				<div class="block">
