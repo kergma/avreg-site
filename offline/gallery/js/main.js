@@ -734,7 +734,7 @@ var matrix = {
 	loaddetailsrc : function() {
 		if (typeof(matrix.events[matrix.num]) != 'undefined') {
 			var value = matrix.events[matrix.num];
-			$('#image_detail').attr('src', WwwPrefix+"/"+value[2]);
+			$('#image_detail').attr('src', WwwPrefix + MediaAlias + '\/' +value[2]);
 			// размер матрицы
 			var width = matrix.width;
 			var height = matrix.height;
@@ -800,7 +800,7 @@ var matrix = {
 		img.onload = function() { 
 			//изображение загрузилось
 			// показываем картинку в ячейке
-			$('#cell_'+el+' .img_block img').attr('src', WwwPrefix+"/" + matrix.events[el][2]); 
+			$('#cell_'+el+' .img_block img').attr('src', WwwPrefix + MediaAlias + '\/' + matrix.events[el][2]); 
 			// задаем новые размеры изображения
 			matrix.setimagesize(el);
 			// обновляем счетчик загруженных изображений
@@ -813,7 +813,7 @@ var matrix = {
 			matrix.events[el].image_chache = true;
 			};
 		// загружаем изображение
-		img.src = WwwPrefix+"/" + matrix.events[el][2];
+		img.src = WwwPrefix + MediaAlias + '\/' + matrix.events[el][2];
 	},
 	// обовление матрицы
 	update : function(sp) {
@@ -846,7 +846,7 @@ var matrix = {
 					}
 					html += '<div id="cell_'+i+'" class="content_item show'+active+' camera_'+value[5]+' '+camera_class+'">';
 					if (typeof( matrix.events[i].image_chache) != 'undefined' && matrix.events[i].image_chache) {
-						html += '<div class="img_block"><a href="#cell_'+i+'"><img src="'+WwwPrefix+"/" + matrix.events[i][2]+'" /></a></div>';
+						html += '<div class="img_block"><a href="#cell_'+i+'"><img src="' + WwwPrefix + MediaAlias + '\/' + matrix.events[i][2]+'" /></a></div>';
 						loadimage[i] = true;
 						
 					} else {
@@ -952,7 +952,7 @@ var matrix = {
 					}
 					html += '<div id="cell_'+i+'" class="content_item show'+active+' camera_'+value[5]+' '+camera_class+'">';
 					if (typeof( matrix.events[i].image_chache) != 'undefined' && matrix.events[i].image_chache) {
-						html += '<div class="img_block"><a href="#cell_'+i+'"><img src="'+WwwPrefix+"/" + matrix.events[i][2]+'" /></a></div>';
+						html += '<div class="img_block"><a href="#cell_'+i+'"><img src="' + WwwPrefix + MediaAlias + '\/' + matrix.events[i][2]+'" /></a></div>';
 						loadimage[i] = true;
 						
 					} else {
