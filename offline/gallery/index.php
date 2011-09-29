@@ -158,6 +158,8 @@
 
 
 <script type="text/javascript">
+var MediaUrlPref = WwwPrefix + MediaAlias + '\/';
+
 // формирование глобального объекта перевода
 var lang = {
 		all : '<?php print $strall; ?>',
