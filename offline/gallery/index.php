@@ -182,7 +182,6 @@ function readableFileSize(size) {
     return size.toFixed(1) + ' ' + units[i];
 }
 
-
 $(function(){
 	// переопределение настроек
 	var conf = {
