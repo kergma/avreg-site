@@ -9,6 +9,7 @@ $.ajaxSetup({
 	dataType: 'json',
 	async: false,
 	timeout: 5000
+
 });
 
 // основной объект галереи
@@ -474,11 +475,14 @@ var gallery = {
 			
 			// инициализация изменения размеров столбцов
 			self.resize_column.init();
+<<<<<<< HEAD
 			
 			// инициализация матрицы
 			
 			matrix.init(self.config.matrix);
 			
+=======
+>>>>>>> c1925a31f626cd897e3fa8ab873012c0a6e6351f
 			// инициализация дерева событий
 			self.tree_event.init('#tree_new');
 			// инициализация выбора цвета камеры
@@ -726,7 +730,11 @@ var matrix = {
 	loaddetailsrc : function() {
 		if (typeof(matrix.events[matrix.num]) != 'undefined') {
 			var value = matrix.events[matrix.num];
+<<<<<<< HEAD
 			$('#image_detail').attr('src', WwwPrefix+"/"+value[2]);
+=======
+			$('#image_detail').attr('src', WwwPrefix + MediaAlias + '\/' +value[2]);
+>>>>>>> c1925a31f626cd897e3fa8ab873012c0a6e6351f
 			// размер матрицы
 			var width = matrix.width;
 			var height = matrix.height;
@@ -792,7 +800,11 @@ var matrix = {
 		img.onload = function() { 
 			//изображение загрузилось
 			// показываем картинку в ячейке
+<<<<<<< HEAD
 			$('#cell_'+el+' .img_block img').attr('src', WwwPrefix+"/" + matrix.events[el][2]); 
+=======
+			$('#cell_'+el+' .img_block img').attr('src', WwwPrefix + MediaAlias + '\/' + matrix.events[el][2]); 
+>>>>>>> c1925a31f626cd897e3fa8ab873012c0a6e6351f
 			// задаем новые размеры изображения
 			matrix.setimagesize(el);
 			// обновляем счетчик загруженных изображений
@@ -804,6 +816,7 @@ var matrix = {
 			// записываем в кеш, что изображение уже загрузилось и есть в кеше браузера
 			matrix.events[el].image_chache = true;
 			};
+<<<<<<< HEAD
 			
 		img.onerror = function() {
 			//изображение не загрузилось
@@ -820,6 +833,10 @@ var matrix = {
 		};	
 		// загружаем изображение
 		img.src = WwwPrefix+"/" + matrix.events[el][2];
+=======
+		// загружаем изображение
+		img.src = WwwPrefix + MediaAlias + '\/' + matrix.events[el][2];
+>>>>>>> c1925a31f626cd897e3fa8ab873012c0a6e6351f
 	},
 	// обовление матрицы
 	update : function(sp) {
@@ -852,7 +869,11 @@ var matrix = {
 					}
 					html += '<div id="cell_'+i+'" class="content_item show'+active+' camera_'+value[5]+' '+camera_class+'">';
 					if (typeof( matrix.events[i].image_chache) != 'undefined' && matrix.events[i].image_chache) {
+<<<<<<< HEAD
 						html += '<div class="img_block"><a href="#cell_'+i+'"><img src="'+WwwPrefix+"/" + matrix.events[i][2]+'" /></a></div>';
+=======
+						html += '<div class="img_block"><a href="#cell_'+i+'"><img src="' + WwwPrefix + MediaAlias + '\/' + matrix.events[i][2]+'" /></a></div>';
+>>>>>>> c1925a31f626cd897e3fa8ab873012c0a6e6351f
 						loadimage[i] = true;
 						
 					} else {
@@ -958,7 +979,11 @@ var matrix = {
 					}
 					html += '<div id="cell_'+i+'" class="content_item show'+active+' camera_'+value[5]+' '+camera_class+'">';
 					if (typeof( matrix.events[i].image_chache) != 'undefined' && matrix.events[i].image_chache) {
+<<<<<<< HEAD
 						html += '<div class="img_block"><a href="#cell_'+i+'"><img src="'+WwwPrefix+"/" + matrix.events[i][2]+'" /></a></div>';
+=======
+						html += '<div class="img_block"><a href="#cell_'+i+'"><img src="' + WwwPrefix + MediaAlias + '\/' + matrix.events[i][2]+'" /></a></div>';
+>>>>>>> c1925a31f626cd897e3fa8ab873012c0a6e6351f
 						loadimage[i] = true;
 						
 					} else {
