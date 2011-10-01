@@ -1,5 +1,4 @@
 <?php 
-
 if (!isset($_POST['method']) || empty($_POST['method'])) {
 	// Загрузка главной страницы галереи
 	$pageTitle='gallery_title';
