@@ -279,7 +279,9 @@ var gallery = {
 					})
 					// событие возникает, если пользователь выбрал новый диапазон событий
 					.bind("select_node.jstree", function (event, data) { 
+						
 						tree = data.rslt.obj.attr("id").replace('tree_', '');
+						
 						// если новый диапазон, перестраиваем матрицу
 						if (matrix.tree != tree) {
 							matrix.tree = tree;
@@ -1092,6 +1094,7 @@ var matrix = {
 	build: function(){
 		$('#matrix_load').show();
 		matrix.cur_count_item = 0;
+		
 		if (typeof( matrix.curent_tree_events[matrix.tree]) != 'undefined') {
 			// обновляем статистику		
 			var stat = '<span><strong>'+lang.count_files+'</strong>'+matrix.curent_tree_events[matrix.tree].count+'</span><br />\
@@ -1180,12 +1183,12 @@ var scroll = {
 			// обработка нажатия стрелки вверх на скроле
 			$(scroll.id + ' .scroll_top_v').unbind('click');
 			$(scroll.id + ' .scroll_top_v').click(function() {
-				scroll.click_top();
+				scroll.num_up();
 			});
 			// обработка нажатия стрелки вниз на скроле
 			$(scroll.id + ' .scroll_bot_v').unbind('click');
 			$(scroll.id + ' .scroll_bot_v').click(function() {
-				scroll.click_bot();
+				scroll.num_down();
 			});
 			
 			// обработка нажатия стрелки предыдущее
@@ -1270,14 +1273,46 @@ var scroll = {
 					}
 					matrix.num = matrix.num - scroll.matrix_count*scroll.row_count;
 					if (matrix.num < 0) {
-						matrix.num = 0;
+						// если вышли за пределы переходим на предыдущий если пользователь согласился
+						if (matrix.curent_tree_events[matrix.tree].prev) {
+							var checknextwindow = ReadCookie('checknextwindow');
+							if (checknextwindow == 'yes') {
+								prev = matrix.curent_tree_events[matrix.tree].prev;
+								new_num = matrix.curent_tree_events[prev].count - 1;
+								sp = Math.floor(new_num / scroll.row_count) * scroll.row_count;
+								matrix.num = new_num;
+								scroll.position = sp;
+								matrix.select_node = 'left';
+								$.jstree._focused().deselect_node("#tree_"+matrix.tree);
+								$("#tree_"+prev).jstree("set_focus");
+								$.jstree._focused().select_node("#tree_"+prev);
+								scroll.setposition(sp);
+							} else if (checknextwindow != 'no'){
+								gallery.nextwindow.open('left');
+							}
+						}
+					} else {
+						scroll.updateposition(sp);
+						scroll.setposition(sp);
 					}
-					scroll.updateposition(sp);
-					scroll.setposition(sp);
 					return false;
 				} else if (e.which == 34) {
 					var sp = scroll.position;
-					if (sp + scroll.matrix_count*scroll.row_count*2 >=  scroll.cell_count*scroll.row_count) {
+					if (sp + scroll.matrix_count*scroll.row_count*2 >  scroll.cell_count*scroll.row_count) {
+						if (matrix.curent_tree_events[matrix.tree].next) {
+							var checknextwindow = ReadCookie('checknextwindow');
+							if (checknextwindow == 'yes') {
+								next = matrix.curent_tree_events[matrix.tree].next;
+								matrix.num = 0;
+								matrix.select_node = 'right';
+								$.jstree._focused().deselect_node("#tree_"+matrix.tree);
+								$("#tree_"+next).jstree("set_focus");
+								$.jstree._focused().select_node("#tree_"+next);
+							} else if (checknextwindow != 'no'){
+								gallery.nextwindow.open('right');
+							}
+							return false;
+						}
 						sp = scroll.cell_count*scroll.row_count - scroll.matrix_count*scroll.row_count;
 						matrix.num =scroll.cell_count*scroll.row_count - scroll.matrix_count*scroll.row_count;
 					} else {
@@ -1314,20 +1349,7 @@ var scroll = {
 			scroll.position = 0;
 			$(scroll.id).show();
 		},
-		//сдвиг на ряд вверх без перемещения курсора матрицы
-		click_top : function() {
-			var sp = scroll.position-scroll.row_count;
-			if (sp > 0) {
-				scroll.setposition(sp);
-			} 
-		},
-		// сдвиг на ряд вниз без перемещения курсора матрицы
-		click_bot : function() {
-			var sp = scroll.position+scroll.row_count;
-			if (sp < (scroll.cell_count- scroll.matrix_count)*scroll.row_count ) {
-				scroll.setposition(sp);
-			}
-		},
+		
 		// сдвиг влево
 		num_left : function() {
 			var new_num = matrix.num - 1;
@@ -1335,9 +1357,7 @@ var scroll = {
 				//если находимся в этом же диапазоне событий 
 				if (matrix.mode == 'preview') {
 					
-					if (!$('#cell_'+new_num).hasClass('show') && $('#cell_'+matrix.num).hasClass('show')) {
-						scroll.click_top();
-					} else if (!$('#cell_'+new_num).hasClass('show')){
+					if (!$('#cell_'+new_num).hasClass('show')){
 						sp = Math.floor(new_num / scroll.row_count) * scroll.row_count;
 						scroll.updateposition(sp);
 						scroll.setposition(sp);
@@ -1376,10 +1396,7 @@ var scroll = {
 			if (new_num >=0) {
 				//если находимся в этом же диапазоне событий 
 				if (matrix.mode == 'preview') {
-					
-					if (!$('#cell_'+new_num).hasClass('show') && $('#cell_'+matrix.num).hasClass('show')) {
-						scroll.click_top();
-					} else if (!$('#cell_'+new_num).hasClass('show')){
+					if (!$('#cell_'+new_num).hasClass('show')){
 						sp = Math.floor(new_num / scroll.row_count) * scroll.row_count;
 						scroll.updateposition(sp);
 						scroll.setposition(sp);
@@ -1418,9 +1435,7 @@ var scroll = {
 			var new_num = matrix.num + 1;
 			if (new_num < scroll.cell_count*scroll.row_count) {
 				if (matrix.mode == 'preview') {
-					if (!$('#cell_'+new_num).hasClass('show') && $('#cell_'+matrix.num).hasClass('show')) {
-						scroll.click_bot();
-					} else if (!$('#cell_'+new_num).hasClass('show')){
+					if (!$('#cell_'+new_num).hasClass('show')){
 						sp = Math.floor(new_num / scroll.row_count) * scroll.row_count;
 						scroll.updateposition(sp);
 						scroll.setposition(sp);
@@ -1454,9 +1469,7 @@ var scroll = {
 			var new_num = matrix.num + scroll.row_count;
 			if (new_num < scroll.cell_count*scroll.row_count) {
 				if (matrix.mode == 'preview') {
-					if (!$('#cell_'+new_num).hasClass('show') && $('#cell_'+matrix.num).hasClass('show')) {
-						scroll.click_bot();
-					} else if (!$('#cell_'+new_num).hasClass('show')){
+					if (!$('#cell_'+new_num).hasClass('show')){
 						sp = Math.floor(new_num / scroll.row_count) * scroll.row_count;
 						scroll.updateposition(sp);
 						scroll.setposition(sp);
