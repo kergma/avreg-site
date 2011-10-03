@@ -75,6 +75,7 @@ class Gallery {
     
     // Функция построения дерева события
     public function get_tree_events($param) {
+    	
     	$query = "SELECT DATE_FORMAT(DT1, '%Y_%m_%d_%H') as date";
     	// Только с камер, доступных пользователю
     	global $GCP_cams_params;

@@ -7,8 +7,21 @@
 $.ajaxSetup({
 	type: 'POST',
 	dataType: 'json',
-	async: false,
-	timeout: 5000
+//	async: false,
+	cache: false,
+	timeout: 5000,
+	complete: function (XMLHttpRequest, textStatus) {
+		
+		//this; // the options for this ajax request
+	//	console.info('ajax has finished, status: ' + textStatus);
+		if (textStatus == 'timeout') {
+			alert(lang.ajax_timeout);
+			if (typeof( matrix.send_query ) != 'undefined' ) {
+				matrix.send_query = false;
+				$('#matrix_load').hide();
+			}
+		}
+	}
 
 });
 
@@ -283,6 +296,7 @@ var gallery = {
 					})
 				.delegate("a", "click", function (event, data) { event.preventDefault(); }).show();	
 				
+				
 				matrix.build();
 			},
 			// инициалзация дерева
@@ -290,7 +304,7 @@ var gallery = {
 				var self = this;
 				self.holder = holder;
 				// получаем данные о постройке дерева события
-				$.post('?dd=tt', {'method': 'get_tree_events'}, function(data) {
+				$.post(WwwPrefix+'/offline/gallery.php', {'method': 'get_tree_events'}, function(data) {
 					if (data.status == 'success'){
 						matrix.tree_events = data.tree_events;
 						matrix.cameras = data.cameras;
@@ -433,6 +447,9 @@ var gallery = {
 			if (config && typeof(config) == 'object') {
 			    $.extend(self.config, config);
 			}
+			
+			$('#matrix_load').show();
+			
 			// организация увеличение размера списка камер
 			if ($('#win_top').height() > 70) {
 				$('#more_cam').show();
@@ -829,6 +846,7 @@ var matrix = {
 	},
 	// обовление матрицы
 	update : function(sp) {
+		$('#matrix_load').show();
 		$('#scroll_content').empty();
 		var html = '';
 		var i = sp;
@@ -882,12 +900,14 @@ var matrix = {
 			$('#scroll_content').html(html);
 			// проверяем какие изображения есть в кеше браузера, а какаие надо загрузить
 			var ci = i + matrix.count_column;
+			var hide_over = true;
 			for(i; i<=ci; i++) {
 				if (typeof( matrix.events[i]) != 'undefined') {
 					if (typeof( matrix.events[i].image_chache) != 'undefined' && matrix.events[i].image_chache) {
 						loadimage[i] = true;
 					} else {
 						loadimage[i] = false;
+						hide_over = false;
 					}
 				}
 			}
@@ -903,6 +923,9 @@ var matrix = {
 			$('#scroll_content .content_item').height(matrix.cell_height);
 			$('#scroll_content .content_item').width(matrix.cell_width);
 			$('#scroll_content .content_item').css({'padding' : matrix.cell_padding });
+			if (hide_over) {
+				$('#matrix_load').hide();
+			}
 		}
 	},
 	// выполнения запроса новых событий
@@ -938,7 +961,7 @@ var matrix = {
 				}
 			} 
 			// делаем запрос
-			$.post('?aa=bb',{'method':'get_events', 'tree':matrix.tree, 'sp':get_sp, 'type': type, 'cameras': cameras}, function(data) {
+			$.post(WwwPrefix+'/offline/gallery.php',{'method':'get_events', 'tree':matrix.tree, 'sp':get_sp, 'type': type, 'cameras': cameras}, function(data) {
 				var i = get_sp;
 				
 				// обновляем кеш
@@ -988,12 +1011,14 @@ var matrix = {
 				$('#scroll_content').html(html);
 				// проверяем какие изображения есть в кеше браузера, а какаие надо загрузить
 				var ci = i + matrix.count_column;
+				var hide_over = true;
 				for(i; i<=ci; i++) {
 					if (typeof( matrix.events[i]) != 'undefined') {
 						if (typeof( matrix.events[i].image_chache) != 'undefined' && matrix.events[i].image_chache) {
 							loadimage[i] = true;
 						} else {
 							loadimage[i] = false;
+							hide_over = false;
 						}
 					}
 				}
@@ -1011,12 +1036,15 @@ var matrix = {
 				$('#scroll_content .content_item').css({'padding' : matrix.cell_padding });
 				// устанавливаем флаг, что запрос выполнился
 				matrix.send_query = false;
-				
+				if (hide_over) {
+					$('#matrix_load').hide();
+				}
 			});
 		}
 	},
 	// постройка матрицы временного диапазона
 	build: function(){
+		$('#matrix_load').show();
 		matrix.cur_count_item = 0;
 		if (typeof( matrix.curent_tree_events[matrix.tree]) != 'undefined') {
 			// обновляем статистику		

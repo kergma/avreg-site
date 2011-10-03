@@ -162,6 +162,7 @@ var MediaUrlPref = WwwPrefix + MediaAlias + '\/';
 
 // формирование глобального объекта перевода
 var lang = {
+		
 		all : '<?php print $strall; ?>',
 		count_files: '<?php print $strcount_files; ?>',	
 		size_files: '<?php print $strsize_files; ?>',	
@@ -171,7 +172,8 @@ var lang = {
 		size: '<?php print $strsize; ?>',	
 		WH: '<?php print $strWH; ?>',	
 		date: '<?php print $strdate; ?>',	
-		empty_cameras: '<?php print $strempty_cameras; ?>'
+		empty_cameras: '<?php print $strempty_cameras; ?>',
+		ajax_timeout : '<?php print $strajax_timeout; ?>'	
 	};
 	// обработка размера файлов
 var units = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];

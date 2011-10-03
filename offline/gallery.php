@@ -20,6 +20,7 @@ if (!isset($_POST['method']) || empty($_POST['method'])) {
 	require_once('gallery/index.php');
 	require_once('../foot.inc.php');
 } else {
+	
 	// Ответ аякс запроса
 	require_once('../lib/config.inc.php');
 	require_once('../lib/my_conn.inc.php');
