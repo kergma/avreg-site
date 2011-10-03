@@ -7,11 +7,16 @@
 				<!-- sidebar inner block -->
 				<div class="block">
 					<div id="type_event">
-						<input type="checkbox" id="image_type" name="type_event" value="image" <?php if (!isset($_COOKIE['event_image']) || $_COOKIE['event_image'] == 'checked') :?>checked="checked" <?php endif;?> />
+						<?php 
+							if (isset($_COOKIE['type_event'])) {
+								$type = explode(',', trim($_COOKIE['type_event'], ','));
+							}
+						?>
+						<input type="checkbox" id="image_type" name="type_event" value="image" <?php if (empty($type) || in_array('i', $type)) :?>checked="checked" <?php endif;?> />
 						<label for="image_type" ><?php print $strimagetype; ?></label><br/>
-						<input type="checkbox" id="video_type" name="type_event" value="video" checked="checked" <?php if (!isset($_COOKIE['event_video']) || $_COOKIE['event_video'] == 'checked') :?>checked="checked" <?php endif;?>/>
+						<input type="checkbox" id="video_type" name="type_event" value="video" <?php if (empty($type) || in_array('v', $type)) :?>checked="checked" <?php endif;?>/>
 						<label for="video_type" ><?php print $strvideotype; ?></label><br/>
-						<input type="checkbox" id="audio_type" name="type_event" value="audio" checked="checked" <?php if (!isset($_COOKIE['event_audio']) || $_COOKIE['event_audio'] == 'checked') :?>checked="checked" <?php endif;?>/>
+						<input type="checkbox" id="audio_type" name="type_event" value="audio" <?php if (empty($type) || in_array('a', $type)) :?>checked="checked" <?php endif;?>/>
 						<label for="audio_type" ><?php print $straudiotype; ?></label>						
 					</div>
 				
@@ -40,11 +45,16 @@
 						
 						<div id="cameras_selector" class="field checkboxes">
 							<div class="options">
+							<?php 
+								if (isset($_COOKIE['cameras'])) {
+									$cameras = explode(',', trim($_COOKIE['cameras'], ','));
+								}
+							?>
 							<?php foreach ($GCP_cams_params as $CAM_NR => $PARAM) :?>
 							
 								<span>
 									<label for="camera_<?php print $CAM_NR;?>"><a href="#<?php print $CAM_NR;?>" class="set_camera_color<?php if (isset($_COOKIE['camera_'.$CAM_NR.'_color']) && !empty($_COOKIE['camera_'.$CAM_NR.'_color']) ): print ' '.$_COOKIE['camera_'.$CAM_NR.'_color'] . '_font'; endif;?>"><?php print $PARAM['text_left'];?></a></label>
-									<input type="checkbox" id="camera_<?php print $CAM_NR;?>" name="cameras" value="<?php print $CAM_NR;?>" <?php if (!isset($_COOKIE['cameras_'.$CAM_NR]) || $_COOKIE['cameras_'.$CAM_NR] == 'checked') :?>checked="checked" <?php endif;?>>
+									<input type="checkbox" id="camera_<?php print $CAM_NR;?>" name="cameras" value="<?php print $CAM_NR;?>" <?php if (empty($cameras) || in_array($CAM_NR, $cameras)) :?>checked="checked" <?php endif;?>>
 								</span>
 							<?php endforeach;?>
 

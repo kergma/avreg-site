@@ -480,17 +480,15 @@ var gallery = {
 			// обработка выбора чекбокса камеры 
 			$('input[name="cameras"]').click(function(){
 				var count = 0;
+				var cook = '';
 				$('input[name="cameras"]').each(function(){
 					if ($(this).attr('checked')) {
 						count++;
+						cook += $(this).val()+',';
 					}
 				});
 				if (count >0 ){
-					if ($(this).attr('checked')) {
-						SetCookie('cameras_'+$(this).val(), 'checked');
-					} else {
-						SetCookie('cameras_'+$(this).val(), '');
-					}
+					SetCookie('cameras',cook);
 					// обновляем дерево
 					self.tree_event.reload();
 				} else {
@@ -503,17 +501,17 @@ var gallery = {
 			// обработка выбора чекбокса типа события 
 			$('input[name="type_event"]').click(function(){
 				var count = 0;
+				var cook = '';
 				$('input[name="type_event"]').each(function(){
 					if ($(this).attr('checked')) {
 						count++;
+						v = $(this).val();
+						cook += v.substr(0,1)+',';
 					}
 				});
 				if (count >0 ){
-					if ($(this).attr('checked')) {
-						SetCookie('event_'+$(this).val(), 'checked');
-					} else {
-						SetCookie('event_'+$(this).val(), '');
-					}
+					SetCookie('type_event', cook);
+					console.log(cook);
 					// обновляем дерево
 					self.tree_event.reload();
 				} else {
@@ -631,11 +629,13 @@ var matrix = {
 		// обновление матрицы
 		matrix.resize();
 		//инициализации елемента масштаба режима миниатюр
-		
 		scale.init();
 		
 		//инициализации елемента масштаба детального режима 
 		scale2.init();
+		
+		
+		
 		// изменить размер матрицы если было изменено размеры окна
 		$(window).bind("resize", function(){
 			matrix.resize();
@@ -1551,16 +1551,16 @@ var scale = {
 	// обновление текущей позиции масштаба и обновление елементов матрицы
 	updateposition : function(sp) {
 		scale.position = sp;
+		SetCookie('scale', sp);
 		matrix.cell_width = matrix.config.min_cell_width + Math.floor((matrix.config.max_cell_width - matrix.config.min_cell_width)*sp/scale.max);
 		matrix.cell_height = matrix.config.min_cell_height + Math.floor((matrix.config.max_cell_height - matrix.config.min_cell_height)*sp/scale.max);
 		matrix.resize();
-		
 	},
 	// обновление елемента масштаба
 	reload : function(width) {
 		var sp = Math.floor(scale.position * width/matrix.config.max_cell_width)
-		if (sp > 100) {
-			sp=100;
+		if (sp > scale.max) {
+			sp=scale.max;
 		}
 		var t = Math.floor(scale.width/scale.max*sp);
 		$(scale.id + ' .scale_polz').css({left:t});
@@ -1599,6 +1599,9 @@ var scale = {
 		$(document).mouseup(function(e){
 			$(document).unbind('mousemove');
 		});
+		if (ReadCookie('scale')) {
+			scale.setposition(ReadCookie('scale'));
+		}
 	}
 }
 
@@ -1636,7 +1639,7 @@ var scale2 = {
 			self.position = sp;
 			$('#image_detail').attr('width', parseInt(self.min_width) + Math.floor((self.max_width - self.min_width)*sp/self.max));
 			$('#image_detail').attr('height', parseInt(self.min_height) + Math.floor((self.max_height - self.min_height)*sp/self.max));
-			
+			SetCookie('scale2', sp);
 		},
 		reload : function() {
 			var self = this;
@@ -1675,7 +1678,9 @@ var scale2 = {
 				$(document).unbind('mousemove');
 			});
 			
-			
+			if (ReadCookie('scale2')) {
+				self.setposition(ReadCookie('scale2'));
+			}
 			
 		}
 	}
