@@ -34,15 +34,16 @@ var gallery = {
 		resize_column : {
 			myWidth: null, // ширина 
 			myHeight: null, // высота
+			res: false,
 			// функция изменения ширины столбцов
 			resize : function(pageX) {
 				var self = this;
-				pageX = parseInt(pageX);
+				
 				$('#sidebar').width(pageX + 2);
-				$('.block','#sidebar').width(pageX-7);
-				$('#statistics','#sidebar').width(pageX-27);
+				$('#sidebar .block').width(pageX-7);
+				$('#sidebar #statistics').width(pageX-27);
 				// fix content width on resize
-				$('#content').css("left",pageX);
+			//	$('#content').css("left",pageX);
 				
 				if( typeof( window.innerWidth ) == 'number' ) {
 					//Non-IE
@@ -55,7 +56,8 @@ var gallery = {
 				}
 				$('#content').width(self.myWidth - $('#sidebar').width() + 2);
 				$('#list_panel').width($('#content').width()-26);
-				SetCookie('resize_column', pageX);
+				
+				
 			},
 			// функция инициализации
 			init: function() {
@@ -64,13 +66,18 @@ var gallery = {
 				$('#statistics','#sidebar').width($('.block','#sidebar').width()-20);
 				// обработка изменение ширины используя вертикальный разделитель
 				$('#handler_vertical').mousedown(function(e){
+					self.res = true;	
 					e.preventDefault();
 					$(document).mousemove(function(e){
 						self.resize(e.pageX);
-						matrix.resize();
 					})
 				});
 				$(document).mouseup(function(e){
+					if (self.res){
+						self.res = false;
+						matrix.resize();
+						SetCookie('resize_column', $('#content').css("left"));
+					}
 					$(document).unbind('mousemove');
 				});
 				// востанавливаем расположения из куков
@@ -1517,7 +1524,7 @@ var scale = {
 	id : '#scale', // ид елемента
 	width: 300, // ширина
 	min : 0, // минимальное значение
-	max : 100, // максимальное значение
+	max : 20, // максимальное значение
 	position : 0, // текущая позиция
 	// уменьшение масштаба
 	click_min : function() {
@@ -1582,7 +1589,9 @@ var scale = {
 				if (left >= 0 && left <= $(scale.id + ' .scale_body').width()- $(scale.id + ' .scale_polz').width()) {
 					$(scale.id + ' .scale_polz').css('left', left);
 					var sp = Math.floor(scale.max/scale.width * left);
-					scale.updateposition(sp);
+					if (sp != scale.position) {
+						scale.updateposition(sp);
+					}
 				}
 			})
 			
@@ -1598,7 +1607,7 @@ var scale2 = {
 		id : '#scale2',
 		width: 300,
 		min : 0,
-		max : 100,
+		max : 20,
 		position : 0,
 		click_min : function() {
 			var self = this;
@@ -1654,7 +1663,10 @@ var scale2 = {
 					if (left >= 0 && left <= $(self.id + ' .scale_body').width()- $(self.id + ' .scale_polz').width()) {
 						$(self.id + ' .scale_polz').css('left', left);
 						var sp = Math.floor(self.max/self.width * left);
-						self.updateposition(sp);
+						
+						if (sp != self.position) {
+							self.updateposition(sp);
+						}
 					}
 				})
 				
