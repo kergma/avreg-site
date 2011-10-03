@@ -7,11 +7,11 @@
 				<!-- sidebar inner block -->
 				<div class="block">
 					<div id="type_event">
-						<input type="radio" id="image_type" name="type_event" value="image" checked="checked" />
+						<input type="checkbox" id="image_type" name="type_event" value="image" <?php if (!isset($_COOKIE['event_image']) || $_COOKIE['event_image'] == 'checked') :?>checked="checked" <?php endif;?> />
 						<label for="image_type" ><?php print $strimagetype; ?></label><br/>
-						<input type="radio" id="video_type" name="type_event" value="video"  />
+						<input type="checkbox" id="video_type" name="type_event" value="video" checked="checked" <?php if (!isset($_COOKIE['event_video']) || $_COOKIE['event_video'] == 'checked') :?>checked="checked" <?php endif;?>/>
 						<label for="video_type" ><?php print $strvideotype; ?></label><br/>
-						<input type="radio" id="audio_type" name="type_event" value="audio"/>
+						<input type="checkbox" id="audio_type" name="type_event" value="audio" checked="checked" <?php if (!isset($_COOKIE['event_audio']) || $_COOKIE['event_audio'] == 'checked') :?>checked="checked" <?php endif;?>/>
 						<label for="audio_type" ><?php print $straudiotype; ?></label>						
 					</div>
 				
@@ -173,6 +173,7 @@ var lang = {
 		WH: '<?php print $strWH; ?>',	
 		date: '<?php print $strdate; ?>',	
 		empty_cameras: '<?php print $strempty_cameras; ?>',
+		empty_event: '<?php print $strempty_event; ?>',
 		ajax_timeout : '<?php print $strajax_timeout; ?>'	
 	};
 	// обработка размера файлов

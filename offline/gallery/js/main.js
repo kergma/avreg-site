@@ -102,6 +102,7 @@ var gallery = {
 						});
 					}
 				});
+				
 				// js кеш нового дерева
 				matrix.curent_tree_events = {
 						all : {
@@ -490,6 +491,31 @@ var gallery = {
 				}
 			});
 			
+			// обработка выбора чекбокса типа события 
+			$('input[name="type_event"]').click(function(){
+				var count = 0;
+				$('input[name="type_event"]').each(function(){
+					if ($(this).attr('checked')) {
+						count++;
+					}
+				});
+				if (count >0 ){
+					if ($(this).attr('checked')) {
+						SetCookie('event_'+$(this).val(), 'checked');
+					} else {
+						SetCookie('event_'+$(this).val(), '');
+					}
+					// обновляем дерево
+					self.tree_event.reload();
+				} else {
+					// не дадим пользователю снять последний чекбокс
+					$(this).attr('checked', 'checked');
+					alert(lang.empty_event);
+				}
+			});
+			
+			
+			
 			// инициализация изменения размеров столбцов
 			self.resize_column.init();
 			
@@ -844,6 +870,7 @@ var matrix = {
 		img.src = MediaUrlPref + matrix.events[el][2];
 
 	},
+	
 	// обовление матрицы
 	update : function(sp) {
 		$('#matrix_load').show();
@@ -869,21 +896,31 @@ var matrix = {
 			for (var i = sp; i < sp+ matrix.cell_count; i++) {
 				if (typeof( matrix.events[i]) != 'undefined') {
 					value = matrix.events[i];
+					
 					active = i == matrix.num ? ' active' : '';
 					camera_class = ReadCookie('camera_'+value[5]+'_color');
 					if (camera_class != '') {
 						camera_class = ' '+camera_class;
 					}
 					html += '<div id="cell_'+i+'" class="content_item show'+active+' camera_'+value[5]+' '+camera_class+'">';
-					if (typeof( matrix.events[i].image_chache) != 'undefined' && matrix.events[i].image_chache) {
-						html += '<div class="img_block"><a href="#cell_'+i+'"><img src="'+MediaUrlPref + matrix.events[i][2]+'" /></a></div>';
-						loadimage[i] = true;
-						
-					} else {
-						html += '<div class="img_block"><a href="#cell_'+i+'"><img src="" /></a></div>';
-						loadimage[i] = false;
-						
+					
+					if (value[7] == 'image') {
+					
+						if (typeof( value.image_chache) != 'undefined' && value.image_chache) {
+							html += '<div class="img_block"><a href="#cell_'+i+'"><img src="'+MediaUrlPref + value[2]+'" /></a></div>';
+							loadimage[i] = true;
+							
+						} else {
+							html += '<div class="img_block"><a href="#cell_'+i+'"><img src="" /></a></div>';
+							loadimage[i] = false;
+							
+						}
+					} else if (value[7] == 'video') {
+						html += '<div class="img_block">'+value[2]+'</div>';
+					} else if (value[7] == 'audio') {
+						html += '<div class="img_block">'+value[2]+'</div>';
 					}
+					
 					html += '<div class="info_block"';
 					if ($('#info').attr('checked')) {
 						html += ' style="display:block;"';
@@ -940,17 +977,17 @@ var matrix = {
 			var i = 0;
 			$('input[name="type_event"]').each(function(){
 				if ($(this).attr('checked')) {
-					type = $(this).val();
-					
-					$('input[name="cameras"]').each(function(){
-						if ($(this).attr('checked')) {
-							cameras += $(this).val()+',';
-							variable[i] =  $(this).val();
-							i++;
-						}
-					});
+					type += $(this).val()+',';
 				}
 			});
+			$('input[name="cameras"]').each(function(){
+				if ($(this).attr('checked')) {
+					cameras += $(this).val()+',';
+					variable[i] =  $(this).val();
+					i++;
+				}
+			});
+			
 			// определяем с какой позиции загружать события
 			var get_sp = sp;
 			if (matrix.select_node == 'left' ) {
@@ -986,15 +1023,24 @@ var matrix = {
 						camera_class = ' '+camera_class;
 					}
 					html += '<div id="cell_'+i+'" class="content_item show'+active+' camera_'+value[5]+' '+camera_class+'">';
-					if (typeof( matrix.events[i].image_chache) != 'undefined' && matrix.events[i].image_chache) {
-						html += '<div class="img_block"><a href="#cell_'+i+'"><img src="'+MediaUrlPref + matrix.events[i][2]+'" /></a></div>';
-						loadimage[i] = true;
+					
+					if (value[7] == 'image') {
 						
-					} else {
-						html += '<div class="img_block"><a href="#cell_'+i+'"><img src="" /></a></div>';
-						loadimage[i] = false;
-						
+						if (typeof( value.image_chache) != 'undefined' && value.image_chache) {
+							html += '<div class="img_block"><a href="#cell_'+i+'"><img src="'+MediaUrlPref + value[2]+'" /></a></div>';
+							loadimage[i] = true;
+							
+						} else {
+							html += '<div class="img_block"><a href="#cell_'+i+'"><img src="" /></a></div>';
+							loadimage[i] = false;
+							
+						}
+					} else if (value[7] == 'video') {
+						html += '<div class="img_block">'+value[2]+'</div>';
+					} else if (value[7] == 'audio') {
+						html += '<div class="img_block">'+value[2]+'</div>';
 					}
+					
 					html += '<div class="info_block"';
 					if ($('#info').attr('checked')) {
 						html += ' style="display:block;"';
@@ -1058,30 +1104,28 @@ var matrix = {
 		}
 		
 		// критерии просмотра: тип, камеры
-		var variablestr = '';
 		var variable = [];
+		var type = [];
 		var i = 0;
 		$('input[name="type_event"]').each(function(){
 			if ($(this).attr('checked')) {
-				var type = $(this).val();
-				variablestr += '&type='+$(this).val();
-				$('input[name="cameras"]').each(function(){
-					if ($(this).attr('checked')) {
-						variablestr += '&cameras[]='+$(this).val();
-						variable[i] =  $(this).val();
-						i++;
-					}
-				});
-				
+				type[i] = $(this).val();
+				i++;
 			}
 		});
-
+		var i = 0;
+		$('input[name="cameras"]').each(function(){
+			if ($(this).attr('checked')) {
+				variable[i] =  $(this).val();
+				i++;
+			}
+		});
 		
 		matrix.events = {};
 		var count_events = 0;
 		// заполняем кеш матрицы елементами из общего кеша
 		$.each(matrix.all_events, function( i,value) {
-			if ($.inArray(value[5], variable) != -1 && (matrix.tree == 'all' || matrix.tree == value[0].substr(0, matrix.tree.length))) {
+			if ($.inArray(value[7], type) != -1 && $.inArray(value[5], variable) != -1 && (matrix.tree == 'all' || matrix.tree == value[0].substr(0, matrix.tree.length))) {
 				matrix.events[count_events] = value;
 				count_events++;
 			}

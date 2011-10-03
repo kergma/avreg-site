@@ -30,10 +30,24 @@ class Gallery {
     		$cameras = trim($param['cameras'], ',');
     		$param['cameras'] = explode(",", $cameras);
  
-	    	$query = "SELECT DATE_FORMAT(DT1, '%Y_%m_%d_%H')  as date, DT1, EVT_CONT as PATH, U16_2 as HEIGHT, U16_1 as WIDTH, EVENTS.CAM_NR, FILESZ_KB";
+    		$type = explode(",", trim($param['type'], ','));
+    		
+	    	$query = "SELECT DATE_FORMAT(DT1, '%Y_%m_%d_%H'), DT1, EVT_CONT, U16_2, U16_1, CAM_NR, FILESZ_KB, EVT_ID";
 	    	$query .= ' FROM EVENTS';
-	    	// Только картинки
-	    	$query .= ' WHERE EVT_ID in (15,16,17,18,19,20,21)';
+	    	// картинки
+	    	$EVT_ID = array();
+	    	if (in_array('image', $type)) {
+	    		$EVT_ID = array_merge($EVT_ID, array(15,16,17,18,19,20,21));
+	    	}
+	    	// видео
+    		if (in_array('video', $type)) {
+    			$EVT_ID = array_merge($EVT_ID, array(23));
+	    	}
+	    	// аудио
+    		if (in_array('audio', $type)) {
+    			$EVT_ID = array_merge($EVT_ID, array(32));
+	    	}
+	    	$query .= ' WHERE EVT_ID in ('. implode(",", $EVT_ID) .')';
 			// ТОлько с камер, что мы просили	    	
 	    	$query .= ' AND EVENTS.CAM_NR in ('.$cameras.')';
 	    	// Только с камер, которые разрешены пользователю
@@ -65,6 +79,13 @@ class Gallery {
 	    	while ($line = mysql_fetch_array($result, MYSQL_NUM)) {
 	    		// обработка размера файла
 	    		$line[6] = filesizeHuman($line[6]);
+	    		if (in_array((int)$line[7], array(15,16,17,18,19,20,21))) {
+	    			$line[7] = 'image';
+	    		} else if ((int)$line[7] == 23 ) {
+	    			$line[7] = 'video';
+	    		} else if ((int)$line[7] == 32 ) {
+	    			$line[7] = 'audio';
+	    		}
 	    		// формирование уникального индекса, для работы кеша в браузере пользователя
 	    		$events[str_replace(array('/', '.'),'_',$line[5].'_'.$line[2])] = $line;
 	    	}
@@ -81,14 +102,24 @@ class Gallery {
     	global $GCP_cams_params;
     	foreach ($GCP_cams_params as $CAM_NR => $PARAM) {
     		// подсчет количества
-    		$query .= ', SUM(IF(CAM_NR = '.$CAM_NR.', 1,0)) as image_'.$CAM_NR.'_count';
+    		$query .= ', SUM(IF(CAM_NR = '.$CAM_NR.' AND EVT_ID in (15,16,17,18,19,20,21), 1,0)) as image_'.$CAM_NR.'_count';
     		// подсчет размера
-    		$query .= ', SUM(IF(CAM_NR = '.$CAM_NR.', FILESZ_KB,0)) as image_'.$CAM_NR.'_size';
+    		$query .= ', SUM(IF(CAM_NR = '.$CAM_NR.' AND EVT_ID in (15,16,17,18,19,20,21), FILESZ_KB,0)) as image_'.$CAM_NR.'_size';
+    		
+    		 // подсчет количества
+    		$query .= ', SUM(IF(CAM_NR = '.$CAM_NR.' AND EVT_ID in (23), 1,0)) as video_'.$CAM_NR.'_count';
+    		// подсчет размера
+    		$query .= ', SUM(IF(CAM_NR = '.$CAM_NR.' AND EVT_ID in (23), FILESZ_KB,0)) as video_'.$CAM_NR.'_size';
+ 
+    		  		// подсчет количества
+    		$query .= ', SUM(IF(CAM_NR = '.$CAM_NR.' AND EVT_ID in (32), 1,0)) as audio_'.$CAM_NR.'_count';
+    		// подсчет размера
+    		$query .= ', SUM(IF(CAM_NR = '.$CAM_NR.' AND EVT_ID in (32), FILESZ_KB,0)) as audio_'.$CAM_NR.'_size';
     	}
     	
     	$query .= ' FROM EVENTS';
     	// только изображения
-    	$query .= ' WHERE EVT_ID in (15,16,17,18,19,20,21)';
+    	$query .= ' WHERE EVT_ID in (15,16,17,18,19,20,21,23,32)';
     	// групировать и сортировать по дате
     	$query .= ' GROUP BY date ORDER BY YEAR(DT1) DESC, DT1 ASC';
     	//Выполнение запроса
@@ -101,6 +132,10 @@ class Gallery {
     		foreach ($GCP_cams_params as $CAM_NR => $PARAM) {
     			$count += $v['image_'.$CAM_NR.'_count'];
     			$size += $v['image_'.$CAM_NR.'_size'];
+    			$count += $v['video_'.$CAM_NR.'_count'];
+    			$size += $v['video_'.$CAM_NR.'_size'];
+    			$count += $v['audio_'.$CAM_NR.'_count'];
+    			$size += $v['audio_'.$CAM_NR.'_size'];
     			
     		}
     		if (empty($count) || empty($size)) {
