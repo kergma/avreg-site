@@ -239,7 +239,6 @@ var gallery = {
 				if (strcook) {
 					objcook = $.parseJSON(strcook);
 				}
-				console.log(objcook);
 				return objcook;
 			},
 			setobject : function (objcook) {

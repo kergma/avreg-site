@@ -8,8 +8,8 @@
 				<div class="block">
 					<div id="type_event">
 						<?php 
-							if (isset($_COOKIE['type_event'])) {
-								$type = explode(',', trim($_COOKIE['type_event'], ','));
+							if (isset($cookies['type_event'])) {
+								$type = explode(',', trim($cookies['type_event'], ','));
 							}
 						?>
 						<input type="checkbox" id="image_type" name="type_event" value="image" <?php if (empty($type) || in_array('i', $type)) :?>checked="checked" <?php endif;?> />
@@ -46,14 +46,14 @@
 						<div id="cameras_selector" class="field checkboxes">
 							<div class="options">
 							<?php 
-								if (isset($_COOKIE['cameras'])) {
-									$cameras = explode(',', trim($_COOKIE['cameras'], ','));
+								if (isset($cookies['cameras'])) {
+									$cameras = explode(',', trim($cookies['cameras'], ','));
 								}
 							?>
 							<?php foreach ($GCP_cams_params as $CAM_NR => $PARAM) :?>
 							
 								<span>
-									<label for="camera_<?php print $CAM_NR;?>"><a href="#<?php print $CAM_NR;?>" class="set_camera_color<?php if (isset($_COOKIE['camera_'.$CAM_NR.'_color']) && !empty($_COOKIE['camera_'.$CAM_NR.'_color']) ): print ' '.$_COOKIE['camera_'.$CAM_NR.'_color'] . '_font'; endif;?>"><?php print $PARAM['text_left'];?></a></label>
+									<label for="camera_<?php print $CAM_NR;?>"><a href="#<?php print $CAM_NR;?>" class="set_camera_color<?php if (isset($cookies['camera_'.$CAM_NR.'_color']) && !empty($cookies['camera_'.$CAM_NR.'_color']) ): print ' '.$cookies['camera_'.$CAM_NR.'_color'] . '_font'; endif;?>"><?php print $PARAM['text_left'];?></a></label>
 									<input type="checkbox" id="camera_<?php print $CAM_NR;?>" name="cameras" value="<?php print $CAM_NR;?>" <?php if (empty($cameras) || in_array($CAM_NR, $cameras)) :?>checked="checked" <?php endif;?>>
 								</span>
 							<?php endforeach;?>
@@ -84,11 +84,11 @@
 				
 					<div id="toolbar" >
 						<div class="propotion controls">
-								<input type="checkbox" id="proportion" name="proportion" value="1" <?php if (isset($_COOKIE['proportion']) && $_COOKIE['proportion'] == 'checked') :?>checked="checked" <?php endif;?>>
+								<input type="checkbox" id="proportion" name="proportion" value="1" <?php if (isset($cookies['proportion']) && $cookies['proportion'] == 'checked') :?>checked="checked" <?php endif;?>>
 								<label for="proportion"><?php print $strproportion; ?></label>
 						</div>
 						<div class="event_info preview controls">
-								<input type="checkbox" id="info" name="info" value="1" <?php if (!isset($_COOKIE['info']) || $_COOKIE['info'] == 'checked') :?>checked="checked" <?php endif;?>>
+								<input type="checkbox" id="info" name="info" value="1" <?php if (!isset($cookies['info']) || $cookies['info'] == 'checked') :?>checked="checked" <?php endif;?>>
 								<label for="info"><?php print $strinfo; ?></label>
 						</div>
 						<div  id="scale" class="preview controls">
