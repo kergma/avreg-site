@@ -732,7 +732,8 @@ var matrix = {
 		min_cell_width : 192, // минимальная ширина ячейки
 		min_cell_height : 192, // минимальная высота ячейки
 		max_cell_width: 0,  // максимальная ширина ячейки
-		max_cell_height: 0  // максимальная высота ячейки
+		max_cell_height: 0,  // максимальная высота ячейки
+		event_limit : 20000
 	},
 	tree: 'all', // текущий временной диапазон
 	height: 0, // текущая высота матрицы
@@ -1061,7 +1062,7 @@ var matrix = {
 		img.src = MediaUrlPref + matrix.events[el][2];
 
 	},
-	
+
 	// обовление матрицы
 	update : function(sp) {
 		$('#matrix_load').show();
@@ -1070,14 +1071,29 @@ var matrix = {
 		var i = sp;
 		var active = '';
 		var get = false;
-		// происходит проверка, есть ли необходимые елементы в кеше
+		// чистим кэш
+		var aa = 0;
+		$.each(matrix.events, function( i,value) {
+			aa++;
+		});
 		
+		var dev = aa - matrix.config.event_limit;
+		if (dev > 0) {
+			$.each(matrix.events, function( i,value) {
+				delete matrix.events[i];
+				dev--;
+				if (dev <= 0) {
+					 return false;
+				}
+			});
+		}
+			
+		// происходит проверка, есть ли необходимые елементы в кеше
 		var count_events = matrix.cell_count > matrix.curent_tree_events[matrix.tree].count ? matrix.curent_tree_events[matrix.tree].count : matrix.cell_count;
 		for (var i = sp; i < sp + count_events; i++) {
 			if (typeof( matrix.events[i]) == 'undefined') {
 				get = true;
 				break;
-				
 			}
 		}
 		if (get) {
@@ -1317,13 +1333,30 @@ var matrix = {
 		
 		matrix.events = {};
 		var count_events = 0;
+		var all_count_events = 0;
+		var me = [];
 		// заполняем кеш матрицы елементами из общего кеша
 		$.each(matrix.all_events, function( i,value) {
 			if ($.inArray(value[7], type) != -1 && $.inArray(value[5], variable) != -1 && (matrix.tree == 'all' || matrix.tree == value[0].substr(0, matrix.tree.length))) {
 				matrix.events[count_events] = value;
+				me[count_events] = i;
 				count_events++;
 			}
+			all_count_events++;
 		});
+		
+		var dev = all_count_events - matrix.config.event_limit;
+		if (dev > 0) {
+			$.each(matrix.all_events, function( i,value) {
+				if ($.inArray(i, me) == -1) {
+					delete matrix.all_events[i];
+					dev--;
+					if (dev <= 0) {
+						 return false;
+					}
+				}
+			});
+		}
 		
 		// если идет переход вверх по дереву, то показываем самый последние елементы в матрице нового диапазона
 		if (matrix.select_node == 'left') {

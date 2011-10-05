@@ -202,6 +202,7 @@ $(function(){
 	var conf = {
 			matrix : {
 				limit : <?php print $conf['gallery-limit'];?>,
+				event_limit : <?php print isset($conf['gallery-cache_event_limit']) ? $conf['gallery-cache_event_limit'] : 20000;?>,
 				min_cell_width : <?php print $conf['gallery-min_cell_width'];?> ,
 				min_cell_height : <?php print $conf['gallery-min_cell_height'];?> 
 			}
