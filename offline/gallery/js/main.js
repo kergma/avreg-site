@@ -327,13 +327,14 @@ var gallery = {
 						var year = e[0];
 						var month = e[1];
 						var day = e[2];
+					
 						// определяем самый первый диапазон для всего дерева
 						if (ii == 0) {
-							matrix.curent_tree_events['all'].from = e[3]+':00 ' + e[2] + ' ' + monthNames[parseInt(e[1])]+ ' ' + e[0];
+							matrix.curent_tree_events['all'].from = e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0];
 							ii++;
 						}
 						// обновляем самы последний диапазон для всего дерева
-						matrix.curent_tree_events['all'].to = e[3]+':00 ' + e[2] + ' ' + monthNames[parseInt(e[1])]+ ' ' + e[0];
+						matrix.curent_tree_events['all'].to = e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0];
 						// если есть предыдущее событие
 						if (old_value != false) {
 							var o = old_value.split('_');
@@ -369,8 +370,8 @@ var gallery = {
 							matrix.curent_tree_events[e[0]] = {
 									size : size,
 									count : count,
-									from : e[3]+':00 ' + e[2] + ' ' + monthNames[parseInt(e[1])]+ ' ' + e[0],
-									to : e[3]+':00 ' + e[2] + ' ' + monthNames[parseInt(e[1])]+ ' ' + e[0],
+									from : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
+									to : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
 									prev : o0
 							};
 							// строим дерево
@@ -387,12 +388,12 @@ var gallery = {
 							matrix.curent_tree_events[e[0]+'_'+e[1]] = {
 									size : size,
 									count : count,
-									from : e[3]+':00 ' + e[2] + ' ' + monthNames[parseInt(e[1])]+ ' ' + e[0],
-									to : e[3]+':00 ' + e[2] + ' ' + monthNames[parseInt(e[1])]+ ' ' + e[0],
+									from : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
+									to : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
 									prev: o1
 							};
 							// строим дерево
-							html += '<li id="tree_'+e[0]+'_'+e[1]+'"><a href="#">'+monthNames[parseInt(e[1])]+'</a><ul>';
+							html += '<li id="tree_'+e[0]+'_'+e[1]+'"><a href="#">'+monthNames[e[1].replace('0','')]+'</a><ul>';
 						} else {
 							//если есть то обновляем размер и количество
 							matrix.curent_tree_events[e[0]+'_'+e[1]].size += size;
@@ -405,8 +406,8 @@ var gallery = {
 							matrix.curent_tree_events[e[0]+'_'+e[1]+'_'+e[2]] = {
 									size : size,
 									count : count,
-									from : e[3]+':00 ' + e[2] + ' ' + monthNames[parseInt(e[1])]+ ' ' + e[0],
-									to : e[3]+':00 ' + e[2] + ' ' + monthNames[parseInt(e[1])]+ ' ' + e[0],
+									from : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
+									to : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
 									prev : o2
 							};
 							// строим дерево
@@ -421,8 +422,8 @@ var gallery = {
 						matrix.curent_tree_events[key] = {
 								size : size,
 								count : count,
-								from : e[3]+':00 ' + e[2] + ' ' + monthNames[parseInt(e[1])]+ ' ' + e[0],
-								to : e[3]+':00 ' + e[2] + ' ' + monthNames[parseInt(e[1])]+ ' ' + e[0],
+								from : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
+								to : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
 								next : false,
 								prev : old_value
 						};
