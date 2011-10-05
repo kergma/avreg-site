@@ -1071,7 +1071,9 @@ var matrix = {
 		var active = '';
 		var get = false;
 		// происходит проверка, есть ли необходимые елементы в кеше
-		for (var i = sp; i < sp + matrix.cell_count; i++) {
+		
+		var count_events = matrix.cell_count > matrix.curent_tree_events[matrix.tree].count ? matrix.curent_tree_events[matrix.tree].count : matrix.cell_count;
+		for (var i = sp; i < sp + count_events; i++) {
 			if (typeof( matrix.events[i]) == 'undefined') {
 				get = true;
 				break;
@@ -1331,7 +1333,7 @@ var matrix = {
 		}
 		
 		
-		if(count_events < matrix.cell_count) {
+		if(count_events < matrix.cell_count && count_events < matrix.curent_tree_events[matrix.tree].count) {
 			// если нет елементов, то выполняем запрос на сервер
 			matrix.get_events(sp);
 		} else {
