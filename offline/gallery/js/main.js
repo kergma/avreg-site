@@ -1,3 +1,139 @@
+    var Base64 = {
+
+    	// private property
+    	_keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+
+    	// public method for encoding
+    	encode : function (input) {
+    		var output = "";
+    		var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+    		var i = 0;
+
+    		input = Base64._utf8_encode(input);
+
+    		while (i < input.length) {
+
+    			chr1 = input.charCodeAt(i++);
+    			chr2 = input.charCodeAt(i++);
+    			chr3 = input.charCodeAt(i++);
+
+    			enc1 = chr1 >> 2;
+    			enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+    			enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+    			enc4 = chr3 & 63;
+
+    			if (isNaN(chr2)) {
+    				enc3 = enc4 = 64;
+    			} else if (isNaN(chr3)) {
+    				enc4 = 64;
+    			}
+
+    			output = output +
+    			this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
+    			this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
+
+    		}
+
+    		return output;
+    	},
+
+    	// public method for decoding
+    	decode : function (input) {
+    		var output = "";
+    		var chr1, chr2, chr3;
+    		var enc1, enc2, enc3, enc4;
+    		var i = 0;
+
+    		input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+
+    		while (i < input.length) {
+
+    			enc1 = this._keyStr.indexOf(input.charAt(i++));
+    			enc2 = this._keyStr.indexOf(input.charAt(i++));
+    			enc3 = this._keyStr.indexOf(input.charAt(i++));
+    			enc4 = this._keyStr.indexOf(input.charAt(i++));
+
+    			chr1 = (enc1 << 2) | (enc2 >> 4);
+    			chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+    			chr3 = ((enc3 & 3) << 6) | enc4;
+
+    			output = output + String.fromCharCode(chr1);
+
+    			if (enc3 != 64) {
+    				output = output + String.fromCharCode(chr2);
+    			}
+    			if (enc4 != 64) {
+    				output = output + String.fromCharCode(chr3);
+    			}
+
+    		}
+
+    		output = Base64._utf8_decode(output);
+
+    		return output;
+
+    	},
+
+    	// private method for UTF-8 encoding
+    	_utf8_encode : function (string) {
+    		string = string.replace(/\r\n/g,"\n");
+    		var utftext = "";
+
+    		for (var n = 0; n < string.length; n++) {
+
+    			var c = string.charCodeAt(n);
+
+    			if (c < 128) {
+    				utftext += String.fromCharCode(c);
+    			}
+    			else if((c > 127) && (c < 2048)) {
+    				utftext += String.fromCharCode((c >> 6) | 192);
+    				utftext += String.fromCharCode((c & 63) | 128);
+    			}
+    			else {
+    				utftext += String.fromCharCode((c >> 12) | 224);
+    				utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+    				utftext += String.fromCharCode((c & 63) | 128);
+    			}
+
+    		}
+
+    		return utftext;
+    	},
+
+    	// private method for UTF-8 decoding
+    	_utf8_decode : function (utftext) {
+    		var string = "";
+    		var i = 0;
+    		var c = c1 = c2 = 0;
+
+    		while ( i < utftext.length ) {
+
+    			c = utftext.charCodeAt(i);
+
+    			if (c < 128) {
+    				string += String.fromCharCode(c);
+    				i++;
+    			}
+    			else if((c > 191) && (c < 224)) {
+    				c2 = utftext.charCodeAt(i+1);
+    				string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+    				i += 2;
+    			}
+    			else {
+    				c2 = utftext.charCodeAt(i+1);
+    				c3 = utftext.charCodeAt(i+2);
+    				string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+    				i += 3;
+    			}
+
+    		}
+
+    		return string;
+    	}
+
+    }
+
 
 
 // глобальные настройки аякс запроса
@@ -76,16 +212,61 @@ var gallery = {
 					if (self.res){
 						self.res = false;
 						matrix.resize();
-						SetCookie('resize_column', $('#content').css("left"));
+						gallery.cookie.set('resize_column', $('#sidebar').width()-2);
 					}
 					$(document).unbind('mousemove');
 				});
 				// востанавливаем расположения из куков
-				pageX = ReadCookie('resize_column');
+				pageX = parseInt(gallery.cookie.get('resize_column'));
+				
 				if (pageX) {
 					self.resize(pageX);
 				}
 				
+			}
+		},
+		cookie : {
+			config: {
+				"days": "30",
+				"path": "/avreg/offline/gallery.php",
+				"name" : "gallery"
+			},
+			getobject : function() {
+				var self = this;
+				var strcook = Base64.decode(ReadCookie(self.config.name));
+				
+				var objcook = {};
+				if (strcook) {
+					objcook = $.parseJSON(strcook);
+				}
+				console.log(objcook);
+				return objcook;
+			},
+			setobject : function (objcook) {
+				var self = this;
+				var strcook = Base64.encode(JSON.stringify(objcook));
+				SetCookie(self.config.name, strcook, self.config.days, self.config.path);
+			},
+			set : function (name, value) {
+				var self = this;
+				var objcook = self.getobject();
+				objcook[name] = value;
+				self.setobject(objcook);
+			},
+			get : function (name) {
+				var self = this;
+				var objcook = self.getobject();
+				if (typeof(objcook[name]) != 'undefined' ) {
+					return objcook[name];
+				}
+				return false;
+			},
+			init: function(config) {
+				var self = this;
+				// обновление настроек
+				if (config && typeof(config) == 'object') {
+				    $.extend(self.config, config);
+				}
 			}
 		},
 		// объект построения дерева событий
@@ -343,9 +524,9 @@ var gallery = {
 			select : function() {
 				var self = this;
 				// читаем старый цвет камеры
-				old_camera_collor = ReadCookie('camera_'+self.camera_id+'_color');
+				old_camera_collor = gallery.cookie.get('camera_'+self.camera_id+'_color');
 				// записываем новый цвет камеры
-				SetCookie('camera_'+self.camera_id+'_color',self.camera_collor);
+				gallery.cookie.set('camera_'+self.camera_id+'_color',self.camera_collor);
 				//удаляем старый цвет камеры 
 				if (old_camera_collor != '') {
 					$('.camera_'+self.camera_id).removeClass(old_camera_collor);
@@ -402,7 +583,7 @@ var gallery = {
 				var self = this;
 				// запомнить выбор если выбрана галочка
 				if ($('#checknextwindow').attr('checked')) {
-					SetCookie('checknextwindow','yes');
+					gallery.cookie.set('checknextwindow','yes');
 				}
 				
 				if (self.mode == 'left') {
@@ -441,7 +622,7 @@ var gallery = {
 				// обработка события если пользователь нажал нет
 				$('#nextwindow .no').click(function(){
 					if ($('#checknextwindow').attr('checked')) {
-						SetCookie('checknextwindow','no');
+						gallery.cookie.set('checknextwindow','no');
 					}
 					self.close();
 				});
@@ -459,6 +640,8 @@ var gallery = {
 			}
 			
 			$('#matrix_load').show();
+			
+			self.cookie.init({path:WwwPrefix+'/offline/gallery.php'});
 			
 			// организация увеличение размера списка камер
 			if ($('#win_top').height() > 70) {
@@ -488,7 +671,7 @@ var gallery = {
 					}
 				});
 				if (count >0 ){
-					SetCookie('cameras',cook);
+					gallery.cookie.set('cameras',cook);
 					// обновляем дерево
 					self.tree_event.reload();
 				} else {
@@ -510,8 +693,7 @@ var gallery = {
 					}
 				});
 				if (count >0 ){
-					SetCookie('type_event', cook);
-					console.log(cook);
+					gallery.cookie.set('type_event', cook);
 					// обновляем дерево
 					self.tree_event.reload();
 				} else {
@@ -604,20 +786,20 @@ var matrix = {
 			});
 			matrix.loaddetailsrc();
 			if ($(this).attr('checked')) {
-				SetCookie('proportion', 'checked');
+				gallery.cookie.set('proportion', 'checked');
 			} else {
-				SetCookie('proportion', '');
+				gallery.cookie.set('proportion', '');
 			}
 		});
 			
 		// обработка чекбокса показывать информацию
 		$('#info').click(function(){
 			if ($(this).attr('checked')) {
-				SetCookie('info', 'checked');
+				gallery.cookie.set('info', 'checked');
 				matrix.thumb_height -= 24;
 				$('.content_item .info_block').show();
 			} else {
-				SetCookie('info', '');
+				gallery.cookie.set('info', '');
 				matrix.thumb_height += 24;
 				$('.content_item .info_block').hide();
 			}
@@ -907,7 +1089,7 @@ var matrix = {
 					value = matrix.events[i];
 					
 					active = i == matrix.num ? ' active' : '';
-					camera_class = ReadCookie('camera_'+value[5]+'_color');
+					camera_class = gallery.cookie.get('camera_'+value[5]+'_color');
 					if (camera_class != '') {
 						camera_class = ' '+camera_class;
 					}
@@ -1027,7 +1209,7 @@ var matrix = {
 					if (typeof( matrix.events[i]) != 'undefined') {
 					value = matrix.events[i];
 					active = i == matrix.num ? ' active' : '';
-					camera_class = ReadCookie('camera_'+value[5]+'_color');
+					camera_class = gallery.cookie.get('camera_'+value[5]+'_color');
 					if (camera_class != '') {
 						camera_class = ' '+camera_class;
 					}
@@ -1282,7 +1464,7 @@ var scroll = {
 					if (matrix.num < 0) {
 						// если вышли за пределы переходим на предыдущий если пользователь согласился
 						if (matrix.curent_tree_events[matrix.tree].prev) {
-							var checknextwindow = ReadCookie('checknextwindow');
+							var checknextwindow = gallery.cookie.get('checknextwindow');
 							if (checknextwindow == 'yes') {
 								prev = matrix.curent_tree_events[matrix.tree].prev;
 								new_num = matrix.curent_tree_events[prev].count - 1;
@@ -1307,7 +1489,7 @@ var scroll = {
 					var sp = scroll.position;
 					if (sp + scroll.matrix_count*scroll.row_count*2 >  scroll.cell_count*scroll.row_count) {
 						if (matrix.curent_tree_events[matrix.tree].next) {
-							var checknextwindow = ReadCookie('checknextwindow');
+							var checknextwindow = gallery.cookie.get('checknextwindow');
 							if (checknextwindow == 'yes') {
 								next = matrix.curent_tree_events[matrix.tree].next;
 								matrix.num = 0;
@@ -1379,7 +1561,7 @@ var scroll = {
 			} else {
 				// если вышли за пределы переходим на предыдущий если пользователь согласился
 				if (matrix.curent_tree_events[matrix.tree].prev) {
-					var checknextwindow = ReadCookie('checknextwindow');
+					var checknextwindow = gallery.cookie.get('checknextwindow');
 					if (checknextwindow == 'yes') {
 						prev = matrix.curent_tree_events[matrix.tree].prev;
 						new_num = matrix.curent_tree_events[prev].count - 1;
@@ -1419,7 +1601,7 @@ var scroll = {
 			} else {
 				// если вышли за пределы переходим на предыдущий если пользователь согласился
 				if (matrix.curent_tree_events[matrix.tree].prev) {
-					var checknextwindow = ReadCookie('checknextwindow');
+					var checknextwindow = gallery.cookie.get('checknextwindow');
 					if (checknextwindow == 'yes') {
 						prev = matrix.curent_tree_events[matrix.tree].prev;
 						new_num = matrix.curent_tree_events[prev].count - 1;
@@ -1457,7 +1639,7 @@ var scroll = {
 				
 			}else {
 				if (matrix.curent_tree_events[matrix.tree].next) {
-					var checknextwindow = ReadCookie('checknextwindow');
+					var checknextwindow = gallery.cookie.get('checknextwindow');
 					if (checknextwindow == 'yes') {
 						next = matrix.curent_tree_events[matrix.tree].next;
 						matrix.num = 0;
@@ -1490,7 +1672,7 @@ var scroll = {
 				}
 			}else {
 				if (matrix.curent_tree_events[matrix.tree].next) {
-					var checknextwindow = ReadCookie('checknextwindow');
+					var checknextwindow = gallery.cookie.get('checknextwindow');
 					if (checknextwindow == 'yes') {
 						next = matrix.curent_tree_events[matrix.tree].next;
 						matrix.num = 0;
@@ -1551,7 +1733,7 @@ var scale = {
 	// обновление текущей позиции масштаба и обновление елементов матрицы
 	updateposition : function(sp) {
 		scale.position = sp;
-		SetCookie('scale', sp);
+		gallery.cookie.set('scale', sp);
 		matrix.cell_width = matrix.config.min_cell_width + Math.floor((matrix.config.max_cell_width - matrix.config.min_cell_width)*sp/scale.max);
 		matrix.cell_height = matrix.config.min_cell_height + Math.floor((matrix.config.max_cell_height - matrix.config.min_cell_height)*sp/scale.max);
 		matrix.resize();
@@ -1599,8 +1781,8 @@ var scale = {
 		$(document).mouseup(function(e){
 			$(document).unbind('mousemove');
 		});
-		if (ReadCookie('scale')) {
-			scale.setposition(ReadCookie('scale'));
+		if (gallery.cookie.get('scale')) {
+			scale.setposition(gallery.cookie.get('scale'));
 		}
 	}
 }
@@ -1639,7 +1821,7 @@ var scale2 = {
 			self.position = sp;
 			$('#image_detail').attr('width', parseInt(self.min_width) + Math.floor((self.max_width - self.min_width)*sp/self.max));
 			$('#image_detail').attr('height', parseInt(self.min_height) + Math.floor((self.max_height - self.min_height)*sp/self.max));
-			SetCookie('scale2', sp);
+			gallery.cookie.set('scale2', sp);
 		},
 		reload : function() {
 			var self = this;
@@ -1678,8 +1860,8 @@ var scale2 = {
 				$(document).unbind('mousemove');
 			});
 			
-			if (ReadCookie('scale2')) {
-				self.setposition(ReadCookie('scale2'));
+			if (gallery.cookie.get('scale2')) {
+				self.setposition(gallery.cookie.get('scale2'));
 			}
 			
 		}
