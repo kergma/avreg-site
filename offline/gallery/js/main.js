@@ -233,7 +233,9 @@ var gallery = {
 			},
 			getobject : function() {
 				var self = this;
-				var strcook = Base64.decode(ReadCookie(self.config.name));
+				var strcook = '';
+				if (ReadCookie(self.config.name))
+					strcook = Base64.decode(ReadCookie(self.config.name));
 				
 				var objcook = {};
 				if (strcook) {
@@ -811,18 +813,23 @@ var matrix = {
 		
 		// обновление матрицы
 		matrix.resize();
-		//инициализации елемента масштаба режима миниатюр
+		//инициализации элемента масштаба режима миниатюр
 		scale.init();
 		
-		//инициализации елемента масштаба детального режима 
+		//инициализации элемента масштаба детального режима 
 		scale2.init();
 		
 		
-		
+		self.res = false
 		// изменить размер матрицы если было изменено размеры окна
 		$(window).bind("resize", function(){
-			matrix.resize();
+		//	console.log($(window).height());
+			clearInterval(self.res);
+			self.res = setTimeout(function() {matrix.resize(); clearInterval(self.res);}, 200) 
+			
 		});
+		
+	
 	},
 	// если включили режим детальный просмотр
 	detail : function() {
@@ -1002,7 +1009,7 @@ var matrix = {
 			$('#image_detail').attr('width', width);
 			$('#image_detail').attr('height', height);
 			
-			// обновляем параметры елемента масштаба
+			// обновляем параметры элемента масштаба
 			scale2.min_width = width;
 			scale2.min_height = height;
 			scale2.max_width = wm;
@@ -1088,7 +1095,7 @@ var matrix = {
 			});
 		}
 			
-		// происходит проверка, есть ли необходимые елементы в кеше
+		// происходит проверка, есть ли необходимые элементы в кеше
 		var count_events = matrix.cell_count > matrix.curent_tree_events[matrix.tree].count ? matrix.curent_tree_events[matrix.tree].count : matrix.cell_count;
 		for (var i = sp; i < sp + count_events; i++) {
 			if (typeof( matrix.events[i]) == 'undefined') {
@@ -1097,10 +1104,10 @@ var matrix = {
 			}
 		}
 		if (get) {
-			// нет необходимых елементов в кеше, делаем запрос
+			// нет необходимых элементов в кеше, делаем запрос
 			matrix.get_events(sp);
 		} else {
-			// все елементы матрицы есть в кеше, строим матрицу
+			// все элементы матрицы есть в кеше, строим матрицу
 			var loadimage = {};
 			for (var i = sp; i < sp+ matrix.cell_count; i++) {
 				if (typeof( matrix.events[i]) != 'undefined') {
@@ -1335,7 +1342,7 @@ var matrix = {
 		var count_events = 0;
 		var all_count_events = 0;
 		var me = [];
-		// заполняем кеш матрицы елементами из общего кеша
+		// заполняем кеш матрицы элементами из общего кеша
 		$.each(matrix.all_events, function( i,value) {
 			if ($.inArray(value[7], type) != -1 && $.inArray(value[5], variable) != -1 && (matrix.tree == 'all' || matrix.tree == value[0].substr(0, matrix.tree.length))) {
 				matrix.events[count_events] = value;
@@ -1358,7 +1365,7 @@ var matrix = {
 			});
 		}
 		
-		// если идет переход вверх по дереву, то показываем самый последние елементы в матрице нового диапазона
+		// если идет переход вверх по дереву, то показываем самый последние элементы в матрице нового диапазона
 		if (matrix.select_node == 'left') {
 			sp = scroll.position;
 		} else {
@@ -1367,20 +1374,20 @@ var matrix = {
 		
 		
 		if(count_events < matrix.cell_count && count_events < matrix.curent_tree_events[matrix.tree].count) {
-			// если нет елементов, то выполняем запрос на сервер
+			// если нет элементов, то выполняем запрос на сервер
 			matrix.get_events(sp);
 		} else {
-			// если есть елементы, то обновляем матрицу
+			// если есть элементы, то обновляем матрицу
 			matrix.update(sp);
 		}
-		//инициализируем елемент скрола
+		//инициализируем элемент скрола
 		scroll.init({height:matrix.height-28, cell_count:Math.ceil(matrix.count_item/matrix.count_column), row_count: matrix.count_column, matrix_count: Math.ceil(matrix.cell_count/matrix.count_column)});
 		matrix.scroll = true;
 	}
 };
-// елемент скрол
+// элемент скрол
 var scroll = {
-		id : '#scroll_v', // ид елемента скрола
+		id : '#scroll_v', // ид элемента скрола
 		height : 100, // высота скрола
 		cell_count : 100, // количество ячеек в скроле
 		row_count : 10, // количество рядов
@@ -1393,7 +1400,7 @@ var scroll = {
 			}
 			// задаем высоту скрола
 			$(scroll.id + ' .scroll_body_v').height(scroll.height);
-			// высчитываем высоту ползунка в зависимости от елементов в матрице и всех елементов в диапазоне 
+			// высчитываем высоту ползунка в зависимости от элементов в матрице и всех элементов в диапазоне 
 			h = Math.floor(scroll.height/scroll.cell_count*scroll.matrix_count);
 			scroll.polzh = 0;
 			if ( h < scroll.min_height) {
@@ -1736,9 +1743,9 @@ var scroll = {
 			matrix.update(sp);
 		}
 };
-// елемент масштаба предварительного просмотра
+// элемент масштаба предварительного просмотра
 var scale = {
-	id : '#scale', // ид елемента
+	id : '#scale', // ид элемента
 	width: 300, // ширина
 	min : 0, // минимальное значение
 	max : 20, // максимальное значение
@@ -1765,7 +1772,7 @@ var scale = {
 		$(scale.id + ' .scale_polz').css({left:t});
 		scale.updateposition(sp);
 	},
-	// обновление текущей позиции масштаба и обновление елементов матрицы
+	// обновление текущей позиции масштаба и обновление элементов матрицы
 	updateposition : function(sp) {
 		scale.position = sp;
 		gallery.cookie.set('scale', sp);
@@ -1773,7 +1780,7 @@ var scale = {
 		matrix.cell_height = matrix.config.min_cell_height + Math.floor((matrix.config.max_cell_height - matrix.config.min_cell_height)*sp/scale.max);
 		matrix.resize();
 	},
-	// обновление елемента масштаба
+	// обновление элемента масштаба
 	reload : function(width) {
 		var sp = Math.floor(scale.position * width/matrix.config.max_cell_width)
 		if (sp > scale.max) {
@@ -1822,7 +1829,7 @@ var scale = {
 	}
 }
 
-// елемент масштаба детального просмотра
+// элемент масштаба детального просмотра
 var scale2 = {
 		id : '#scale2',
 		width: 300,
