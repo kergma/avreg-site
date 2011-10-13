@@ -205,7 +205,8 @@ $(function(){
 				event_limit : <?php print isset($conf['gallery-cache_event_limit']) ? $conf['gallery-cache_event_limit'] : 20000;?>,
 				min_cell_width : <?php print $conf['gallery-min_cell_width'];?> ,
 				min_cell_height : <?php print $conf['gallery-min_cell_height'];?> 
-			}
+			},
+			show_timeout : <?php print isset($conf['gallery-show_timeout']) ? $conf['gallery-show_timeout'] : 1 ;?>
 	};
 
 	// инициализация галереи	

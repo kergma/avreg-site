@@ -151,7 +151,10 @@ $.ajaxSetup({
 		//this; // the options for this ajax request
 	//	console.info('ajax has finished, status: ' + textStatus);
 		if (textStatus == 'timeout') {
-			alert(lang.ajax_timeout);
+			if (gallery.config.show_timeout) {
+				alert(lang.ajax_timeout);
+			}
+			
 			if (typeof( matrix.send_query ) != 'undefined' ) {
 				matrix.send_query = false;
 				$('#matrix_load').hide();
@@ -756,6 +759,7 @@ var matrix = {
 	cur_count_item : 0, // текущее количество загруженных событий
 	send_query: false, // можно ли посылать запросы к базе
 	select_node : false, // можно ли выбирать другой диапазон
+	up: false,
 	init: function(config) {
 		
 		if (config && typeof(config) == 'object') {
@@ -822,10 +826,8 @@ var matrix = {
 		self.res = false
 		// изменить размер матрицы если было изменено размеры окна
 		$(window).bind("resize", function(){
-		//	console.log($(window).height());
 			clearInterval(self.res);
 			self.res = setTimeout(function() {matrix.resize(); clearInterval(self.res);}, 200) 
-			
 		});
 		
 	
@@ -1068,9 +1070,12 @@ var matrix = {
 		img.src = MediaUrlPref + matrix.events[el][2];
 
 	},
-
-	// обовление матрицы
 	update : function(sp) {
+		clearInterval(matrix.up);
+		matrix.up = setTimeout(function() {matrix.update_matrix(sp); clearInterval(matrix.up);}, 200) 
+	},
+	// обовление матрицы
+	update_matrix : function(sp) {
 		$('#matrix_load').show();
 		$('#scroll_content').empty();
 		var html = '';
