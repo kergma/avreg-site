@@ -222,7 +222,6 @@ var gallery = {
 				if (pageX) {
 					self.resize(pageX);
 				}
-				
 			}
 		},
 		cookie : {
@@ -1226,9 +1225,7 @@ var matrix = {
 				// строим матрицу
 				$('#scroll_content').empty();
 				var html = '';
-				var i = sp;
 				var active = '';
-				
 				var loadimage = {};
 				for (var i = sp; i < sp+ matrix.cell_count; i++) {
 					if (typeof( matrix.events[i]) != 'undefined') {
@@ -1664,7 +1661,7 @@ var scroll = {
 		// смещаемся вправо
 		num_right : function() {
 			var new_num = matrix.num + 1;
-			if (new_num < scroll.cell_count*scroll.row_count) {
+			if (new_num < scroll.cell_count*scroll.row_count && new_num < matrix.curent_tree_events[matrix.tree].count) {
 				if (matrix.mode == 'preview') {
 					if (!$('#cell_'+new_num).hasClass('show')){
 						sp = Math.floor(new_num / scroll.row_count) * scroll.row_count;
@@ -1698,7 +1695,7 @@ var scroll = {
 		// смещаемся на ряд ниже
 		num_down : function() {
 			var new_num = matrix.num + scroll.row_count;
-			if (new_num < scroll.cell_count*scroll.row_count) {
+			if (new_num < scroll.cell_count*scroll.row_count && new_num < matrix.curent_tree_events[matrix.tree].count) {
 				if (matrix.mode == 'preview') {
 					if (!$('#cell_'+new_num).hasClass('show')){
 						sp = Math.floor(new_num / scroll.row_count) * scroll.row_count;

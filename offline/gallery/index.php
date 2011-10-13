@@ -209,7 +209,7 @@ $(function(){
 	};
 
 	// инициализация галереи	
-	gallery.init();
+	gallery.init(conf);
 });
 </script>
 		

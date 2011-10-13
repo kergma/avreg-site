@@ -10,7 +10,8 @@ if (!isset($_POST['method']) || empty($_POST['method'])) {
 	// Подключение js скриптов
 	$link_javascripts = array('offline/gallery/js/jquery.jstree.js',
 								'offline/gallery/js/jquery.mousewheel.min.js',
-								'offline/gallery/js/main.js');
+								'offline/gallery/js/main.js',
+								'offline/gallery/js/jquery.keyboard.js');
 	require_once('../head.inc.php');
 	$GCP_query_param_list=array('text_left', 'Hx2');
 	require('../lib/get_cams_params.inc.php');
