@@ -57,7 +57,7 @@
 									<input type="checkbox" id="camera_<?php print $CAM_NR;?>" name="cameras" value="<?php print $CAM_NR;?>" <?php if (empty($cameras) || in_array($CAM_NR, $cameras)) :?>checked="checked" <?php endif;?>>
 								</span>
 							<?php endforeach;?>
-
+							
 							</div>
 							
 						</div>

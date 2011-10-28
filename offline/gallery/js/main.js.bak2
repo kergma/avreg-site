@@ -5,19 +5,19 @@ function Enum() {
 		this[arguments[i]] = parseInt(i);
 		this.allValues.push(arguments[i]);
 	}
-};
+}
 Enum.prototype.values = function() {
 	return this.allValues;
-};
+}
 Enum.prototype.current = function() {
 	return this.currentValue;
-};
+}
 Enum.prototype.next = function() {
 	this.currentValue++;
 	if(this.currentValue==this.allValues.length)
 		this.currentValue = 0;
 	return this.currentValue;
-};
+}
 var Base64 = {
 
     	// private property
@@ -152,7 +152,7 @@ var Base64 = {
     		return string;
     	}
 
-    };
+    }
 
 
 
@@ -183,7 +183,6 @@ $.ajaxSetup({
 
 // основной объект галереи
 var gallery = {
-		treeObject: null,
 		config : {
 			
 		},
@@ -227,7 +226,7 @@ var gallery = {
 					e.preventDefault();
 					$(document).mousemove(function(e){
 						self.resize(e.pageX);
-					});
+					})
 				});
 				$(document).mouseup(function(e){
 					if (self.res){
@@ -428,7 +427,6 @@ var gallery = {
 						// обновляем размер и количество файлов всего дерева
 						matrix.curent_tree_events['all'].size += size;
 						matrix.curent_tree_events['all'].count += count;
-						matrix.curent_tree_events['all'].under = e[0];
 						
 						// если в кеше нет года текущего события, то..
 						if (typeof(matrix.curent_tree_events[e[0]]) == 'undefined' ) {
@@ -438,9 +436,7 @@ var gallery = {
 									count : count,
 									from : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
 									to : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
-									prev : o0,
-									top: 'all',
-									under: e[0]+'_'+e[1]
+									prev : o0
 							};
 							// строим дерево
 							html += '<li id="tree_'+e[0]+'"><a href="#">'+e[0]+'</a><ul>';
@@ -458,9 +454,7 @@ var gallery = {
 									count : count,
 									from : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
 									to : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
-									prev: o1,
-									top: e[0],
-									under: e[0]+'_'+e[1]+'_'+e[2]
+									prev: o1
 							};
 							// строим дерево
 							html += '<li id="tree_'+e[0]+'_'+e[1]+'"><a href="#">'+monthNames[e[1].replace('0','')]+'</a><ul>';
@@ -478,9 +472,7 @@ var gallery = {
 									count : count,
 									from : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
 									to : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
-									prev : o2,
-									top: e[0]+'_'+e[1],
-									under: e[0]+'_'+e[1]+'_'+e[2]+'_'+e[3]
+									prev : o2
 							};
 							// строим дерево
 							html += '<li id="tree_'+e[0]+'_'+e[1]+'_'+e[2]+'"><a href="#">'+e[2]+'</a><ul>';
@@ -497,8 +489,7 @@ var gallery = {
 								from : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
 								to : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
 								next : false,
-								prev : old_value,
-								top: e[0]+'_'+e[1]+'_'+e[2],
+								prev : old_value
 						};
 						// строим дерево
 						html += '<li id="tree_'+key+'"><a href="#">'+e[3]+':00</a>';
@@ -543,26 +534,15 @@ var gallery = {
 						
 						tree = data.rslt.obj.attr("id").replace('tree_', '');
 						
-						if(matrix.keyBoardTree != tree) {
-							matrix.keyBoardTree = tree;
+						// если новый диапазон, перестраиваем матрицу
+						if (matrix.tree != tree) {
+							matrix.tree = tree;
+							matrix.build();
 						}
-						
-						if(keyBoard.boxesEnum.current()!=keyBoard.boxesEnum.TREE) {
-							// если новый диапазон, перестраиваем матрицу
-							if (matrix.tree != tree) {
-								matrix.tree = tree;
-								matrix.keyBoardTree = tree;
-								matrix.build();
-							}
-							// если режим детального просмотра, обновляем картинку
-							if (matrix.mode == 'detail') {
-								matrix.preview();
-							}
+						// если режим детального просмотра, обновляем картинку
+						if (matrix.mode == 'detail') {
+							matrix.preview();
 						}
-
-						$.jstree._focused().set_focus("#tree_"+tree);
-						$("#tree_"+tree).jstree("set_focus");
-						
 					})
 					.bind("loaded.jstree", function (event, data) {
 						$.jstree._focused().select_node(open);
@@ -571,7 +551,7 @@ var gallery = {
 					})
 				.delegate("a", "click", function (event, data) {event.preventDefault();}).show();	
 				
-				gallery.treeObject = $(self.holder);
+				
 				matrix.build();
 			},
 			// инициалзация дерева
@@ -596,6 +576,7 @@ var gallery = {
 			camera_link : '', // ссылка на камеру
 			// показываем окно выбора цвета
 			open: function() {
+				console.log('start');
 				keyBoard.beforeView = keyBoard.view;
 				keyBoard.view = keyBoard.views.colorDialog;
 				$('#overlay').show();
@@ -657,8 +638,6 @@ var gallery = {
 			mode: '', // вверх или вниз по дереву
 			// показ окна
 			open: function(mode) {
-				keyBoard.beforeView = keyBoard.view;
-				keyBoard.view = keyBoard.views.chooseDialog;
 				var self = this;
 				self.mode = mode;
 				$('#overlay').show();
@@ -666,7 +645,6 @@ var gallery = {
 			},
 			// закрытие окна
 			close : function() {
-				keyBoard.view = keyBoard.beforeView;
 				$('#nextwindow').hide();
 				$('#overlay').hide();
 			},
@@ -786,7 +764,7 @@ var gallery = {
 			// инициализация событий клавиатуры
 			keyBoard.init();
 		}
-};
+}
 
 
 
@@ -801,9 +779,6 @@ var matrix = {
 		max_cell_height: 0,  // максимальная высота ячейки
 		event_limit : 20000
 	},
-	keyBoardTree: 'all',
-	imageDetail: null,
-	currentOffset: null,
 	tree: 'all', // текущий временной диапазон
 	height: 0, // текущая высота матрицы
 	width: 0, // текущая ширина матрицы
@@ -826,7 +801,6 @@ var matrix = {
 	select_node : false, // можно ли выбирать другой диапазон
 	init: function(config) {
 		
-		matrix.imageDetail = $("#image_detail").css('top', '0');
 		// отменяет действие по клику
 		$('#scroll_content').click(function(event) {
 			event.preventDefault();
@@ -864,7 +838,7 @@ var matrix = {
 		});
 		$('#scroll_content .content_item').live('click', function(event) {
 			event.preventDefault();
-			var re = /cell_(\d+)/i;
+			var re = /cell_(\d+)/i
 			var id = $(this).attr('id');
 			var found = id.match(re);
 			if(typeof(found[1])!='undefined') {
@@ -884,50 +858,6 @@ var matrix = {
 			matrix.doShowInfo();
 		});
 		
-		// убираем скроллы
-		$('#win_bot_detail').css('overflow', 'hidden');
-		matrix.imageDetail.draggable({ 
-			cursor: 'move', 
-			drag: function(event, ui){
-				
-				
-				var imgWidth = parseInt(matrix.imageDetail.attr('width'));
-				var imgHeight = parseInt(matrix.imageDetail.attr('height'));
-				
-				if(imgWidth>matrix.width) {
-					if(ui.position.left>0){
-						ui.position.left = 0;
-					}
-					if(matrix.width-ui.position.left>imgWidth)
-						ui.position.left = matrix.width - imgWidth;
-				} else {
-					ui.position.left = 0;
-				}
-				
-				if(imgHeight>matrix.height) {
-					if(ui.position.top>0)
-						ui.position.top = 0;
-					if(matrix.height-ui.position.top>imgHeight)
-						ui.position.top = matrix.height - imgHeight;
-				} else {
-					ui.position.top = 0;
-				}
-				/*var temp = [
-							   ui.position.left,
-							   ui.position.top,
-							   matrix.width,
-							   matrix.height,
-							   matrix.imageDetail.attr('width'),
-							   matrix.imageDetail.attr('height'),
-							   matrix.width-ui.position.left,
-							   matrix.height-ui.position.top
-							];
-							console.log(temp);
-				*/
-			}
-		});
-		
-		
 		// обновление матрицы
 		matrix.resize();
 		//инициализации элемента масштаба режима миниатюр
@@ -937,20 +867,16 @@ var matrix = {
 		scale2.init();
 		
 		
-		self.res = false;
+		self.res = false
 		// изменить размер матрицы если было изменено размеры окна
 		$(window).bind("resize", function(){
+		//	console.log($(window).height());
 			clearInterval(self.res);
-			self.res = setTimeout(function() {matrix.resize();clearInterval(self.res);}, 200);
+			self.res = setTimeout(function() {matrix.resize();clearInterval(self.res);}, 200) 
 			
 		});
 		
 	
-	},
-	resetPositionImage: function(){
-		matrix.imageDetail.css('top', '0');
-		matrix.imageDetail.css('left', '0');
-		matrix.currentOffset = matrix.imageDetail.offset(); 
 	},
 	// обновление чекбокса пропорций
 	doProportion : function() {
@@ -990,7 +916,6 @@ var matrix = {
 		$('#toolbar .preview').hide();
 		$('#win_bot_detail').show();
 		$('#toolbar .detail').show();
-		matrix.resetPositionImage();
 	},
 	// если включили режим миниатюр
 	preview : function() {
@@ -1004,7 +929,7 @@ var matrix = {
 			var stat = '<span><strong>'+lang.count_files+'</strong>'+matrix.curent_tree_events[matrix.tree].count+'</span><br />\
 			<span><strong>'+lang.size_files+'</strong>'+readableFileSize(matrix.curent_tree_events[matrix.tree].size)+'</span><br />\
 			<span><strong>'+lang.date_from+'</strong>'+matrix.curent_tree_events[matrix.tree].from+'</span><br />\
-			<span><strong>'+lang.date_to+'</strong>'+matrix.curent_tree_events[matrix.tree].to+'</span><br />';
+			<span><strong>'+lang.date_to+'</strong>'+matrix.curent_tree_events[matrix.tree].to+'</span><br />'
 			$('#statistics').html(stat);
 			
 			$('#win_bot_detail').hide();
@@ -1040,28 +965,20 @@ var matrix = {
 			$('.content_item .info_block').hide();
 		}
 		// определяем новые размеры матрицы
-		
-		// исправяем баг с длинной не видимого элемента
-		
-		var pan_height = $('#list_panel').css('height');
-		var pan_width = parseInt($('#list_panel').css('width').replace('px',''));
-		
-		// исправление бага с высотой!!! придумать что то лучше
-		if($('#list_panel').height()!==0)
-			matrix.height = $('#list_panel').height()-140;
-		
-		matrix.width = pan_width; //$('#list_panel').width();
+		matrix.height = $('#list_panel').height()-140;
+		matrix.width = $('#list_panel').width();
 		$('#matrix_load img').css('margin-top', matrix.height/2);
 		
 		// обновляем размеры детального просмотра
 		$('#win_bot_detail').height($('#content').height() - $('#win_top').height() - $('#toolbar').height()-30);
 		$('#win_bot_detail').width($('#content').width() - $('#win_top').width() - $('#toolbar').width());
+
 		
 		// высчитываем новую высоту и ширину ячейки
 		var old_width = matrix.config.max_cell_width;
 		if ((matrix.height-(matrix.config.cell_padding+matrix.config.cell_border)*2) > (matrix.width/2 -(matrix.config.cell_padding+matrix.config.cell_border)*4)) {
-			matrix.config.max_cell_width = (matrix.width/2 -(matrix.config.cell_padding+matrix.config.cell_border)*4);
-			matrix.config.max_cell_height = (matrix.width/2 -(matrix.config.cell_padding+matrix.config.cell_border)*4);
+			matrix.config.max_cell_width = (matrix.width/2 -(matrix.config.cell_padding+matrix.config.cell_border)*4)
+			matrix.config.max_cell_height = (matrix.width/2 -(matrix.config.cell_padding+matrix.config.cell_border)*4)
 		} else {
 			matrix.config.max_cell_width = matrix.height-(matrix.config.cell_padding+matrix.config.cell_border)*2;
 			matrix.config.max_cell_height = matrix.height-(matrix.config.cell_padding+matrix.config.cell_border)*2;
@@ -1102,10 +1019,10 @@ var matrix = {
 			scroll.setposition(sp);
 		
 		}
-		matrix.resetPositionImage();
 	},
 	// задаем размер изображения в ячейке
 	setimagesize : function(el) {
+		
 		if (typeof(matrix.events[el]) != 'undefined') {
 			var thumb_width = matrix.thumb_width;
 			var thumb_height = matrix.thumb_height;
@@ -1128,17 +1045,14 @@ var matrix = {
 			$('#cell_'+el+' .img_block img').attr('width',thumb_width);	
 			$('#cell_'+el+' .img_block img').attr('height',thumb_height);	
 		}
-		matrix.resetPositionImage();
 	},
 	// загружаем изображение в окно детального просмотра
 	loaddetailsrc : function() {
 		if (typeof(matrix.events[matrix.num]) != 'undefined') {
 			var value = matrix.events[matrix.num];
-			
+
 			$('#image_detail').attr('src', MediaUrlPref+value[2]);
 
-			
-			
 			// размер матрицы
 			var width = matrix.width;
 			var height = matrix.height;
@@ -1187,10 +1101,9 @@ var matrix = {
 			var stat = '<span><strong>'+lang.camera+'</strong>'+matrix.cameras[value[5]].text_left+'</span><br />\
 				<span><strong>'+lang.size+'</strong>'+value[6]+'</span><br />\
 				<span><strong>'+lang.WH+'</strong>'+value[4]+'x'+value[3]+'</span><br />\
-				<span><strong>'+lang.date+'</strong>'+value[1]+'</span><br />';
+				<span><strong>'+lang.date+'</strong>'+value[1]+'</span><br />'
 			$('#statistics').html(stat);
 		}
-		matrix.resetPositionImage();
 	},
 	// загрузка изображения
 	loadsrc : function(el) {
@@ -1235,7 +1148,7 @@ var matrix = {
 		};	
 		// загружаем изображение
 		img.src = MediaUrlPref + matrix.events[el][2];
-		matrix.resetPositionImage();
+
 	},
 
 	// обовление матрицы
@@ -1389,7 +1302,7 @@ var matrix = {
 				$.each(data.events, function(key, value) {
 					matrix.all_events[key] = value;
 					matrix.events[i] = value;
-					i++;
+					i++
 				});
 				// строим матрицу
 				$('#scroll_content').empty();
@@ -1482,7 +1395,7 @@ var matrix = {
 			var stat = '<span><strong>'+lang.count_files+'</strong>'+matrix.curent_tree_events[matrix.tree].count+'</span><br />\
 			<span><strong>'+lang.size_files+'</strong>'+readableFileSize(matrix.curent_tree_events[matrix.tree].size)+'</span><br />\
 			<span><strong>'+lang.date_from+'</strong>'+matrix.curent_tree_events[matrix.tree].from+'</span><br />\
-			<span><strong>'+lang.date_to+'</strong>'+matrix.curent_tree_events[matrix.tree].to+'</span><br />';
+			<span><strong>'+lang.date_to+'</strong>'+matrix.curent_tree_events[matrix.tree].to+'</span><br />'
 			$('#statistics').html(stat);
 			// записываем количество событий в данном временном диапазоне
 			matrix.count_item = matrix.curent_tree_events[matrix.tree].count;
@@ -1551,7 +1464,6 @@ var matrix = {
 		//инициализируем элемент скрола
 		scroll.init({height:matrix.height-28, cell_count:Math.ceil(matrix.count_item/matrix.count_column), row_count: matrix.count_column, matrix_count: Math.ceil(matrix.cell_count/matrix.count_column)});
 		matrix.scroll = true;
-		matrix.resetPositionImage();
 	}
 };
 // элемент скрол
@@ -1621,7 +1533,7 @@ var scroll = {
 						var sp = Math.floor(top/((scroll.height-scroll.polzh)/scroll.cell_count)) * scroll.row_count;
 						scroll.position = sp;
 					}
-				});
+				})
 				
 			});
 			$(document).mouseup(function(e){
@@ -1761,6 +1673,7 @@ var scroll = {
 					$('#cell_'+new_num).addClass('active');
 					matrix.num = new_num;
 				} else if (matrix.mode == 'detail'){
+					console.log('>>');
 					matrix.num = new_num;
 					matrix.loaddetailsrc();
 				}
@@ -1868,7 +1781,7 @@ var scale = {
 	},
 	// обновление элемента масштаба
 	reload : function(width) {
-		var sp = Math.floor(scale.position * width/matrix.config.max_cell_width);
+		var sp = Math.floor(scale.position * width/matrix.config.max_cell_width)
 		if (sp > scale.max) {
 			sp=scale.max;
 		}
@@ -1903,7 +1816,7 @@ var scale = {
 						scale.updateposition(sp);
 					}
 				}
-			});
+			})
 			
 		});
 		$(document).mouseup(function(e){
@@ -1913,7 +1826,7 @@ var scale = {
 			scale.setposition(gallery.cookie.get('scale'));
 		}
 	}
-};
+}
 
 // элемент масштаба детального просмотра
 var scale2 = {
@@ -1950,7 +1863,6 @@ var scale2 = {
 			$('#image_detail').attr('width', parseInt(self.min_width) + Math.floor((self.max_width - self.min_width)*sp/self.max));
 			$('#image_detail').attr('height', parseInt(self.min_height) + Math.floor((self.max_height - self.min_height)*sp/self.max));
 			gallery.cookie.set('scale2', sp);
-			matrix.resetPositionImage();
 		},
 		reload : function() {
 			var self = this;
@@ -1982,7 +1894,7 @@ var scale2 = {
 							self.updateposition(sp);
 						}
 					}
-				});
+				})
 				
 			});
 			$(document).mouseup(function(e){
@@ -1994,7 +1906,7 @@ var scale2 = {
 			}
 			
 		}
-	};
+	}
 var keyBoard = {
 	boxesEnum : {},
 	keys : {
@@ -2005,8 +1917,6 @@ var keyBoard = {
 		s : 83,
 		minus : 189,
 		plus : 187,
-		minus2: 109,
-		plus2: 61,
 		tab : 9,
 		enter : 13,
 		space : 32,
@@ -2028,10 +1938,9 @@ var keyBoard = {
 	views : {
 		matrix: 0,
 		detail: 1,
-		colorDialog: 2,
-		chooseDialog: 3
+		colorDialog: 2
 	},
-	/*selectedBox: 3,// 0 - Зона дерева событий. 1 - Зона списка камер. 2 - диалог. 3 - диалог 2*/
+	/*selectedBox: 3,// 0 - Зона дерева событий. 1 - Зона списка камер. 2 - диалог. 3 - центр. окно*/
 	view : 0,
 	beforeView : 0,
 	currentBoxSelector : [],
@@ -2094,6 +2003,7 @@ var keyBoard = {
 			
 			// work any where
 			if(e.which == keyBoard.keys.tab){
+				console.log('tab');
 				keyBoard.boxesEnum.next();
 				//'INSIDE','TREE','CAMS'
 				if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.INSIDE) {
@@ -2105,27 +2015,32 @@ var keyBoard = {
 					keyBoard.selectElem(0);
 				}
 			} else if(e.which == keyBoard.keys.i){ //i
+				console.log('i');
 				$('#image_type').attr('checked', !$('#image_type').attr('checked'));
 				var r1 = gallery.reload_events();
 				if(!r1) {
 					$('#image_type').attr('checked', 'checked');
 				}
 			} else if(e.which == keyBoard.keys.a){ //a
+				console.log('a');
 				$('#audio_type').attr('checked', !$('#audio_type').attr('checked'));
 				var r3 = gallery.reload_events();
 				if(!r3) {
 					$('#audio_type').attr('checked', 'checked');
 				}
 			} else if(e.which == keyBoard.keys.v) { //v
+				console.log('v');
 				$('#video_type').attr('checked', !$('#video_type').attr('checked'));
 				var r2 = gallery.reload_events();
 				if(!r2) {
 					$('#video_type').attr('checked', 'checked');
 				}
 			} else if(e.which == keyBoard.keys.p) {
+				console.log('p');
 				$('#proportion').attr('checked', !$('#proportion').attr('checked'));
 				matrix.doProportion();
 			} else if(e.which == keyBoard.keys.s) {
+				console.log('s');
 				$('#info').attr('checked', !$('#info').attr('checked'));
 				matrix.doShowInfo();
 			}
@@ -2133,9 +2048,11 @@ var keyBoard = {
 			
 			//work in views
 			if(keyBoard.view==keyBoard.views.detail) { // DETAIL
-				if(e.which == keyBoard.keys.minus || e.which == keyBoard.keys.minus2) {
+				if(e.which == keyBoard.keys.minus) {
+					console.log('-');
 					scale2.click_min();
-				} else if(e.which == keyBoard.keys.plus || e.which == keyBoard.keys.plus2) {
+				} else if(e.which == keyBoard.keys.plus) {
+					console.log('+');
 					scale2.click_max();
 				}
 				if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.INSIDE) {
@@ -2145,71 +2062,15 @@ var keyBoard = {
 						scroll.num_left();
 					} else if(e.which == keyBoard.keys.enter) {
 						matrix.preview();
-					} else if(e.which == keyBoard.keys.down) {
-						var imgHeight = parseInt(matrix.imageDetail.attr('height'));
-						
-						if(imgHeight<matrix.height) {
-							return;
-						}
-						
-						var pos = matrix.imageDetail.offset();
-						pos.top -= 20;
-						
-						var imgHeight = parseInt(matrix.imageDetail.attr('height'));
-						
-						if(matrix.height - pos.top + matrix.currentOffset.top >=imgHeight)
-							pos.top = matrix.height - imgHeight + matrix.currentOffset.top;
-						
-						matrix.imageDetail.offset(pos);
-						
-					} else if(e.which == keyBoard.keys.up) {
-						var imgHeight = parseInt(matrix.imageDetail.attr('height'));
-						
-						if(imgHeight<matrix.height) {
-							return;
-						}
-						
-						var pos = matrix.imageDetail.offset();
-						pos.top += 20;
-						
-						if(pos.top>matrix.currentOffset.top)
-							pos.top = matrix.currentOffset.top;
-						
-						matrix.imageDetail.offset(pos);
-					} else if(e.which == keyBoard.keys.right) {
-						var imgWidth = parseInt(matrix.imageDetail.attr('width'));
-						if(imgWidth<matrix.width) {
-							return;
-						}
-						var pos = matrix.imageDetail.offset();
-						pos.left -= 20;
-						
-						var imgWidth = parseInt(matrix.imageDetail.attr('width'));
-						
-						if(matrix.width-pos.left + matrix.currentOffset.left>imgWidth)
-							pos.left = matrix.width - imgWidth + matrix.currentOffset.left;
-						
-						matrix.imageDetail.offset(pos);
-					} else if(e.which == keyBoard.keys.left) {
-						var imgWidth = parseInt(matrix.imageDetail.attr('width'));
-						if(imgWidth<matrix.width) {
-							return;
-						}
-						var pos = matrix.imageDetail.offset();
-						pos.left += 20;
-						
-						if(pos.left>matrix.currentOffset.left){
-							pos.left = matrix.currentOffset.left;
-						}
-						
-						matrix.imageDetail.offset(pos);
-					}
+					} 
 				}
 				
 			} else if(keyBoard.view==keyBoard.views.matrix) { //MATRIX
-				if(e.which == keyBoard.keys.minus || e.which == keyBoard.keys.minus2) {
+				if(e.which == keyBoard.keys.minus) {
+					console.log('-');
 					scale.click_min();
-				} else if(e.which == keyBoard.keys.plus || e.which == keyBoard.keys.plus2) {
+				} else if(e.which == keyBoard.keys.plus) {
+					console.log('+');
 					scale.click_max();
 				}
 				
@@ -2298,15 +2159,6 @@ var keyBoard = {
 					gallery.cameras_color.close();
 					return;
 				}
-			} else if(keyBoard.view==keyBoard.views.chooseDialog) {
-				if (e.which == keyBoard.keys.esc) {
-					gallery.nextwindow.close();
-				} else if (e.which == keyBoard.keys.enter) {
-					gallery.nextwindow.select();
-					gallery.nextwindow.close();
-				} else if (e.which == keyBoard.keys.space) {
-					$('#checknextwindow').attr('checked', !$('#checknextwindow').attr('checked'));
-				}
 			}
 			
 			if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.CAMS) {
@@ -2332,52 +2184,8 @@ var keyBoard = {
 						gallery.cameras_color.open();
 					}
 				}
-			} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.TREE) {
-				if (e.which == keyBoard.keys.left) {
-					var top = matrix.curent_tree_events[matrix.keyBoardTree].top;
-					if(top!=false && typeof(top)!='undefined') {
-						$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
-						$.jstree._focused().select_node('#tree_'+top);
-					}
-				} else if (e.which == keyBoard.keys.up) {
-					var prev = matrix.curent_tree_events[matrix.keyBoardTree].prev;
-					if(prev!=false && typeof(prev)!='undefined') {
-						$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
-						$.jstree._focused().select_node('#tree_'+prev);
-					}
-				} else if (e.which == keyBoard.keys.right) {
-					var under = matrix.curent_tree_events[matrix.keyBoardTree].under;
-					if(under!=false && typeof(under)!='undefined') {
-						$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
-						$.jstree._focused().select_node('#tree_'+under);
-					}
-				} else if (e.which == keyBoard.keys.down) {
-					var next = matrix.curent_tree_events[matrix.keyBoardTree].next;
-					if(next!=false && typeof(next)!='undefined') {
-						$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
-						$.jstree._focused().select_node('#tree_'+next);
-					}
-				} else if (e.which == keyBoard.keys.enter) {
-					var tree = matrix.keyBoardTree;
-					if (matrix.tree != tree) {
-						matrix.tree = tree;
-						matrix.keyBoardTree = tree;
-						matrix.build();
-					}
-					// если режим детального просмотра, обновляем картинку
-					if (matrix.mode == 'detail') {
-						matrix.preview();
-					}
-					
-				} else if (e.which == keyBoard.keys.space) {
-					if($.jstree._focused().is_open()) {
-						$.jstree._focused().close_node('#tree_'+matrix.keyBoardTree);
-					} else {
-						$.jstree._focused().open_node('#tree_'+matrix.keyBoardTree);
-					}
-				}
 			}
 			
 		});
 	}
-};
+}

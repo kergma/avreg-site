@@ -1,24 +1,4 @@
-function Enum() {
-	this.allValues = [];
-	this.currentValue = 0;
-	for (var i in arguments) {
-		this[arguments[i]] = parseInt(i);
-		this.allValues.push(arguments[i]);
-	}
-};
-Enum.prototype.values = function() {
-	return this.allValues;
-};
-Enum.prototype.current = function() {
-	return this.currentValue;
-};
-Enum.prototype.next = function() {
-	this.currentValue++;
-	if(this.currentValue==this.allValues.length)
-		this.currentValue = 0;
-	return this.currentValue;
-};
-var Base64 = {
+    var Base64 = {
 
     	// private property
     	_keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
@@ -152,7 +132,7 @@ var Base64 = {
     		return string;
     	}
 
-    };
+    }
 
 
 
@@ -183,7 +163,6 @@ $.ajaxSetup({
 
 // основной объект галереи
 var gallery = {
-		treeObject: null,
 		config : {
 			
 		},
@@ -227,7 +206,7 @@ var gallery = {
 					e.preventDefault();
 					$(document).mousemove(function(e){
 						self.resize(e.pageX);
-					});
+					})
 				});
 				$(document).mouseup(function(e){
 					if (self.res){
@@ -243,50 +222,8 @@ var gallery = {
 				if (pageX) {
 					self.resize(pageX);
 				}
+				
 			}
-		},
-		reload_events : function(){
-			var count = 0;
-			var cook = '';
-			$('input[name="type_event"]').each(function(){
-				if ($(this).attr('checked')) {
-					count++;
-					v = $(this).val();
-					cook += v.substr(0,1)+',';
-				}
-			});
-			if (count > 0){
-				gallery.cookie.set('type_event', cook);
-				// обновляем дерево
-				gallery.tree_event.reload();
-			} else {
-				// не дадим пользователю снять последний чекбокс
-				//$(this).attr('checked', 'checked');
-				alert(lang.empty_event);
-				return false;
-			}
-			return true;
-		},
-		reload_cams : function () {
-			var count = 0;
-			var cook = '';
-			$('input[name="cameras"]').each(function(){
-				if ($(this).attr('checked')) {
-					count++;
-					cook += $(this).val()+',';
-				}
-			});
-			if (count >0 ){
-				gallery.cookie.set('cameras',cook);
-				// обновляем дерево
-				gallery.tree_event.reload();
-			} else {
-				// не дадим пользователю снять последний чекбокс
-				//$(this).attr('checked', 'checked');
-				alert(lang.empty_cameras);
-				return false;
-			}
-			return true;
 		},
 		cookie : {
 			config: {
@@ -428,7 +365,6 @@ var gallery = {
 						// обновляем размер и количество файлов всего дерева
 						matrix.curent_tree_events['all'].size += size;
 						matrix.curent_tree_events['all'].count += count;
-						matrix.curent_tree_events['all'].under = e[0];
 						
 						// если в кеше нет года текущего события, то..
 						if (typeof(matrix.curent_tree_events[e[0]]) == 'undefined' ) {
@@ -438,9 +374,7 @@ var gallery = {
 									count : count,
 									from : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
 									to : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
-									prev : o0,
-									top: 'all',
-									under: e[0]+'_'+e[1]
+									prev : o0
 							};
 							// строим дерево
 							html += '<li id="tree_'+e[0]+'"><a href="#">'+e[0]+'</a><ul>';
@@ -458,9 +392,7 @@ var gallery = {
 									count : count,
 									from : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
 									to : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
-									prev: o1,
-									top: e[0],
-									under: e[0]+'_'+e[1]+'_'+e[2]
+									prev: o1
 							};
 							// строим дерево
 							html += '<li id="tree_'+e[0]+'_'+e[1]+'"><a href="#">'+monthNames[e[1].replace('0','')]+'</a><ul>';
@@ -478,13 +410,11 @@ var gallery = {
 									count : count,
 									from : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
 									to : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
-									prev : o2,
-									top: e[0]+'_'+e[1],
-									under: e[0]+'_'+e[1]+'_'+e[2]+'_'+e[3]
+									prev : o2
 							};
 							// строим дерево
 							html += '<li id="tree_'+e[0]+'_'+e[1]+'_'+e[2]+'"><a href="#">'+e[2]+'</a><ul>';
-						}else {
+						} else {
 							//если есть то обновляем размер и количество
 							matrix.curent_tree_events[e[0]+'_'+e[1]+'_'+e[2]].size += size;
 							matrix.curent_tree_events[e[0]+'_'+e[1]+'_'+e[2]].count += count;
@@ -497,8 +427,7 @@ var gallery = {
 								from : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
 								to : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
 								next : false,
-								prev : old_value,
-								top: e[0]+'_'+e[1]+'_'+e[2],
+								prev : old_value
 						};
 						// строим дерево
 						html += '<li id="tree_'+key+'"><a href="#">'+e[3]+':00</a>';
@@ -543,35 +472,24 @@ var gallery = {
 						
 						tree = data.rslt.obj.attr("id").replace('tree_', '');
 						
-						if(matrix.keyBoardTree != tree) {
-							matrix.keyBoardTree = tree;
+						// если новый диапазон, перестраиваем матрицу
+						if (matrix.tree != tree) {
+							matrix.tree = tree;
+							matrix.build();
 						}
-						
-						if(keyBoard.boxesEnum.current()!=keyBoard.boxesEnum.TREE) {
-							// если новый диапазон, перестраиваем матрицу
-							if (matrix.tree != tree) {
-								matrix.tree = tree;
-								matrix.keyBoardTree = tree;
-								matrix.build();
-							}
-							// если режим детального просмотра, обновляем картинку
-							if (matrix.mode == 'detail') {
-								matrix.preview();
-							}
+						// если режим детального просмотра, обновляем картинку
+						if (matrix.mode == 'detail') {
+							matrix.preview();
 						}
-
-						$.jstree._focused().set_focus("#tree_"+tree);
-						$("#tree_"+tree).jstree("set_focus");
-						
 					})
 					.bind("loaded.jstree", function (event, data) {
 						$.jstree._focused().select_node(open);
 						$.jstree._focused().open_node(open);
 						$('#tree').show();
 					})
-				.delegate("a", "click", function (event, data) {event.preventDefault();}).show();	
+				.delegate("a", "click", function (event, data) { event.preventDefault(); }).show();	
 				
-				gallery.treeObject = $(self.holder);
+				
 				matrix.build();
 			},
 			// инициалзация дерева
@@ -596,16 +514,11 @@ var gallery = {
 			camera_link : '', // ссылка на камеру
 			// показываем окно выбора цвета
 			open: function() {
-				keyBoard.beforeView = keyBoard.view;
-				keyBoard.view = keyBoard.views.colorDialog;
 				$('#overlay').show();
 				$('#cameras_color').show();
-				//установка текущего элемента
-				keyBoard.selectColor(0);
 			},
 			// закрываем окно выбора цвета
 			close : function() {
-				keyBoard.view = keyBoard.beforeView;
 				$('#cameras_color').hide();
 				$('#overlay').hide();
 			},
@@ -657,8 +570,6 @@ var gallery = {
 			mode: '', // вверх или вниз по дереву
 			// показ окна
 			open: function(mode) {
-				keyBoard.beforeView = keyBoard.view;
-				keyBoard.view = keyBoard.views.chooseDialog;
 				var self = this;
 				self.mode = mode;
 				$('#overlay').show();
@@ -666,7 +577,6 @@ var gallery = {
 			},
 			// закрытие окна
 			close : function() {
-				keyBoard.view = keyBoard.beforeView;
 				$('#nextwindow').hide();
 				$('#overlay').hide();
 			},
@@ -692,7 +602,7 @@ var gallery = {
 					$.jstree._focused().select_node("#tree_"+prev);
 					scroll.setposition(sp);
 					
-				}else if (self.mode == 'right') {
+				} else if (self.mode == 'right') {
 					// если пользователь идет вниз по дереву
 					// обновляем матрицу и перемещаем текущий указатель в начало матрицы
 					next = matrix.curent_tree_events[matrix.tree].next;
@@ -754,16 +664,45 @@ var gallery = {
 			
 			// обработка выбора чекбокса камеры 
 			$('input[name="cameras"]').click(function(){
-				var rez = gallery.reload_cams();
-				if(!rez)
+				var count = 0;
+				var cook = '';
+				$('input[name="cameras"]').each(function(){
+					if ($(this).attr('checked')) {
+						count++;
+						cook += $(this).val()+',';
+					}
+				});
+				if (count >0 ){
+					gallery.cookie.set('cameras',cook);
+					// обновляем дерево
+					self.tree_event.reload();
+				} else {
+					// не дадим пользователю снять последний чекбокс
 					$(this).attr('checked', 'checked');
+					alert(lang.empty_cameras);
+				}
 			});
 			
 			// обработка выбора чекбокса типа события 
 			$('input[name="type_event"]').click(function(){
-				var rez = gallery.reload_events();
-				if(!rez)
+				var count = 0;
+				var cook = '';
+				$('input[name="type_event"]').each(function(){
+					if ($(this).attr('checked')) {
+						count++;
+						v = $(this).val();
+						cook += v.substr(0,1)+',';
+					}
+				});
+				if (count >0 ){
+					gallery.cookie.set('type_event', cook);
+					// обновляем дерево
+					self.tree_event.reload();
+				} else {
+					// не дадим пользователю снять последний чекбокс
 					$(this).attr('checked', 'checked');
+					alert(lang.empty_event);
+				}
 			});
 			
 			
@@ -782,11 +721,8 @@ var gallery = {
 			
 			// инициализация перехода на следующий временной диапазон
 			self.nextwindow.init();
-			
-			// инициализация событий клавиатуры
-			keyBoard.init();
 		}
-};
+}
 
 
 
@@ -801,9 +737,6 @@ var matrix = {
 		max_cell_height: 0,  // максимальная высота ячейки
 		event_limit : 20000
 	},
-	keyBoardTree: 'all',
-	imageDetail: null,
-	currentOffset: null,
 	tree: 'all', // текущий временной диапазон
 	height: 0, // текущая высота матрицы
 	width: 0, // текущая ширина матрицы
@@ -826,19 +759,6 @@ var matrix = {
 	select_node : false, // можно ли выбирать другой диапазон
 	init: function(config) {
 		
-		matrix.imageDetail = $("#image_detail").css('top', '0');
-		// отменяет действие по клику
-		$('#scroll_content').click(function(event) {
-			event.preventDefault();
-		});
-		
-		$('.matrix_mode').click(function(event) {
-			event.preventDefault();
-		});
-		
-		console.log('matrix view');
-		keyBoard.beforeView = keyBoard.view;
-		keyBoard.view = keyBoard.views.matrix;
 		if (config && typeof(config) == 'object') {
 		    $.extend(matrix.config, config);
 		}
@@ -848,85 +768,48 @@ var matrix = {
 		matrix.cell_width = matrix.config.min_cell_width;
 		
 		// обработка переключение режима матрицы
-		// изменено на dblclick
-		$('.matrix_mode a').dblclick(function(e) {
+		$('.matrix_mode a').click(function(e) {
 			e.preventDefault();
 			var mode = $(this).attr('href').replace('#','');
 			matrix[mode]();
 			return false;
 		});
 		
-		$('#scroll_content .content_item .img_block a').live('dblclick', function(e) {
+		$('#scroll_content .content_item .img_block a').live('click', function(e) {
 			e.preventDefault();
-			//matrix.num = parseInt($(this).attr('href').replace('#cell_',''));
+			matrix.num = parseInt($(this).attr('href').replace('#cell_',''));
 			matrix.detail();
 			return false;
-		});
-		$('#scroll_content .content_item').live('click', function(event) {
-			event.preventDefault();
-			var re = /cell_(\d+)/i;
-			var id = $(this).attr('id');
-			var found = id.match(re);
-			if(typeof(found[1])!='undefined') {
-				$('#cell_'+matrix.num).removeClass('active');
-				$(this).addClass('active');
-				matrix.num = parseInt(found[1]);
-			}
 		});
 		
 		// обработка чекбокса сохранять пропорции
 		$('#proportion').click(function(){
-			matrix.doProportion();
+			$('#scroll_content .show').each(function() {
+				matrix.setimagesize($(this).attr('id').replace('cell_',''));
+			});
+			matrix.loaddetailsrc();
+			if ($(this).attr('checked')) {
+				gallery.cookie.set('proportion', 'checked');
+			} else {
+				gallery.cookie.set('proportion', '');
+			}
 		});
 			
 		// обработка чекбокса показывать информацию
 		$('#info').click(function(){
-			matrix.doShowInfo();
-		});
-		
-		// убираем скроллы
-		$('#win_bot_detail').css('overflow', 'hidden');
-		matrix.imageDetail.draggable({ 
-			cursor: 'move', 
-			drag: function(event, ui){
-				
-				
-				var imgWidth = parseInt(matrix.imageDetail.attr('width'));
-				var imgHeight = parseInt(matrix.imageDetail.attr('height'));
-				
-				if(imgWidth>matrix.width) {
-					if(ui.position.left>0){
-						ui.position.left = 0;
-					}
-					if(matrix.width-ui.position.left>imgWidth)
-						ui.position.left = matrix.width - imgWidth;
-				} else {
-					ui.position.left = 0;
-				}
-				
-				if(imgHeight>matrix.height) {
-					if(ui.position.top>0)
-						ui.position.top = 0;
-					if(matrix.height-ui.position.top>imgHeight)
-						ui.position.top = matrix.height - imgHeight;
-				} else {
-					ui.position.top = 0;
-				}
-				/*var temp = [
-							   ui.position.left,
-							   ui.position.top,
-							   matrix.width,
-							   matrix.height,
-							   matrix.imageDetail.attr('width'),
-							   matrix.imageDetail.attr('height'),
-							   matrix.width-ui.position.left,
-							   matrix.height-ui.position.top
-							];
-							console.log(temp);
-				*/
+			if ($(this).attr('checked')) {
+				gallery.cookie.set('info', 'checked');
+				matrix.thumb_height -= 24;
+				$('.content_item .info_block').show();
+			} else {
+				gallery.cookie.set('info', '');
+				matrix.thumb_height += 24;
+				$('.content_item .info_block').hide();
 			}
+			$('#scroll_content .show').each(function() {
+				matrix.setimagesize($(this).attr('id').replace('cell_',''));
+			});
 		});
-		
 		
 		// обновление матрицы
 		matrix.resize();
@@ -937,74 +820,35 @@ var matrix = {
 		scale2.init();
 		
 		
-		self.res = false;
+		self.res = false
 		// изменить размер матрицы если было изменено размеры окна
 		$(window).bind("resize", function(){
+		//	console.log($(window).height());
 			clearInterval(self.res);
-			self.res = setTimeout(function() {matrix.resize();clearInterval(self.res);}, 200);
+			self.res = setTimeout(function() {matrix.resize(); clearInterval(self.res);}, 200) 
 			
 		});
 		
 	
 	},
-	resetPositionImage: function(){
-		matrix.imageDetail.css('top', '0');
-		matrix.imageDetail.css('left', '0');
-		matrix.currentOffset = matrix.imageDetail.offset(); 
-	},
-	// обновление чекбокса пропорций
-	doProportion : function() {
-		$('#scroll_content .show').each(function() {
-			matrix.setimagesize($(this).attr('id').replace('cell_',''));
-		});
-		matrix.loaddetailsrc();
-		if ($('#proportion').attr('checked')) {
-			gallery.cookie.set('proportion', 'checked');
-		} else {
-			gallery.cookie.set('proportion', '');
-		}
-	},
-	// обновление чекбокса информации 
-	doShowInfo : function() {
-		if ($('#info').attr('checked')) {
-			gallery.cookie.set('info', 'checked');
-			matrix.thumb_height -= 24;
-			$('.content_item .info_block').show();
-		} else {
-			gallery.cookie.set('info', '');
-			matrix.thumb_height += 24;
-			$('.content_item .info_block').hide();
-		}
-		$('#scroll_content .show').each(function() {
-			matrix.setimagesize($('#info').attr('id').replace('cell_',''));
-		});
-	},
 	// если включили режим детальный просмотр
 	detail : function() {
-		console.log('detail view');
-		keyBoard.beforeView = keyBoard.view;
-		keyBoard.view = keyBoard.views.detail;
 		matrix.mode = 'detail';
 		matrix.loaddetailsrc();
 		$('#win_bot').hide();
 		$('#toolbar .preview').hide();
 		$('#win_bot_detail').show();
 		$('#toolbar .detail').show();
-		matrix.resetPositionImage();
 	},
 	// если включили режим миниатюр
 	preview : function() {
-		console.log('matrix view');
 		if (typeof(matrix.curent_tree_events[matrix.tree]) != 'undefined') {
-			keyBoard.beforeView = keyBoard.view;
-			keyBoard.view = keyBoard.views.matrix;
-			
 			matrix.mode = 'preview'; 	
 			// обновлаем статистику
 			var stat = '<span><strong>'+lang.count_files+'</strong>'+matrix.curent_tree_events[matrix.tree].count+'</span><br />\
 			<span><strong>'+lang.size_files+'</strong>'+readableFileSize(matrix.curent_tree_events[matrix.tree].size)+'</span><br />\
 			<span><strong>'+lang.date_from+'</strong>'+matrix.curent_tree_events[matrix.tree].from+'</span><br />\
-			<span><strong>'+lang.date_to+'</strong>'+matrix.curent_tree_events[matrix.tree].to+'</span><br />';
+			<span><strong>'+lang.date_to+'</strong>'+matrix.curent_tree_events[matrix.tree].to+'</span><br />'
 			$('#statistics').html(stat);
 			
 			$('#win_bot_detail').hide();
@@ -1040,28 +884,20 @@ var matrix = {
 			$('.content_item .info_block').hide();
 		}
 		// определяем новые размеры матрицы
-		
-		// исправяем баг с длинной не видимого элемента
-		
-		var pan_height = $('#list_panel').css('height');
-		var pan_width = parseInt($('#list_panel').css('width').replace('px',''));
-		
-		// исправление бага с высотой!!! придумать что то лучше
-		if($('#list_panel').height()!==0)
-			matrix.height = $('#list_panel').height()-140;
-		
-		matrix.width = pan_width; //$('#list_panel').width();
+		matrix.height = $('#list_panel').height()-140;
+		matrix.width = $('#list_panel').width();
 		$('#matrix_load img').css('margin-top', matrix.height/2);
 		
 		// обновляем размеры детального просмотра
 		$('#win_bot_detail').height($('#content').height() - $('#win_top').height() - $('#toolbar').height()-30);
 		$('#win_bot_detail').width($('#content').width() - $('#win_top').width() - $('#toolbar').width());
+
 		
 		// высчитываем новую высоту и ширину ячейки
 		var old_width = matrix.config.max_cell_width;
 		if ((matrix.height-(matrix.config.cell_padding+matrix.config.cell_border)*2) > (matrix.width/2 -(matrix.config.cell_padding+matrix.config.cell_border)*4)) {
-			matrix.config.max_cell_width = (matrix.width/2 -(matrix.config.cell_padding+matrix.config.cell_border)*4);
-			matrix.config.max_cell_height = (matrix.width/2 -(matrix.config.cell_padding+matrix.config.cell_border)*4);
+			matrix.config.max_cell_width = (matrix.width/2 -(matrix.config.cell_padding+matrix.config.cell_border)*4)
+			matrix.config.max_cell_height = (matrix.width/2 -(matrix.config.cell_padding+matrix.config.cell_border)*4)
 		} else {
 			matrix.config.max_cell_width = matrix.height-(matrix.config.cell_padding+matrix.config.cell_border)*2;
 			matrix.config.max_cell_height = matrix.height-(matrix.config.cell_padding+matrix.config.cell_border)*2;
@@ -1102,10 +938,10 @@ var matrix = {
 			scroll.setposition(sp);
 		
 		}
-		matrix.resetPositionImage();
 	},
 	// задаем размер изображения в ячейке
 	setimagesize : function(el) {
+		
 		if (typeof(matrix.events[el]) != 'undefined') {
 			var thumb_width = matrix.thumb_width;
 			var thumb_height = matrix.thumb_height;
@@ -1128,17 +964,14 @@ var matrix = {
 			$('#cell_'+el+' .img_block img').attr('width',thumb_width);	
 			$('#cell_'+el+' .img_block img').attr('height',thumb_height);	
 		}
-		matrix.resetPositionImage();
 	},
 	// загружаем изображение в окно детального просмотра
 	loaddetailsrc : function() {
 		if (typeof(matrix.events[matrix.num]) != 'undefined') {
 			var value = matrix.events[matrix.num];
-			
+
 			$('#image_detail').attr('src', MediaUrlPref+value[2]);
 
-			
-			
 			// размер матрицы
 			var width = matrix.width;
 			var height = matrix.height;
@@ -1187,10 +1020,9 @@ var matrix = {
 			var stat = '<span><strong>'+lang.camera+'</strong>'+matrix.cameras[value[5]].text_left+'</span><br />\
 				<span><strong>'+lang.size+'</strong>'+value[6]+'</span><br />\
 				<span><strong>'+lang.WH+'</strong>'+value[4]+'x'+value[3]+'</span><br />\
-				<span><strong>'+lang.date+'</strong>'+value[1]+'</span><br />';
+				<span><strong>'+lang.date+'</strong>'+value[1]+'</span><br />'
 			$('#statistics').html(stat);
 		}
-		matrix.resetPositionImage();
 	},
 	// загрузка изображения
 	loadsrc : function(el) {
@@ -1235,7 +1067,7 @@ var matrix = {
 		};	
 		// загружаем изображение
 		img.src = MediaUrlPref + matrix.events[el][2];
-		matrix.resetPositionImage();
+
 	},
 
 	// обовление матрицы
@@ -1343,7 +1175,7 @@ var matrix = {
 			// обновляем размеры и позиционирование ячеек в матрице
 			$('#scroll_content .content_item').height(matrix.cell_height);
 			$('#scroll_content .content_item').width(matrix.cell_width);
-			$('#scroll_content .content_item').css({'padding' : matrix.cell_padding});
+			$('#scroll_content .content_item').css({'padding' : matrix.cell_padding });
 			if (hide_over) {
 				$('#matrix_load').hide();
 			}
@@ -1389,7 +1221,7 @@ var matrix = {
 				$.each(data.events, function(key, value) {
 					matrix.all_events[key] = value;
 					matrix.events[i] = value;
-					i++;
+					i++
 				});
 				// строим матрицу
 				$('#scroll_content').empty();
@@ -1463,7 +1295,7 @@ var matrix = {
 				// обновляем размеры и позиционирование ячеек в матрице
 				$('#scroll_content .content_item').height(matrix.cell_height);
 				$('#scroll_content .content_item').width(matrix.cell_width);
-				$('#scroll_content .content_item').css({'padding' : matrix.cell_padding});
+				$('#scroll_content .content_item').css({'padding' : matrix.cell_padding });
 				// устанавливаем флаг, что запрос выполнился
 				matrix.send_query = false;
 				if (hide_over) {
@@ -1482,7 +1314,7 @@ var matrix = {
 			var stat = '<span><strong>'+lang.count_files+'</strong>'+matrix.curent_tree_events[matrix.tree].count+'</span><br />\
 			<span><strong>'+lang.size_files+'</strong>'+readableFileSize(matrix.curent_tree_events[matrix.tree].size)+'</span><br />\
 			<span><strong>'+lang.date_from+'</strong>'+matrix.curent_tree_events[matrix.tree].from+'</span><br />\
-			<span><strong>'+lang.date_to+'</strong>'+matrix.curent_tree_events[matrix.tree].to+'</span><br />';
+			<span><strong>'+lang.date_to+'</strong>'+matrix.curent_tree_events[matrix.tree].to+'</span><br />'
 			$('#statistics').html(stat);
 			// записываем количество событий в данном временном диапазоне
 			matrix.count_item = matrix.curent_tree_events[matrix.tree].count;
@@ -1551,7 +1383,6 @@ var matrix = {
 		//инициализируем элемент скрола
 		scroll.init({height:matrix.height-28, cell_count:Math.ceil(matrix.count_item/matrix.count_column), row_count: matrix.count_column, matrix_count: Math.ceil(matrix.cell_count/matrix.count_column)});
 		matrix.scroll = true;
-		matrix.resetPositionImage();
 	}
 };
 // элемент скрол
@@ -1621,7 +1452,7 @@ var scroll = {
 						var sp = Math.floor(top/((scroll.height-scroll.polzh)/scroll.cell_count)) * scroll.row_count;
 						scroll.position = sp;
 					}
-				});
+				})
 				
 			});
 			$(document).mouseup(function(e){
@@ -1641,6 +1472,89 @@ var scroll = {
 				}
 			});
 			
+			// обработка нажатий клавиатуры
+			$(document).unbind('keydown');
+			$(document).keydown(function (e) {
+				/*
+				 left - 37
+				 up	- 38
+				 right - 39
+				 down - 40
+				 Page Up - 33
+				 Page Down - 34
+				 */
+				
+				if (e.which == 37) {
+					scroll.num_left();
+					return false;
+				} else if (e.which == 38) {
+					scroll.num_up();
+					return false;
+				} else if (e.which == 39) {
+					scroll.num_right();
+					return false;
+				} else if (e.which == 40) {
+					scroll.num_down();
+					return false;
+				} else if (e.which == 33) {
+					var sp = scroll.position;
+					sp = sp - scroll.matrix_count*scroll.row_count;
+					if (sp < 0) {
+						sp = 0;
+					}
+					matrix.num = matrix.num - scroll.matrix_count*scroll.row_count;
+					if (matrix.num < 0) {
+						// если вышли за пределы переходим на предыдущий если пользователь согласился
+						if (matrix.curent_tree_events[matrix.tree].prev) {
+							var checknextwindow = gallery.cookie.get('checknextwindow');
+							if (checknextwindow == 'yes') {
+								prev = matrix.curent_tree_events[matrix.tree].prev;
+								new_num = matrix.curent_tree_events[prev].count - 1;
+								sp = Math.floor(new_num / scroll.row_count) * scroll.row_count;
+								matrix.num = new_num;
+								scroll.position = sp;
+								matrix.select_node = 'left';
+								$.jstree._focused().deselect_node("#tree_"+matrix.tree);
+								$("#tree_"+prev).jstree("set_focus");
+								$.jstree._focused().select_node("#tree_"+prev);
+								scroll.setposition(sp);
+							} else if (checknextwindow != 'no'){
+								gallery.nextwindow.open('left');
+							}
+						}
+					} else {
+						scroll.updateposition(sp);
+						scroll.setposition(sp);
+					}
+					return false;
+				} else if (e.which == 34) {
+					var sp = scroll.position;
+					if (sp + scroll.matrix_count*scroll.row_count*2 >  scroll.cell_count*scroll.row_count) {
+						if (matrix.curent_tree_events[matrix.tree].next) {
+							var checknextwindow = gallery.cookie.get('checknextwindow');
+							if (checknextwindow == 'yes') {
+								next = matrix.curent_tree_events[matrix.tree].next;
+								matrix.num = 0;
+								matrix.select_node = 'right';
+								$.jstree._focused().deselect_node("#tree_"+matrix.tree);
+								$("#tree_"+next).jstree("set_focus");
+								$.jstree._focused().select_node("#tree_"+next);
+							} else if (checknextwindow != 'no'){
+								gallery.nextwindow.open('right');
+							}
+							return false;
+						}
+						sp = scroll.cell_count*scroll.row_count - scroll.matrix_count*scroll.row_count;
+						matrix.num =scroll.cell_count*scroll.row_count - scroll.matrix_count*scroll.row_count;
+					} else {
+						sp =  sp + scroll.matrix_count*scroll.row_count;
+						matrix.num = matrix.num + scroll.matrix_count*scroll.row_count;
+					}
+					scroll.updateposition(sp);
+					scroll.setposition(sp);
+					return false;
+				}
+			});
 			// обработка нажатия на область между ползунком и края скрола
 			$(scroll.id + ' .scroll_body_v').unbind('mousedown');
 			$(scroll.id + ' .scroll_body_v').mousedown(function(e){
@@ -1722,7 +1636,7 @@ var scroll = {
 					$('#cell_'+new_num).addClass('active');
 					matrix.num = new_num;
 					
-				} else if (matrix.mode == 'detail'){
+				}	else if (matrix.mode == 'detail'){
 					matrix.num = new_num;
 					matrix.loaddetailsrc();
 				}
@@ -1868,7 +1782,7 @@ var scale = {
 	},
 	// обновление элемента масштаба
 	reload : function(width) {
-		var sp = Math.floor(scale.position * width/matrix.config.max_cell_width);
+		var sp = Math.floor(scale.position * width/matrix.config.max_cell_width)
 		if (sp > scale.max) {
 			sp=scale.max;
 		}
@@ -1903,7 +1817,7 @@ var scale = {
 						scale.updateposition(sp);
 					}
 				}
-			});
+			})
 			
 		});
 		$(document).mouseup(function(e){
@@ -1913,7 +1827,7 @@ var scale = {
 			scale.setposition(gallery.cookie.get('scale'));
 		}
 	}
-};
+}
 
 // элемент масштаба детального просмотра
 var scale2 = {
@@ -1950,7 +1864,6 @@ var scale2 = {
 			$('#image_detail').attr('width', parseInt(self.min_width) + Math.floor((self.max_width - self.min_width)*sp/self.max));
 			$('#image_detail').attr('height', parseInt(self.min_height) + Math.floor((self.max_height - self.min_height)*sp/self.max));
 			gallery.cookie.set('scale2', sp);
-			matrix.resetPositionImage();
 		},
 		reload : function() {
 			var self = this;
@@ -1982,7 +1895,7 @@ var scale2 = {
 							self.updateposition(sp);
 						}
 					}
-				});
+				})
 				
 			});
 			$(document).mouseup(function(e){
@@ -1994,390 +1907,5 @@ var scale2 = {
 			}
 			
 		}
-	};
-var keyBoard = {
-	boxesEnum : {},
-	keys : {
-		i : 73,
-		a : 65,
-		v : 86,
-		p : 80,
-		s : 83,
-		minus : 189,
-		plus : 187,
-		minus2: 109,
-		plus2: 61,
-		tab : 9,
-		enter : 13,
-		space : 32,
-		backspace : 8,
-		left : 37,
-		up : 38,
-		right : 39,
-		down : 40,
-		pageUp : 33,
-		pageDown : 34,
-		esc : 27
-	},
-	/*boxes : {
-		tree : 0,
-		camList: 1,
-		dialog: 2,
-		inside: 3
-	},*/
-	views : {
-		matrix: 0,
-		detail: 1,
-		colorDialog: 2,
-		chooseDialog: 3
-	},
-	/*selectedBox: 3,// 0 - Зона дерева событий. 1 - Зона списка камер. 2 - диалог. 3 - диалог 2*/
-	view : 0,
-	beforeView : 0,
-	currentBoxSelector : [],
-	currentSelector : null,
-	currentSelectorChild : 0,
-	colorSelector : null,
-	colorSelectorNumber : 0,
-	selectColor : function(next) {
-		$(keyBoard.colorSelector[keyBoard.colorSelectorNumber]).css('border', '1px solid black !important');
-		keyBoard.colorSelectorNumber = next;
-		if(keyBoard.colorSelectorNumber>=keyBoard.colorSelector.length) {
-			keyBoard.selectColor(keyBoard.colorSelectorNumber-keyBoard.colorSelector.length);
-			return;
-		}
-		if(keyBoard.colorSelectorNumber<=-1) {
-			//keyBoard.colorSelectorNumber = keyBoard.colorSelector.length-1;
-			keyBoard.selectColor(keyBoard.colorSelectorNumber+keyBoard.colorSelector.length);
-			return;
-		}
-		$(keyBoard.colorSelector[keyBoard.colorSelectorNumber]).css('border', '1px solid red !important');
-	},
-	getColor : function() {
-		return $(keyBoard.colorSelector[keyBoard.colorSelectorNumber]);
-	},
-	selectBox : function(){
-		keyBoard.selectElem();
-		for(var i=0,ilen=keyBoard.currentBoxSelector.length; i<ilen;i++){
-			keyBoard.currentBoxSelector[i].css('border', '');
-		}
-		keyBoard.currentBoxSelector = [];
-		for(var elem in arguments)
-			keyBoard.currentBoxSelector.push(arguments[elem]);
-		for(var j=0,jlen=keyBoard.currentBoxSelector.length; j<jlen;j++){
-			keyBoard.currentBoxSelector[j].css('border', '1px solid');
-		}
-	},
-	selectElem : function(next){
-		$(keyBoard.currentSelector[keyBoard.currentSelectorChild]).css('border', '');
-		keyBoard.currentSelectorChild = next;
-		if(keyBoard.currentSelectorChild>=keyBoard.currentSelector.length)
-			keyBoard.currentSelectorChild = 0;
-		if(keyBoard.currentSelectorChild<=-1)
-			keyBoard.currentSelectorChild = keyBoard.currentSelector.length-1;
-		$(keyBoard.currentSelector[keyBoard.currentSelectorChild]).css('border', '1px solid');
-	},
-	getCam : function (){
-		return $(keyBoard.currentSelector[keyBoard.currentSelectorChild]);
-	},
-	init : function() {
-		keyBoard.currentSelector = $('#cameras_selector .options').children();
-		keyBoard.colorSelector = $('#cameras_color ul').children('li');
-		keyBoard.boxesEnum = new Enum('INSIDE','TREE','CAMS');
-		keyBoard.selectBox($('#scroll_content'));
-		// обработка нажатий клавиатуры
-		//$(document).unbind('keydown');
-		$(document).keydown(function (e) {
-			e.preventDefault();
-
-			console.log('keyCode:'+e.which);
-			
-			// work any where
-			if(e.which == keyBoard.keys.tab){
-				keyBoard.boxesEnum.next();
-				//'INSIDE','TREE','CAMS'
-				if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.INSIDE) {
-					keyBoard.selectBox($('#scroll_content'));
-				} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.TREE) {
-					keyBoard.selectBox($('#tree'));
-				} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.CAMS) {
-					keyBoard.selectBox($('#cameras_selector'));
-					keyBoard.selectElem(0);
-				}
-			} else if(e.which == keyBoard.keys.i){ //i
-				$('#image_type').attr('checked', !$('#image_type').attr('checked'));
-				var r1 = gallery.reload_events();
-				if(!r1) {
-					$('#image_type').attr('checked', 'checked');
-				}
-			} else if(e.which == keyBoard.keys.a){ //a
-				$('#audio_type').attr('checked', !$('#audio_type').attr('checked'));
-				var r3 = gallery.reload_events();
-				if(!r3) {
-					$('#audio_type').attr('checked', 'checked');
-				}
-			} else if(e.which == keyBoard.keys.v) { //v
-				$('#video_type').attr('checked', !$('#video_type').attr('checked'));
-				var r2 = gallery.reload_events();
-				if(!r2) {
-					$('#video_type').attr('checked', 'checked');
-				}
-			} else if(e.which == keyBoard.keys.p) {
-				$('#proportion').attr('checked', !$('#proportion').attr('checked'));
-				matrix.doProportion();
-			} else if(e.which == keyBoard.keys.s) {
-				$('#info').attr('checked', !$('#info').attr('checked'));
-				matrix.doShowInfo();
-			}
-			
-			
-			//work in views
-			if(keyBoard.view==keyBoard.views.detail) { // DETAIL
-				if(e.which == keyBoard.keys.minus || e.which == keyBoard.keys.minus2) {
-					scale2.click_min();
-				} else if(e.which == keyBoard.keys.plus || e.which == keyBoard.keys.plus2) {
-					scale2.click_max();
-				}
-				if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.INSIDE) {
-					if(e.which == keyBoard.keys.space) {
-						scroll.num_right();
-					} else if(e.which == keyBoard.keys.backspace) {
-						scroll.num_left();
-					} else if(e.which == keyBoard.keys.enter) {
-						matrix.preview();
-					} else if(e.which == keyBoard.keys.down) {
-						var imgHeight = parseInt(matrix.imageDetail.attr('height'));
-						
-						if(imgHeight<matrix.height) {
-							return;
-						}
-						
-						var pos = matrix.imageDetail.offset();
-						pos.top -= 20;
-						
-						var imgHeight = parseInt(matrix.imageDetail.attr('height'));
-						
-						if(matrix.height - pos.top + matrix.currentOffset.top >=imgHeight)
-							pos.top = matrix.height - imgHeight + matrix.currentOffset.top;
-						
-						matrix.imageDetail.offset(pos);
-						
-					} else if(e.which == keyBoard.keys.up) {
-						var imgHeight = parseInt(matrix.imageDetail.attr('height'));
-						
-						if(imgHeight<matrix.height) {
-							return;
-						}
-						
-						var pos = matrix.imageDetail.offset();
-						pos.top += 20;
-						
-						if(pos.top>matrix.currentOffset.top)
-							pos.top = matrix.currentOffset.top;
-						
-						matrix.imageDetail.offset(pos);
-					} else if(e.which == keyBoard.keys.right) {
-						var imgWidth = parseInt(matrix.imageDetail.attr('width'));
-						if(imgWidth<matrix.width) {
-							return;
-						}
-						var pos = matrix.imageDetail.offset();
-						pos.left -= 20;
-						
-						var imgWidth = parseInt(matrix.imageDetail.attr('width'));
-						
-						if(matrix.width-pos.left + matrix.currentOffset.left>imgWidth)
-							pos.left = matrix.width - imgWidth + matrix.currentOffset.left;
-						
-						matrix.imageDetail.offset(pos);
-					} else if(e.which == keyBoard.keys.left) {
-						var imgWidth = parseInt(matrix.imageDetail.attr('width'));
-						if(imgWidth<matrix.width) {
-							return;
-						}
-						var pos = matrix.imageDetail.offset();
-						pos.left += 20;
-						
-						if(pos.left>matrix.currentOffset.left){
-							pos.left = matrix.currentOffset.left;
-						}
-						
-						matrix.imageDetail.offset(pos);
-					}
-				}
-				
-			} else if(keyBoard.view==keyBoard.views.matrix) { //MATRIX
-				if(e.which == keyBoard.keys.minus || e.which == keyBoard.keys.minus2) {
-					scale.click_min();
-				} else if(e.which == keyBoard.keys.plus || e.which == keyBoard.keys.plus2) {
-					scale.click_max();
-				}
-				
-				if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.INSIDE) {
-					if (e.which == keyBoard.keys.left) {
-						scroll.num_left();
-					} else if (e.which == keyBoard.keys.up) {
-						scroll.num_up();
-					} else if (e.which == keyBoard.keys.right) {
-						scroll.num_right();
-					} else if (e.which == keyBoard.keys.down) {
-						scroll.num_down();
-					} else if (e.which == keyBoard.keys.pageUp) {
-						var sp = scroll.position;
-						sp = sp - scroll.matrix_count*scroll.row_count;
-						if (sp < 0) {
-							sp = 0;
-						}
-						matrix.num = matrix.num - scroll.matrix_count*scroll.row_count;
-						if (matrix.num < 0) {
-							// если вышли за пределы переходим на предыдущий если пользователь согласился
-							if (matrix.curent_tree_events[matrix.tree].prev) {
-								var checknextwindow = gallery.cookie.get('checknextwindow');
-								if (checknextwindow == 'yes') {
-									prev = matrix.curent_tree_events[matrix.tree].prev;
-									new_num = matrix.curent_tree_events[prev].count - 1;
-									sp = Math.floor(new_num / scroll.row_count) * scroll.row_count;
-									matrix.num = new_num;
-									scroll.position = sp;
-									matrix.select_node = 'left';
-									$.jstree._focused().deselect_node("#tree_"+matrix.tree);
-									$("#tree_"+prev).jstree("set_focus");
-									$.jstree._focused().select_node("#tree_"+prev);
-									scroll.setposition(sp);
-								} else if (checknextwindow != 'no'){
-									gallery.nextwindow.open('left');
-								}
-							}
-						} else {
-							scroll.updateposition(sp);
-							scroll.setposition(sp);
-						}
-					} else if (e.which == keyBoard.keys.pageDown) {
-						var sp = scroll.position;
-						if (sp + scroll.matrix_count*scroll.row_count*2 >  scroll.cell_count*scroll.row_count) {
-							if (matrix.curent_tree_events[matrix.tree].next) {
-								var checknextwindow = gallery.cookie.get('checknextwindow');
-								if (checknextwindow == 'yes') {
-									next = matrix.curent_tree_events[matrix.tree].next;
-									matrix.num = 0;
-									matrix.select_node = 'right';
-									$.jstree._focused().deselect_node("#tree_"+matrix.tree);
-									$("#tree_"+next).jstree("set_focus");
-									$.jstree._focused().select_node("#tree_"+next);
-								} else if (checknextwindow != 'no'){
-									gallery.nextwindow.open('right');
-								}
-								return false;
-							}
-							sp = scroll.cell_count*scroll.row_count - scroll.matrix_count*scroll.row_count;
-							matrix.num =scroll.cell_count*scroll.row_count - scroll.matrix_count*scroll.row_count;
-						} else {
-							sp =  sp + scroll.matrix_count*scroll.row_count;
-							matrix.num = matrix.num + scroll.matrix_count*scroll.row_count;
-						}
-						scroll.updateposition(sp);
-						scroll.setposition(sp);
-					} else if(e.which == keyBoard.keys.enter) {
-						matrix.detail();
-					}
-				}
-			} else if(keyBoard.view==keyBoard.views.colorDialog) {
-				if (e.which == keyBoard.keys.esc) {
-					gallery.cameras_color.close();
-				} else if (e.which == keyBoard.keys.left) {
-					keyBoard.selectColor(keyBoard.colorSelectorNumber-1);
-				} else if (e.which == keyBoard.keys.up) {
-					keyBoard.selectColor(keyBoard.colorSelectorNumber-4);
-				} else if (e.which == keyBoard.keys.right) {
-					keyBoard.selectColor(keyBoard.colorSelectorNumber+1);
-				} else if (e.which == keyBoard.keys.down) {
-					keyBoard.selectColor(keyBoard.colorSelectorNumber+4);
-				} else if (e.which == keyBoard.keys.enter) {
-					gallery.cameras_color.camera_collor = keyBoard.getColor().attr('class');
-					gallery.cameras_color.select();
-					gallery.cameras_color.close();
-					return;
-				}
-			} else if(keyBoard.view==keyBoard.views.chooseDialog) {
-				if (e.which == keyBoard.keys.esc) {
-					gallery.nextwindow.close();
-				} else if (e.which == keyBoard.keys.enter) {
-					gallery.nextwindow.select();
-					gallery.nextwindow.close();
-				} else if (e.which == keyBoard.keys.space) {
-					$('#checknextwindow').attr('checked', !$('#checknextwindow').attr('checked'));
-				}
-			}
-			
-			if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.CAMS) {
-				if(keyBoard.view!=keyBoard.views.colorDialog) {
-					if (e.which == keyBoard.keys.left) {
-						keyBoard.selectElem(keyBoard.currentSelectorChild-1);
-					} else if (e.which == keyBoard.keys.up) {
-
-					} else if (e.which == keyBoard.keys.right) {
-						keyBoard.selectElem(keyBoard.currentSelectorChild+1);
-					} else if (e.which == keyBoard.keys.down) {
-
-					} else if (e.which == keyBoard.keys.space) {
-						var camId = keyBoard.getCam().children('input').attr('id');
-						$('#'+camId).attr('checked', !$('#'+camId).attr('checked'));
-						var rez = gallery.reload_cams();
-						if(!rez)
-							$('#'+camId).attr('checked', 'checked');
-					} else if (e.which == keyBoard.keys.enter) {
-						gallery.cameras_color.camera_id = keyBoard.getCam().children('label').children('a').attr('href').replace('#','');
-						gallery.cameras_color.camera_title = keyBoard.getCam().children('label').children('a').html();
-						gallery.cameras_color.camera_link = keyBoard.getCam().children('label').children('a');
-						gallery.cameras_color.open();
-					}
-				}
-			} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.TREE) {
-				if (e.which == keyBoard.keys.left) {
-					var top = matrix.curent_tree_events[matrix.keyBoardTree].top;
-					if(top!=false && typeof(top)!='undefined') {
-						$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
-						$.jstree._focused().select_node('#tree_'+top);
-					}
-				} else if (e.which == keyBoard.keys.up) {
-					var prev = matrix.curent_tree_events[matrix.keyBoardTree].prev;
-					if(prev!=false && typeof(prev)!='undefined') {
-						$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
-						$.jstree._focused().select_node('#tree_'+prev);
-					}
-				} else if (e.which == keyBoard.keys.right) {
-					var under = matrix.curent_tree_events[matrix.keyBoardTree].under;
-					if(under!=false && typeof(under)!='undefined') {
-						$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
-						$.jstree._focused().select_node('#tree_'+under);
-					}
-				} else if (e.which == keyBoard.keys.down) {
-					var next = matrix.curent_tree_events[matrix.keyBoardTree].next;
-					if(next!=false && typeof(next)!='undefined') {
-						$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
-						$.jstree._focused().select_node('#tree_'+next);
-					}
-				} else if (e.which == keyBoard.keys.enter) {
-					var tree = matrix.keyBoardTree;
-					if (matrix.tree != tree) {
-						matrix.tree = tree;
-						matrix.keyBoardTree = tree;
-						matrix.build();
-					}
-					// если режим детального просмотра, обновляем картинку
-					if (matrix.mode == 'detail') {
-						matrix.preview();
-					}
-					
-				} else if (e.which == keyBoard.keys.space) {
-					if($.jstree._focused().is_open()) {
-						$.jstree._focused().close_node('#tree_'+matrix.keyBoardTree);
-					} else {
-						$.jstree._focused().open_node('#tree_'+matrix.keyBoardTree);
-					}
-				}
-			}
-			
-		});
 	}
-};
+
