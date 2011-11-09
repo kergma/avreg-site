@@ -836,7 +836,7 @@ var matrix = {
 			event.preventDefault();
 		});
 		
-		console.log('matrix view');
+		//console.log('matrix view');
 		keyBoard.beforeView = keyBoard.view;
 		keyBoard.view = keyBoard.views.matrix;
 		if (config && typeof(config) == 'object') {
@@ -886,8 +886,8 @@ var matrix = {
 		
 		// убираем скроллы
 		$('#win_bot_detail').css('overflow', 'hidden');
+		
 		matrix.imageDetail.draggable({ 
-			cursor: 'move', 
 			drag: function(event, ui){
 				
 				
@@ -922,11 +922,10 @@ var matrix = {
 							   matrix.width-ui.position.left,
 							   matrix.height-ui.position.top
 							];
-							console.log(temp);
+							//console.log(temp);
 				*/
 			}
 		});
-		
 		
 		// обновление матрицы
 		matrix.resize();
@@ -950,7 +949,15 @@ var matrix = {
 	resetPositionImage: function(){
 		matrix.imageDetail.css('top', '0');
 		matrix.imageDetail.css('left', '0');
-		matrix.currentOffset = matrix.imageDetail.offset(); 
+		matrix.currentOffset = matrix.imageDetail.offset();
+		var imgWidth = parseInt(matrix.imageDetail.attr('width'));
+		var imgHeight = parseInt(matrix.imageDetail.attr('height'));
+		
+		if(imgWidth>matrix.width || imgHeight>matrix.height) {
+			matrix.imageDetail.css('cursor', 'move');
+		} else {
+			matrix.imageDetail.css('cursor', 'default');
+		}
 	},
 	// обновление чекбокса пропорций
 	doProportion : function() {
@@ -981,7 +988,7 @@ var matrix = {
 	},
 	// если включили режим детальный просмотр
 	detail : function() {
-		console.log('detail view');
+		//console.log('detail view');
 		keyBoard.beforeView = keyBoard.view;
 		keyBoard.view = keyBoard.views.detail;
 		matrix.mode = 'detail';
@@ -994,7 +1001,7 @@ var matrix = {
 	},
 	// если включили режим миниатюр
 	preview : function() {
-		console.log('matrix view');
+		//console.log('matrix view');
 		if (typeof(matrix.curent_tree_events[matrix.tree]) != 'undefined') {
 			keyBoard.beforeView = keyBoard.view;
 			keyBoard.view = keyBoard.views.matrix;
@@ -2090,7 +2097,7 @@ var keyBoard = {
 		$(document).keydown(function (e) {
 			e.preventDefault();
 
-			console.log('keyCode:'+e.which);
+			//console.log('keyCode:'+e.which);
 			
 			// work any where
 			if(e.which == keyBoard.keys.tab){

@@ -21,8 +21,8 @@
 	clear: both;
 }
 #content #win_top .options span {
-	padding: 5px;
-	float: left;
+	/*padding: 5px;
+	float: left;*/
 }
 #content #win_top .options label {
 	float:left;
@@ -31,9 +31,9 @@
 	min-width: 5px;
 }
 #content #win_top  {
-	background: url(../img/shadow.gif) repeat-x 0 0;
-	background-position: bottom;
-	background-color: #fff;
+	/*background: url(../img/shadow.gif) repeat-x 0 0;	
+	background-position: bottom;*/
+	background-color: #333;
 	overflow: hidden;
 	top:3px;
 /*	height: 70px;*/
@@ -55,7 +55,7 @@
 #content #win_bot, #content #win_bot_detail{
 	margin-top: 70px;
 	height: 100%;
-	
+	background: #000;
 	padding-top: 10px;
 }
 
@@ -64,12 +64,13 @@
 	overflow: auto;
 }
 #content #toolbar {
+	background: #303030;
 	height: 50px;
 	padding: 10px;
 	position: absolute;
 	bottom: 0px;
 	width: 100%;	
-	background: url(../img/shadow.gif) repeat-x 0 0;
+	/*background: url(../img/shadow.gif) repeat-x 0 0;*/
 }
 #content .detail {
 	display:none;
@@ -92,37 +93,43 @@
 	float: left;
 	position: absolute;
 	overflow-y: hidden;
-	background-color: #fff;
+	background-color: #313131;
 	color: #444;
 	height: 100%;
 }
 #sidebar .block {
 	border: 1px solid #ADADAD !important;
-	background: url(../img/shadow.gif) repeat-x 0 0;
+	/*background: url(../img/shadow.gif) repeat-x 0 0;*/
 	display: block;
 	height: 100%;
 	width: 96%;
 	float: left;
 	font-size: 12px;	
 }
-
+#type_event label {
+	color: black;
+	font-size: 13px;	
+}
 #sidebar #type_event, #sidebar #favorite, #sidebar #tree, #sidebar #statistics {
 	padding: 10px;
 }
 #sidebar #type_event {
-	height:50px;
+	/*height:50px;*/
+	background: #A29DB3;
+    border-radius: 4px 4px 4px 4px;
+    margin: 10px;	
 }
 #sidebar #favorite {
-	background: url(../img/shadow.gif) repeat-x 0 0;
+	/*background: url(../img/shadow.gif) repeat-x 0 0;*/
 }
 #sidebar #tree {
 	overflow: auto;
 }
 
 #sidebar #statistics {
-	background: url(../img/shadow.gif) repeat-x 0 0;
-	position: absolute;
-	bottom: 0;
+	/*background: url(../img/shadow.gif) repeat-x 0 0;*/
+	/*position: absolute;
+	bottom: 0;*/
 	height: 50px;
 	width: 88.5%;
 }
@@ -132,9 +139,9 @@
 #handler_vertical {
 	height: 100%;
 	float: right;
-	width: 6px;
+	width: 26px;
 	cursor: col-resize;
-	background: url(../img/handle-v.png) 0 50% no-repeat;
+	background: url(../img/handle-v.png) no-repeat;
 }
 
 #list_panel { 
@@ -154,10 +161,10 @@
 
 
 #scroll_v {width:14px; height:auto; left:-14px; float:right; display:none;}
-#scroll_v .scroll_top_v {width:14px; height:14px; background:url(../img/scroll_top.png) no-repeat;}
-#scroll_v .scroll_body_v {width:12px; height:200px; background:#eaeaea; border-left:1px solid #cccccc; border-right:1px solid #cccccc;  position:relative;}
-#scroll_v .scroll_polz_v {width:12px; margin:auto; height:30px; background:#4b7da8; border:1px solid #6d9acc; position:relative; left:-1px; top:0px;}
-#scroll_v .scroll_bot_v {width:14px; height:14px; background:url(../img/scroll_bot.png) no-repeat;}
+#scroll_v .scroll_top_v {width:36px; height:42px; background:url(../img/scroll_top.png) no-repeat;}
+#scroll_v .scroll_body_v {width:30px; height:200px; background:#eaeaea; /*border-left:1px solid #cccccc; border-right:1px solid #cccccc; */ position:relative;}
+#scroll_v .scroll_polz_v {width:38px; margin:auto; height:106px !important; background:url(../img/scrolll.png) no-repeat; position:relative; left:-1px; top:0px;}
+#scroll_v .scroll_bot_v {width:36px; height:42px; background:url(../img/scroll_bot.png) no-repeat;}
 
 
 #scale {width:auto; height:30px; margin-bottom:2px;}
@@ -202,7 +209,7 @@
 	left:0;
 }
 .content_item { 
-	background-color:#fcfcfc; 
+	background-color:#fcfcfc;
 }
 #scroll_content .content_item { 
 	position: relative; 
@@ -213,9 +220,13 @@
 	display: block;
 }
 #scroll_content .active {
-	background-color: silver;
+	background-color: #1b1b1d;
+	border: #fff 1px solid;
 }
-
+div.img_block img {
+	border:#4b3ab5 4px solid;
+	box-shadow: 3px 3px 5px #000;	
+} 
 .content_item .img_block { 
 	font-size:12px;
 	line-height:96px;
@@ -226,7 +237,7 @@
 	width: 99%;	
 	font-size: 12px;
 	text-align: center;
-	color:#000;
+	color:#fff;
 }
 
 .camera_1_color {
@@ -296,10 +307,11 @@
 	color:LawnGreen; 
 }
 .camera_12_color {
-	background-color:LightYellow; 
+	/*background-color:LightYellow; */
 }
 .camera_12_color_font {
-	color:LightYellow; 
+	color:#8f7dff; 
+	
 }
 .camera_13_color {
 	background-color:IndianRed; 
@@ -376,14 +388,4 @@
 }
 
 
-#overlay{
-	background: none repeat scroll 0 0 #FFFFFF;
-	opacity : 0.8;
-	position:fixed; 
-	top:0px;
-	bottom:0px;
-	left:0px;
-	right:0px;
-	z-index:100; 
-	display:none;  
-}
+#overlay{

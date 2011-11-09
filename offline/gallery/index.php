@@ -7,24 +7,26 @@
 				<!-- sidebar inner block -->
 				<div class="block">
 					<div id="type_event">
+					<form class="niceform">
 						<?php 
 							if (isset($cookies['type_event'])) {
 								$type = explode(',', trim($cookies['type_event'], ','));
 							}
 						?>
-						<input type="checkbox" id="image_type" name="type_event" value="image" <?php if (empty($type) || in_array('i', $type)) :?>checked="checked" <?php endif;?> />
+						<input type="checkbox" id="image_type" name="type_event"  value="image" <?php if (empty($type) || in_array('i', $type)) :?>checked="checked" <?php endif;?> />
 						<label for="image_type" ><?php print $strimagetype; ?></label><br/>
 						<input type="checkbox" id="video_type" name="type_event" value="video" <?php if (empty($type) || in_array('v', $type)) :?>checked="checked" <?php endif;?>/>
 						<label for="video_type" ><?php print $strvideotype; ?></label><br/>
 						<input type="checkbox" id="audio_type" name="type_event" value="audio" <?php if (empty($type) || in_array('a', $type)) :?>checked="checked" <?php endif;?>/>
 						<label for="audio_type" ><?php print $straudiotype; ?></label>						
+					</form>
 					</div>
 				
-					<div id="favorite">
-		<!--				<input type="checkbox" id="input_favorite" name="favorite" value="favorite">
+				<!--	<div id="favorite">
+						<input type="checkbox" id="input_favorite" name="favorite" value="favorite">
 						<label for="input_favorite">Отмеченные</label>
-		 -->			</div>
-					
+		 			</div>-->
+				<div class="treeBg">	
 					<div id="tree">
 						<div id="tree_new">
 						</div>
@@ -32,7 +34,7 @@
 					
 					<div id="statistics">
 					</div>
-					
+				</div>
 				</div>
 				<!-- end sidebar inner block -->
 				
@@ -51,13 +53,27 @@
 								}
 							?>
 							<?php foreach ($GCP_cams_params as $CAM_NR => $PARAM) :?>
-							
-								<span>
-									<label for="camera_<?php print $CAM_NR;?>"><a href="#<?php print $CAM_NR;?>" class="set_camera_color<?php if (isset($cookies['camera_'.$CAM_NR.'_color']) && !empty($cookies['camera_'.$CAM_NR.'_color']) ): print ' '.$cookies['camera_'.$CAM_NR.'_color'] . '_font'; endif;?>"><?php print $PARAM['text_left'];?></a></label>
+								<span style="width: 200px; white-space: nowrap; text-align: center;">
 									<input type="checkbox" id="camera_<?php print $CAM_NR;?>" name="cameras" value="<?php print $CAM_NR;?>" <?php if (empty($cameras) || in_array($CAM_NR, $cameras)) :?>checked="checked" <?php endif;?>>
+									<label  style="float: none !important;" for="camera_<?php print $CAM_NR;?>"><a href="#<?php print $CAM_NR;?>" class="set_camera_color<?php if (isset($cookies['camera_'.$CAM_NR.'_color']) && !empty($cookies['camera_'.$CAM_NR.'_color']) ): print ' '.$cookies['camera_'.$CAM_NR.'_color'] . '_font'; endif;?>"><?php
+									$name = $PARAM['text_left'];
+									if($CAM_NR==2)
+										$name = 'длинный текст'.$name; 
+									if(mb_strlen($name)>18) {
+										$name = mb_substr($name, 0, 15);
+										$name .= '...';
+									} 
+									print $name; 
+									?></a></label>
 								</span>
 							<?php endforeach;?>
+							<?php /* foreach ($GCP_cams_params as $CAM_NR => $PARAM) :?>
 							
+								<span style="width:250px !important;  ">
+									<label style="width:225px !important; overflow: hidden; text-overflow: ellipsis;white-space: nowrap;text-align: center;" for="camera_<?php print $CAM_NR;?>"><a href="#<?php print $CAM_NR;?>" class="set_camera_color<?php if (isset($cookies['camera_'.$CAM_NR.'_color']) && !empty($cookies['camera_'.$CAM_NR.'_color']) ): print ' '.$cookies['camera_'.$CAM_NR.'_color'] . '_font'; endif;?>"><?php print $PARAM['text_left'].$PARAM['text_left']; ?></a></label>
+									<input type="checkbox" id="camera_<?php print $CAM_NR;?>" name="cameras" value="<?php print $CAM_NR;?>" <?php if (empty($cameras) || in_array($CAM_NR, $cameras)) :?>checked="checked" <?php endif;?>>
+								</span>
+							<?php endforeach;*/ ?>
 							</div>
 							
 						</div>
