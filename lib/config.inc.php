@@ -172,7 +172,9 @@ if ( !empty($conf['prefix']) && preg_match('@^/([^/]+).*@', $_SERVER['REQUEST_UR
          $conf['daemon-name'] .= '-'.$AVREG_PROFILE;
       }
    }
-}
+} else // for empty prefix and SMP's profiles
+   $EXISTS_PROFILES = glob($conf['profiles-dir'].'/[A-Za-z0-9][A-Za-z0-9_-:]*', GLOB_NOSORT);
+
 if ($conf['debug']) {
    ini_set ('display_errors', '1' );
    ini_set ('log_errors', '1');
