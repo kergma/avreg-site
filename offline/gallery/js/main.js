@@ -2047,7 +2047,7 @@ var keyBoard = {
 	colorSelector : null,
 	colorSelectorNumber : 0,
 	selectColor : function(next) {
-		$(keyBoard.colorSelector[keyBoard.colorSelectorNumber]).css('border', '1px solid black !important');
+		$(keyBoard.colorSelector[keyBoard.colorSelectorNumber]).removeClass('selectColor');
 		keyBoard.colorSelectorNumber = next;
 		if(keyBoard.colorSelectorNumber>=keyBoard.colorSelector.length) {
 			keyBoard.selectColor(keyBoard.colorSelectorNumber-keyBoard.colorSelector.length);
@@ -2058,7 +2058,7 @@ var keyBoard = {
 			keyBoard.selectColor(keyBoard.colorSelectorNumber+keyBoard.colorSelector.length);
 			return;
 		}
-		$(keyBoard.colorSelector[keyBoard.colorSelectorNumber]).css('border', '1px solid red !important');
+		$(keyBoard.colorSelector[keyBoard.colorSelectorNumber]).addClass('selectColor');
 	},
 	getColor : function() {
 		return $(keyBoard.colorSelector[keyBoard.colorSelectorNumber]);
@@ -2066,23 +2066,23 @@ var keyBoard = {
 	selectBox : function(){
 		keyBoard.selectElem();
 		for(var i=0,ilen=keyBoard.currentBoxSelector.length; i<ilen;i++){
-			keyBoard.currentBoxSelector[i].css('border', '');
+			keyBoard.currentBoxSelector[i].removeClass('selectBox');
 		}
 		keyBoard.currentBoxSelector = [];
 		for(var elem in arguments)
 			keyBoard.currentBoxSelector.push(arguments[elem]);
 		for(var j=0,jlen=keyBoard.currentBoxSelector.length; j<jlen;j++){
-			keyBoard.currentBoxSelector[j].css('border', '1px solid');
+			keyBoard.currentBoxSelector[j].addClass('selectBox');
 		}
 	},
 	selectElem : function(next){
-		$(keyBoard.currentSelector[keyBoard.currentSelectorChild]).css('border', '');
+		$(keyBoard.currentSelector[keyBoard.currentSelectorChild]).removeClass('selectElement');
 		keyBoard.currentSelectorChild = next;
 		if(keyBoard.currentSelectorChild>=keyBoard.currentSelector.length)
 			keyBoard.currentSelectorChild = 0;
 		if(keyBoard.currentSelectorChild<=-1)
 			keyBoard.currentSelectorChild = keyBoard.currentSelector.length-1;
-		$(keyBoard.currentSelector[keyBoard.currentSelectorChild]).css('border', '1px solid');
+		$(keyBoard.currentSelector[keyBoard.currentSelectorChild]).addClass('selectElement');
 	},
 	getCam : function (){
 		return $(keyBoard.currentSelector[keyBoard.currentSelectorChild]);
@@ -2300,6 +2300,7 @@ var keyBoard = {
 				} else if (e.which == keyBoard.keys.down) {
 					keyBoard.selectColor(keyBoard.colorSelectorNumber+4);
 				} else if (e.which == keyBoard.keys.enter) {
+					keyBoard.getColor().removeClass('selectColor');
 					gallery.cameras_color.camera_collor = keyBoard.getColor().attr('class');
 					gallery.cameras_color.select();
 					gallery.cameras_color.close();

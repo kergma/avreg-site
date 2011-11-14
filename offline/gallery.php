@@ -13,7 +13,7 @@ if (!isset($_POST['method']) || empty($_POST['method'])) {
 								'offline/gallery/js/main.js',
 								//'offline/gallery/js/jquery.keyboard.js'
 								'offline/gallery/js/jquery-ui-1.8.16.custom.min.js',
-								'offline/gallery/js/niceforms.js',
+								'offline/gallery/js/jquery.checkbox.js',
 						);
 	require_once('../head.inc.php');
 	$GCP_query_param_list=array('text_left', 'Hx2');

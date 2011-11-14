@@ -7,19 +7,21 @@
 				<!-- sidebar inner block -->
 				<div class="block">
 					<div id="type_event">
-					<form class="niceform">
+					
 						<?php 
 							if (isset($cookies['type_event'])) {
 								$type = explode(',', trim($cookies['type_event'], ','));
 							}
 						?>
-						<input type="checkbox" id="image_type" name="type_event"  value="image" <?php if (empty($type) || in_array('i', $type)) :?>checked="checked" <?php endif;?> />
+						<span class="niceCheck"><input type="checkbox" id="image_type" name="type_event"  value="image" <?php if (empty($type) || in_array('i', $type)) :?>checked="checked" <?php endif;?> /></span>
 						<label for="image_type" ><?php print $strimagetype; ?></label><br/>
-						<input type="checkbox" id="video_type" name="type_event" value="video" <?php if (empty($type) || in_array('v', $type)) :?>checked="checked" <?php endif;?>/>
+						<div class="borderBot"></div>
+						<span class="niceCheck"><input type="checkbox" id="video_type" name="type_event" value="video" <?php if (empty($type) || in_array('v', $type)) :?>checked="checked" <?php endif;?>/></span>
 						<label for="video_type" ><?php print $strvideotype; ?></label><br/>
-						<input type="checkbox" id="audio_type" name="type_event" value="audio" <?php if (empty($type) || in_array('a', $type)) :?>checked="checked" <?php endif;?>/>
+						<div class="borderBot"></div>
+						<span class="niceCheck"><input type="checkbox" id="audio_type" name="type_event" value="audio" <?php if (empty($type) || in_array('a', $type)) :?>checked="checked" <?php endif;?>/></span>
 						<label for="audio_type" ><?php print $straudiotype; ?></label>						
-					</form>
+						
 					</div>
 				
 				<!--	<div id="favorite">
@@ -47,6 +49,7 @@
 						
 						<div id="cameras_selector" class="field checkboxes">
 							<div class="options">
+							
 							<?php 
 								if (isset($cookies['cameras'])) {
 									$cameras = explode(',', trim($cookies['cameras'], ','));
@@ -54,7 +57,9 @@
 							?>
 							<?php foreach ($GCP_cams_params as $CAM_NR => $PARAM) :?>
 								<span style="width: 200px; white-space: nowrap; text-align: center;">
-									<input type="checkbox" id="camera_<?php print $CAM_NR;?>" name="cameras" value="<?php print $CAM_NR;?>" <?php if (empty($cameras) || in_array($CAM_NR, $cameras)) :?>checked="checked" <?php endif;?>>
+								<span class="niceCheck">
+									<input type="checkbox" id="camera_<?php print $CAM_NR;?>" name="cameras" value="<?php print $CAM_NR;?>" <?php if (empty($cameras) || in_array($CAM_NR, $cameras)) :?>checked="checked" <?php endif;?>></span>
+									
 									<label  style="float: none !important;" for="camera_<?php print $CAM_NR;?>"><a href="#<?php print $CAM_NR;?>" class="set_camera_color<?php if (isset($cookies['camera_'.$CAM_NR.'_color']) && !empty($cookies['camera_'.$CAM_NR.'_color']) ): print ' '.$cookies['camera_'.$CAM_NR.'_color'] . '_font'; endif;?>"><?php
 									$name = $PARAM['text_left'];
 									if($CAM_NR==2)
@@ -66,6 +71,7 @@
 									print $name; 
 									?></a></label>
 								</span>
+								
 							<?php endforeach;?>
 							<?php /* foreach ($GCP_cams_params as $CAM_NR => $PARAM) :?>
 							
@@ -100,11 +106,13 @@
 				
 					<div id="toolbar" >
 						<div class="propotion controls">
-								<input type="checkbox" id="proportion" name="proportion" value="1" <?php if (isset($cookies['proportion']) && $cookies['proportion'] == 'checked') :?>checked="checked" <?php endif;?>>
+						
+								<span class="niceCheck"><input type="checkbox" id="proportion" name="proportion" value="1" <?php if (isset($cookies['proportion']) && $cookies['proportion'] == 'checked') :?>checked="checked" <?php endif;?>></span>
 								<label for="proportion"><?php print $strproportion; ?></label>
+							
 						</div>
 						<div class="event_info preview controls">
-								<input type="checkbox" id="info" name="info" value="1" <?php if (!isset($cookies['info']) || $cookies['info'] == 'checked') :?>checked="checked" <?php endif;?>>
+								<span class="niceCheck"><input type="checkbox" id="info" name="info" value="1" <?php if (!isset($cookies['info']) || $cookies['info'] == 'checked') :?>checked="checked" <?php endif;?>></span>
 								<label for="info"><?php print $strinfo; ?></label>
 						</div>
 						<div  id="scale" class="preview controls">
@@ -123,7 +131,7 @@
 								</div>
 								<div class="scale_max"></div>
 						</div>
-						
+						<img src="/avreg/offline/gallery/img/lupa.png" />
 						<div class="controls prevnext">
 							<a class="prew" href="#"><img src="/avreg/offline/gallery/img/arrow_left.png" /></a>
 							<a class="next" href="#"><img src="/avreg/offline/gallery/img/arrow_right.png" /></a>
@@ -167,14 +175,15 @@
 	</div>
 </div>
 
-<div id="nextwindow" class="mod_window">
+<div id="nextwindow" class="mod_window next_window">
 	<div class="window_title">
 		<h2><?php print $strnextwindow; ?></h2>
 	</div>
 	<div class="window_body">
-		<input type="checkbox" id="checknextwindow" name="checknextwindow" value="1">
+
+		<span class="niceCheck"><input type="checkbox" id="checknextwindow" name="checknextwindow" value="1"></span>
 		<label for="checknextwindow"><?php print $strchecknextwindow; ?></label>
-	
+
 	</div>
 	<div class="window_button">
 		<button class="no"><?php print $strno; ?></button>
