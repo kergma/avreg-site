@@ -187,6 +187,7 @@ var gallery = {
 		config : {
 			
 		},
+		hcameras : 100,
 		// объект изменения ширины столбцов
 		resize_column : {
 			myWidth: null, // ширина 
@@ -197,8 +198,8 @@ var gallery = {
 				var self = this;
 				
 				$('#sidebar').width(pageX + 2);
-				$('#sidebar .block').width(pageX-7);
-				$('#sidebar #statistics').width(pageX-27);
+				$('#sidebar .block').width(pageX-26);
+				$('#sidebar #statistics').width(pageX-66);
 				// fix content width on resize
 			//	$('#content').css("left",pageX);
 				
@@ -212,9 +213,11 @@ var gallery = {
 					self.myHeight = document.documentElement.clientHeight;
 				}
 				$('#content').width(self.myWidth - $('#sidebar').width() + 2);
-				$('#list_panel').width($('#content').width()-26);
+				$('#list_panel').width($('#content').width()-38);
 				
 				
+				var hc = $('#content').height() - 100 - $('#toolbar').height()-28;
+				$('#win_bot').height(hc);
 			},
 			// функция инициализации
 			init: function() {
@@ -725,6 +728,7 @@ var gallery = {
 		},
 		// инициализация галереи
 		init : function(config) {
+			
 			var self = this;
 			// обновление настроек
 			if (config && typeof(config) == 'object') {
@@ -736,37 +740,76 @@ var gallery = {
 			self.cookie.init({path:WwwPrefix+'/offline/gallery.php'});
 			
 			// организация увеличение размера списка камер
-			if ($('#win_top').height() > 70) {
+			if ($('#win_top').height() > 100) {
 				$('#more_cam').show();
-				self.win_top = $('#win_top').height();
 				$('#win_top').hover(
 						function(){
-							$('#more_cam').hide();
-							$('#win_top').height(self.win_top);
+							if (!$('#cameras_selector').hasClass('selectBox')) {
+								$('#more_cam').hide();
+								$('#win_top').height('auto');
+							}
 						},
 						function(){
-							$('#more_cam').show();
-							$('#win_top').height(70);
+							if (!$('#cameras_selector').hasClass('selectBox')) {
+								$('#more_cam').show();
+								$('#win_top').height(100);
+							}
 						}
 				);
 			}
-			$('#win_top').height(70);
+			$('#win_top').height(100);
+			
+			
+			
 			
 			// обработка выбора чекбокса камеры 
-			$('input[name="cameras"]').click(function(){
+			$('input[name="cameras"]').change(function(){
 				var rez = gallery.reload_cams();
 				if(!rez)
 					$(this).attr('checked', 'checked');
+				
+				if ($(this).attr('checked')) {
+					$(this).parent().attr('style','background-position: 0px -14px');
+				} else {
+					$(this).parent().attr('style','background-position: 0px -0px');
+				}
 			});
+			
+			$('#cameras_selector .niceCheck').click(function(){
+				var rez = gallery.reload_cams();
+				if(!rez) {
+					$(this).attr('style','background-position: 0px -14px');
+					$(this).children().attr('checked', 'checked');
+				}
+			});
+			
 			
 			// обработка выбора чекбокса типа события 
-			$('input[name="type_event"]').click(function(){
+			$('#type_event input[name="type_event"]').change(function(){
 				var rez = gallery.reload_events();
-				if(!rez)
+				if(!rez) {
 					$(this).attr('checked', 'checked');
+					
+				} 
+				
+				if ($(this).attr('checked')) {
+					$(this).parent().attr('style','background-position: 0px -14px');
+				} else {
+					$(this).parent().attr('style','background-position: 0px -0px');
+				}
+				
+			});
+			$('#type_event .niceCheck').click(function(){
+				var rez = gallery.reload_events();
+				if(!rez) {
+					$(this).attr('style','background-position: 0px -14px');
+					$(this).children().attr('checked', 'checked');
+				}
 			});
 			
 			
+			
+		
 			
 			// инициализация изменения размеров столбцов
 			self.resize_column.init();
@@ -877,12 +920,34 @@ var matrix = {
 		// обработка чекбокса сохранять пропорции
 		$('#proportion').click(function(){
 			matrix.doProportion();
+			
+			if ($(this).attr('checked')) {
+				$(this).parent().attr('style','background-position: 0px -14px');
+			} else {
+				$(this).parent().attr('style','background-position: 0px -0px');
+			}
 		});
 			
+		$('.propotion .niceCheck').click(function(){
+			matrix.doProportion();
+		});
 		// обработка чекбокса показывать информацию
 		$('#info').click(function(){
 			matrix.doShowInfo();
+			
+			if ($(this).attr('checked')) {
+				$(this).parent().attr('style','background-position: 0px -14px');
+			} else {
+				$(this).parent().attr('style','background-position: 0px -0px');
+			}
 		});
+		
+		
+		$('.event_info .niceCheck').click(function(){
+			matrix.doShowInfo();
+		});
+		
+		
 		
 		// убираем скроллы
 		$('#win_bot_detail').css('overflow', 'hidden');
@@ -926,7 +991,6 @@ var matrix = {
 				*/
 			}
 		});
-		
 		// обновление матрицы
 		matrix.resize();
 		//инициализации элемента масштаба режима миниатюр
@@ -1048,21 +1112,27 @@ var matrix = {
 		}
 		// определяем новые размеры матрицы
 		
-		// исправяем баг с длинной не видимого элемента
+
+		
+		// обновляем размеры детального просмотра
+		var hc = $('#content').height() - 100 - $('#toolbar').height()-28;
+		$('#win_bot_detail').height(hc);
+		//$('#win_bot_detail').width($('#content').width() - $('#win_top').width() - $('#toolbar').width());
+		$('#win_bot').height(hc);
+		//$('#scroll_v').height(hc);
+		
+		// исправление бага с высотой!!! придумать что то лучше
+		if($('#list_panel').height()!==0)
+			matrix.height = $('#list_panel').height();
+		// 	исправяем баг с длинной не видимого элемента
 		
 		var pan_height = $('#list_panel').css('height');
 		var pan_width = parseInt($('#list_panel').css('width').replace('px',''));
 		
-		// исправление бага с высотой!!! придумать что то лучше
-		if($('#list_panel').height()!==0)
-			matrix.height = $('#list_panel').height()-140;
+		
 		
 		matrix.width = pan_width; //$('#list_panel').width();
-		$('#matrix_load img').css('margin-top', matrix.height/2);
-		
-		// обновляем размеры детального просмотра
-		$('#win_bot_detail').height($('#content').height() - $('#win_top').height() - $('#toolbar').height()-30);
-		$('#win_bot_detail').width($('#content').width() - $('#win_top').width() - $('#toolbar').width());
+		$('#matrix_load img').css('margin-top', $('#content').height()/2);
 		
 		// высчитываем новую высоту и ширину ячейки
 		var old_width = matrix.config.max_cell_width;
@@ -1103,7 +1173,8 @@ var matrix = {
 		// если элемента скрола нет, то создаем его
 		if (matrix.scroll == true) {
 			var sp = scroll.position;
-			scroll.init({height:matrix.height-28, cell_count:Math.ceil(matrix.count_item/matrix.count_column), row_count: matrix.count_column, matrix_count: Math.ceil(matrix.cell_count/matrix.count_column)});
+			
+			scroll.init({height:matrix.height-82, cell_count:Math.ceil(matrix.count_item/matrix.count_column), row_count: matrix.count_column, matrix_count: Math.ceil(matrix.cell_count/matrix.count_column)});
 			sp = Math.floor(sp/scroll.row_count)*scroll.row_count;
 			scroll.updateposition(sp, true);	
 			scroll.setposition(sp);
@@ -1294,7 +1365,7 @@ var matrix = {
 						camera_class = ' '+camera_class;
 					}
 					html += '<div id="cell_'+i+'" class="content_item show'+active+' camera_'+value[5]+' '+camera_class+'">';
-					
+					html += '<div class="elem">';
 					if (value[7] == 'image') {
 					
 						if (typeof( value.image_chache) != 'undefined' && value.image_chache) {
@@ -1322,6 +1393,7 @@ var matrix = {
 						'+value[6]+' \
 						'+value[4]+'x'+value[3]+'<br />\
 						</div>';
+					html += '</div>';
 					html += '</div>';
 				}
 			}
@@ -1415,6 +1487,8 @@ var matrix = {
 					}
 					html += '<div id="cell_'+i+'" class="content_item show'+active+' camera_'+value[5]+' '+camera_class+'">';
 					
+					html += '<div class="elem">';
+					
 					if (value[7] == 'image') {
 						
 						if (typeof( value.image_chache) != 'undefined' && value.image_chache) {
@@ -1442,6 +1516,7 @@ var matrix = {
 						'+value[6]+' \
 						'+value[4]+'x'+value[3]+'<br />\
 						</div>';
+					html += '</div>';
 					html += '</div>';
 					}
 				};
@@ -1556,7 +1631,7 @@ var matrix = {
 			matrix.update(sp);
 		}
 		//инициализируем элемент скрола
-		scroll.init({height:matrix.height-28, cell_count:Math.ceil(matrix.count_item/matrix.count_column), row_count: matrix.count_column, matrix_count: Math.ceil(matrix.cell_count/matrix.count_column)});
+		scroll.init({height:matrix.height-82, cell_count:Math.ceil(matrix.count_item/matrix.count_column), row_count: matrix.count_column, matrix_count: Math.ceil(matrix.cell_count/matrix.count_column)});
 		matrix.scroll = true;
 		matrix.resetPositionImage();
 	}
@@ -1569,7 +1644,7 @@ var scroll = {
 		row_count : 10, // количество рядов
 		matrix_count: 10, // размер матрицы
 		position : 0, // текущая позиция в скроле
-		min_height : 10, // минимальная высота ползунка
+		min_height : 36, // минимальная высота ползунка
 		init : function(config) {
 			if (config && typeof(config) == 'object') {
 			    $.extend(scroll, config);
@@ -1839,7 +1914,7 @@ var scroll = {
 // элемент масштаба предварительного просмотра
 var scale = {
 	id : '#scale', // ид элемента
-	width: 300, // ширина
+	width: 205, // ширина
 	min : 0, // минимальное значение
 	max : 20, // максимальное значение
 	position : 0, // текущая позиция
@@ -1925,7 +2000,7 @@ var scale = {
 // элемент масштаба детального просмотра
 var scale2 = {
 		id : '#scale2',
-		width: 300,
+		width: 205,
 		min : 0,
 		max : 20,
 		position : 0,
@@ -2104,12 +2179,22 @@ var keyBoard = {
 				keyBoard.boxesEnum.next();
 				//'INSIDE','TREE','CAMS'
 				if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.INSIDE) {
-					keyBoard.selectBox($('#scroll_content'));
+					//keyBoard.selectBox($('#scroll_content'));
+					keyBoard.selectBox($('#win_bot'));
+					$('#more_cam').show();
+					$('#win_top').height(gallery.hcameras);
 				} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.TREE) {
 					keyBoard.selectBox($('#tree'));
+					$('#more_cam').show();
+					$('#win_top').height(gallery.hcameras);
 				} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.CAMS) {
-					keyBoard.selectBox($('#cameras_selector'));
+					//keyBoard.selectBox($('#cameras_selector'));
+					keyBoard.selectBox($('#win_top'));
 					keyBoard.selectElem(0);
+					
+					$('#more_cam').hide();
+					$('#win_top').height('auto');
+					
 				}
 			} else if(e.which == keyBoard.keys.i){ //i
 				$('#image_type').attr('checked', !$('#image_type').attr('checked'));
@@ -2117,24 +2202,56 @@ var keyBoard = {
 				if(!r1) {
 					$('#image_type').attr('checked', 'checked');
 				}
+				
+				if ($('#image_type').attr('checked')) {
+					$('#image_type').parent().attr('style','background-position: 0px -14px');
+				} else {
+					$('#image_type').parent().attr('style','background-position: 0px -0px');
+				}
+				
 			} else if(e.which == keyBoard.keys.a){ //a
 				$('#audio_type').attr('checked', !$('#audio_type').attr('checked'));
 				var r3 = gallery.reload_events();
 				if(!r3) {
 					$('#audio_type').attr('checked', 'checked');
 				}
+				
+				if ($('#audio_type').attr('checked')) {
+					$('#audio_type').parent().attr('style','background-position: 0px -14px');
+				} else {
+					$('#audio_type').parent().attr('style','background-position: 0px -0px');
+				}
+				
 			} else if(e.which == keyBoard.keys.v) { //v
 				$('#video_type').attr('checked', !$('#video_type').attr('checked'));
 				var r2 = gallery.reload_events();
 				if(!r2) {
 					$('#video_type').attr('checked', 'checked');
 				}
+				if ($('#video_type').attr('checked')) {
+					$('#video_type').parent().attr('style','background-position: 0px -14px');
+				} else {
+					$('#video_type').parent().attr('style','background-position: 0px -0px');
+				}
 			} else if(e.which == keyBoard.keys.p) {
 				$('#proportion').attr('checked', !$('#proportion').attr('checked'));
 				matrix.doProportion();
+				
+				if ($('#proportion').attr('checked')) {
+					$('#proportion').parent().attr('style','background-position: 0px -14px');
+				} else {
+					$('#proportion').parent().attr('style','background-position: 0px -0px');
+				}
+				
 			} else if(e.which == keyBoard.keys.s) {
 				$('#info').attr('checked', !$('#info').attr('checked'));
 				matrix.doShowInfo();
+				
+				if ($('#info').attr('checked')) {
+					$('#info').parent().attr('style','background-position: 0px -14px');
+				} else {
+					$('#info').parent().attr('style','background-position: 0px -0px');
+				}
 			}
 			
 			
@@ -2328,15 +2445,21 @@ var keyBoard = {
 					} else if (e.which == keyBoard.keys.down) {
 
 					} else if (e.which == keyBoard.keys.space) {
-						var camId = keyBoard.getCam().children('input').attr('id');
+						var camId = keyBoard.getCam().find('input').attr('id');
 						$('#'+camId).attr('checked', !$('#'+camId).attr('checked'));
 						var rez = gallery.reload_cams();
 						if(!rez)
 							$('#'+camId).attr('checked', 'checked');
+						
+						if ($('#'+camId).attr('checked')) {
+							$('#'+camId).parent().attr('style','background-position: 0px -14px');
+						} else {
+							$('#'+camId).parent().attr('style','background-position: 0px -0px');
+						}
 					} else if (e.which == keyBoard.keys.enter) {
-						gallery.cameras_color.camera_id = keyBoard.getCam().children('label').children('a').attr('href').replace('#','');
-						gallery.cameras_color.camera_title = keyBoard.getCam().children('label').children('a').html();
-						gallery.cameras_color.camera_link = keyBoard.getCam().children('label').children('a');
+						gallery.cameras_color.camera_id = keyBoard.getCam().find('label').children('a').attr('href').replace('#','');
+						gallery.cameras_color.camera_title = keyBoard.getCam().find('label').children('a').html();
+						gallery.cameras_color.camera_link = keyBoard.getCam().find('label').children('a');
 						gallery.cameras_color.open();
 					}
 				}
