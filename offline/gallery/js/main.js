@@ -203,15 +203,7 @@ var gallery = {
 				// fix content width on resize
 			//	$('#content').css("left",pageX);
 				
-				if( typeof( window.innerWidth ) == 'number' ) {
-					//Non-IE
-					self.myWidth = window.innerWidth;
-					self.myHeight = window.innerHeight;
-				} else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
-					//IE 6+ in 'standards compliant mode'
-					self.myWidth = document.documentElement.clientWidth;
-					self.myHeight = document.documentElement.clientHeight;
-				}
+				
 				$('#content').width(self.myWidth - $('#sidebar').width() + 2);
 				$('#list_panel').width($('#content').width()-38);
 				
@@ -222,6 +214,16 @@ var gallery = {
 			// функция инициализации
 			init: function() {
 				var self = this;
+				if( typeof( window.innerWidth ) == 'number' ) {
+					//Non-IE
+					self.myWidth = window.innerWidth;
+					self.myHeight = window.innerHeight;
+				} else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
+					//IE 6+ in 'standards compliant mode'
+					self.myWidth = document.documentElement.clientWidth;
+					self.myHeight = document.documentElement.clientHeight;
+				}
+				
 				$('.block','#sidebar').width($('#sidebar').width()-9);
 				$('#statistics','#sidebar').width($('.block','#sidebar').width()-20);
 				// обработка изменение ширины используя вертикальный разделитель
@@ -229,7 +231,9 @@ var gallery = {
 					self.res = true;	
 					e.preventDefault();
 					$(document).mousemove(function(e){
-						self.resize(e.pageX);
+						if (e.pageX > 300 && e.pageX< self.myWidth - 666) {
+							self.resize(e.pageX);
+						}
 					});
 				});
 				$(document).mouseup(function(e){
@@ -643,7 +647,7 @@ var gallery = {
 				});
 				// обработка выбора цвета камеры
 				$('#cameras_color .window_body li').click(function(){
-					self.camera_collor = $(this).attr('class');
+					self.camera_collor = $(this).attr('class').replace(' selectColor','');
 					self.select();	
 					self.close();
 				});
@@ -744,20 +748,19 @@ var gallery = {
 				$('#more_cam').show();
 				$('#win_top').hover(
 						function(){
-							if (!$('#cameras_selector').hasClass('selectBox')) {
+							if (!$(this).hasClass('selectBox')) {
 								$('#more_cam').hide();
 								$('#win_top').height('auto');
 							}
 						},
 						function(){
-							if (!$('#cameras_selector').hasClass('selectBox')) {
+							if (!$(this).hasClass('selectBox')) {
 								$('#more_cam').show();
 								$('#win_top').height(100);
 							}
 						}
 				);
 			}
-			$('#win_top').height(100);
 			
 			
 			
@@ -956,9 +959,8 @@ var matrix = {
 			drag: function(event, ui){
 				
 				
-				var imgWidth = parseInt(matrix.imageDetail.attr('width'));
+				var imgWidth = parseInt(matrix.imageDetail.attr('width'))-28;
 				var imgHeight = parseInt(matrix.imageDetail.attr('height'));
-				
 				if(imgWidth>matrix.width) {
 					if(ui.position.left>0){
 						ui.position.left = 0;
@@ -1711,6 +1713,7 @@ var scroll = {
 					$(document).unbind('mousemove');
 					scroll.updateposition(scroll.position, true);
 					scroll.mousemove = false;
+					matrix.num = scroll.position;
 				}
 			});
 			
@@ -1741,8 +1744,11 @@ var scroll = {
 						sp = sp + scroll.matrix_count*scroll.row_count;
 					}
 				}
+				
 				scroll.updateposition(sp);
 				scroll.setposition(sp);
+				$('#cell_'+sp).addClass('active');
+				matrix.num = scroll.position;
 			});
 			
 			scroll.position = 0;
@@ -1899,6 +1905,7 @@ var scroll = {
 		// обновляем позицию скрола и перестраиваем матрицу
 		updateposition : function(sp, force) {
 			if (scroll.position != sp || force == true) {
+				
 				scroll.position = sp;
 				matrix.update(sp);
 			}
@@ -1909,6 +1916,8 @@ var scroll = {
 			var t = Math.floor(sp/scroll.row_count*(scroll.height-scroll.polzh)/scroll.cell_count);
 			$(scroll.id + ' .scroll_polz_v').css({top:t});
 			matrix.update(sp);
+			
+	
 		}
 };
 // элемент масштаба предварительного просмотра
@@ -1960,6 +1969,7 @@ var scale = {
 	},
 	
 	init : function() {
+		var self = this;
 		// обработка нажатия уменьшения масштаба
 		$(scale.id + ' .scale_min').unbind('click');
 		$(scale.id + ' .scale_min').click(function() {
@@ -1991,10 +2001,29 @@ var scale = {
 		$(document).mouseup(function(e){
 			$(document).unbind('mousemove');
 		});
+		
+		
+
+		
+		
+		
 		if (gallery.cookie.get('scale')) {
 			scale.setposition(gallery.cookie.get('scale'));
 		}
+		
+		// обработка нажатия на область между ползунком и края 
+		$(self.id + ' .scale_body').unbind('click');
+		$(self.id + ' .scale_body').click(function(e){
+			e.preventDefault();
+			var y = e.pageX -$(this).offset().left;
+			if (y < $(self.id + ' .scale_polz').position().left) {
+				self.click_min();
+			} else if (y > $(self.id + ' .scale_polz').position().left + $(self.id + ' .scale_polz').width()){
+				self.click_max();
+			}
+		});
 	}
+	
 };
 
 // элемент масштаба детального просмотра
@@ -2075,7 +2104,24 @@ var scale2 = {
 				self.setposition(gallery.cookie.get('scale2'));
 			}
 			
+			
+			// обработка нажатия на область между ползунком и края 
+			$(self.id + ' .scale_body').unbind('click');
+			$(self.id + ' .scale_body').click(function(e){
+				e.preventDefault();
+				var y = e.pageX -$(this).offset().left;
+				if (y < $(self.id + ' .scale_polz').position().left) {
+					self.click_min();
+				} else if (y > $(self.id + ' .scale_polz').position().left + $(self.id + ' .scale_polz').width()){
+					self.click_max();
+				}
+			});
+			
 		}
+		
+		
+	
+		
 	};
 var keyBoard = {
 	boxesEnum : {},
@@ -2181,12 +2227,17 @@ var keyBoard = {
 				if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.INSIDE) {
 					//keyBoard.selectBox($('#scroll_content'));
 					keyBoard.selectBox($('#win_bot'));
-					$('#more_cam').show();
 					$('#win_top').height(gallery.hcameras);
+					if ($('#win_top').height() > 100) {
+						$('#more_cam').show();
+					}
 				} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.TREE) {
 					keyBoard.selectBox($('#tree'));
-					$('#more_cam').show();
+					
 					$('#win_top').height(gallery.hcameras);
+					if ($('#win_top').height() > 100) {
+						$('#more_cam').show();
+					}
 				} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.CAMS) {
 					//keyBoard.selectBox($('#cameras_selector'));
 					keyBoard.selectBox($('#win_top'));
@@ -2301,21 +2352,21 @@ var keyBoard = {
 						
 						matrix.imageDetail.offset(pos);
 					} else if(e.which == keyBoard.keys.right) {
-						var imgWidth = parseInt(matrix.imageDetail.attr('width'));
+						var imgWidth = parseInt(matrix.imageDetail.attr('width'))-28;
 						if(imgWidth<matrix.width) {
 							return;
 						}
 						var pos = matrix.imageDetail.offset();
 						pos.left -= 20;
 						
-						var imgWidth = parseInt(matrix.imageDetail.attr('width'));
+						var imgWidth = parseInt(matrix.imageDetail.attr('width'))-28;
 						
 						if(matrix.width-pos.left + matrix.currentOffset.left>imgWidth)
 							pos.left = matrix.width - imgWidth + matrix.currentOffset.left;
 						
 						matrix.imageDetail.offset(pos);
 					} else if(e.which == keyBoard.keys.left) {
-						var imgWidth = parseInt(matrix.imageDetail.attr('width'));
+						var imgWidth = parseInt(matrix.imageDetail.attr('width'))-28;
 						if(imgWidth<matrix.width) {
 							return;
 						}
