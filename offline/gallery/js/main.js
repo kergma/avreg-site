@@ -187,6 +187,7 @@ var gallery = {
 		config : {
 			
 		},
+		hcameras : 100,
 		// объект изменения ширины столбцов
 		resize_column : {
 			myWidth: null, // ширина 
@@ -197,11 +198,22 @@ var gallery = {
 				var self = this;
 				
 				$('#sidebar').width(pageX + 2);
-				$('#sidebar .block').width(pageX-7);
-				$('#sidebar #statistics').width(pageX-27);
+				$('#sidebar .block').width(pageX-26);
+				$('#sidebar #statistics').width(pageX-66);
 				// fix content width on resize
 			//	$('#content').css("left",pageX);
 				
+				
+				$('#content').width(self.myWidth - $('#sidebar').width() + 2);
+				$('#list_panel').width($('#content').width()-38);
+				
+				
+				var hc = $('#content').height() - 100 - $('#toolbar').height()-28;
+				$('#win_bot').height(hc);
+			},
+			// функция инициализации
+			init: function() {
+				var self = this;
 				if( typeof( window.innerWidth ) == 'number' ) {
 					//Non-IE
 					self.myWidth = window.innerWidth;
@@ -211,14 +223,7 @@ var gallery = {
 					self.myWidth = document.documentElement.clientWidth;
 					self.myHeight = document.documentElement.clientHeight;
 				}
-				$('#content').width(self.myWidth - $('#sidebar').width() + 2);
-				$('#list_panel').width($('#content').width()-26);
 				
-				
-			},
-			// функция инициализации
-			init: function() {
-				var self = this;
 				$('.block','#sidebar').width($('#sidebar').width()-9);
 				$('#statistics','#sidebar').width($('.block','#sidebar').width()-20);
 				// обработка изменение ширины используя вертикальный разделитель
@@ -226,7 +231,9 @@ var gallery = {
 					self.res = true;	
 					e.preventDefault();
 					$(document).mousemove(function(e){
-						self.resize(e.pageX);
+						if (e.pageX > 300 && e.pageX< self.myWidth - 666) {
+							self.resize(e.pageX);
+						}
 					});
 				});
 				$(document).mouseup(function(e){
@@ -640,7 +647,7 @@ var gallery = {
 				});
 				// обработка выбора цвета камеры
 				$('#cameras_color .window_body li').click(function(){
-					self.camera_collor = $(this).attr('class');
+					self.camera_collor = $(this).attr('class').replace(' selectColor','');
 					self.select();	
 					self.close();
 				});
@@ -725,6 +732,7 @@ var gallery = {
 		},
 		// инициализация галереи
 		init : function(config) {
+			
 			var self = this;
 			// обновление настроек
 			if (config && typeof(config) == 'object') {
@@ -736,37 +744,75 @@ var gallery = {
 			self.cookie.init({path:WwwPrefix+'/offline/gallery.php'});
 			
 			// организация увеличение размера списка камер
-			if ($('#win_top').height() > 70) {
+			if ($('#win_top').height() > 100) {
 				$('#more_cam').show();
-				self.win_top = $('#win_top').height();
 				$('#win_top').hover(
 						function(){
-							$('#more_cam').hide();
-							$('#win_top').height(self.win_top);
+							if (!$(this).hasClass('selectBox')) {
+								$('#more_cam').hide();
+								$('#win_top').height('auto');
+							}
 						},
 						function(){
-							$('#more_cam').show();
-							$('#win_top').height(70);
+							if (!$(this).hasClass('selectBox')) {
+								$('#more_cam').show();
+								$('#win_top').height(100);
+							}
 						}
 				);
 			}
-			$('#win_top').height(70);
+			
+			
+			
 			
 			// обработка выбора чекбокса камеры 
-			$('input[name="cameras"]').click(function(){
+			$('input[name="cameras"]').change(function(){
 				var rez = gallery.reload_cams();
 				if(!rez)
 					$(this).attr('checked', 'checked');
+				
+				if ($(this).attr('checked')) {
+					$(this).parent().attr('style','background-position: 0px -14px');
+				} else {
+					$(this).parent().attr('style','background-position: 0px -0px');
+				}
 			});
+			
+			$('#cameras_selector .niceCheck').click(function(){
+				var rez = gallery.reload_cams();
+				if(!rez) {
+					$(this).attr('style','background-position: 0px -14px');
+					$(this).children().attr('checked', 'checked');
+				}
+			});
+			
 			
 			// обработка выбора чекбокса типа события 
-			$('input[name="type_event"]').click(function(){
+			$('#type_event input[name="type_event"]').change(function(){
 				var rez = gallery.reload_events();
-				if(!rez)
+				if(!rez) {
 					$(this).attr('checked', 'checked');
+					
+				} 
+				
+				if ($(this).attr('checked')) {
+					$(this).parent().attr('style','background-position: 0px -14px');
+				} else {
+					$(this).parent().attr('style','background-position: 0px -0px');
+				}
+				
+			});
+			$('#type_event .niceCheck').click(function(){
+				var rez = gallery.reload_events();
+				if(!rez) {
+					$(this).attr('style','background-position: 0px -14px');
+					$(this).children().attr('checked', 'checked');
+				}
 			});
 			
 			
+			
+		
 			
 			// инициализация изменения размеров столбцов
 			self.resize_column.init();
@@ -836,7 +882,7 @@ var matrix = {
 			event.preventDefault();
 		});
 		
-		console.log('matrix view');
+		//console.log('matrix view');
 		keyBoard.beforeView = keyBoard.view;
 		keyBoard.view = keyBoard.views.matrix;
 		if (config && typeof(config) == 'object') {
@@ -877,23 +923,44 @@ var matrix = {
 		// обработка чекбокса сохранять пропорции
 		$('#proportion').click(function(){
 			matrix.doProportion();
+			
+			if ($(this).attr('checked')) {
+				$(this).parent().attr('style','background-position: 0px -14px');
+			} else {
+				$(this).parent().attr('style','background-position: 0px -0px');
+			}
 		});
 			
+		$('.propotion .niceCheck').click(function(){
+			matrix.doProportion();
+		});
 		// обработка чекбокса показывать информацию
 		$('#info').click(function(){
 			matrix.doShowInfo();
+			
+			if ($(this).attr('checked')) {
+				$(this).parent().attr('style','background-position: 0px -14px');
+			} else {
+				$(this).parent().attr('style','background-position: 0px -0px');
+			}
 		});
+		
+		
+		$('.event_info .niceCheck').click(function(){
+			matrix.doShowInfo();
+		});
+		
+		
 		
 		// убираем скроллы
 		$('#win_bot_detail').css('overflow', 'hidden');
+		
 		matrix.imageDetail.draggable({ 
-			cursor: 'move', 
 			drag: function(event, ui){
 				
 				
-				var imgWidth = parseInt(matrix.imageDetail.attr('width'));
+				var imgWidth = parseInt(matrix.imageDetail.attr('width'))-28;
 				var imgHeight = parseInt(matrix.imageDetail.attr('height'));
-				
 				if(imgWidth>matrix.width) {
 					if(ui.position.left>0){
 						ui.position.left = 0;
@@ -922,12 +989,10 @@ var matrix = {
 							   matrix.width-ui.position.left,
 							   matrix.height-ui.position.top
 							];
-							console.log(temp);
+							//console.log(temp);
 				*/
 			}
 		});
-		
-		
 		// обновление матрицы
 		matrix.resize();
 		//инициализации элемента масштаба режима миниатюр
@@ -950,7 +1015,15 @@ var matrix = {
 	resetPositionImage: function(){
 		matrix.imageDetail.css('top', '0');
 		matrix.imageDetail.css('left', '0');
-		matrix.currentOffset = matrix.imageDetail.offset(); 
+		matrix.currentOffset = matrix.imageDetail.offset();
+		var imgWidth = parseInt(matrix.imageDetail.attr('width'));
+		var imgHeight = parseInt(matrix.imageDetail.attr('height'));
+		
+		if(imgWidth>matrix.width || imgHeight>matrix.height) {
+			matrix.imageDetail.css('cursor', 'move');
+		} else {
+			matrix.imageDetail.css('cursor', 'default');
+		}
 	},
 	// обновление чекбокса пропорций
 	doProportion : function() {
@@ -981,7 +1054,7 @@ var matrix = {
 	},
 	// если включили режим детальный просмотр
 	detail : function() {
-		console.log('detail view');
+		//console.log('detail view');
 		keyBoard.beforeView = keyBoard.view;
 		keyBoard.view = keyBoard.views.detail;
 		matrix.mode = 'detail';
@@ -994,7 +1067,7 @@ var matrix = {
 	},
 	// если включили режим миниатюр
 	preview : function() {
-		console.log('matrix view');
+		//console.log('matrix view');
 		if (typeof(matrix.curent_tree_events[matrix.tree]) != 'undefined') {
 			keyBoard.beforeView = keyBoard.view;
 			keyBoard.view = keyBoard.views.matrix;
@@ -1041,21 +1114,27 @@ var matrix = {
 		}
 		// определяем новые размеры матрицы
 		
-		// исправяем баг с длинной не видимого элемента
+
+		
+		// обновляем размеры детального просмотра
+		var hc = $('#content').height() - 100 - $('#toolbar').height()-28;
+		$('#win_bot_detail').height(hc);
+		//$('#win_bot_detail').width($('#content').width() - $('#win_top').width() - $('#toolbar').width());
+		$('#win_bot').height(hc);
+		//$('#scroll_v').height(hc);
+		
+		// исправление бага с высотой!!! придумать что то лучше
+		if($('#list_panel').height()!==0)
+			matrix.height = $('#list_panel').height();
+		// 	исправяем баг с длинной не видимого элемента
 		
 		var pan_height = $('#list_panel').css('height');
 		var pan_width = parseInt($('#list_panel').css('width').replace('px',''));
 		
-		// исправление бага с высотой!!! придумать что то лучше
-		if($('#list_panel').height()!==0)
-			matrix.height = $('#list_panel').height()-140;
+		
 		
 		matrix.width = pan_width; //$('#list_panel').width();
-		$('#matrix_load img').css('margin-top', matrix.height/2);
-		
-		// обновляем размеры детального просмотра
-		$('#win_bot_detail').height($('#content').height() - $('#win_top').height() - $('#toolbar').height()-30);
-		$('#win_bot_detail').width($('#content').width() - $('#win_top').width() - $('#toolbar').width());
+		$('#matrix_load img').css('margin-top', $('#content').height()/2);
 		
 		// высчитываем новую высоту и ширину ячейки
 		var old_width = matrix.config.max_cell_width;
@@ -1096,7 +1175,8 @@ var matrix = {
 		// если элемента скрола нет, то создаем его
 		if (matrix.scroll == true) {
 			var sp = scroll.position;
-			scroll.init({height:matrix.height-28, cell_count:Math.ceil(matrix.count_item/matrix.count_column), row_count: matrix.count_column, matrix_count: Math.ceil(matrix.cell_count/matrix.count_column)});
+			
+			scroll.init({height:matrix.height-82, cell_count:Math.ceil(matrix.count_item/matrix.count_column), row_count: matrix.count_column, matrix_count: Math.ceil(matrix.cell_count/matrix.count_column)});
 			sp = Math.floor(sp/scroll.row_count)*scroll.row_count;
 			scroll.updateposition(sp, true);	
 			scroll.setposition(sp);
@@ -1287,7 +1367,7 @@ var matrix = {
 						camera_class = ' '+camera_class;
 					}
 					html += '<div id="cell_'+i+'" class="content_item show'+active+' camera_'+value[5]+' '+camera_class+'">';
-					
+					html += '<div class="elem">';
 					if (value[7] == 'image') {
 					
 						if (typeof( value.image_chache) != 'undefined' && value.image_chache) {
@@ -1315,6 +1395,7 @@ var matrix = {
 						'+value[6]+' \
 						'+value[4]+'x'+value[3]+'<br />\
 						</div>';
+					html += '</div>';
 					html += '</div>';
 				}
 			}
@@ -1408,6 +1489,8 @@ var matrix = {
 					}
 					html += '<div id="cell_'+i+'" class="content_item show'+active+' camera_'+value[5]+' '+camera_class+'">';
 					
+					html += '<div class="elem">';
+					
 					if (value[7] == 'image') {
 						
 						if (typeof( value.image_chache) != 'undefined' && value.image_chache) {
@@ -1435,6 +1518,7 @@ var matrix = {
 						'+value[6]+' \
 						'+value[4]+'x'+value[3]+'<br />\
 						</div>';
+					html += '</div>';
 					html += '</div>';
 					}
 				};
@@ -1549,7 +1633,7 @@ var matrix = {
 			matrix.update(sp);
 		}
 		//инициализируем элемент скрола
-		scroll.init({height:matrix.height-28, cell_count:Math.ceil(matrix.count_item/matrix.count_column), row_count: matrix.count_column, matrix_count: Math.ceil(matrix.cell_count/matrix.count_column)});
+		scroll.init({height:matrix.height-82, cell_count:Math.ceil(matrix.count_item/matrix.count_column), row_count: matrix.count_column, matrix_count: Math.ceil(matrix.cell_count/matrix.count_column)});
 		matrix.scroll = true;
 		matrix.resetPositionImage();
 	}
@@ -1562,7 +1646,7 @@ var scroll = {
 		row_count : 10, // количество рядов
 		matrix_count: 10, // размер матрицы
 		position : 0, // текущая позиция в скроле
-		min_height : 10, // минимальная высота ползунка
+		min_height : 36, // минимальная высота ползунка
 		init : function(config) {
 			if (config && typeof(config) == 'object') {
 			    $.extend(scroll, config);
@@ -1629,6 +1713,7 @@ var scroll = {
 					$(document).unbind('mousemove');
 					scroll.updateposition(scroll.position, true);
 					scroll.mousemove = false;
+					matrix.num = scroll.position;
 				}
 			});
 			
@@ -1659,8 +1744,11 @@ var scroll = {
 						sp = sp + scroll.matrix_count*scroll.row_count;
 					}
 				}
+				
 				scroll.updateposition(sp);
 				scroll.setposition(sp);
+				$('#cell_'+sp).addClass('active');
+				matrix.num = scroll.position;
 			});
 			
 			scroll.position = 0;
@@ -1817,6 +1905,7 @@ var scroll = {
 		// обновляем позицию скрола и перестраиваем матрицу
 		updateposition : function(sp, force) {
 			if (scroll.position != sp || force == true) {
+				
 				scroll.position = sp;
 				matrix.update(sp);
 			}
@@ -1827,12 +1916,14 @@ var scroll = {
 			var t = Math.floor(sp/scroll.row_count*(scroll.height-scroll.polzh)/scroll.cell_count);
 			$(scroll.id + ' .scroll_polz_v').css({top:t});
 			matrix.update(sp);
+			
+	
 		}
 };
 // элемент масштаба предварительного просмотра
 var scale = {
 	id : '#scale', // ид элемента
-	width: 300, // ширина
+	width: 205, // ширина
 	min : 0, // минимальное значение
 	max : 20, // максимальное значение
 	position : 0, // текущая позиция
@@ -1878,6 +1969,7 @@ var scale = {
 	},
 	
 	init : function() {
+		var self = this;
 		// обработка нажатия уменьшения масштаба
 		$(scale.id + ' .scale_min').unbind('click');
 		$(scale.id + ' .scale_min').click(function() {
@@ -1909,16 +2001,35 @@ var scale = {
 		$(document).mouseup(function(e){
 			$(document).unbind('mousemove');
 		});
+		
+		
+
+		
+		
+		
 		if (gallery.cookie.get('scale')) {
 			scale.setposition(gallery.cookie.get('scale'));
 		}
+		
+		// обработка нажатия на область между ползунком и края 
+		$(self.id + ' .scale_body').unbind('click');
+		$(self.id + ' .scale_body').click(function(e){
+			e.preventDefault();
+			var y = e.pageX -$(this).offset().left;
+			if (y < $(self.id + ' .scale_polz').position().left) {
+				self.click_min();
+			} else if (y > $(self.id + ' .scale_polz').position().left + $(self.id + ' .scale_polz').width()){
+				self.click_max();
+			}
+		});
 	}
+	
 };
 
 // элемент масштаба детального просмотра
 var scale2 = {
 		id : '#scale2',
-		width: 300,
+		width: 205,
 		min : 0,
 		max : 20,
 		position : 0,
@@ -1993,7 +2104,24 @@ var scale2 = {
 				self.setposition(gallery.cookie.get('scale2'));
 			}
 			
+			
+			// обработка нажатия на область между ползунком и края 
+			$(self.id + ' .scale_body').unbind('click');
+			$(self.id + ' .scale_body').click(function(e){
+				e.preventDefault();
+				var y = e.pageX -$(this).offset().left;
+				if (y < $(self.id + ' .scale_polz').position().left) {
+					self.click_min();
+				} else if (y > $(self.id + ' .scale_polz').position().left + $(self.id + ' .scale_polz').width()){
+					self.click_max();
+				}
+			});
+			
 		}
+		
+		
+	
+		
 	};
 var keyBoard = {
 	boxesEnum : {},
@@ -2040,7 +2168,7 @@ var keyBoard = {
 	colorSelector : null,
 	colorSelectorNumber : 0,
 	selectColor : function(next) {
-		$(keyBoard.colorSelector[keyBoard.colorSelectorNumber]).css('border', '1px solid black !important');
+		$(keyBoard.colorSelector[keyBoard.colorSelectorNumber]).removeClass('selectColor');
 		keyBoard.colorSelectorNumber = next;
 		if(keyBoard.colorSelectorNumber>=keyBoard.colorSelector.length) {
 			keyBoard.selectColor(keyBoard.colorSelectorNumber-keyBoard.colorSelector.length);
@@ -2051,7 +2179,7 @@ var keyBoard = {
 			keyBoard.selectColor(keyBoard.colorSelectorNumber+keyBoard.colorSelector.length);
 			return;
 		}
-		$(keyBoard.colorSelector[keyBoard.colorSelectorNumber]).css('border', '1px solid red !important');
+		$(keyBoard.colorSelector[keyBoard.colorSelectorNumber]).addClass('selectColor');
 	},
 	getColor : function() {
 		return $(keyBoard.colorSelector[keyBoard.colorSelectorNumber]);
@@ -2059,23 +2187,23 @@ var keyBoard = {
 	selectBox : function(){
 		keyBoard.selectElem();
 		for(var i=0,ilen=keyBoard.currentBoxSelector.length; i<ilen;i++){
-			keyBoard.currentBoxSelector[i].css('border', '');
+			keyBoard.currentBoxSelector[i].removeClass('selectBox');
 		}
 		keyBoard.currentBoxSelector = [];
 		for(var elem in arguments)
 			keyBoard.currentBoxSelector.push(arguments[elem]);
 		for(var j=0,jlen=keyBoard.currentBoxSelector.length; j<jlen;j++){
-			keyBoard.currentBoxSelector[j].css('border', '1px solid');
+			keyBoard.currentBoxSelector[j].addClass('selectBox');
 		}
 	},
 	selectElem : function(next){
-		$(keyBoard.currentSelector[keyBoard.currentSelectorChild]).css('border', '');
+		$(keyBoard.currentSelector[keyBoard.currentSelectorChild]).removeClass('selectElement');
 		keyBoard.currentSelectorChild = next;
 		if(keyBoard.currentSelectorChild>=keyBoard.currentSelector.length)
 			keyBoard.currentSelectorChild = 0;
 		if(keyBoard.currentSelectorChild<=-1)
 			keyBoard.currentSelectorChild = keyBoard.currentSelector.length-1;
-		$(keyBoard.currentSelector[keyBoard.currentSelectorChild]).css('border', '1px solid');
+		$(keyBoard.currentSelector[keyBoard.currentSelectorChild]).addClass('selectElement');
 	},
 	getCam : function (){
 		return $(keyBoard.currentSelector[keyBoard.currentSelectorChild]);
@@ -2090,19 +2218,34 @@ var keyBoard = {
 		$(document).keydown(function (e) {
 			e.preventDefault();
 
-			console.log('keyCode:'+e.which);
+			//console.log('keyCode:'+e.which);
 			
 			// work any where
 			if(e.which == keyBoard.keys.tab){
 				keyBoard.boxesEnum.next();
 				//'INSIDE','TREE','CAMS'
 				if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.INSIDE) {
-					keyBoard.selectBox($('#scroll_content'));
+					//keyBoard.selectBox($('#scroll_content'));
+					keyBoard.selectBox($('#win_bot'));
+					$('#win_top').height(gallery.hcameras);
+					if ($('#win_top').height() > 100) {
+						$('#more_cam').show();
+					}
 				} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.TREE) {
 					keyBoard.selectBox($('#tree'));
+					
+					$('#win_top').height(gallery.hcameras);
+					if ($('#win_top').height() > 100) {
+						$('#more_cam').show();
+					}
 				} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.CAMS) {
-					keyBoard.selectBox($('#cameras_selector'));
+					//keyBoard.selectBox($('#cameras_selector'));
+					keyBoard.selectBox($('#win_top'));
 					keyBoard.selectElem(0);
+					
+					$('#more_cam').hide();
+					$('#win_top').height('auto');
+					
 				}
 			} else if(e.which == keyBoard.keys.i){ //i
 				$('#image_type').attr('checked', !$('#image_type').attr('checked'));
@@ -2110,24 +2253,56 @@ var keyBoard = {
 				if(!r1) {
 					$('#image_type').attr('checked', 'checked');
 				}
+				
+				if ($('#image_type').attr('checked')) {
+					$('#image_type').parent().attr('style','background-position: 0px -14px');
+				} else {
+					$('#image_type').parent().attr('style','background-position: 0px -0px');
+				}
+				
 			} else if(e.which == keyBoard.keys.a){ //a
 				$('#audio_type').attr('checked', !$('#audio_type').attr('checked'));
 				var r3 = gallery.reload_events();
 				if(!r3) {
 					$('#audio_type').attr('checked', 'checked');
 				}
+				
+				if ($('#audio_type').attr('checked')) {
+					$('#audio_type').parent().attr('style','background-position: 0px -14px');
+				} else {
+					$('#audio_type').parent().attr('style','background-position: 0px -0px');
+				}
+				
 			} else if(e.which == keyBoard.keys.v) { //v
 				$('#video_type').attr('checked', !$('#video_type').attr('checked'));
 				var r2 = gallery.reload_events();
 				if(!r2) {
 					$('#video_type').attr('checked', 'checked');
 				}
+				if ($('#video_type').attr('checked')) {
+					$('#video_type').parent().attr('style','background-position: 0px -14px');
+				} else {
+					$('#video_type').parent().attr('style','background-position: 0px -0px');
+				}
 			} else if(e.which == keyBoard.keys.p) {
 				$('#proportion').attr('checked', !$('#proportion').attr('checked'));
 				matrix.doProportion();
+				
+				if ($('#proportion').attr('checked')) {
+					$('#proportion').parent().attr('style','background-position: 0px -14px');
+				} else {
+					$('#proportion').parent().attr('style','background-position: 0px -0px');
+				}
+				
 			} else if(e.which == keyBoard.keys.s) {
 				$('#info').attr('checked', !$('#info').attr('checked'));
 				matrix.doShowInfo();
+				
+				if ($('#info').attr('checked')) {
+					$('#info').parent().attr('style','background-position: 0px -14px');
+				} else {
+					$('#info').parent().attr('style','background-position: 0px -0px');
+				}
 			}
 			
 			
@@ -2177,21 +2352,21 @@ var keyBoard = {
 						
 						matrix.imageDetail.offset(pos);
 					} else if(e.which == keyBoard.keys.right) {
-						var imgWidth = parseInt(matrix.imageDetail.attr('width'));
+						var imgWidth = parseInt(matrix.imageDetail.attr('width'))-28;
 						if(imgWidth<matrix.width) {
 							return;
 						}
 						var pos = matrix.imageDetail.offset();
 						pos.left -= 20;
 						
-						var imgWidth = parseInt(matrix.imageDetail.attr('width'));
+						var imgWidth = parseInt(matrix.imageDetail.attr('width'))-28;
 						
 						if(matrix.width-pos.left + matrix.currentOffset.left>imgWidth)
 							pos.left = matrix.width - imgWidth + matrix.currentOffset.left;
 						
 						matrix.imageDetail.offset(pos);
 					} else if(e.which == keyBoard.keys.left) {
-						var imgWidth = parseInt(matrix.imageDetail.attr('width'));
+						var imgWidth = parseInt(matrix.imageDetail.attr('width'))-28;
 						if(imgWidth<matrix.width) {
 							return;
 						}
@@ -2293,6 +2468,7 @@ var keyBoard = {
 				} else if (e.which == keyBoard.keys.down) {
 					keyBoard.selectColor(keyBoard.colorSelectorNumber+4);
 				} else if (e.which == keyBoard.keys.enter) {
+					keyBoard.getColor().removeClass('selectColor');
 					gallery.cameras_color.camera_collor = keyBoard.getColor().attr('class');
 					gallery.cameras_color.select();
 					gallery.cameras_color.close();
@@ -2320,15 +2496,21 @@ var keyBoard = {
 					} else if (e.which == keyBoard.keys.down) {
 
 					} else if (e.which == keyBoard.keys.space) {
-						var camId = keyBoard.getCam().children('input').attr('id');
+						var camId = keyBoard.getCam().find('input').attr('id');
 						$('#'+camId).attr('checked', !$('#'+camId).attr('checked'));
 						var rez = gallery.reload_cams();
 						if(!rez)
 							$('#'+camId).attr('checked', 'checked');
+						
+						if ($('#'+camId).attr('checked')) {
+							$('#'+camId).parent().attr('style','background-position: 0px -14px');
+						} else {
+							$('#'+camId).parent().attr('style','background-position: 0px -0px');
+						}
 					} else if (e.which == keyBoard.keys.enter) {
-						gallery.cameras_color.camera_id = keyBoard.getCam().children('label').children('a').attr('href').replace('#','');
-						gallery.cameras_color.camera_title = keyBoard.getCam().children('label').children('a').html();
-						gallery.cameras_color.camera_link = keyBoard.getCam().children('label').children('a');
+						gallery.cameras_color.camera_id = keyBoard.getCam().find('label').children('a').attr('href').replace('#','');
+						gallery.cameras_color.camera_title = keyBoard.getCam().find('label').children('a').html();
+						gallery.cameras_color.camera_link = keyBoard.getCam().find('label').children('a');
 						gallery.cameras_color.open();
 					}
 				}
