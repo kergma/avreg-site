@@ -558,6 +558,17 @@ var gallery = {
 							matrix.keyBoardTree = tree;
 						}
 						
+						var found = tree.split('_');
+						
+						var s = '';
+						for(var i=0,ilen=found.length; i<ilen; i++) {
+							if(s!='')
+								s += '_';
+							s += found[i];
+							console.log(s);
+							$('#tree_'+s+' > a').addClass('jstree-clicked');
+						}
+						
 						if(keyBoard.boxesEnum.current()!=keyBoard.boxesEnum.TREE || typeof(data.args[2])!=='undefined') {
 							// если новый диапазон, перестраиваем матрицу
 							if (matrix.tree != tree) {
@@ -2192,7 +2203,7 @@ var keyBoard = {
 			keyBoard.currentBoxSelector[i].removeClass('selectBox');
 		}
 		keyBoard.currentBoxSelector = [];
-		for(var elem in arguments)
+		for(var elem=0,elemlen=arguments.length; elem<elemlen; elem++)
 			keyBoard.currentBoxSelector.push(arguments[elem]);
 		for(var j=0,jlen=keyBoard.currentBoxSelector.length; j<jlen;j++){
 			keyBoard.currentBoxSelector[j].addClass('selectBox');
