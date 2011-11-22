@@ -239,6 +239,7 @@ function readableFileSize(size) {
 }
 
 $(function(){
+	
 	// переопределение настроек
 	var conf = {
 			matrix : {

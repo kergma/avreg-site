@@ -158,7 +158,7 @@
 	background: none repeat scroll 0 0 #A29DB3;
    	border-radius: 0px 0px 10px 10px;
 	min-width: 240px;
-	
+	border-bottom: 1px solid #fff;	
 }
 #sidebar #statistics .window_label {
 	right: 8px;
@@ -552,8 +552,7 @@ div.block {
 .jstree a {
 	font-weight: 100;	
 }
-#tree {
-	border-bottom: 1px solid #fff;
+#tree {	
 	position:relative;	
 }
 .borderBot {

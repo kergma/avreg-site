@@ -547,14 +547,13 @@ var gallery = {
 					})
 					// событие возникает, если пользователь выбрал новый диапазон событий
 					.bind("select_node.jstree", function (event, data) { 
-						
 						tree = data.rslt.obj.attr("id").replace('tree_', '');
 						
 						if(matrix.keyBoardTree != tree) {
 							matrix.keyBoardTree = tree;
 						}
 						
-						if(keyBoard.boxesEnum.current()!=keyBoard.boxesEnum.TREE) {
+						if(keyBoard.boxesEnum.current()!=keyBoard.boxesEnum.TREE || typeof(data.args[2])!=='undefined') {
 							// если новый диапазон, перестраиваем матрицу
 							if (matrix.tree != tree) {
 								matrix.tree = tree;
