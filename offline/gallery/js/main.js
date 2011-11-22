@@ -18,6 +18,11 @@ Enum.prototype.next = function() {
 		this.currentValue = 0;
 	return this.currentValue;
 };
+Enum.prototype.set = function (element) {
+	if(element>0 && element<this.allValues.length)
+		this.currentValue = element;
+	return this.currentValue;
+}
 var Base64 = {
 
     	// private property
@@ -1915,8 +1920,8 @@ var scroll = {
 			var t = Math.floor(sp/scroll.row_count*(scroll.height-scroll.polzh)/scroll.cell_count);
 			$(scroll.id + ' .scroll_polz_v').css({top:t});
 			matrix.update(sp);
-			
-	
+			keyBoard.boxesEnum.set(keyBoard.boxesEnum.INSIDE);
+			keyBoard.checkSelecBox();
 		}
 };
 // элемент масштаба предварительного просмотра
@@ -2207,6 +2212,31 @@ var keyBoard = {
 	getCam : function (){
 		return $(keyBoard.currentSelector[keyBoard.currentSelectorChild]);
 	},
+	checkSelecBox: function () {
+		if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.INSIDE) {
+			//keyBoard.selectBox($('#scroll_content'));
+			keyBoard.selectBox($('#win_bot'));
+			$('#win_top').height(gallery.hcameras);
+			if ($('#win_top').height() > 100) {
+				$('#more_cam').show();
+			}
+		} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.TREE) {
+			keyBoard.selectBox($('#tree'));
+			
+			$('#win_top').height(gallery.hcameras);
+			if ($('#win_top').height() > 100) {
+				$('#more_cam').show();
+			}
+		} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.CAMS) {
+			//keyBoard.selectBox($('#cameras_selector'));
+			keyBoard.selectBox($('#win_top'));
+			keyBoard.selectElem(0);
+			
+			$('#more_cam').hide();
+			$('#win_top').height('auto');
+			
+		}
+	},
 	init : function() {
 		keyBoard.currentSelector = $('#cameras_selector .options').children();
 		keyBoard.colorSelector = $('#cameras_color ul').children('li');
@@ -2223,29 +2253,7 @@ var keyBoard = {
 			if(e.which == keyBoard.keys.tab){
 				keyBoard.boxesEnum.next();
 				//'INSIDE','TREE','CAMS'
-				if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.INSIDE) {
-					//keyBoard.selectBox($('#scroll_content'));
-					keyBoard.selectBox($('#win_bot'));
-					$('#win_top').height(gallery.hcameras);
-					if ($('#win_top').height() > 100) {
-						$('#more_cam').show();
-					}
-				} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.TREE) {
-					keyBoard.selectBox($('#tree'));
-					
-					$('#win_top').height(gallery.hcameras);
-					if ($('#win_top').height() > 100) {
-						$('#more_cam').show();
-					}
-				} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.CAMS) {
-					//keyBoard.selectBox($('#cameras_selector'));
-					keyBoard.selectBox($('#win_top'));
-					keyBoard.selectElem(0);
-					
-					$('#more_cam').hide();
-					$('#win_top').height('auto');
-					
-				}
+				keyBoard.checkSelecBox();
 			} else if(e.which == keyBoard.keys.i){ //i
 				$('#image_type').attr('checked', !$('#image_type').attr('checked'));
 				var r1 = gallery.reload_events();
