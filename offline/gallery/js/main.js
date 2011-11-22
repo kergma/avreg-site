@@ -565,7 +565,6 @@ var gallery = {
 							if(s!='')
 								s += '_';
 							s += found[i];
-							console.log(s);
 							$('#tree_'+s+' > a').addClass('jstree-clicked');
 						}
 						
@@ -2158,7 +2157,9 @@ var keyBoard = {
 		down : 40,
 		pageUp : 33,
 		pageDown : 34,
-		esc : 27
+		esc : 27,
+		home: 36,
+		end: 35
 	},
 	/*boxes : {
 		tree : 0,
@@ -2420,6 +2421,18 @@ var keyBoard = {
 				if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.INSIDE) {
 					if (e.which == keyBoard.keys.left) {
 						scroll.num_left();
+					} else if (e.which == keyBoard.keys.home) {
+						/*matrix.build();
+						$('#cell_'+matrix.num).removeClass('active');
+						$('#cell_0').addClass('active');
+						matrix.num = 0;*/
+					} else if (e.which == keyBoard.keys.end) {
+						/*var sp = matrix.count_items-1;
+						matrix.num = matrix.count_items-1;
+						scroll.updateposition(sp, true);
+						scroll.setposition(sp);
+						$('#cell_'+matrix.num).removeClass('active');
+						$('#cell_'+matrix.count_items).addClass('active');*/
 					} else if (e.which == keyBoard.keys.up) {
 						scroll.num_up();
 					} else if (e.which == keyBoard.keys.right) {
@@ -2549,6 +2562,21 @@ var keyBoard = {
 					if(top!=false && typeof(top)!='undefined') {
 						$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
 						$.jstree._focused().select_node('#tree_'+top);
+					}
+				} else if (e.which == keyBoard.keys.home) {
+					var top = matrix.curent_tree_events[matrix.keyBoardTree].top;
+					if(top!=false && typeof(top)!='undefined') {
+						var under = matrix.curent_tree_events[top].under;
+						if(under!=false && typeof(under)!='undefined') {
+							$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
+							$.jstree._focused().select_node('#tree_'+under);
+						}
+					}
+				} else if (e.which == keyBoard.keys.end) {
+					var top = matrix.curent_tree_events[matrix.keyBoardTree].top;
+					if(top!=false && typeof(top)!='undefined') {
+						$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
+						$.jstree._focused().select_node('#tree_'+top+' > ul > .jstree-last');
 					}
 				} else if (e.which == keyBoard.keys.up) {
 					var prev = matrix.curent_tree_events[matrix.keyBoardTree].prev;

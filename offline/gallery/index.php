@@ -90,7 +90,7 @@
 						</div>
 					<div id="more_cam">...</div>															
 					</div>
-					<div id="win_bot" class="matrix_mode">
+					<div id="win_bot" class="matrix_mode selectBox">
 						<div id="list_panel">
 							<div id="scroll_content"></div>
 						</div>	
