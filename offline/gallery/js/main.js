@@ -19,7 +19,7 @@ Enum.prototype.next = function() {
 	return this.currentValue;
 };
 Enum.prototype.set = function (element) {
-	if(element>0 && element<this.allValues.length)
+	if(element>=0 && element<this.allValues.length)
 		this.currentValue = element;
 	return this.currentValue;
 }
@@ -1920,8 +1920,6 @@ var scroll = {
 			var t = Math.floor(sp/scroll.row_count*(scroll.height-scroll.polzh)/scroll.cell_count);
 			$(scroll.id + ' .scroll_polz_v').css({top:t});
 			matrix.update(sp);
-			keyBoard.boxesEnum.set(keyBoard.boxesEnum.INSIDE);
-			keyBoard.checkSelecBox();
 		}
 };
 // элемент масштаба предварительного просмотра
@@ -2242,11 +2240,24 @@ var keyBoard = {
 		keyBoard.colorSelector = $('#cameras_color ul').children('li');
 		keyBoard.boxesEnum = new Enum('INSIDE','TREE','CAMS');
 		keyBoard.selectBox($('#scroll_content'));
+		
+		$('#list_panel').click(function(){
+			keyBoard.boxesEnum.set(keyBoard.boxesEnum.INSIDE);
+			keyBoard.checkSelecBox();
+		});
+		$('#win_top').click(function(){
+			keyBoard.boxesEnum.set(keyBoard.boxesEnum.CAMS);
+			keyBoard.checkSelecBox();
+		});
+		$('#tree').click(function(){
+			keyBoard.boxesEnum.set(keyBoard.boxesEnum.TREE);
+			keyBoard.checkSelecBox();
+		});
 		// обработка нажатий клавиатуры
 		//$(document).unbind('keydown');
 		$(document).keydown(function (e) {
 			e.preventDefault();
-
+			console.log(e.which);
 			//console.log('keyCode:'+e.which);
 			
 			// work any where
