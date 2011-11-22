@@ -2493,7 +2493,7 @@ var keyBoard = {
 					} else if (e.which == keyBoard.keys.right) {
 						keyBoard.selectElem(keyBoard.currentSelectorChild+1);
 					} else if (e.which == keyBoard.keys.down) {
-						keyBoard.selectElem(keyBoard.currentSelectorChild-1);
+						keyBoard.selectElem(keyBoard.currentSelectorChild+1);
 					} else if (e.which == keyBoard.keys.space) {
 						var camId = keyBoard.getCam().find('input').attr('id');
 						$('#'+camId).attr('checked', !$('#'+camId).attr('checked'));
