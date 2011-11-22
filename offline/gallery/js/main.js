@@ -1,11 +1,15 @@
 function Enum() {
 	this.allValues = [];
 	this.currentValue = 0;
+};
+Enum.prototype.constr = function() {
+	console.log(arguments);
 	for (var i in arguments) {
+		console.log(i);
 		this[arguments[i]] = parseInt(i);
 		this.allValues.push(arguments[i]);
 	}
-};
+}
 Enum.prototype.values = function() {
 	return this.allValues;
 };
@@ -2238,7 +2242,8 @@ var keyBoard = {
 	init : function() {
 		keyBoard.currentSelector = $('#cameras_selector .options').children();
 		keyBoard.colorSelector = $('#cameras_color ul').children('li');
-		keyBoard.boxesEnum = new Enum('INSIDE','TREE','CAMS');
+		keyBoard.boxesEnum = new Enum();
+		keyBoard.boxesEnum.constr('INSIDE','TREE','CAMS');
 		keyBoard.selectBox($('#scroll_content'));
 		
 		$('#list_panel').click(function(){
