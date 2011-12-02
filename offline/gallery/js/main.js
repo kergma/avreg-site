@@ -1669,6 +1669,7 @@ var scroll = {
 			$(scroll.id + ' .scroll_body_v').height(scroll.height);
 			// высчитываем высоту ползунка в зависимости от элементов в матрице и всех элементов в диапазоне 
 			h = Math.floor(scroll.height/scroll.cell_count*scroll.matrix_count);
+			
 			scroll.polzh = 0;
 			if ( h < scroll.min_height) {
 				scroll.polzh = scroll.min_height - h; 
@@ -1677,6 +1678,9 @@ var scroll = {
 			}
 			// задаем параметры ползунка
 			$(scroll.id + ' .scroll_polz_v').height(h);
+			$(scroll.id + ' .scroll_polz_v_Middle').height(h-20);
+			
+			
 			$(scroll.id + ' .scroll_polz_v').css('top',0);
 			// обработка нажатия стрелки вверх на скроле
 			$(scroll.id + ' .scroll_top_v').unbind('click');

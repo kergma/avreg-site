@@ -54,13 +54,73 @@
 								}
 							?>
 							<?php foreach ($GCP_cams_params as $CAM_NR => $PARAM) :?>
-								<span style="width: 200px; white-space: nowrap; text-align: center;">
+								<span style="width: 200px; white-space: nowrap; ">
 								<span class="niceCheck">
 									<input type="checkbox" id="camera_<?php print $CAM_NR;?>" name="cameras" value="<?php print $CAM_NR;?>" <?php if (empty($cameras) || in_array($CAM_NR, $cameras)) :?>checked="checked" <?php endif;?>></span>
 									<?php
 									$name_orig = $PARAM['text_left'];
 									if($CAM_NR==2)
 										$name_orig = 'длинный текст'.$name_orig;
+									$name = $name_orig; 
+									if(mb_strlen($name)>18) {
+										$name = mb_substr($name, 0, 15);
+										$name .= '...';
+									} 
+									?>
+									<label  style="float: none !important;" for="camera_<?php print $CAM_NR;?>"><a href="#<?php print $CAM_NR;?>" class="set_camera_color<?php if (isset($cookies['camera_'.$CAM_NR.'_color']) && !empty($cookies['camera_'.$CAM_NR.'_color']) ): print ' '.$cookies['camera_'.$CAM_NR.'_color'] . '_font'; endif;?>"<?php
+									if($name != $name_orig)
+										print ' title="'.$name_orig.'"';  
+									?>><?php print $name; ?></a></label>
+								</span>
+								
+							<?php endforeach;?>
+							<?php foreach ($GCP_cams_params as $CAM_NR => $PARAM) :?>
+								<span style="width: 200px; white-space: nowrap; ">
+								<span class="niceCheck">
+									<input type="checkbox" id="camera_<?php print $CAM_NR;?>" name="cameras" value="<?php print $CAM_NR;?>" <?php if (empty($cameras) || in_array($CAM_NR, $cameras)) :?>checked="checked" <?php endif;?>></span>
+									<?php
+									$name_orig = $PARAM['text_left'];
+									$name_orig = rand(0,99999);
+									$name = $name_orig; 
+									if(mb_strlen($name)>18) {
+										$name = mb_substr($name, 0, 15);
+										$name .= '...';
+									} 
+									?>
+									<label  style="float: none !important;" for="camera_<?php print $CAM_NR;?>"><a href="#<?php print $CAM_NR;?>" class="set_camera_color<?php if (isset($cookies['camera_'.$CAM_NR.'_color']) && !empty($cookies['camera_'.$CAM_NR.'_color']) ): print ' '.$cookies['camera_'.$CAM_NR.'_color'] . '_font'; endif;?>"<?php
+									if($name != $name_orig)
+										print ' title="'.$name_orig.'"';  
+									?>><?php print $name; ?></a></label>
+								</span>
+								
+							<?php endforeach;?>
+							<?php foreach ($GCP_cams_params as $CAM_NR => $PARAM) :?>
+								<span style="width: 200px; white-space: nowrap; ">
+								<span class="niceCheck">
+									<input type="checkbox" id="camera_<?php print $CAM_NR;?>" name="cameras" value="<?php print $CAM_NR;?>" <?php if (empty($cameras) || in_array($CAM_NR, $cameras)) :?>checked="checked" <?php endif;?>></span>
+									<?php
+									$name_orig = $PARAM['text_left'];
+									$name_orig .= rand(0,99999999999999999999);
+									$name = $name_orig; 
+									if(mb_strlen($name)>18) {
+										$name = mb_substr($name, 0, 15);
+										$name .= '...';
+									} 
+									?>
+									<label  style="float: none !important;" for="camera_<?php print $CAM_NR;?>"><a href="#<?php print $CAM_NR;?>" class="set_camera_color<?php if (isset($cookies['camera_'.$CAM_NR.'_color']) && !empty($cookies['camera_'.$CAM_NR.'_color']) ): print ' '.$cookies['camera_'.$CAM_NR.'_color'] . '_font'; endif;?>"<?php
+									if($name != $name_orig)
+										print ' title="'.$name_orig.'"';  
+									?>><?php print $name; ?></a></label>
+								</span>
+								
+							<?php endforeach;?>
+							<?php foreach ($GCP_cams_params as $CAM_NR => $PARAM) :?>
+								<span style="width: 200px; white-space: nowrap; ">
+								<span class="niceCheck">
+									<input type="checkbox" id="camera_<?php print $CAM_NR;?>" name="cameras" value="<?php print $CAM_NR;?>" <?php if (empty($cameras) || in_array($CAM_NR, $cameras)) :?>checked="checked" <?php endif;?>></span>
+									<?php
+									$name_orig = $PARAM['text_left'];
+									$name_orig .= rand(0,99999999999999999999);
 									$name = $name_orig; 
 									if(mb_strlen($name)>18) {
 										$name = mb_substr($name, 0, 15);
@@ -141,8 +201,8 @@
 						</div>
 
 						<div class="controls prevnext">
-							<a class="prew" href="#"><img src="/avreg/offline/gallery/img/arrow_left.png" /></a>
-							<a class="next" href="#"><img src="/avreg/offline/gallery/img/arrow_right.png" /></a>
+							<a class="prew" href="#"><img src="gallery/img/arrow_left.png" /></a>
+							<a class="next" href="#"><img src="gallery/img/arrow_right.png" /></a>
 						</div>						
 						
 						<div  id="scale2" class="detail controls">
@@ -152,7 +212,7 @@
 								</div>
 								<div class="scale_max"></div>
 						</div>
-						<img id="scale_image" src="/avreg/offline/gallery/img/lupa.png" />
+						<img id="scale_image" src="gallery/img/lupa.png" />
 
 						</div>
 					</div>		

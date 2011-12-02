@@ -231,7 +231,7 @@
 
 	
 
-#matrix_load {
+#matrix_load, #overlay {
     background: none repeat scroll 0 0 #FFFFFF;
     display: none;
     height: 100%;
@@ -474,6 +474,7 @@
 	margin: 1px;	
 }
 #cameras_color {
+	z-index:9999;
 	border: 1px solid #fff !important;	
 	text-align:center;
 	background: url(../img/bgPOp.png) repeat; 
@@ -573,6 +574,7 @@ div.block {
 	background:url(../img/bgPOp.png) repeat;	
 	padding: 5px;
 	border: 2px solid #fff !important;
+	z-index: 9999;
 }
 #nextwindow h2 {
 	width: 350px;
