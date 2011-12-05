@@ -1,7 +1,7 @@
 function Enum() {
 	this.allValues = [];
 	this.currentValue = 0;
-	for (var i in arguments) {
+	for (var i=0, ilen=arguments.length; i<ilen; i++) {
 		this[arguments[i]] = parseInt(i);
 		this.allValues.push(arguments[i]);
 	}
@@ -18,6 +18,11 @@ Enum.prototype.next = function() {
 		this.currentValue = 0;
 	return this.currentValue;
 };
+Enum.prototype.set = function (element) {
+	if(element>=0 && element<this.allValues.length)
+		this.currentValue = element;
+	return this.currentValue;
+}
 var Base64 = {
 
     	// private property
@@ -547,14 +552,23 @@ var gallery = {
 					})
 					// событие возникает, если пользователь выбрал новый диапазон событий
 					.bind("select_node.jstree", function (event, data) { 
-						
 						tree = data.rslt.obj.attr("id").replace('tree_', '');
 						
 						if(matrix.keyBoardTree != tree) {
 							matrix.keyBoardTree = tree;
 						}
 						
-						if(keyBoard.boxesEnum.current()!=keyBoard.boxesEnum.TREE) {
+						var found = tree.split('_');
+						
+						var s = '';
+						for(var i=0,ilen=found.length; i<ilen; i++) {
+							if(s!='')
+								s += '_';
+							s += found[i];
+							$('#tree_'+s+' > a').addClass('jstree-clicked');
+						}
+						
+						if(keyBoard.boxesEnum.current()!=keyBoard.boxesEnum.TREE || typeof(data.args[2])!=='undefined') {
 							// если новый диапазон, перестраиваем матрицу
 							if (matrix.tree != tree) {
 								matrix.tree = tree;
@@ -1655,6 +1669,7 @@ var scroll = {
 			$(scroll.id + ' .scroll_body_v').height(scroll.height);
 			// высчитываем высоту ползунка в зависимости от элементов в матрице и всех элементов в диапазоне 
 			h = Math.floor(scroll.height/scroll.cell_count*scroll.matrix_count);
+			
 			scroll.polzh = 0;
 			if ( h < scroll.min_height) {
 				scroll.polzh = scroll.min_height - h; 
@@ -1663,6 +1678,9 @@ var scroll = {
 			}
 			// задаем параметры ползунка
 			$(scroll.id + ' .scroll_polz_v').height(h);
+			$(scroll.id + ' .scroll_polz_v_Middle').height(h-20);
+			
+			
 			$(scroll.id + ' .scroll_polz_v').css('top',0);
 			// обработка нажатия стрелки вверх на скроле
 			$(scroll.id + ' .scroll_top_v').unbind('click');
@@ -1916,8 +1934,6 @@ var scroll = {
 			var t = Math.floor(sp/scroll.row_count*(scroll.height-scroll.polzh)/scroll.cell_count);
 			$(scroll.id + ' .scroll_polz_v').css({top:t});
 			matrix.update(sp);
-			
-	
 		}
 };
 // элемент масштаба предварительного просмотра
@@ -2145,7 +2161,9 @@ var keyBoard = {
 		down : 40,
 		pageUp : 33,
 		pageDown : 34,
-		esc : 27
+		esc : 27,
+		home: 36,
+		end: 35
 	},
 	/*boxes : {
 		tree : 0,
@@ -2190,7 +2208,7 @@ var keyBoard = {
 			keyBoard.currentBoxSelector[i].removeClass('selectBox');
 		}
 		keyBoard.currentBoxSelector = [];
-		for(var elem in arguments)
+		for(var elem=0,elemlen=arguments.length; elem<elemlen; elem++)
 			keyBoard.currentBoxSelector.push(arguments[elem]);
 		for(var j=0,jlen=keyBoard.currentBoxSelector.length; j<jlen;j++){
 			keyBoard.currentBoxSelector[j].addClass('selectBox');
@@ -2208,45 +2226,61 @@ var keyBoard = {
 	getCam : function (){
 		return $(keyBoard.currentSelector[keyBoard.currentSelectorChild]);
 	},
+	checkSelecBox: function () {
+		if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.INSIDE) {
+			//keyBoard.selectBox($('#scroll_content'));
+			keyBoard.selectBox($('#win_bot'));
+			$('#win_top').height(gallery.hcameras);
+			if ($('#win_top').height() > 100) {
+				$('#more_cam').show();
+			}
+		} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.TREE) {
+			keyBoard.selectBox($('#tree'));
+			
+			$('#win_top').height(gallery.hcameras);
+			if ($('#win_top').height() > 100) {
+				$('#more_cam').show();
+			}
+		} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.CAMS) {
+			//keyBoard.selectBox($('#cameras_selector'));
+			keyBoard.selectBox($('#win_top'));
+			keyBoard.selectElem(0);
+			
+			$('#more_cam').hide();
+			$('#win_top').height('auto');
+			
+		}
+	},
 	init : function() {
 		keyBoard.currentSelector = $('#cameras_selector .options').children();
 		keyBoard.colorSelector = $('#cameras_color ul').children('li');
 		keyBoard.boxesEnum = new Enum('INSIDE','TREE','CAMS');
 		keyBoard.selectBox($('#scroll_content'));
+		
+		$('#list_panel').click(function(){
+			keyBoard.boxesEnum.set(keyBoard.boxesEnum.INSIDE);
+			keyBoard.checkSelecBox();
+		});
+		$('#win_top').click(function(){
+			keyBoard.boxesEnum.set(keyBoard.boxesEnum.CAMS);
+			keyBoard.checkSelecBox();
+		});
+		$('#tree').click(function(){
+			keyBoard.boxesEnum.set(keyBoard.boxesEnum.TREE);
+			keyBoard.checkSelecBox();
+		});
 		// обработка нажатий клавиатуры
 		//$(document).unbind('keydown');
 		$(document).keydown(function (e) {
 			e.preventDefault();
-
+			
 			//console.log('keyCode:'+e.which);
 			
 			// work any where
 			if(e.which == keyBoard.keys.tab){
 				keyBoard.boxesEnum.next();
 				//'INSIDE','TREE','CAMS'
-				if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.INSIDE) {
-					//keyBoard.selectBox($('#scroll_content'));
-					keyBoard.selectBox($('#win_bot'));
-					$('#win_top').height(gallery.hcameras);
-					if ($('#win_top').height() > 100) {
-						$('#more_cam').show();
-					}
-				} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.TREE) {
-					keyBoard.selectBox($('#tree'));
-					
-					$('#win_top').height(gallery.hcameras);
-					if ($('#win_top').height() > 100) {
-						$('#more_cam').show();
-					}
-				} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.CAMS) {
-					//keyBoard.selectBox($('#cameras_selector'));
-					keyBoard.selectBox($('#win_top'));
-					keyBoard.selectElem(0);
-					
-					$('#more_cam').hide();
-					$('#win_top').height('auto');
-					
-				}
+				keyBoard.checkSelecBox();
 			} else if(e.which == keyBoard.keys.i){ //i
 				$('#image_type').attr('checked', !$('#image_type').attr('checked'));
 				var r1 = gallery.reload_events();
@@ -2391,6 +2425,18 @@ var keyBoard = {
 				if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.INSIDE) {
 					if (e.which == keyBoard.keys.left) {
 						scroll.num_left();
+					} else if (e.which == keyBoard.keys.home) {
+						/*matrix.build();
+						$('#cell_'+matrix.num).removeClass('active');
+						$('#cell_0').addClass('active');
+						matrix.num = 0;*/
+					} else if (e.which == keyBoard.keys.end) {
+						/*var sp = matrix.count_items-1;
+						matrix.num = matrix.count_items-1;
+						scroll.updateposition(sp, true);
+						scroll.setposition(sp);
+						$('#cell_'+matrix.num).removeClass('active');
+						$('#cell_'+matrix.count_items).addClass('active');*/
 					} else if (e.which == keyBoard.keys.up) {
 						scroll.num_up();
 					} else if (e.which == keyBoard.keys.right) {
@@ -2490,11 +2536,11 @@ var keyBoard = {
 					if (e.which == keyBoard.keys.left) {
 						keyBoard.selectElem(keyBoard.currentSelectorChild-1);
 					} else if (e.which == keyBoard.keys.up) {
-
+						keyBoard.selectElem(keyBoard.currentSelectorChild-1);
 					} else if (e.which == keyBoard.keys.right) {
 						keyBoard.selectElem(keyBoard.currentSelectorChild+1);
 					} else if (e.which == keyBoard.keys.down) {
-
+						keyBoard.selectElem(keyBoard.currentSelectorChild+1);
 					} else if (e.which == keyBoard.keys.space) {
 						var camId = keyBoard.getCam().find('input').attr('id');
 						$('#'+camId).attr('checked', !$('#'+camId).attr('checked'));
@@ -2520,6 +2566,21 @@ var keyBoard = {
 					if(top!=false && typeof(top)!='undefined') {
 						$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
 						$.jstree._focused().select_node('#tree_'+top);
+					}
+				} else if (e.which == keyBoard.keys.home) {
+					var top = matrix.curent_tree_events[matrix.keyBoardTree].top;
+					if(top!=false && typeof(top)!='undefined') {
+						var under = matrix.curent_tree_events[top].under;
+						if(under!=false && typeof(under)!='undefined') {
+							$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
+							$.jstree._focused().select_node('#tree_'+under);
+						}
+					}
+				} else if (e.which == keyBoard.keys.end) {
+					var top = matrix.curent_tree_events[matrix.keyBoardTree].top;
+					if(top!=false && typeof(top)!='undefined') {
+						$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
+						$.jstree._focused().select_node('#tree_'+top+' > ul > .jstree-last');
 					}
 				} else if (e.which == keyBoard.keys.up) {
 					var prev = matrix.curent_tree_events[matrix.keyBoardTree].prev;

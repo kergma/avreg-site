@@ -158,7 +158,7 @@
 	background: none repeat scroll 0 0 #A29DB3;
    	border-radius: 0px 0px 10px 10px;
 	min-width: 240px;
-	
+	border-top: 1px solid #fff;	
 }
 #sidebar #statistics .window_label {
 	right: 8px;
@@ -231,7 +231,7 @@
 
 	
 
-#matrix_load {
+#matrix_load, #overlay {
     background: none repeat scroll 0 0 #FFFFFF;
     display: none;
     height: 100%;
@@ -268,7 +268,7 @@
 }
 #scroll_content .active .elem{
 	background-color: #1b1b1d;
-	outline: 2px solid #fff;
+	outline: 1px solid #fff;
 	margin: -5px;
    	padding: 5px;
 }
@@ -287,7 +287,7 @@
 }
 
 .camera_1_color img {
-	border: 4px solid #ffdab9;
+	border: 2px solid #ffdab9;
 	/*background-color:PeachPuff;*/
 }
 .window_body .camera_1_color {
@@ -297,7 +297,7 @@
 	color:#ffdab9; 
 }
 .camera_2_color img {
-	border: 4px solid #778899;	
+	border: 2px solid #778899;	
 	/*background-color: LightSlateGray;*/
 }
 .window_body .camera_2_color {
@@ -307,7 +307,7 @@
 	color:#778899; 
 }
 .camera_3_color img {
-	border: 4px solid #e6e6fa;		
+	border: 2px solid #e6e6fa;		
 	/*background-color: lavender;*/ 
 }
 .window_body .camera_3_color {
@@ -317,7 +317,7 @@
 	color: #e6e6fa; 
 }
 .camera_4_color img {
-	border: 4px solid #347fcc;	
+	border: 2px solid #347fcc;	
 	/*background-color:CornflowerBlue;*/
 }
 .window_body .camera_4_color {
@@ -327,7 +327,7 @@
 	color:	#347fcc; 
 }
 .camera_5_color img {
-	border: 4px solid #8f7dff;		
+	border: 2px solid #8f7dff;		
 	/*background-color:SlateBlue; */
 }
 .window_body .camera_5_color {
@@ -337,7 +337,7 @@
 	color:#8f7dff; 
 }
 .camera_6_color img {
-	border: 4px solid #9dff34;	
+	border: 2px solid #9dff34;	
 	/*background-color:DeepSkyBlue; */
 }
 .window_body .camera_6_color {
@@ -347,7 +347,7 @@
 	color:#9dff34; 
 }
 .camera_7_color img {
-	border: 4px solid #ff3434;
+	border: 2px solid #ff3434;
 	/*background-color:LightSkyBlue; */
 }
 .window_body .camera_7_color {
@@ -357,7 +357,7 @@
 	color:#ff3434; 
 }
 .camera_8_color img {
-	border: 4px solid #87cefa;
+	border: 2px solid #87cefa;
 	/*background-color: LightSteelBlue; */
 }
 .window_body .camera_8_color {
@@ -367,7 +367,7 @@
 	color:	#87cefa; 
 }
 .camera_9_color img {
-	border: 4px solid #006400;
+	border: 2px solid #006400;
 	/*background-color:DarkGreen;*/
 }
 .window_body .camera_9_color {
@@ -387,7 +387,7 @@
 	color:#98fb98; 
 }
 .camera_11_color img {
-	border: 4px solid #ffffe0;
+	border: 2px solid #ffffe0;
 	/*background-color:LawnGreen; */
 }
 .window_body .camera_11_color {
@@ -397,7 +397,7 @@
 	color:#ffffe0; 
 }
 .camera_12_color img {
-	border: 4px solid #b0c4de;
+	border: 2px solid #b0c4de;
 }
 .window_body .camera_12_color {
 	background-color: #b0c4de;
@@ -408,7 +408,7 @@
 
 .camera_13_color img {
 	/*background-color:IndianRed; */
-	border: 4px solid #cd5c5c;
+	border: 2px solid #cd5c5c;
 }
 .window_body .camera_13_color {
 	background-color: #cd5c5c;
@@ -427,7 +427,7 @@
 	color:#ffa500; 
 }
 .camera_15_color img  {
-	border: 4px solid #ff69b4;
+	border: 2px solid #ff69b4;
 	/*background-color:HotPink; */
 }
 .window_body .camera_15_color {
@@ -437,7 +437,7 @@
 	color:#ff69b4; 
 }
 .camera_16_color img {
-	border: 4px solid #ffc0cb;
+	border: 2px solid #ffc0cb;
 	/*background-color:Pink; */
 }
 .window_body .camera_16_color {
@@ -474,6 +474,7 @@
 	margin: 1px;	
 }
 #cameras_color {
+	z-index:9999;
 	border: 1px solid #fff !important;	
 	text-align:center;
 	background: url(../img/bgPOp.png) repeat; 
@@ -552,8 +553,7 @@ div.block {
 .jstree a {
 	font-weight: 100;	
 }
-#tree {
-	border-bottom: 1px solid #fff;
+#tree {	
 	position:relative;	
 }
 .borderBot {
@@ -565,14 +565,16 @@ div.block {
 	
 }
 .jstree-default .jstree-clicked {
-	border: none !important;
-	background: none !important;
+	border: 1px solid #D8F0FA !important;
+	background: #E7F4F9 !important;
+	padding: 0 2px 0 1px;
 	color: blue;
 }
 #nextwindow {
 	background:url(../img/bgPOp.png) repeat;	
 	padding: 5px;
 	border: 2px solid #fff !important;
+	z-index: 9999;
 }
 #nextwindow h2 {
 	width: 350px;
