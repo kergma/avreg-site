@@ -475,7 +475,7 @@ var gallery = {
 									under: e[0]+'_'+e[1]+'_'+e[2]
 							};
 							// строим дерево
-							html += '<li id="tree_'+e[0]+'_'+e[1]+'"><a href="#">'+monthNames[e[1].replace('0','')]+'</a><ul>';
+							html += '<li id="tree_'+e[0]+'_'+e[1]+'"><a href="#">'+e[1]+' ('+monthNames[e[1].replace('0','')]+')</a><ul>';
 						} else {
 							//если есть то обновляем размер и количество
 							matrix.curent_tree_events[e[0]+'_'+e[1]].size += size;
@@ -589,6 +589,19 @@ var gallery = {
 						$.jstree._focused().select_node(open);
 						$.jstree._focused().open_node(open);
 						$('#tree').show();
+						$('ins.jstree-icon').hover(
+								function(){
+									$(this).attr('title', 
+											function(){
+												if($(this).parent().hasClass('jstree-open')){
+													return 'Свернуть';
+												} else if ($(this).parent().hasClass('jstree-closed')) {
+													return 'Развернуть';
+												}
+											});
+								},
+								function(){}
+								);
 					})
 				.delegate("a", "click", function (event, data) {event.preventDefault();}).show();	
 				
@@ -607,6 +620,9 @@ var gallery = {
 						gallery.tree_event.reload();
 					}
 				});
+				
+				
+				
 			}
 		},
 		// объект управлением цветом камер
@@ -1113,8 +1129,8 @@ var matrix = {
 	resize: function() {
 		// обновляем ширину колонок
 		gallery.resize_column.resize($('#sidebar').width()-2);
-		$('#tree').height($('#sidebar').height() - $('#type_event').height() - $('#favorite').height() - $('#statistics').height()-90);
-		
+		$('#tree').height($('#sidebar').height() - $('#type_event').height() - $('#favorite').height() - $('#statistics').height()-67);
+
 		// высчитываем размеры табнейлов 
 		matrix.thumb_width = matrix.cell_width-matrix.config.cell_padding*2;
 		matrix.thumb_height = matrix.cell_height-matrix.config.cell_padding*2;

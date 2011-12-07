@@ -279,6 +279,8 @@
 	text-align:center;
 	color:#003366;
 }
+
+
 .content_item .info_block {
 	width: 99%;	
 	font-size: 12px;
@@ -671,3 +673,6 @@ font-family: Arial,Verdana,Geneva,Helvetica,sans-serif !important;
 .camera_5_color, .camera_9_color, .camera_13_color {
 	clear:left;	
 }
+.jstree-default .jstree-open ins { cursor: pointer;  }
+.jstree-default .jstree-closed ins { cursor: pointer; }
+.jstree-default .jstree-leaf ins { cursor:auto; }

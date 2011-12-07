@@ -34,6 +34,11 @@
 					</div>
 					
 					<div id="statistics">
+						<span><strong><?php print $strcount_files; ?></strong></span><br />
+						<span><strong><?php print $strsize_files; ?></strong></span><br />
+						<span><strong><?php print $strdate_form; ?></strong></span><br />
+						<span><strong><?php print $strdate_to; ?></strong></span><br />
+					
 					</div>
 				</div>
 				<!-- end sidebar inner block -->

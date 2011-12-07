@@ -62,8 +62,8 @@
 #vakata-dragged.jstree-default .jstree-invalid, 
 #vakata-dragged.jstree-default .jstree-ok, 
 #jstree-marker.jstree-default { _background-image:url("d.gif"); }
-.jstree-default .jstree-open ins { _background-position:-72px 0; }
-.jstree-default .jstree-closed ins { _background-position:-54px 0; }
+.jstree-default .jstree-open ins { cursor: pointer; _background-position:-72px 0; }
+.jstree-default .jstree-closed ins { cursor: pointer; _background-position:-54px 0; }
 .jstree-default .jstree-leaf ins { _background-position:-36px 0; }
 .jstree-default a ins.jstree-icon { _background-position:-56px -19px; }
 #vakata-contextmenu.jstree-default-context ins { _display:none; }
