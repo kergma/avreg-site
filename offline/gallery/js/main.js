@@ -1376,10 +1376,13 @@ var matrix = {
 					value = matrix.events[i];
 					
 					active = i == matrix.num ? ' active' : '';
+					
+					
 					camera_class = gallery.cookie.get('camera_'+value[5]+'_color');
 					if (camera_class != '') {
 						camera_class = ' '+camera_class;
 					}
+					
 					html += '<div id="cell_'+i+'" class="content_item show'+active+' camera_'+value[5]+' '+camera_class+'">';
 					html += '<div class="elem">';
 					if (value[7] == 'image') {
@@ -2426,17 +2429,14 @@ var keyBoard = {
 					if (e.which == keyBoard.keys.left) {
 						scroll.num_left();
 					} else if (e.which == keyBoard.keys.home) {
-						/*matrix.build();
+						matrix.build();
 						$('#cell_'+matrix.num).removeClass('active');
 						$('#cell_0').addClass('active');
-						matrix.num = 0;*/
+						matrix.num = 0;
 					} else if (e.which == keyBoard.keys.end) {
-						/*var sp = matrix.count_items-1;
-						matrix.num = matrix.count_items-1;
-						scroll.updateposition(sp, true);
+						var sp = (scroll.cell_count-1)*scroll.row_count;
+						matrix.num = sp;
 						scroll.setposition(sp);
-						$('#cell_'+matrix.num).removeClass('active');
-						$('#cell_'+matrix.count_items).addClass('active');*/
 					} else if (e.which == keyBoard.keys.up) {
 						scroll.num_up();
 					} else if (e.which == keyBoard.keys.right) {
