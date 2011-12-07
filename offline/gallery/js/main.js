@@ -633,8 +633,11 @@ var gallery = {
 			camera_link : '', // ссылка на камеру
 			// показываем окно выбора цвета
 			open: function() {
+				var self = this;
 				keyBoard.beforeView = keyBoard.view;
 				keyBoard.view = keyBoard.views.colorDialog;
+				$('#cameras_color h2').html(lang.color_cameras+" <"+ self.camera_title+">");
+				
 				$('#overlay').show();
 				$('#cameras_color').show();
 				//установка текущего элемента

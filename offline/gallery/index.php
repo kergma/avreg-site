@@ -227,6 +227,7 @@ var lang = {
 		date_from: '<?php print $strdate_from; ?>',	
 		date_to: '<?php print $strdate_to; ?>',	
 		camera: '<?php print $strcamera; ?>',	
+		color_cameras: '<?php print $strcolorcameras; ?>',
 		size: '<?php print $strsize; ?>',	
 		WH: '<?php print $strWH; ?>',	
 		date: '<?php print $strdate; ?>',	
