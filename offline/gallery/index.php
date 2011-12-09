@@ -34,6 +34,11 @@
 					</div>
 					
 					<div id="statistics">
+						<span><strong><?php print $strcount_files; ?></strong></span><br />
+						<span><strong><?php print $strsize_files; ?></strong></span><br />
+						<span><strong><?php print $strdate_form; ?></strong></span><br />
+						<span><strong><?php print $strdate_to; ?></strong></span><br />
+					
 					</div>
 				</div>
 				<!-- end sidebar inner block -->
@@ -58,10 +63,8 @@
 								<span class="niceCheck">
 									<input type="checkbox" id="camera_<?php print $CAM_NR;?>" name="cameras" value="<?php print $CAM_NR;?>" <?php if (empty($cameras) || in_array($CAM_NR, $cameras)) :?>checked="checked" <?php endif;?>></span>
 									<?php
-									$name_orig = $PARAM['text_left'];
-									if($CAM_NR==2)
-										$name_orig = 'длинный текст'.$name_orig;
-									$name = $name_orig; 
+
+									$name = $PARAM['text_left']; 
 									if(mb_strlen($name)>18) {
 										$name = mb_substr($name, 0, 15);
 										$name .= '...';
@@ -74,66 +77,7 @@
 								</span>
 								
 							<?php endforeach;?>
-							<?php foreach ($GCP_cams_params as $CAM_NR => $PARAM) :?>
-								<span style="width: 200px; white-space: nowrap; ">
-								<span class="niceCheck">
-									<input type="checkbox" id="camera_<?php print $CAM_NR;?>" name="cameras" value="<?php print $CAM_NR;?>" <?php if (empty($cameras) || in_array($CAM_NR, $cameras)) :?>checked="checked" <?php endif;?>></span>
-									<?php
-									$name_orig = $PARAM['text_left'];
-									$name_orig = rand(0,99999);
-									$name = $name_orig; 
-									if(mb_strlen($name)>18) {
-										$name = mb_substr($name, 0, 15);
-										$name .= '...';
-									} 
-									?>
-									<label  style="float: none !important;" for="camera_<?php print $CAM_NR;?>"><a href="#<?php print $CAM_NR;?>" class="set_camera_color<?php if (isset($cookies['camera_'.$CAM_NR.'_color']) && !empty($cookies['camera_'.$CAM_NR.'_color']) ): print ' '.$cookies['camera_'.$CAM_NR.'_color'] . '_font'; endif;?>"<?php
-									if($name != $name_orig)
-										print ' title="'.$name_orig.'"';  
-									?>><?php print $name; ?></a></label>
-								</span>
-								
-							<?php endforeach;?>
-							<?php foreach ($GCP_cams_params as $CAM_NR => $PARAM) :?>
-								<span style="width: 200px; white-space: nowrap; ">
-								<span class="niceCheck">
-									<input type="checkbox" id="camera_<?php print $CAM_NR;?>" name="cameras" value="<?php print $CAM_NR;?>" <?php if (empty($cameras) || in_array($CAM_NR, $cameras)) :?>checked="checked" <?php endif;?>></span>
-									<?php
-									$name_orig = $PARAM['text_left'];
-									$name_orig .= rand(0,99999999999999999999);
-									$name = $name_orig; 
-									if(mb_strlen($name)>18) {
-										$name = mb_substr($name, 0, 15);
-										$name .= '...';
-									} 
-									?>
-									<label  style="float: none !important;" for="camera_<?php print $CAM_NR;?>"><a href="#<?php print $CAM_NR;?>" class="set_camera_color<?php if (isset($cookies['camera_'.$CAM_NR.'_color']) && !empty($cookies['camera_'.$CAM_NR.'_color']) ): print ' '.$cookies['camera_'.$CAM_NR.'_color'] . '_font'; endif;?>"<?php
-									if($name != $name_orig)
-										print ' title="'.$name_orig.'"';  
-									?>><?php print $name; ?></a></label>
-								</span>
-								
-							<?php endforeach;?>
-							<?php foreach ($GCP_cams_params as $CAM_NR => $PARAM) :?>
-								<span style="width: 200px; white-space: nowrap; ">
-								<span class="niceCheck">
-									<input type="checkbox" id="camera_<?php print $CAM_NR;?>" name="cameras" value="<?php print $CAM_NR;?>" <?php if (empty($cameras) || in_array($CAM_NR, $cameras)) :?>checked="checked" <?php endif;?>></span>
-									<?php
-									$name_orig = $PARAM['text_left'];
-									$name_orig .= rand(0,99999999999999999999);
-									$name = $name_orig; 
-									if(mb_strlen($name)>18) {
-										$name = mb_substr($name, 0, 15);
-										$name .= '...';
-									} 
-									?>
-									<label  style="float: none !important;" for="camera_<?php print $CAM_NR;?>"><a href="#<?php print $CAM_NR;?>" class="set_camera_color<?php if (isset($cookies['camera_'.$CAM_NR.'_color']) && !empty($cookies['camera_'.$CAM_NR.'_color']) ): print ' '.$cookies['camera_'.$CAM_NR.'_color'] . '_font'; endif;?>"<?php
-									if($name != $name_orig)
-										print ' title="'.$name_orig.'"';  
-									?>><?php print $name; ?></a></label>
-								</span>
-								
-							<?php endforeach;?>
+						
 							
 											
 							
@@ -283,6 +227,7 @@ var lang = {
 		date_from: '<?php print $strdate_from; ?>',	
 		date_to: '<?php print $strdate_to; ?>',	
 		camera: '<?php print $strcamera; ?>',	
+		color_cameras: '<?php print $strcolorcameras; ?>',
 		size: '<?php print $strsize; ?>',	
 		WH: '<?php print $strWH; ?>',	
 		date: '<?php print $strdate; ?>',	

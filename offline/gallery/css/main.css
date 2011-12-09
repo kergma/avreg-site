@@ -279,6 +279,8 @@
 	text-align:center;
 	color:#003366;
 }
+
+
 .content_item .info_block {
 	width: 99%;	
 	font-size: 12px;
@@ -473,7 +475,7 @@
 	cursor: pointer;
 	margin: 1px;	
 }
-#cameras_color {
+.mod_window {
 	z-index:9999;
 	border: 1px solid #fff !important;	
 	text-align:center;
@@ -510,7 +512,7 @@
 	color: #fff;
 	//padding:6px 8px 6px 8px;
 	border: none;
-	margin: 0 66px 4px 0;
+	margin: 0 35px 4px 0;
 	cursor: pointer;
 	width:80px;
 	height: 30px;
@@ -570,17 +572,7 @@ div.block {
 	padding: 0 2px 0 1px;
 	color: blue;
 }
-#nextwindow {
-	background:url(../img/bgPOp.png) repeat;	
-	padding: 5px;
-	border: 2px solid #fff !important;
-	z-index: 9999;
-}
-#nextwindow h2 {
-	width: 350px;
-	border: none !important;
-	color:#fff;
-}
+
 #nextwindow .no, #nextwindow .yes {
 	background:url(../img/smallPush.png) no-repeat;
 	padding-right: 15px; 
@@ -596,25 +588,7 @@ div.block {
 	
 }
 
-#nextwindow .mod_window {
-	background-color: none !important;	
-}
-#nextwindow .window_title {
-	background: none !important;	
-}
-#nextwindow .window_button {
-	float:left;
-	clear:none;
-	padding: 0;
-}
-#nextwindow .window_body {
-	float: left;
-	margin:5px 45px 0 0;	
-}
-#nextwindow label {
-	font-size: 13px;
-	color: #fff;
-}
+
 .propotion label, .event_info label {
 	color: #fff;	
 }
@@ -671,3 +645,6 @@ font-family: Arial,Verdana,Geneva,Helvetica,sans-serif !important;
 .camera_5_color, .camera_9_color, .camera_13_color {
 	clear:left;	
 }
+.jstree-default .jstree-open ins { cursor: pointer;  }
+.jstree-default .jstree-closed ins { cursor: pointer; }
+.jstree-default .jstree-leaf ins { cursor:auto; }

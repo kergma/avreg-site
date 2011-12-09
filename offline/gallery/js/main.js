@@ -475,7 +475,7 @@ var gallery = {
 									under: e[0]+'_'+e[1]+'_'+e[2]
 							};
 							// строим дерево
-							html += '<li id="tree_'+e[0]+'_'+e[1]+'"><a href="#">'+monthNames[e[1].replace('0','')]+'</a><ul>';
+							html += '<li id="tree_'+e[0]+'_'+e[1]+'"><a href="#">'+e[1]+' ('+monthNames[e[1].replace('0','')]+')</a><ul>';
 						} else {
 							//если есть то обновляем размер и количество
 							matrix.curent_tree_events[e[0]+'_'+e[1]].size += size;
@@ -589,6 +589,19 @@ var gallery = {
 						$.jstree._focused().select_node(open);
 						$.jstree._focused().open_node(open);
 						$('#tree').show();
+						$('ins.jstree-icon').hover(
+								function(){
+									$(this).attr('title', 
+											function(){
+												if($(this).parent().hasClass('jstree-open')){
+													return 'Свернуть';
+												} else if ($(this).parent().hasClass('jstree-closed')) {
+													return 'Развернуть';
+												}
+											});
+								},
+								function(){}
+								);
 					})
 				.delegate("a", "click", function (event, data) {event.preventDefault();}).show();	
 				
@@ -607,6 +620,9 @@ var gallery = {
 						gallery.tree_event.reload();
 					}
 				});
+				
+				
+				
 			}
 		},
 		// объект управлением цветом камер
@@ -617,8 +633,11 @@ var gallery = {
 			camera_link : '', // ссылка на камеру
 			// показываем окно выбора цвета
 			open: function() {
+				var self = this;
 				keyBoard.beforeView = keyBoard.view;
 				keyBoard.view = keyBoard.views.colorDialog;
+				$('#cameras_color h2').html(lang.color_cameras+" <"+ self.camera_title+">");
+				
 				$('#overlay').show();
 				$('#cameras_color').show();
 				//установка текущего элемента
@@ -1113,8 +1132,8 @@ var matrix = {
 	resize: function() {
 		// обновляем ширину колонок
 		gallery.resize_column.resize($('#sidebar').width()-2);
-		$('#tree').height($('#sidebar').height() - $('#type_event').height() - $('#favorite').height() - $('#statistics').height()-90);
-		
+		$('#tree').height($('#sidebar').height() - $('#type_event').height() - $('#favorite').height() - $('#statistics').height()-67);
+
 		// высчитываем размеры табнейлов 
 		matrix.thumb_width = matrix.cell_width-matrix.config.cell_padding*2;
 		matrix.thumb_height = matrix.cell_height-matrix.config.cell_padding*2;
@@ -1376,10 +1395,13 @@ var matrix = {
 					value = matrix.events[i];
 					
 					active = i == matrix.num ? ' active' : '';
+					
+					
 					camera_class = gallery.cookie.get('camera_'+value[5]+'_color');
 					if (camera_class != '') {
 						camera_class = ' '+camera_class;
 					}
+					
 					html += '<div id="cell_'+i+'" class="content_item show'+active+' camera_'+value[5]+' '+camera_class+'">';
 					html += '<div class="elem">';
 					if (value[7] == 'image') {
@@ -2426,17 +2448,14 @@ var keyBoard = {
 					if (e.which == keyBoard.keys.left) {
 						scroll.num_left();
 					} else if (e.which == keyBoard.keys.home) {
-						/*matrix.build();
+						matrix.build();
 						$('#cell_'+matrix.num).removeClass('active');
 						$('#cell_0').addClass('active');
-						matrix.num = 0;*/
+						matrix.num = 0;
 					} else if (e.which == keyBoard.keys.end) {
-						/*var sp = matrix.count_items-1;
-						matrix.num = matrix.count_items-1;
-						scroll.updateposition(sp, true);
+						var sp = (scroll.cell_count-1)*scroll.row_count;
+						matrix.num = sp;
 						scroll.setposition(sp);
-						$('#cell_'+matrix.num).removeClass('active');
-						$('#cell_'+matrix.count_items).addClass('active');*/
 					} else if (e.which == keyBoard.keys.up) {
 						scroll.num_up();
 					} else if (e.which == keyBoard.keys.right) {
