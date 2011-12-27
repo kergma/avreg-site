@@ -636,7 +636,7 @@ var gallery = {
 				var self = this;
 				keyBoard.beforeView = keyBoard.view;
 				keyBoard.view = keyBoard.views.colorDialog;
-				$('#cameras_color h2').html(lang.color_cameras+" <"+ self.camera_title+">");
+				$('#cameras_color h2').html(lang.color_cameras+" &lt;"+ self.camera_title+"&gt;");
 				
 				$('#overlay').show();
 				$('#cameras_color').show();
@@ -2291,6 +2291,7 @@ var keyBoard = {
 			keyBoard.boxesEnum.set(keyBoard.boxesEnum.TREE);
 			keyBoard.checkSelecBox();
 		});
+	
 		// обработка нажатий клавиатуры
 		//$(document).unbind('keydown');
 		$(document).keydown(function (e) {
@@ -2448,14 +2449,19 @@ var keyBoard = {
 					if (e.which == keyBoard.keys.left) {
 						scroll.num_left();
 					} else if (e.which == keyBoard.keys.home) {
-						matrix.build();
+					/*	matrix.build();
 						$('#cell_'+matrix.num).removeClass('active');
 						$('#cell_0').addClass('active');
-						matrix.num = 0;
+						matrix.num = 0;*/
+						$('#cell_'+matrix.num).removeClass('active');
+						matrix.num = scroll.position;
+						$('#cell_'+matrix.num).addClass('active');
 					} else if (e.which == keyBoard.keys.end) {
-						var sp = (scroll.cell_count-1)*scroll.row_count;
-						matrix.num = sp;
-						scroll.setposition(sp);
+						
+						$('#cell_'+matrix.num).removeClass('active');
+						matrix.num = scroll.position+(scroll.matrix_count-1)*scroll.row_count;
+						$('#cell_'+matrix.num).addClass('active');
+						
 					} else if (e.which == keyBoard.keys.up) {
 						scroll.num_up();
 					} else if (e.which == keyBoard.keys.right) {
@@ -2547,6 +2553,11 @@ var keyBoard = {
 					gallery.nextwindow.close();
 				} else if (e.which == keyBoard.keys.space) {
 					$('#checknextwindow').attr('checked', !$('#checknextwindow').attr('checked'));
+					if ($('#checknextwindow').attr('checked')) {
+						$('#checknextwindow').parent().attr('style','background-position: 0px -14px');
+					} else {
+						$('#checknextwindow').parent().attr('style','background-position: 0px -0px');
+					}
 				}
 			}
 			
@@ -2582,6 +2593,7 @@ var keyBoard = {
 			} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.TREE) {
 				if (e.which == keyBoard.keys.left) {
 					var top = matrix.curent_tree_events[matrix.keyBoardTree].top;
+					
 					if(top!=false && typeof(top)!='undefined') {
 						$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
 						$.jstree._focused().select_node('#tree_'+top);
@@ -2603,7 +2615,7 @@ var keyBoard = {
 					}
 				} else if (e.which == keyBoard.keys.up) {
 					var prev = matrix.curent_tree_events[matrix.keyBoardTree].prev;
-					if(prev!=false && typeof(prev)!='undefined') {
+					if(prev!=false && typeof(prev)!='undefined' &&  matrix.curent_tree_events[matrix.keyBoardTree].top ==  matrix.curent_tree_events[prev].top ) {
 						$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
 						$.jstree._focused().select_node('#tree_'+prev);
 					}
@@ -2615,9 +2627,10 @@ var keyBoard = {
 					}
 				} else if (e.which == keyBoard.keys.down) {
 					var next = matrix.curent_tree_events[matrix.keyBoardTree].next;
-					if(next!=false && typeof(next)!='undefined') {
+					if(next!=false && typeof(next)!='undefined' &&  matrix.curent_tree_events[matrix.keyBoardTree].top ==  matrix.curent_tree_events[next].top ) {
 						$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
 						$.jstree._focused().select_node('#tree_'+next);
+						
 					}
 				} else if (e.which == keyBoard.keys.enter) {
 					var tree = matrix.keyBoardTree;
