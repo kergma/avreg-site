@@ -2588,6 +2588,9 @@ var keyBoard = {
 						gallery.cameras_color.camera_title = keyBoard.getCam().find('label').children('a').html();
 						gallery.cameras_color.camera_link = keyBoard.getCam().find('label').children('a');
 						gallery.cameras_color.open();
+					} else if (e.which == keyBoard.keys.esc) {
+						keyBoard.boxesEnum.set(keyBoard.boxesEnum.INSIDE);
+						keyBoard.checkSelecBox();
 					}
 				}
 			} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.TREE) {
