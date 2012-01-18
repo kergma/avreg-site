@@ -2598,6 +2598,7 @@ var keyBoard = {
 						if(top!=false && typeof(top)!='undefined') {
 							$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
 							$.jstree._focused().select_node('#tree_'+top);
+							$('#tree').scrollTo( $('#tree_'+top)).scrollTo('-=100px');
 						}
 					} else if (e.which == keyBoard.keys.home) {
 						var top = matrix.curent_tree_events[matrix.keyBoardTree].top;
@@ -2606,6 +2607,7 @@ var keyBoard = {
 							if(under!=false && typeof(under)!='undefined') {
 								$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
 								$.jstree._focused().select_node('#tree_'+under);
+								$('#tree').scrollTo( $('#tree_'+under)).scrollTo('-=100px');
 							}
 						}
 					} else if (e.which == keyBoard.keys.end) {
@@ -2613,24 +2615,28 @@ var keyBoard = {
 						if(top!=false && typeof(top)!='undefined') {
 							$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
 							$.jstree._focused().select_node('#tree_'+top+' > ul > .jstree-last');
+							$('#tree').scrollTo( $('#tree_'+top+' > ul > .jstree-last')).scrollTo('-=100px');
 						}
 					} else if (e.which == keyBoard.keys.up) {
 						var prev = matrix.curent_tree_events[matrix.keyBoardTree].prev;
 						if(prev!=false && typeof(prev)!='undefined' &&  matrix.curent_tree_events[matrix.keyBoardTree].top ==  matrix.curent_tree_events[prev].top ) {
 							$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
 							$.jstree._focused().select_node('#tree_'+prev);
+							$('#tree').scrollTo( $('#tree_'+prev)).scrollTo('-=100px');
 						}
 					} else if (e.which == keyBoard.keys.right) {
 						var under = matrix.curent_tree_events[matrix.keyBoardTree].under;
 						if(under!=false && typeof(under)!='undefined') {
 							$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
 							$.jstree._focused().select_node('#tree_'+under);
+							$('#tree').scrollTo( $('#tree_'+under)).scrollTo('-=100px');
 						}
 					} else if (e.which == keyBoard.keys.down) {
 						var next = matrix.curent_tree_events[matrix.keyBoardTree].next;
 						if(next!=false && typeof(next)!='undefined' &&  matrix.curent_tree_events[matrix.keyBoardTree].top ==  matrix.curent_tree_events[next].top ) {
 							$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
 							$.jstree._focused().select_node('#tree_'+next);
+							$('#tree').scrollTo( $('#tree_'+next)).scrollTo('-=100px');
 							
 						}
 					} else if (e.which == keyBoard.keys.enter) {
