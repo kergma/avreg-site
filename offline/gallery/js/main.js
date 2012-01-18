@@ -1039,7 +1039,36 @@ var matrix = {
 		// изменить размер матрицы если было изменено размеры окна
 		$(window).bind("resize", function(){
 			clearInterval(self.res);
-			self.res = setTimeout(function() {matrix.resize();clearInterval(self.res);}, 200);
+			
+			
+			self.res = setTimeout(function() {
+				
+				pageX = parseInt(gallery.cookie.get('resize_column'));
+				
+				if (pageX) {
+					
+					if( typeof( window.innerWidth ) == 'number' ) {
+						//Non-IE
+						gallery.resize_column.myWidth = window.innerWidth;
+						gallery.resize_column.myHeight = window.innerHeight;
+					} else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
+						//IE 6+ in 'standards compliant mode'
+						gallery.resize_column.myWidth = document.documentElement.clientWidth;
+						gallery.resize_column.myHeight = document.documentElement.clientHeight;
+					}
+					
+					if (pageX < gallery.resize_column.myWidth - 666 && pageX - (gallery.resize_column.myWidth - 666) < 300 ) {
+						
+						pageX = pageX - (gallery.resize_column.myWidth - 666);
+					} else {
+						pageX = 300;
+					}
+					gallery.cookie.set('resize_column', pageX);
+					gallery.resize_column.resize(pageX);
+				}
+				
+				
+				matrix.resize();clearInterval(self.res);}, 200);
 			
 		});
 		
