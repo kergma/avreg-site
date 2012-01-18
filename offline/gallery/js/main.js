@@ -2560,9 +2560,8 @@ var keyBoard = {
 					}
 				}
 			}
-			
-			if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.CAMS) {
-				if(keyBoard.view!=keyBoard.views.colorDialog) {
+			if (keyBoard.view == 0) {
+				if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.CAMS) {
 					if (e.which == keyBoard.keys.left) {
 						keyBoard.selectElem(keyBoard.currentSelectorChild-1);
 					} else if (e.which == keyBoard.keys.up) {
@@ -2592,66 +2591,66 @@ var keyBoard = {
 						keyBoard.boxesEnum.set(keyBoard.boxesEnum.INSIDE);
 						keyBoard.checkSelecBox();
 					}
-				}
-			} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.TREE) {
-				if (e.which == keyBoard.keys.left) {
-					var top = matrix.curent_tree_events[matrix.keyBoardTree].top;
-					
-					if(top!=false && typeof(top)!='undefined') {
-						$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
-						$.jstree._focused().select_node('#tree_'+top);
-					}
-				} else if (e.which == keyBoard.keys.home) {
-					var top = matrix.curent_tree_events[matrix.keyBoardTree].top;
-					if(top!=false && typeof(top)!='undefined') {
-						var under = matrix.curent_tree_events[top].under;
+				} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.TREE) {
+					if (e.which == keyBoard.keys.left) {
+						var top = matrix.curent_tree_events[matrix.keyBoardTree].top;
+						
+						if(top!=false && typeof(top)!='undefined') {
+							$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
+							$.jstree._focused().select_node('#tree_'+top);
+						}
+					} else if (e.which == keyBoard.keys.home) {
+						var top = matrix.curent_tree_events[matrix.keyBoardTree].top;
+						if(top!=false && typeof(top)!='undefined') {
+							var under = matrix.curent_tree_events[top].under;
+							if(under!=false && typeof(under)!='undefined') {
+								$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
+								$.jstree._focused().select_node('#tree_'+under);
+							}
+						}
+					} else if (e.which == keyBoard.keys.end) {
+						var top = matrix.curent_tree_events[matrix.keyBoardTree].top;
+						if(top!=false && typeof(top)!='undefined') {
+							$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
+							$.jstree._focused().select_node('#tree_'+top+' > ul > .jstree-last');
+						}
+					} else if (e.which == keyBoard.keys.up) {
+						var prev = matrix.curent_tree_events[matrix.keyBoardTree].prev;
+						if(prev!=false && typeof(prev)!='undefined' &&  matrix.curent_tree_events[matrix.keyBoardTree].top ==  matrix.curent_tree_events[prev].top ) {
+							$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
+							$.jstree._focused().select_node('#tree_'+prev);
+						}
+					} else if (e.which == keyBoard.keys.right) {
+						var under = matrix.curent_tree_events[matrix.keyBoardTree].under;
 						if(under!=false && typeof(under)!='undefined') {
 							$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
 							$.jstree._focused().select_node('#tree_'+under);
 						}
-					}
-				} else if (e.which == keyBoard.keys.end) {
-					var top = matrix.curent_tree_events[matrix.keyBoardTree].top;
-					if(top!=false && typeof(top)!='undefined') {
-						$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
-						$.jstree._focused().select_node('#tree_'+top+' > ul > .jstree-last');
-					}
-				} else if (e.which == keyBoard.keys.up) {
-					var prev = matrix.curent_tree_events[matrix.keyBoardTree].prev;
-					if(prev!=false && typeof(prev)!='undefined' &&  matrix.curent_tree_events[matrix.keyBoardTree].top ==  matrix.curent_tree_events[prev].top ) {
-						$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
-						$.jstree._focused().select_node('#tree_'+prev);
-					}
-				} else if (e.which == keyBoard.keys.right) {
-					var under = matrix.curent_tree_events[matrix.keyBoardTree].under;
-					if(under!=false && typeof(under)!='undefined') {
-						$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
-						$.jstree._focused().select_node('#tree_'+under);
-					}
-				} else if (e.which == keyBoard.keys.down) {
-					var next = matrix.curent_tree_events[matrix.keyBoardTree].next;
-					if(next!=false && typeof(next)!='undefined' &&  matrix.curent_tree_events[matrix.keyBoardTree].top ==  matrix.curent_tree_events[next].top ) {
-						$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
-						$.jstree._focused().select_node('#tree_'+next);
+					} else if (e.which == keyBoard.keys.down) {
+						var next = matrix.curent_tree_events[matrix.keyBoardTree].next;
+						if(next!=false && typeof(next)!='undefined' &&  matrix.curent_tree_events[matrix.keyBoardTree].top ==  matrix.curent_tree_events[next].top ) {
+							$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
+							$.jstree._focused().select_node('#tree_'+next);
+							
+						}
+					} else if (e.which == keyBoard.keys.enter) {
+						var tree = matrix.keyBoardTree;
+						if (matrix.tree != tree) {
+							matrix.tree = tree;
+							matrix.keyBoardTree = tree;
+							matrix.build();
+						}
+						// если режим детального просмотра, обновляем картинку
+						if (matrix.mode == 'detail') {
+							matrix.preview();
+						}
 						
-					}
-				} else if (e.which == keyBoard.keys.enter) {
-					var tree = matrix.keyBoardTree;
-					if (matrix.tree != tree) {
-						matrix.tree = tree;
-						matrix.keyBoardTree = tree;
-						matrix.build();
-					}
-					// если режим детального просмотра, обновляем картинку
-					if (matrix.mode == 'detail') {
-						matrix.preview();
-					}
-					
-				} else if (e.which == keyBoard.keys.space) {
-					if($.jstree._focused().is_open()) {
-						$.jstree._focused().close_node('#tree_'+matrix.keyBoardTree);
-					} else {
-						$.jstree._focused().open_node('#tree_'+matrix.keyBoardTree);
+					} else if (e.which == keyBoard.keys.space) {
+						if($.jstree._focused().is_open()) {
+							$.jstree._focused().close_node('#tree_'+matrix.keyBoardTree);
+						} else {
+							$.jstree._focused().open_node('#tree_'+matrix.keyBoardTree);
+						}
 					}
 				}
 			}
