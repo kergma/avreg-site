@@ -9,9 +9,10 @@ if (!isset($_POST['method']) || empty($_POST['method'])) {
 						'offline/gallery/css/html5reset-1.6.1.css');
 	// Подключение js скриптов
 	$link_javascripts = array('offline/gallery/js/jquery.jstree.js',
+	
 								'offline/gallery/js/jquery.mousewheel.min.js',
 								'offline/gallery/js/main.js',
-								//'offline/gallery/js/jquery.keyboard.js'
+								'offline/gallery/js/jquery.scrollTo-min.js',
 								'offline/gallery/js/jquery-ui-1.8.16.custom.min.js',
 								'offline/gallery/js/jquery.checkbox.js',
 						);
