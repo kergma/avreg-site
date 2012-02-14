@@ -36,9 +36,8 @@
 					<div id="statistics">
 						<span><strong><?php print $strcount_files; ?></strong></span><br />
 						<span><strong><?php print $strsize_files; ?></strong></span><br />
-						<span><strong><?php print $strdate_form; ?></strong></span><br />
+						<span><strong><?php print $strdate_from; ?></strong></span><br />
 						<span><strong><?php print $strdate_to; ?></strong></span><br />
-					
 					</div>
 				</div>
 				<!-- end sidebar inner block -->
@@ -233,6 +232,7 @@ var lang = {
 		date: '<?php print $strdate; ?>',	
 		empty_cameras: '<?php print $strempty_cameras; ?>',
 		empty_event: '<?php print $strempty_event; ?>',
+		empty_tree: '<?php print $strempty_tree; ?>',
 		ajax_timeout : '<?php print $strajax_timeout; ?>'	
 	};
 	// обработка размера файлов
