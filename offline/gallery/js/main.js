@@ -1,4 +1,4 @@
-function Enum() {
+﻿function Enum() {
 	this.allValues = [];
 	this.currentValue = 0;
 	for (var i=0, ilen=arguments.length; i<ilen; i++) {
@@ -172,7 +172,7 @@ $.ajaxSetup({
 	cache: false,
 	timeout: 5000,
 	complete: function (XMLHttpRequest, textStatus) {
-		
+
 		//this; // the options for this ajax request
 	//	console.info('ajax has finished, status: ' + textStatus);
 		if (textStatus == 'timeout') {
@@ -190,29 +190,29 @@ $.ajaxSetup({
 var gallery = {
 		treeObject: null,
 		config : {
-			
+
 		},
 		hcameras : 100,
 		// объект изменения ширины столбцов
 		resize_column : {
-			myWidth: null, // ширина 
+			myWidth: null, // ширина
 			myHeight: null, // высота
 			res: false,
 			// функция изменения ширины столбцов
 			resize : function(pageX) {
 				var self = this;
-				
+
 				$('#sidebar').width(pageX + 2);
 				$('#sidebar .block').width(pageX-26);
 				$('#sidebar #statistics').width(pageX-66);
 				// fix content width on resize
 			//	$('#content').css("left",pageX);
-				
-				
+
+
 				$('#content').width(self.myWidth - $('#sidebar').width() + 2);
 				$('#list_panel').width($('#content').width()-38);
-				
-				
+
+
 				var hc = $('#content').height() - 100 - $('#toolbar').height()-28;
 				$('#win_bot').height(hc);
 			},
@@ -228,12 +228,12 @@ var gallery = {
 					self.myWidth = document.documentElement.clientWidth;
 					self.myHeight = document.documentElement.clientHeight;
 				}
-				
+
 				$('.block','#sidebar').width($('#sidebar').width()-9);
 				$('#statistics','#sidebar').width($('.block','#sidebar').width()-20);
 				// обработка изменение ширины используя вертикальный разделитель
 				$('#handler_vertical').mousedown(function(e){
-					self.res = true;	
+					self.res = true;
 					e.preventDefault();
 					$(document).mousemove(function(e){
 						if (e.pageX > 300 && e.pageX< self.myWidth - 666) {
@@ -251,7 +251,7 @@ var gallery = {
 				});
 				// востанавливаем расположения из куков
 				pageX = parseInt(gallery.cookie.get('resize_column'));
-				
+
 				if (pageX) {
 					self.resize(pageX);
 				}
@@ -311,7 +311,7 @@ var gallery = {
 				var strcook = '';
 				if (ReadCookie(self.config.name))
 					strcook = Base64.decode(ReadCookie(self.config.name));
-				
+
 				var objcook = {};
 				if (strcook) {
 					objcook = $.parseJSON(strcook);
@@ -366,7 +366,7 @@ var gallery = {
 						});
 					}
 				});
-				
+
 				// js кеш нового дерева
 				matrix.curent_tree_events = {
 						all : {
@@ -404,7 +404,7 @@ var gallery = {
 						var year = e[0];
 						var month = e[1];
 						var day = e[2];
-					
+
 						// определяем самый первый диапазон для всего дерева
 						if (ii == 0) {
 							matrix.curent_tree_events['all'].from = e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0];
@@ -441,7 +441,7 @@ var gallery = {
 						matrix.curent_tree_events['all'].size += size;
 						matrix.curent_tree_events['all'].count += count;
 						matrix.curent_tree_events['all'].under = e[0];
-						
+
 						// если в кеше нет года текущего события, то..
 						if (typeof(matrix.curent_tree_events[e[0]]) == 'undefined' ) {
 							//записываем новые данные в кеш
@@ -461,7 +461,7 @@ var gallery = {
 							matrix.curent_tree_events[e[0]].size += size;
 							matrix.curent_tree_events[e[0]].count += count;
 						}
-						
+
 						// если в кеше нет месяца текущего события, то..
 						if (typeof(matrix.curent_tree_events[e[0]+'_'+e[1]]) == 'undefined' ) {
 							//записываем новые данные в кеш
@@ -481,7 +481,7 @@ var gallery = {
 							matrix.curent_tree_events[e[0]+'_'+e[1]].size += size;
 							matrix.curent_tree_events[e[0]+'_'+e[1]].count += count;
 						}
-						
+
 						// если в кеше нет дня текущего события, то..
 						if (typeof(matrix.curent_tree_events[e[0]+'_'+e[1]+'_'+e[2]]) == 'undefined' ) {
 							//записываем новые данные в кеш
@@ -501,7 +501,7 @@ var gallery = {
 							matrix.curent_tree_events[e[0]+'_'+e[1]+'_'+e[2]].size += size;
 							matrix.curent_tree_events[e[0]+'_'+e[1]+'_'+e[2]].count += count;
 						}
-						
+
 						//записываем новые данные о события в кеш
 						matrix.curent_tree_events[key] = {
 								size : size,
@@ -523,11 +523,11 @@ var gallery = {
 					}
 				});
 				html += '</ul></ul>';
-				// высчитываем новый выбранный диапазон событий если старого в новом дереве нет 
+				// высчитываем новый выбранный диапазон событий если старого в новом дереве нет
 				if (matrix.tree != 'all' && typeof(matrix.curent_tree_events[matrix.tree]) == 'undefined') {
 					var str = matrix.tree;
 					while (str != ''){
-						var end = str.lastIndexOf( '_' ); 
+						var end = str.lastIndexOf( '_' );
 						str = str.substr(0, end);
 						if (typeof(matrix.curent_tree_events[str]) != 'undefined') {
 							matrix.tree = str;
@@ -538,10 +538,10 @@ var gallery = {
 				if (typeof(matrix.curent_tree_events[matrix.tree]) == 'undefined') {
 					matrix.tree = 'all';
 				}
-			
+
 				var open = '#tree_'+matrix.tree;
 				var parent = $(self.holder).parent().hide();
-				
+
 				$("#tree_new").remove();
 				parent.append('<div id="tree_new"></div>');
 				// построение дерева
@@ -551,15 +551,15 @@ var gallery = {
 						"plugins" : ["themes","html_data","ui","crrm"]
 					})
 					// событие возникает, если пользователь выбрал новый диапазон событий
-					.bind("select_node.jstree", function (event, data) { 
+					.bind("select_node.jstree", function (event, data) {
 						tree = data.rslt.obj.attr("id").replace('tree_', '');
-						
+
 						if(matrix.keyBoardTree != tree) {
 							matrix.keyBoardTree = tree;
 						}
-						
+
 						var found = tree.split('_');
-						
+
 						var s = '';
 						for(var i=0,ilen=found.length; i<ilen; i++) {
 							if(s!='')
@@ -567,7 +567,7 @@ var gallery = {
 							s += found[i];
 							$('#tree_'+s+' > a').addClass('jstree-clicked');
 						}
-						
+
 						if(keyBoard.boxesEnum.current()!=keyBoard.boxesEnum.TREE || typeof(data.args[2])!=='undefined') {
 							// если новый диапазон, перестраиваем матрицу
 							if (matrix.tree != tree) {
@@ -583,7 +583,7 @@ var gallery = {
 
 						$.jstree._focused().set_focus("#tree_"+tree);
 						$("#tree_"+tree).jstree("set_focus");
-						
+
 					})
 					.bind("loaded.jstree", function (event, data) {
 						$.jstree._focused().select_node(open);
@@ -591,7 +591,7 @@ var gallery = {
 						$('#tree').show();
 						$('ins.jstree-icon').hover(
 								function(){
-									$(this).attr('title', 
+									$(this).attr('title',
 											function(){
 												if($(this).parent().hasClass('jstree-open')){
 													return 'Свернуть';
@@ -603,8 +603,8 @@ var gallery = {
 								function(){}
 								);
 					})
-				.delegate("a", "click", function (event, data) {event.preventDefault();}).show();	
-				
+				.delegate("a", "click", function (event, data) {event.preventDefault();}).show();
+
 				gallery.treeObject = $(self.holder);
 				matrix.build();
 			},
@@ -618,11 +618,14 @@ var gallery = {
 						matrix.tree_events = data.tree_events;
 						matrix.cameras = data.cameras;
 						gallery.tree_event.reload();
+					} else if (data.status == 'error') {
+						alert(lang.empty_tree);
+						//$('#matrix_load').hide();
 					}
 				});
-				
-				
-				
+
+
+
 			}
 		},
 		// объект управлением цветом камер
@@ -637,7 +640,7 @@ var gallery = {
 				keyBoard.beforeView = keyBoard.view;
 				keyBoard.view = keyBoard.views.colorDialog;
 				$('#cameras_color h2').html(lang.color_cameras+" &lt;"+ self.camera_title+"&gt;");
-				
+
 				$('#overlay').show();
 				$('#cameras_color').show();
 				//установка текущего элемента
@@ -656,7 +659,7 @@ var gallery = {
 				old_camera_collor = gallery.cookie.get('camera_'+self.camera_id+'_color');
 				// записываем новый цвет камеры
 				gallery.cookie.set('camera_'+self.camera_id+'_color',self.camera_collor);
-				//удаляем старый цвет камеры 
+				//удаляем старый цвет камеры
 				if (old_camera_collor != '') {
 					$('.camera_'+self.camera_id).removeClass(old_camera_collor);
 					self.camera_link.removeClass(old_camera_collor + '_font');
@@ -664,9 +667,9 @@ var gallery = {
 				// устанавливаем новый цвет
 				$('.camera_'+self.camera_id).addClass(self.camera_collor);
 				self.camera_link.addClass(self.camera_collor+'_font');
-				
+
 			},
-			
+
 			init:	function() {
 				var self = this;
 				// обработка нажатия ссылки камеры
@@ -681,15 +684,15 @@ var gallery = {
 				// обработка выбора цвета камеры
 				$('#cameras_color .window_body li').click(function(){
 					self.camera_collor = $(this).attr('class').replace(' selectColor','');
-					self.select();	
+					self.select();
 					self.close();
 				});
-				
+
 				// обработка закрытия окна
 				$('#cameras_color .close').click(function(){
 					self.close();
 				});
-				
+
 			}
 		},
 		// объект, показывающий сообщения хочет ли пользователь перейти на следующий временной диапазон
@@ -717,7 +720,7 @@ var gallery = {
 				if ($('#checknextwindow').attr('checked')) {
 					gallery.cookie.set('checknextwindow','yes');
 				}
-				
+
 				if (self.mode == 'left') {
 					// если пользователь идет вверх по дереву
 					// обновляем матрицу и перемещаем текущий указатель в конец матрицы
@@ -731,7 +734,7 @@ var gallery = {
 					$("#tree_"+prev).jstree("set_focus");
 					$.jstree._focused().select_node("#tree_"+prev);
 					scroll.setposition(sp);
-					
+
 				}else if (self.mode == 'right') {
 					// если пользователь идет вниз по дереву
 					// обновляем матрицу и перемещаем текущий указатель в начало матрицы
@@ -742,13 +745,13 @@ var gallery = {
 					$("#tree_"+next).jstree("set_focus");
 					$.jstree._focused().select_node("#tree_"+next);
 				}
-				
+
 			},
 			init:	function() {
 				var self = this;
 				// обработка события если пользователь нажал да
 				$('#nextwindow .yes').click(function(){
-					self.select();	
+					self.select();
 					self.close();
 				});
 				// обработка события если пользователь нажал нет
@@ -758,24 +761,24 @@ var gallery = {
 					}
 					self.close();
 				});
-				
+
 			}
-			
-			
+
+
 		},
 		// инициализация галереи
 		init : function(config) {
-			
+
 			var self = this;
 			// обновление настроек
 			if (config && typeof(config) == 'object') {
 			    $.extend(self.config, config);
 			}
-			
+
 			$('#matrix_load').show();
-			
+
 			self.cookie.init({path:WwwPrefix+'/offline/gallery.php'});
-			
+
 			// организация увеличение размера списка камер
 			if ($('#win_top').height() > 100) {
 				$('#more_cam').show();
@@ -794,23 +797,23 @@ var gallery = {
 						}
 				);
 			}
-			
-			
-			
-			
-			// обработка выбора чекбокса камеры 
+
+
+
+
+			// обработка выбора чекбокса камеры
 			$('input[name="cameras"]').change(function(){
 				var rez = gallery.reload_cams();
 				if(!rez)
 					$(this).attr('checked', 'checked');
-				
+
 				if ($(this).attr('checked')) {
 					$(this).parent().attr('style','background-position: 0px -14px');
 				} else {
 					$(this).parent().attr('style','background-position: 0px -0px');
 				}
 			});
-			
+
 			$('#cameras_selector .niceCheck').click(function(){
 				var rez = gallery.reload_cams();
 				if(!rez) {
@@ -818,22 +821,22 @@ var gallery = {
 					$(this).children().attr('checked', 'checked');
 				}
 			});
-			
-			
-			// обработка выбора чекбокса типа события 
+
+
+			// обработка выбора чекбокса типа события
 			$('#type_event input[name="type_event"]').change(function(){
 				var rez = gallery.reload_events();
 				if(!rez) {
 					$(this).attr('checked', 'checked');
-					
-				} 
-				
+
+				}
+
 				if ($(this).attr('checked')) {
 					$(this).parent().attr('style','background-position: 0px -14px');
 				} else {
 					$(this).parent().attr('style','background-position: 0px -0px');
 				}
-				
+
 			});
 			$('#type_event .niceCheck').click(function(){
 				var rez = gallery.reload_events();
@@ -842,26 +845,26 @@ var gallery = {
 					$(this).children().attr('checked', 'checked');
 				}
 			});
-			
-			
-			
-		
-			
+
+
+
+
+
 			// инициализация изменения размеров столбцов
 			self.resize_column.init();
-			
+
 			// инициализация матрицы
-			
+
 			matrix.init(self.config.matrix);
-			
+
 			// инициализация дерева событий
 			self.tree_event.init('#tree_new');
 			// инициализация выбора цвета камеры
 			self.cameras_color.init();
-			
+
 			// инициализация перехода на следующий временной диапазон
 			self.nextwindow.init();
-			
+
 			// инициализация событий клавиатуры
 			keyBoard.init();
 		}
@@ -897,35 +900,39 @@ var matrix = {
 	all_events : {}, // кеш евентов
 	num : 0, // текущая позиция в матрице
 	scroll: false, // использование скрола
-	count_src : 0, 
+	count_src : 0,
 	load_src: 0,
 	mode : 'preview', // режим просмотра
 	cur_count_item : 0, // текущее количество загруженных событий
 	send_query: false, // можно ли посылать запросы к базе
 	select_node : false, // можно ли выбирать другой диапазон
 	init: function(config) {
-		
-		matrix.imageDetail = $("#image_detail").css('top', '0');
+
+//		matrix.imageDetail = $("#image_detail").css('top', '0');
+
+		matrix.imageDetail = $(".show_detail").css('top', '0');
+
+
 		// отменяет действие по клику
 		$('#scroll_content').click(function(event) {
 			event.preventDefault();
 		});
-		
+
 		$('.matrix_mode').click(function(event) {
 			event.preventDefault();
 		});
-		
+
 		//console.log('matrix view');
 		keyBoard.beforeView = keyBoard.view;
 		keyBoard.view = keyBoard.views.matrix;
 		if (config && typeof(config) == 'object') {
 		    $.extend(matrix.config, config);
 		}
-		
+
 		// обновление ширины и высоты ячейки
 		matrix.cell_height = matrix.config.min_cell_height;
 		matrix.cell_width = matrix.config.min_cell_width;
-		
+
 		// обработка переключение режима матрицы
 		// изменено на dblclick
 		$('.matrix_mode a').dblclick(function(e) {
@@ -934,7 +941,7 @@ var matrix = {
 			matrix[mode]();
 			return false;
 		});
-		
+
 		$('#scroll_content .content_item .img_block a').live('dblclick', function(e) {
 			e.preventDefault();
 			//matrix.num = parseInt($(this).attr('href').replace('#cell_',''));
@@ -952,46 +959,46 @@ var matrix = {
 				matrix.num = parseInt(found[1]);
 			}
 		});
-		
+
 		// обработка чекбокса сохранять пропорции
 		$('#proportion').click(function(){
 			matrix.doProportion();
-			
+
 			if ($(this).attr('checked')) {
 				$(this).parent().attr('style','background-position: 0px -14px');
 			} else {
 				$(this).parent().attr('style','background-position: 0px -0px');
 			}
 		});
-			
+
 		$('.propotion .niceCheck').click(function(){
 			matrix.doProportion();
 		});
 		// обработка чекбокса показывать информацию
 		$('#info').click(function(){
 			matrix.doShowInfo();
-			
+
 			if ($(this).attr('checked')) {
 				$(this).parent().attr('style','background-position: 0px -14px');
 			} else {
 				$(this).parent().attr('style','background-position: 0px -0px');
 			}
 		});
-		
-		
+
+
 		$('.event_info .niceCheck').click(function(){
 			matrix.doShowInfo();
 		});
-		
-		
-		
+
+
+
 		// убираем скроллы
 		$('#win_bot_detail').css('overflow', 'hidden');
-		
-		matrix.imageDetail.draggable({ 
+
+		matrix.imageDetail.draggable({
 			drag: function(event, ui){
-				
-				
+
+
 				var imgWidth = parseInt(matrix.imageDetail.attr('width'))-28;
 				var imgHeight = parseInt(matrix.imageDetail.attr('height'));
 				if(imgWidth>matrix.width) {
@@ -1003,7 +1010,7 @@ var matrix = {
 				} else {
 					ui.position.left = 0;
 				}
-				
+
 				if(imgHeight>matrix.height) {
 					if(ui.position.top>0)
 						ui.position.top = 0;
@@ -1030,23 +1037,23 @@ var matrix = {
 		matrix.resize();
 		//инициализации элемента масштаба режима миниатюр
 		scale.init();
-		
-		//инициализации элемента масштаба детального режима 
+
+		//инициализации элемента масштаба детального режима
 		scale2.init();
-		
-		
+
+
 		self.res = false;
 		// изменить размер матрицы если было изменено размеры окна
 		$(window).bind("resize", function(){
 			clearInterval(self.res);
-			
-			
+
+
 			self.res = setTimeout(function() {
-				
+
 				pageX = parseInt(gallery.cookie.get('resize_column'));
-				
+
 				if (pageX) {
-					
+
 					if( typeof( window.innerWidth ) == 'number' ) {
 						//Non-IE
 						gallery.resize_column.myWidth = window.innerWidth;
@@ -1056,9 +1063,9 @@ var matrix = {
 						gallery.resize_column.myWidth = document.documentElement.clientWidth;
 						gallery.resize_column.myHeight = document.documentElement.clientHeight;
 					}
-					
+
 					if (pageX < gallery.resize_column.myWidth - 666 && pageX - (gallery.resize_column.myWidth - 666) < 300 ) {
-						
+
 						pageX = pageX - (gallery.resize_column.myWidth - 666);
 					} else {
 						pageX = 300;
@@ -1066,13 +1073,13 @@ var matrix = {
 					gallery.cookie.set('resize_column', pageX);
 					gallery.resize_column.resize(pageX);
 				}
-				
-				
+
+
 				matrix.resize();clearInterval(self.res);}, 200);
-			
+
 		});
-		
-	
+
+
 	},
 	resetPositionImage: function(){
 		matrix.imageDetail.css('top', '0');
@@ -1080,7 +1087,7 @@ var matrix = {
 		matrix.currentOffset = matrix.imageDetail.offset();
 		var imgWidth = parseInt(matrix.imageDetail.attr('width'));
 		var imgHeight = parseInt(matrix.imageDetail.attr('height'));
-		
+
 		if(imgWidth>matrix.width || imgHeight>matrix.height) {
 			matrix.imageDetail.css('cursor', 'move');
 		} else {
@@ -1099,7 +1106,7 @@ var matrix = {
 			gallery.cookie.set('proportion', '');
 		}
 	},
-	// обновление чекбокса информации 
+	// обновление чекбокса информации
 	doShowInfo : function() {
 		if ($('#info').attr('checked')) {
 			gallery.cookie.set('info', 'checked');
@@ -1133,20 +1140,20 @@ var matrix = {
 		if (typeof(matrix.curent_tree_events[matrix.tree]) != 'undefined') {
 			keyBoard.beforeView = keyBoard.view;
 			keyBoard.view = keyBoard.views.matrix;
-			
-			matrix.mode = 'preview'; 	
+
+			matrix.mode = 'preview';
 			// обновлаем статистику
 			var stat = '<span><strong>'+lang.count_files+'</strong>'+matrix.curent_tree_events[matrix.tree].count+'</span><br />\
 			<span><strong>'+lang.size_files+'</strong>'+readableFileSize(matrix.curent_tree_events[matrix.tree].size)+'</span><br />\
 			<span><strong>'+lang.date_from+'</strong>'+matrix.curent_tree_events[matrix.tree].from+'</span><br />\
 			<span><strong>'+lang.date_to+'</strong>'+matrix.curent_tree_events[matrix.tree].to+'</span><br />';
 			$('#statistics').html(stat);
-			
+
 			$('#win_bot_detail').hide();
 			$('#toolbar .detail').hide();
 			$('#win_bot').show();
 			$('#toolbar .preview').show();
-			
+
 			// обновляем матрицу с использованием новой позиции
 			if (!$('#cell_'+matrix.num).hasClass('show')){
 				sp = Math.floor(matrix.num / scroll.row_count) * scroll.row_count;
@@ -1161,12 +1168,12 @@ var matrix = {
 	resize: function() {
 		// обновляем ширину колонок
 		gallery.resize_column.resize($('#sidebar').width()-2);
-		$('#tree').height($('#sidebar').height() - $('#type_event').height() - $('#favorite').height() - $('#statistics').height()-67);
+		$('#tree').height($('#sidebar').height() - $('#type_event').height() - $('#favorite').height() - $('#statistics').height()-90);
 
-		// высчитываем размеры табнейлов 
+		// высчитываем размеры табнейлов
 		matrix.thumb_width = matrix.cell_width-matrix.config.cell_padding*2;
 		matrix.thumb_height = matrix.cell_height-matrix.config.cell_padding*2;
-		
+
 		// показываем или скрываем информацию о событии
 		if ($('#info').attr('checked')) {
 			matrix.thumb_height -= 24;
@@ -1175,29 +1182,29 @@ var matrix = {
 			$('.content_item .info_block').hide();
 		}
 		// определяем новые размеры матрицы
-		
 
-		
+
+
 		// обновляем размеры детального просмотра
 		var hc = $('#content').height() - 100 - $('#toolbar').height()-28;
 		$('#win_bot_detail').height(hc);
 		//$('#win_bot_detail').width($('#content').width() - $('#win_top').width() - $('#toolbar').width());
 		$('#win_bot').height(hc);
 		//$('#scroll_v').height(hc);
-		
+
 		// исправление бага с высотой!!! придумать что то лучше
 		if($('#list_panel').height()!==0)
 			matrix.height = $('#list_panel').height();
 		// 	исправяем баг с длинной не видимого элемента
-		
+
 		var pan_height = $('#list_panel').css('height');
 		var pan_width = parseInt($('#list_panel').css('width').replace('px',''));
-		
-		
-		
+
+
+
 		matrix.width = pan_width; //$('#list_panel').width();
 		$('#matrix_load img').css('margin-top', $('#content').height()/2);
-		
+
 		// высчитываем новую высоту и ширину ячейки
 		var old_width = matrix.config.max_cell_width;
 		if ((matrix.height-(matrix.config.cell_padding+matrix.config.cell_border)*2) > (matrix.width/2 -(matrix.config.cell_padding+matrix.config.cell_border)*4)) {
@@ -1210,15 +1217,15 @@ var matrix = {
 		if (matrix.config.max_cell_width < matrix.cell_width || matrix.config.max_cell_height < matrix.cell_height) {
 			matrix.cell_height = matrix.config.max_cell_height;
 			matrix.cell_width = matrix.config.max_cell_width;
-			
+
 		}
-		
-		
+
+
 		// обновляем элемент масштаба
 		if (old_width != matrix.config.max_cell_width) {
 			scale.reload(old_width);
 		}
-		
+
 		// задаем новые размеры ячейки
 		$('#scroll_content .content_item').height(matrix.cell_height);
 		$('#scroll_content .content_item').width(matrix.cell_width);
@@ -1227,22 +1234,22 @@ var matrix = {
 		matrix.count_column = Math.floor(matrix.width /  (matrix.cell_width+(matrix.config.cell_padding+matrix.config.cell_border)*2));
 		matrix.count_row = Math.floor(matrix.height /  (matrix.cell_height+(matrix.config.cell_padding+matrix.config.cell_border)*2));
 		matrix.cell_count =  matrix.count_column * matrix.count_row;
-		
+
 		// центрируем содержимое в ячейках
 		var left =  Math.floor((matrix.width-matrix.count_column*matrix.cell_width)/ matrix.count_column/2);
 		var top =  Math.floor((matrix.height-matrix.count_row*matrix.cell_height)/ matrix.count_row/2);
 		matrix.cell_padding = top + 'px ' + left + 'px';
 		$('#scroll_content .content_item').css({'padding':matrix.cell_padding});
-		
+
 		// если элемента скрола нет, то создаем его
 		if (matrix.scroll == true) {
 			var sp = scroll.position;
-			
+
 			scroll.init({height:matrix.height-82, cell_count:Math.ceil(matrix.count_item/matrix.count_column), row_count: matrix.count_column, matrix_count: Math.ceil(matrix.cell_count/matrix.count_column)});
 			sp = Math.floor(sp/scroll.row_count)*scroll.row_count;
-			scroll.updateposition(sp, true);	
+			scroll.updateposition(sp, true);
 			scroll.setposition(sp);
-		
+
 		}
 		matrix.resetPositionImage();
 	},
@@ -1251,24 +1258,24 @@ var matrix = {
 		if (typeof(matrix.events[el]) != 'undefined') {
 			var thumb_width = matrix.thumb_width;
 			var thumb_height = matrix.thumb_height;
-			
+
 			if ($('#proportion').attr('checked')) {
 				// если выбран чекбокс сохранять пропорции
 				var w = thumb_width;
 				var h = Math.floor(matrix.events[el][3]*w/matrix.events[el][4]);
-				
+
 				if (h > thumb_height) {
 					h = thumb_height;
 					w = Math.floor(matrix.events[el][4]*h/matrix.events[el][3]);
 				}
-				
+
 				thumb_width = w;
 				thumb_height = h;
 			}
-			
+
 			// задаем новые размеры
-			$('#cell_'+el+' .img_block img').attr('width',thumb_width);	
-			$('#cell_'+el+' .img_block img').attr('height',thumb_height);	
+			$('#cell_'+el+' .img_block img').attr('width',thumb_width);
+			$('#cell_'+el+' .img_block img').attr('height',thumb_height);
 		}
 		matrix.resetPositionImage();
 	},
@@ -1276,11 +1283,12 @@ var matrix = {
 	loaddetailsrc : function() {
 		if (typeof(matrix.events[matrix.num]) != 'undefined') {
 			var value = matrix.events[matrix.num];
-			
-			$('#image_detail').attr('src', MediaUrlPref+value[2]);
 
-			
-			
+//			$('#image_detail').attr('src', MediaUrlPref+value[2]);
+
+
+
+
 			// размер матрицы
 			var width = matrix.width;
 			var height = matrix.height;
@@ -1301,7 +1309,7 @@ var matrix = {
 					var h = Math.floor(value[3]*w/value[4]);
 					wm = value[4];
 					hm = Math.floor(h*value[4]/w);
-					
+
 					// если высота не влазит, то используем высоту матрицы, а ширину подгоняем в пропорциях
 					if (h > matrix.height) {
 						h = matrix.height;
@@ -1309,22 +1317,26 @@ var matrix = {
 						hm = value[3];
 						wm = Math.floor(w*value[4]/h);
 					}
-					
+
 					width = w;
 					height = h;
 				}
-			} 
+			}
 			// устанавливаем новую ширину и высоту
-			$('#image_detail').attr('width', width);
-			$('#image_detail').attr('height', height);
-			
+//			$('#image_detail').attr('width', width);
+//			$('#image_detail').attr('height', height);
+
+			//Установка плеера (src+размеры) в "win_bot_detail"
+			$('#win_bot_detail a').addPlayer({'src': MediaUrlPref+value[2], 'width': width, 'height': height, 'class': 'show_detail' });
+
+
 			// обновляем параметры элемента масштаба
 			scale2.min_width = width;
 			scale2.min_height = height;
 			scale2.max_width = wm;
 			scale2.max_height = hm;
 			scale2.reload();
-			
+
 			// обновляем статистику события
 			var stat = '<span><strong>'+lang.camera+'</strong>'+matrix.cameras[value[5]].text_left+'</span><br />\
 				<span><strong>'+lang.size+'</strong>'+value[6]+'</span><br />\
@@ -1344,16 +1356,16 @@ var matrix = {
 		}
 		// создаем объект изображения
 		var img = new Image();
-		img.onload = function() { 
+		img.onload = function() {
 			//изображение загрузилось
 			// показываем картинку в ячейке
 
-			$('#cell_'+el+' .img_block img').attr('src', MediaUrlPref + matrix.events[el][2]); 
+			$('#cell_'+el+' .img_block img').attr('src', MediaUrlPref + matrix.events[el][2]);
 
 			// задаем новые размеры изображения
 			matrix.setimagesize(el);
 			// обновляем счетчик загруженных изображений
-			matrix.load_src++; 
+			matrix.load_src++;
 			if (matrix.load_src == matrix.count_src) {
 				// если все изображения загружены, то убираем ромашку
 				$('#matrix_load').hide();
@@ -1361,20 +1373,20 @@ var matrix = {
 			// записываем в кеш, что изображение уже загрузилось и есть в кеше браузера
 			matrix.events[el].image_chache = true;
 			};
-			
+
 		img.onerror = function() {
 			//изображение не загрузилось
 			// показываем картинку ошибки в ячейке
-			$('#cell_'+el+' .img_block img').attr('src', WwwPrefix+'/offline/gallery/img/error.jpg'); 
+			$('#cell_'+el+' .img_block img').attr('src', WwwPrefix+'/offline/gallery/img/error.jpg');
 			// задаем новые размеры изображения
 			matrix.setimagesize(el);
 			// обновляем счетчик загруженных изображений
-			matrix.load_src++; 
+			matrix.load_src++;
 			if (matrix.load_src == matrix.count_src) {
 				// если все изображения загружены, то убираем ромашку
 				$('#matrix_load').hide();
 			}
-		};	
+		};
 		// загружаем изображение
 		img.src = MediaUrlPref + matrix.events[el][2];
 		matrix.resetPositionImage();
@@ -1393,7 +1405,7 @@ var matrix = {
 		$.each(matrix.events, function( i,value) {
 			aa++;
 		});
-		
+
 		var dev = aa - matrix.config.event_limit;
 		if (dev > 0) {
 			$.each(matrix.events, function( i,value) {
@@ -1404,7 +1416,7 @@ var matrix = {
 				}
 			});
 		}
-			
+
 		// происходит проверка, есть ли необходимые элементы в кеше
 		var count_events = matrix.cell_count > matrix.curent_tree_events[matrix.tree].count ? matrix.curent_tree_events[matrix.tree].count : matrix.cell_count;
 		for (var i = sp; i < sp + count_events; i++) {
@@ -1422,34 +1434,34 @@ var matrix = {
 			for (var i = sp; i < sp+ matrix.cell_count; i++) {
 				if (typeof( matrix.events[i]) != 'undefined') {
 					value = matrix.events[i];
-					
+
 					active = i == matrix.num ? ' active' : '';
-					
-					
+
+
 					camera_class = gallery.cookie.get('camera_'+value[5]+'_color');
 					if (camera_class != '') {
 						camera_class = ' '+camera_class;
 					}
-					
+
 					html += '<div id="cell_'+i+'" class="content_item show'+active+' camera_'+value[5]+' '+camera_class+'">';
 					html += '<div class="elem">';
 					if (value[7] == 'image') {
-					
+
 						if (typeof( value.image_chache) != 'undefined' && value.image_chache) {
 							html += '<div class="img_block"><a href="#cell_'+i+'"><img src="'+MediaUrlPref + value[2]+'" /></a></div>';
 							loadimage[i] = true;
-							
+
 						} else {
 							html += '<div class="img_block"><a href="#cell_'+i+'"><img src="" /></a></div>';
 							loadimage[i] = false;
-							
+
 						}
 					} else if (value[7] == 'video') {
 						html += '<div class="img_block">'+value[2]+'</div>';
 					} else if (value[7] == 'audio') {
 						html += '<div class="img_block">'+value[2]+'</div>';
 					}
-					
+
 					html += '<div class="info_block"';
 					if ($('#info').attr('checked')) {
 						html += ' style="display:block;"';
@@ -1517,7 +1529,7 @@ var matrix = {
 					i++;
 				}
 			});
-			
+
 			// определяем с какой позиции загружать события
 			var get_sp = sp;
 			if (matrix.select_node == 'left' ) {
@@ -1526,11 +1538,11 @@ var matrix = {
 				} else {
 					get_sp = 0;
 				}
-			} 
+			}
 			// делаем запрос
 			$.post(WwwPrefix+'/offline/gallery.php',{'method':'get_events', 'tree':matrix.tree, 'sp':get_sp, 'type': type, 'cameras': cameras}, function(data) {
 				var i = get_sp;
-				
+
 				// обновляем кеш
 				$.each(data.events, function(key, value) {
 					matrix.all_events[key] = value;
@@ -1542,7 +1554,6 @@ var matrix = {
 				var html = '';
 				var i = sp;
 				var active = '';
-				
 				var loadimage = {};
 				for (var i = sp; i < sp+ matrix.cell_count; i++) {
 					if (typeof( matrix.events[i]) != 'undefined') {
@@ -1553,26 +1564,26 @@ var matrix = {
 						camera_class = ' '+camera_class;
 					}
 					html += '<div id="cell_'+i+'" class="content_item show'+active+' camera_'+value[5]+' '+camera_class+'">';
-					
+
 					html += '<div class="elem">';
-					
+
 					if (value[7] == 'image') {
-						
+
 						if (typeof( value.image_chache) != 'undefined' && value.image_chache) {
 							html += '<div class="img_block"><a href="#cell_'+i+'"><img src="'+MediaUrlPref + value[2]+'" /></a></div>';
 							loadimage[i] = true;
-							
+
 						} else {
 							html += '<div class="img_block"><a href="#cell_'+i+'"><img src="" /></a></div>';
 							loadimage[i] = false;
-							
+
 						}
 					} else if (value[7] == 'video') {
 						html += '<div class="img_block">'+value[2]+'</div>';
 					} else if (value[7] == 'audio') {
 						html += '<div class="img_block">'+value[2]+'</div>';
 					}
-					
+
 					html += '<div class="info_block"';
 					if ($('#info').attr('checked')) {
 						html += ' style="display:block;"';
@@ -1588,6 +1599,8 @@ var matrix = {
 					}
 				};
 				$('#scroll_content').html(html);
+				
+				
 				// проверяем какие изображения есть в кеше браузера, а какаие надо загрузить
 				var ci = i + matrix.count_column;
 				var hide_over = true;
@@ -1615,7 +1628,7 @@ var matrix = {
 				$('#scroll_content .content_item').css({'padding' : matrix.cell_padding});
 				// устанавливаем флаг, что запрос выполнился
 				matrix.send_query = false;
-				if (hide_over) {
+				if (hide_over ) {
 					$('#matrix_load').hide();
 				}
 			});
@@ -1625,9 +1638,9 @@ var matrix = {
 	build: function(){
 		$('#matrix_load').show();
 		matrix.cur_count_item = 0;
-		
+
 		if (typeof( matrix.curent_tree_events[matrix.tree]) != 'undefined') {
-			// обновляем статистику		
+			// обновляем статистику
 			var stat = '<span><strong>'+lang.count_files+'</strong>'+matrix.curent_tree_events[matrix.tree].count+'</span><br />\
 			<span><strong>'+lang.size_files+'</strong>'+readableFileSize(matrix.curent_tree_events[matrix.tree].size)+'</span><br />\
 			<span><strong>'+lang.date_from+'</strong>'+matrix.curent_tree_events[matrix.tree].from+'</span><br />\
@@ -1636,7 +1649,7 @@ var matrix = {
 			// записываем количество событий в данном временном диапазоне
 			matrix.count_item = matrix.curent_tree_events[matrix.tree].count;
 		}
-		
+
 		// критерии просмотра: тип, камеры
 		var variable = [];
 		var type = [];
@@ -1654,7 +1667,7 @@ var matrix = {
 				i++;
 			}
 		});
-		
+
 		matrix.events = {};
 		var count_events = 0;
 		var all_count_events = 0;
@@ -1668,7 +1681,7 @@ var matrix = {
 			}
 			all_count_events++;
 		});
-		
+
 		var dev = all_count_events - matrix.config.event_limit;
 		if (dev > 0) {
 			$.each(matrix.all_events, function( i,value) {
@@ -1681,15 +1694,15 @@ var matrix = {
 				}
 			});
 		}
-		
+
 		// если идет переход вверх по дереву, то показываем самый последние элементы в матрице нового диапазона
 		if (matrix.select_node == 'left') {
 			sp = scroll.position;
 		} else {
 			sp = 0;
 		}
-		
-		
+
+
 		if(count_events < matrix.cell_count && count_events < matrix.curent_tree_events[matrix.tree].count) {
 			// если нет элементов, то выполняем запрос на сервер
 			matrix.get_events(sp);
@@ -1718,20 +1731,20 @@ var scroll = {
 			}
 			// задаем высоту скрола
 			$(scroll.id + ' .scroll_body_v').height(scroll.height);
-			// высчитываем высоту ползунка в зависимости от элементов в матрице и всех элементов в диапазоне 
+			// высчитываем высоту ползунка в зависимости от элементов в матрице и всех элементов в диапазоне
 			h = Math.floor(scroll.height/scroll.cell_count*scroll.matrix_count);
-			
+
 			scroll.polzh = 0;
 			if ( h < scroll.min_height) {
-				scroll.polzh = scroll.min_height - h; 
+				scroll.polzh = scroll.min_height - h;
 				h = scroll.min_height;
-				
+
 			}
 			// задаем параметры ползунка
 			$(scroll.id + ' .scroll_polz_v').height(h);
 			$(scroll.id + ' .scroll_polz_v_Middle').height(h-20);
-			
-			
+
+
 			$(scroll.id + ' .scroll_polz_v').css('top',0);
 			// обработка нажатия стрелки вверх на скроле
 			$(scroll.id + ' .scroll_top_v').unbind('click');
@@ -1743,7 +1756,7 @@ var scroll = {
 			$(scroll.id + ' .scroll_bot_v').click(function() {
 				scroll.num_down();
 			});
-			
+
 			// обработка нажатия стрелки предыдущее
 			$('#toolbar .prew').unbind('click');
 			$('#toolbar .prew').click(function(e) {
@@ -1758,13 +1771,13 @@ var scroll = {
 				scroll.num_right();
 				return false;
 			});
-			
+
 			// обработка перемещения ползунка
 			scroll.mousemove = false;
 			$(scroll.id + ' .scroll_polz_v').unbind('mousedown');
 			$(scroll.id + ' .scroll_polz_v').mousedown(function(e){
 				e.preventDefault();
-				var start = e.pageY - $(this).offset().top; 
+				var start = e.pageY - $(this).offset().top;
 				var start_top = $(this).offset().top - $(this).position().top;
 				$(document).mousemove(function(e){
 					scroll.mousemove = true;
@@ -1775,7 +1788,7 @@ var scroll = {
 						scroll.position = sp;
 					}
 				});
-				
+
 			});
 			$(document).mouseup(function(e){
 				if (scroll.mousemove) {
@@ -1785,7 +1798,7 @@ var scroll = {
 					matrix.num = scroll.position;
 				}
 			});
-			
+
 			$("#win_bot").unbind('mousewheel');
 			$("#win_bot").mousewheel(function(event, delta) {
 				if (delta > 0) {
@@ -1794,7 +1807,7 @@ var scroll = {
 					scroll.num_down();
 				}
 			});
-			
+
 			// обработка нажатия на область между ползунком и края скрола
 			$(scroll.id + ' .scroll_body_v').unbind('mousedown');
 			$(scroll.id + ' .scroll_body_v').mousedown(function(e){
@@ -1813,24 +1826,24 @@ var scroll = {
 						sp = sp + scroll.matrix_count*scroll.row_count;
 					}
 				}
-				
+
 				scroll.updateposition(sp);
 				scroll.setposition(sp);
 				$('#cell_'+sp).addClass('active');
 				matrix.num = scroll.position;
 			});
-			
+
 			scroll.position = 0;
 			$(scroll.id).show();
 		},
-		
+
 		// сдвиг влево
 		num_left : function() {
 			var new_num = matrix.num - 1;
 			if (new_num >=0) {
-				//если находимся в этом же диапазоне событий 
+				//если находимся в этом же диапазоне событий
 				if (matrix.mode == 'preview') {
-					
+
 					if (!$('#cell_'+new_num).hasClass('show')){
 						sp = Math.floor(new_num / scroll.row_count) * scroll.row_count;
 						scroll.updateposition(sp);
@@ -1868,7 +1881,7 @@ var scroll = {
 		num_up : function() {
 			var new_num = matrix.num - scroll.row_count;
 			if (new_num >=0) {
-				//если находимся в этом же диапазоне событий 
+				//если находимся в этом же диапазоне событий
 				if (matrix.mode == 'preview') {
 					if (!$('#cell_'+new_num).hasClass('show')){
 						sp = Math.floor(new_num / scroll.row_count) * scroll.row_count;
@@ -1878,7 +1891,7 @@ var scroll = {
 					$('#cell_'+matrix.num).removeClass('active');
 					$('#cell_'+new_num).addClass('active');
 					matrix.num = new_num;
-					
+
 				} else if (matrix.mode == 'detail'){
 					matrix.num = new_num;
 					matrix.loaddetailsrc();
@@ -1921,7 +1934,7 @@ var scroll = {
 					matrix.num = new_num;
 					matrix.loaddetailsrc();
 				}
-				
+
 			}else {
 				if (matrix.curent_tree_events[matrix.tree].next) {
 					var checknextwindow = gallery.cookie.get('checknextwindow');
@@ -1974,7 +1987,7 @@ var scroll = {
 		// обновляем позицию скрола и перестраиваем матрицу
 		updateposition : function(sp, force) {
 			if (scroll.position != sp || force == true) {
-				
+
 				scroll.position = sp;
 				matrix.update(sp);
 			}
@@ -2034,7 +2047,7 @@ var scale = {
 		$(scale.id + ' .scale_polz').css({left:t});
 		scale.position = sp;
 	},
-	
+
 	init : function() {
 		var self = this;
 		// обработка нажатия уменьшения масштаба
@@ -2051,7 +2064,7 @@ var scale = {
 		$(scale.id + ' .scale_polz').unbind('mousedown');
 		$(scale.id + ' .scale_polz').mousedown(function(e){
 			e.preventDefault();
-			var start = e.pageX - $(this).offset().left; 
+			var start = e.pageX - $(this).offset().left;
 			var start_left = $(this).offset().left - $(this).position().left;
 			$(document).mousemove(function(e){
 				var left = e.pageX - start_left - start;
@@ -2063,22 +2076,22 @@ var scale = {
 					}
 				}
 			});
-			
+
 		});
 		$(document).mouseup(function(e){
 			$(document).unbind('mousemove');
 		});
-		
-		
 
-		
-		
-		
+
+
+
+
+
 		if (gallery.cookie.get('scale')) {
 			scale.setposition(gallery.cookie.get('scale'));
 		}
-		
-		// обработка нажатия на область между ползунком и края 
+
+		// обработка нажатия на область между ползунком и края
 		$(self.id + ' .scale_body').unbind('click');
 		$(self.id + ' .scale_body').click(function(e){
 			e.preventDefault();
@@ -2090,7 +2103,7 @@ var scale = {
 			}
 		});
 	}
-	
+
 };
 
 // элемент масштаба детального просмотра
@@ -2125,8 +2138,15 @@ var scale2 = {
 		updateposition : function(sp) {
 			var self = this;
 			self.position = sp;
-			$('#image_detail').attr('width', parseInt(self.min_width) + Math.floor((self.max_width - self.min_width)*sp/self.max));
-			$('#image_detail').attr('height', parseInt(self.min_height) + Math.floor((self.max_height - self.min_height)*sp/self.max));
+	//		$('#image_detail').attr('width', parseInt(self.min_width) + Math.floor((self.max_width - self.min_width)*sp/self.max));
+	//		$('#image_detail').attr('height', parseInt(self.min_height) + Math.floor((self.max_height - self.min_height)*sp/self.max));
+
+			//Изменение размеров плеера в "win_bot_detail"
+			$('#win_bot_detail a').aplayerSetSize({
+				'width': parseInt(self.min_width) + Math.floor((self.max_width - self.min_width)*sp/self.max),
+				'height': parseInt(self.min_height) + Math.floor((self.max_height - self.min_height)*sp/self.max)
+			} );
+
 			gallery.cookie.set('scale2', sp);
 			matrix.resetPositionImage();
 		},
@@ -2144,35 +2164,35 @@ var scale2 = {
 			$(self.id + ' .scale_max').click(function() {
 				self.click_max();
 			});
-			
+
 			$(self.id + ' .scale_polz').unbind('mousedown');
 			$(self.id + ' .scale_polz').mousedown(function(e){
 				e.preventDefault();
-				var start = e.pageX - $(this).offset().left; 
+				var start = e.pageX - $(this).offset().left;
 				var start_left = $(this).offset().left - $(this).position().left;
 				$(document).mousemove(function(e){
 					var left = e.pageX - start_left - start;
 					if (left >= 0 && left <= $(self.id + ' .scale_body').width()- $(self.id + ' .scale_polz').width()) {
 						$(self.id + ' .scale_polz').css('left', left);
 						var sp = Math.floor(self.max/self.width * left);
-						
+
 						if (sp != self.position) {
 							self.updateposition(sp);
 						}
 					}
 				});
-				
+
 			});
 			$(document).mouseup(function(e){
 				$(document).unbind('mousemove');
 			});
-			
+
 			if (gallery.cookie.get('scale2')) {
 				self.setposition(gallery.cookie.get('scale2'));
 			}
-			
-			
-			// обработка нажатия на область между ползунком и края 
+
+
+			// обработка нажатия на область между ползунком и края
 			$(self.id + ' .scale_body').unbind('click');
 			$(self.id + ' .scale_body').click(function(e){
 				e.preventDefault();
@@ -2183,12 +2203,12 @@ var scale2 = {
 					self.click_max();
 				}
 			});
-			
+
 		}
-		
-		
-	
-		
+
+
+
+
 	};
 var keyBoard = {
 	boxesEnum : {},
@@ -2287,7 +2307,7 @@ var keyBoard = {
 			}
 		} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.TREE) {
 			keyBoard.selectBox($('#tree'));
-			
+
 			$('#win_top').height(gallery.hcameras);
 			if ($('#win_top').height() > 100) {
 				$('#more_cam').show();
@@ -2296,18 +2316,22 @@ var keyBoard = {
 			//keyBoard.selectBox($('#cameras_selector'));
 			keyBoard.selectBox($('#win_top'));
 			keyBoard.selectElem(0);
-			
+
 			$('#more_cam').hide();
 			$('#win_top').height('auto');
-			
+
 		}
 	},
 	init : function() {
 		keyBoard.currentSelector = $('#cameras_selector .options').children();
 		keyBoard.colorSelector = $('#cameras_color ul').children('li');
 		keyBoard.boxesEnum = new Enum('INSIDE','TREE','CAMS');
-		keyBoard.selectBox($('#scroll_content'));
 		
+		keyBoard.chooseDialogTab = new Enum('check','yes','no');
+		
+		
+		keyBoard.selectBox($('#scroll_content'));
+
 		$('#list_panel').click(function(){
 			keyBoard.boxesEnum.set(keyBoard.boxesEnum.INSIDE);
 			keyBoard.checkSelecBox();
@@ -2320,45 +2344,48 @@ var keyBoard = {
 			keyBoard.boxesEnum.set(keyBoard.boxesEnum.TREE);
 			keyBoard.checkSelecBox();
 		});
-	
+
 		// обработка нажатий клавиатуры
 		//$(document).unbind('keydown');
 		$(document).keydown(function (e) {
 			e.preventDefault();
 			
+
 			//console.log('keyCode:'+e.which);
-			
+
 			// work any where
 			if(e.which == keyBoard.keys.tab){
-				keyBoard.boxesEnum.next();
-				//'INSIDE','TREE','CAMS'
-				keyBoard.checkSelecBox();
+				if(keyBoard.view!==keyBoard.views.colorDialog && keyBoard.view!==keyBoard.views.chooseDialog) {
+					keyBoard.boxesEnum.next();
+					//'INSIDE','TREE','CAMS'
+					keyBoard.checkSelecBox();
+				}
 			} else if(e.which == keyBoard.keys.i){ //i
 				$('#image_type').attr('checked', !$('#image_type').attr('checked'));
 				var r1 = gallery.reload_events();
 				if(!r1) {
 					$('#image_type').attr('checked', 'checked');
 				}
-				
+
 				if ($('#image_type').attr('checked')) {
 					$('#image_type').parent().attr('style','background-position: 0px -14px');
 				} else {
 					$('#image_type').parent().attr('style','background-position: 0px -0px');
 				}
-				
+
 			} else if(e.which == keyBoard.keys.a){ //a
 				$('#audio_type').attr('checked', !$('#audio_type').attr('checked'));
 				var r3 = gallery.reload_events();
 				if(!r3) {
 					$('#audio_type').attr('checked', 'checked');
 				}
-				
+
 				if ($('#audio_type').attr('checked')) {
 					$('#audio_type').parent().attr('style','background-position: 0px -14px');
 				} else {
 					$('#audio_type').parent().attr('style','background-position: 0px -0px');
 				}
-				
+
 			} else if(e.which == keyBoard.keys.v) { //v
 				$('#video_type').attr('checked', !$('#video_type').attr('checked'));
 				var r2 = gallery.reload_events();
@@ -2373,25 +2400,25 @@ var keyBoard = {
 			} else if(e.which == keyBoard.keys.p) {
 				$('#proportion').attr('checked', !$('#proportion').attr('checked'));
 				matrix.doProportion();
-				
+
 				if ($('#proportion').attr('checked')) {
 					$('#proportion').parent().attr('style','background-position: 0px -14px');
 				} else {
 					$('#proportion').parent().attr('style','background-position: 0px -0px');
 				}
-				
+
 			} else if(e.which == keyBoard.keys.s) {
 				$('#info').attr('checked', !$('#info').attr('checked'));
 				matrix.doShowInfo();
-				
+
 				if ($('#info').attr('checked')) {
 					$('#info').parent().attr('style','background-position: 0px -14px');
 				} else {
 					$('#info').parent().attr('style','background-position: 0px -0px');
 				}
 			}
-			
-			
+
+
 			//work in views
 			if(keyBoard.view==keyBoard.views.detail) { // DETAIL
 				if(e.which == keyBoard.keys.minus || e.which == keyBoard.keys.minus2) {
@@ -2408,34 +2435,34 @@ var keyBoard = {
 						matrix.preview();
 					} else if(e.which == keyBoard.keys.down) {
 						var imgHeight = parseInt(matrix.imageDetail.attr('height'));
-						
+
 						if(imgHeight<matrix.height) {
 							return;
 						}
-						
+
 						var pos = matrix.imageDetail.offset();
 						pos.top -= 20;
-						
+
 						var imgHeight = parseInt(matrix.imageDetail.attr('height'));
-						
+
 						if(matrix.height - pos.top + matrix.currentOffset.top >=imgHeight)
 							pos.top = matrix.height - imgHeight + matrix.currentOffset.top;
-						
+
 						matrix.imageDetail.offset(pos);
-						
+
 					} else if(e.which == keyBoard.keys.up) {
 						var imgHeight = parseInt(matrix.imageDetail.attr('height'));
-						
+
 						if(imgHeight<matrix.height) {
 							return;
 						}
-						
+
 						var pos = matrix.imageDetail.offset();
 						pos.top += 20;
-						
+
 						if(pos.top>matrix.currentOffset.top)
 							pos.top = matrix.currentOffset.top;
-						
+
 						matrix.imageDetail.offset(pos);
 					} else if(e.which == keyBoard.keys.right) {
 						var imgWidth = parseInt(matrix.imageDetail.attr('width'))-28;
@@ -2444,12 +2471,12 @@ var keyBoard = {
 						}
 						var pos = matrix.imageDetail.offset();
 						pos.left -= 20;
-						
+
 						var imgWidth = parseInt(matrix.imageDetail.attr('width'))-28;
-						
+
 						if(matrix.width-pos.left + matrix.currentOffset.left>imgWidth)
 							pos.left = matrix.width - imgWidth + matrix.currentOffset.left;
-						
+
 						matrix.imageDetail.offset(pos);
 					} else if(e.which == keyBoard.keys.left) {
 						var imgWidth = parseInt(matrix.imageDetail.attr('width'))-28;
@@ -2458,22 +2485,22 @@ var keyBoard = {
 						}
 						var pos = matrix.imageDetail.offset();
 						pos.left += 20;
-						
+
 						if(pos.left>matrix.currentOffset.left){
 							pos.left = matrix.currentOffset.left;
 						}
-						
+
 						matrix.imageDetail.offset(pos);
 					}
 				}
-				
+
 			} else if(keyBoard.view==keyBoard.views.matrix) { //MATRIX
 				if(e.which == keyBoard.keys.minus || e.which == keyBoard.keys.minus2) {
 					scale.click_min();
 				} else if(e.which == keyBoard.keys.plus || e.which == keyBoard.keys.plus2) {
 					scale.click_max();
 				}
-				
+
 				if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.INSIDE) {
 					if (e.which == keyBoard.keys.left) {
 						scroll.num_left();
@@ -2486,11 +2513,11 @@ var keyBoard = {
 						matrix.num = scroll.position;
 						$('#cell_'+matrix.num).addClass('active');
 					} else if (e.which == keyBoard.keys.end) {
-						
+
 						$('#cell_'+matrix.num).removeClass('active');
 						matrix.num = scroll.position+(scroll.matrix_count-1)*scroll.row_count;
 						$('#cell_'+matrix.num).addClass('active');
-						
+
 					} else if (e.which == keyBoard.keys.up) {
 						scroll.num_up();
 					} else if (e.which == keyBoard.keys.right) {
@@ -2573,12 +2600,14 @@ var keyBoard = {
 					gallery.cameras_color.select();
 					gallery.cameras_color.close();
 					return;
-				}
+				} 
 			} else if(keyBoard.view==keyBoard.views.chooseDialog) {
 				if (e.which == keyBoard.keys.esc) {
 					gallery.nextwindow.close();
 				} else if (e.which == keyBoard.keys.enter) {
-					gallery.nextwindow.select();
+					if (keyBoard.chooseDialogTab.current() == keyBoard.chooseDialogTab.yes) {
+						gallery.nextwindow.select();
+					}
 					gallery.nextwindow.close();
 				} else if (e.which == keyBoard.keys.space) {
 					$('#checknextwindow').attr('checked', !$('#checknextwindow').attr('checked'));
@@ -2586,6 +2615,21 @@ var keyBoard = {
 						$('#checknextwindow').parent().attr('style','background-position: 0px -14px');
 					} else {
 						$('#checknextwindow').parent().attr('style','background-position: 0px -0px');
+					}
+				} else if (e.which == keyBoard.keys.tab){
+					$('#checknextwindow').parent().removeClass('select');
+					$('#nextwindow .yes').removeClass('select');
+					$('#nextwindow .no').removeClass('select');
+					
+					keyBoard.boxesEnum.current()==keyBoard.boxesEnum.INSIDE
+					keyBoard.chooseDialogTab.next();
+					if(keyBoard.chooseDialogTab.current() == keyBoard.chooseDialogTab.check) {
+						$('#checknextwindow').parent().addClass('select');
+					} else if(keyBoard.chooseDialogTab.current() == keyBoard.chooseDialogTab.yes) {
+						$('#nextwindow .yes').addClass('select');
+					} else if(keyBoard.chooseDialogTab.current() == keyBoard.chooseDialogTab.no) {
+						$('#nextwindow .no').addClass('select');
+						
 					}
 				}
 			}
@@ -2605,7 +2649,7 @@ var keyBoard = {
 						var rez = gallery.reload_cams();
 						if(!rez)
 							$('#'+camId).attr('checked', 'checked');
-						
+
 						if ($('#'+camId).attr('checked')) {
 							$('#'+camId).parent().attr('style','background-position: 0px -14px');
 						} else {
@@ -2623,11 +2667,13 @@ var keyBoard = {
 				} else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.TREE) {
 					if (e.which == keyBoard.keys.left) {
 						var top = matrix.curent_tree_events[matrix.keyBoardTree].top;
-						
+
 						if(top!=false && typeof(top)!='undefined') {
 							$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
+							
 							$.jstree._focused().select_node('#tree_'+top);
-							$('#tree').scrollTo( $('#tree_'+top)).scrollTo('-=100px');
+							$.jstree._focused().toggle_node('#tree_'+top);
+							$('#tree').scrollTo( $('#tree_'+top));
 						}
 					} else if (e.which == keyBoard.keys.home) {
 						var top = matrix.curent_tree_events[matrix.keyBoardTree].top;
@@ -2636,7 +2682,7 @@ var keyBoard = {
 							if(under!=false && typeof(under)!='undefined') {
 								$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
 								$.jstree._focused().select_node('#tree_'+under);
-								$('#tree').scrollTo( $('#tree_'+under)).scrollTo('-=100px');
+								$('#tree').scrollTo( $('#tree_'+under));
 							}
 						}
 					} else if (e.which == keyBoard.keys.end) {
@@ -2644,29 +2690,29 @@ var keyBoard = {
 						if(top!=false && typeof(top)!='undefined') {
 							$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
 							$.jstree._focused().select_node('#tree_'+top+' > ul > .jstree-last');
-							$('#tree').scrollTo( $('#tree_'+top+' > ul > .jstree-last')).scrollTo('-=100px');
+							$('#tree').scrollTo( $('#tree_'+top+' > ul > .jstree-last'));
 						}
 					} else if (e.which == keyBoard.keys.up) {
 						var prev = matrix.curent_tree_events[matrix.keyBoardTree].prev;
 						if(prev!=false && typeof(prev)!='undefined' &&  matrix.curent_tree_events[matrix.keyBoardTree].top ==  matrix.curent_tree_events[prev].top ) {
 							$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
 							$.jstree._focused().select_node('#tree_'+prev);
-							$('#tree').scrollTo( $('#tree_'+prev)).scrollTo('-=100px');
+							$('#tree').scrollTo( $('#tree_'+prev));
 						}
 					} else if (e.which == keyBoard.keys.right) {
 						var under = matrix.curent_tree_events[matrix.keyBoardTree].under;
 						if(under!=false && typeof(under)!='undefined') {
 							$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
 							$.jstree._focused().select_node('#tree_'+under);
-							$('#tree').scrollTo( $('#tree_'+under)).scrollTo('-=100px');
+							$('#tree').scrollTo( $('#tree_'+under));
 						}
 					} else if (e.which == keyBoard.keys.down) {
 						var next = matrix.curent_tree_events[matrix.keyBoardTree].next;
 						if(next!=false && typeof(next)!='undefined' &&  matrix.curent_tree_events[matrix.keyBoardTree].top ==  matrix.curent_tree_events[next].top ) {
 							$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
 							$.jstree._focused().select_node('#tree_'+next);
-							$('#tree').scrollTo( $('#tree_'+next)).scrollTo('-=100px');
-							
+							$('#tree').scrollTo( $('#tree_'+next));
+
 						}
 					} else if (e.which == keyBoard.keys.enter) {
 						var tree = matrix.keyBoardTree;
@@ -2679,7 +2725,7 @@ var keyBoard = {
 						if (matrix.mode == 'detail') {
 							matrix.preview();
 						}
-						
+
 					} else if (e.which == keyBoard.keys.space) {
 						if($.jstree._focused().is_open()) {
 							$.jstree._focused().close_node('#tree_'+matrix.keyBoardTree);
@@ -2689,7 +2735,7 @@ var keyBoard = {
 					}
 				}
 			}
-			
+
 		});
 	}
 };

@@ -650,3 +650,9 @@ font-family: Arial,Verdana,Geneva,Helvetica,sans-serif !important;
 .jstree-default .jstree-open ins { cursor: pointer;  }
 .jstree-default .jstree-closed ins { cursor: pointer; }
 .jstree-default .jstree-leaf ins { cursor:auto; }
+
+
+
+#nextwindow .select {
+	border: 1px dotted;
+}
