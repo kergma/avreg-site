@@ -63,7 +63,7 @@
 									<input type="checkbox" id="camera_<?php print $CAM_NR;?>" name="cameras" value="<?php print $CAM_NR;?>" <?php if (empty($cameras) || in_array($CAM_NR, $cameras)) :?>checked="checked" <?php endif;?>></span>
 									<?php
 
-									$name = $PARAM['text_left']; 
+									$name = $name_orig = $PARAM['text_left']; 
 									if(mb_strlen($name)>18) {
 										$name = mb_substr($name, 0, 15);
 										$name .= '...';

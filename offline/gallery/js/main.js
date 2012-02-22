@@ -1073,10 +1073,7 @@ var matrix = {
 					gallery.cookie.set('resize_column', pageX);
 					gallery.resize_column.resize(pageX);
 				}
-
-
 				matrix.resize();clearInterval(self.res);}, 200);
-
 		});
 
 
@@ -1133,6 +1130,15 @@ var matrix = {
 		$('#win_bot_detail').show();
 		$('#toolbar .detail').show();
 		matrix.resetPositionImage();
+		//установка размеров плеера в соответствии с размерами родительского элемента
+		$('#win_bot_detail a').aplayerResizeContanerOnlyToParent();
+
+		//Изменение размеров медиа-элемента плеера в "win_bot_detail"
+		$('#win_bot_detail a').aplayerSetSizeMediaElt({
+			'width': parseInt(self.min_width) + Math.floor((self.max_width - self.min_width)*sp/self.max),
+			'height': parseInt(self.min_height) + Math.floor((self.max_height - self.min_height)*sp/self.max)
+		} );
+
 	},
 	// если включили режим миниатюр
 	preview : function() {
@@ -1150,6 +1156,8 @@ var matrix = {
 			$('#statistics').html(stat);
 
 			$('#win_bot_detail').hide();
+			//Закрытие плеера
+			$('#win_bot_detail a').aplayerClose();
 			$('#toolbar .detail').hide();
 			$('#win_bot').show();
 			$('#toolbar .preview').show();
@@ -1189,6 +1197,11 @@ var matrix = {
 		var hc = $('#content').height() - 100 - $('#toolbar').height()-28;
 		$('#win_bot_detail').height(hc);
 		//$('#win_bot_detail').width($('#content').width() - $('#win_top').width() - $('#toolbar').width());
+
+		//установка размеров плеера в соответствии с размерами родительского элемента
+		$('#win_bot_detail a').aplayerResizeContanerOnlyToParent();
+
+
 		$('#win_bot').height(hc);
 		//$('#scroll_v').height(hc);
 
@@ -1327,7 +1340,8 @@ var matrix = {
 //			$('#image_detail').attr('height', height);
 
 			//Установка плеера (src+размеры) в "win_bot_detail"
-			$('#win_bot_detail a').addPlayer({'src': MediaUrlPref+value[2], 'width': width, 'height': height, 'class': 'show_detail' });
+			$('#win_bot_detail a').css({ 'display':'block', 'width':'100%', 'height':'100%', 'type':'audio'}
+				).addPlayer({'src': MediaUrlPref+value[2]}); //, 'width': width, 'height': height, 'class': 'show_detail' });
 
 
 			// обновляем параметры элемента масштаба
@@ -1457,9 +1471,11 @@ var matrix = {
 
 						}
 					} else if (value[7] == 'video') {
-						html += '<div class="img_block">'+value[2]+'</div>';
+						// html += '<div class="img_block"> '+value[2]+' </div>';
+						 html += '<div class="img_block"> <a href="'+value[2]+'" >'+value[2]+'</a> </div>';
 					} else if (value[7] == 'audio') {
-						html += '<div class="img_block">'+value[2]+'</div>';
+						// html += '<div class="img_block">'+value[2]+'</div>';
+						html += '<div class="img_block"> <a href="'+value[2]+'">'+value[2]+'</a> </div>';
 					}
 
 					html += '<div class="info_block"';
@@ -1481,7 +1497,7 @@ var matrix = {
 			var ci = i + matrix.count_column;
 			var hide_over = true;
 			for(i; i<=ci; i++) {
-				if (typeof( matrix.events[i]) != 'undefined') {
+				if (typeof( matrix.events[i]) != 'undefined' && matrix.events[i][7] == 'image') {
 					if (typeof( matrix.events[i].image_chache) != 'undefined' && matrix.events[i].image_chache) {
 						loadimage[i] = true;
 					} else {
@@ -1579,9 +1595,12 @@ var matrix = {
 
 						}
 					} else if (value[7] == 'video') {
-						html += '<div class="img_block">'+value[2]+'</div>';
+						// html += '<div class="img_block">'+value[2]+'</div>';
+						html += '<div class="img_block"> <a href="'+value[2]+'">'+value[2]+'</a> </div>';
 					} else if (value[7] == 'audio') {
-						html += '<div class="img_block">'+value[2]+'</div>';
+						// html += '<div class="img_block">'+value[2]+'</div>';
+						html += '<div class="img_block"> <a href="'+value[2]+'">'+value[2]+'</a> </div>';
+
 					}
 
 					html += '<div class="info_block"';
@@ -1599,13 +1618,13 @@ var matrix = {
 					}
 				};
 				$('#scroll_content').html(html);
-				
-				
+
+
 				// проверяем какие изображения есть в кеше браузера, а какаие надо загрузить
 				var ci = i + matrix.count_column;
 				var hide_over = true;
 				for(i; i<=ci; i++) {
-					if (typeof( matrix.events[i]) != 'undefined') {
+					if (typeof( matrix.events[i]) != 'undefined' && matrix.events[i][7] == 'image') {
 						if (typeof( matrix.events[i].image_chache) != 'undefined' && matrix.events[i].image_chache) {
 							loadimage[i] = true;
 						} else {
@@ -2141,14 +2160,20 @@ var scale2 = {
 	//		$('#image_detail').attr('width', parseInt(self.min_width) + Math.floor((self.max_width - self.min_width)*sp/self.max));
 	//		$('#image_detail').attr('height', parseInt(self.min_height) + Math.floor((self.max_height - self.min_height)*sp/self.max));
 
-			//Изменение размеров плеера в "win_bot_detail"
-			$('#win_bot_detail a').aplayerSetSize({
+
+
+			gallery.cookie.set('scale2', sp);
+
+			//Изменение размеров медиа-элемента плеера в "win_bot_detail"
+			$('#win_bot_detail a').aplayerSetSizeMediaElt({
 				'width': parseInt(self.min_width) + Math.floor((self.max_width - self.min_width)*sp/self.max),
 				'height': parseInt(self.min_height) + Math.floor((self.max_height - self.min_height)*sp/self.max)
 			} );
 
-			gallery.cookie.set('scale2', sp);
+
 			matrix.resetPositionImage();
+
+
 		},
 		reload : function() {
 			var self = this;
@@ -2326,10 +2351,10 @@ var keyBoard = {
 		keyBoard.currentSelector = $('#cameras_selector .options').children();
 		keyBoard.colorSelector = $('#cameras_color ul').children('li');
 		keyBoard.boxesEnum = new Enum('INSIDE','TREE','CAMS');
-		
+
 		keyBoard.chooseDialogTab = new Enum('check','yes','no');
-		
-		
+
+
 		keyBoard.selectBox($('#scroll_content'));
 
 		$('#list_panel').click(function(){
@@ -2349,7 +2374,7 @@ var keyBoard = {
 		//$(document).unbind('keydown');
 		$(document).keydown(function (e) {
 			e.preventDefault();
-			
+
 
 			//console.log('keyCode:'+e.which);
 
@@ -2600,7 +2625,7 @@ var keyBoard = {
 					gallery.cameras_color.select();
 					gallery.cameras_color.close();
 					return;
-				} 
+				}
 			} else if(keyBoard.view==keyBoard.views.chooseDialog) {
 				if (e.which == keyBoard.keys.esc) {
 					gallery.nextwindow.close();
@@ -2620,7 +2645,7 @@ var keyBoard = {
 					$('#checknextwindow').parent().removeClass('select');
 					$('#nextwindow .yes').removeClass('select');
 					$('#nextwindow .no').removeClass('select');
-					
+
 					keyBoard.boxesEnum.current()==keyBoard.boxesEnum.INSIDE
 					keyBoard.chooseDialogTab.next();
 					if(keyBoard.chooseDialogTab.current() == keyBoard.chooseDialogTab.check) {
@@ -2629,7 +2654,7 @@ var keyBoard = {
 						$('#nextwindow .yes').addClass('select');
 					} else if(keyBoard.chooseDialogTab.current() == keyBoard.chooseDialogTab.no) {
 						$('#nextwindow .no').addClass('select');
-						
+
 					}
 				}
 			}
@@ -2670,7 +2695,7 @@ var keyBoard = {
 
 						if(top!=false && typeof(top)!='undefined') {
 							$.jstree._focused().deselect_node('#tree_'+matrix.keyBoardTree);
-							
+
 							$.jstree._focused().select_node('#tree_'+top);
 							$.jstree._focused().toggle_node('#tree_'+top);
 							$('#tree').scrollTo( $('#tree_'+top));
