@@ -1,5 +1,6 @@
 <?php
-if (!isset($_POST['method']) || empty($_POST['method'])) {
+
+if (!isset($_POST['method']) && !isset($_GET['method'])) {
 	// Загрузка главной страницы галереи
 	$pageTitle='gallery_title';
 	//$USE_JQUERY = true;
@@ -33,6 +34,7 @@ if (!isset($_POST['method']) || empty($_POST['method'])) {
 	require_once('../foot.inc.php');
 } else {
 
+	
 	// Ответ аякс запроса
 	require_once('../lib/config.inc.php');
 	require_once('../lib/my_conn.inc.php');
@@ -40,9 +42,11 @@ if (!isset($_POST['method']) || empty($_POST['method'])) {
 	require('../lib/get_cams_params.inc.php');
 	if ( $GCP_cams_nr == 0 )
    		die('There are no available cameras!');
+   	require_once'gallery/memcache.php';
 	require_once('gallery/gallery.php');
 	// Инициализация класа галереи
-	$gallery = new Gallery($_POST);
+	$params = !empty($_POST) ? $_POST : $_GET;
+	$gallery = new Gallery($params);
 	// Возврат ответа запроса
 	$gallery->print_result();
 	require_once('../lib/my_close.inc.php');
