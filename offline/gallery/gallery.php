@@ -164,9 +164,12 @@ class Gallery {
     }
     
     public function update_tree_events($param) {
-    	if (isset($param['start']) && isset($param['end'])) {
-    		$this->_update_tree_events($param['start'], $param['end']);
-    	}
+    	$start = isset($param['start']) ? $param['start'] : false;
+    	$end = isset($param['end']) ? $param['end'] : false;
+    	$cameras = isset($param['cameras']) ? $param['cameras'] : false;
+    	
+    	$this->_update_tree_events($start, $end, $cameras);
+    	
     }
 	public function cron_update_tree_events() {
 		$query = "SELECT DT1";
@@ -188,15 +191,25 @@ class Gallery {
 		}
     }
     
-    private function _update_tree_events($start, $end){
-    	$tstart = date('Y-m-d H:00:00',strtotime($start));
-    	$tend = date('Y-m-d H:59:59',strtotime($end));
+    private function _update_tree_events($start, $end, $cameras){
+    	
+    	
     	$query = "SELECT *";
     	$query .= " FROM EVENTS";
     	$query .= ' WHERE EVT_ID in (15,16,17,18,19,20,21,23,32)';
-    	$query .= ' AND DT1 >= "'.$tstart.'"';
-    	$query .= ' AND DT1 <= "'.$tend.'"';
+    	if ($start) {
+    		$tstart = date('Y-m-d H:00:00',strtotime($start));
+    		$query .= ' AND DT1 >= "'.$tstart.'"';
+    	}
+    	if ($end) {
+    		$tend = date('Y-m-d H:59:59',strtotime($end));
+    		$query .= ' AND DT1 <= "'.$tend.'"';
+    	}
+    	if ($cameras) {
+    		$query .= ' AND CAM_NR in ('.$cameras.')';
+    	}
     	$query .= ' ORDER BY DT1 ASC';
+    	
     	$result = mysql_query($query) or die("Query failed");
     	
     	$tree_events = array();
@@ -232,8 +245,17 @@ class Gallery {
     		$tree_events[$key]['LAST_UPDATE']=$line['DT1'];
     	}
     	$query = 'DELETE FROM TREE_EVENTS';
-    	$query .= ' WHERE DATE >= "'.date('Y_m_d_H',strtotime($start)).'"';
-    	$query .= ' AND DATE <= "'.date('Y_m_d_H',strtotime($end)).'"';
+    	$query .= ' WHERE 1=1';
+    	
+    	if ($start) {
+    		$query .= ' AND DATE >= "'.date('Y_m_d_H',strtotime($start)).'"';
+    	}
+    	if ($end) {
+    		$query .= ' AND DATE <= "'.date('Y_m_d_H',strtotime($end)).'"';
+    	}
+    	if ($cameras) {
+    		$query .= ' AND CAM_NR in ('.$cameras.')';
+    	}
     	$result = mysql_query($query) or die("Query failed");
     	
     	foreach ($tree_events as $row) {
