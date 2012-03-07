@@ -1,4 +1,6 @@
 <?php
+error_reporting(NULL);
+ini_set('display_errors', 0);
 
 if (!isset($_POST['method']) && !isset($_GET['method'])) {
 	// Загрузка главной страницы галереи

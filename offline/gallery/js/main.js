@@ -215,6 +215,7 @@ var gallery = {
 
 				var hc = $('#content').height() - 100 - $('#toolbar').height()-28;
 				$('#win_bot').height(hc);
+				$('#page').width($('#sidebar').width()+$('#content').width());
 			},
 			// функция инициализации
 			init: function() {
@@ -236,7 +237,7 @@ var gallery = {
 					self.res = true;
 					e.preventDefault();
 					$(document).mousemove(function(e){
-						if (e.pageX > 300 && e.pageX< self.myWidth - 666) {
+						if (e.pageX > 300 && e.pageX< self.myWidth - 535) {
 							self.resize(e.pageX);
 						}
 					});
@@ -366,7 +367,7 @@ var gallery = {
 						});
 					}
 				});
-
+				
 				// js кеш нового дерева
 				matrix.curent_tree_events = {
 						all : {
@@ -381,6 +382,7 @@ var gallery = {
 				// предыдущий год, месяц, день
 				var o0 = false, o1 = false, o2 = false;
 				var ii = 0;
+				
 				$.each(matrix.tree_events, function( i,value) {
 					// временной диапазон
 					var key = value.date;
@@ -388,6 +390,7 @@ var gallery = {
 					var size = 0;
 					// количество файлов во временном диапазоне
 					var count = 0;
+					
 					//считаем размер и количество файлов в временном диапазоне в выбранных настройках
 					$.each(variable, function(k, v) {
 						if (typeof(value[k+'_size']) != 'undefined' ) {
@@ -397,10 +400,12 @@ var gallery = {
 							count += parseInt(value[k+'_count']);
 						}
 					});
+					
 					// если не пучто, то строим дерево
 					if (count > 0 && size > 0) {
 						// разбиваем дату на год месяц день
 						var e = key.split('_');
+						
 						var year = e[0];
 						var month = e[1];
 						var day = e[2];
@@ -510,7 +515,7 @@ var gallery = {
 								to : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
 								next : false,
 								prev : old_value,
-								top: e[0]+'_'+e[1]+'_'+e[2],
+								top: e[0]+'_'+e[1]+'_'+e[2]
 						};
 						// строим дерево
 						html += '<li id="tree_'+key+'"><a href="#">'+e[3]+':00</a>';
@@ -522,6 +527,7 @@ var gallery = {
 						old_value = key;
 					}
 				});
+				
 				html += '</ul></ul>';
 				// высчитываем новый выбранный диапазон событий если старого в новом дереве нет
 				if (matrix.tree != 'all' && typeof(matrix.curent_tree_events[matrix.tree]) == 'undefined') {
@@ -906,6 +912,7 @@ var matrix = {
 	cur_count_item : 0, // текущее количество загруженных событий
 	send_query: false, // можно ли посылать запросы к базе
 	select_node : false, // можно ли выбирать другой диапазон
+	cur_source: null, //отн путь текущего медиа файла
 	init: function(config) {
 
 //		matrix.imageDetail = $("#image_detail").css('top', '0');
@@ -922,7 +929,6 @@ var matrix = {
 			event.preventDefault();
 		});
 
-		//console.log('matrix view');
 		keyBoard.beforeView = keyBoard.view;
 		keyBoard.view = keyBoard.views.matrix;
 		if (config && typeof(config) == 'object') {
@@ -1063,10 +1069,9 @@ var matrix = {
 						gallery.resize_column.myWidth = document.documentElement.clientWidth;
 						gallery.resize_column.myHeight = document.documentElement.clientHeight;
 					}
+					if (pageX < gallery.resize_column.myWidth - 535 && pageX - (gallery.resize_column.myWidth - 535) < 300 ) {
 
-					if (pageX < gallery.resize_column.myWidth - 666 && pageX - (gallery.resize_column.myWidth - 666) < 300 ) {
-
-						pageX = pageX - (gallery.resize_column.myWidth - 666);
+						pageX = pageX - (gallery.resize_column.myWidth - 535);
 					} else {
 						pageX = 300;
 					}
@@ -1120,7 +1125,6 @@ var matrix = {
 	},
 	// если включили режим детальный просмотр
 	detail : function() {
-		//console.log('detail view');
 		keyBoard.beforeView = keyBoard.view;
 		keyBoard.view = keyBoard.views.detail;
 		matrix.mode = 'detail';
@@ -1130,19 +1134,40 @@ var matrix = {
 		$('#win_bot_detail').show();
 		$('#toolbar .detail').show();
 		matrix.resetPositionImage();
+
+
+		
+		if($('#win_bot_detail a').aplayerIsImage())
+			{
+				var ResizedImgSrc = 'http://'+document.location.host+'/avreg/offline/gallery/ResizeImg.php?url=media/'+matrix.cur_source+'&size='+scale2.position;
+				ResizedImgSrc += '&mode=normal';
+				if($('#proportion').attr('checked')=='checked'){
+					ResizedImgSrc +='&prop=true';
+				}
+				else{
+					ResizedImgSrc +='&prop=false';
+				}
+				
+				//Загрузка изображения соответствующего размера
+				$('#win_bot_detail a').each(function(){
+					$(this).aplayerResizeContanerOnlyToParent().aplayerSetImgSrc(ResizedImgSrc).aplayerSetSrcSizes();
+					
+				});   
+			}
+			else
+			{
 		//установка размеров плеера в соответствии с размерами родительского элемента
 		$('#win_bot_detail a').aplayerResizeContanerOnlyToParent();
-
 		//Изменение размеров медиа-элемента плеера в "win_bot_detail"
 		$('#win_bot_detail a').aplayerSetSizeMediaElt({
 			'width': parseInt(self.min_width) + Math.floor((self.max_width - self.min_width)*sp/self.max),
 			'height': parseInt(self.min_height) + Math.floor((self.max_height - self.min_height)*sp/self.max)
 		} );
+		}
 
 	},
 	// если включили режим миниатюр
 	preview : function() {
-		//console.log('matrix view');
 		if (typeof(matrix.curent_tree_events[matrix.tree]) != 'undefined') {
 			keyBoard.beforeView = keyBoard.view;
 			keyBoard.view = keyBoard.views.matrix;
@@ -1159,6 +1184,7 @@ var matrix = {
 			//Закрытие плеера
 			$('#win_bot_detail a').aplayerClose();
 			$('#toolbar .detail').hide();
+			
 			$('#win_bot').show();
 			$('#toolbar .preview').show();
 
@@ -1203,13 +1229,13 @@ var matrix = {
 
 
 		$('#win_bot').height(hc);
-		//$('#scroll_v').height(hc);
-
+		
+		$('#scroll_v').height(hc);
 		// исправление бага с высотой!!! придумать что то лучше
-		if($('#list_panel').height()!==0)
-			matrix.height = $('#list_panel').height();
+		//if($('#list_panel').height()!==0) matrix.height = $('#list_panel').height();
+		matrix.height = hc;
+		
 		// 	исправяем баг с длинной не видимого элемента
-
 		var pan_height = $('#list_panel').css('height');
 		var pan_width = parseInt($('#list_panel').css('width').replace('px',''));
 
@@ -1271,8 +1297,8 @@ var matrix = {
 		if (typeof(matrix.events[el]) != 'undefined') {
 			var thumb_width = matrix.thumb_width;
 			var thumb_height = matrix.thumb_height;
-
-			if ($('#proportion').attr('checked')) {
+			
+			if ($('#proportion').attr('checked') && matrix.events[el][7]=='image' ) {
 				// если выбран чекбокс сохранять пропорции
 				var w = thumb_width;
 				var h = Math.floor(matrix.events[el][3]*w/matrix.events[el][4]);
@@ -1285,10 +1311,16 @@ var matrix = {
 				thumb_width = w;
 				thumb_height = h;
 			}
-
+			
 			// задаем новые размеры
-			$('#cell_'+el+' .img_block img').attr('width',thumb_width);
-			$('#cell_'+el+' .img_block img').attr('height',thumb_height);
+			$('#cell_'+el+' .img_block>a').css({'display':'block'})
+			.height(thumb_height)
+			.width(thumb_width)
+			.aplayerSetSize({'height':thumb_height, 'width': thumb_width });
+			
+			// задаем новые размеры
+//			$('#cell_'+el+' .img_block img').attr('width',thumb_width);
+//			$('#cell_'+el+' .img_block img').attr('height',thumb_height);
 		}
 		matrix.resetPositionImage();
 	},
@@ -1339,10 +1371,41 @@ var matrix = {
 //			$('#image_detail').attr('width', width);
 //			$('#image_detail').attr('height', height);
 
-			//Установка плеера (src+размеры) в "win_bot_detail"
-			$('#win_bot_detail a').css({ 'display':'block', 'width':'100%', 'height':'100%', 'type':'audio'}
-				).addPlayer({'src': MediaUrlPref+value[2]}); //, 'width': width, 'height': height, 'class': 'show_detail' });
+	
+			
+			//save source's path
+			matrix.cur_source = value[2];
+			
+			if(matrix.cur_source.indexOf('.jpg')!=-1 || matrix.cur_source.indexOf('.png')!=-1 || matrix.cur_source.indexOf('.bmp')!=-1 ||matrix.cur_source.indexOf('.gif')!=-1 )
+			{
+				var ResizedImgSrc = 'http://'+document.location.host+'/avreg/offline/gallery/ResizeImg.php?url=media/'+matrix.cur_source+'&size='+scale2.position;
+				ResizedImgSrc += '&mode=normal';
+				if($('#proportion').attr('checked')=='checked'){
+					ResizedImgSrc +='&prop=true';
+				}
+				else{
+					ResizedImgSrc +='&prop=false';
+				}
 
+				if($('#win_bot_detail a').aplayerIsImage())
+				{
+					//Загрузка изображения соответствующего размера
+					$('#win_bot_detail a').each(function(){
+						$(this).aplayerResizeContanerOnlyToParent().aplayerSetImgSrc(ResizedImgSrc).aplayerSetSrcSizes().show();
+					}); 
+				}
+				else{				
+					//Установка плеера в "win_bot_detail" + Загрузка изображения соответствующего размера
+					$('#win_bot_detail a').css({ 'display':'block', 'width':'100%', 'height':'100%', 'type':'audio'}
+						).addPlayer({'src': ResizedImgSrc, 'useImageSize':'true'});//.hide();//, 'useImageSize':'true', 'application':'true' , 'width': width, 'height': height, 'class': 'show_detail' });  
+				}
+			}
+			else
+			{
+				//Установка плеера (src+размеры) в "win_bot_detail"
+				$('#win_bot_detail a').css({ 'display':'block', 'width':'100%', 'height':'100%'})
+					.addPlayer({'src': MediaUrlPref+value[2] }); //, 'controls':'mini' , 'controls':'browser'  , 'application':'true' , 'width': width, 'height': height, 'class': 'show_detail' });
+			}
 
 			// обновляем параметры элемента масштаба
 			scale2.min_width = width;
@@ -1374,10 +1437,41 @@ var matrix = {
 			//изображение загрузилось
 			// показываем картинку в ячейке
 
-			$('#cell_'+el+' .img_block img').attr('src', MediaUrlPref + matrix.events[el][2]);
+//			$('#cell_'+el+' .img_block img').attr('src', MediaUrlPref + matrix.events[el][2]);
 
+//			$('#cell_'+el+' .img_block').addPlayer({ 'src':MediaUrlPref + matrix.events[el][2] });
+			
+			//Устанавливаем плеер в матрицу		
+			//если картинка
+/*			if(matrix.events[el][2].indexOf('.jpg')!=-1 || matrix.events[el][2].indexOf('.png')!=-1 || matrix.events[el][2].indexOf('.bmp')!=-1 || matrix.events[el][2].indexOf('.gif')!=-1 )
+			{
+				
+				var ResizedImgSrc = 'http://'+document.location.host+'/avreg/offline/gallery/ResizeImg.php?url=media/'+matrix.events[el][2]+'&size='+scale2.position;
+				ResizedImgSrc += '&mode=icon';
+				if($('#proportion').attr('checked')=='checked'){
+					ResizedImgSrc +='&prop=true';
+				}
+				else{
+					ResizedImgSrc +='&prop=false';
+				}
+				//Установка плеера в матрицу + Загрузка изображения соответствующего размера
+				$('#cell_'+el+' .img_block a').css({ 'display':'block', 'width':'100%', 'height':'100%', 'type':'audio'}
+					).addPlayer({'src': ResizedImgSrc, 'useImageSize':'true'});// .hide();//, 'useImageSize':'true', 'application':'true' , 'width': width, 'height': height, 'class': 'show_detail' });  
+			}
+			else
+			{
+				//Установка плеера (src+размеры) в "win_bot_detail"
+				$('#cell_'+el+' .img_block a').css({ 'display':'block', 'width':'100%', 'height':'100%', 'type':'audio'}
+				).addPlayer({'src': MediaUrlPref+value[2] , 'controls':'mini'}); // , 'controls':'browser'  , 'application':'true' , 'width': width, 'height': height, 'class': 'show_detail' });
+			}
+
+*/
+			
+
+			
 			// задаем новые размеры изображения
 			matrix.setimagesize(el);
+			
 			// обновляем счетчик загруженных изображений
 			matrix.load_src++;
 			if (matrix.load_src == matrix.count_src) {
@@ -1391,7 +1485,19 @@ var matrix = {
 		img.onerror = function() {
 			//изображение не загрузилось
 			// показываем картинку ошибки в ячейке
-			$('#cell_'+el+' .img_block img').attr('src', WwwPrefix+'/offline/gallery/img/error.jpg');
+//			$('#cell_'+el+' .img_block img').attr('src', WwwPrefix+'/offline/gallery/img/error.jpg');
+			
+				var ResizedImgSrc = 'http://'+document.location.host+'/avreg/offline/gallery/ResizeImg.php?url='+'/offline/gallery/img/error.jpg'+'&size='+scale2.position;
+				ResizedImgSrc += '&mode=icon';
+				if($('#proportion').attr('checked')=='checked'){
+					ResizedImgSrc +='&prop=true';
+				}
+				else{
+					ResizedImgSrc +='&prop=false';
+				}
+				//Установка плеера 
+				$('#cell_'+el+' .img_block a').css({ 'display':'block', 'width':'100%', 'height':'100%', 'type':'audio'}
+					).addPlayer({'src': ResizedImgSrc, 'useImageSize':'true'});
 			// задаем новые размеры изображения
 			matrix.setimagesize(el);
 			// обновляем счетчик загруженных изображений
@@ -1408,9 +1514,9 @@ var matrix = {
 
 	// обовление матрицы
 	update : function(sp) {
+
 		$('#matrix_load').show();
-		$('#scroll_content').empty();
-		var html = '';
+		
 		var i = sp;
 		var active = '';
 		var get = false;
@@ -1432,7 +1538,16 @@ var matrix = {
 		}
 
 		// происходит проверка, есть ли необходимые элементы в кеше
-		var count_events = matrix.cell_count > matrix.curent_tree_events[matrix.tree].count ? matrix.curent_tree_events[matrix.tree].count : matrix.cell_count;
+		
+		var count_events = matrix.cell_count;
+		
+		if (matrix.cell_count > matrix.curent_tree_events[matrix.tree].count) {
+			count_events = matrix.curent_tree_events[matrix.tree].count;
+		}else if (matrix.cell_count+sp > matrix.curent_tree_events[matrix.tree].count) {
+			count_events = matrix.curent_tree_events[matrix.tree].count - sp;
+		}
+	//	var count_events = matrix.cell_count > matrix.curent_tree_events[matrix.tree].count ? matrix.curent_tree_events[matrix.tree].count : matrix.cell_count;
+		
 		for (var i = sp; i < sp + count_events; i++) {
 			if (typeof( matrix.events[i]) == 'undefined') {
 				get = true;
@@ -1442,57 +1557,179 @@ var matrix = {
 		if (get) {
 			// нет необходимых элементов в кеше, делаем запрос
 			matrix.get_events(sp);
-		} else {
-			// все элементы матрицы есть в кеше, строим матрицу
-			var loadimage = {};
-			for (var i = sp; i < sp+ matrix.cell_count; i++) {
-				if (typeof( matrix.events[i]) != 'undefined') {
-					value = matrix.events[i];
+		} 
+		else 
+		{
+			
+			//Если кол-во элтов матрицы не соответствует кол-ву установленных плееров- Пересоздаем матрицу 
+			if(matrix.cell_count != $("[id^="+$.aplayer.idContainer+"]").length)	
+			{
+							
+			
+				$('#scroll_content').empty();
+				var html = '';
+			
+				// все элементы матрицы есть в кеше, строим матрицу
+				var loadimage = {};
+			
+			
+				for (var i = sp; i < sp+ matrix.cell_count; i++) {
+					if (typeof( matrix.events[i]) != 'undefined') 
+						{
+						
+						value = matrix.events[i];
 
-					active = i == matrix.num ? ' active' : '';
+						active = i == matrix.num ? ' active' : '';
 
-
-					camera_class = gallery.cookie.get('camera_'+value[5]+'_color');
-					if (camera_class != '') {
-						camera_class = ' '+camera_class;
-					}
-
-					html += '<div id="cell_'+i+'" class="content_item show'+active+' camera_'+value[5]+' '+camera_class+'">';
-					html += '<div class="elem">';
-					if (value[7] == 'image') {
-
-						if (typeof( value.image_chache) != 'undefined' && value.image_chache) {
-							html += '<div class="img_block"><a href="#cell_'+i+'"><img src="'+MediaUrlPref + value[2]+'" /></a></div>';
-							loadimage[i] = true;
-
-						} else {
-							html += '<div class="img_block"><a href="#cell_'+i+'"><img src="" /></a></div>';
-							loadimage[i] = false;
-
+						camera_class = gallery.cookie.get('camera_'+value[5]+'_color');
+						if (camera_class != '') {
+							camera_class = ' '+camera_class;
 						}
-					} else if (value[7] == 'video') {
-						// html += '<div class="img_block"> '+value[2]+' </div>';
-						 html += '<div class="img_block"> <a href="'+value[2]+'" >'+value[2]+'</a> </div>';
-					} else if (value[7] == 'audio') {
-						// html += '<div class="img_block">'+value[2]+'</div>';
-						html += '<div class="img_block"> <a href="'+value[2]+'">'+value[2]+'</a> </div>';
-					}
 
-					html += '<div class="info_block"';
-					if ($('#info').attr('checked')) {
-						html += ' style="display:block;"';
-					} else {
-						html += ' style="display:none;"';
+						html += '<div id="cell_'+i+'" class="content_item show'+active+' camera_'+value[5]+' '+camera_class+'">';
+						html += '<div class="elem">';
+
+						html += '<div class="img_block"><a href="#cell_'+i+'"></a></div>';
+					
+						if (value[7] == 'image') {
+							if (typeof( value.image_chache) != 'undefined' && value.image_chache) {
+								loadimage[i] = true;
+							} else {
+								loadimage[i] = false;
+							}
+						}
+						//ad hoc
+						else loadimage[i] = true;
+
+						html += '<div class="info_block"';
+						if ($('#info').attr('checked')) {
+							html += ' style="display:block;"';
+						} else {
+							html += ' style="display:none;"';
+						}
+						html += '>'+matrix.cameras[value[5]].text_left+'<br />\
+							'+value[6]+' \
+							'+value[4]+'x'+value[3]+'<br />\
+							</div>';
+						html += '</div>';
+						html += '</div>';
+						
 					}
-					html += '>'+matrix.cameras[value[5]].text_left+'<br />\
-						'+value[6]+' \
-						'+value[4]+'x'+value[3]+'<br />\
-						</div>';
-					html += '</div>';
-					html += '</div>';
+				}
+				$('#scroll_content').html(html);
+			
+			
+				// проверяем какие изображения есть в кеше браузера, а какаие надо загрузить
+				var ci = i + matrix.count_column;
+				var hide_over = true;
+				for(i; i<=ci; i++) {
+					if (typeof( matrix.events[i]) != 'undefined' && matrix.events[i][7] == 'image') {
+						if (typeof( matrix.events[i].image_chache) != 'undefined' && matrix.events[i].image_chache) {
+							loadimage[i] = true;
+						} else {
+							loadimage[i] = false;
+							hide_over = false;
+						}
+					}
+				}
+			
+			
+				// загружаем изображения и меняем размеры
+				$.each(loadimage, function(key, value) {
+					if (value) {
+						matrix.setimagesize(key);
+					}else {
+						matrix.loadsrc(key);
+					}
+			});
+			// обновляем размеры и позиционирование ячеек в матрице
+			$('#scroll_content .content_item').height(matrix.cell_height);
+			$('#scroll_content .content_item').width(matrix.cell_width);
+			$('#scroll_content .content_item').css({'padding' : matrix.cell_padding});
+			
+			//Устанавливаем плеер в матрицу
+			
+			for (var i = sp; i < sp+ matrix.cell_count; i++) {
+					if (typeof( matrix.events[i]) != 'undefined'){
+						 matrix.setimagesize(i);
+						var value = matrix.events[i];
+						var ResizedImgSrc = MediaUrlPref+ value[2];
+						
+						
+						if (value[7] == 'image') {
+							ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url=..'+MediaUrlPref+ value[2];
+							ResizedImgSrc += '&size='+scale.position;
+							ResizedImgSrc += '&mode=icon';
+							ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
+							
+							$('#cell_'+i).find('a').empty().addPlayer({'src': ResizedImgSrc, 'useImageSize':'true' });
+						}
+						else 
+						{
+							$('#cell_'+i).find('a').empty().addPlayer({'src': ResizedImgSrc, 'logoPlay':'true' }).aplayerResizeContanerOnlyToParent();	
+						}
+						
 				}
 			}
-			$('#scroll_content').html(html);
+			
+/*			
+			var exp = new RegExp('\\d+');
+			$('.content_item').each(function(){
+				var ResizedImgSrc = MediaUrlPref+ matrix.events[exp.exec($(this).attr('id'))][2];
+				if(ResizedImgSrc.indexOf('.jpg')!=-1 || ResizedImgSrc.indexOf('.png')!=-1 || ResizedImgSrc.indexOf('.bmp')!=-1 || ResizedImgSrc.indexOf('.gif')!=-1 )
+				{
+					ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url=..'+MediaUrlPref+ matrix.events[exp.exec($(this).attr('id'))][2];
+					ResizedImgSrc += '&size='+scale.position;
+					ResizedImgSrc += '&mode=icon';
+					ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
+				}
+*/
+			/*				else
+				{
+					ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url=..'+WwwPrefix+ "/offline/gallery/img/aplayerControls/logo_play.jpeg";
+					ResizedImgSrc += '&size='+scale.position;
+					ResizedImgSrc += '&mode=icon';
+					ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
+					
+					ResizedImgSrc = WwwPrefix+ "/offline/gallery/img/aplayerControls/logo_play.png"
+				}
+				
+				
+*/
+/*
+				$(this).find('a').empty().addPlayer({'src': ResizedImgSrc, 'controls':'mini', 'logoPlay':'true' });				
+			});
+	*/	
+		}
+		//Перезаполняем существующую матрицу
+		else
+		{
+			// все элементы матрицы есть в кеше, перезаполняем матрицу
+			var loadimage = {};
+			
+			
+		var cells = $('div [id ^=cell_]').each(function(i){
+
+			if (typeof( matrix.events[i+sp]) != 'undefined')
+				{
+					value = matrix.events[i+sp];
+
+				var cont = $(this).attr({'id': 'cell_'+(i+sp)}).find('div.elem>div.img_block>a').attr({'href': '#cell_'+(i+sp) });
+	
+				if (value[7] == 'image') 
+				{
+					if (typeof( value.image_chache) != 'undefined' && value.image_chache) loadimage[i] = true;
+					else loadimage[i] = false;
+				}
+				//Не картинка //ad hoc
+				else
+				{
+					loadimage[i] = true;
+				}
+			}
+		});
+			
+			
 			// проверяем какие изображения есть в кеше браузера, а какаие надо загрузить
 			var ci = i + matrix.count_column;
 			var hide_over = true;
@@ -1506,6 +1743,7 @@ var matrix = {
 					}
 				}
 			}
+
 			// загружаем изображения и меняем размеры
 			$.each(loadimage, function(key, value) {
 				if (value) {
@@ -1514,17 +1752,92 @@ var matrix = {
 					matrix.loadsrc(key);
 				}
 			});
-			// обновляем размеры и позиционирование ячеек в матрице
-			$('#scroll_content .content_item').height(matrix.cell_height);
-			$('#scroll_content .content_item').width(matrix.cell_width);
-			$('#scroll_content .content_item').css({'padding' : matrix.cell_padding});
+
+			
+			$(cells).each(function(i){
+				
+				if (typeof( matrix.events[i+sp]) != 'undefined') {
+					value = matrix.events[i+sp];
+					active = i == matrix.num ? ' active' : '';
+					camera_class = gallery.cookie.get('camera_'+value[5]+'_color');
+					if (camera_class != '') {
+						camera_class = ' '+camera_class;
+					}
+				
+
+					$(this).removeClass().attr({'id': 'cell_'+(i+sp)}).addClass('content_item show'+ ' camera_'+value[5]+' '+ camera_class );   
+				
+					var cont = $(this).find('div.elem>div.img_block>a');
+					var NewSRC = MediaUrlPref+ matrix.events[i+sp][2];
+				
+					if (value[7] == 'image') 
+					{
+						NewSRC = '/avreg/offline/gallery/ResizeImg.php?url=..'+MediaUrlPref+ matrix.events[i+sp][2];
+						NewSRC += '&size='+scale.position;
+						NewSRC += '&mode=icon';
+						NewSRC += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
+						//если ранее в плеере была установлена картинка - меняем src						
+						if($(cont).aplayerIsImage())
+						{
+							 matrix.setimagesize(i+sp);
+							//Загрузка изображения соответствующего размера
+							$(cont).aplayerSetImgSrc(NewSRC).aplayerSetSrcSizes();
+							
+						}
+						//если была не картинка - переустанавливаем плеер
+						else
+						{
+							 matrix.setimagesize(i+sp);
+							$(cont).empty().addPlayer({'src': NewSRC, 'useImageSize':'true' }).aplayerResizeContanerOnlyToParent();	
+						}
+
+					}
+					
+					else
+					{
+/*					
+						ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url=..'+WwwPrefix+ "/offline/gallery/img/aplayerControls/logo_play.jpeg";
+						ResizedImgSrc += '&size='+scale.position;
+						ResizedImgSrc += '&mode=icon';
+						ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
+						
+						NewSRC = WwwPrefix+ "/offline/gallery/img/aplayerControls/logo_play.png"
+						$(cont).aplayerSetImgSrc(NewSRC);
+*/						
+						
+						
+						//Не картинка  - 
+						// задаем новые размеры
+						$(this).find('.img_block>a').css({'display':'block'})
+						.height(matrix.thumb_height)
+						.width(matrix.thumb_width);
+						//пересоздаем плеер
+						$(this).find('a').empty().addPlayer({'src': NewSRC, 'logoPlay':'true' }).aplayerResizeContanerOnlyToParent();	
+						
+					}
+					$(this).show();
+				}
+				else
+				{
+					$(this).remove();
+				}
+
+
+			});
+			
+		}
+			
 			if (hide_over) {
 				$('#matrix_load').hide();
 			}
 		}
 	},
+
 	// выполнения запроса новых событий
 	get_events : function (sp) {
+		
+		
+		
 		// определяем тип событий и список камер
 		var type = '', cameras = '';
 		// проверяем закончился ли предыдущий запрос
@@ -1558,43 +1871,57 @@ var matrix = {
 			// делаем запрос
 			$.post(WwwPrefix+'/offline/gallery.php',{'method':'get_events', 'tree':matrix.tree, 'sp':get_sp, 'type': type, 'cameras': cameras}, function(data) {
 				var i = get_sp;
-
 				// обновляем кеш
 				$.each(data.events, function(key, value) {
 					matrix.all_events[key] = value;
 					matrix.events[i] = value;
 					i++;
 				});
-				// строим матрицу
+/*					// строим матрицу
 				$('#scroll_content').empty();
 				var html = '';
 				var i = sp;
 				var active = '';
-				var loadimage = {};
+*/				var loadimage = {};
 				for (var i = sp; i < sp+ matrix.cell_count; i++) {
-					if (typeof( matrix.events[i]) != 'undefined') {
+					if (typeof( matrix.events[i]) != 'undefined') 
+					{
 					value = matrix.events[i];
-					active = i == matrix.num ? ' active' : '';
-					camera_class = gallery.cookie.get('camera_'+value[5]+'_color');
-					if (camera_class != '') {
-						camera_class = ' '+camera_class;
-					}
-					html += '<div id="cell_'+i+'" class="content_item show'+active+' camera_'+value[5]+' '+camera_class+'">';
+//					active = i == matrix.num ? ' active' : '';
+//					camera_class = gallery.cookie.get('camera_'+value[5]+'_color');
+//					if (camera_class != '') {
+//						camera_class = ' '+camera_class;
+//					}
 
-					html += '<div class="elem">';
-
+					//					html += '<div id="cell_'+i+'" class="content_item show'+active+' camera_'+value[5]+' '+camera_class+'">';
+//					html += '<div class="elem">';
+//					html += '<div class="img_block"><a href="#cell_'+i+'"></a></div>';
+					
 					if (value[7] == 'image') {
 
 						if (typeof( value.image_chache) != 'undefined' && value.image_chache) {
-							html += '<div class="img_block"><a href="#cell_'+i+'"><img src="'+MediaUrlPref + value[2]+'" /></a></div>';
+//							html += '<div class="img_block"><a href="#cell_'+i+'"><img src="'+MediaUrlPref + value[2]+'" /></a></div>';
+
+							//формирует <img> с запросом ресайза							
+//							html += '<div class="img_block"><a href="#cell_'+i+'"><img src="'+'/avreg/offline/gallery/ResizeImg.php?url=media/'+ value[2]+'&size=0&mode=icon&prop=true'+'" /></a></div>';
+							
+							//Create an empty cell
+//							html += '<div class="img_block"><a href="#cell_'+i+'"></a></div>';
+							
 							loadimage[i] = true;
 
 						} else {
-							html += '<div class="img_block"><a href="#cell_'+i+'"><img src="" /></a></div>';
+//							html += '<div class="img_block"><a href="#cell_'+i+'"><img src="" /></a></div>';
 							loadimage[i] = false;
 
 						}
-					} else if (value[7] == 'video') {
+					} 
+					// ad hoc
+					else loadimage[i] = true;
+
+					
+/*					
+					else if (value[7] == 'video') {
 						// html += '<div class="img_block">'+value[2]+'</div>';
 						html += '<div class="img_block"> <a href="'+value[2]+'">'+value[2]+'</a> </div>';
 					} else if (value[7] == 'audio') {
@@ -1616,10 +1943,12 @@ var matrix = {
 					html += '</div>';
 					html += '</div>';
 					}
+*/					
 				};
-				$('#scroll_content').html(html);
+//				$('#scroll_content').html(html);
 
 
+				
 				// проверяем какие изображения есть в кеше браузера, а какаие надо загрузить
 				var ci = i + matrix.count_column;
 				var hide_over = true;
@@ -1633,6 +1962,8 @@ var matrix = {
 						}
 					}
 				}
+				
+/*				
 				// загружаем изображения и меняем размеры
 				$.each(loadimage, function(key, value) {
 					if (value) {
@@ -1641,10 +1972,31 @@ var matrix = {
 						matrix.loadsrc(key);
 					}
 				});
-				// обновляем размеры и позиционирование ячеек в матрице
+*/
+				
+/*				// обновляем размеры и позиционирование ячеек в матрице
 				$('#scroll_content .content_item').height(matrix.cell_height);
 				$('#scroll_content .content_item').width(matrix.cell_width);
 				$('#scroll_content .content_item').css({'padding' : matrix.cell_padding});
+				
+			//Устанавливаем плеер в матрицу
+			var exp = new RegExp('\\d+');
+			$('.content_item').each(function(){
+				var ResizedImgSrc = MediaUrlPref+ matrix.events[exp.exec($(this).attr('id'))][2];
+				if(ResizedImgSrc.indexOf('.jpg')!=-1 || ResizedImgSrc.indexOf('.png')!=-1 || ResizedImgSrc.indexOf('.bmp')!=-1 || ResizedImgSrc.indexOf('.gif')!=-1 )
+				{
+					ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url=..'+MediaUrlPref+ matrix.events[exp.exec($(this).attr('id'))][2];
+					ResizedImgSrc += '&size='+scale.position;
+					ResizedImgSrc += '&mode=icon';
+					ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
+				}
+				$(this).find('a').empty().addPlayer({'src': ResizedImgSrc, 'useImageSize':'true', 'controls':'mini'});				
+			});
+*/				
+		}
+				
+			matrix.update(sp);	
+				
 				// устанавливаем флаг, что запрос выполнился
 				matrix.send_query = false;
 				if (hide_over ) {
@@ -1862,7 +2214,6 @@ var scroll = {
 			if (new_num >=0) {
 				//если находимся в этом же диапазоне событий
 				if (matrix.mode == 'preview') {
-
 					if (!$('#cell_'+new_num).hasClass('show')){
 						sp = Math.floor(new_num / scroll.row_count) * scroll.row_count;
 						scroll.updateposition(sp);
@@ -1910,7 +2261,7 @@ var scroll = {
 					$('#cell_'+matrix.num).removeClass('active');
 					$('#cell_'+new_num).addClass('active');
 					matrix.num = new_num;
-
+					
 				} else if (matrix.mode == 'detail'){
 					matrix.num = new_num;
 					matrix.loaddetailsrc();
@@ -1939,7 +2290,7 @@ var scroll = {
 		// смещаемся вправо
 		num_right : function() {
 			var new_num = matrix.num + 1;
-			if (new_num < scroll.cell_count*scroll.row_count) {
+			if (new_num < scroll.cell_count*scroll.row_count && new_num < matrix.curent_tree_events[matrix.tree].count) {
 				if (matrix.mode == 'preview') {
 					if (!$('#cell_'+new_num).hasClass('show')){
 						sp = Math.floor(new_num / scroll.row_count) * scroll.row_count;
@@ -1972,8 +2323,10 @@ var scroll = {
 		},
 		// смещаемся на ряд ниже
 		num_down : function() {
+			
 			var new_num = matrix.num + scroll.row_count;
-			if (new_num < scroll.cell_count*scroll.row_count) {
+			
+			if (new_num < scroll.cell_count*scroll.row_count && new_num < matrix.curent_tree_events[matrix.tree].count) {
 				if (matrix.mode == 'preview') {
 					if (!$('#cell_'+new_num).hasClass('show')){
 						sp = Math.floor(new_num / scroll.row_count) * scroll.row_count;
@@ -2006,7 +2359,6 @@ var scroll = {
 		// обновляем позицию скрола и перестраиваем матрицу
 		updateposition : function(sp, force) {
 			if (scroll.position != sp || force == true) {
-
 				scroll.position = sp;
 				matrix.update(sp);
 			}
@@ -2016,7 +2368,8 @@ var scroll = {
 			scroll.position = sp;
 			var t = Math.floor(sp/scroll.row_count*(scroll.height-scroll.polzh)/scroll.cell_count);
 			$(scroll.id + ' .scroll_polz_v').css({top:t});
-			matrix.update(sp);
+			//Вызывает повторную перестройку матрицы - commented
+//			matrix.update(sp);
 		}
 };
 // элемент масштаба предварительного просмотра
@@ -2132,6 +2485,7 @@ var scale2 = {
 		min : 0,
 		max : 20,
 		position : 0,
+
 		click_min : function() {
 			var self = this;
 			var sp = self.position - 1;
@@ -2160,17 +2514,39 @@ var scale2 = {
 	//		$('#image_detail').attr('width', parseInt(self.min_width) + Math.floor((self.max_width - self.min_width)*sp/self.max));
 	//		$('#image_detail').attr('height', parseInt(self.min_height) + Math.floor((self.max_height - self.min_height)*sp/self.max));
 
-
-
 			gallery.cookie.set('scale2', sp);
-
-			//Изменение размеров медиа-элемента плеера в "win_bot_detail"
-			$('#win_bot_detail a').aplayerSetSizeMediaElt({
-				'width': parseInt(self.min_width) + Math.floor((self.max_width - self.min_width)*sp/self.max),
-				'height': parseInt(self.min_height) + Math.floor((self.max_height - self.min_height)*sp/self.max)
-			} );
-
-
+			
+			//Изменение положения ползунка масштаба 	
+			if($('#win_bot_detail a').aplayerIsImage())
+			{
+				var ResizedImgSrc = 'http://'+document.location.host+'/avreg/offline/gallery/ResizeImg.php?url=media/'+matrix.cur_source+'&size='+scale2.position;
+				ResizedImgSrc += '&mode=normal';
+				if($('#proportion').attr('checked')=='checked'){
+					ResizedImgSrc +='&prop=true';
+				}
+				else{
+					ResizedImgSrc +='&prop=false';
+				}
+				
+				//Загрузка изображения соответствующего размера
+				$('#win_bot_detail a').each(function(){
+					$(this).aplayerResizeContanerOnlyToParent().aplayerSetImgSrc(ResizedImgSrc).aplayerSetSrcSizes().show();
+					
+				});   
+			}
+			else
+			{
+				//установка размеров плеера в соответствии с размерами родительского элемента
+				$('#win_bot_detail a').aplayerResizeContanerOnlyToParent();
+				//Изменение размеров медиа-элемента плеера в "win_bot_detail"
+				$('#win_bot_detail a').aplayerSetSizeMediaElt({
+					'width': parseInt(self.min_width) + Math.floor((self.max_width - self.min_width)*sp/self.max),
+					'height': parseInt(self.min_height) + Math.floor((self.max_height - self.min_height)*sp/self.max)
+				} );
+			}
+			
+			
+			
 			matrix.resetPositionImage();
 
 
@@ -2375,9 +2751,6 @@ var keyBoard = {
 		$(document).keydown(function (e) {
 			e.preventDefault();
 
-
-			//console.log('keyCode:'+e.which);
-
 			// work any where
 			if(e.which == keyBoard.keys.tab){
 				if(keyBoard.view!==keyBoard.views.colorDialog && keyBoard.view!==keyBoard.views.chooseDialog) {
@@ -2458,7 +2831,6 @@ var keyBoard = {
 						scroll.num_left();
 					} else if(e.which == keyBoard.keys.enter) {
 						matrix.preview();
-					} else if(e.which == keyBoard.keys.down) {
 						var imgHeight = parseInt(matrix.imageDetail.attr('height'));
 
 						if(imgHeight<matrix.height) {
