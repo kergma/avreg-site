@@ -492,16 +492,26 @@
 
 			//Метод вывода изображения
 			showImage:function(container, settings){
-				
-				
+				var im = new Image();
+				im.src = settings.src;
+				im.onerror = function(){
+					im.src = $.aplayer.ControlBar.controlsImg + $.aplayer.logo_error;
+console.log(501+ "src = "+ im.src );						
+					im.onerror = function(){
+
+						$(container).append('<div style="font-size:14; color:red;">Image\'s loading failed </div>');
+//						return;
+					}
+				}
+			
 				if(settings.useImageSize!=null && settings.useImageSize=='true')
 				{
-					$('<img title="'+settings.type+'" src="'+settings.src+'" name="img"/>').appendTo(container);
+					$('<img title="'+settings.type+'" src="'+im.src+'" name="img"/>').appendTo(container);
 					return;
 				}
 				
 				var size = 'style="width:'+settings.width+'px; height:'+settings.height+'px; "';
-				var im = $('<img title="'+settings.type+'" src="'+settings.src+'" '+size+' name="img"/>').attr({'height':settings.height, 'width':settings.width });
+				var im = $('<img title="'+settings.type+'" src="'+im.src+'" '+size+' name="img"/>').attr({'height':settings.height, 'width':settings.width });
 				$(im).appendTo(container);
 			},
 
@@ -728,6 +738,7 @@
 			idSoundOn:'cntrSoundOn_',
 			idVolume:'cntrVolume_',
 
+			logo_error: 'error.jpg',
 			logo_play:'logo_play.png',
 			
 			

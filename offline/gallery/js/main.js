@@ -206,7 +206,7 @@ var gallery = {
 				$('#sidebar .block').width(pageX-26);
 				$('#sidebar #statistics').width(pageX-66);
 				// fix content width on resize
-			//	$('#content').css("left",pageX);
+				//	$('#content').css("left",pageX);
 
 
 				$('#content').width(self.myWidth - $('#sidebar').width() + 2);
@@ -804,9 +804,6 @@ var gallery = {
 				);
 			}
 
-
-
-
 			// обработка выбора чекбокса камеры
 			$('input[name="cameras"]').change(function(){
 				var rez = gallery.reload_cams();
@@ -851,10 +848,6 @@ var gallery = {
 					$(this).children().attr('checked', 'checked');
 				}
 			});
-
-
-
-
 
 			// инициализация изменения размеров столбцов
 			self.resize_column.init();
@@ -915,10 +908,7 @@ var matrix = {
 	cur_source: null, //отн путь текущего медиа файла
 	init: function(config) {
 
-//		matrix.imageDetail = $("#image_detail").css('top', '0');
-
 		matrix.imageDetail = $(".show_detail").css('top', '0');
-
 
 		// отменяет действие по клику
 		$('#scroll_content').click(function(event) {
@@ -1025,18 +1015,6 @@ var matrix = {
 				} else {
 					ui.position.top = 0;
 				}
-				/*var temp = [
-							   ui.position.left,
-							   ui.position.top,
-							   matrix.width,
-							   matrix.height,
-							   matrix.imageDetail.attr('width'),
-							   matrix.imageDetail.attr('height'),
-							   matrix.width-ui.position.left,
-							   matrix.height-ui.position.top
-							];
-							//console.log(temp);
-				*/
 			}
 		});
 		// обновление матрицы
@@ -1135,8 +1113,6 @@ var matrix = {
 		$('#toolbar .detail').show();
 		matrix.resetPositionImage();
 
-
-		
 		if($('#win_bot_detail a').aplayerIsImage())
 			{
 				var ResizedImgSrc = 'http://'+document.location.host+'/avreg/offline/gallery/ResizeImg.php?url=media/'+matrix.cur_source+'&size='+scale2.position;
@@ -1256,9 +1232,7 @@ var matrix = {
 		if (matrix.config.max_cell_width < matrix.cell_width || matrix.config.max_cell_height < matrix.cell_height) {
 			matrix.cell_height = matrix.config.max_cell_height;
 			matrix.cell_width = matrix.config.max_cell_width;
-
 		}
-
 
 		// обновляем элемент масштаба
 		if (old_width != matrix.config.max_cell_width) {
@@ -1317,10 +1291,6 @@ var matrix = {
 			.height(thumb_height)
 			.width(thumb_width)
 			.aplayerSetSize({'height':thumb_height, 'width': thumb_width });
-			
-			// задаем новые размеры
-//			$('#cell_'+el+' .img_block img').attr('width',thumb_width);
-//			$('#cell_'+el+' .img_block img').attr('height',thumb_height);
 		}
 		matrix.resetPositionImage();
 	},
@@ -1328,11 +1298,6 @@ var matrix = {
 	loaddetailsrc : function() {
 		if (typeof(matrix.events[matrix.num]) != 'undefined') {
 			var value = matrix.events[matrix.num];
-
-//			$('#image_detail').attr('src', MediaUrlPref+value[2]);
-
-
-
 
 			// размер матрицы
 			var width = matrix.width;
@@ -1367,11 +1332,6 @@ var matrix = {
 					height = h;
 				}
 			}
-			// устанавливаем новую ширину и высоту
-//			$('#image_detail').attr('width', width);
-//			$('#image_detail').attr('height', height);
-
-	
 			
 			//save source's path
 			matrix.cur_source = value[2];
@@ -1434,44 +1394,7 @@ var matrix = {
 		// создаем объект изображения
 		var img = new Image();
 		img.onload = function() {
-			//изображение загрузилось
-			// показываем картинку в ячейке
 
-//			$('#cell_'+el+' .img_block img').attr('src', MediaUrlPref + matrix.events[el][2]);
-
-//			$('#cell_'+el+' .img_block').addPlayer({ 'src':MediaUrlPref + matrix.events[el][2] });
-			
-			//Устанавливаем плеер в матрицу		
-			//если картинка
-/*			if(matrix.events[el][2].indexOf('.jpg')!=-1 || matrix.events[el][2].indexOf('.png')!=-1 || matrix.events[el][2].indexOf('.bmp')!=-1 || matrix.events[el][2].indexOf('.gif')!=-1 )
-			{
-				
-				var ResizedImgSrc = 'http://'+document.location.host+'/avreg/offline/gallery/ResizeImg.php?url=media/'+matrix.events[el][2]+'&size='+scale2.position;
-				ResizedImgSrc += '&mode=icon';
-				if($('#proportion').attr('checked')=='checked'){
-					ResizedImgSrc +='&prop=true';
-				}
-				else{
-					ResizedImgSrc +='&prop=false';
-				}
-				//Установка плеера в матрицу + Загрузка изображения соответствующего размера
-				$('#cell_'+el+' .img_block a').css({ 'display':'block', 'width':'100%', 'height':'100%', 'type':'audio'}
-					).addPlayer({'src': ResizedImgSrc, 'useImageSize':'true'});// .hide();//, 'useImageSize':'true', 'application':'true' , 'width': width, 'height': height, 'class': 'show_detail' });  
-			}
-			else
-			{
-				//Установка плеера (src+размеры) в "win_bot_detail"
-				$('#cell_'+el+' .img_block a').css({ 'display':'block', 'width':'100%', 'height':'100%', 'type':'audio'}
-				).addPlayer({'src': MediaUrlPref+value[2] , 'controls':'mini'}); // , 'controls':'browser'  , 'application':'true' , 'width': width, 'height': height, 'class': 'show_detail' });
-			}
-
-*/
-			
-
-			
-			// задаем новые размеры изображения
-			matrix.setimagesize(el);
-			
 			// обновляем счетчик загруженных изображений
 			matrix.load_src++;
 			if (matrix.load_src == matrix.count_src) {
@@ -1564,8 +1487,6 @@ var matrix = {
 			//Если кол-во элтов матрицы не соответствует кол-ву установленных плееров- Пересоздаем матрицу 
 			if(matrix.cell_count != $("[id^="+$.aplayer.idContainer+"]").length)	
 			{
-							
-			
 				$('#scroll_content').empty();
 				var html = '';
 			
@@ -1650,19 +1571,17 @@ var matrix = {
 			//Устанавливаем плеер в матрицу
 			
 			for (var i = sp; i < sp+ matrix.cell_count; i++) {
+				matrix.setimagesize(i);
 					if (typeof( matrix.events[i]) != 'undefined'){
-						 matrix.setimagesize(i);
 						var value = matrix.events[i];
 						var ResizedImgSrc = MediaUrlPref+ value[2];
-						
-						
 						if (value[7] == 'image') {
 							ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url=..'+MediaUrlPref+ value[2];
 							ResizedImgSrc += '&size='+scale.position;
 							ResizedImgSrc += '&mode=icon';
 							ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
 							
-							$('#cell_'+i).find('a').empty().addPlayer({'src': ResizedImgSrc, 'useImageSize':'true' });
+							$('#cell_'+i).find('a').empty().addPlayer({'src': ResizedImgSrc, 'useImageSize':'true' }).aplayerResizeContanerOnlyToParent();
 						}
 						else 
 						{
@@ -1671,42 +1590,12 @@ var matrix = {
 						
 				}
 			}
-			
-/*			
-			var exp = new RegExp('\\d+');
-			$('.content_item').each(function(){
-				var ResizedImgSrc = MediaUrlPref+ matrix.events[exp.exec($(this).attr('id'))][2];
-				if(ResizedImgSrc.indexOf('.jpg')!=-1 || ResizedImgSrc.indexOf('.png')!=-1 || ResizedImgSrc.indexOf('.bmp')!=-1 || ResizedImgSrc.indexOf('.gif')!=-1 )
-				{
-					ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url=..'+MediaUrlPref+ matrix.events[exp.exec($(this).attr('id'))][2];
-					ResizedImgSrc += '&size='+scale.position;
-					ResizedImgSrc += '&mode=icon';
-					ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
-				}
-*/
-			/*				else
-				{
-					ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url=..'+WwwPrefix+ "/offline/gallery/img/aplayerControls/logo_play.jpeg";
-					ResizedImgSrc += '&size='+scale.position;
-					ResizedImgSrc += '&mode=icon';
-					ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
-					
-					ResizedImgSrc = WwwPrefix+ "/offline/gallery/img/aplayerControls/logo_play.png"
-				}
-				
-				
-*/
-/*
-				$(this).find('a').empty().addPlayer({'src': ResizedImgSrc, 'controls':'mini', 'logoPlay':'true' });				
-			});
-	*/	
 		}
 		//Перезаполняем существующую матрицу
 		else
 		{
 			// все элементы матрицы есть в кеше, перезаполняем матрицу
 			var loadimage = {};
-			
 			
 		var cells = $('div [id ^=cell_]').each(function(i){
 
@@ -1795,17 +1684,6 @@ var matrix = {
 					
 					else
 					{
-/*					
-						ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url=..'+WwwPrefix+ "/offline/gallery/img/aplayerControls/logo_play.jpeg";
-						ResizedImgSrc += '&size='+scale.position;
-						ResizedImgSrc += '&mode=icon';
-						ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
-						
-						NewSRC = WwwPrefix+ "/offline/gallery/img/aplayerControls/logo_play.png"
-						$(cont).aplayerSetImgSrc(NewSRC);
-*/						
-						
-						
 						//Не картинка  - 
 						// задаем новые размеры
 						$(this).find('.img_block>a').css({'display':'block'})
@@ -1877,78 +1755,26 @@ var matrix = {
 					matrix.events[i] = value;
 					i++;
 				});
-/*					// строим матрицу
-				$('#scroll_content').empty();
-				var html = '';
-				var i = sp;
-				var active = '';
-*/				var loadimage = {};
+				var loadimage = {};
 				for (var i = sp; i < sp+ matrix.cell_count; i++) {
 					if (typeof( matrix.events[i]) != 'undefined') 
 					{
 					value = matrix.events[i];
-//					active = i == matrix.num ? ' active' : '';
-//					camera_class = gallery.cookie.get('camera_'+value[5]+'_color');
-//					if (camera_class != '') {
-//						camera_class = ' '+camera_class;
-//					}
 
-					//					html += '<div id="cell_'+i+'" class="content_item show'+active+' camera_'+value[5]+' '+camera_class+'">';
-//					html += '<div class="elem">';
-//					html += '<div class="img_block"><a href="#cell_'+i+'"></a></div>';
-					
 					if (value[7] == 'image') {
 
 						if (typeof( value.image_chache) != 'undefined' && value.image_chache) {
-//							html += '<div class="img_block"><a href="#cell_'+i+'"><img src="'+MediaUrlPref + value[2]+'" /></a></div>';
-
-							//формирует <img> с запросом ресайза							
-//							html += '<div class="img_block"><a href="#cell_'+i+'"><img src="'+'/avreg/offline/gallery/ResizeImg.php?url=media/'+ value[2]+'&size=0&mode=icon&prop=true'+'" /></a></div>';
-							
-							//Create an empty cell
-//							html += '<div class="img_block"><a href="#cell_'+i+'"></a></div>';
-							
 							loadimage[i] = true;
 
 						} else {
-//							html += '<div class="img_block"><a href="#cell_'+i+'"><img src="" /></a></div>';
 							loadimage[i] = false;
 
 						}
 					} 
 					// ad hoc
 					else loadimage[i] = true;
-
-					
-/*					
-					else if (value[7] == 'video') {
-						// html += '<div class="img_block">'+value[2]+'</div>';
-						html += '<div class="img_block"> <a href="'+value[2]+'">'+value[2]+'</a> </div>';
-					} else if (value[7] == 'audio') {
-						// html += '<div class="img_block">'+value[2]+'</div>';
-						html += '<div class="img_block"> <a href="'+value[2]+'">'+value[2]+'</a> </div>';
-
-					}
-
-					html += '<div class="info_block"';
-					if ($('#info').attr('checked')) {
-						html += ' style="display:block;"';
-					} else {
-						html += ' style="display:none;"';
-					}
-					html += '>'+matrix.cameras[value[5]].text_left+'<br />\
-						'+value[6]+' \
-						'+value[4]+'x'+value[3]+'<br />\
-						</div>';
-					html += '</div>';
-					html += '</div>';
-					}
-*/					
 				};
-//				$('#scroll_content').html(html);
 
-
-				
 				// проверяем какие изображения есть в кеше браузера, а какаие надо загрузить
 				var ci = i + matrix.count_column;
 				var hide_over = true;
@@ -1962,41 +1788,8 @@ var matrix = {
 						}
 					}
 				}
-				
-/*				
-				// загружаем изображения и меняем размеры
-				$.each(loadimage, function(key, value) {
-					if (value) {
-						matrix.setimagesize(key);
-					}else {
-						matrix.loadsrc(key);
-					}
-				});
-*/
-				
-/*				// обновляем размеры и позиционирование ячеек в матрице
-				$('#scroll_content .content_item').height(matrix.cell_height);
-				$('#scroll_content .content_item').width(matrix.cell_width);
-				$('#scroll_content .content_item').css({'padding' : matrix.cell_padding});
-				
-			//Устанавливаем плеер в матрицу
-			var exp = new RegExp('\\d+');
-			$('.content_item').each(function(){
-				var ResizedImgSrc = MediaUrlPref+ matrix.events[exp.exec($(this).attr('id'))][2];
-				if(ResizedImgSrc.indexOf('.jpg')!=-1 || ResizedImgSrc.indexOf('.png')!=-1 || ResizedImgSrc.indexOf('.bmp')!=-1 || ResizedImgSrc.indexOf('.gif')!=-1 )
-				{
-					ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url=..'+MediaUrlPref+ matrix.events[exp.exec($(this).attr('id'))][2];
-					ResizedImgSrc += '&size='+scale.position;
-					ResizedImgSrc += '&mode=icon';
-					ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
-				}
-				$(this).find('a').empty().addPlayer({'src': ResizedImgSrc, 'useImageSize':'true', 'controls':'mini'});				
-			});
-*/				
 		}
-				
 			matrix.update(sp);	
-				
 				// устанавливаем флаг, что запрос выполнился
 				matrix.send_query = false;
 				if (hide_over ) {
