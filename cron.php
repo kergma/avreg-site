@@ -15,8 +15,11 @@ if (in_array('-m',$argv) && isset($argv[array_search('-m', $argv)+1]) && in_arra
 	if (in_array('-c',$argv) && isset($argv[array_search('-c', $argv)+1])) {
 		$params['cameras'] = 	$argv[array_search('-c', $argv)+1];	
 	}
+	if (in_array('-p',$argv) && isset($argv[array_search('-p', $argv)+1])) {
+		$profile = $argv[array_search('-p', $argv)+1];
+	}
 	
-	// Ответ аякс запроса
+	
 	require ('/etc/avreg/site-defaults.php');
 
 
@@ -26,6 +29,9 @@ if (in_array('-m',$argv) && isset($argv[array_search('-m', $argv)+1]) && in_arra
 	} else
 	   $conf = array_merge($conf, $res);
 	
+	if (!empty($profile) && $res = confparse($conf, 'avreg-site', $conf['profiles-dir'].'/'.$profile);)   
+		$conf = array_merge($conf, $res);   
+	   
 	$link=NULL;
 	require_once( $conf['site-dir'].'/lib/my_conn.inc.php');
    	require_once($conf['site-dir'].'/offline/gallery/memcache.php');
@@ -37,9 +43,7 @@ if (in_array('-m',$argv) && isset($argv[array_search('-m', $argv)+1]) && in_arra
 	// Возврат ответа запроса
 	require_once($conf['site-dir'].'/lib/my_close.inc.php');
 	
-} else if (in_array('-m',$argv) && isset($argv[array_search('-m', $argv)+1]) && $argv[array_search('-m', $argv)+1]=='cron_update_tree_events') {
-	
-}
+} 
 
 	/* $params строковый массив, список параметров, которые нужно читать из файла */
 function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params=NULL)

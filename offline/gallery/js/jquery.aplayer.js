@@ -40,14 +40,13 @@
 			});
 		return this;
 	};
-	//-----------------------------------
 
 	//Закрытие плеера
 	$.fn.aplayerClose=function(){
 		$(this).empty();
 		return this;
 	};
-	//-----------------------------------
+
 	//Смена src изображения
 	$.fn.aplayerSetImgSrc = function(imageSource){
 		var pl =  $(this).children('[id ^=' + $.aplayer.idContainer + ']');
@@ -57,13 +56,13 @@
 		$.aplayer.draggable(pl);
 		return this;
 	};
-	//-----------------------------------
+
 	//Медиаэлемент использует размеры источника 
 	$.fn.aplayerSetSrcSizes = function(){
 		$(this).children('[id ^=' + $.aplayer.idContainer + ']').children(':first-child').removeAttr('height').removeAttr('width').css({'height':'', 'width':'' });
 		return this;
 	};
-	//-----------------------------------
+
 	
     //Изменение размеров медиаэлемента
     $.fn.aplayerSetSizeMediaElt = function(Sizes) {
@@ -144,7 +143,6 @@
         });
         return this;
     };
-	//-----------------------------------------
 
     //Является ли медиа-элемент картинкой?
     $.fn.aplayerIsImage = function(){
@@ -172,8 +170,6 @@
 			
             $(Container).children('video, audio, object, embed, img, .'+$.aplayer.classMediaCont).each(function () {
 	           if(!( $(this).hasClass($.aplayer.classMediaCont))) {
-					
-	           	
 	           	
 		       		//Проверяем на перетаскиваемость
 					if($(this).height() > $(this).parent().height() || $(this).width() > $(this).parent().width()) 
@@ -257,7 +253,6 @@
 		init : function(GlobalSettings){
 			$.extend($.aplayer.config, GlobalSettings);
 		},
-			//-----------------------------------
 
 
 			//типы файлов
@@ -267,7 +262,7 @@
 				audio:['.oga','.mp3', '.m4a', '.wav', '.mpeg'],
 				application:['.avi']
 			},
-			//-----------------------------------
+
 			//Расширения и соответствующие MIME types
 			MIMEtypes:{
 				swf		:'application/x-shockwave-flash',
@@ -319,7 +314,7 @@
 
 				return mediaType;
 			},
-			//-----------------------------------
+
 
 			//Определение и установка типа
 			setType: function(settings){
@@ -391,7 +386,6 @@
 				$.extend(settings, {'type':mediaType})
 				return settings;
 			},
-			//-----------------------------------
 
 			//Метод установки плеера
 			play:function(element, settings){
@@ -409,10 +403,10 @@
 
 				//Установка размеров плеера ('Inherit' - установка размеров родительского эл-та)
 				try{
-				if(sets.height.indexOf('Inherit')!=-1)sets.height = $(element).height()-5;
+				if(sets.height.indexOf('Inherit')!=-1)sets.height = $(element).height();
 				}catch(err){};
 				try{
-				if(sets.width.indexOf('Inherit')!=-1)sets.width = $(element).width()-5;
+				if(sets.width.indexOf('Inherit')!=-1)sets.width = $(element).width();
 				}catch(err){};
 
 				//Создание контейнера для плеера
@@ -421,7 +415,7 @@
                 //$(container).height($(element).height()).width($(element).width());
 				$(container).attr('id', $.aplayer.idContainer+$.aplayer.aplayerNo);
 				//Установка дополнительного класса
-				 $(container).addClass(settings['class']);//.addClass('ui-draggable');
+				 $(container).addClass(settings['class']).addClass('aplayer');
 
 				$(element).html(container);
 
@@ -443,8 +437,9 @@
 					var s = sets.src;
 					
 					$(container).attr({'t':t,'s':s}) .click(function(){
-						$(this).parent().addPlayer({'src': $(this).attr('s'), 'type':'"'+$(this).attr('t')+'"' ,'controls':'mini' })
+						$(this).parent().addPlayer({'src': $(this).attr('s'), 'type':'"'+$(this).attr('t')+'"' ,'controls':'mini' }).click()
 						.end().removeAttr('t').removeAttr('s').unbind('click');
+						
 					});
 				}
 				//Если задано значение application - воспроизводить как внедренный объект
@@ -467,7 +462,7 @@
 
 		//корректировка типа воспроизведения в зависимости от версии браузера
 		browserVersionSettings: function(srcType ,settings){
-			//Вывод версии браузера и тип открываемого файла
+		//Вывод версии браузера и тип открываемого файла
 		//	alert('Browser\'s version: '+$.browser.version+'\nSource type: '+ settings.type);
 			switch($.browser.version)
 			{
@@ -488,34 +483,33 @@
 		},
 
 
-			//-----------------------------------
-
 			//Метод вывода изображения
 			showImage:function(container, settings){
+/*
 				var im = new Image();
 				im.src = settings.src;
+				//ошбика при загрузке картинки
 				im.onerror = function(){
 					im.src = $.aplayer.ControlBar.controlsImg + $.aplayer.logo_error;
-console.log(501+ "src = "+ im.src );						
+
 					im.onerror = function(){
 
 						$(container).append('<div style="font-size:14; color:red;">Image\'s loading failed </div>');
-//						return;
+						return;
 					}
 				}
-			
+*/			
 				if(settings.useImageSize!=null && settings.useImageSize=='true')
 				{
-					$('<img title="'+settings.type+'" src="'+im.src+'" name="img"/>').appendTo(container);
+					$('<img title="'+settings.type+'" src="'+settings.src+'" name="img"/>').appendTo(container);
 					return;
 				}
 				
 				var size = 'style="width:'+settings.width+'px; height:'+settings.height+'px; "';
-				var im = $('<img title="'+settings.type+'" src="'+im.src+'" '+size+' name="img"/>').attr({'height':settings.height, 'width':settings.width });
+				var im = $('<img title="'+settings.type+'" src="'+settings.src+'" '+size+' name="img"/>').attr({'height':settings.height, 'width':settings.width });
 				$(im).appendTo(container);
 			},
 
-			//-----------------------------------
 			//Метод для использования плагина
 			showObject:function(container, settings){
 
@@ -554,24 +548,24 @@ console.log(501+ "src = "+ im.src );
 
            //Create video AVI  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
            createObj_AVI: function(settings){
-			var obj = $('<object type="video/avi" data="'+settings.src+'" autoplay="false"> </object>'
-				).append('<param name="src" value="'+settings.src+'" />'
-				).append('<param name="controller" value="true" />'
-				).append('<param name="autoplay" value="false" />'
-				).append('<param name="autostart" value="0" />')
+			var obj = $('<object type="video/avi" data="'+settings.src+'" autoplay="false"> </object>')
+				.append('<param name="src" value="'+settings.src+'" />')
+				.append('<param name="controller" value="true" />')
+				.append('<param name="autoplay" value="false" />')
+				.append('<param name="autostart" value="0" />')
 				.append('<param name="wmode" value="window" >')
 				.append('<param name="play" value="false" >');
-			$(obj).append( $($.aplayer.create_Embed(settings))	);
+			$(obj).append( $($.aplayer.create_Embed(settings)));
             return obj;
            },
 
            //Create audio/wav
            createObj_WAV: function(settings){
-			var obj = $('<object type="audio/x-wav" data="'+settings.src+'" autoplay="false"> </object>'
-				).append('<param name="src" value="'+settings.src+'" />'
-				).append('<param name="controller" value="true" />'
-				).append('<param name="autoplay" value="false" />'
-				).append('<param name="autostart" value="0" />');
+			var obj = $('<object type="audio/x-wav" data="'+settings.src+'" autoplay="false"> </object>')
+				.append('<param name="src" value="'+settings.src+'" />')
+				.append('<param name="controller" value="true" />')
+				.append('<param name="autoplay" value="false" />')
+				.append('<param name="autostart" value="0" />');
 				$(obj).append('<param name="wmode" value="window" >')
 				.append('<param name="play" value="false" >');
 			$(obj).append($($.aplayer.create_Embed(settings)));
@@ -580,11 +574,11 @@ console.log(501+ "src = "+ im.src );
 
            // Create object audio/mp3
            createObj_MP3:function(settings){
-			var obj = $('<object type="audio/x-mpeg" data="'+settings.src+'" autoplay="false"> </object>'
-				).append('<param name="src" value="'+settings.src+'" />'
-				).append('<param name="controller" value="true" />'
-				).append('<param name="autoplay" value="false" />'
-				).append('<param name="autostart" value="0" />');
+			var obj = $('<object type="audio/x-mpeg" data="'+settings.src+'" autoplay="false"> </object>')
+				.append('<param name="src" value="'+settings.src+'" />')
+				.append('<param name="controller" value="true" />')
+				.append('<param name="autoplay" value="false" />')
+				.append('<param name="autostart" value="0" />');
 				$(obj).append('<param name="wmode" value="window" >')
 				.append('<param name="play" value="false" >');
 
@@ -677,7 +671,6 @@ console.log(501+ "src = "+ im.src );
 
 				$.aplayer.setControls(container, settings);
 			},
-			//-------------------------------------
 
 			//Общая для всех плееров конфигурация
 			config:{
@@ -812,32 +805,6 @@ console.log(501+ "src = "+ im.src );
 	            'left':'2px'
 	        },
 
-	        /* Звук - вертикальный слайдер
-            Volume_handle: {
-                'margin-bottom':'-1px',
-	            'left': '-1px',
-                'margin-top':'20px',
-                'z-index': '2',
-	            'width': '8px',
-    	        'height': '2px',
-                'background-color': 'Darkred',
-	            'cursor': 'default',
-	            'border': '1px solid Darkred',
-
-	        },
-            Volume_line: {
-                'width':'8px',
-	            'border': '1px solid Blue',
-	            'background-color': 'Lightblue',
-                'position':'relative',
-                'top':'-122px',
-                'left':'25%',
-                'padding':'0',
-	        },
-			*/
-
-
-
 
 			//Обработчики событий медиа элемента
 			elMediaOnTimeUpdate:function(ElNum){
@@ -899,7 +866,6 @@ console.log(501+ "src = "+ im.src );
 
 
             //Обработчики событий контролов
-
 			soundOnClickHandler: function(ElNum){
                $('#'+$.aplayer.idElMedia+ElNum).each(function(){ this.muted=false; });
 			   $('#'+$.aplayer.idSoundOff+ElNum).show();
@@ -1001,7 +967,6 @@ console.log(501+ "src = "+ im.src );
                 max : 40,
 			    value: 30,
                 orientation: 'horizontal',
-//                stop:function(event, ui){$.aplayer.ControlBar.volumeStopHandler(this);},
                 slide:function(event, ui){$.aplayer.ControlBar.volumeSlideHandler(this);},
                 change:function(event, ui){$.aplayer.ControlBar.volumeSlideHandler(this);}
 			}).attr({
@@ -1103,8 +1068,6 @@ console.log(501+ "src = "+ im.src );
 				.append(Search).append(Play).append(Pause).append(Stop).append(soundOff).append(soundOn);
 			}
             
-            
-
             //Создаем субконтейнер для медиа-элемента, вставлем в него медиа элемент и помещаем в контейнер плеера
 			var SubCont = $('<div></div>').addClass($.aplayer.classMediaCont).css({'overflow':'hidden'}).height(meHeight);
 
@@ -1125,10 +1088,6 @@ console.log(501+ "src = "+ im.src );
 			});
 
 		}
-		//-----------------------------------
-
-
-
 
     };
 
@@ -1159,9 +1118,6 @@ console.log(501+ "src = "+ im.src );
 		audio_mpeg:false,
 		audio_wav:false,
 		audio_x_m4a:false,
-
-
-
 
 		isDefined:false,
 
@@ -1259,8 +1215,6 @@ console.log(501+ "src = "+ im.src );
 			if($.browserInfo.audio_x_m4a=='')$.browserInfo.audio_x_m4a = audio.canPlayType('audio/aac;');
 			if($.browserInfo.audio_x_m4a=='')$.browserInfo.audio_x_m4a=false;
 		}
-
-
 
 	};
 

@@ -1,10 +1,12 @@
 <?php 
-
+require ('/etc/avreg/site-defaults.php');
 //$id = "/var/www/avreg/media/cam_02/2010-05/01/01_21_36.jpg";
 //	http://localhost.sandbox.moonion.com/avreg/offline/gallery/ResizeImg.php?url=media/cam_02/2010-05/01/01_21_36.jpg&size=1
 
-$id = "/var/www/avreg/".$_GET['url'];
-
+$id = $conf['storage-dir'].$conf['media-alias'].'/'.$_GET['url'];
+do {
+    $id = preg_replace('#\w+/\.\./#', '', $id, 1, $c);
+} while($c);
 $im = imagecreatefromjpeg($id);
 $im_width=imageSX($im);
 $im_height=imageSY($im);
