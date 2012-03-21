@@ -34,7 +34,7 @@ class Gallery {
  
     		$type = explode(",", trim($param['type'], ','));
     		
-	    	$query = "SELECT DATE_FORMAT(DT1, '%Y_%m_%d_%H'), DT1, EVT_CONT, U16_2, U16_1, CAM_NR, FILESZ_KB, EVT_ID, TIMEDIFF(DT2 , DT1)";
+	    	$query = "SELECT DATE_FORMAT(DT1, '%Y_%m_%d_%H'), DT1, EVT_CONT, U16_2, U16_1, CAM_NR, FILESZ_KB, EVT_ID, TIMEDIFF(DT1 , DT2)";
 	    	$query .= ' FROM EVENTS';
 	    	// картинки
 	    	$EVT_ID = array();

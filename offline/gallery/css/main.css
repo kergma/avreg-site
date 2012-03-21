@@ -3,7 +3,6 @@
 	width: 80%;
 	float: right;
 	position: absolute;
-	right: 0;	
 	overflow: hidden;
 	height: 100%;
 	background-color: black;
@@ -599,6 +598,7 @@ div.propotion, div.event_info {
 	margin-top: 5px;	
 }
 .info_block {
+	color: #FFFFFF !important;
 	margin-top: 5px;	
 }
 
@@ -644,10 +644,11 @@ font-family: Arial,Verdana,Geneva,Helvetica,sans-serif !important;
 #content #win_bot.selectBox #list_panel {
 	background: #171717;
 }
-
+/*
 .camera_5_color, .camera_9_color, .camera_13_color {
 	clear:left;	
-}
+}*/
+
 .jstree-default .jstree-open ins { cursor: pointer;  }
 .jstree-default .jstree-closed ins { cursor: pointer; }
 .jstree-default .jstree-leaf ins { cursor:auto; }

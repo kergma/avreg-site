@@ -52,7 +52,7 @@
 		var pl =  $(this).children('[id ^=' + $.aplayer.idContainer + ']');
 			$(pl).removeAttr('t','s').unbind('click');
 		
-		$(pl).children(':first-child').attr('src',imageSource).attr('title', 'image');
+		$(pl).children(':first-child').attr('src',imageSource);//.attr('title', 'image');
 		$.aplayer.draggable(pl);
 		return this;
 	};
@@ -116,8 +116,7 @@
 		    $(Cont).children('.'+$.aplayer.classMediaCont).height(function(){
 	        	return $(Cont).height()-$(this).next('div[id ^=' + $.aplayer.idControlPanel + ']').height();
 	        });
-
-	        $(this).find('.logoPlay').css({'top': ($(this).height()- $(this).find('.logoPlay').height())/2 +'px' })
+	        $(this).find('.logoPlay').css({'top': ($(this).height()- $(this).find('.logoPlay').height())/2 });
         });
         
     	return this;
@@ -171,6 +170,7 @@
             $(Container).children('video, audio, object, embed, img, .'+$.aplayer.classMediaCont).each(function () {
 	           if(!( $(this).hasClass($.aplayer.classMediaCont))) {
 	           	
+	     //      	$(this).addClass('show_detail');
 		       		//Проверяем на перетаскиваемость
 					if($(this).height() > $(this).parent().height() || $(this).width() > $(this).parent().width()) 
 					{
@@ -206,6 +206,8 @@
 					}
 	           }
 		       $(this).children('video, audio, embed').each(function () {
+		       	
+		//       	$(this).addClass('show_detail');
 		       		//Проверяем на перетаскиваемость
 					if($(this).height() > $(this).parent().height() || $(this).width() > $(this).parent().width()) 
 					{
@@ -439,7 +441,7 @@
 					$(container).attr({'t':t,'s':s}) .click(function(){
 						$(this).parent().addPlayer({'src': $(this).attr('s'), 'type':'"'+$(this).attr('t')+'"' ,'controls':'mini' }).click()
 						.end().removeAttr('t').removeAttr('s').unbind('click');
-						
+
 					});
 				}
 				//Если задано значение application - воспроизводить как внедренный объект
@@ -501,12 +503,14 @@
 */			
 				if(settings.useImageSize!=null && settings.useImageSize=='true')
 				{
-					$('<img title="'+settings.type+'" src="'+settings.src+'" name="img"/>').appendTo(container);
+					//  title="'+settings.type+'"
+					$('<img  src="'+settings.src+'" name="img"/>').appendTo(container);
 					return;
 				}
 				
 				var size = 'style="width:'+settings.width+'px; height:'+settings.height+'px; "';
-				var im = $('<img title="'+settings.type+'" src="'+settings.src+'" '+size+' name="img"/>').attr({'height':settings.height, 'width':settings.width });
+				// title="'+settings.type+'"
+				var im = $('<img  src="'+settings.src+'" '+size+' name="img"/>').attr({'height':settings.height, 'width':settings.width });
 				$(im).appendTo(container);
 			},
 
@@ -532,18 +536,22 @@
                else if(settings.type.indexOf($.aplayer.MIMEtypes.avi)!=-1) obj = $.aplayer.createObj_AVI(settings);
                else obj = $.aplayer.create_Embed(settings);
 
-               $(obj).attr({'width': settings.width, 'height': settings.height});
+               $(container).height(settings.height);
+               
+ //              $(obj).attr({'width': settings.width, 'height': settings.height});
 
-              $(obj).append($('<noembed>Your browser does not support video!!!!!!!!!!!!!!!!!!!!! </noembed>'));
+//              $(obj).append($('<noembed>Your browser does not support video!!!!!!!!!!!!!!!!!!!!! </noembed>'));
 
                $(container).html(obj);
         	},
 
             //create EMBED
             create_Embed:function(settings){
-                var size = 'width="'+settings.width+'" height="'+settings.height+'"';
-                return $('<embed type="'+settings.type+'" play="false" autostart="false" auto="false" autoplay="false" allowfullscreen="true" allowScriptAccess="always" '+size+' />'
-                    ).attr({'width': settings.width, 'height': settings.height, 'src':settings.src , wmode:"window" }); //.html('<noembed>Your browser does not support video</noembed>'); //'Your browser does not support video');
+//                var size = 'width="'+settings.width+'" height="'+settings.height+'"';  // '+size+'
+                return $('<embed type="'+settings.type+'" play="false" autostart="false" auto="false" autoplay="false" allowfullscreen="true" allowScriptAccess="always"  />'
+                    ).attr({'src':settings.src , wmode:"window" })
+                    .width(settings.width)
+                    .height(settings.height); //.html('<noembed>Your browser does not support video</noembed>'); //'Your browser does not support video');
            },
 
            //Create video AVI  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -555,7 +563,8 @@
 				.append('<param name="autostart" value="0" />')
 				.append('<param name="wmode" value="window" >')
 				.append('<param name="play" value="false" >');
-			$(obj).append( $($.aplayer.create_Embed(settings)));
+				$(obj).width(settings.width).height(settings.height);
+            $(obj).append( $($.aplayer.create_Embed(settings)));
             return obj;
            },
 
@@ -581,7 +590,7 @@
 				.append('<param name="autostart" value="0" />');
 				$(obj).append('<param name="wmode" value="window" >')
 				.append('<param name="play" value="false" >');
-
+				$(obj).width(settings.width).height(settings.height);
 			$(obj).append($($.aplayer.create_Embed(settings)));
             return obj;
            },
@@ -590,9 +599,10 @@
             createObj_QuickTime:function(settings){
                var obj = $('<object classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" codebase="http://www.apple.com/qtactivex/qtplugin.cab"></object>');
                $(obj).append('<param name="controller" value="true" />').append('<param name="src" value="'+settings.src+'" />');
-               $(obj).append($($.aplayer.create_Embed(settings)).attr({ "TYPE":"image/x-macpaint"}));
                $(obj).append('<param name="wmode" value="window" >')
 				.append('<param name="play" value="false" >');
+				$(obj).width(settings.width).height(settings.height);
+				$(obj).append($($.aplayer.create_Embed(settings)).attr({ "TYPE":"image/x-macpaint", 'Height':settings.height}));
                return obj;
             },
 
@@ -617,7 +627,8 @@
 //               $(obj).append('<param name="devicefont" value="false" />');
 //			    $(obj).append('<param name="salign" value="" />');
 //				$(obj).append('<param name="allowScriptAccess" value="sameDomain" />');
-
+				$(obj).width(settings.width)
+                .height(settings.height);
                $(obj).append($($.aplayer.create_Embed(settings)).removeAttr('type') );
              //   $(obj).append('<div><h4>Content on this page requires a newer version of Adobe Flash Player.</h4><p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif"alt="Get Adobe Flash player" width="112" height="33" /></a></p></div>');
                return obj;
@@ -635,7 +646,9 @@
                		).append('<param name="playcount" value="1">');
 			 $(obj).append('<param name="wmode" value="window" >')
 				.append('<param name="play" value="false" >');
-			   $(obj).append('<embed type="audio/wav" play="false" wmode="window" PLUGINSPAGE="http://www.microsoft.com/windows/windowsmedia/download/" src="'+settings.src+'" width="'+settings.width+'" height="'+settings.height+'" autostart="false" showcontrols="true"></embed>');
+				$(obj).width(settings.width)
+                .height(settings.height);
+			   $(obj).append('<embed type="audio/wav" play="false" wmode="window" PLUGINSPAGE="http://www.microsoft.com/windows/windowsmedia/download/" src="'+settings.src+'" style="width:'+settings.width+'px; height:'+settings.height+'px;" autostart="false" showcontrols="true"></embed>');
                return obj;
             },
 

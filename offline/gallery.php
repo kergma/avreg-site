@@ -10,7 +10,9 @@ if (!isset($_POST['method']) && !isset($_GET['method'])) {
 	// Подключение стилей
 	$css_links = array( 'offline/gallery/css/main.css',
 				'offline/gallery/css/html5reset-1.6.1.css',
-				'offline/gallery/css/jquery-ui-1.8.17.custom.css');
+				'offline/gallery/css/jquery-ui-1.8.17.custom.css',
+				'offline/gallery/css/tooltip.css'
+	);
 	// Подключение js скриптов
 	$link_javascripts = array(	'offline/gallery/js/jquery-1.7.1.min.js',
 								'offline/gallery/js/jquery.jstree.js',
@@ -24,6 +26,8 @@ if (!isset($_POST['method']) && !isset($_GET['method'])) {
 
 								'offline/gallery/js/jquery-ui-1.8.17.custom.min.js',
 								'offline/gallery/js/jquery.aplayer.js',
+								'offline/gallery/js/jquery.tooltip.js'
+	
 						);
 	require_once('../head.inc.php');
 	$GCP_query_param_list=array('text_left', 'Hx2');

@@ -203,13 +203,14 @@ var gallery = {
 				var self = this;
 
 				$('#sidebar').width(pageX + 2);
+				
 				$('#sidebar .block').width(pageX-26);
 				$('#sidebar #statistics').width(pageX-66);
 				// fix content width on resize
 				//	$('#content').css("left",pageX);
 
 
-				$('#content').width(self.myWidth - $('#sidebar').width() + 2);
+				$('#content').width(self.myWidth - $('#sidebar').width() ).css('margin-left', pageX + 2);
 				$('#list_panel').width($('#content').width()-38);
 
 
@@ -255,6 +256,8 @@ var gallery = {
 
 				if (pageX) {
 					self.resize(pageX);
+				} else {
+					gallery.cookie.set('resize_column', 300);
 				}
 			}
 		},
@@ -299,6 +302,7 @@ var gallery = {
 				alert(lang.empty_cameras);
 				return false;
 			}
+			
 			return true;
 		},
 		cookie : {
@@ -751,7 +755,6 @@ var gallery = {
 					$("#tree_"+next).jstree("set_focus");
 					$.jstree._focused().select_node("#tree_"+next);
 				}
-
 			},
 			init:	function() {
 				var self = this;
@@ -848,7 +851,27 @@ var gallery = {
 					$(this).children().attr('checked', 'checked');
 				}
 			});
+		//Кнопка смены режима просмотра - детальный/миниатюры	
+			var btnCangeMode =	$('<div class="select_mode"> <div id="btn_ViewModeText" style="color: #FFFFFF; ">Просмотр</div>	</div>');
+			$(btnCangeMode).find('#btn_ViewModeText').hover(
+				function(){
+						$('#btn_ViewModeText').css({ 'cursor':'pointer'});
+					},
+				function(){$('#btn_ViewMode').css({'background-color':'#aaaaaa'});})
+					.click(function(){
+					if(matrix.mode == 'detail')
+					{
+						matrix.preview();
+					}
+					else
+					{
+						matrix.detail();
+					}
+						
+				});
+		$("#toolbar>#toolbar_left:first-child").prepend(btnCangeMode);
 
+			
 			// инициализация изменения размеров столбцов
 			self.resize_column.init();
 
@@ -866,13 +889,13 @@ var gallery = {
 
 			// инициализация событий клавиатуры
 			keyBoard.init();
-		
-		//Кнопка смены режима просмотра - детальный/миниатюры	
-		var btnCangeMode =	$('<div id="loolbar_middle" style="float:left; width:110px; position:relative; left: 100px">\
+			
+/*		var btnCangeMode =	$('<div id="loolbar_middle" style="float:left; width:110px; position:absolute; left: 250px">\
 				<img id="btn_ViewMode" src="gallery/img/pushbutton.png" style="background-color:#aaaaaa; height:35px; width:100%;" />\
-				<div id="btn_ViewModeText" style="color:#eeeeee; position: relative; top:-27px; left: 10px; ">&nbsp;&nbsp;Просмотр</div>\
+				<div id="btn_ViewModeText" style="color:#eeeeee; position: relative; top:-26px; left: 10px; ">&nbsp;&nbsp;Просмотр</div>\
 			</div>');
-		$(btnCangeMode).find('#btn_ViewMode, #btn_ViewModeText').hover(
+
+			$(btnCangeMode).find('#btn_ViewMode, #btn_ViewModeText').hover(
 				function(){
 						$('#btn_ViewMode').css({'background-color':'#888888', 'cursor':'pointer'});
 						$('#btn_ViewModeText').css({ 'cursor':'pointer'});
@@ -897,7 +920,9 @@ var gallery = {
 				});
 		
 		$("#toolbar>#toolbar_left").after(btnCangeMode);
-		
+*/
+			
+			
 		}
 };
 
@@ -940,8 +965,10 @@ var matrix = {
 	cur_source: null, //отн путь текущего медиа файла
 	init: function(config) {
 
-		matrix.imageDetail = $(".show_detail").css('top', '0');
+//		matrix.imageDetail = $(".show_detail").css('top', '0');
 
+		
+		
 		// отменяет действие по клику
 		$('#scroll_content').click(function(event) {
 			event.preventDefault();
@@ -1022,7 +1049,7 @@ var matrix = {
 
 		// убираем скроллы
 		$('#win_bot_detail').css('overflow', 'hidden');
-
+/*
 		matrix.imageDetail.draggable({
 			drag: function(event, ui){
 
@@ -1049,6 +1076,7 @@ var matrix = {
 				}
 			}
 		});
+*/		
 		// обновление матрицы
 		matrix.resize();
 		//инициализации элемента масштаба режима миниатюр
@@ -1061,11 +1089,12 @@ var matrix = {
 		self.res = false;
 		// изменить размер матрицы если было изменено размеры окна
 		$(window).bind("resize", function(){
+			
 			clearInterval(self.res);
 
 
 			self.res = setTimeout(function() {
-
+				
 				pageX = parseInt(gallery.cookie.get('resize_column'));
 
 				if (pageX) {
@@ -1085,14 +1114,17 @@ var matrix = {
 					} else {
 						pageX = 300;
 					}
+					
 					gallery.cookie.set('resize_column', pageX);
 					gallery.resize_column.resize(pageX);
+					
 				}
 				matrix.resize();clearInterval(self.res);}, 200);
 		});
 
 
 	},
+/*
 	resetPositionImage: function(){
 		matrix.imageDetail.css('top', '0');
 		matrix.imageDetail.css('left', '0');
@@ -1106,12 +1138,17 @@ var matrix = {
 			matrix.imageDetail.css('cursor', 'default');
 		}
 	},
+*/
 	// обновление чекбокса пропорций
 	doProportion : function() {
 		$('#scroll_content .show').each(function() {
 			matrix.setimagesize($(this).attr('id').replace('cell_',''));
 		});
-		matrix.loaddetailsrc();
+	
+		//Если в режиме detail для аудио и видео переключается "Сохр.пропорци" - ничего не делаем
+		if(matrix.mode == 'detail' && !$('#win_bot_detail a').aplayerIsImage())return;
+		else matrix.loaddetailsrc();
+		
 		if ($('#proportion').attr('checked')) {
 			gallery.cookie.set('proportion', 'checked');
 		} else {
@@ -1135,15 +1172,28 @@ var matrix = {
 	},
 	// если включили режим детальный просмотр
 	detail : function() {
+		$('#toolbar').height($('#toolbar').height());
 		keyBoard.beforeView = keyBoard.view;
 		keyBoard.view = keyBoard.views.detail;
 		matrix.mode = 'detail';
-		matrix.loaddetailsrc();
+		
+	matrix.loaddetailsrc();
+/*		//Если картинка - переустанавливаем плеер
+		if(matrix.events[matrix.num][7]=='image') matrix.loaddetailsrc();
+		//Если нет - используем плеер из активного элемента матрицы
+		else
+		{
+			$('#win_bot_detail a').empty();
+			$('#cell_'+matrix.num).find('[id ^='+$.aplayer.idContainer+']').appendTo('#win_bot_detail a');
+		}
+*/		
 		$('#win_bot').hide();
-		$('#toolbar .preview').hide();
+//		$('#toolbar .preview').hide();
+		$('#toolbar .preview').css({'display':'none'});
+
 		$('#win_bot_detail').show();
 		$('#toolbar .detail').show();
-		matrix.resetPositionImage();
+//		matrix.resetPositionImage();
 
 		if($('#win_bot_detail a').aplayerIsImage())
 			{
@@ -1165,13 +1215,21 @@ var matrix = {
 			else
 			{
 		//установка размеров плеера в соответствии с размерами родительского элемента
-		$('#win_bot_detail a').aplayerResizeContanerOnlyToParent();
+				scale2.updateposition(scale2.position);
+//		$('#win_bot_detail a').aplayerResizeContanerOnlyToParent();
 		//Изменение размеров медиа-элемента плеера в "win_bot_detail"
-		$('#win_bot_detail a').aplayerSetSizeMediaElt({
+		
+/*		$('#win_bot_detail a').aplayerSetSizeMediaElt({
 			'width': parseInt(self.min_width) + Math.floor((self.max_width - self.min_width)*sp/self.max),
 			'height': parseInt(self.min_height) + Math.floor((self.max_height - self.min_height)*sp/self.max)
 		} );
+*/
 		}
+		
+		//присваиваем значение элементу детального просмотра
+//		matrix.imageDetail = $(".show_detail").css('top', '0');
+//		matrix.currentOffset = matrix.imageDetail.offset();
+		
 		//Смена названия кнопки режима просмотра
 		$('#btn_ViewModeText').html('Миниатюры');
 	},
@@ -1198,7 +1256,7 @@ var matrix = {
 			$('#toolbar .preview').show();
 
 			//Корректировка позиционирования контента после ресайза
-			$('.img_block>a').aplayerResizeContanerOnlyToParent();
+//			$('.img_block>a').aplayerResizeContanerOnlyToParent();
 			
 			// обновляем матрицу с использованием новой позиции
 			if (!$('#cell_'+matrix.num).hasClass('show')){
@@ -1208,13 +1266,14 @@ var matrix = {
 			}
 			$('#scroll_content .content_item').removeClass('active');
 			$('#cell_'+matrix.num).addClass('active');
-			
+
 			//Смена названия кнопки режима просмотра
-			$('#btn_ViewModeText').html('&nbsp;&nbsp;Просмотр');
+			$('#btn_ViewModeText').html('Просмотр');
+			
 			
 		}
 	},
-	// перестраиваем матрицу при зменении размеров
+	// перестраиваем матрицу при именении размеров
 	resize: function() {
 		// обновляем ширину колонок
 		gallery.resize_column.resize($('#sidebar').width()-2);
@@ -1251,6 +1310,7 @@ var matrix = {
 		// исправление бага с высотой!!! придумать что то лучше
 		//if($('#list_panel').height()!==0) matrix.height = $('#list_panel').height();
 		matrix.height = hc;
+		
 		
 		// 	исправяем баг с длинной не видимого элемента
 		var pan_height = $('#list_panel').css('height');
@@ -1305,7 +1365,7 @@ var matrix = {
 			scroll.setposition(sp);
 
 		}
-		matrix.resetPositionImage();
+//		matrix.resetPositionImage();
 	},
 	// задаем размер изображения в ячейке
 	setimagesize : function(el) {
@@ -1331,12 +1391,24 @@ var matrix = {
 			}
 			
 			// задаем новые размеры
-			$('#cell_'+el+' .img_block>a').css({'display':'block'})
-			.height(thumb_height)
-			.width(thumb_width)
-			.aplayerSetSize({'height':thumb_height, 'width': thumb_width });
+			if($('#cell_'+el+' .img_block>a').aplayerIsImage())
+			{
+				$('#cell_'+el+' .img_block>a').css({'display':'block'})
+				.height(thumb_height)
+				.width(thumb_width)
+				.aplayerSetSize({'height':thumb_height, 'width': thumb_width });
+				
+			}
+			else
+			{
+				$('#cell_'+el+' .img_block>a').css({'display':'block'})
+				.height(thumb_height)
+				.width(thumb_width)
+				.aplayerResizeContanerOnlyToParent();
+			}
+		
 		}
-		matrix.resetPositionImage();
+//		matrix.resetPositionImage();
 	},
 	// загружаем изображение в окно детального просмотра
 	loaddetailsrc : function() {
@@ -1349,7 +1421,7 @@ var matrix = {
 			// максимальный размер увеличения
 			var wm = width*2;
 			var hm = height*2;
-			if ($('#proportion').attr('checked')) {
+			if ($('#proportion').attr('checked') || value[7]=='video') {
 				// если выбран режим сохранять пропорции
 				if (value[3] < matrix.height && value[4] < matrix.width) {
 					// если изображение влазиет в окно просмотра, то используем оригинальные размеры
@@ -1379,8 +1451,8 @@ var matrix = {
 			
 			//save source's path
 			matrix.cur_source = value[2];
-			
-			if(matrix.cur_source.indexOf('.jpg')!=-1 || matrix.cur_source.indexOf('.png')!=-1 || matrix.cur_source.indexOf('.bmp')!=-1 ||matrix.cur_source.indexOf('.gif')!=-1 )
+
+			if(value[7]=='image')
 			{
 				var ResizedImgSrc = 'http://'+document.location.host+'/avreg/offline/gallery/ResizeImg.php?url='+matrix.cur_source+'&size='+scale2.position;
 				ResizedImgSrc += '&mode=normal';
@@ -1398,17 +1470,24 @@ var matrix = {
 						$(this).aplayerResizeContanerOnlyToParent().aplayerSetImgSrc(ResizedImgSrc).aplayerSetSrcSizes().show();
 					}); 
 				}
-				else{				
+				else{
 					//Установка плеера в "win_bot_detail" + Загрузка изображения соответствующего размера
-					$('#win_bot_detail a').css({ 'display':'block', 'width':'100%', 'height':'100%', 'type':'audio'}
-						).addPlayer({'src': ResizedImgSrc, 'useImageSize':'true'});//.hide();//, 'useImageSize':'true', 'application':'true' , 'width': width, 'height': height, 'class': 'show_detail' });  
+					$('#win_bot_detail a').css({ 'display':'block', 'width':'100%', 'height':'100%'})
+					.addPlayer({'src': ResizedImgSrc, 'useImageSize':'true'});
+					//.hide();//, 'useImageSize':'true', 'application':'true' , 'width': width, 'height': height,  });  
 				}
 			}
-			else
+			else if(value[7]=='audio')
 			{
 				//Установка плеера (src+размеры) в "win_bot_detail"
-				$('#win_bot_detail a').css({ 'display':'block', 'width':'100%', 'height':'100%'})
-					.addPlayer({'src': MediaUrlPref+value[2] }); //, 'controls':'mini' , 'controls':'browser'  , 'application':'true' , 'width': width, 'height': height, 'class': 'show_detail' });
+				$('#win_bot_detail a').css({ 'display':'block', 'width':'100%', 'height':'100%'}).addPlayer({'src': MediaUrlPref+value[2] }); 
+				//, 'controls':'mini' , 'controls':'browser'  , 'application':'true' , 'width': width, 'height': height, 'class': 'show_detail' });
+			}
+			else  // if(value[7]=='video')
+			{
+				//Установка плеера (src+размеры) в "win_bot_detail"
+				$('#win_bot_detail a').css({ 'display':'block', 'width':'100%', 'height':'100%'}).addPlayer({'src': MediaUrlPref+value[2] }); 
+				// , 'controls':'mini' , 'controls':'browser'  , 'application':'true' , 'width': width, 'height': height, 'class': 'show_detail' });
 			}
 
 			// обновляем параметры элемента масштаба
@@ -1425,7 +1504,7 @@ var matrix = {
 				<span><strong>'+lang.date+'</strong>'+value[1]+'</span><br />';
 			$('#statistics').html(stat);
 		}
-		matrix.resetPositionImage();
+//		matrix.resetPositionImage();
 	},
 	// загрузка изображения
 	loadsrc : function(el) {
@@ -1476,12 +1555,12 @@ var matrix = {
 		};
 		// загружаем изображение
 		img.src = MediaUrlPref + matrix.events[el][2];
-		matrix.resetPositionImage();
+//		matrix.resetPositionImage();
 	},
 
 	// обовление матрицы
 	update : function(sp) {
-
+		
 		$('#matrix_load').show();
 	
 		var reg = new RegExp('\\.\\w{3,4}\\s*', 'i'); //для получения расширения файла
@@ -1545,14 +1624,12 @@ var matrix = {
 						
 						value = matrix.events[i];
 
-						active = i == matrix.num ? ' active' : '';
-
 						camera_class = gallery.cookie.get('camera_'+value[5]+'_color');
 						if (camera_class != '') {
 							camera_class = ' '+camera_class;
 						}
 
-						html += '<div id="cell_'+i+'" class="content_item show'+active+' camera_'+value[5]+' '+camera_class+'">';
+						html += '<div id="cell_'+i+'" class="content_item show'+' camera_'+value[5]+' '+camera_class+'">';
 						html += '<div class="elem">';
 
 						html += '<div class="img_block"><a class="refBox" href="#cell_'+i+'"></a></div>';
@@ -1586,12 +1663,8 @@ var matrix = {
 						if (value[7] == 'image') html +=' ('+ value[6]+') <br /> </div></a>';
 						else html +=' ('+ value[8]+') <br /> </div></a>';
 						
-						
 						html += '</div>';
 						html += '</div>';
-
-
-						
 						
 					}
 				}
@@ -1627,11 +1700,20 @@ var matrix = {
 			$('#scroll_content .content_item').css({'padding' : matrix.cell_padding});
 			
 			//Устанавливаем плеер в матрицу
-			
 			for (var i = sp; i < sp+ matrix.cell_count; i++) {
 				matrix.setimagesize(i);
 					if (typeof( matrix.events[i]) != 'undefined'){
 						var value = matrix.events[i];
+						
+						//Получить расширение файла 
+					 	var extension=value[2].match(reg);
+					 	extension=extension[extension.length-1].slice(1);
+					 	//формирование информационной строки
+						var ttl = matrix.cameras[value[5]].text_left+'<br />'+value[7]+': '+extension+"<br />";
+						if (value[7] == 'image') ttl +=	' ('+ value[6]+')';
+						else ttl +=	 ' ('+ value[8]+')';
+
+						
 						var ResizedImgSrc = MediaUrlPref+ value[2];
 						if (value[7] == 'image') {
 							ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url='+ value[2];
@@ -1639,14 +1721,12 @@ var matrix = {
 							ResizedImgSrc += '&mode=icon';
 							ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
 							
-							$('#cell_'+i).find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'useImageSize':'true' }).aplayerResizeContanerOnlyToParent();
+							$('#cell_'+i).attr('tooltip',ttl).find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'useImageSize':'true' }).aplayerResizeContanerOnlyToParent();
 						}
 						else 
 						{
-							$('#cell_'+i).find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'logoPlay':'true' }).aplayerResizeContanerOnlyToParent();
-							//'type': value[7]+'/application',
+							$('#cell_'+i).attr('tooltip',ttl).find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'logoPlay':'true' }).aplayerResizeContanerOnlyToParent();
 						}
-						
 				}
 			}
 		}
@@ -1706,13 +1786,14 @@ var matrix = {
 				
 				if (typeof( matrix.events[i+sp]) != 'undefined') {
 					value = matrix.events[i+sp];
-					active = i == matrix.num ? ' active' : '';
 					camera_class = gallery.cookie.get('camera_'+value[5]+'_color');
 					if (camera_class != '') {
 						camera_class = ' '+camera_class;
 					}
 				
+					
 
+					
 					$(this).removeClass().attr({'id': 'cell_'+(i+sp)}).addClass('content_item show'+ ' camera_'+value[5]+' '+ camera_class );   
 				
 					var cont = $(this).find('div.elem>div.img_block>a.refBox');
@@ -1757,37 +1838,43 @@ var matrix = {
 				 	var extension=value[2].match(reg);
 				 	extension=extension[extension.length-1].slice(1);
 
+				 	//формирование информационной строки
+					var ttl = matrix.cameras[value[5]].text_left+'<br />'+value[7]+': '+extension+"<br />";
+					if (value[7] == 'image') ttl +=	' ('+ value[6]+')';
+					else ttl +=	 ' ('+ value[8]+')';
+					
 				 	//Заполнение инфо-блока
-				 	$(this)				
+				 	$(this)
+				 	.attr({"tooltip":ttl})		
 					.show()
-					.find('.info_block').html(function(){ 
-						var html = matrix.cameras[value[5]].text_left+'<br />'+value[7]+': '+extension;
-						if (value[7] == 'image') html +=	 ' ('+ value[6]+') <br /> </div></a>';
-						else html +=	 ' ('+ value[8]+') <br /> </div></a>';
-						return html;
+					.find('.info_block').html(function(){
+						//формирование информационной строки
+						var info_html = matrix.cameras[value[5]].text_left+'<br />'+value[7]+': '+extension;
+						if (value[7] == 'image') info_html +=	 ' ('+ value[6]+') <br /> </div></a>';
+						else info_html +=	 ' ('+ value[8]+') <br /> </div></a>';
+						return info_html;
 					});
 				}
 				else
 				{
 					$(this).remove();
 				}
-
-
 			});
 			
 		}
-			
 			if (hide_over) {
 				$('#matrix_load').hide();
 			}
 		}
+		
+		$(".content_item").tooltip();
+		
+		if(matrix.num > sp+matrix.cell_count) matrix.num = sp;
+		$('#cell_'+matrix.num).addClass('active');
 	},
 
 	// выполнения запроса новых событий
 	get_events : function (sp) {
-		
-		
-		
 		// определяем тип событий и список камер
 		var type = '', cameras = '';
 		// проверяем закончился ли предыдущий запрос
@@ -1872,6 +1959,7 @@ var matrix = {
 	},
 	// постройка матрицы временного диапазона
 	build: function(){
+		
 		$('#matrix_load').show();
 		matrix.cur_count_item = 0;
 
@@ -1949,7 +2037,7 @@ var matrix = {
 		//инициализируем элемент скрола
 		scroll.init({height:matrix.height-82, cell_count:Math.ceil(matrix.count_item/matrix.count_column), row_count: matrix.count_column, matrix_count: Math.ceil(matrix.cell_count/matrix.count_column)});
 		matrix.scroll = true;
-		matrix.resetPositionImage();
+//		matrix.resetPositionImage();
 	}
 };
 // элемент скрол
@@ -2032,11 +2120,14 @@ var scroll = {
 					scroll.updateposition(scroll.position, true);
 					scroll.mousemove = false;
 					matrix.num = scroll.position;
+					$('#cell_'+matrix.num).addClass('active');
 				}
 			});
 
 			$("#win_bot").unbind('mousewheel');
 			$("#win_bot").mousewheel(function(event, delta) {
+
+		
 				if (delta > 0) {
 					scroll.num_up();
 				} else {
@@ -2413,7 +2504,7 @@ var scale2 = {
 			
 			
 			
-			matrix.resetPositionImage();
+//			matrix.resetPositionImage();
 
 
 		},
@@ -2486,7 +2577,7 @@ var keyBoard = {
 		p : 80,
 		s : 83,
 		minus : 189,
-		plus : 187,
+		plus : 107,
 		minus2: 109,
 		plus2: 61,
 		tab : 9,
@@ -2685,6 +2776,7 @@ var keyBoard = {
 
 			//work in views
 			if(keyBoard.view==keyBoard.views.detail) { // DETAIL
+				
 				if(e.which == keyBoard.keys.minus || e.which == keyBoard.keys.minus2) {
 					scale2.click_min();
 				} else if(e.which == keyBoard.keys.plus || e.which == keyBoard.keys.plus2) {
@@ -2697,13 +2789,16 @@ var keyBoard = {
 						scroll.num_left();
 					} else if(e.which == keyBoard.keys.enter) {
 						matrix.preview();
+					} else if(e.which == keyBoard.keys.down) {
+// отработка для стрелок в детальном режиме				
 						var imgHeight = parseInt(matrix.imageDetail.attr('height'));
-
+						
 						if(imgHeight<matrix.height) {
 							return;
 						}
 
 						var pos = matrix.imageDetail.offset();
+
 						pos.top -= 20;
 
 						var imgHeight = parseInt(matrix.imageDetail.attr('height'));
@@ -2714,6 +2809,7 @@ var keyBoard = {
 						matrix.imageDetail.offset(pos);
 
 					} else if(e.which == keyBoard.keys.up) {
+						
 						var imgHeight = parseInt(matrix.imageDetail.attr('height'));
 
 						if(imgHeight<matrix.height) {
