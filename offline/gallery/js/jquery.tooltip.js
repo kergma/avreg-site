@@ -9,8 +9,8 @@
 			$(this)
 			 .mouseover(function(e){
 				 if($(".tooltip").length>0)return; //ограничение кол-ва эдентичных тултипов(при отключении logo_play)
-				 $('<div class="tooltip" id="tooltip_'+i+'" ><p>'+$(this).attr('tooltip')+'</p></div>')
-				 	.css({opacity:0.9,left:e.pageX-10, top:e.pageY+20 })
+				 $('<div class="tooltip" id="tooltip_'+i+'" ><table >'+$(this).attr('tooltip')+'</table></div>')
+				 	.css({'left':e.pageX-10, 'top':e.pageY+20 })
 				 	.fadeIn(400)
 				 	.appendTo('body');
 			 })

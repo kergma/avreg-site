@@ -7,6 +7,15 @@ $id = $conf['storage-dir'].$conf['media-alias'].'/'.$_GET['url'];
 do {
     $id = preg_replace('#\w+/\.\./#', '', $id, 1, $c);
 } while($c);
+
+if (!file_exists($id))
+{
+		$id = $conf['storage-dir'].$conf['media-alias'].'/'.'../offline/gallery/img/error.jpg';
+	do {
+    	$id = preg_replace('#\w+/\.\./#', '', $id, 1, $c);
+	} while($c);
+}
+
 $im = imagecreatefromjpeg($id);
 $im_width=imageSX($im);
 $im_height=imageSY($im);

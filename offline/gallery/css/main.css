@@ -277,7 +277,7 @@
 	font-size:12px;
 	line-height:96px;
 	text-align:center;
-	color:#003366;
+/*	color:#003366;*/
 }
 
 
@@ -296,7 +296,8 @@
 	background-color:#ffdab9;
 }
 .camera_1_color_font {
-	color:#ffdab9; 
+/*	color:#ffdab9; 
+*/
 }
 .camera_2_color .img_block {
 	border: 2px solid #778899;	
@@ -306,8 +307,8 @@
 	background-color: #778899;
 }
 .camera_2_color_font {
-	color:#778899; 
-}
+/*	color:#778899; 
+*/}
 .camera_3_color .img_block {
 	border: 2px solid #e6e6fa;		
 	/*background-color: lavender;*/ 
@@ -315,8 +316,10 @@
 .window_body .camera_3_color {
 	background-color: #e6e6fa;
 }
+
 .camera_3_color_font {
-	color: #e6e6fa; 
+/*	color: #e6e6fa; 
+*/
 }
 .camera_4_color .img_block {
 	border: 2px solid #347fcc;	
@@ -326,7 +329,8 @@
 	background-color: #347fcc;
 }
 .camera_4_color_font {
-	color:	#347fcc; 
+/*	color:	#347fcc; 
+*/
 }
 .camera_5_color .img_block {
 	border: 2px solid #8f7dff;		
@@ -336,7 +340,8 @@
 	background-color: #8f7dff;
 }
 .camera_5_color_font {
-	color:#8f7dff; 
+/*	color:#8f7dff; 
+*/
 }
 .camera_6_color .img_block {
 	border: 2px solid #9dff34;	
@@ -346,7 +351,8 @@
 	background-color: #9dff34;
 }
 .camera_6_color_font {
-	color:#9dff34; 
+/*	color:#9dff34; 
+*/
 }
 .camera_7_color .img_block {
 	border: 2px solid #ff3434;
@@ -356,7 +362,8 @@
 	background-color: #ff3434;
 }
 .camera_7_color_font {
-	color:#ff3434; 
+/*	color:#ff3434; 
+*/
 }
 .camera_8_color .img_block {
 	border: 2px solid #87cefa;
@@ -366,7 +373,8 @@
 	background-color: #87cefa;
 }
 .camera_8_color_font {
-	color:	#87cefa; 
+/*	color:	#87cefa; 
+*/
 }
 .camera_9_color .img_block {
 	border: 2px solid #006400;
@@ -376,7 +384,8 @@
 	background-color: #006400;
 }
 .camera_9_color_font {
-	color:#006400; 
+/*	color:#006400; 
+*/
 }
 .camera_10_color .img_block {
 	border: 4px solid #98fb98;
@@ -386,8 +395,8 @@
 	background-color: #98fb98;
 }
 .camera_10_color_font {
-	color:#98fb98; 
-}
+/*	color:#98fb98; 
+*/}
 .camera_11_color .img_block {
 	border: 2px solid #ffffe0;
 	/*background-color:LawnGreen; */
@@ -396,7 +405,8 @@
 	background-color: #ffffe0;
 }
 .camera_11_color_font {
-	color:#ffffe0; 
+/*	color:#ffffe0; 
+*/
 }
 .camera_12_color .img_block {
 	border: 2px solid #b0c4de;
@@ -405,8 +415,8 @@
 	background-color: #b0c4de;
 }
 .camera_12_color_font {
-	color:#b0c4de; 	
-}
+/*	color:#b0c4de; 	
+*/}
 
 .camera_13_color .img_block {
 	/*background-color:IndianRed; */
@@ -416,7 +426,8 @@
 	background-color: #cd5c5c;
 }
 .camera_13_color_font {
-	color:#cd5c5c; 
+/*	color:#cd5c5c; 
+*/
 }
 .camera_14_color .img_block {
 	/*background-color:Orange;*/ 
@@ -426,7 +437,8 @@
 	background-color: #ffa500;
 }
 .camera_14_color_font {
-	color:#ffa500; 
+/*	color:#ffa500; 
+*/
 }
 .camera_15_color .img_block  {
 	border: 2px solid #ff69b4;
@@ -436,7 +448,8 @@
 	background-color: #ff69b4;
 }
 .camera_15_color_font {
-	color:#ff69b4; 
+/*	color:#ff69b4; 
+*/
 }
 .camera_16_color .img_block {
 	border: 2px solid #ffc0cb;
@@ -446,7 +459,8 @@
 	background-color: #ffc0cb;
 }
 .camera_16_color_font {
-	color:#ffc0cb; 
+/*	color:#ffc0cb; 
+*/
 }
 
 

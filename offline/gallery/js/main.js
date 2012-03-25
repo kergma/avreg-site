@@ -1,4 +1,5 @@
-﻿function Enum() {
+﻿
+function Enum() {
 	this.allValues = [];
 	this.currentValue = 0;
 	for (var i=0, ilen=arguments.length; i<ilen; i++) {
@@ -201,7 +202,6 @@ var gallery = {
 			// функция изменения ширины столбцов
 			resize : function(pageX) {
 				var self = this;
-
 				$('#sidebar').width(pageX + 2);
 				
 				$('#sidebar .block').width(pageX-26);
@@ -209,10 +209,8 @@ var gallery = {
 				// fix content width on resize
 				//	$('#content').css("left",pageX);
 
-
 				$('#content').width(self.myWidth - $('#sidebar').width() ).css('margin-left', pageX + 2);
 				$('#list_panel').width($('#content').width()-38);
-
 
 				var hc = $('#content').height() - 100 - $('#toolbar').height()-28;
 				$('#win_bot').height(hc);
@@ -889,40 +887,6 @@ var gallery = {
 
 			// инициализация событий клавиатуры
 			keyBoard.init();
-			
-/*		var btnCangeMode =	$('<div id="loolbar_middle" style="float:left; width:110px; position:absolute; left: 250px">\
-				<img id="btn_ViewMode" src="gallery/img/pushbutton.png" style="background-color:#aaaaaa; height:35px; width:100%;" />\
-				<div id="btn_ViewModeText" style="color:#eeeeee; position: relative; top:-26px; left: 10px; ">&nbsp;&nbsp;Просмотр</div>\
-			</div>');
-
-			$(btnCangeMode).find('#btn_ViewMode, #btn_ViewModeText').hover(
-				function(){
-						$('#btn_ViewMode').css({'background-color':'#888888', 'cursor':'pointer'});
-						$('#btn_ViewModeText').css({ 'cursor':'pointer'});
-					},
-				function(){$('#btn_ViewMode').css({'background-color':'#aaaaaa'});})
-				.mousedown(function(){
-					$('#btn_ViewMode').css({'background-color':'#555555'});
-				})
-				.mouseup(function(){
-					$('#btn_ViewMode').css({'background-color':'#888888'});
-				})
-				.click(function(){
-					if(matrix.mode == 'detail')
-					{
-						matrix.preview();
-					}
-					else
-					{
-						matrix.detail();
-					}
-						
-				});
-		
-		$("#toolbar>#toolbar_left").after(btnCangeMode);
-*/
-			
-			
 		}
 };
 
@@ -958,6 +922,7 @@ var matrix = {
 	scroll: false, // использование скрола
 	count_src : 0,
 	load_src: 0,
+	reference:'reference', //имя аттрибута для освобождения href ссылок
 	mode : 'preview', // режим просмотра
 	cur_count_item : 0, // текущее количество загруженных событий
 	send_query: false, // можно ли посылать запросы к базе
@@ -992,7 +957,7 @@ var matrix = {
 		// изменено на dblclick
 		$('.matrix_mode a').dblclick(function(e) {
 			e.preventDefault();
-			var mode = $(this).attr('href').replace('#','');
+			var mode = $(this).attr(matrix.reference).replace('#','');
 			matrix[mode]();
 			return false;
 		});
@@ -1122,7 +1087,8 @@ var matrix = {
 				matrix.resize();clearInterval(self.res);}, 200);
 		});
 
-
+		//Освобождение атрибута href для указания прямой ссылки на ресурс
+		$('#win_bot_detail a').attr({'href':'', reference:'#preview'})
 	},
 /*
 	resetPositionImage: function(){
@@ -1142,7 +1108,7 @@ var matrix = {
 	// обновление чекбокса пропорций
 	doProportion : function() {
 		$('#scroll_content .show').each(function() {
-			matrix.setimagesize($(this).attr('id').replace('cell_',''));
+				matrix.setimagesize($(this).attr('id').replace('cell_',''));
 		});
 	
 		//Если в режиме detail для аудио и видео переключается "Сохр.пропорци" - ничего не делаем
@@ -1177,16 +1143,8 @@ var matrix = {
 		keyBoard.view = keyBoard.views.detail;
 		matrix.mode = 'detail';
 		
-	matrix.loaddetailsrc();
-/*		//Если картинка - переустанавливаем плеер
-		if(matrix.events[matrix.num][7]=='image') matrix.loaddetailsrc();
-		//Если нет - используем плеер из активного элемента матрицы
-		else
-		{
-			$('#win_bot_detail a').empty();
-			$('#cell_'+matrix.num).find('[id ^='+$.aplayer.idContainer+']').appendTo('#win_bot_detail a');
-		}
-*/		
+		matrix.loaddetailsrc();
+		
 		$('#win_bot').hide();
 //		$('#toolbar .preview').hide();
 		$('#toolbar .preview').css({'display':'none'});
@@ -1195,9 +1153,13 @@ var matrix = {
 		$('#toolbar .detail').show();
 //		matrix.resetPositionImage();
 
+		//Устанавливаем прямую ссылку на ресурс
+		$('#win_bot_detail a').attr({'href': $('#cell_'+matrix.num+' a.refBox' ).attr('href') });
+		
 		if($('#win_bot_detail a').aplayerIsImage())
 			{
-				var ResizedImgSrc = 'http://'+document.location.host+'/avreg/offline/gallery/ResizeImg.php?url='+matrix.cur_source+'&size='+scale2.position;
+				//'http://'+document.location.host+
+				var ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url='+matrix.cur_source+'&size='+scale2.position;
 				ResizedImgSrc += '&mode=normal';
 				if($('#proportion').attr('checked')=='checked'){
 					ResizedImgSrc +='&prop=true';
@@ -1214,27 +1176,16 @@ var matrix = {
 			}
 			else
 			{
-		//установка размеров плеера в соответствии с размерами родительского элемента
-				scale2.updateposition(scale2.position);
-//		$('#win_bot_detail a').aplayerResizeContanerOnlyToParent();
-		//Изменение размеров медиа-элемента плеера в "win_bot_detail"
-		
-/*		$('#win_bot_detail a').aplayerSetSizeMediaElt({
-			'width': parseInt(self.min_width) + Math.floor((self.max_width - self.min_width)*sp/self.max),
-			'height': parseInt(self.min_height) + Math.floor((self.max_height - self.min_height)*sp/self.max)
-		} );
-*/
+			//установка размеров плеера в соответствии с размерами родительского элемента
+			scale2.updateposition(scale2.position);
 		}
-		
-		//присваиваем значение элементу детального просмотра
-//		matrix.imageDetail = $(".show_detail").css('top', '0');
-//		matrix.currentOffset = matrix.imageDetail.offset();
 		
 		//Смена названия кнопки режима просмотра
 		$('#btn_ViewModeText').html('Миниатюры');
 	},
 	// если включили режим миниатюр
 	preview : function() {
+		$('.propotion').show();
 		if (typeof(matrix.curent_tree_events[matrix.tree]) != 'undefined') {
 			keyBoard.beforeView = keyBoard.view;
 			keyBoard.view = keyBoard.views.matrix;
@@ -1254,9 +1205,6 @@ var matrix = {
 			
 			$('#win_bot').show();
 			$('#toolbar .preview').show();
-
-			//Корректировка позиционирования контента после ресайза
-//			$('.img_block>a').aplayerResizeContanerOnlyToParent();
 			
 			// обновляем матрицу с использованием новой позиции
 			if (!$('#cell_'+matrix.num).hasClass('show')){
@@ -1267,6 +1215,11 @@ var matrix = {
 			$('#scroll_content .content_item').removeClass('active');
 			$('#cell_'+matrix.num).addClass('active');
 
+			//корректирока размеров ячеек
+			$('#scroll_content .show').each(function() {
+				matrix.setimagesize($(this).attr('id').replace('cell_',''));
+			});
+						
 			//Смена названия кнопки режима просмотра
 			$('#btn_ViewModeText').html('Просмотр');
 			
@@ -1275,12 +1228,12 @@ var matrix = {
 	},
 	// перестраиваем матрицу при именении размеров
 	resize: function() {
+
 		// обновляем ширину колонок
 		gallery.resize_column.resize($('#sidebar').width()-2);
 		$('#tree').height($('#sidebar').height() - $('#type_event').height() - $('#favorite').height() - $('#statistics').height()-90);
 
 		// высчитываем размеры табнейлов
-//		matrix.thumb_width = matrix.cell_width-matrix.config.cell_padding*2;
 		matrix.thumb_width = matrix.cell_width-matrix.config.cell_padding;
 		matrix.thumb_height = matrix.cell_height-matrix.config.cell_padding*2;
 
@@ -1363,8 +1316,16 @@ var matrix = {
 			sp = Math.floor(sp/scroll.row_count)*scroll.row_count;
 			scroll.updateposition(sp, true);
 			scroll.setposition(sp);
-
 		}
+		
+		//корректировка размеров плеера в detail режиме
+		if(matrix.mode=='detail')
+		{
+			//корректируем размеры плеера
+			scale2.updateposition(scale2.position);
+		}
+
+		
 //		matrix.resetPositionImage();
 	},
 	// задаем размер изображения в ячейке
@@ -1391,9 +1352,9 @@ var matrix = {
 			}
 			
 			// задаем новые размеры
-			if($('#cell_'+el+' .img_block>a').aplayerIsImage())
+			if($('#cell_'+el+' a.refBox').aplayerIsImage())
 			{
-				$('#cell_'+el+' .img_block>a').css({'display':'block'})
+				$('#cell_'+el+' a.refBox').css({'display':'block'})
 				.height(thumb_height)
 				.width(thumb_width)
 				.aplayerSetSize({'height':thumb_height, 'width': thumb_width });
@@ -1401,12 +1362,12 @@ var matrix = {
 			}
 			else
 			{
-				$('#cell_'+el+' .img_block>a').css({'display':'block'})
+				$('#cell_'+el+' a.refBox').css({'display':'block'})
 				.height(thumb_height)
 				.width(thumb_width)
 				.aplayerResizeContanerOnlyToParent();
 			}
-		
+			
 		}
 //		matrix.resetPositionImage();
 	},
@@ -1424,7 +1385,7 @@ var matrix = {
 			if ($('#proportion').attr('checked') || value[7]=='video') {
 				// если выбран режим сохранять пропорции
 				if (value[3] < matrix.height && value[4] < matrix.width) {
-					// если изображение влазиет в окно просмотра, то используем оригинальные размеры
+					// если изображение влазит в окно просмотра, то используем оригинальные размеры
 					width = value[4];
 					height = value[3];
 					wm = width*2;
@@ -1454,7 +1415,9 @@ var matrix = {
 
 			if(value[7]=='image')
 			{
-				var ResizedImgSrc = 'http://'+document.location.host+'/avreg/offline/gallery/ResizeImg.php?url='+matrix.cur_source+'&size='+scale2.position;
+				$('.propotion').show();
+				// 'http://'+document.location.host+ - removed from path
+				var ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url='+matrix.cur_source+'&size='+scale2.position;
 				ResizedImgSrc += '&mode=normal';
 				if($('#proportion').attr('checked')=='checked'){
 					ResizedImgSrc +='&prop=true';
@@ -1479,14 +1442,17 @@ var matrix = {
 			}
 			else if(value[7]=='audio')
 			{
+				$('.propotion').hide();
 				//Установка плеера (src+размеры) в "win_bot_detail"
 				$('#win_bot_detail a').css({ 'display':'block', 'width':'100%', 'height':'100%'}).addPlayer({'src': MediaUrlPref+value[2] }); 
 				//, 'controls':'mini' , 'controls':'browser'  , 'application':'true' , 'width': width, 'height': height, 'class': 'show_detail' });
 			}
-			else  // if(value[7]=='video')
+			else if(value[7]=='video')
 			{
+				$('.propotion').hide();
 				//Установка плеера (src+размеры) в "win_bot_detail"
-				$('#win_bot_detail a').css({ 'display':'block', 'width':'100%', 'height':'100%'}).addPlayer({'src': MediaUrlPref+value[2] }); 
+				$('#win_bot_detail a').css({ 'display':'block', 'width':'100%', 'height':'100%'})
+				.addPlayer({'src': MediaUrlPref+value[2]}); 
 				// , 'controls':'mini' , 'controls':'browser'  , 'application':'true' , 'width': width, 'height': height, 'class': 'show_detail' });
 			}
 
@@ -1510,6 +1476,7 @@ var matrix = {
 	loadsrc : function(el) {
 		// увеличиваем счетчик изображений
 		matrix.count_src++;
+		
 		if (matrix.count_src > matrix.load_src) {
 			// если количество загруженных изображений меньше количество всего изображений, показываем ромашку
 			$('#matrix_load').show();
@@ -1517,7 +1484,6 @@ var matrix = {
 		// создаем объект изображения
 		var img = new Image();
 		img.onload = function() {
-
 			// обновляем счетчик загруженных изображений
 			matrix.load_src++;
 			if (matrix.load_src == matrix.count_src) {
@@ -1532,8 +1498,8 @@ var matrix = {
 			//изображение не загрузилось
 			// показываем картинку ошибки в ячейке
 //			$('#cell_'+el+' .img_block img').attr('src', WwwPrefix+'/offline/gallery/img/error.jpg');
-			
-				var ResizedImgSrc = 'http://'+document.location.host+'/avreg/offline/gallery/ResizeImg.php?url='+'../offline/gallery/img/error.jpg'+'&size='+scale2.position;
+				//'http://'+document.location.host+
+				var ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url='+'../offline/gallery/img/error.jpg'+'&size='+scale2.position;
 				ResizedImgSrc += '&mode=icon';
 				if($('#proportion').attr('checked')=='checked'){
 					ResizedImgSrc +='&prop=true';
@@ -1553,8 +1519,23 @@ var matrix = {
 				$('#matrix_load').hide();
 			}
 		};
-		// загружаем изображение
-		img.src = MediaUrlPref + matrix.events[el][2];
+		
+		var value = matrix.events[el];
+		//формируем строку запроса для ресайза картинки
+		var ResizedImgSrc;// = MediaUrlPref+ value[2];
+		if (value[7] == 'image') {
+			ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url='+ value[2];
+			ResizedImgSrc += '&size='+scale.position;
+			ResizedImgSrc += '&mode=icon';
+			ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
+			// загружаем изображение
+			img.src = ResizedImgSrc;
+		}
+		else
+		{
+			img.src = MediaUrlPref + matrix.events[el][2];
+		}
+		
 //		matrix.resetPositionImage();
 	},
 
@@ -1564,6 +1545,7 @@ var matrix = {
 		$('#matrix_load').show();
 	
 		var reg = new RegExp('\\.\\w{3,4}\\s*', 'i'); //для получения расширения файла
+		
 		var i = sp;
 		var active = '';
 		var get = false;
@@ -1632,7 +1614,7 @@ var matrix = {
 						html += '<div id="cell_'+i+'" class="content_item show'+' camera_'+value[5]+' '+camera_class+'">';
 						html += '<div class="elem">';
 
-						html += '<div class="img_block"><a class="refBox" href="#cell_'+i+'"></a></div>';
+						html += '<div class="img_block"><a class="refBox" '+matrix.reference+'="#cell_'+i+'"></a></div>';
 					
 						if (value[7] == 'image') {
 							if (typeof( value.image_chache) != 'undefined' && value.image_chache) {
@@ -1644,7 +1626,7 @@ var matrix = {
 						//ad hoc
 						else loadimage[i] = true;
 
-						html += '<a href="#cell_'+i+'"><div class="info_block"';
+						html += '<a '+matrix.reference+'="#cell_'+i+'"><div class="info_block"';
 						if ($('#info').attr('checked')) {
 							html += ' style="display:block;"';
 						} else {
@@ -1704,28 +1686,37 @@ var matrix = {
 				matrix.setimagesize(i);
 					if (typeof( matrix.events[i]) != 'undefined'){
 						var value = matrix.events[i];
-						
-						//Получить расширение файла 
-					 	var extension=value[2].match(reg);
-					 	extension=extension[extension.length-1].slice(1);
-					 	//формирование информационной строки
-						var ttl = matrix.cameras[value[5]].text_left+'<br />'+value[7]+': '+extension+"<br />";
-						if (value[7] == 'image') ttl +=	' ('+ value[6]+')';
-						else ttl +=	 ' ('+ value[8]+')';
-
-						
+					 	
+						//формирование html ToolTip
+						var ttl = '<tr><td>Камера</td> <td>'+matrix.cameras[value[5]].text_left+'</td> </tr>';
+						if (value[7] == 'image')
+						{
+							ttl +='<tr><td>Файл</td>   <td>'+value[2].slice((value[2].lastIndexOf('/')+1))+'</td> </tr>';
+							ttl +='<tr><td>Размер</td> <td>'+ value[6]+' ['+value[3]+'x'+value[4]+']</td> </tr>';
+							ttl +='<tr><td>Создан</td> <td>'+value[1]+'</td> </tr>';
+						}
+						else 
+						{
+							ttl += '<tr><td>Файл</td>   <td>'+value[2].slice((value[2].lastIndexOf('/')+1))+' ['+value[3]+'x'+value[4]+']</td> </tr>';
+							ttl +='<tr><td>Размер</td> <td>'+value[6]+', '+ value[8]+'</td> </tr>';
+							ttl +='<tr><td>Начало</td> <td>'+value[9]+'</td> </tr>';
+							ttl +='<tr><td>Конец</td> <td>'+value[1]+'</td> </tr>';
+						}
+							
 						var ResizedImgSrc = MediaUrlPref+ value[2];
+						//Установка прямой ссылки на ресурс
+						$('#cell_'+i+' a').attr({'href': ResizedImgSrc })
 						if (value[7] == 'image') {
 							ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url='+ value[2];
 							ResizedImgSrc += '&size='+scale.position;
 							ResizedImgSrc += '&mode=icon';
 							ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
 							
-							$('#cell_'+i).attr('tooltip',ttl).find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'useImageSize':'true' }).aplayerResizeContanerOnlyToParent();
+							$('#cell_'+i).find(".elem").attr('tooltip',ttl).end().find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'useImageSize':'true' }).aplayerResizeContanerOnlyToParent();
 						}
 						else 
 						{
-							$('#cell_'+i).attr('tooltip',ttl).find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'logoPlay':'true' }).aplayerResizeContanerOnlyToParent();
+							$('#cell_'+i).find(".elem").attr('tooltip',ttl).end().find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'logoPlay':'true' }).aplayerResizeContanerOnlyToParent();
 						}
 				}
 			}
@@ -1742,7 +1733,7 @@ var matrix = {
 				{
 					value = matrix.events[i+sp];
 
-				var cont = $(this).attr({'id': 'cell_'+(i+sp)}).find('div.elem a').attr({'href': '#cell_'+(i+sp) });
+				var cont = $(this).attr({'id': 'cell_'+(i+sp)}).find('div.elem a').attr({reference: '#cell_'+(i+sp) });
 	
 				if (value[7] == 'image') 
 				{
@@ -1791,14 +1782,14 @@ var matrix = {
 						camera_class = ' '+camera_class;
 					}
 				
-					
-
-					
 					$(this).removeClass().attr({'id': 'cell_'+(i+sp)}).addClass('content_item show'+ ' camera_'+value[5]+' '+ camera_class );   
 				
 					var cont = $(this).find('div.elem>div.img_block>a.refBox');
 					var NewSRC = MediaUrlPref+ matrix.events[i+sp][2];
-				
+
+					//Установка прямой ссылки на ресурс
+					$('#cell_'+(i+sp)+' a').attr({'href': NewSRC })
+					
 					if (value[7] == 'image') 
 					{
 						NewSRC = '/avreg/offline/gallery/ResizeImg.php?url='+ matrix.events[i+sp][2];
@@ -1838,14 +1829,26 @@ var matrix = {
 				 	var extension=value[2].match(reg);
 				 	extension=extension[extension.length-1].slice(1);
 
-				 	//формирование информационной строки
-					var ttl = matrix.cameras[value[5]].text_left+'<br />'+value[7]+': '+extension+"<br />";
-					if (value[7] == 'image') ttl +=	' ('+ value[6]+')';
-					else ttl +=	 ' ('+ value[8]+')';
+					//формирование html ToolTip
+					var ttl = '<tr><td>Камера</td> <td>'+matrix.cameras[value[5]].text_left+'</td> </tr>';
+					if (value[7] == 'image')
+					{
+						ttl +='<tr><td>Файл</td>   <td>'+value[2].slice((value[2].lastIndexOf('/')+1))+'</td> </tr>';
+						ttl +='<tr><td>Размер</td> <td>'+ value[6]+' ['+value[3]+'x'+value[4]+']</td> </tr>';
+						ttl +='<tr><td>Создан</td> <td>'+value[1]+'</td> </tr>';
+					}
+					else 
+					{
+						ttl += '<tr><td>Файл</td>   <td>'+value[2].slice((value[2].lastIndexOf('/')+1))+' ['+value[3]+'x'+value[4]+']</td> </tr>';
+						ttl +='<tr><td>Размер</td> <td>'+value[6]+', '+ value[8]+'</td> </tr>';
+						ttl +='<tr><td>Начало</td> <td>'+value[9]+'</td> </tr>';
+						ttl +='<tr><td>Конец</td> <td>'+value[1]+'</td> </tr>';
+					}
+
 					
 				 	//Заполнение инфо-блока
 				 	$(this)
-				 	.attr({"tooltip":ttl})		
+				 	.find(".elem").attr({"tooltip":ttl}).end()		
 					.show()
 					.find('.info_block').html(function(){
 						//формирование информационной строки
@@ -1867,8 +1870,7 @@ var matrix = {
 			}
 		}
 		
-		$(".content_item").tooltip();
-		
+		$(".elem").tooltip();
 		if(matrix.num > sp+matrix.cell_count) matrix.num = sp;
 		$('#cell_'+matrix.num).addClass('active');
 	},
@@ -2086,6 +2088,8 @@ var scroll = {
 			$('#toolbar .prew').click(function(e) {
 				e.preventDefault();
 				scroll.num_left();
+				//Устанавливаем прямую ссылку на ресурс
+				$('#win_bot_detail a').attr({'href': $('#cell_'+matrix.num+' a.refBox' ).attr('href') });
 				return false;
 			});
 			// обработка нажатия стрелки следующее
@@ -2093,6 +2097,8 @@ var scroll = {
 			$('#toolbar .next').click(function(e) {
 				e.preventDefault();
 				scroll.num_right();
+				//Устанавливаем прямую ссылку на ресурс
+				$('#win_bot_detail a').attr({'href': $('#cell_'+matrix.num+' a.refBox' ).attr('href') });
 				return false;
 			});
 
@@ -2112,7 +2118,6 @@ var scroll = {
 						scroll.position = sp;
 					}
 				});
-
 			});
 			$(document).mouseup(function(e){
 				if (scroll.mousemove) {
@@ -2153,10 +2158,8 @@ var scroll = {
 						sp = sp + scroll.matrix_count*scroll.row_count;
 					}
 				}
-
 				scroll.updateposition(sp);
 				scroll.setposition(sp);
-				$('#cell_'+sp).addClass('active');
 				matrix.num = scroll.position;
 				
 			});
@@ -2468,15 +2471,15 @@ var scale2 = {
 		updateposition : function(sp) {
 			var self = this;
 			self.position = sp;
-	//		$('#image_detail').attr('width', parseInt(self.min_width) + Math.floor((self.max_width - self.min_width)*sp/self.max));
-	//		$('#image_detail').attr('height', parseInt(self.min_height) + Math.floor((self.max_height - self.min_height)*sp/self.max));
 
 			gallery.cookie.set('scale2', sp);
-			
+
+			if(matrix.mode=='detail') $('#scale2').show();
 			//Изменение положения ползунка масштаба 	
-			if($('#win_bot_detail a').aplayerIsImage())
+			if($('#win_bot_detail a').aplayerIsImage()) //Если картинка
 			{
-				var ResizedImgSrc = 'http://'+document.location.host+'/avreg/offline/gallery/ResizeImg.php?url='+matrix.cur_source+'&size='+scale2.position;
+				//'http://'+document.location.host+
+				var ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url='+matrix.cur_source+'&size='+scale2.position;
 				ResizedImgSrc += '&mode=normal';
 				if($('#proportion').attr('checked')=='checked'){
 					ResizedImgSrc +='&prop=true';
@@ -2491,10 +2494,19 @@ var scale2 = {
 					
 				});   
 			}
-			else
+			else if( $('#win_bot_detail a').aplayerIsEmbededObject() ) //Если внедренный объект
 			{
+				//Скрываем елемент управления масштабом
+				$('#scale2').hide();
 				//установка размеров плеера в соответствии с размерами родительского элемента
-				$('#win_bot_detail a').aplayerResizeContanerOnlyToParent();
+				$('#win_bot_detail a').aplayerResizeToParent();
+			
+			}
+			else // HTML5-player
+			{
+				sp+=3; //Несколько увеличиваем размер медиаэлемента 
+				//установка размеров плеера в соответствии с размерами родительского элемента
+				$('#win_bot_detail a').aplayerResizeToParent();
 				//Изменение размеров медиа-элемента плеера в "win_bot_detail"
 				$('#win_bot_detail a').aplayerSetSizeMediaElt({
 					'width': parseInt(self.min_width) + Math.floor((self.max_width - self.min_width)*sp/self.max),
@@ -2502,10 +2514,7 @@ var scale2 = {
 				} );
 			}
 			
-			
-			
 //			matrix.resetPositionImage();
-
 
 		},
 		reload : function() {

@@ -125,20 +125,22 @@
     //Установка размеров плеера в соответствии с размерами его контейнера
     $.fn.aplayerResizeToParent = function () {
 	    $(this).children('div[id ^=' + $.aplayer.idContainer + ']').each(function () {
-	    $(this).height($(this).parent().height() - 5);
-	    $(this).width($(this).parent().width() - 5);
+	    $(this).height($(this).parent().height() - 2);
+	    $(this).width($(this).parent().width() - 2);
 	    var Cont = $(this);
 
 	$(Cont).children('object, embed, img').each(function () {
-	        $(this).height($(Cont).height() - 6).width($(Cont).width() - 6);
+	        $(this).height($(Cont).height() - 1).width($(Cont).width() - 1);
 	        $(this).children('embed').each(function () {
-	        $(this).height($(Cont).height() - 5).width($(Cont).width() - 6);
+	        $(this).height($(Cont).height() - 1).width($(Cont).width() - 1);
+//	        .css({'height':($(Cont).height() - 5) , 'width':($(Cont).width() - 6) });
 	        });
+//	        .css({'height':($(Cont).height() ) , 'width':($(Cont).width() ) });
         }).end().children('.'+$.aplayer.classMediaCont).height(function(){
         	return $(Cont).height()-$(this).next('div[id ^=' + $.aplayer.idControlPanel + ']').height();
         }).children('video, audio').each(function () { //Установка размера суб-элемента и вложенного медиа-элемента НЕ ПРОВЕРЯЛАСЬ!!!
 	        $(this).height($(Cont).height() - $(this).parent().next('div[id ^=' + $.aplayer.idControlPanel + ']').height() - 7).width($(Cont).width() - 6);
-	        }).css({border:'2px solid green'});
+	        });
         });
         return this;
     };
@@ -149,6 +151,15 @@
   		if($(el).attr('name')=='img' && $(this).children('div').attr('t')== undefined) return true;
   		else return false;
     };
+    
+    
+    //Является ли медиа-элемент embed || object?
+    $.fn.aplayerIsEmbededObject = function(){
+  		if($(this).find('embed').size()>0) return true;
+  		else return false;
+    };
+    
+    
     
     //Скрыть плеер
     $.fn.aplayerHide = function(){
@@ -402,7 +413,6 @@
 				//корректировка типа воспроизведения в зависимости от версии браузера
 				settings = $.aplayer.browserVersionSettings(sets.type, settings);
 
-
 				//Установка размеров плеера ('Inherit' - установка размеров родительского эл-та)
 				try{
 				if(sets.height.indexOf('Inherit')!=-1)sets.height = $(element).height();
@@ -435,13 +445,16 @@
 					var im = $('<img class="logoPlay" src="'+$.aplayer.ControlBar.controlsImg +$.aplayer.logo_play+'">')
 					.appendTo(container);
 					
+					$(container).css({'text-align':'center'})
+					.find('.logoPlay').css({'top': ($(container).height()- $(container).find('.logoPlay').height())/2 });
+
+					
 					var t = sets.type;
 					var s = sets.src;
 					
 					$(container).attr({'t':t,'s':s}) .click(function(){
 						$(this).parent().addPlayer({'src': $(this).attr('s'), 'type':'"'+$(this).attr('t')+'"' ,'controls':'mini' }).click()
 						.end().removeAttr('t').removeAttr('s').unbind('click');
-
 					});
 				}
 				//Если задано значение application - воспроизводить как внедренный объект
@@ -465,15 +478,25 @@
 		//корректировка типа воспроизведения в зависимости от версии браузера
 		browserVersionSettings: function(srcType ,settings){
 		//Вывод версии браузера и тип открываемого файла
-		//	alert('Browser\'s version: '+$.browser.version+'\nSource type: '+ settings.type);
+//			alert('Browser\'s version: '+$.browser.version+'\nSource type: '+ settings.type);
+			//Блокировка использования HTML5 в Chrome для указанных форматов
+			if( $.browser.version.indexOf('535')!=-1 && (srcType=='audio/wav' || srcType=='video/mp4' || srcType=='audio/mpeg'))
+				{
+					$.extend(settings, {'application':'true'});
+				}
+			
 			switch($.browser.version)
 			{
-				case '535.2': //Google Chrome v. 535.2
+/*				case '535.2':
+				case '535.11': //Google Chrome v. 535.2
 					if(srcType=='audio/wav' || srcType=='video/mp4' || srcType=='audio/mpeg')
 					{
 						$.extend(settings, {'application':'true'});
 					}
 				break;
+*/				
+				case '10.0':
+				case '11.0':
 				case '9.0.1': //Mozilla Firefox v. 9.0.1
 					if(srcType=='audio/wav')
 					{
@@ -523,7 +546,8 @@
              //Создаем object
              var obj;
                //QuickTime
-               if(settings.type.indexOf($.aplayer.MIMEtypes.mp4)!=-1) obj = $.aplayer.createObj_QuickTime(settings);
+               if(settings.type.indexOf($.aplayer.MIMEtypes.mp4)!=-1 || 
+               		settings.type.indexOf($.aplayer.MIMEtypes.mov)!=-1) obj = $.aplayer.createObj_QuickTime(settings);
                //SWF
                else if(settings.type.indexOf($.aplayer.MIMEtypes.swf)!=-1 || settings.type.indexOf($.aplayer.MIMEtypes.flv)!=-1) obj = $.aplayer.createObj_SWF(settings);
                //wmv - в IE глюки
@@ -534,6 +558,8 @@
                else if(settings.type.indexOf($.aplayer.MIMEtypes.wav)!=-1) obj = $.aplayer.createObj_WAV(settings);
                // video AVI
                else if(settings.type.indexOf($.aplayer.MIMEtypes.avi)!=-1) obj = $.aplayer.createObj_AVI(settings);
+               // audio wav
+               else if(settings.type.indexOf($.aplayer.MIMEtypes.wav)!=-1) obj = $.aplayer.createObj_WAV(settings);
                else obj = $.aplayer.create_Embed(settings);
 
                $(container).height(settings.height);
@@ -570,8 +596,17 @@
 
            //Create audio/wav
            createObj_WAV: function(settings){
-			var obj = $('<object type="audio/x-wav" data="'+settings.src+'" autoplay="false"> </object>')
-				.append('<param name="src" value="'+settings.src+'" />')
+           	   var obj;
+
+               if($.browser.msie){
+                    obj = $('<object data="'+settings.src+'" classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" codebase="http://www.apple.com/qtactivex/qtplugin.cab"> </object>');
+                }
+                else{
+					obj = $('<object type="audio/x-wav" data="'+settings.src+'" autoplay="false"> </object>')
+                }
+           	
+//			var obj = $('<object type="audio/x-wav" data="'+settings.src+'" autoplay="false"> </object>')
+				$(obj).append('<param name="src" value="'+settings.src+'" />')
 				.append('<param name="controller" value="true" />')
 				.append('<param name="autoplay" value="false" />')
 				.append('<param name="autostart" value="0" />');
@@ -598,7 +633,8 @@
             // Create object QuickTime
             createObj_QuickTime:function(settings){
                var obj = $('<object classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" codebase="http://www.apple.com/qtactivex/qtplugin.cab"></object>');
-               $(obj).append('<param name="controller" value="true" />').append('<param name="src" value="'+settings.src+'" />');
+               $(obj).append('<param name="controller" value="true" />')
+               	.append('<param name="src" value="'+settings.src+'" />');
                $(obj).append('<param name="wmode" value="window" >')
 				.append('<param name="play" value="false" >');
 				$(obj).width(settings.width).height(settings.height);
@@ -651,7 +687,51 @@
 			   $(obj).append('<embed type="audio/wav" play="false" wmode="window" PLUGINSPAGE="http://www.microsoft.com/windows/windowsmedia/download/" src="'+settings.src+'" style="width:'+settings.width+'px; height:'+settings.height+'px;" autostart="false" showcontrols="true"></embed>');
                return obj;
             },
+            
+            
+            
+            
+            /*
+             // Create object SWF
+            createObj_SWF:function(settings){
+               var obj;
 
+               if($.browser.msie){
+                    obj = $('<object type="application/x-shockwave-flash data="'+settings.src+'" ></object>');
+                }
+                else{
+                   obj = $('<object type="application/x-shockwave-flash" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0"></object>');
+                }
+               $(obj).append('<param name="movie" value="'+settings.src+'" />');
+               $(obj).append('<param name="quality" value="high" >');
+               $(obj).append('<param name="play" value="0" >');
+               $(obj).append('<param name="loop" value="0" >');
+               $(obj).append('<param name="wmode" value="window" >');
+               $(obj).append('<param name="scale" value="showall" >');
+               $(obj).append('<param name="menu" value="1" >')
+				.append('<param name="play" value="false" >');
+//               $(obj).append('<param name="devicefont" value="false" />');
+//			    $(obj).append('<param name="salign" value="" />');
+//				$(obj).append('<param name="allowScriptAccess" value="sameDomain" />');
+				$(obj).width(settings.width)
+                .height(settings.height);
+               $(obj).append($($.aplayer.create_Embed(settings)).removeAttr('type') );
+             //   $(obj).append('<div><h4>Content on this page requires a newer version of Adobe Flash Player.</h4><p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif"alt="Get Adobe Flash player" width="112" height="33" /></a></p></div>');
+               return obj;
+            },
+            
+            */
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
 			//-----------------------------------
 
 			//Метод для использования HTML5 video
@@ -902,7 +982,11 @@
 			stopClickHandler:function(ElNum){
                $('#'+$.aplayer.idElMedia+ElNum).each(function(){
 					this.pause();
+					try{
 					this.currentTime = 0;
+					}catch(error){
+						console.log(error.message);
+					}
 					$.aplayer.ControlBar.elMediaOnCanPlay(ElNum);
 			   });
             },

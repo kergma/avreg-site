@@ -3,16 +3,21 @@
 	position:absolute;
 	z-index:999;
 	/* left:-9999px; */
-	background-color:#dedede;
+	background-color: Beige;
 	padding:2px;
 	border:3px solid #fff;
-/*	width:200px;
-*/
 	display:inline;
-}
-
-.tooltip p{
-	color:#fff;
- 	background-color:#222;
 	text-align:center;
 }
+
+.tooltip table{
+	font-size: 9pt;
+	border: 1px groove Black; 
+}
+
+.tooltip td{
+	border: 3px inset #999999; 
+	margin: 2px;
+	padding:3px;
+}
+
