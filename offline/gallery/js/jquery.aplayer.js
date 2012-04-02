@@ -32,7 +32,7 @@
 	$.fn.addPlayer = function(settings){
 				if(settings.src==null)
 				{
-					alert('aplayer:\nError: src = undefined');
+//					alert('aplayer:\nError: src = undefined');
 					return this;
 				}
 			else $(this).each(function(){
@@ -116,7 +116,7 @@
 		    $(Cont).children('.'+$.aplayer.classMediaCont).height(function(){
 	        	return $(Cont).height()-$(this).next('div[id ^=' + $.aplayer.idControlPanel + ']').height();
 	        });
-	        $(this).find('.logoPlay').css({'top': ($(this).height()- $(this).find('.logoPlay').height())/2 });
+	        $(Cont).find('.logoPlay').removeAttr('style').css({'position':'relative', 'top': ($(Cont).height()- $(Cont).find('.logoPlay').height())/2 });
         });
         
     	return this;
@@ -133,9 +133,10 @@
 	        $(this).height($(Cont).height() - 1).width($(Cont).width() - 1);
 	        $(this).children('embed').each(function () {
 	        $(this).height($(Cont).height() - 1).width($(Cont).width() - 1);
-//	        .css({'height':($(Cont).height() - 5) , 'width':($(Cont).width() - 6) });
 	        });
-//	        .css({'height':($(Cont).height() ) , 'width':($(Cont).width() ) });
+	        //отображение лого-плей
+	        $(Cont).find('.logoPlay').removeAttr('style').css({'position':'relative', 'top': ($(Cont).find('.logoPlay').parent().height()- $(Cont).find('.logoPlay').height())/2 });
+	        
         }).end().children('.'+$.aplayer.classMediaCont).height(function(){
         	return $(Cont).height()-$(this).next('div[id ^=' + $.aplayer.idControlPanel + ']').height();
         }).children('video, audio').each(function () { //Установка размера суб-элемента и вложенного медиа-элемента НЕ ПРОВЕРЯЛАСЬ!!!
@@ -255,7 +256,7 @@
 
 			});
           	
-           $(Container).height(H).width(W).css({'overflow':'hidden'});
+           if($(Container)!=null && $(Container).height()!=null && $(Container).width()!=null ) $(Container).height(H).width(W).css({'overflow':'hidden'});
     	},
 
 		
@@ -411,8 +412,9 @@
 				sets = $.aplayer.setType(sets);
 
 				//корректировка типа воспроизведения в зависимости от версии браузера
-				settings = $.aplayer.browserVersionSettings(sets.type, settings);
+				sets.type = $.aplayer.browserVersionSettings(sets.type, settings);
 
+				
 				//Установка размеров плеера ('Inherit' - установка размеров родительского эл-та)
 				try{
 				if(sets.height.indexOf('Inherit')!=-1)sets.height = $(element).height();
@@ -457,8 +459,9 @@
 						.end().removeAttr('t').removeAttr('s').unbind('click');
 					});
 				}
-				//Если задано значение application - воспроизводить как внедренный объект
-				else if(sets.type.indexOf('application')!=-1 || (settings.application!=null && settings.application.indexOf('true')!=-1)){
+				//Если задано значение application - воспроизводить как внедренный объект // || (settings.application!=null && settings.application.indexOf('true')!=-1)
+				else if(sets.type.indexOf('application')!=-1 ){
+//					console.log(settings.type +"  "+settings.application)
 					//Вызов метода для использования плагина
 					$.aplayer.showObject(container, sets);
 				}
@@ -477,11 +480,14 @@
 
 		//корректировка типа воспроизведения в зависимости от версии браузера
 		browserVersionSettings: function(srcType ,settings){
+			
 		//Вывод версии браузера и тип открываемого файла
 //			alert('Browser\'s version: '+$.browser.version+'\nSource type: '+ settings.type);
 			//Блокировка использования HTML5 в Chrome для указанных форматов
-			if( $.browser.version.indexOf('535')!=-1 && (srcType=='audio/wav' || srcType=='video/mp4' || srcType=='audio/mpeg'))
+			if( $.browser.safari==true && (srcType=='audio/wav' || srcType=='video/mp4'))// || srcType=='audio/mpeg'))
 				{
+					srcType+='" application ="true';
+					
 					$.extend(settings, {'application':'true'});
 				}
 			
@@ -504,7 +510,7 @@
 					}
 				break;
 			}
-			return settings;
+			return srcType;
 		},
 
 
@@ -873,6 +879,7 @@
             Search_line: {
                 'height':'5px',
                 'padding-left':'5px',
+				'width':'99.25%',
 	            'border': '1px solid Blue',
 	            'background-color': 'Lightblue'
 	        },
@@ -1148,7 +1155,7 @@
 			
 			//автоматическая подгонка панели контролов под размеры плеера = {controls:'auto'}
 			if(settings.controls==null || settings.controls=='auto'){
-				$(ControlBar).css({ 'width':'100%'  }); 
+				$(ControlBar).css({ 'width':'99.5%' }); 
 				
 				//вставляем в панель управления элементы управления
 				$(ControlBar).attr('id',$.aplayer.idControlPanel+$.aplayer.aplayerNo)
@@ -1158,7 +1165,7 @@
             
 			//автоматическая подгонка панели контролов под размеры плеера = {controls:'auto'}
 			if(settings.controls=='mini'){
-				$(ControlBar).css({ 'width':'100%'  }); 
+				$(ControlBar).css({ 'width':'99.3%'  }); 
 				
 				//вставляем в панель управления элементы управления
 				$(ControlBar).attr('id',$.aplayer.idControlPanel+$.aplayer.aplayerNo).css({ 'text-align':'center' })

@@ -2,10 +2,9 @@
 (function ($) { $(function () {
 
 	//Плагин ToolTip использует значение атрибута "tooltip" для отображения в тултипе	
-	
+
 	$.fn.tooltip = function() {
 		$(this).each(function(i) {
-
 			$(this)
 			 .mouseover(function(e){
 				 if($(".tooltip").length>0)return; //ограничение кол-ва эдентичных тултипов(при отключении logo_play)
@@ -22,6 +21,10 @@
 				 $(".tooltip").remove();
 			 });
 		});
+	};
+	
+	$.fn.tooltipOff = function() {
+		$(this).unbind("mouseover").unbind("mousemove").unbind("mouseout");
 	};
 
 });})(jQuery);

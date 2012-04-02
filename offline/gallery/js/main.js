@@ -257,11 +257,16 @@ var gallery = {
 				} else {
 					gallery.cookie.set('resize_column', 300);
 				}
+				
+				$("body").css({"overflow-y":"hidden"})
 			}
 		},
 		reload_events : function(){
 			var count = 0;
 			var cook = '';
+			//если включен режим детального просмотра - включаем режим превью
+			if(matrix.mode == 'detail')	matrix.preview();
+			
 			$('input[name="type_event"]').each(function(){
 				if ($(this).attr('checked')) {
 					count++;
@@ -284,6 +289,10 @@ var gallery = {
 		reload_cams : function () {
 			var count = 0;
 			var cook = '';
+			
+			//если включен режим детального просмотра - включаем режим превью
+			if(matrix.mode == 'detail')	matrix.preview();
+
 			$('input[name="cameras"]').each(function(){
 				if ($(this).attr('checked')) {
 					count++;
@@ -300,7 +309,6 @@ var gallery = {
 				alert(lang.empty_cameras);
 				return false;
 			}
-			
 			return true;
 		},
 		cookie : {
@@ -849,24 +857,52 @@ var gallery = {
 					$(this).children().attr('checked', 'checked');
 				}
 			});
-		//Кнопка смены режима просмотра - детальный/миниатюры	
-			var btnCangeMode =	$('<div class="select_mode"> <div id="btn_ViewModeText" style="color: #FFFFFF; ">Просмотр</div>	</div>');
-			$(btnCangeMode).find('#btn_ViewModeText').hover(
-				function(){
-						$('#btn_ViewModeText').css({ 'cursor':'pointer'});
-					},
-				function(){$('#btn_ViewMode').css({'background-color':'#aaaaaa'});})
-					.click(function(){
+		//Кнопка смены режима просмотра - детальный/миниатюры
+/*			
+			var tumbCangeMode =  $('<fieldset class="switch" >' +
+					'<label class="off">Off<input type="radio" class="on_off" name="on_off" value="off"/></label>\
+    				<label class="on">On<input type="radio" class="on_off" name="on_off" value="on"/></label>\
+				</fieldset>');
+				
+		   	$(tumbCangeMode).css('background-image', 'url("gallery/img/switch.png")')
+    		.find('.on_off').css('display','none').end()
+    		.find('.on, .off').css('text-indent','-10000px');
+ 
+    		$(tumbCangeMode).find("[name=on_off]").change(function() {
+      			var button = $(this).val();
+        		if(button == 'off'){ $('.switch').css('background-position', 'right'); }
+        		if(button == 'on'){ $('.switch').css('background-position', 'left'); }  
+   			});
+
+		$("#toolbar>#toolbar_left:first-child").prepend(tumbCangeMode);
+
+*/				
+			
+			
+			var btnCangeMode =	$('<div class="select_mode"> <button id="btn_PreviewMode" disabled="disabled" >Минниаюры</button> <button id="btn_DetailMode" >Просмотр</button>	</div>');
+			$(btnCangeMode).find("button").width(100).height(25);
+			
+			$(btnCangeMode)
+			.find('#btn_DetailMode').click(function(){
+					if(matrix.mode == 'preview')
+					{
+						matrix.detail();
+					}
+						$(this).attr("disabled","disabled");
+						$('#btn_PreviewMode').removeAttr("disabled")
+				}).end()
+				.find('#btn_PreviewMode').click(function(){
 					if(matrix.mode == 'detail')
 					{
 						matrix.preview();
 					}
-					else
-					{
-						matrix.detail();
-					}
-						
-				});
+						$(this).attr("disabled","disabled");
+						$('#btn_DetailMode').removeAttr("disabled")
+				})
+
+
+
+				
 		$("#toolbar>#toolbar_left:first-child").prepend(btnCangeMode);
 
 			
@@ -904,7 +940,7 @@ var matrix = {
 		event_limit : 20000
 	},
 	keyBoardTree: 'all',
-	imageDetail: null,
+//	imageDetail: null,
 	currentOffset: null,
 	tree: 'all', // текущий временной диапазон
 	height: 0, // текущая высота матрицы
@@ -915,7 +951,7 @@ var matrix = {
 	thumb_height : 0, //высота миниатюры
 	cell_count: 2, // количество ячеек
 	count_row : 5, //количество строк в матрице
-	count_column: 5, // количество столцов в матрице
+	count_column: 5, // количество столбцов в матрице
 	events : {}, // текущие евенты в матрице
 	all_events : {}, // кеш евентов
 	num : 0, // текущая позиция в матрице
@@ -924,10 +960,16 @@ var matrix = {
 	load_src: 0,
 	reference:'reference', //имя аттрибута для освобождения href ссылок
 	mode : 'preview', // режим просмотра
+	proportionDetail: false, //изменение режима пропорций в detail
 	cur_count_item : 0, // текущее количество загруженных событий
 	send_query: false, // можно ли посылать запросы к базе
 	select_node : false, // можно ли выбирать другой диапазон
-	cur_source: null, //отн путь текущего медиа файла
+//	cur_source: null, //отн путь текущего медиа файла
+	//объект для востановления матрицы при выходе из режима просмотра
+	recover:{
+		cell_style:null,
+		refBox_style:null
+	}, 
 	init: function(config) {
 
 //		matrix.imageDetail = $(".show_detail").css('top', '0');
@@ -955,17 +997,18 @@ var matrix = {
 
 		// обработка переключение режима матрицы
 		// изменено на dblclick
-		$('.matrix_mode a').dblclick(function(e) {
+/*		$('.matrix_mode a').dblclick(function(e) {
 			e.preventDefault();
 			var mode = $(this).attr(matrix.reference).replace('#','');
 			matrix[mode]();
 			return false;
 		});
-
+*/
+		// обработка переключение режима матрицы
 		$('#scroll_content .content_item a').live('dblclick', function(e) {
 			e.preventDefault();
-			//matrix.num = parseInt($(this).attr('href').replace('#cell_',''));
-			matrix.detail();
+			if(matrix.mode == 'preview') matrix.detail();
+			else matrix.preview();
 			return false;
 		});
 		$('#scroll_content .content_item').live('click', function(event) {
@@ -1010,38 +1053,7 @@ var matrix = {
 			matrix.doShowInfo();
 		});
 
-
-
-		// убираем скроллы
-		$('#win_bot_detail').css('overflow', 'hidden');
-/*
-		matrix.imageDetail.draggable({
-			drag: function(event, ui){
-
-
-				var imgWidth = parseInt(matrix.imageDetail.attr('width'))-28;
-				var imgHeight = parseInt(matrix.imageDetail.attr('height'));
-				if(imgWidth>matrix.width) {
-					if(ui.position.left>0){
-						ui.position.left = 0;
-					}
-					if(matrix.width-ui.position.left>imgWidth)
-						ui.position.left = matrix.width - imgWidth;
-				} else {
-					ui.position.left = 0;
-				}
-
-				if(imgHeight>matrix.height) {
-					if(ui.position.top>0)
-						ui.position.top = 0;
-					if(matrix.height-ui.position.top>imgHeight)
-						ui.position.top = matrix.height - imgHeight;
-				} else {
-					ui.position.top = 0;
-				}
-			}
-		});
-*/		
+		
 		// обновление матрицы
 		matrix.resize();
 		//инициализации элемента масштаба режима миниатюр
@@ -1049,7 +1061,6 @@ var matrix = {
 
 		//инициализации элемента масштаба детального режима
 		scale2.init();
-
 
 		self.res = false;
 		// изменить размер матрицы если было изменено размеры окна
@@ -1086,34 +1097,24 @@ var matrix = {
 				}
 				matrix.resize();clearInterval(self.res);}, 200);
 		});
-
-		//Освобождение атрибута href для указания прямой ссылки на ресурс
-		$('#win_bot_detail a').attr({'href':'', reference:'#preview'})
 	},
-/*
-	resetPositionImage: function(){
-		matrix.imageDetail.css('top', '0');
-		matrix.imageDetail.css('left', '0');
-		matrix.currentOffset = matrix.imageDetail.offset();
-		var imgWidth = parseInt(matrix.imageDetail.attr('width'));
-		var imgHeight = parseInt(matrix.imageDetail.attr('height'));
 
-		if(imgWidth>matrix.width || imgHeight>matrix.height) {
-			matrix.imageDetail.css('cursor', 'move');
-		} else {
-			matrix.imageDetail.css('cursor', 'default');
-		}
-	},
-*/
 	// обновление чекбокса пропорций
 	doProportion : function() {
-		$('#scroll_content .show').each(function() {
-				matrix.setimagesize($(this).attr('id').replace('cell_',''));
-		});
-	
-		//Если в режиме detail для аудио и видео переключается "Сохр.пропорци" - ничего не делаем
-		if(matrix.mode == 'detail' && !$('#win_bot_detail a').aplayerIsImage())return;
-		else matrix.loaddetailsrc();
+		//Если в режиме detail
+		if(matrix.mode == 'detail')
+		{
+			matrix.proportionDetail = true;
+			scale2.updateposition(scale2.position);
+		}
+		else //Если в режиме preview 
+		{
+			//установка ресайзеных какртинок
+			scale.updateposition(scale.position);
+			
+			//установка размеров <img/> (картинки не ресайзятся)
+//  			$('#scroll_content .show').each(function() { 	matrix.setimagesize($(this).attr('id').replace('cell_',''));  	});
+		}
 		
 		if ($('#proportion').attr('checked')) {
 			gallery.cookie.set('proportion', 'checked');
@@ -1136,53 +1137,68 @@ var matrix = {
 			matrix.setimagesize($('#info').attr('id').replace('cell_',''));
 		});
 	},
+	
+	
 	// если включили режим детальный просмотр
 	detail : function() {
-		$('#toolbar').height($('#toolbar').height());
-		keyBoard.beforeView = keyBoard.view;
-		keyBoard.view = keyBoard.views.detail;
+		
 		matrix.mode = 'detail';
 		
+//		keyBoard.beforeView = keyBoard.view;
+		keyBoard.view = keyBoard.views.detail;
+		
+		
+		//скрываем все ячейки матрицы за исключением активной
+		$(".content_item").each(function(){
+			if(!$(this).hasClass("active")){
+    			$(this).hide();
+			}
+			//сохраняем необходимые параметры активного элемента
+			else{
+				matrix.recover.cell_style = $(this).attr('style');
+				matrix.recover.refBox_style = $(this).find(".refBox").attr('style');
+
+				//если лого-плей - переключаем в режим плеера
+				$(this).find(".refBox .aplayer").each(function(){
+						$(this).parent().addPlayer({'src': $(this).attr('s'), 'type':'"'+$(this).attr('t')+'"' ,'controls':'mini' }).click()
+						.end().removeAttr('t').removeAttr('s').unbind('click');
+					});
+				
+			}
+			});
+
+		//фиксируем высоту tool bar		
+		$('#toolbar').height($('#toolbar').height());
+		//переключаем режим tool bar
+		$('#toolbar .preview').css({'display':'none'});
+		$('#toolbar .detail').show();
+			
+		//отключаем tooltip
+		$(".elem").tooltipOff();
+		//если есть тултип - удаляем
+		$('.tooltip').remove();
+			
+		//скрыть инфо-блок
+//		$('.info_block').hide(); //рестартит ембед //спрятан за #toolbar
+			
+		//скрываем скролл матрицы
+		$("#scroll_v").hide();
+		//расширяем панель матрицы на освободившееся место
+		$("#list_panel").width($("#list_panel").width() + $("#scroll_v").width());
+			
+		//Установка размеров отображаемого элемента
 		matrix.loaddetailsrc();
 		
-		$('#win_bot').hide();
-//		$('#toolbar .preview').hide();
-		$('#toolbar .preview').css({'display':'none'});
-
-		$('#win_bot_detail').show();
-		$('#toolbar .detail').show();
-//		matrix.resetPositionImage();
-
-		//Устанавливаем прямую ссылку на ресурс
-		$('#win_bot_detail a').attr({'href': $('#cell_'+matrix.num+' a.refBox' ).attr('href') });
-		
-		if($('#win_bot_detail a').aplayerIsImage())
-			{
-				//'http://'+document.location.host+
-				var ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url='+matrix.cur_source+'&size='+scale2.position;
-				ResizedImgSrc += '&mode=normal';
-				if($('#proportion').attr('checked')=='checked'){
-					ResizedImgSrc +='&prop=true';
-				}
-				else{
-					ResizedImgSrc +='&prop=false';
-				}
-				
-				//Загрузка изображения соответствующего размера
-				$('#win_bot_detail a').each(function(){
-					$(this).aplayerResizeContanerOnlyToParent().aplayerSetImgSrc(ResizedImgSrc).aplayerSetSrcSizes();
-					
-				});   
-			}
-			else
-			{
-			//установка размеров плеера в соответствии с размерами родительского элемента
-			scale2.updateposition(scale2.position);
-		}
-		
+	 	scale2.updateposition(scale2.position);
+	 	
+	 	//корректировка позиционирования лого-плей
+//		$('.active .logoPlay').removeAttr('style').css({'position':'relative', 'top': ($('.active .logoPlay').parent().height()- $('.active .logoPlay').height())/2 });
+	 	
 		//Смена названия кнопки режима просмотра
-		$('#btn_ViewModeText').html('Миниатюры');
+//		$('#btn_ViewModeText').html('Миниатюры');
 	},
+	
+	
 	// если включили режим миниатюр
 	preview : function() {
 		$('.propotion').show();
@@ -1191,44 +1207,52 @@ var matrix = {
 			keyBoard.view = keyBoard.views.matrix;
 
 			matrix.mode = 'preview';
+
+			//переключаем toolbar в режим миниатюрs
+			$('#toolbar .detail').hide();
+			$('#toolbar .preview').show();
+			
+			//востанавливаем размер панели матрицы 
+			$("#list_panel").width($("#list_panel").width() - $("#scroll_v").width());
+			//отображаем скролл матрицы
+			$("#scroll_v").show();
+
+			//отображаем все ячейки матрицы 
+			$(".content_item").each(function(){
+				if($(this).hasClass("active")){
+					//востанавливаем параметры активного элемента
+					$(this).attr('style', matrix.recover.cell_style)
+					.find('.refBox').attr('style', matrix.recover.refBox_style)
+					.aplayerResizeToParent();
+				}	
+   				$(this).show();
+			});
+			
+			//Если в DETAIL был изменен режим пропорций
+			if(matrix.proportionDetail){
+				matrix.proportionDetail=false;
+				scale.updateposition(scale.position);
+			}
 			// обновлаем статистику
 			var stat = '<span><strong>'+lang.count_files+'</strong>'+matrix.curent_tree_events[matrix.tree].count+'</span><br />\
 			<span><strong>'+lang.size_files+'</strong>'+readableFileSize(matrix.curent_tree_events[matrix.tree].size)+'</span><br />\
 			<span><strong>'+lang.date_from+'</strong>'+matrix.curent_tree_events[matrix.tree].from+'</span><br />\
 			<span><strong>'+lang.date_to+'</strong>'+matrix.curent_tree_events[matrix.tree].to+'</span><br />';
 			$('#statistics').html(stat);
-
-			$('#win_bot_detail').hide();
-			//Закрытие плеера
-			$('#win_bot_detail a').aplayerClose();
-			$('#toolbar .detail').hide();
 			
-			$('#win_bot').show();
-			$('#toolbar .preview').show();
-			
-			// обновляем матрицу с использованием новой позиции
-			if (!$('#cell_'+matrix.num).hasClass('show')){
-				sp = Math.floor(matrix.num / scroll.row_count) * scroll.row_count;
-				scroll.updateposition(sp);
-				scroll.setposition(sp);
-			}
-			$('#scroll_content .content_item').removeClass('active');
-			$('#cell_'+matrix.num).addClass('active');
+			//Включаем тултип
+			$(".elem").tooltip();
 
-			//корректирока размеров ячеек
-			$('#scroll_content .show').each(function() {
-				matrix.setimagesize($(this).attr('id').replace('cell_',''));
-			});
-						
 			//Смена названия кнопки режима просмотра
-			$('#btn_ViewModeText').html('Просмотр');
-			
-			
+//			$('#btn_ViewModeText').html('Просмотр');
 		}
 	},
-	// перестраиваем матрицу при именении размеров
+
+	
+	// перестраиваем матрицу при изменении размеров
 	resize: function() {
 
+		
 		// обновляем ширину колонок
 		gallery.resize_column.resize($('#sidebar').width()-2);
 		$('#tree').height($('#sidebar').height() - $('#type_event').height() - $('#favorite').height() - $('#statistics').height()-90);
@@ -1246,16 +1270,8 @@ var matrix = {
 		}
 		// определяем новые размеры матрицы
 
-
-
 		// обновляем размеры детального просмотра
 		var hc = $('#content').height() - 100 - $('#toolbar').height()-28;
-		$('#win_bot_detail').height(hc);
-		//$('#win_bot_detail').width($('#content').width() - $('#win_top').width() - $('#toolbar').width());
-
-		//установка размеров плеера в соответствии с размерами родительского элемента
-		$('#win_bot_detail a').aplayerResizeContanerOnlyToParent();
-
 
 		$('#win_bot').height(hc);
 		
@@ -1307,27 +1323,30 @@ var matrix = {
 		var top =  Math.floor((matrix.height-matrix.count_row*matrix.cell_height)/ matrix.count_row/2);
 		matrix.cell_padding = top + 'px ' + left + 'px';
 		$('#scroll_content .content_item').css({'padding':matrix.cell_padding});
-
+		
 		// если элемента скрола нет, то создаем его
 		if (matrix.scroll == true) {
 			var sp = scroll.position;
 
-			scroll.init({height:matrix.height-82, cell_count:Math.ceil(matrix.count_item/matrix.count_column), row_count: matrix.count_column, matrix_count: Math.ceil(matrix.cell_count/matrix.count_column)});
-			sp = Math.floor(sp/scroll.row_count)*scroll.row_count;
+			scroll.init({
+				height:matrix.height-82, 
+				cell_count:Math.ceil(matrix.count_item/matrix.count_column), 
+				row_count: matrix.count_column, 
+				matrix_count: Math.ceil(matrix.cell_count/matrix.count_column)
+			});
+
+			sp = Math.floor(matrix.num/scroll.row_count)*scroll.row_count-scroll.row_count;
+			if(sp<0)sp=0;
+
 			scroll.updateposition(sp, true);
 			scroll.setposition(sp);
 		}
-		
-		//корректировка размеров плеера в detail режиме
-		if(matrix.mode=='detail')
-		{
-			//корректируем размеры плеера
-			scale2.updateposition(scale2.position);
-		}
 
+		//если в detail режиме - перезапускаем detail
+		if(matrix.mode=='detail') matrix.detail();
 		
-//		matrix.resetPositionImage();
 	},
+	
 	// задаем размер изображения в ячейке
 	setimagesize : function(el) {
 		if (typeof(matrix.events[el]) != 'undefined') {
@@ -1369,9 +1388,11 @@ var matrix = {
 			}
 			
 		}
-//		matrix.resetPositionImage();
 	},
-	// загружаем изображение в окно детального просмотра
+	
+	
+	
+	//Устанавливает размеры элементов в режиме делального просмотра
 	loaddetailsrc : function() {
 		if (typeof(matrix.events[matrix.num]) != 'undefined') {
 			var value = matrix.events[matrix.num];
@@ -1410,52 +1431,6 @@ var matrix = {
 				}
 			}
 			
-			//save source's path
-			matrix.cur_source = value[2];
-
-			if(value[7]=='image')
-			{
-				$('.propotion').show();
-				// 'http://'+document.location.host+ - removed from path
-				var ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url='+matrix.cur_source+'&size='+scale2.position;
-				ResizedImgSrc += '&mode=normal';
-				if($('#proportion').attr('checked')=='checked'){
-					ResizedImgSrc +='&prop=true';
-				}
-				else{
-					ResizedImgSrc +='&prop=false';
-				}
-
-				if($('#win_bot_detail a').aplayerIsImage())
-				{
-					//Загрузка изображения соответствующего размера
-					$('#win_bot_detail a').each(function(){
-						$(this).aplayerResizeContanerOnlyToParent().aplayerSetImgSrc(ResizedImgSrc).aplayerSetSrcSizes().show();
-					}); 
-				}
-				else{
-					//Установка плеера в "win_bot_detail" + Загрузка изображения соответствующего размера
-					$('#win_bot_detail a').css({ 'display':'block', 'width':'100%', 'height':'100%'})
-					.addPlayer({'src': ResizedImgSrc, 'useImageSize':'true'});
-					//.hide();//, 'useImageSize':'true', 'application':'true' , 'width': width, 'height': height,  });  
-				}
-			}
-			else if(value[7]=='audio')
-			{
-				$('.propotion').hide();
-				//Установка плеера (src+размеры) в "win_bot_detail"
-				$('#win_bot_detail a').css({ 'display':'block', 'width':'100%', 'height':'100%'}).addPlayer({'src': MediaUrlPref+value[2] }); 
-				//, 'controls':'mini' , 'controls':'browser'  , 'application':'true' , 'width': width, 'height': height, 'class': 'show_detail' });
-			}
-			else if(value[7]=='video')
-			{
-				$('.propotion').hide();
-				//Установка плеера (src+размеры) в "win_bot_detail"
-				$('#win_bot_detail a').css({ 'display':'block', 'width':'100%', 'height':'100%'})
-				.addPlayer({'src': MediaUrlPref+value[2]}); 
-				// , 'controls':'mini' , 'controls':'browser'  , 'application':'true' , 'width': width, 'height': height, 'class': 'show_detail' });
-			}
-
 			// обновляем параметры элемента масштаба
 			scale2.min_width = width;
 			scale2.min_height = height;
@@ -1463,6 +1438,34 @@ var matrix = {
 			scale2.max_height = hm;
 			scale2.reload();
 
+			
+//-------------------------------------------------------  	//Визуализируем активную ячейку в режиме детального просмотра
+				//сохраняем необходимые параметры нового активного элемента
+			$(".content_item.active").each(function(){
+				matrix.recover.cell_style = $(this).attr('style');
+				matrix.recover.refBox_style = $(this).find(".refBox").attr('style');
+				
+				//если лого-плей - переключаем в режим плеера
+				$(this).find(".refBox .aplayer").each(function(){
+						$(this).parent().addPlayer({'src': $(this).attr('s'), 'type':'"'+$(this).attr('t')+'"' ,'controls':'mini' }).click()
+						.end().removeAttr('t').removeAttr('s').unbind('click');
+					});
+
+				//Устанавливает для элементов текущей ячейки размеры просмотра
+				$(this).css({
+					"padding": 0 ,
+					'height':matrix.height,
+					'width':(matrix.width + $("#scroll_v").width())
+					});
+				$(".active .refBox").css({
+					"padding": 0 ,
+					'height':matrix.height-5,
+					'width':(matrix.width + $("#scroll_v").width())
+					})
+					.aplayerResizeContanerOnlyToParent();
+				});
+///-----------------------------------------------------------------------------------------			
+			
 			// обновляем статистику события
 			var stat = '<span><strong>'+lang.camera+'</strong>'+matrix.cameras[value[5]].text_left+'</span><br />\
 				<span><strong>'+lang.size+'</strong>'+value[6]+'</span><br />\
@@ -1470,8 +1473,8 @@ var matrix = {
 				<span><strong>'+lang.date+'</strong>'+value[1]+'</span><br />';
 			$('#statistics').html(stat);
 		}
-//		matrix.resetPositionImage();
 	},
+	
 	// загрузка изображения
 	loadsrc : function(el) {
 		// увеличиваем счетчик изображений
@@ -1497,9 +1500,8 @@ var matrix = {
 		img.onerror = function() {
 			//изображение не загрузилось
 			// показываем картинку ошибки в ячейке
-//			$('#cell_'+el+' .img_block img').attr('src', WwwPrefix+'/offline/gallery/img/error.jpg');
-				//'http://'+document.location.host+
-				var ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url='+'../offline/gallery/img/error.jpg'+'&size='+scale2.position;
+
+				var ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url=http://'+document.location.host+'/avreg/offline/gallery/img/error.jpg'+'&size='+scale2.position;
 				ResizedImgSrc += '&mode=icon';
 				if($('#proportion').attr('checked')=='checked'){
 					ResizedImgSrc +='&prop=true';
@@ -1524,12 +1526,21 @@ var matrix = {
 		//формируем строку запроса для ресайза картинки
 		var ResizedImgSrc;// = MediaUrlPref+ value[2];
 		if (value[7] == 'image') {
-			ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url='+ value[2];
+			ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url=http://'+document.location.host+MediaUrlPref+ value[2];
 			ResizedImgSrc += '&size='+scale.position;
 			ResizedImgSrc += '&mode=icon';
 			ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
 			// загружаем изображение
 			img.src = ResizedImgSrc;
+			
+/*			//кеширование крупного ресайза
+			ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url='+ value[2];
+			ResizedImgSrc += '&size='+scale2.position;
+			ResizedImgSrc += '&mode=normal';
+			ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
+			// загружаем изображение
+			img.src = ResizedImgSrc;
+*/			
 		}
 		else
 		{
@@ -1541,10 +1552,11 @@ var matrix = {
 
 	// обовление матрицы
 	update : function(sp) {
-		
 		$('#matrix_load').show();
 	
 		var reg = new RegExp('\\.\\w{3,4}\\s*', 'i'); //для получения расширения файла
+		//определение параметров в зависимости от режима отображения
+		var display_mode = matrix.mode == "detail"? "none" : "block";
 		
 		var i = sp;
 		var active = '';
@@ -1598,8 +1610,7 @@ var matrix = {
 			
 				// все элементы матрицы есть в кеше, строим матрицу
 				var loadimage = {};
-			
-			
+
 				for (var i = sp; i < sp+ matrix.cell_count; i++) {
 					if (typeof( matrix.events[i]) != 'undefined') 
 						{
@@ -1611,7 +1622,7 @@ var matrix = {
 							camera_class = ' '+camera_class;
 						}
 
-						html += '<div id="cell_'+i+'" class="content_item show'+' camera_'+value[5]+' '+camera_class+'">';
+						html += '<div id="cell_'+i+'" class="content_item show'+' camera_'+value[5]+' '+camera_class+'" style="display:'+display_mode+';">';
 						html += '<div class="elem">';
 
 						html += '<div class="img_block"><a class="refBox" '+matrix.reference+'="#cell_'+i+'"></a></div>';
@@ -1681,12 +1692,15 @@ var matrix = {
 			$('#scroll_content .content_item').width(matrix.cell_width);
 			$('#scroll_content .content_item').css({'padding' : matrix.cell_padding});
 			
+			//Если включен режим детального просмотра - создаем ячейки скрытыми
+			if(matrix.mode=="detail") $('#scroll_content .content_item').hide();
+			
 			//Устанавливаем плеер в матрицу
 			for (var i = sp; i < sp+ matrix.cell_count; i++) {
 				matrix.setimagesize(i);
 					if (typeof( matrix.events[i]) != 'undefined'){
 						var value = matrix.events[i];
-					 	
+
 						//формирование html ToolTip
 						var ttl = '<tr><td>Камера</td> <td>'+matrix.cameras[value[5]].text_left+'</td> </tr>';
 						if (value[7] == 'image')
@@ -1702,16 +1716,23 @@ var matrix = {
 							ttl +='<tr><td>Начало</td> <td>'+value[9]+'</td> </tr>';
 							ttl +='<tr><td>Конец</td> <td>'+value[1]+'</td> </tr>';
 						}
-							
+
+						
+// console.log(document.location.host);
+
+//console.log(MediaUrlPref);
+						
+// console.log(value[2]);	
+						
 						var ResizedImgSrc = MediaUrlPref+ value[2];
 						//Установка прямой ссылки на ресурс
 						$('#cell_'+i+' a').attr({'href': ResizedImgSrc })
 						if (value[7] == 'image') {
-							ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url='+ value[2];
+							ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url=http://'+document.location.host+MediaUrlPref+ value[2];
 							ResizedImgSrc += '&size='+scale.position;
 							ResizedImgSrc += '&mode=icon';
 							ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
-							
+						
 							$('#cell_'+i).find(".elem").attr('tooltip',ttl).end().find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'useImageSize':'true' }).aplayerResizeContanerOnlyToParent();
 						}
 						else 
@@ -1782,8 +1803,10 @@ var matrix = {
 						camera_class = ' '+camera_class;
 					}
 				
-					$(this).removeClass().attr({'id': 'cell_'+(i+sp)}).addClass('content_item show'+ ' camera_'+value[5]+' '+ camera_class );   
-				
+					$(this).removeClass().attr({'id': 'cell_'+(i+sp)})
+					.addClass('content_item show'+ ' camera_'+value[5]+' '+ camera_class )
+					.css({"display":display_mode});   
+			
 					var cont = $(this).find('div.elem>div.img_block>a.refBox');
 					var NewSRC = MediaUrlPref+ matrix.events[i+sp][2];
 
@@ -1792,7 +1815,7 @@ var matrix = {
 					
 					if (value[7] == 'image') 
 					{
-						NewSRC = '/avreg/offline/gallery/ResizeImg.php?url='+ matrix.events[i+sp][2];
+						NewSRC = '/avreg/offline/gallery/ResizeImg.php?url=http://'+document.location.host+MediaUrlPref+matrix.events[i+sp][2];
 						NewSRC += '&size='+scale.position;
 						NewSRC += '&mode=icon';
 						NewSRC += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
@@ -1801,7 +1824,7 @@ var matrix = {
 						{
 							 matrix.setimagesize(i+sp);
 							//Загрузка изображения соответствующего размера
-							$(cont).aplayerSetImgSrc(NewSRC).aplayerSetSrcSizes();
+							$(cont).aplayerSetImgSrc(NewSRC).aplayerResizeContanerOnlyToParent().aplayerSetSrcSizes();
 							
 						}
 						//если была не картинка - переустанавливаем плеер
@@ -1849,7 +1872,6 @@ var matrix = {
 				 	//Заполнение инфо-блока
 				 	$(this)
 				 	.find(".elem").attr({"tooltip":ttl}).end()		
-					.show()
 					.find('.info_block').html(function(){
 						//формирование информационной строки
 						var info_html = matrix.cameras[value[5]].text_left+'<br />'+value[7]+': '+extension;
@@ -1869,10 +1891,24 @@ var matrix = {
 				$('#matrix_load').hide();
 			}
 		}
+	
 		
+		//корректировка позиционирования лого-плей
+		$('.logoPlay').each(function(){
+			$(this).removeAttr('style').css({'position':'relative', 'top': ($(this).parent().height()- $(this).height())/2 });
+		});
+		
+		//Включаем тултип
 		$(".elem").tooltip();
 		if(matrix.num > sp+matrix.cell_count) matrix.num = sp;
 		$('#cell_'+matrix.num).addClass('active');
+		
+		//Если включен режим детального просмотра - хайдим ячейки и выключаем тултип
+		if(matrix.mode=="detail") 
+		{
+			$(".elem").tooltipOff();
+			$('#scroll_content .content_item').hide();
+		}
 	},
 
 	// выполнения запроса новых событий
@@ -1899,7 +1935,7 @@ var matrix = {
 			});
 
 			// определяем с какой позиции загружать события
-			var get_sp = sp;
+			var get_sp = sp>0?sp:sp=0; // sp не должно быть меньше нуля
 			if (matrix.select_node == 'left' ) {
 				if (sp - matrix.config.limit+ matrix.cell_count > 0) {
 					get_sp = sp - matrix.config.limit+ matrix.cell_count;
@@ -1907,6 +1943,7 @@ var matrix = {
 					get_sp = 0;
 				}
 			}
+			
 			// делаем запрос
 			$.post(WwwPrefix+'/offline/gallery.php',{'method':'get_events', 'tree':matrix.tree, 'sp':get_sp, 'type': type, 'cameras': cameras}, function(data) {
 				var i = get_sp;
@@ -1950,7 +1987,15 @@ var matrix = {
 					}
 				}
 		}
-			matrix.update(sp);	
+			//обновляем матрицу
+			matrix.update(sp);
+
+			//если режим детального просмотра - отображаем текущий элемент
+			if(matrix.mode=='detail'){
+					matrix.loaddetailsrc();
+				 	scale2.updateposition(scale2.position);
+			}
+			
 				// устанавливаем флаг, что запрос выполнился
 				matrix.send_query = false;
 				if (hide_over ) {
@@ -2088,8 +2133,6 @@ var scroll = {
 			$('#toolbar .prew').click(function(e) {
 				e.preventDefault();
 				scroll.num_left();
-				//Устанавливаем прямую ссылку на ресурс
-				$('#win_bot_detail a').attr({'href': $('#cell_'+matrix.num+' a.refBox' ).attr('href') });
 				return false;
 			});
 			// обработка нажатия стрелки следующее
@@ -2097,8 +2140,6 @@ var scroll = {
 			$('#toolbar .next').click(function(e) {
 				e.preventDefault();
 				scroll.num_right();
-				//Устанавливаем прямую ссылку на ресурс
-				$('#win_bot_detail a').attr({'href': $('#cell_'+matrix.num+' a.refBox' ).attr('href') });
 				return false;
 			});
 
@@ -2183,9 +2224,23 @@ var scroll = {
 					$('#cell_'+new_num).addClass('active');
 					matrix.num = new_num;
 				} else if (matrix.mode == 'detail'){
+				//востанавливаем матричные параметры активного элемента
+				$(".content_item.active").attr('style', matrix.recover.cell_style).hide()
+				.find('.refBox').attr('style', matrix.recover.refBox_style)
+				.aplayerResizeToParent();
+					if (!$('#cell_'+new_num).hasClass('show')){
+						sp = Math.floor(new_num / scroll.row_count) * scroll.row_count;
+						scroll.updateposition(sp);
+						scroll.setposition(sp);
+					}
+					$('#cell_'+matrix.num).removeClass('active');
+					$('#cell_'+new_num).addClass('active');
 					matrix.num = new_num;
+				
+					//Установка размеров отображаемого элемента
 					matrix.loaddetailsrc();
-				}
+	 				scale2.updateposition(scale2.position);
+			 	}
 			} else {
 				// если вышли за пределы переходим на предыдущий если пользователь согласился
 				if (matrix.curent_tree_events[matrix.tree].prev) {
@@ -2221,10 +2276,24 @@ var scroll = {
 					$('#cell_'+matrix.num).removeClass('active');
 					$('#cell_'+new_num).addClass('active');
 					matrix.num = new_num;
-					
 				} else if (matrix.mode == 'detail'){
+				//востанавливаем матричные параметры активного элемента
+				$(".content_item.active").attr('style', matrix.recover.cell_style).hide()
+				.find('.refBox').attr('style', matrix.recover.refBox_style)
+				.aplayerResizeToParent();
+
+				if (!$('#cell_'+new_num).hasClass('show')){
+						sp = Math.floor(new_num / scroll.row_count) * scroll.row_count;
+						scroll.updateposition(sp);
+						scroll.setposition(sp);
+					}
+					$('#cell_'+matrix.num).removeClass('active');
+					$('#cell_'+new_num).addClass('active');
 					matrix.num = new_num;
+
+					//Установка размеров отображаемого элемента
 					matrix.loaddetailsrc();
+				 	scale2.updateposition(scale2.position);
 				}
 			} else {
 				// если вышли за пределы переходим на предыдущий если пользователь согласился
@@ -2261,8 +2330,23 @@ var scroll = {
 					$('#cell_'+new_num).addClass('active');
 					matrix.num = new_num;
 				} else if (matrix.mode == 'detail'){
+				//востанавливаем матричные параметры активного элемента
+				$(".content_item.active").attr('style', matrix.recover.cell_style).hide()
+				.find('.refBox').attr('style', matrix.recover.refBox_style)
+				.aplayerResizeToParent();
+				
+				if (!$('#cell_'+new_num).hasClass('show')){
+						sp = Math.floor(new_num / scroll.row_count) * scroll.row_count;
+						scroll.updateposition(sp);
+						scroll.setposition(sp);
+					}
+					$('#cell_'+matrix.num).removeClass('active');
+					$('#cell_'+new_num).addClass('active');
 					matrix.num = new_num;
+
+					//Установка размеров отображаемого элемента
 					matrix.loaddetailsrc();
+				 	scale2.updateposition(scale2.position);
 				}
 
 			}else {
@@ -2283,7 +2367,6 @@ var scroll = {
 		},
 		// смещаемся на ряд ниже
 		num_down : function() {
-			
 			var new_num = matrix.num + scroll.row_count;
 			
 			if (new_num < scroll.cell_count*scroll.row_count && new_num < matrix.curent_tree_events[matrix.tree].count) {
@@ -2297,8 +2380,24 @@ var scroll = {
 					$('#cell_'+new_num).addClass('active');
 					matrix.num = new_num;
 				} else if (matrix.mode == 'detail'){
-					matrix.num = new_num;
-					matrix.loaddetailsrc();
+				//востанавливаем матричные параметры активного элемента
+				$(".content_item.active").attr('style', matrix.recover.cell_style).hide()
+				.find('.refBox').attr('style', matrix.recover.refBox_style)
+				.aplayerResizeToParent();
+
+				//переходим на новую активную ячейку
+				if (!$('#cell_'+new_num).hasClass('show')){
+					sp = Math.floor(new_num / scroll.row_count) * scroll.row_count;
+					scroll.updateposition(sp);
+					scroll.setposition(sp);
+				}
+				$('#cell_'+matrix.num).removeClass('active');
+				$('#cell_'+new_num).addClass('active');
+				matrix.num = new_num;
+				
+				//Установка размеров отображаемого элемента
+				matrix.loaddetailsrc();
+			 	scale2.updateposition(scale2.position);
 				}
 			}else {
 				if (matrix.curent_tree_events[matrix.tree].next) {
@@ -2323,13 +2422,11 @@ var scroll = {
 				matrix.update(sp);
 			}
 		},
-		// обновляем позицию скрола и ползунка, перестраиваем матрицу
+		// обновляем позицию скрола и ползунка
 		setposition : function(sp) {
 			scroll.position = sp;
 			var t = Math.floor(sp/scroll.row_count*(scroll.height-scroll.polzh)/scroll.cell_count);
 			$(scroll.id + ' .scroll_polz_v').css({top:t});
-			//Вызывает повторную перестройку матрицы - commented
-//			matrix.update(sp);
 		}
 };
 // элемент масштаба предварительного просмотра
@@ -2415,10 +2512,6 @@ var scale = {
 		});
 
 
-
-
-
-
 		if (gallery.cookie.get('scale')) {
 			scale.setposition(gallery.cookie.get('scale'));
 		}
@@ -2468,18 +2561,24 @@ var scale2 = {
 			$(self.id + ' .scale_polz').css({left:t});
 			self.updateposition(sp);
 		},
+
 		updateposition : function(sp) {
+
+			
 			var self = this;
 			self.position = sp;
-
+			var value = matrix.events[matrix.num];
+			
 			gallery.cookie.set('scale2', sp);
 
 			if(matrix.mode=='detail') $('#scale2').show();
+
+			if(value==null) return; //при инициализации
+
 			//Изменение положения ползунка масштаба 	
-			if($('#win_bot_detail a').aplayerIsImage()) //Если картинка
+			if(value[7]=='image') //Если картинка
 			{
-				//'http://'+document.location.host+
-				var ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url='+matrix.cur_source+'&size='+scale2.position;
+				var ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url=http://'+document.location.host+MediaUrlPref+ value[2]+'&size='+scale2.position;
 				ResizedImgSrc += '&mode=normal';
 				if($('#proportion').attr('checked')=='checked'){
 					ResizedImgSrc +='&prop=true';
@@ -2487,36 +2586,48 @@ var scale2 = {
 				else{
 					ResizedImgSrc +='&prop=false';
 				}
-				
 				//Загрузка изображения соответствующего размера
-				$('#win_bot_detail a').each(function(){
-					$(this).aplayerResizeContanerOnlyToParent().aplayerSetImgSrc(ResizedImgSrc).aplayerSetSrcSizes().show();
-					
-				});   
+				$('.active .refBox').aplayerSetImgSrc(ResizedImgSrc).aplayerResizeToParent().aplayerSetSrcSizes();
+				
+				//визуализируем скролл масштаба режима просмотра
+				$('#scale2').show();
+				//показываем чекбокс пропорций
+				$('div.propotion').show();
+				
 			}
-			else if( $('#win_bot_detail a').aplayerIsEmbededObject() ) //Если внедренный объект
+			else if( $('.active .refBox').aplayerIsEmbededObject() || value[7]=='audio' ) //Если внедренный объект или  аудио
 			{
 				//Скрываем елемент управления масштабом
 				$('#scale2').hide();
 				//установка размеров плеера в соответствии с размерами родительского элемента
-				$('#win_bot_detail a').aplayerResizeToParent();
-			
+				$('.active .refBox').aplayerResizeToParent();
+
+				//скрываем скролл масштаба режима просмотра
+				$('#scale2').hide();
+				//скрываем чекбокс пропорций
+				$('div.propotion').hide();
 			}
 			else // HTML5-player
 			{
 				sp+=3; //Несколько увеличиваем размер медиаэлемента 
 				//установка размеров плеера в соответствии с размерами родительского элемента
-				$('#win_bot_detail a').aplayerResizeToParent();
-				//Изменение размеров медиа-элемента плеера в "win_bot_detail"
-				$('#win_bot_detail a').aplayerSetSizeMediaElt({
-					'width': parseInt(self.min_width) + Math.floor((self.max_width - self.min_width)*sp/self.max),
+				$('.active .refBox').aplayerResizeToParent();
+				//Изменение размеров медиа-элемента плеера 
+				$('.active .refBox').aplayerSetSizeMediaElt({
+					'width':  parseInt(self.min_width) + Math.floor((self.max_width - self.min_width)*sp/self.max),
 					'height': parseInt(self.min_height) + Math.floor((self.max_height - self.min_height)*sp/self.max)
 				} );
+				
+				//визуализируем скролл масштаба режима просмотра
+				$('#scale2').show();
+				//скрываем чекбокс пропорций
+				$('div.propotion').hide();
 			}
-			
-//			matrix.resetPositionImage();
+			$('.active').show();
 
 		},
+		
+		
 		reload : function() {
 			var self = this;
 			self.updateposition(self.position);
@@ -2603,12 +2714,7 @@ var keyBoard = {
 		home: 36,
 		end: 35
 	},
-	/*boxes : {
-		tree : 0,
-		camList: 1,
-		dialog: 2,
-		inside: 3
-	},*/
+
 	views : {
 		matrix: 0,
 		detail: 1,
@@ -2799,66 +2905,61 @@ var keyBoard = {
 					} else if(e.which == keyBoard.keys.enter) {
 						matrix.preview();
 					} else if(e.which == keyBoard.keys.down) {
-// отработка для стрелок в детальном режиме				
-						var imgHeight = parseInt(matrix.imageDetail.attr('height'));
+//DETAIL: Нажатие стрелки вниз
+						scroll.num_down();
 						
-						if(imgHeight<matrix.height) {
-							return;
-						}
-
+						
+/*						var imgHeight = parseInt(matrix.imageDetail.attr('height'));
+						if(imgHeight<matrix.height) { return; }
 						var pos = matrix.imageDetail.offset();
-
 						pos.top -= 20;
-
 						var imgHeight = parseInt(matrix.imageDetail.attr('height'));
-
 						if(matrix.height - pos.top + matrix.currentOffset.top >=imgHeight)
 							pos.top = matrix.height - imgHeight + matrix.currentOffset.top;
-
 						matrix.imageDetail.offset(pos);
-
+*/
 					} else if(e.which == keyBoard.keys.up) {
+//DETAIL: Нажатие стрелки вверх	
+						scroll.num_up();
 						
-						var imgHeight = parseInt(matrix.imageDetail.attr('height'));
-
-						if(imgHeight<matrix.height) {
-							return;
-						}
-
+						
+						
+/*						var imgHeight = parseInt(matrix.imageDetail.attr('height'));
+						if(imgHeight<matrix.height) { return; }
 						var pos = matrix.imageDetail.offset();
 						pos.top += 20;
-
 						if(pos.top>matrix.currentOffset.top)
 							pos.top = matrix.currentOffset.top;
-
 						matrix.imageDetail.offset(pos);
+*/
+						
 					} else if(e.which == keyBoard.keys.right) {
-						var imgWidth = parseInt(matrix.imageDetail.attr('width'))-28;
-						if(imgWidth<matrix.width) {
-							return;
-						}
+//DETAIL: Нажатие стрелки вправо
+						scroll.num_right();
+						
+/*						var imgWidth = parseInt(matrix.imageDetail.attr('width'))-28;
+						if(imgWidth<matrix.width) { return;	}
 						var pos = matrix.imageDetail.offset();
 						pos.left -= 20;
-
 						var imgWidth = parseInt(matrix.imageDetail.attr('width'))-28;
-
 						if(matrix.width-pos.left + matrix.currentOffset.left>imgWidth)
 							pos.left = matrix.width - imgWidth + matrix.currentOffset.left;
-
 						matrix.imageDetail.offset(pos);
+*/						
+						
 					} else if(e.which == keyBoard.keys.left) {
-						var imgWidth = parseInt(matrix.imageDetail.attr('width'))-28;
-						if(imgWidth<matrix.width) {
-							return;
-						}
+//DETAIL: Нажатие стрелки влево
+						scroll.num_left();
+						
+/*						var imgWidth = parseInt(matrix.imageDetail.attr('width'))-28;
+						if(imgWidth<matrix.width) {	return;	}
 						var pos = matrix.imageDetail.offset();
 						pos.left += 20;
-
 						if(pos.left>matrix.currentOffset.left){
 							pos.left = matrix.currentOffset.left;
 						}
-
 						matrix.imageDetail.offset(pos);
+*/
 					}
 				}
 
@@ -2869,14 +2970,12 @@ var keyBoard = {
 					scale.click_max();
 				}
 
+				
 				if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.INSIDE) {
-					if (e.which == keyBoard.keys.left) {
+					if (e.which == keyBoard.keys.left) { 
+						//PREVIEW: стрелка влево
 						scroll.num_left();
 					} else if (e.which == keyBoard.keys.home) {
-					/*	matrix.build();
-						$('#cell_'+matrix.num).removeClass('active');
-						$('#cell_0').addClass('active');
-						matrix.num = 0;*/
 						$('#cell_'+matrix.num).removeClass('active');
 						matrix.num = scroll.position;
 						$('#cell_'+matrix.num).addClass('active');
@@ -2886,11 +2985,14 @@ var keyBoard = {
 						matrix.num = scroll.position+(scroll.matrix_count-1)*scroll.row_count;
 						$('#cell_'+matrix.num).addClass('active');
 
-					} else if (e.which == keyBoard.keys.up) {
+					} else if (e.which == keyBoard.keys.up) { 
+						//PREVIEW: стрелка вверх
 						scroll.num_up();
 					} else if (e.which == keyBoard.keys.right) {
+					//PREVIEW: стрелка вправо
 						scroll.num_right();
 					} else if (e.which == keyBoard.keys.down) {
+					//PREVIEW: стрелка вниз
 						scroll.num_down();
 					} else if (e.which == keyBoard.keys.pageUp) {
 						var sp = scroll.position;

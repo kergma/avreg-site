@@ -1,22 +1,89 @@
 <?php 
 require ('/etc/avreg/site-defaults.php');
-//$id = "/var/www/avreg/media/cam_02/2010-05/01/01_21_36.jpg";
-//	http://localhost.sandbox.moonion.com/avreg/offline/gallery/ResizeImg.php?url=media/cam_02/2010-05/01/01_21_36.jpg&size=1
-
+$id = $_GET['url'];
+/*
 $id = $conf['storage-dir'].$conf['media-alias'].'/'.$_GET['url'];
 do {
     $id = preg_replace('#\w+/\.\./#', '', $id, 1, $c);
 } while($c);
-
-if (!file_exists($id))
+*/
+//$im = imagecreatefromjpeg($id);
+//if(!$im)
+//если файл не существует - заставка ошибки 
+//if (!file_exists($id))
+//if(!$im)
+/*
+ if(!is_success(head($id))  
 {
-		$id = $conf['storage-dir'].$conf['media-alias'].'/'.'../offline/gallery/img/error.jpg';
-	do {
-    	$id = preg_replace('#\w+/\.\./#', '', $id, 1, $c);
-	} while($c);
-}
+	
+	$saveProp = $_GET['prop'];
+	
+	$proportion = 1;
+	
+	//Кол-во позиций ползунка слайдера
+	$positionNum = 21;
+	
+	$h=150;
+	$w=188;
+	$delta=12;
+	
+	if($_GET['mode']=='normal')
+	{
+		$h=400;
+		$w=400;
+		$delta=30;
+	}
+	
+	for ($i = 0; $i< $positionNum ; $i++, $h+=$delta, $w+=$delta)
+	{
+		if($saveProp=='true')
+		{
+			if($proportion >=1 )
+			{
+				$h = (int) $w/$proportion;
+			}
+			else
+			{
+				$w = (int)$h*$proportion;
+			}
+		}
+		$sizes[$i]= array('h'=>$h, 'w'=>$w);
+	}
+	
+	
+	$sz = $sizes[(int)$_GET['size']];
+	
+	
+	$new_width = $sz['w'];
+	$new_height = $sz['h'];
 
-$im = imagecreatefromjpeg($id);
+	
+//	$new_im=imagecreatetruecolor($new_width, $new_height);
+	
+	$new_im=imagecreatetruecolor(200, 160);
+	
+	
+	$string = "FILE NOT FOUND";
+	
+	$orange = imagecolorallocate($new_im, 220, 210, 60);
+	
+	$px     = (imagesx($new_im) - 7.5 * strlen($string)) /2.5;
+	
+	
+	imagestring($new_im, 60, $px, $new_height/6 , $string, $orange);
+	
+	//output
+	header("Content-type: image/jpeg");
+	Imagejpeg($new_im,'',80); // quality 80
+	ImageDestroy($new_im);
+	
+}
+else 
+*/
+{
+
+	$im = imagecreatefromjpeg($id);
+
 $im_width=imageSX($im);
 $im_height=imageSY($im);
 
@@ -29,8 +96,9 @@ $sizes = array(
 );
 */
 
+
 $saveProp = $_GET['prop'];
-$proportion = $im_width/$im_height;
+if($im_height>0) $proportion = $im_width/$im_height;
 
 //Кол-во позиций ползунка слайдера
 $positionNum = 21;
@@ -87,6 +155,6 @@ Imagejpeg($new_im,'',80); // quality 80
 ImageDestroy($im);
 ImageDestroy($new_im);
 
-
+}
 
 ?>
