@@ -884,21 +884,12 @@ var gallery = {
 			
 			$(btnCangeMode)
 			.find('#btn_DetailMode').click(function(){
-					if(matrix.mode == 'preview')
-					{
-						matrix.detail();
-					}
-						$(this).attr("disabled","disabled");
-						$('#btn_PreviewMode').removeAttr("disabled")
+					matrix.detail();
 				}).end()
 				.find('#btn_PreviewMode').click(function(){
 					if(matrix.mode == 'detail')
-					{
 						matrix.preview();
-					}
-						$(this).attr("disabled","disabled");
-						$('#btn_DetailMode').removeAttr("disabled")
-				})
+				});
 
 
 
@@ -1143,6 +1134,9 @@ var matrix = {
 	detail : function() {
 		
 		matrix.mode = 'detail';
+		$('#btn_DetailMode').attr("disabled","disabled");
+		$('#btn_PreviewMode').removeAttr("disabled")
+		
 		
 //		keyBoard.beforeView = keyBoard.view;
 		keyBoard.view = keyBoard.views.detail;
@@ -1207,6 +1201,10 @@ var matrix = {
 			keyBoard.view = keyBoard.views.matrix;
 
 			matrix.mode = 'preview';
+	
+			$('#btn_PreviewMode').attr("disabled","disabled");
+			$('#btn_DetailMode').removeAttr("disabled")
+
 
 			//переключаем toolbar в режим миниатюрs
 			$('#toolbar .detail').hide();

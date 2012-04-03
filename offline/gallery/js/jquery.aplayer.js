@@ -484,7 +484,7 @@
 		//Вывод версии браузера и тип открываемого файла
 //			alert('Browser\'s version: '+$.browser.version+'\nSource type: '+ settings.type);
 			//Блокировка использования HTML5 в Chrome для указанных форматов
-			if( $.browser.safari==true && (srcType=='audio/wav' || srcType=='video/mp4'))// || srcType=='audio/mpeg'))
+			if( $.browser.safari==true && (srcType=='audio/wav' || srcType=='video/mp4')) // || srcType=='audio/mpeg'))
 				{
 					srcType+='" application ="true';
 					
