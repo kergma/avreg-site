@@ -1173,7 +1173,7 @@ var matrix = {
 		$('.tooltip').remove();
 			
 		//скрыть инфо-блок
-//		$('.info_block').hide(); //рестартит ембед //спрятан за #toolbar
+		$('.info_block').hide(); //рестартит ембед //спрятан за #toolbar
 			
 		//скрываем скролл матрицы
 		$("#scroll_v").hide();

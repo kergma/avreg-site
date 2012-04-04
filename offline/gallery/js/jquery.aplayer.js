@@ -483,14 +483,21 @@
 			
 		//Вывод версии браузера и тип открываемого файла
 //			alert('Browser\'s version: '+$.browser.version+'\nSource type: '+ settings.type);
+			
 			//Блокировка использования HTML5 в Chrome для указанных форматов
 			if( $.browser.safari==true && (srcType=='audio/wav' || srcType=='video/mp4')) // || srcType=='audio/mpeg'))
 				{
 					srcType+='" application ="true';
-					
 					$.extend(settings, {'application':'true'});
 				}
-			
+			//Блокировка использования HTML5 в Mozilla Firefox для указанных форматов
+			if( $.browser.mozilla ==true && (srcType=='audio/wav'))
+				{
+					srcType+='" application ="true';
+					$.extend(settings, {'application':'true'});
+				}
+				
+				
 			switch($.browser.version)
 			{
 /*				case '535.2':
