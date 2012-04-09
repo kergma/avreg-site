@@ -955,7 +955,6 @@ var matrix = {
 	cur_count_item : 0, // текущее количество загруженных событий
 	send_query: false, // можно ли посылать запросы к базе
 	select_node : false, // можно ли выбирать другой диапазон
-//	cur_source: null, //отн путь текущего медиа файла
 	//объект для востановления матрицы при выходе из режима просмотра
 	recover:{
 		cell_style:null,
@@ -963,10 +962,6 @@ var matrix = {
 	}, 
 	init: function(config) {
 
-//		matrix.imageDetail = $(".show_detail").css('top', '0');
-
-		
-		
 		// отменяет действие по клику
 		$('#scroll_content').click(function(event) {
 			event.preventDefault();
@@ -986,15 +981,6 @@ var matrix = {
 		matrix.cell_height = matrix.config.min_cell_height;
 		matrix.cell_width = matrix.config.min_cell_width;
 
-		// обработка переключение режима матрицы
-		// изменено на dblclick
-/*		$('.matrix_mode a').dblclick(function(e) {
-			e.preventDefault();
-			var mode = $(this).attr(matrix.reference).replace('#','');
-			matrix[mode]();
-			return false;
-		});
-*/
 		// обработка переключение режима матрицы
 		$('#scroll_content .content_item a').live('dblclick', function(e) {
 			e.preventDefault();
@@ -1102,9 +1088,6 @@ var matrix = {
 		{
 			//установка ресайзеных какртинок
 			scale.updateposition(scale.position);
-			
-			//установка размеров <img/> (картинки не ресайзятся)
-//  			$('#scroll_content .show').each(function() { 	matrix.setimagesize($(this).attr('id').replace('cell_',''));  	});
 		}
 		
 		if ($('#proportion').attr('checked')) {
@@ -1132,15 +1115,12 @@ var matrix = {
 	
 	// если включили режим детальный просмотр
 	detail : function() {
-		
 		matrix.mode = 'detail';
 		$('#btn_DetailMode').attr("disabled","disabled");
 		$('#btn_PreviewMode').removeAttr("disabled")
 		
-		
 //		keyBoard.beforeView = keyBoard.view;
 		keyBoard.view = keyBoard.views.detail;
-		
 		
 		//скрываем все ячейки матрицы за исключением активной
 		$(".content_item").each(function(){
@@ -1151,12 +1131,6 @@ var matrix = {
 			else{
 				matrix.recover.cell_style = $(this).attr('style');
 				matrix.recover.refBox_style = $(this).find(".refBox").attr('style');
-
-				//если лого-плей - переключаем в режим плеера
-				$(this).find(".refBox .aplayer").each(function(){
-						$(this).parent().addPlayer({'src': $(this).attr('s'), 'type':'"'+$(this).attr('t')+'"' ,'controls':'mini' }).click()
-						.end().removeAttr('t').removeAttr('s').unbind('click');
-					});
 				
 			}
 			});
@@ -1173,7 +1147,7 @@ var matrix = {
 		$('.tooltip').remove();
 			
 		//скрыть инфо-блок
-		$('.info_block').hide(); //рестартит ембед //спрятан за #toolbar
+//		$('.info_block').hide(); //рестартит ембед //спрятан за #toolbar
 			
 		//скрываем скролл матрицы
 		$("#scroll_v").hide();
@@ -1182,14 +1156,8 @@ var matrix = {
 			
 		//Установка размеров отображаемого элемента
 		matrix.loaddetailsrc();
-		
 	 	scale2.updateposition(scale2.position);
-	 	
-	 	//корректировка позиционирования лого-плей
-//		$('.active .logoPlay').removeAttr('style').css({'position':'relative', 'top': ($('.active .logoPlay').parent().height()- $('.active .logoPlay').height())/2 });
-	 	
-		//Смена названия кнопки режима просмотра
-//		$('#btn_ViewModeText').html('Миниатюры');
+
 	},
 	
 	
@@ -1241,8 +1209,6 @@ var matrix = {
 			//Включаем тултип
 			$(".elem").tooltip();
 
-			//Смена названия кнопки режима просмотра
-//			$('#btn_ViewModeText').html('Просмотр');
 		}
 	},
 
@@ -1250,7 +1216,6 @@ var matrix = {
 	// перестраиваем матрицу при изменении размеров
 	resize: function() {
 
-		
 		// обновляем ширину колонок
 		gallery.resize_column.resize($('#sidebar').width()-2);
 		$('#tree').height($('#sidebar').height() - $('#type_event').height() - $('#favorite').height() - $('#statistics').height()-90);
@@ -1349,7 +1314,6 @@ var matrix = {
 	setimagesize : function(el) {
 		if (typeof(matrix.events[el]) != 'undefined') {
 			
-			var thumb_width = matrix.thumb_width;
 			var thumb_width = 	matrix.thumb_width;
 			var thumb_height = matrix.thumb_height;
 			
@@ -1394,7 +1358,7 @@ var matrix = {
 	loaddetailsrc : function() {
 		if (typeof(matrix.events[matrix.num]) != 'undefined') {
 			var value = matrix.events[matrix.num];
-
+/*
 			// размер матрицы
 			var width = matrix.width;
 			var height = matrix.height;
@@ -1428,17 +1392,16 @@ var matrix = {
 					height = h;
 				}
 			}
+*/
 			
 			// обновляем параметры элемента масштаба
-			scale2.min_width = width;
-			scale2.min_height = height;
-			scale2.max_width = wm;
-			scale2.max_height = hm;
-			scale2.reload();
-
+//			scale2.min_width = width;
+//			scale2.min_height = height;
+//			scale2.max_width = wm;
+//			scale2.max_height = hm;
 			
-//-------------------------------------------------------  	//Визуализируем активную ячейку в режиме детального просмотра
-				//сохраняем необходимые параметры нового активного элемента
+		//Визуализируем активную ячейку в режиме детального просмотра
+			//сохраняем необходимые параметры нового активного элемента
 			$(".content_item.active").each(function(){
 				matrix.recover.cell_style = $(this).attr('style');
 				matrix.recover.refBox_style = $(this).find(".refBox").attr('style');
@@ -1459,10 +1422,10 @@ var matrix = {
 					"padding": 0 ,
 					'height':matrix.height-5,
 					'width':(matrix.width + $("#scroll_v").width())
-					})
-					.aplayerResizeContanerOnlyToParent();
+					});
+//					.aplayerResizeToParent();
+//					.aplayerResizeContanerOnlyToParent();
 				});
-///-----------------------------------------------------------------------------------------			
 			
 			// обновляем статистику события
 			var stat = '<span><strong>'+lang.camera+'</strong>'+matrix.cameras[value[5]].text_left+'</span><br />\
@@ -1498,18 +1461,10 @@ var matrix = {
 		img.onerror = function() {
 			//изображение не загрузилось
 			// показываем картинку ошибки в ячейке
-
-				var ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url=http://'+document.location.host+'/avreg/offline/gallery/img/error.jpg'+'&size='+scale2.position;
-				ResizedImgSrc += '&mode=icon';
-				if($('#proportion').attr('checked')=='checked'){
-					ResizedImgSrc +='&prop=true';
-				}
-				else{
-					ResizedImgSrc +='&prop=false';
-				}
-				//Установка плеера 
-				$('#cell_'+el+' .img_block a').css({ 'display':'block', 'width':'100%', 'height':'100%', 'type':'audio'}
-					).addPlayer({'src': ResizedImgSrc, 'useImageSize':'true'});
+			var errorImgSrc = 'http://'+document.location.host+'/avreg/offline/gallery/img/error.jpg';
+			//Установка плеера 
+			$('#cell_'+el+' .img_block a').css({ 'display':'block', 'width':'100%', 'height':'100%', 'type':'audio'}
+					).addPlayer({'src': errorImgSrc });
 			// задаем новые размеры изображения
 			matrix.setimagesize(el);
 			// обновляем счетчик загруженных изображений
@@ -1524,34 +1479,39 @@ var matrix = {
 		//формируем строку запроса для ресайза картинки
 		var ResizedImgSrc;// = MediaUrlPref+ value[2];
 		if (value[7] == 'image') {
-			ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url=http://'+document.location.host+MediaUrlPref+ value[2];
-			ResizedImgSrc += '&size='+scale.position;
-			ResizedImgSrc += '&mode=icon';
-			ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
-			// загружаем изображение
-			img.src = ResizedImgSrc;
 			
-/*			//кеширование крупного ресайза
-			ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url='+ value[2];
-			ResizedImgSrc += '&size='+scale2.position;
-			ResizedImgSrc += '&mode=normal';
-			ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
+			//вычисляем размеры изображения
+			var width = matrix.thumb_width;
+			var height = matrix.thumb_height;
+			if ($('#proportion').attr('checked')) {
+				// если выбран чекбокс сохранять пропорции
+				var w = width;
+				var h = Math.floor(matrix.events[el][3]*w/matrix.events[el][4]);
+				if (h > height) {
+					h = height;
+					w = Math.floor(matrix.events[el][4]*h/matrix.events[el][3]);
+				}
+				width = w;
+				height = h;
+			}
+			//формируем src изображения соответствующего размера
+			ResizedImgSrc = matrix.getResizedImageSrc(el, height, width);
 			// загружаем изображение
 			img.src = ResizedImgSrc;
-*/			
 		}
 		else
 		{
 			img.src = MediaUrlPref + matrix.events[el][2];
 		}
-		
-//		matrix.resetPositionImage();
 	},
 
 	// обовление матрицы
 	update : function(sp) {
 		$('#matrix_load').show();
 	
+		var height, width; //размер ячейки
+		var img_height, img_width;//размер изображения
+		
 		var reg = new RegExp('\\.\\w{3,4}\\s*', 'i'); //для получения расширения файла
 		//определение параметров в зависимости от режима отображения
 		var display_mode = matrix.mode == "detail"? "none" : "block";
@@ -1715,27 +1675,50 @@ var matrix = {
 							ttl +='<tr><td>Конец</td> <td>'+value[1]+'</td> </tr>';
 						}
 
-						
-// console.log(document.location.host);
-
-//console.log(MediaUrlPref);
-						
-// console.log(value[2]);	
-						
 						var ResizedImgSrc = MediaUrlPref+ value[2];
 						//Установка прямой ссылки на ресурс
 						$('#cell_'+i+' a').attr({'href': ResizedImgSrc })
 						if (value[7] == 'image') {
-							ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url=http://'+document.location.host+MediaUrlPref+ value[2];
-							ResizedImgSrc += '&size='+scale.position;
-							ResizedImgSrc += '&mode=icon';
-							ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
-						
-							$('#cell_'+i).find(".elem").attr('tooltip',ttl).end().find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'useImageSize':'true' }).aplayerResizeContanerOnlyToParent();
+
+							//определяем размеры изображения
+							height =  $('#cell_'+i+' .refBox').height();
+							width = $('#cell_'+i+' .refBox').width();
+							
+							img_height = height;
+							img_width = width;
+							
+							//если включен режим пропорций
+							if( $('#proportion').attr('checked')=='checked' )
+							{
+								var img_height = value[3];
+								var img_width = value[4];
+								var origin_proportion = img_width/img_height;
+			
+								elem_proportion = width/height;
+								
+								if(origin_proportion > elem_proportion )
+								{
+									img_height = parseInt(width/origin_proportion);
+									img_width = width;
+								}
+								else 
+								{
+									img_width = parseInt( height*origin_proportion);
+									img_height = height;
+								}
+							}
+							//формирование src ресайза картинки
+							var ResizedImgSrc = matrix.getResizedImageSrc(i, img_height, img_width);
+							
+							$('#cell_'+i).find(".elem").attr('tooltip',ttl).end()
+							.find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'useImageSize':'true' })
+							.aplayerResizeToParent();
 						}
 						else 
 						{
-							$('#cell_'+i).find(".elem").attr('tooltip',ttl).end().find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'logoPlay':'true' }).aplayerResizeContanerOnlyToParent();
+							$('#cell_'+i).find(".elem").attr('tooltip',ttl).end()
+							.find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'logoPlay':'true' })
+							.aplayerResizeToParent();
 						}
 				}
 			}
@@ -1748,11 +1731,11 @@ var matrix = {
 			
 		var cells = $('div [id ^=cell_]').each(function(i){
 		
-			if (typeof( matrix.events[i+sp]) != 'undefined')
+			if (typeof( matrix.events[i]) != 'undefined')
 				{
-					value = matrix.events[i+sp];
+					value = matrix.events[i];
 
-				var cont = $(this).attr({'id': 'cell_'+(i+sp)}).find('div.elem a').attr({reference: '#cell_'+(i+sp) });
+				var cont = $(this).attr({'id': 'cell_'+(i)}).find('div.elem a').attr({reference: '#cell_'+(i) });
 	
 				if (value[7] == 'image') 
 				{
@@ -1793,52 +1776,77 @@ var matrix = {
 
 			
 			$(cells).each(function(i){
-				
-				if (typeof( matrix.events[i+sp]) != 'undefined') {
-					value = matrix.events[i+sp];
+				i=i+sp;
+				if (typeof( matrix.events[i]) != 'undefined') {
+					value = matrix.events[i];
 					camera_class = gallery.cookie.get('camera_'+value[5]+'_color');
 					if (camera_class != '') {
 						camera_class = ' '+camera_class;
 					}
 				
-					$(this).removeClass().attr({'id': 'cell_'+(i+sp)})
+					$(this).removeClass().attr({'id': 'cell_'+(i)})
 					.addClass('content_item show'+ ' camera_'+value[5]+' '+ camera_class )
 					.css({"display":display_mode});   
 			
 					var cont = $(this).find('div.elem>div.img_block>a.refBox');
-					var NewSRC = MediaUrlPref+ matrix.events[i+sp][2];
+					var NewSRC = MediaUrlPref+ matrix.events[i][2];
 
 					//Установка прямой ссылки на ресурс
-					$('#cell_'+(i+sp)+' a').attr({'href': NewSRC })
+					$('#cell_'+(i)+' a').attr({'href': NewSRC })
 					
 					if (value[7] == 'image') 
 					{
-						NewSRC = '/avreg/offline/gallery/ResizeImg.php?url=http://'+document.location.host+MediaUrlPref+matrix.events[i+sp][2];
-						NewSRC += '&size='+scale.position;
-						NewSRC += '&mode=icon';
-						NewSRC += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
-						//если ранее в плеере была установлена картинка - меняем src						
+						//определяем размеры изображения
+						height =  $('#cell_'+i+' .refBox').height();
+						width = $('#cell_'+i+' .refBox').width();
+						
+						img_height = height;
+						img_width = width;
+						
+						//если включен режим пропорций
+						if( $('#proportion').attr('checked')=='checked' )
+						{
+							var img_height = value[3];
+							var img_width = value[4];
+							var origin_proportion = img_width/img_height;
+		
+							elem_proportion = width/height;
+							
+							if(origin_proportion > elem_proportion )
+							{
+								img_height = parseInt(width/origin_proportion);
+								img_width = width;
+							}
+							else 
+							{
+								img_width = parseInt( height*origin_proportion);
+								img_height = height;
+							}
+						}
+						//формирование src ресайза картинки
+						 NewSRC = matrix.getResizedImageSrc(i, img_height, img_width);
+
+						 //если ранее в плеере была установлена картинка - меняем src						
 						if($(cont).aplayerIsImage())
 						{
-							 matrix.setimagesize(i+sp);
+							 matrix.setimagesize(i);
 							//Загрузка изображения соответствующего размера
-							$(cont).aplayerSetImgSrc(NewSRC).aplayerResizeContanerOnlyToParent().aplayerSetSrcSizes();
+							$(cont).aplayerSetImgSrc(NewSRC);//.aplayerResizeContanerOnlyToParent().aplayerSetSrcSizes();
 							
 						}
 						//если была не картинка - переустанавливаем плеер
 						else
 						{
-							 matrix.setimagesize(i+sp);
+							 matrix.setimagesize(i);
 							$(cont).empty().addPlayer({'src': NewSRC, 'useImageSize':'true' }).aplayerResizeContanerOnlyToParent();	
 						}
-
 					}
 					
 					else
 					{
 						//Не картинка  - 
 						// задаем новые размеры
-						matrix.setimagesize(i+sp);
+						matrix.setimagesize(i);
 						
 						//пересоздаем плеер
 						$(this).find('a.refBox').empty().addPlayer({'src': NewSRC, 'logoPlay':'true' }).aplayerResizeContanerOnlyToParent();	
@@ -2082,9 +2090,47 @@ var matrix = {
 		//инициализируем элемент скрола
 		scroll.init({height:matrix.height-82, cell_count:Math.ceil(matrix.count_item/matrix.count_column), row_count: matrix.count_column, matrix_count: Math.ceil(matrix.cell_count/matrix.count_column)});
 		matrix.scroll = true;
-//		matrix.resetPositionImage();
-	}
+	},
+	
+	//возвращает src ресайзенного изображения
+	getResizedImageSrc : function(cell_num, height, width){
+/*		
+		//определение размеров изображения
+		height = $('#cell_'+cell_num+' .refBox').height();
+		width = $('#cell_'+cell_num+' .refBox').width();
+		//проверка полученных значений (при вызове matrix.get_events() - элементы матрицы еще не сформированны)
+		if(height == null || height <= 0 || width == null || width <= 0 )
+		{
+			//поэтому вычисляем необходимые размеры здесь
+			width = matrix.thumb_width;
+			height = matrix.thumb_height;
+			if ($('#proportion').attr('checked')) {
+				// если выбран чекбокс сохранять пропорции
+				var w = width;
+				var h = Math.floor(matrix.events[cell_num][3]*w/matrix.events[cell_num][4]);
+				if (h > height) {
+					h = height;
+					w = Math.floor(matrix.events[cell_num][4]*h/matrix.events[cell_num][3]);
+				}
+				width = w;
+				height = h;
+			}
+		}
+*/
+		
+		//формируем строку src
+		var ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url=http://'+document.location.host+MediaUrlPref+ matrix.events[cell_num][2];
+		ResizedImgSrc += '&h='+height;
+		ResizedImgSrc += '&w='+width;						
+		ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
+
+		return ResizedImgSrc;
+		}
+	
 };
+
+
+
 // элемент скрол
 var scroll = {
 		id : '#scroll_v', // ид элемента скрола
@@ -2200,7 +2246,8 @@ var scroll = {
 				scroll.updateposition(sp);
 				scroll.setposition(sp);
 				matrix.num = scroll.position;
-				
+					$('.active').removeClass('active');
+					$('#cell_'+matrix.num).addClass('active');
 			});
 
 			scroll.position = 0;
@@ -2462,6 +2509,7 @@ var scale = {
 		gallery.cookie.set('scale', sp);
 		matrix.cell_width = matrix.config.min_cell_width + Math.floor((matrix.config.max_cell_width - matrix.config.min_cell_width)*sp/scale.max);
 		matrix.cell_height = matrix.config.min_cell_height + Math.floor((matrix.config.max_cell_height - matrix.config.min_cell_height)*sp/scale.max);
+
 		matrix.resize();
 	},
 	// обновление элемента масштаба
@@ -2561,8 +2609,6 @@ var scale2 = {
 		},
 
 		updateposition : function(sp) {
-
-			
 			var self = this;
 			self.position = sp;
 			var value = matrix.events[matrix.num];
@@ -2576,16 +2622,48 @@ var scale2 = {
 			//Изменение положения ползунка масштаба 	
 			if(value[7]=='image') //Если картинка
 			{
-				var ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url=http://'+document.location.host+MediaUrlPref+ value[2]+'&size='+scale2.position;
-				ResizedImgSrc += '&mode=normal';
-				if($('#proportion').attr('checked')=='checked'){
-					ResizedImgSrc +='&prop=true';
+			
+				
+				
+				//определяем размеры изображения
+				var height =  $(".active .refBox").height();
+				var width = $(".active .refBox").width();
+				height += (height*2 - height)*scale2.position/scale2.max ;
+				width += (width*2 - width)*scale2.position/scale2.max ;
+
+				var img_height = height;
+				var img_width = width;
+				
+				//если включен режим пропорций
+				if( $('#proportion').attr('checked')=='checked' )
+				{
+				
+					var img_height = matrix.events[matrix.num][3];
+					var img_width = matrix.events[matrix.num][4];
+					var origin_proportion = img_width/img_height;
+
+					elem_proportion = width/height;
+					
+					if(origin_proportion > elem_proportion )
+					{
+						img_height = parseInt( width/origin_proportion);
+						img_width = width;
+					}
+					else 
+					{
+						img_width = parseInt(height*origin_proportion);
+						img_height = height;
+					}
 				}
-				else{
-					ResizedImgSrc +='&prop=false';
-				}
+				
+				//формирование src ресайза картинки
+				var ResizedImgSrc = matrix.getResizedImageSrc(matrix.num, img_height, img_width);
+
 				//Загрузка изображения соответствующего размера
-				$('.active .refBox').aplayerSetImgSrc(ResizedImgSrc).aplayerResizeToParent().aplayerSetSrcSizes();
+				$('.active .refBox')
+				.aplayerSetImgSrc(ResizedImgSrc)
+				.aplayerSetSizeMediaElt({'height': img_height, 'width': img_width})
+				.aplayerResizeContanerOnlyToParent();
 				
 				//визуализируем скролл масштаба режима просмотра
 				$('#scale2').show();

@@ -268,6 +268,55 @@
 			$.extend($.aplayer.config, GlobalSettings);
 		},
 
+		
+		
+					//Общая для всех плееров конфигурация
+			config : {
+				height:'Inherit',
+				width:'Inherit',
+				
+				dictionery:{
+					stop:'Stop',
+					pause:'Pause',
+					play: 'Play',
+					soundOn:'Sound on',
+					soundOff: 'Sound off',
+					volume:'Volume',
+					search:'Search',
+					currentTime:'Current Time',
+					duration:'Duration'
+				},
+				
+				//Отображает содержимое объекта config
+				Show:function(){
+					var str='';
+					for(var p in $.aplayer.config){
+						if ($.aplayer.config[p].toString().indexOf('function')==-1){
+							str += p +" = " +$.aplayer.config[p]+'\n';
+							
+							if(p.toString().indexOf('dictionery')!=-1){
+								str+='{\n';
+								for(var tip in $.aplayer.config.dictionery){
+									str +='\t'+ tip +" = " +$.aplayer.config.dictionery[tip]+'\n';	
+								}
+								str+='}\n';
+							}
+						}
+						else str += p +" = " + 'function(){}'+'\n';
+					}
+					alert(str);
+				}
+			},
+		
+			
+			   
+		
+		
+		
+		
+		
+		
+		
 
 			//типы файлов
 			extTypes:{
@@ -314,7 +363,7 @@
 			},
 
 			//метод определения mime type для воспроизведения файла
-			setApplicationType: function(extension, mediaType, settings){
+			setApplicationType : function(extension, mediaType, settings){
 				if(extension==null){
 					var reg = new RegExp('\\.\\w{3,4}\\s*', 'i');
 					 extension=settings.src.match(reg);
@@ -331,7 +380,7 @@
 
 
 			//Определение и установка типа
-			setType: function(settings){
+			setType : function(settings){
 				if(settings.type!=null)
 					{
 						if(settings.type.indexOf('image')!=-1 || settings.type.indexOf('application')!=-1 ) return settings;
@@ -482,7 +531,7 @@
 		browserVersionSettings: function(srcType ,settings){
 			
 		//Вывод версии браузера и тип открываемого файла
-//			alert('Browser\'s version: '+$.browser.version+'\nSource type: '+ settings.type);
+//			alert('Browser\'s version: '+$.browser.version+"     "+$.browser.version+'\nSource type: '+ settings.type);
 			
 			//Блокировка использования HTML5 в Chrome для указанных форматов
 			if( $.browser.safari==true && (srcType=='audio/wav' || srcType=='video/mp4')) // || srcType=='audio/mpeg'))
@@ -586,8 +635,8 @@
 
             //create EMBED
             create_Embed:function(settings){
-//                var size = 'width="'+settings.width+'" height="'+settings.height+'"';  // '+size+'
-                return $('<embed type="'+settings.type+'" play="false" autostart="false" auto="false" autoplay="false" allowfullscreen="true" allowScriptAccess="always"  />'
+//                var size = 'width="'+settings.width+'" height="'+settings.height+'"';  // '+size+' // play="false"
+                return $('<embed type="'+settings.type+'"autostart="false" auto="false" autoplay="false" allowfullscreen="true" allowScriptAccess="always"  />'
                     ).attr({'src':settings.src , wmode:"window" })
                     .width(settings.width)
                     .height(settings.height); //.html('<noembed>Your browser does not support video</noembed>'); //'Your browser does not support video');
@@ -600,8 +649,8 @@
 				.append('<param name="controller" value="true" />')
 				.append('<param name="autoplay" value="false" />')
 				.append('<param name="autostart" value="0" />')
-				.append('<param name="wmode" value="window" >')
-				.append('<param name="play" value="false" >');
+				.append('<param name="wmode" value="window" >');
+//				.append('<param name="play" value="true" >');
 				$(obj).width(settings.width).height(settings.height);
             $(obj).append( $($.aplayer.create_Embed(settings)));
             return obj;
@@ -617,8 +666,6 @@
                 else{
 					obj = $('<object type="audio/x-wav" data="'+settings.src+'" autoplay="false"> </object>')
                 }
-           	
-//			var obj = $('<object type="audio/x-wav" data="'+settings.src+'" autoplay="false"> </object>')
 				$(obj).append('<param name="src" value="'+settings.src+'" />')
 				.append('<param name="controller" value="true" />')
 				.append('<param name="autoplay" value="false" />')
@@ -776,44 +823,6 @@
 				}).appendTo(container);
 
 				$.aplayer.setControls(container, settings);
-			},
-
-			//Общая для всех плееров конфигурация
-			config:{
-				height:'Inherit',
-				width:'Inherit',
-				
-				dictionery:{
-					stop:'Stop',
-					pause:'Pause',
-					play: 'Play',
-					soundOn:'Sound on',
-					soundOff: 'Sound off',
-					volume:'Volume',
-					search:'Search',
-					currentTime:'Current Time',
-					duration:'Duration'
-				},
-				
-				//Отображает содержимое объекта config
-				Show:function(){
-					var str='';
-					for(var p in $.aplayer.config){
-						if ($.aplayer.config[p].toString().indexOf('function')==-1){
-							str += p +" = " +$.aplayer.config[p]+'\n';
-							
-							if(p.toString().indexOf('dictionery')!=-1){
-								str+='{\n';
-								for(var tip in $.aplayer.config.dictionery){
-									str +='\t'+ tip +" = " +$.aplayer.config.dictionery[tip]+'\n';	
-								}
-								str+='}\n';
-							}
-						}
-						else str += p +" = " + 'function(){}'+'\n';
-					}
-					alert(str);
-				}
 			},
 
 
@@ -1218,6 +1227,7 @@
 
 	//Инкапсулирует данные о браузере
 	$.browserInfo = {
+		
 		HTML5_Audio:false,
 		HTML5_Video:false,
 
