@@ -2,9 +2,14 @@
 
 require_once '/usr/share/php/DB.php';
 
+require_once('../lib/config.inc.php');
+
+$adb = new Adb(array('host' => $conf['db-host'],'user' => $conf['db-user'], 'password' => $conf['db-passwd'], 'database' => $conf['db-name'], 'dbtype' =>$conf['db-type']));
+
+
 //$adb = new Adb(array('user' => 'moonion', 'password' => 'B0nxgsGrdguSjMxv', 'database' => 'avreg_test'));
 
-$adb = new Adb(array('user' => 'moonion', 'password' => 'bt7J2Y9xKhmbm2lM', 'database' => 'avreg_test', 'dbtype' =>'pgsql'));
+//$adb = new Adb(array('user' => 'moonion', 'password' => 'bt7J2Y9xKhmbm2lM', 'database' => 'avreg_test', 'dbtype' =>'pgsql'));
 
 
 
@@ -39,8 +44,10 @@ class Adb {
 		$this->_db->query("SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
 		return true;
 	}
-	
 
+	public function __destruct() {
+		$this->_db->disconnect();
+	}
 	public function gallery_get_event($param) {
 		$events = array();
  	
