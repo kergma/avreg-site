@@ -49,23 +49,10 @@ $rec_sessions = null;
 if ( isset($_SESSION[$recsess_sess_var_name]) ) {
    $rec_sessions = &$_SESSION[$recsess_sess_var_name];
 } else {
-   $sql_dt_range = "((E1.DT1 between '$timebegin' and '$timeend') and (E2.DT1 is null or E2.DT1 between '$timebegin' and '$timeend'))";
-   $sql_join_on = "(E1.SER_NR = E2.SER_NR AND E1.CAM_NR = E2.CAM_NR AND E1.DT1 = E2.DT2 AND E1.EVT_ID = 13 AND E2.EVT_ID = 14)";
-   $query = <<<_EOL_
-select UNIX_TIMESTAMP(E1.DT1) as START, UNIX_TIMESTAMP(E2.DT1) as FINISH, E1.CAM_NR, E1.SER_NR
-from EVENTS as E1 left join EVENTS as E2
-  on $sql_join_on
-where E1.CAM_NR in ($cams_csv)
-  and E1.EVT_ID = 13
-  and $sql_dt_range
-order by E1.DT1 $use_desc_order
-_EOL_;
-
-   if ( $conf['debug'] )
-      print '<div class="help"  style="font-size:85%">'.$query.'</div>'."\n";
-   $result = mysql_query($query) or die('Query failed: `'.mysql_error().'`');
-   while ( $row = mysql_fetch_array($result, MYSQL_NUM) )
-      $rec_sessions[] = $row;
+      
+    $rec_sessions = $adb->get_pda_events($cams_csv,  $timebegin, $timeend,  $use_desc_order);
+      
+      
    if ( !$rec_sessions ) {
       print "<div style='padding: 10px;'>Ничего не найдено за этот период.<br>\n";
       print "<a href='javascript:window.history.back();' title='$strBack'>$strBack</a></div>\n";

@@ -1,4 +1,5 @@
 <?php
+require_once('../lib/adb.php');
 $pageTitle = sprintf('Камера №%u - файлы сеанса №%u', $_GET['camera'], $_GET['ser_nr']);
 $lang_file = '_admin_cams.php';
 require ('head_pda.inc.php');
@@ -25,30 +26,14 @@ if ( isset($_SESSION[$files_sess_var_name]) ) {
    $files = &$_SESSION[$files_sess_var_name];
 } else {
    $timebegin = strftime('%Y-%m-%d %T', (int)$s);
-   if ( empty($f) ) {
-      $sql_dt_range = "((DT1 >= '$timebegin') or (DT2 >= '$timebegin'))";
-
-   } else {
+   $timeend = false;
+   if ( !empty($f) ) {
       $timeend   = strftime('%Y-%m-%d %T', (int)$f);
-      $sql_dt_range = "((DT1 between '$timebegin' and '$timeend') or (DT2 between '$timebegin' and '$timeend'))";
    }
    $use_desc_order = empty($desc) ? '' : 'desc';
-   $sql_join_on = "(E1.SER_NR = E2.SER_NR AND E1.CAM_NR = E2.CAM_NR AND E1.DT1 = E2.DT2 AND E1.EVT_ID = 13 AND E2.EVT_ID = 14)";
-   $query = <<<_EOL_
-select UNIX_TIMESTAMP(DT1) as START, UNIX_TIMESTAMP(DT2) as FINISH,
-  EVT_ID, FILESZ_KB, FRAMES, U16_1, U16_2, EVT_CONT
-from EVENTS
-where CAM_NR=$camera and SER_NR=$ser_nr
-  and EVT_ID in (15,16,17,18,19,20,21)
-  and $sql_dt_range
-order by DT1 $use_desc_order
-_EOL_;
-   if ( $conf['debug'] )
-      print '<div class="help"  style="font-size:85%">'.$query.'</div>'."\n";
-   $result = mysql_query($query) or die('Query failed: `'.mysql_error().'`');
-   $files=array();
-   while ( $row = mysql_fetch_array($result, MYSQL_NUM) )
-      $files[] = $row;
+
+    $files = $adb->get_files($camera, $ser_nr, $timebegin, $timeend,  $use_desc_order);
+      
    if ( !$files ) {
       print "<div style='padding: 10px;'>Странно..., ничего не найдено :-0<br>\n";
       print "<a href='javascript:window.history.back();' title='$strBack'>$strBack</a></div>\n";
