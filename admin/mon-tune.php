@@ -1,4 +1,5 @@
 <?php
+require_once('../lib/adb.php');
 if (isset($_POST['pipes_show']))
    $pipes_show = $_POST['pipes_show'];
 if ( isset($pipes_show) ) {
@@ -59,12 +60,9 @@ if (isset($cmd)) {
          $i++;
       }
       if ( count( $fWINS ) > 0 )	{
-         $query = sprintf('REPLACE INTO MONITORS '.
-            '(BIND_MAC, DISPLAY, MON_NR, MON_TYPE, MON_NAME, %s, CHANGE_HOST, CHANGE_USER) '.
-            'VALUES (\'local\', \'%s\', %d, \'%s\', \'%s\', %s, \'%s\', \'%s\')',
-               implode (', ',$fWINS), $display, $mon_nr, $mon_type, $mon_name,
-               implode (', ',$vWINS), $remote_addr, $login_user);
-         mysql_query($query) or die('Query failed: `'. $query . '`'.'<br/><br/>'. mysql_error() );
+         
+         $adb->replace_monitors( $display, $mon_nr, $mon_type, $mon_name, $remote_addr, $login_user, $fWINS, $vWINS);
+         
          print '<p class="HiLiteBigWarn">' . sprintf($r_mon_changed, $mon_nr, empty($mon_name)?$mon_type:$mon_name, $display=='R'?$sRightDisplay1:$sLeftDisplay1) . '</p>'."\n";
          print '<center><a href="'.$conf['prefix'].'/admin/mon-list.php" target="_self">'.$r_mon_goto_list.'</a></center>'."\n";
       } else {
@@ -86,16 +84,9 @@ if (isset($cmd)) {
       exit;
    } else {
       $aaa = array();
-      /* Performing new SQL query */
-      $query = 'SELECT MON_NR, MON_TYPE, MON_NAME, IS_DEFAULT, ' .
-         'WIN1, WIN2, WIN3, WIN4, WIN5, WIN6, WIN7, WIN8, WIN9, WIN10, WIN11, WIN12, WIN13, WIN14, WIN15, WIN16, WIN17, WIN18, WIN19, WIN20, WIN21, WIN22, WIN23, WIN24, WIN25, '.
-         'CHANGE_HOST, CHANGE_USER, CHANGE_TIME '.
-         'FROM MONITORS '.
-         'WHERE BIND_MAC=\'local\' AND DISPLAY=\''.$display.'\' AND MON_NR='.$mon_nr;
+      
+      $row = $adb->get_monitor($display, $mon_nr);
 
-      $result = mysql_query($query) or die('Query failed: `'. $query . '`');
-      if (is_null($result)) die('No result');
-      $row = mysql_fetch_row($result);
       for ($i=4; $i<29; $i++) {
          $a = getSelectHtmlByName('mon_wins[]',$wins_array, FALSE , 1, 1, $row[$i], TRUE, 'sel_change(this);');
          array_push($aaa, $a );

@@ -1,4 +1,5 @@
 <?php
+require_once('../lib/adb.php');
 $lang_file = '_admin_cams.php';
 require ('../head.inc.php');
 DENY($install_status);
@@ -33,18 +34,16 @@ if ( isset($cmd) && $cmd == '_ADD_NEW_CAM_' )
 		}
 		/* insert CAMS with min PARAMS */
 		settype($cam_nr, 'integer');
-		$query = sprintf('INSERT INTO CAMERAS '.
-		'( BIND_MAC, CAM_NR, PARAM, VALUE, CHANGE_HOST, CHANGE_USER) '.
-		'VALUES ( \'local\', %d, \'%s\', \'%d\', \'%s\', \'%s\')',
-		$cam_nr, 'work', 0, $remote_addr, $login_user);
-		mysql_query($query) or die("Query failed");
+		
+		$adb->add_camera('local', $cam_nr, 'work', 0, $remote_addr, $login_user);
+		
 		if (isset($cam_text) && !empty($cam_text))
 		{
-			$query = sprintf('INSERT INTO CAMERAS '.
-					'( BIND_MAC, CAM_NR, PARAM, VALUE, CHANGE_HOST, CHANGE_USER) '.
-					'VALUES ( \'local\', %d, \'%s\', \'%s\', \'%s\', \'%s\')',
-			$cam_nr, 'text_left', $cam_text, $remote_addr, $login_user);
-			mysql_query($query) or die("Query failed");
+
+			
+			$adb->add_camera('local', $cam_nr, 'text_left', $cam_text, $remote_addr, $login_user);
+			
+			
 		}
 		print ('<h4><font color="'.$warn_color.'">'.sprintf($r_cam_addnew_ok1, $cam_nr,$cam_text).'</font></h4>');
 		print ('<h4><font color="'.$warn_color.'">'.$r_cam_addnew_ok2.'</font></h4>');
@@ -55,14 +54,11 @@ if ( isset($cmd) && $cmd == '_ADD_NEW_CAM_' )
 
 /* GET LAST NOT DEFINED CAM NUMBER */
 /* Performing new SQL query */
-$query = 'SELECT MAX(CAM_NR) AS LAST_NUM FROM CAMERAS WHERE BIND_MAC=\'local\'';
-$result = mysql_query($query) or die("Query failed");
-$num_rows = mysql_num_rows($result);
-if ( $row = mysql_fetch_array($result, MYSQL_ASSOC) )
-	$cam_nr = $row['LAST_NUM'] + 1;
+$cam_nr = $adb->max_cam_nr();
+if ( $cam_nr )
+	$cam_nr = $cam_nr + 1;
 else 
 	$cam_nr = 1;
-mysql_free_result($result); $result = NULL;
 
 echo '<h2>' . sprintf ($r_cam_addnew, $cam_nr, $named, $sip) . '</h2>' ."\n";
 print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";

@@ -1,4 +1,6 @@
 <?php
+require_once('../lib/adb.php');
+
 if (isset($_POST)) {
    $expire=time()+5184000;
    if (isset($_POST['par_filter']))
@@ -41,15 +43,11 @@ if ( isset($cmd) )
             {
                CorrectParVal($param, &$value);
                if ($value == '')
-                  $_val = 'NULL';
+                  $_val = null;
                else
-                  $_val = '\''. html_entity_decode($value).'\'';
-               $query = sprintf('REPLACE CAMERAS '.
-                  '(BIND_MAC, CAM_NR, PARAM,  VALUE, CHANGE_HOST, CHANGE_USER) '.
-                  'VALUES (\'%s\', %d, \'%s\', %s, \'%s\', \'%s\')',
-                     'local', $cam_nr, $param, $_val, $remote_addr, $login_user);
-               // print '<p>'.$query.'</p>'."\n";
-               mysql_query($query) or die('Query failed:`'.mysql_error().'`');
+                  $_val =  html_entity_decode($value);
+               $adb->replace_camera('local', $cam_nr, $param, $_val, $remote_addr, $login_user);
+               
                if ($cam_nr===0)
                   print_syslog(LOG_NOTICE,
                      sprintf('for cam[ALL] on [%s] set param `%s\' to %s, old value `%s\'',
@@ -89,18 +87,16 @@ require ('./param-grp.inc.php');
 // выводим таблицу параметров
 if ( isset($categories) )
 {
-   if ($cam_nr === 0 )
-      $query = sprintf('SELECT PARAM, VALUE, CHANGE_HOST, CHANGE_USER, CHANGE_TIME'.
-                                 ' FROM CAMERAS '.
-                                 ' WHERE BIND_MAC=\'local\' AND CAM_NR=0');
-   else
-      $query = sprintf('SELECT CAM_NR, PARAM, VALUE, CHANGE_HOST, CHANGE_USER, CHANGE_TIME'.
-                                 ' FROM CAMERAS '.
-         ' WHERE BIND_MAC=\'local\' AND (CAM_NR=0 OR CAM_NR=%d)', $cam_nr);
-   $result = mysql_query($query) or die('Query failed: `'. mysql_error() . '\'');
+	
+	
+	
+	$result = $adb->get_def_cam_params($cam_nr);
+	
+	
+
    $cam_params = array();
    $def_params   = array();
-   while ( $row = mysql_fetch_array($result, MYSQL_ASSOC) ) 
+   foreach ( $result as $row) 
    {
       if ( $cam_nr === 0 ) 
             $cam_params[$row['PARAM']] = $row['VALUE'].'~'.$row['CHANGE_HOST'].'~'.$row['CHANGE_USER'].'~'.$row['CHANGE_TIME'];
@@ -109,7 +105,10 @@ if ( isset($categories) )
       else
             $def_params[$row['PARAM']] = $row['VALUE'].'~'.$row['CHANGE_HOST'].'~'.$row['CHANGE_USER'].'~'.$row['CHANGE_TIME'];
    }
-   mysql_free_result($result);  $result = NULL;
+   $result = NULL;
+   
+   
+   
    
       print '<br>'."\n";
       print '<table width="100%" cellspacing="0" border="1" cellpadding="5" bgcolor="#dcdcdc">'."\n";

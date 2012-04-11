@@ -1,4 +1,5 @@
 <?php
+require_once('../lib/adb.php');
 $lang_file='_admin_users.php';
 require ('../head.inc.php');
 require ('../lib/my_conn.inc.php');
@@ -28,9 +29,10 @@ if ( isset($cmd) )
 	case 'DEL_OK':
 		if ( ($mult_btn == $strYes) && isset($u_host) && isset($u_name) && isset($u_status))
 		{
-			$query = sprintf('DELETE FROM USERS WHERE USER="%s" AND HOST="%s" AND STATUS=%u',
-			 $u_name, $u_host, $u_status);
-	        	mysql_query($query) or die("Query failed");
+	
+	        	
+	        $adb->delete_user($u_name, $u_host, $u_status);	
+	        	
 		       echo '<p class="HiLiteBigWarn">' . sprintf ($fmtDeleteUser, $u_name,$u_host) . '</p>' ."\n";
                      print '<div class="warn">'.$strOnUsersUpdateMsg."</div>\n";
 		}
@@ -57,12 +59,10 @@ if ( !isset($u_name) || empty($u_name) )
 	{
 		// next($grps);
 		// print '<pre>'.$grp_status.'/'.$groups.'</pre>'."\n";
-		$query = 'SELECT HOST, USER, LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME '.
-				 'FROM USERS '.
-				 "WHERE STATUS = $grp_status ".
-				 'ORDER BY HOST, USER';
-		$result = mysql_query($query) or die('Query failed: `'. $query . '`');
-		$num_rows = mysql_num_rows($result);
+		$result = $adb->get_users($grp_status);
+		
+		
+		$num_rows = count($result);
 		switch ($grp_status)
 		{
 			case 1: $bashnia = '<img src="'.$conf['prefix'].'/img/mozilla-icon.gif" border=0>'; break;
@@ -88,7 +88,7 @@ if ( !isset($u_name) || empty($u_name) )
 			print '<th>'.$strUpdateControl.'</th>'."\n";
 			print '</tr>'."\n";
 			$r_count = 0;
-			while ( $row = mysql_fetch_array($result, MYSQL_ASSOC) )
+			foreach ( $result as $row  )
 			{
 				print '<tr>'."\n";
 				print '<td>'.$bashnia.'</td>' . "\n";
@@ -96,7 +96,7 @@ if ( !isset($u_name) || empty($u_name) )
 							$_SERVER['PHP_SELF'],
 							urlencode ($row['USER']),
 							urlencode ($row['HOST']));
-				$a_change = sprintf('./user-tune.php?u_name=%s&u_host=%s',
+				$a_change = sprintf('./user-tune.php?cmd=UPDATE_USER&u_name=%s&u_host=%s',
                                 urlencode($row['USER']), urlencode($row['HOST']));
                 if ( $row['USER'] == $login_user )
                 {
@@ -127,7 +127,7 @@ if ( !isset($u_name) || empty($u_name) )
         if ( $admin_user && $user_status < $grp_status )
            print '<div><a href="'.$conf['prefix'].'/admin/user-addnew.php?status='.$grp_status.
                  '">+ '.$l_user_addnew.' +</a></div>'."\n";
-		mysql_free_result($result); $result = null;
+		 $result = null;
 		print '<div align="center"><a href="#top">'.$strUp.'</a></div>'."\n";
 		print '<hr align="center" noshade>'."\n";
 	} // while (list ( $grp_status, $groups ) = $grps )

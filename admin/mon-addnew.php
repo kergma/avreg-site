@@ -1,4 +1,5 @@
 <?php
+require_once('../lib/adb.php');
 if (isset($_POST['pipes_show']))
    $pipes_show = $_POST['pipes_show'];
 if ( isset ($pipes_show) ) {
@@ -15,6 +16,8 @@ DENY($admin_status);
 
 require ('../lib/my_conn.inc.php');
 require ('./mon-type.inc.php');
+
+
 
 ?>
 
@@ -86,9 +89,7 @@ if ( isset($cmd) ) {
 				$i++;
 			}
 			if ( count( $fWINS ) > 0 ) {
-				$query = sprintf('INSERT INTO MONITORS (BIND_MAC, DISPLAY, MON_NR, MON_TYPE, MON_NAME, %s, CHANGE_HOST, CHANGE_USER) VALUES (\'local\', \'%s\', %d, \'%s\', \'%s\', %s, \'%s\', \'%s\')',
-				implode (', ',$fWINS), $display, $mon_nr, $mon_type, $mon_name, implode (', ',$vWINS), $remote_addr, $login_user);
-				mysql_query($query) or die('Query failed: `'. $query . '`');
+				$adb->add_monitors($display,$mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $fWINS, $vWINS);
 				print "Ok!\n'";
 				print '<script type="text/javascript" language="javascript">reset_to_list();</script>'."\n";
 			} else {

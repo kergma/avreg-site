@@ -1,5 +1,5 @@
 <?php
-
+require_once('../lib/adb.php');
 if ( isset($_FILES) && is_array($_FILES) )
 {
    $paramsnames = array_keys($_FILES);
@@ -63,18 +63,12 @@ if ( isset($_FILES) && is_array($_FILES) )
 
       // save to database
       if ( $clear_file ) {
-         $_SQL = sprintf('REPLACE INTO CAMERAS '.
-            '(BIND_MAC, CAM_NR, PARAM, VALUE, CHANGE_HOST, CHANGE_USER, CHANGE_TIME) '.
-            'VALUES ( \'local\', %d, \'%s\', NULL, \'%s\', \'%s\', NOW())',
-            $cam_nr, $_parname, $remote_addr, $login_user);
-            mysql_query($_SQL) or die('Query failed:`'.mysql_error().'\'');
+      	
+      		$adb->replace_camera ('local', $cam_nr, $_parname, null, $remote_addr, $login_user);
+       
             print_syslog(LOG_NOTICE, sprintf('cam[%s]: set param `%s\' to NULL, old value `%s\'',($cam_nr)?sprintf("%2d",$cam_nr):'ALL',$_parname, $olds[$_parname] ));
       } else {
-         $_SQL = sprintf('REPLACE INTO CAMERAS '.
-            '(BIND_MAC, CAM_NR, PARAM, VALUE, CHANGE_HOST, CHANGE_USER, CHANGE_TIME) '.
-            'VALUES ( \'local\', %d, \'%s\', \'%s\', \'%s\', \'%s\', NOW())',
-            $cam_nr, $_parname, $_val, $remote_addr, $login_user);
-            mysql_query($_SQL) or die('Query failed:`'.mysql_error().'\'');
+      		$adb->replace_camera ('local', $cam_nr, $_parname, $_val, $remote_addr, $login_user);
             print_syslog(LOG_NOTICE, sprintf('cam[%s]: set param `%s\' to `%s\', old value `%s\'',($cam_nr)?sprintf("%2d",$cam_nr):'ALL',$_parname, $_val,  $olds[$_parname]));
             unlink($uploadfile);
       }

@@ -1,4 +1,6 @@
 <?php
+require_once('../lib/adb.php');
+
 $lang_file = '_admin_cams.php';
 require('../head.inc.php');
 require('../lib/my_conn.inc.php');
@@ -25,8 +27,10 @@ if ( isset($cmd) )
    case 'DEL_OK':
       if ( ($mult_btn == $strYes) && isset($cam_nr) )
       {
-         $query = sprintf('DELETE FROM CAMERAS WHERE BIND_MAC=\'local\' AND CAM_NR=%d', $cam_nr);
-         mysql_query($query) or die("Query failed");
+      	
+      	$adb->delete_camera($cam_nr);
+      	
+
          echo '<p class="HiLiteWarn">' . sprintf ($strDeleteCam, $cam_nr, $cam_name) . '</p>' ."\n";
       }
       unset($cam_nr);
@@ -77,6 +81,7 @@ if ( !isset($cam_nr) )
 
       $r_count = 0;
       reset($GCP_cams_params);
+      
       while (list($__cam_nr, $cam_detail) = each($GCP_cams_params)) 
       {
          $cam_name = getCamName($cam_detail['text_left']);

@@ -1,4 +1,5 @@
 <?php
+require_once('../lib/adb.php');
 require ('../head.inc.php');
 require_once ('../lib/my_conn.inc.php');
 require ('./mon-type.inc.php');
@@ -25,9 +26,9 @@ if ( isset($cmd) )
    case 'DEL_OK':
       if ( ($mult_btn == $strYes) && isset($mon_nr) )
       {
-         $query = sprintf('DELETE FROM MONITORS WHERE BIND_MAC=\'local\' AND DISPLAY=\'%s\' AND MON_NR=%d',
-            $display, $mon_nr);
-         mysql_query($query) or die("Query failed");
+      	
+      	$adb->delete_monitors($display, $mon_nr);
+ 
          echo '<p><font color="' . $warn_color . '">' . sprintf ($strDeleteMon, $mon_nr, $mon_name, $display=='R'?$sRightDisplay1:$sLeftDisplay1) . '</font></p>' ."\n";
       }
       unset($mon_nr);
@@ -55,11 +56,13 @@ function prt_l ($display, $l_nr, $l_def, $is_admin)
 if ( !isset($mon_nr) || $mon_nr =='')
 {
    /* Performing new SQL query */
-   $query = 'SELECT DISPLAY, MON_NR, MON_TYPE, MON_NAME, IS_DEFAULT, WIN1, WIN2, WIN3, WIN4, WIN5, WIN6, WIN7, WIN8, WIN9, WIN10, WIN11, WIN12, WIN13, WIN14, WIN15, WIN16, WIN17, WIN18, WIN19, WIN20, WIN21, WIN22, WIN23, WIN24, WIN25, CHANGE_HOST, CHANGE_USER, CHANGE_TIME FROM MONITORS WHERE BIND_MAC=\'local\' ORDER BY MON_NR';
-   $result = mysql_query($query) or die('Query failed: `'. $query . '`');
+
+   
+   $result = $adb->get_monitors();
+   
    $LD = array();
    $RD = array();
-   while ( $row = mysql_fetch_array($result, MYSQL_ASSOC) )	{
+   foreach ( $result as $row)	{
       if ( $row['DISPLAY'] == 'R' )
          $D = &$RD;
       else
