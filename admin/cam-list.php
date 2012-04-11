@@ -1,9 +1,7 @@
 <?php
-require_once('../lib/adb.php');
 
 $lang_file = '_admin_cams.php';
 require('../head.inc.php');
-require('../lib/my_conn.inc.php');
 require('../lib/cams_main_detail.inc.php');
 
 echo '<h1>' . sprintf($r_cam_list, $named, $sip) . '</h1>' ."\n";
@@ -121,6 +119,5 @@ if ( !isset($cam_nr) )
 }
 
 // phpinfo ();
-require ('../lib/my_close.inc.php');
 require ('../foot.inc.php');
 ?>

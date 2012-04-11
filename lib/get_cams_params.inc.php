@@ -1,5 +1,4 @@
 <?php
-require_once('../lib/adb.php');
 if ( isset($GCP_cams_list) && empty($GCP_cams_list))
    die('not set cam list');
 if (!isset($GCP_query_param_list) || !is_array($GCP_query_param_list))

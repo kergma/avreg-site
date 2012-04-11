@@ -3,7 +3,6 @@ $pageTitle = 'Сеансы записи';
 
 $lang_file = '_admin_cams.php';
 require ('head_pda.inc.php');
-require ('../lib/my_conn.inc.php');
 // phpinfo(INFO_VARIABLES);
 if ( !isset($cams) || empty($cams))
    die('should use "cams" cgi param');
@@ -101,6 +100,5 @@ foreach($pagi as $row) {
 $pagi->print_below();
 print "<div><a href='./' title='$strHome'>$strHome</a></div>\n";
 
-require ('../lib/my_close.inc.php');
 require ('../foot.inc.php');
 ?>

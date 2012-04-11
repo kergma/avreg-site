@@ -1,8 +1,6 @@
 <?php
-require_once('../lib/adb.php');
 $lang_file='_admin_users.php';
 require ('../head.inc.php');
-require ('../lib/my_conn.inc.php');
 
 echo '<h1>' . sprintf($r_users, $named, $sip) . '</h1>' ."\n";
 
@@ -134,6 +132,5 @@ if ( !isset($u_name) || empty($u_name) )
 }
 
 //phpinfo ();
-require ('../lib/my_close.inc.php');
 require ('../foot.inc.php');
 ?>

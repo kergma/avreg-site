@@ -1,5 +1,4 @@
 <?php
-require_once('../lib/adb.php');
 if (isset($_POST['pipes_show']))
    $pipes_show = $_POST['pipes_show'];
 if ( isset($pipes_show) ) {
@@ -14,7 +13,6 @@ require ('../head.inc.php');
 
 DENY($admin_status);
 
-require ('../lib/my_conn.inc.php');
 require ('./mon-type.inc.php');
 
 ?>
@@ -110,6 +108,5 @@ if (isset($cmd)) {
    }
 }
 // phpinfo ();
-require ('../lib/my_close.inc.php');
 require ('../foot.inc.php');
 ?>

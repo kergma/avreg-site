@@ -1,7 +1,6 @@
 <?php
 require ('../head.inc.php');
 DENY($admin_status);
-require_once ('../lib/my_conn.inc.php');
 require('warn.inc.php');
 
 /*

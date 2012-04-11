@@ -1,5 +1,4 @@
 <?php
-require_once('../lib/adb.php');
 
 if (isset($_POST)) {
    $expire=time()+5184000;
@@ -9,7 +8,6 @@ if (isset($_POST)) {
 $lang_file = '_admin_cams.php';
 require ('../head.inc.php');
 DENY($admin_status);
-require_once ($wwwdir.'/lib/my_conn.inc.php');
 require_once ($params_module_name);
 require ('./params.inc.php');
 
@@ -273,6 +271,5 @@ if ( isset($categories) )
 }
 
 // phpinfo ();
-require ('../lib/my_close.inc.php');
 require ('../foot.inc.php');
 ?>

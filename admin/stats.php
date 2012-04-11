@@ -1,6 +1,5 @@
 <?php
 require ('../head.inc.php');
-require_once ('../lib/my_conn.inc.php');
 
 function color_level ($val, $warn_val, $max_val)
 {

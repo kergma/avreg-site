@@ -1,6 +1,5 @@
 <?php
 require ('../head.inc.php');
-// require ('../lib/my_conn.inc.php');
 
 echo '<h1>' . sprintf($r_update,$named) . '</h1>' ."\n";
 

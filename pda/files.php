@@ -1,9 +1,7 @@
 <?php
-require_once('../lib/adb.php');
 $pageTitle = sprintf('Камера №%u - файлы сеанса №%u', $_GET['camera'], $_GET['ser_nr']);
 $lang_file = '_admin_cams.php';
 require ('head_pda.inc.php');
-require ('../lib/my_conn.inc.php');
 // phpinfo(INFO_VARIABLES);
 if ( !isset($camera) || !settype($camera, 'int'))
    die('should use "camera" cgi param');
@@ -82,6 +80,5 @@ if ($recsess_list_url)
    print "<a href='$recsess_list_url' title='К списку сеансов записи'>К списку</a>&nbsp;|&nbsp;\n";
 print "<a href='./' title='$strHome'>$strHome</a></div>\n";
 
-require ('../lib/my_close.inc.php');
 require ('../foot.inc.php');
 ?>

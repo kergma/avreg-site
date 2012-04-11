@@ -1,7 +1,5 @@
 <?php
-require_once('../lib/adb.php');
 require ('../head.inc.php');
-require_once ('../lib/my_conn.inc.php');
 require ('./mon-type.inc.php');
 
 echo '<h1>' . sprintf($r_mons,$named,$sip) . '</h1>' ."\n";
@@ -116,6 +114,5 @@ if ( !isset($mon_nr) || $mon_nr =='')
 }
 
 // phpinfo ();
-require ('../lib/my_close.inc.php');
 require ('../foot.inc.php');
 ?>

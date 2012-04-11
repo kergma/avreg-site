@@ -1,9 +1,7 @@
 <?php
-require_once('../lib/adb.php');
 $lang_file='_admin_users.php';
 require ('../head.inc.php');
 DENY($admin_status);
-require ('../lib/my_conn.inc.php');
 require_once ('../lib/utils-inet.php');
 ?>
 
@@ -41,16 +39,10 @@ if ( isset($cmd) && isset($u_host) && isset($u_name) && isset($groups) )
       die('crack');
    }
    // print ($query);
-   if ( mysql_query($query) )
-   {
-      print '<p class="HiLiteWarn">' . sprintf ($fmtUserAdded, $u_name, $u_host) . '</p>' ."\n";
-      print '<div class="warn">'.$strOnUsersUpdateMsg."</div>\n";
-      print '<br><center><a href="'.$conf['prefix'].'/admin/user-list.php">'.$l_user_list.'</a><center>' ."\n";
-   } else {
+   
       print '<div class="error">'.sprintf ($fmtUserAddErr2, $u_name, $u_host, mysql_error() ). "</div>\n";
       if ( $conf['debug'] ) tohtml($query);      
       print_go_back();
-   }
    require ('../foot.inc.php');
    exit;
 } else {
@@ -82,6 +74,5 @@ if ( !isset($u_name) || empty($u_name) )
 }
 
 // phpinfo ();
-require ('../lib/my_close.inc.php');
 require ('../foot.inc.php');
 ?>

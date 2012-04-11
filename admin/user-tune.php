@@ -2,7 +2,6 @@
 $lang_file='_admin_users.php';
 require ('../head.inc.php');
 DENY($admin_status);
-require ('../lib/my_conn.inc.php');
 ?>
 
 <script type="text/javascript" language="javascript">
@@ -76,6 +75,5 @@ if ( isset($u_name) && !empty($u_name) )
 }
 
 // phpinfo ();
-require ('../lib/my_close.inc.php');
 require ('../foot.inc.php');
 ?>

@@ -1,6 +1,6 @@
 <?php
-error_reporting(NULL);
-ini_set('display_errors', 0);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 if (!isset($_POST['method']) && !isset($_GET['method'])) {
 	// Загрузка главной страницы галереи
@@ -43,7 +43,9 @@ if (!isset($_POST['method']) && !isset($_GET['method'])) {
 	
 	// Ответ аякс запроса
 	require_once('../lib/config.inc.php');
-	require_once('../lib/my_conn.inc.php');
+	
+	require_once('../lib/adb.php');
+	
 	$GCP_query_param_list=array('text_left', 'Hx2');
 	require('../lib/get_cams_params.inc.php');
 	if ( $GCP_cams_nr == 0 )
@@ -55,6 +57,5 @@ if (!isset($_POST['method']) && !isset($_GET['method'])) {
 	$gallery = new Gallery($params);
 	// Возврат ответа запроса
 	$gallery->print_result();
-	require_once('../lib/my_close.inc.php');
 }
 ?>

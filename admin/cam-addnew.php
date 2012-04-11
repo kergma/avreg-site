@@ -1,9 +1,7 @@
 <?php
-require_once('../lib/adb.php');
 $lang_file = '_admin_cams.php';
 require ('../head.inc.php');
 DENY($install_status);
-require ('../lib/my_conn.inc.php');
 
 ?>
 
@@ -28,7 +26,6 @@ if ( isset($cmd) && $cmd == '_ADD_NEW_CAM_' )
 		{
 			$str_err_fmt = "<font color=\"$error_color\"><p>" . $strError . ": " . $strField . " '%s' %s</p></font>\n";
 			printf ($str_err_fmt, $strCam_nr_Range, $cam_nr);
-			require ('../lib/my_close.inc.php');
 			require ('../foot.inc.php');
 			exit;
 		}
@@ -70,6 +67,5 @@ print '&nbsp;&nbsp;'."\n";
 print '<input type="reset" name="btnRevoke" value="'.$strRevoke.'" onclick="reset_to_list();">'."\n";
 print '</form>'."\n";
 
-require ('../lib/my_close.inc.php');
 require ('../foot.inc.php');
 ?>

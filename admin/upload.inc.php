@@ -1,5 +1,4 @@
 <?php
-require_once('../lib/adb.php');
 if ( isset($_FILES) && is_array($_FILES) )
 {
    $paramsnames = array_keys($_FILES);

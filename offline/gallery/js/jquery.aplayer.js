@@ -2,15 +2,42 @@
  		//Установка плеера в элемент
 //		$('#win_bot_detail').addPlayer({'src':'/avreg/media/cam_02/2010-05/03/00_00_00.jpg'});
     	//Установка общих параметров
-//		$.aplayer.init({'height':200, 'width':300});
+//		$.aplayer.init({'height':200, 'width':300, 'mediaType':'embed' });
 		//Вывод конфигурации
 //		$.aplayer.config.Show();
 		//Получить информацию о браузере
 //		$.browserInfo.getInfo();
 		//Вывод инфо о браузере
 //		$.browserInfo.Show();
-
 //		$.aplayer.config.Show();
+
+		//Пример глобальной пользовательской настройки
+/*		$.aplayerConfiguration({		
+			'mozilla' : {
+				'mp4' : {   '11':'MYTEST',
+							'10':'htyjntym',
+						   	'5':'hren', 
+						   	'6':'hren'
+						   },
+
+				'webm': { '11.0':'video' },
+				
+				'wav':{'11': "embed"}
+			},
+			'safari' : {
+				'webm' : {
+					'535.2':'nover',					
+					'535.11':'embed'
+					
+				}
+			},
+			'opera':{},
+			'msie':{}
+		});
+*/
+
+		//Начальная инициализация
+		$.aplayer.init({});
 
 });})(jQuery);
 
@@ -26,6 +53,11 @@
 
 
 (function($){
+	
+	//Метод установки пользовательских настроек
+	$.aplayerConfiguration = function(globalSettings){
+		$.aplayer.init(globalSettings);
+	};
 
 	//Установка плеера в заданные эл-ты html
 	//settings: src , type , config{}
@@ -83,7 +115,6 @@
         });
         return this;
     };
-
 
     //Установка размеров плеера
     $.fn.aplayerSetSize = function(Sizes) {
@@ -219,7 +250,6 @@
 	           }
 		       $(this).children('video, audio, embed').each(function () {
 		       	
-		//       	$(this).addClass('show_detail');
 		       		//Проверяем на перетаскиваемость
 					if($(this).height() > $(this).parent().height() || $(this).width() > $(this).parent().width()) 
 					{
@@ -262,15 +292,154 @@
 		
 		
 		
-		//Установка общей для всех плееров конфигурации
-		//GlobalSettings: config{}
-		init : function(GlobalSettings){
-			$.extend($.aplayer.config, GlobalSettings);
+		//Установка базовых настроек плеера для популярных браузеров
+		baseSettings : {
+			'mozilla' : {
+					'wav' : { '9':'embed'	},
+					'mp3' :	{ '9':'embed'	},
+					'ogg' :	{ '9':'video'	},
+					'ogv' :	{ '9':'video'	},
+					'mp4' :	{ '9':'embed'	},
+					'webm':	{ '9':'video'	},
+					'avi' :	{ '9':'embed'	},
+					'wmv' :	{ '9':'embed'	},
+					'mov' :	{ '9':'embed'	},
+					'oga' : { '9':'audio'	}
+			},
+
+			'chrome' : {
+					'wav' :	{ '17':'embed'	},
+					'mp3' :	{ '17':'embed'	},
+					'mp4' :	{ '17':'embed'	},
+					'ogg' :	{ '17':'video'	},
+					'ogv' :	{ '17':'video'	},
+					'webm':	{ '17':'video'	},
+					'avi' :	{ '17':'embed'	},
+					'wmv' :	{ '17':'embed'	},
+					'mov' :	{ '17':'embed'	},
+					'oga' : { '17':'audio'	}
+
+			},
+			
+			'safari' : {
+					'wav' :	{ '1':'embed'	},
+					'mp3' :	{ '1':'embed'	},
+					'mp4' :	{ '1':'embed'	}
+			},
+			
+			'opera':{
+					'wav' :	{ '11':'audio'	},
+					'mp3' :	{ '11':'embed'	},
+					'ogg' :	{ '11':'video'	},
+					'ogv' :	{ '11':'video'	},
+					'mp4' :	{ '11':'embed'	},
+					'webm':	{ '11':'video'	},
+					'avi' :	{ '11':'embed'	},
+					'wmv' :	{ '11':'embed'	},
+					'mov' :	{ '11':'embed'	},
+					'oga' : { '11':'audio'	}
+			},
+			'msie':{}
+		},
+		
+		//Была ли произведена конфигурация?
+		IsConfigurate : false, 
+		
+		//начальная инициализация
+		init : function(globalSettings){
+			
+			if($.aplayer.IsConfigurate) return;
+			$.aplayer.IsConfigurate = true;
+			
+			//сбор информации о браузере
+			$.browserInfo.getInfo();
+			
+			//Вывод инфо о браузере
+//			$.browserInfo.Show();
+			
+			//объект для формирования настроек текущего браузера
+			var curSets = {};
+			
+			//временный объект для прохода по всем установленным значениям для текущего браузера
+			var totalObj = $.extend({}, 
+				$.aplayer.baseSettings==null?{}:$.aplayer.baseSettings[$.browserInfo.browser], 
+				globalSettings==null?{}:globalSettings[$.browserInfo.browser]);
+
+			//установка базовых настроек для данной версии браузера
+			for(var ext in totalObj){
+				
+				var extVers = $.extend({}, 
+					$.aplayer.baseSettings[$.browserInfo.browser]==null?{}:$.aplayer.baseSettings[$.browserInfo.browser][ext], 
+					globalSettings[$.browserInfo.browser]==null? {}:globalSettings[$.browserInfo.browser][ext]);
+				
+				//если значение для данной версии заданно непосредственно
+				if(extVers[$.browserInfo.version]!=null){
+					curSets[ext] = extVers[$.browserInfo.version];
+					continue;
+				}
+				else{ //если значение для данной версии не заданно непосредственно - ищем максимальную версию, которая меньше версии браузера
+					//создаем массив версий, включая и версию браузера
+					var arrVer = [$.browserInfo.version]; 
+					for(var ver in extVers) arrVer.push(ver);
+					//сортируем массив по возрастанию
+					arrVer.sort($.aplayer.versionPredicate);
+					//получаем версию предшествующую версии браузера
+					$.each(arrVer, function(i, val){
+						if(val == $.browserInfo.version){
+							if((i-1)<0)return;
+							else{
+								curSets[ext] = extVers[arrVer[i-1]];
+								return;
+							}
+						}
+					});
+					
+				}
+			}
+
+			//проверка допустимых значений
+			$.each(curSets, function(i, value){
+				if(value!='embed' && value!='video' && value!='audio'){
+					alert("Установленно недопустимое значение конфигурации: \n"+ i +' : '+value );
+					curSets[i]='embed';
+				}
+			});
+			
+			//Устанавливаем результат в объект конфигурации
+			$.extend($.aplayer.config, curSets);
+			
+			//Вывод конфигурации
+//			$.aplayer.config.Show();
 		},
 
+		//предикат сравнения версий
+		versionPredicate : function(f,s){
+			//выражение парсинга версии
+			var reg = new RegExp('\\d+', 'ig');
+			//парсим версии
+			var F = f.match(reg);
+			var S = s.match(reg);
+			//учитываем кол-во значений (если больше значений - большим считаем исходноее значение, прт прочих равных)
+			var p = 0;
+			//выравнивание размеров версий
+			if(F.length > S.length){
+				for(var i = S.length; i<F.length; i++)S[i]=0;
+				p = 1;
+			}
+			else if	(F.length < S.length){
+				for(var i = F.length; i<S.length; i++)F[i]=0;
+				p = -1;	
+			}
+			//Производим сравнение
+			for(var i = 0; i<F.length; i++){
+				if(parseInt(F[i]) > parseInt(S[i]))return 1;
+				else if(parseInt(F[i]) < parseInt(S[i]))return -1;
+			}
+			return p;
+		},
 		
 		
-					//Общая для всех плееров конфигурация
+			//Общая для всех плееров конфигурация
 			config : {
 				height:'Inherit',
 				width:'Inherit',
@@ -288,16 +457,24 @@
 				},
 				
 				//Отображает содержимое объекта config
-				Show:function(){
+				Show : function(){
 					var str='';
 					for(var p in $.aplayer.config){
 						if ($.aplayer.config[p].toString().indexOf('function')==-1){
 							str += p +" = " +$.aplayer.config[p]+'\n';
 							
-							if(p.toString().indexOf('dictionery')!=-1){
+							if($.aplayer.config[p].toString().indexOf('object')!=-1){
 								str+='{\n';
-								for(var tip in $.aplayer.config.dictionery){
-									str +='\t'+ tip +" = " +$.aplayer.config.dictionery[tip]+'\n';	
+								for(var tip in $.aplayer.config[p]){
+									str +='\t'+ tip +" = " +$.aplayer.config[p][tip]+'\n';	
+
+									if($.aplayer.config[p][tip].toString().indexOf('object')!=-1){
+										str+='\t{\n';
+										for(var tipIn in $.aplayer.config[p][tip]){
+											str +='\t\t'+ tipIn +" = " +$.aplayer.config[p][tip][tipIn]+'\n';	
+										}
+										str+='\t}\n';
+									}
 								}
 								str+='}\n';
 							}
@@ -308,26 +485,22 @@
 				}
 			},
 		
-			
-			   
-		
-		
-		
-		
-		
-		
-		
 
-			//типы файлов
+			//типы файлов для автоопределения
 			extTypes:{
-				image:['.png', '.jpg','.gif', '.bmp', 'jpeg'],
-				video:['.mp4', '.ogg', '.ogv', '.webm'],
-				audio:['.oga','.mp3', '.m4a', '.wav', '.mpeg'],
-				application:['.avi']
+				image:['png', 'jpg','gif', 'bmp', 'jpeg'],
+				video:['mp4', 'ogg', 'ogv', 'webm'],
+				audio:['oga','mp3', 'm4a', 'wav'],
+				application:['avi']
 			},
 
 			//Расширения и соответствующие MIME types
 			MIMEtypes:{
+				bmp		:'image/bmp',
+				png		:'image/png', 
+				jpeg	:'image/jpeg',
+				jpg		:'image/jpeg',
+				gif		:'image/gif', 
 				swf		:'application/x-shockwave-flash',
 				flv		:'video/x-flv',
 				aif 	:'audio/x-aiff',
@@ -359,11 +532,12 @@
 				wmv		:'video/x-ms-wmv',
 				ogv		:'video/ogg',
 				oga		:'audio/ogg',
-				ogg 	:'application/ogg'
+				ogg 	:'application/ogg',
+				webm	: 'video/webm'
 			},
 
 			//метод определения mime type для воспроизведения файла
-			setApplicationType : function(extension, mediaType, settings){
+			setApplicationType : function(extension, elementMediaType, settings){
 				if(extension==null){
 					var reg = new RegExp('\\.\\w{3,4}\\s*', 'i');
 					 extension=settings.src.match(reg);
@@ -371,98 +545,166 @@
 				}
 				if($.aplayer.MIMEtypes[extension]!=null)
 				{
-					mediaType=$.aplayer.MIMEtypes[extension] + '" application ="true';
+					elementMediaType=$.aplayer.MIMEtypes[extension];
 				}
-				else mediaType='application/'+extension;
+				else elementMediaType='application/'+extension;
 
-				return mediaType;
+				return elementMediaType;
 			},
-
 
 			//Определение и установка типа
 			setType : function(settings){
 				if(settings.type!=null)
 					{
-						if(settings.type.indexOf('image')!=-1 || settings.type.indexOf('application')!=-1 ) return settings;
-						if(settings.type.indexOf('video')!=-1 && $.browserInfo.HTML5_Video) return settings;
-						if(settings.type.indexOf('audio')!=-1 && $.browserInfo.HTML5_Audio) return settings;
+						if(settings.type.indexOf('image')!=-1)return $.extend(settings, {mediaType : 'image' });
+						if(settings.type.indexOf('application')!=-1 )return $.extend(settings, {mediaType : 'embed' });
 					}
 
-				var ext, mediaType;
+				var ext=null, elementMediaType = null;
 				var src = settings.src;
 
+				//получение расширения и майм-типа
+				if(ext==null){
+					var reg = new RegExp('\\.\\w{3,4}\\s*', 'i'); //для получения расширения файла
+					var extArr = src.match(reg);
+					if(extArr.length>0){
+						ext = extArr[extArr.length-1].slice(1); 
+						elementMediaType = $.aplayer.MIMEtypes[ext];
+					}
+				}
+				
+				//если задан в конфигурации способ воспроизведения - исползуем его, нет -> автоопределение
+				if($.aplayer.config[ext]!=null)
+				{
+					if(elementMediaType==null){
+						if($.aplayer.config[ext]=='embed')elementMediaType = 'application/'+ext;
+						else elementMediaType = $.aplayer.config[ext]+'/'+ext;
+					}
+					$.extend(settings, {mediaType : $.aplayer.config[ext], 'type' :elementMediaType });
+					return settings;
+				}
+				
+				//автоматическое определение способа воспроизведения				
 				$.each($.aplayer.extTypes, function(i, type){
 					$.each(type, function(index, value){
-						if(src.indexOf(value)!=-1)
-						{
-							mediaType = i;
-							ext = value.slice(1);
-							if(ext == 'ogv')ext ='ogg';
+						if(src.indexOf(value)!=-1){
+							elementMediaType = i;
+							ext = value;
 						}
 					});
 				});
-
-				if(mediaType==null)mediaType = $.aplayer.setApplicationType(ext, mediaType,settings);
-				else if(mediaType.indexOf('image')!=-1) mediaType=mediaType+'/'+ext;
-				else if(mediaType.indexOf('video')!=-1 && $.browserInfo.HTML5_Video)
+				
+				if(elementMediaType==null){
+					elementMediaType = $.aplayer.setApplicationType(ext, elementMediaType,settings);
+					$.extend(settings, {mediaType : 'embed' });
+				}
+				else if(elementMediaType.indexOf('image')!=-1){
+					elementMediaType=elementMediaType+'/'+ext;
+					$.extend(settings, {mediaType : 'image'});	
+				}
+				else if(elementMediaType.indexOf('video')!=-1 && $.browserInfo.HTML5_Video)
 				{
 					if(
-						(ext == 'ogg' && $.browserInfo.video_ogg=='probably')||
+						((ext == 'ogg' ||ext == 'ogv') && $.browserInfo.video_ogg=='probably')||
 						(ext == 'mp4' && $.browserInfo.video_mp4=='probably')||
 						(ext == 'webm' && $.browserInfo.video_webm=='probably')
-							)mediaType=mediaType+'/'+ext;
+							){
+								elementMediaType=elementMediaType+'/'+ext;
+								$.extend(settings, {mediaType : 'video' });
+							}
 					else {
 						if(
-						(ext == 'ogg' && $.browserInfo.video_ogg=='maybe')||
+						((ext == 'ogg' ||ext == 'ogv') && $.browserInfo.video_ogg=='maybe')||
 						(ext == 'mp4' && $.browserInfo.video_mp4=='maybe')||
 						(ext == 'webm' && $.browserInfo.video_webm=='maybe')
-							)mediaType=mediaType+'/'+ext;
-						else mediaType = $.aplayer.setApplicationType(ext, mediaType, settings);
+							){
+								elementMediaType=elementMediaType+'/'+ext;
+								$.extend(settings, {mediaType : 'video' });	
+							}
+						else{
+								elementMediaType = $.aplayer.setApplicationType(ext, elementMediaType, settings);
+								$.extend(settings, {mediaType : 'embed' });		
+						}
 					}
 				}
-				else if(mediaType.indexOf('audio')!=-1 && $.browserInfo.HTML5_Audio)
+				else if(elementMediaType.indexOf('audio')!=-1 && $.browserInfo.HTML5_Audio)
 				{
 					if(ext == 'mp3'|| ext == 'mp2' || ext == 'mpga')
-					{	if($.browserInfo.audio_mpeg=='probably')mediaType = 'audio/mpeg';
-						else if($.browserInfo.audio_mpeg=='maybe')mediaType = 'audio/mpeg';
-						else mediaType = 'audio/mpeg" application ="true';
+					{	if($.browserInfo.audio_mpeg=='probably'){
+							elementMediaType = 'audio/mpeg';
+							$.extend(settings, {mediaType : 'audio' });
+						}
+						else if($.browserInfo.audio_mpeg=='maybe'){
+							elementMediaType = 'audio/mpeg';
+							$.extend(settings, {mediaType : 'audio' });
+						}
+						else {
+							elementMediaType = 'audio/mpeg';
+							$.extend(settings, {mediaType : 'embed' });
+						}
 					}
-					if(ext == 'ogg')
-					{	if($.browserInfo.audio_ogg=='probably')mediaType ='audio/ogg';
-						else if($.browserInfo.audio_ogg=='maybe')mediaType ='audio/ogg';
-						else mediaType = 'audio/ogg" application ="true';
+					if((ext == 'ogg' ||ext == 'oga'))
+					{	if($.browserInfo.audio_ogg=='probably'){
+							elementMediaType ='audio/ogg';
+							$.extend(settings, {mediaType : 'audio' });
+						}
+						else if($.browserInfo.audio_ogg=='maybe'){
+							elementMediaType ='audio/ogg';
+							$.extend(settings, {mediaType : 'audio' });	
+						}
+						else{
+							elementMediaType = 'audio/ogg';
+							$.extend(settings, {mediaType : 'embed' });
+						}
 					}
 					if(ext == 'm4a')
-					{	if($.browserInfo.audio_x_m4a=='probably')mediaType ='audio/x-m4a';
-						else mediaType = 'audio/x-m4a" application ="true';
+					{	if($.browserInfo.audio_x_m4a=='probably'){
+							elementMediaType ='audio/x-m4a';
+							$.extend(settings, {mediaType : 'audio' });
+						}
+						else if($.browserInfo.audio_x_m4a=='maybe'){
+							elementMediaType ='audio/x-m4a';
+							$.extend(settings, {mediaType : 'audio' });	
+						}
+						else{
+							elementMediaType = 'audio/x-m4a';
+							$.extend(settings, {mediaType : 'embed' });
+						}
 					}
 					if(ext == 'wav')
-					{	if($.browserInfo.audio_wav=='probably') mediaType = 'audio/wav'; //" application ="true'; //mediaType ='audio/wav';
-						else mediaType = 'audio/wav" application ="true';
+					{	if($.browserInfo.audio_wav=='probably'){
+							elementMediaType = 'audio/wav';
+							$.extend(settings, {mediaType : 'audio' });
+						}
+						else if($.browserInfo.audio_wav=='maybe'){
+							elementMediaType = 'audio/wav';
+							$.extend(settings, {mediaType : 'audio' });
+						}
+						else{
+							elementMediaType = 'audio/wav';
+							$.extend(settings, {mediaType : 'embed' });
+						}
 					}
 				}
 				else
 				{
-					mediaType = $.aplayer.setApplicationType(ext, mediaType, settings);
+					elementMediaType = $.aplayer.setApplicationType(ext, elementMediaType, settings);
+					$.extend(settings, {mediaType : 'embed' });
 				}
 
-				$.extend(settings, {'type':mediaType})
+				$.extend(settings, {'type':elementMediaType})
 				return settings;
 			},
-
+			
+			
 			//Метод установки плеера
 			play:function(element, settings){
-				//сбор информации о браузере
-				$.browserInfo.getInfo();
+
 				//Установка параметров переданных через $.fn.add()
 				var sets = $.extend({}, $.aplayer.config, settings);
 
 				//Определение и установка типа
 				sets = $.aplayer.setType(sets);
-
-				//корректировка типа воспроизведения в зависимости от версии браузера
-				sets.type = $.aplayer.browserVersionSettings(sets.type, settings);
-
 				
 				//Установка размеров плеера ('Inherit' - установка размеров родительского эл-та)
 				try{
@@ -482,11 +724,12 @@
 
 				$(element).html(container);
 
-				if(sets.type.indexOf('image')!=-1){
+				if(sets.mediaType == 'image'){
 					//Вызов метода вывода изображения
 					$.aplayer.showImage(container, sets);
 				}
-				else if(sets.logoPlay != undefined && sets.logoPlay.indexOf('true')!=-1)
+				// установка лого_плей
+				else if(sets.logoPlay != undefined && sets.logoPlay.indexOf('true')!=-1) 
 				{
 					var setLogoPlay = $.extend({}, sets, {'src': $.aplayer.ControlBar.controlsImg +$.aplayer.logo_play });
 					//создаем субконтейнер для логотипа плей
@@ -498,9 +741,8 @@
 					
 					$(container).css({'text-align':'center'})
 					.find('.logoPlay').css({'top': ($(container).height()- $(container).find('.logoPlay').height())/2 });
-
 					
-					var t = sets.type;
+					var t = sets.mediaType;
 					var s = sets.src;
 					
 					$(container).attr({'t':t,'s':s}) .click(function(){
@@ -509,66 +751,22 @@
 					});
 				}
 				//Если задано значение application - воспроизводить как внедренный объект // || (settings.application!=null && settings.application.indexOf('true')!=-1)
-				else if(sets.type.indexOf('application')!=-1 ){
-//					console.log(settings.type +"  "+settings.application)
+				else if(sets.mediaType == 'embed'){
 					//Вызов метода для использования плагина
 					$.aplayer.showObject(container, sets);
 				}
-				else if(sets.type.indexOf('video')!=-1){
+				else if(sets.mediaType == 'video'){
 					//Вызов метода для использования HTML5 video
 					$.aplayer.showVideo(container, sets);
 				}
-				else if(sets.type.indexOf('audio')!=-1){
+				else if(sets.mediaType == 'audio'){
 					//Вызов метода для использования HTML5 audio
 					$.aplayer.showAudio(container, sets);
 				}
-				else{alert('Error: undefined type')}
+				else{alert('Error: undefined mediaType: '+sets.mediaType)}
 				
 				$.aplayer.draggable(container);
 		},
-
-		//корректировка типа воспроизведения в зависимости от версии браузера
-		browserVersionSettings: function(srcType ,settings){
-			
-		//Вывод версии браузера и тип открываемого файла
-//			alert('Browser\'s version: '+$.browser.version+"     "+$.browser.version+'\nSource type: '+ settings.type);
-			
-			//Блокировка использования HTML5 в Chrome для указанных форматов
-			if( $.browser.safari==true && (srcType=='audio/wav' || srcType=='video/mp4')) // || srcType=='audio/mpeg'))
-				{
-					srcType+='" application ="true';
-					$.extend(settings, {'application':'true'});
-				}
-			//Блокировка использования HTML5 в Mozilla Firefox для указанных форматов
-			if( $.browser.mozilla ==true && (srcType=='audio/wav'))
-				{
-					srcType+='" application ="true';
-					$.extend(settings, {'application':'true'});
-				}
-				
-				
-			switch($.browser.version)
-			{
-/*				case '535.2':
-				case '535.11': //Google Chrome v. 535.2
-					if(srcType=='audio/wav' || srcType=='video/mp4' || srcType=='audio/mpeg')
-					{
-						$.extend(settings, {'application':'true'});
-					}
-				break;
-*/				
-				case '10.0':
-				case '11.0':
-				case '9.0.1': //Mozilla Firefox v. 9.0.1
-					if(srcType=='audio/wav')
-					{
-						$.extend(settings, {'application':'true'});
-					}
-				break;
-			}
-			return srcType;
-		},
-
 
 			//Метод вывода изображения
 			showImage:function(container, settings){
@@ -601,9 +799,6 @@
 
 			//Метод для использования плагина
 			showObject:function(container, settings){
-
-					// Не добавляет высоту для аудио
-					//if(!(settings.type.indexOf('audio')!=-1))size = 'style="width:'+settings.width+'px;'
 
              //Создаем object
              var obj;
@@ -642,7 +837,7 @@
                     .height(settings.height); //.html('<noembed>Your browser does not support video</noembed>'); //'Your browser does not support video');
            },
 
-           //Create video AVI  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+           //Create video AVI  
            createObj_AVI: function(settings){
 			var obj = $('<object type="video/avi" data="'+settings.src+'" autoplay="false"> </object>')
 				.append('<param name="src" value="'+settings.src+'" />')
@@ -672,6 +867,7 @@
 				.append('<param name="autostart" value="0" />');
 				$(obj).append('<param name="wmode" value="window" >')
 				.append('<param name="play" value="false" >');
+				$(obj).width(settings.width).height(settings.height);
 			$(obj).append($($.aplayer.create_Embed(settings)));
             return obj;
            },
@@ -749,8 +945,6 @@
             },
             
             
-            
-            
             /*
              // Create object SWF
             createObj_SWF:function(settings){
@@ -781,15 +975,6 @@
             },
             
             */
-            
-            
-            
-            
-            
-            
-            
-            
-            
             
             
 			//-----------------------------------
@@ -853,7 +1038,7 @@
 			
         ControlBar:{
 			//Control's images location
-        	// controlsImg:'aplayerControls/',
+        	 // controlsImg:'aplayerControls/',
         	controlsImg:'gallery/img/aplayerControls/',
 
 
@@ -866,13 +1051,24 @@
 
             search:'<div style="padding:1px;" ><div /></div>',
 
-			duration:'<div  style="height:12px; font-family:Verdana; font-size:10px; font-weight:bold; overflow:hidden; text-align:right;">0:00:00</div>',
-			currentTime:'<div  style="height:12px; font-family:Verdana;   font-size:10px; font-weight:bold; overflow:hidden; text-align:right;" >0:00:00</div>',
+			duration:'<div>0:00:00</div>',
+			currentTime:'<div>0:00:00</div>',
 			soundOff:'<div><img style="height:100%;" /></div>',
 			soundOn:'<div style="display:none;"><img style="height:100%; " /></div>',
 
 			volume:'<div> <div class="divSlider" /> </div>',
 
+			
+			/*Стиль элементов вывода времени и продолжительности */
+			TimeFontStyle: {
+				'height':'12px',
+				'color':'silver',
+				'font-family':'Verdana',
+				'font-size':'10px',
+				'font-weight':'bold',
+				'text-align':'right',
+				'overflow':'hidden'
+	        },
 
  			/*Стили субКонтейнеров для элементов*/
 			ControlsContainers: {
@@ -1121,11 +1317,13 @@
 				}).children('img').attr({'src': $.aplayer.ControlBar.controlsImg+'Stop.png'}).end()
 				.attr({'title':$.aplayer.config.dictionery.stop,'alt': $.aplayer.config.dictionery.stop });
 
-			var CurrentTime = $($.aplayer.ControlBar.currentTime).attr(
-				{'id':$.aplayer.idCurrentTime+$.aplayer.aplayerNo, 'title':$.aplayer.config.dictionery.currentTime});
+			var CurrentTime = $($.aplayer.ControlBar.currentTime)
+				.attr({'id':$.aplayer.idCurrentTime+$.aplayer.aplayerNo, 'title':$.aplayer.config.dictionery.currentTime})
+				.css($.aplayer.ControlBar.TimeFontStyle);
 
-			var Duration = $($.aplayer.ControlBar.duration).attr(
-				{'id':$.aplayer.idDuration+$.aplayer.aplayerNo, 'title':$.aplayer.config.dictionery.duration});
+			var Duration = $($.aplayer.ControlBar.duration)
+				.attr({'id':$.aplayer.idDuration+$.aplayer.aplayerNo, 'title':$.aplayer.config.dictionery.duration})
+				.css($.aplayer.ControlBar.TimeFontStyle);;
 
 
 			var Times = $('<div />').css($.aplayer.ControlBar.ControlsContainers).append(CurrentTime).append(Duration);
@@ -1228,6 +1426,9 @@
 	//Инкапсулирует данные о браузере
 	$.browserInfo = {
 		
+		browser:'undefined',
+		version:'undefined',
+		
 		HTML5_Audio:false,
 		HTML5_Video:false,
 
@@ -1257,12 +1458,38 @@
 		//Сформировать данные о браузере
 		getInfo:function(){
 			if(!$.browserInfo.isDefined){
+			$.browserInfo.defineBrowserType();
 			$.browserInfo.support_HTML5_Audio();
 			$.browserInfo.support_HTML5_Video();
 			$.browserInfo.isDefined = true;
 			}
 		},
 
+		//Определение типа и версии браузера
+		defineBrowserType : function()
+		{
+			var userAgent = navigator.userAgent.toLowerCase(); 
+			$.browser.chrome = /chrome/.test(userAgent);
+			if($.browser.chrome) {
+				$.browserInfo.browser = 'chrome';
+				userAgent = userAgent.substring(userAgent.indexOf('chrome/') +7);
+			  	userAgent = userAgent.substring(0,userAgent.indexOf('.'));
+				$.browser.version = userAgent;
+				 // If it is chrome then jQuery thinks it's safari so we have to tell it it isn't
+				$.browser.safari = false;
+			}
+			else if($.browser.safari){
+				$.browserInfo.browser = 'safari';
+				userAgent = userAgent.substring(userAgent.indexOf('safari/') +7);
+ 				userAgent = userAgent.substring(0,userAgent.indexOf('.'));
+  				$.browser.version = userAgent;
+			}
+			else if($.browser.opera)$.browserInfo.browser = 'opera';
+    		else if($.browser.msie)$.browserInfo.browser = 'msie';
+    		else if($.browser.mozilla)$.browserInfo.browser = 'mozilla';
+    		$.browserInfo.version = $.browser.version;
+		},
+		
 		//Check HTML5_Audio
 		support_HTML5_Audio:function(){
 			try{

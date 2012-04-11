@@ -1,5 +1,4 @@
 <?php
-require_once('../lib/adb.php');
 if (isset($_POST['pipes_show']))
    $pipes_show = $_POST['pipes_show'];
 if ( isset ($pipes_show) ) {
@@ -14,7 +13,6 @@ require ('../head.inc.php');
 
 DENY($admin_status);
 
-require ('../lib/my_conn.inc.php');
 require ('./mon-type.inc.php');
 
 
@@ -49,7 +47,6 @@ if ( isset($cmd) ) {
 	if ( empty($mon_type) ) {
 		print '<p class="HiLiteBigErr">' . $strMonAddErr1 . '</p>' ."\n";
 		print_go_back();
-		require ('../lib/my_close.inc.php');
 		require ('../foot.inc.php');
 		exit;		
 	}
@@ -73,7 +70,6 @@ if ( isset($cmd) ) {
 				print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="reset_to_list();">'."\n";
 				print '</form>'."\n";
 			}
-			require ('../lib/my_close.inc.php');
 			require ('../foot.inc.php');
 			exit;
 			break; /**/
@@ -95,7 +91,6 @@ if ( isset($cmd) ) {
 			} else {
 				print '<p class="HiLiteBigErr">' . $strNotChoiceCam . '</p>' ."\n";
 				print_go_back();
-				require ('../lib/my_close.inc.php');
 				require ('../foot.inc.php');
 				exit;
 			}
@@ -139,6 +134,5 @@ if ( isset($cmd) ) {
 	print '</form>'."\n";
 }
 // phpinfo ();
-require ('../lib/my_close.inc.php');
 require ('../foot.inc.php');
 ?>

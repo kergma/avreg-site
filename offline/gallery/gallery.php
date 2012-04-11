@@ -21,7 +21,6 @@ class Gallery {
     	global $conf;
     	$this->conf = $conf;
     	$this->cache = new Cache();
-    	$this->conf['gallery-limit'] = 10;
     	
     	global $adb;
     	$this->db = $adb;

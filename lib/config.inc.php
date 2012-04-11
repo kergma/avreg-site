@@ -1,5 +1,5 @@
 <?php
-require_once('../lib/adb.php');
+
 require ('/etc/avreg/site-defaults.php');
 $wwwdir = $conf['site-dir'] . '/';
 
@@ -315,11 +315,11 @@ $WellKnownAspects = array(
    array( 5, 4)
 );
 
-require($wwwdir.'/lib/my_conn.inc.php');
 
 
-
+require_once('../lib/adb.php');
 $result = $adb->get_users();
+
 foreach ($result as $row  )
 {
    /* var_dump($row); */
