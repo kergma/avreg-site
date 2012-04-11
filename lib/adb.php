@@ -305,6 +305,32 @@ class Adb {
 		return  $cams;
 	}
 	
+	public function get_cameras_name() {
+		$cams = array();
+   	/* Performing new SQL query */
+  	 $query = 'SELECT c1.CAM_NR, c1.PARVAL as work , c2.PARVAL as text_left, '.
+      'c1.CHANGE_HOST, c1.CHANGE_USER, c1.CHANGE_TIME '.
+      'FROM CAMERAS c1 LEFT OUTER JOIN CAMERAS c2 '.
+      'ON ( c1.CAM_NR = c2.CAM_NR AND c1.BIND_MAC=c2.BIND_MAC AND c2.PARNAME = \'text_left\' ) '.
+      'WHERE c1.BIND_MAC=\'local\' AND c1.CAM_NR>0 AND c1.PARNAME = \'work\' '.
+      'ORDER BY c1.CAM_NR';
+  	 $res = $this->_db->query($query);
+		while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
+    		$cams[] = array(
+    			'CAM_NR' => trim($line[$this->_key('CAM_NR')]),
+   				'work' => trim($line[$this->_key('work')]),
+				'text_left' => trim($line[$this->_key('text_left')]),
+    		);
+    	}
+		return  $cams;
+		
+	}
+	
+	
+	
+	
+	
+	
 	public function max_cam_nr($bind_mac = 'local') {
 		$query = 'SELECT MAX(CAM_NR) AS LAST_NUM FROM CAMERAS WHERE BIND_MAC=\''.$bind_mac.'\'';
 		$res = $this->_db->query($query);
@@ -455,22 +481,41 @@ class Adb {
 		 $this->_db->query($query);   
 	}
 	
-	public function get_users($status) {
+	
+	
+
+	
+	
+	public function get_users($status = false) {
 		$users = array();
-		$query = 'SELECT ALLOW_FROM, USER_LOGIN, LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME '.
-				 'FROM USERS '.
-				 "WHERE STATUS = $status ".
-				 'ORDER BY ALLOW_FROM, USER_LOGIN';
+		$query = 'SELECT ALLOW_FROM, USER_LOGIN,  PASSWD, STATUS, ALLOW_CAMS, FORCED_SAVING_LIMIT,  SESSIONS_PER_CAM, LIMIT_FPS, NONMOTION_FPS, LIMIT_KBPS, SESSION_TIME, SESSION_VOLUME,LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME '.
+				 'FROM USERS ';
+		if ($status) {
+			$query .= "WHERE STATUS = $status ";
+		}
+		$query .=  'ORDER BY ALLOW_FROM, USER_LOGIN';
+		
 		$res = $this->_db->query($query);
     	while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
     		
     		$users[] =array(
     			'HOST' => trim($line[$this->_key('ALLOW_FROM')]),
     		    'USER' => trim($line[$this->_key('USER_LOGIN')]),
+    			'PASSWD' => trim($line[$this->_key('PASSWD')]),
+    			'STATUS' => trim($line[$this->_key('STATUS')]),
+    			'ALLOW_CAMS' => trim($line[$this->_key('ALLOW_CAMS')]),
+    			'FORCED_SAVING_LIMIT' => trim($line[$this->_key('FORCED_SAVING_LIMIT')]),
+    			'SESSIONS_PER_CAM' => trim($line[$this->_key('SESSIONS_PER_CAM')]),
+    			'LIMIT_FPS' => trim($line[$this->_key('LIMIT_FPS')]),
+    			'NONMOTION_FPS' => trim($line[$this->_key('NONMOTION_FPS')]),
+    			'LIMIT_KBPS' => trim($line[$this->_key('LIMIT_KBPS')]),
+    			'SESSION_TIME' => trim($line[$this->_key('SESSION_TIME')]),
+    			'SESSION_VOLUME' => trim($line[$this->_key('SESSION_VOLUME')]),
     			'LONGNAME' => trim($line[$this->_key('LONGNAME')]),
     			'CHANGE_HOST' => trim($line[$this->_key('CHANGE_HOST')]),
     			'CHANGE_USER' => trim($line[$this->_key('CHANGE_USER')]),
     			'CHANGE_TIME' => trim($line[$this->_key('CHANGE_TIME')]),
+    		
     		
     		);
     	}

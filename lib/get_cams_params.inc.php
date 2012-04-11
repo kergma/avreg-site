@@ -1,5 +1,5 @@
 <?php
-
+require_once('../lib/adb.php');
 if ( isset($GCP_cams_list) && empty($GCP_cams_list))
    die('not set cam list');
 if (!isset($GCP_query_param_list) || !is_array($GCP_query_param_list))
@@ -31,21 +31,10 @@ for ($GCP_i=0;$GCP_i<$PARAMS_NR;$GCP_i++)
       $GCP_sql_in_par.= ', \''.$GCP_parname.'\'';
 }
 
-/* разбираемся с камерами */
-if (!is_null($GCP_cams_list))
-   $GCP_sql_cams='  AND (C.CAM_NR=0 OR C.CAM_NR IN ('.$GCP_cams_list.')) ';
 
-$query = sprintf(
-   'SELECT C.CAM_NR, C.PARAM, C.VALUE '.
-   'FROM CAMERAS C '.
-   'WHERE C.BIND_MAC=\'local\' '.
-   $GCP_sql_cams.
-   'AND C.PARAM IN ('.$GCP_sql_in_par.') '.
-   'AND  C.VALUE<>"" AND C.VALUE IS NOT NULL '.
-   'ORDER BY C.CAM_NR');
-// print_r($query);
-$result = mysql_query($query) or die('Query failed: '. $query);
-while ( $row = mysql_fetch_array($result, MYSQL_ASSOC) )
+
+$result = $adb->get_cam_params($GCP_cams_list, $GCP_sql_in_par);
+foreach ( $result as $row )
 {
    $__cam_nr = intval($row['CAM_NR']);
    if ($__cam_nr === 0 )
@@ -53,7 +42,9 @@ while ( $row = mysql_fetch_array($result, MYSQL_ASSOC) )
    else
       $GCP_cams_params[$__cam_nr][$row['PARAM']] = $row['VALUE'];
 }
-mysql_free_result($result); $result=NULL;
+$result=NULL;
+
+
 
 $GCP_cams_list=array_keys($GCP_cams_params);
 $GCP_cams_nr=count($GCP_cams_list);
@@ -70,7 +61,6 @@ if ($GCP_cams_nr)
       }
    }
 }
-
 /*
 echo "<pre style='text-align: left;'>\n";
 var_dump($GCP_def_pars);

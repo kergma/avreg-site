@@ -1,5 +1,5 @@
 <?php
-
+require_once('../lib/adb.php');
 require ('/etc/avreg/site-defaults.php');
 $wwwdir = $conf['site-dir'] . '/';
 
@@ -316,14 +316,11 @@ $WellKnownAspects = array(
 );
 
 require($wwwdir.'/lib/my_conn.inc.php');
-$query = 'SELECT HOST, USER, PASSWD, STATUS, ALLOW_CAMS,
-   FORCED_SAVING_LIMIT,
-   SESSIONS_PER_CAM, LIMIT_FPS, NONMOTION_FPS, LIMIT_KBPS,
-   SESSION_TIME, SESSION_VOLUME,
-   LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME
-   FROM USERS ORDER BY STATUS';
-$result = mysql_query($query) or die('SQL query failed: `'. mysql_error() ."`\n");
-while ($row = mysql_fetch_array($result, MYSQL_ASSOC) )
+
+
+
+$result = $adb->get_users();
+foreach ($result as $row  )
 {
    /* var_dump($row); */
    $ui = array();
@@ -345,7 +342,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC) )
    $ui['CHANGE_TIME'] = $row['CHANGE_TIME'];
    $users[] = $ui;
 }
-mysql_free_result($result); unset($result);
+unset($result);
 
 function get_user_info($ipacl, $name)
 {
@@ -368,7 +365,6 @@ function avreg_find_user($addr, $mask, $name)
       return false;
    if (is_null($addr) || is_null($mask) || is_null($name) )
       return false;
-
    $found = false;
    foreach ($GLOBALS['users'] as $ui) {
       if ( 0 !== strcmp($ui['USER'], $name) )
@@ -573,33 +569,24 @@ function sql_format_float_val($val) {
 
 function getCamsArray($_sip,$first_defs=FALSE)
 {
-   /* Performing new SQL query */
-   $query = 'SELECT c1.CAM_NR, c1.VALUE as work , c2.VALUE as text_left, '.
-      'c1.CHANGE_HOST, c1.CHANGE_USER, c1.CHANGE_TIME '.
-      'FROM CAMERAS c1 LEFT OUTER JOIN CAMERAS c2 '.
-      'ON ( c1.CAM_NR = c2.CAM_NR AND c1.BIND_MAC=c2.BIND_MAC AND c2.PARAM = \'text_left\' ) '.
-      'WHERE c1.BIND_MAC=\'local\' AND c1.CAM_NR>0 AND c1.PARAM = \'work\' '.
-      'ORDER BY c1.CAM_NR';
-   // print '<p>'.$query.'</p>'."\n";
-   $result = mysql_query($query) or die("Query failed");
-   $num_rows = mysql_num_rows($result);
+	global $adb;
+	$result = $adb->get_cameras_name();
+   $num_rows = count($result);
    if ( $num_rows == 0 )
    {
-      mysql_free_result($result);
       unset ($result);
       return NULL;
    }
    $arr=array();
    if ($first_defs)
       $arr[0]=$GLOBALS['r_cam_defs3'];
-   while ( $row = mysql_fetch_array($result, MYSQL_ASSOC) )
+   foreach ( $result as $row )
    {
       $_cam_name = getCamName($row['text_left']);
       $_cam_nr = $row['CAM_NR'];
       settype($_cam_nr,'int');
       $arr[$_cam_nr] = $_cam_name;
    }
-   mysql_free_result($result);
    unset ($result);
    return $arr;  
 }
