@@ -6,7 +6,6 @@ $body_onload='switch_timemode();';
 $lang_file = '_offline.php';
 require ('../head.inc.php');
 DENY($arch_status);
-require ('../lib/my_conn.inc.php');
 ?>
 
 <script type="text/javascript" language="javascript">
@@ -69,20 +68,13 @@ function OptionHelp() {
 
 <?php
 
-if (empty($GCP_cams_list)) 
-   $camsnr_cond = 'c1.CAM_NR>0';
-else
-   $camsnr_cond = 'c1.CAM_NR IN (' . $GCP_cams_list . ')';
-$query = 'SELECT c1.CAM_NR, c1.VALUE as work, c2.VALUE as text_left '.
-	'FROM CAMERAS c1 LEFT OUTER JOIN CAMERAS c2 '.
-	'ON (c1.BIND_MAC=c2.BIND_MAC AND c1.CAM_NR = c2.CAM_NR AND c2.PARAM=\'text_left\') '.
-	'WHERE c1.BIND_MAC=\'local\' AND '.$camsnr_cond.' AND c1.PARAM = \'work\' '.
-	'ORDER BY c1.CAM_NR';
-$result = mysql_query($query) or die("Query failed");
-$num_rows = mysql_num_rows($result);
+
+$result = $adb->get_cameras_name($GCP_cams_list);
+$num_rows = count ($result);
+
 if ( $num_rows > 0 ) {
    $conf_cams_array = array();
-	while ( $row = mysql_fetch_array($result, MYSQL_ASSOC) )
+	foreach ($result as  $row )
    {
       if ( empty($row['text_left']) )
          $_cam_short = "cam $row[CAM_NR]";
@@ -95,7 +87,6 @@ if ( $num_rows > 0 ) {
 	print '<p><b>' . $strNotCamsDef2 . '</b></p>' . "\n";
 
 	require ('../foot.inc.php');
-	require ('../lib/my_close.inc.php');
 
 	exit;
 }
@@ -299,5 +290,4 @@ print getSelectHtml('minute2', $minute_array, FALSE, 1, 0, $minute_array[$minute
 
 <?php
 require ('../foot.inc.php');
-require ('../lib/my_close.inc.php');
 ?>

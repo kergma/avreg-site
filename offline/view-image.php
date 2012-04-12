@@ -5,7 +5,6 @@ $ie6_quirks_mode = true;
 $body_style='margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; ';
 $lang_file = '_offline.php';
 require ('../head.inc.php');
-require_once ('../lib/my_conn.inc.php');
 DENY($arch_status);
 ?>
 
@@ -67,6 +66,5 @@ if (!isset ($src) || empty($src)) {
 } 
 print  '</div>'."\n";
 
-require_once ('../lib/my_close.inc.php');
 require ('../foot.inc.php');
 ?>

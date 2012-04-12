@@ -88,20 +88,27 @@ if (($_POST['cams_ordered']))
       setcookie('avreg_cams_ordered','0',$expire,$_pg);
 */
 
-require ('../lib/my_conn.inc.php');
 $events = &$ftypes;
-require ('./_events_select_query.inc.php');
+$_cams_csv   = implode(',', $cams);
 
-$result = mysql_query($query) or die('SQL query failed: ' . mysql_error());
+   $date = array (
+		'from' => array($year_array[$year1],$month1,$day1,$hour1,$minute_array[$minute1]),
+   		'to' => array($year_array[$year2],$month2,$day2,$hour2,$minute_array[$minute2]),
+   );
+   
+   
+      
+   $result = $adb->events_select($cams, $timemode, $date, $events, isset($dayofweek) ? $dayofweek : array());
+
+
 $num_rows = 0;
 $res_array=array();
-while ( $row = mysql_fetch_array($result, MYSQL_ASSOC) )
+foreach ( $result as $row )
 {
    $res_array[$num_rows] = $row;
    $num_rows++;
 }
 
-require_once ('../lib/my_close.inc.php');
 if ( $conf['debug'] )
   $_SESSION['sql'] = $query;
 if ( $num_rows === 0 )

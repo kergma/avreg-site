@@ -85,16 +85,20 @@ die;
    if (isset($btLast)) $page--;
    $row_start = $page * $row_max;
    /* Performing new SQL query */
-   require ('../lib/my_conn.inc.php');
-   require ('./_events_select_query.inc.php');
-   $query .= "\nlimit $row_start,$row_max";
 
-   if ( $conf['debug'] )
-      print '<div class="help"  style="font-size:85%">'.$query.'</div>'."\n";
-   $result = mysql_query($query) or die('Query failed: `'.mysql_error().'`');
+  
+   
+   $date = array (
+		'from' => array($year_array[$year1],$month1,$day1,$hour1,$minute_array[$minute1]),
+   		'to' => array($year_array[$year2],$month2,$day2,$hour2,$minute_array[$minute2]),
+   );
+   
+   
+   $result = $adb->events_select($cams, $timemode, $date, $events, isset($dayofweek) ? $dayofweek : array(), array('limit' => $row_max, 'offset' => $row_start));
+   
    $num_rows = 0;
    $res_array=array();
-   while ( $row = mysql_fetch_array($result, MYSQL_ASSOC) )
+   foreach ( $result as $row)
    {
       $res_array[$num_rows] = $row;
       if ($num_rows===0)
@@ -104,7 +108,6 @@ die;
       $num_rows++;
    }
    unset($row);
-   require_once ('../lib/my_close.inc.php');
 
    if ( $num_rows == 0 && $page == 0 ) {
       print '<div class="warn"><h3>'.$strNotSavedPict.'</h3></div>'."\n";
