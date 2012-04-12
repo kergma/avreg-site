@@ -1,7 +1,6 @@
 <?php
 $lang_file='_admin_users.php';
 require ('../head.inc.php');
-require ('../lib/my_conn.inc.php');
 ?>
 
 <script type="text/javascript" language="javascript">
@@ -41,15 +40,16 @@ if ( isset($cmd) )
                print_go_back();
                         } else {
                            if ( $u_host === '127.0.0.1' || $u_host === 'localhost' )
-                              $host_cond = '(HOST=\'127.0.0.1\' OR HOST=\'localhost\')';
+                              $hosts = array('127.0.0.1', 'localhost');
                            else
-                              $host_cond = sprintf('HOST=\'%s\'',$u_host);
-                              $query = sprintf("SELECT PASSWD FROM USERS WHERE %s AND USER='%s'", $host_cond, $u_name);
-                              $result = mysql_query($query) or die('Query failed: `'. $query . "`\n");
-                              if ( $row = mysql_fetch_array($result, MYSQL_ASSOC) )
-                                       $user_passwd = $row['PASSWD'];
-                              else die ("Error\n");
-                              mysql_free_result($result); $result = NULL;
+                            $hosts = array($u_host);
+                            
+                              
+                              $user_passwd = $adb->get_user_passwd($u_name, $hosts);
+                              var_dump($user_passwd);
+                              if ($user_passwd === false) {
+                              	 die ("Error\n");
+                              }
                               $z = crypt($old_pass, $user_passwd);
                               //print "<p>old_pass='$old_pass'<br>user_passwd='$user_passwd'<br>crypt='$z'</p>\n";
                               if ( ( $user_passwd == '' && $old_pass == '') ||
@@ -57,13 +57,10 @@ if ( isset($cmd) )
                               {
                                        if ( strcmp($old_pass, $u_pass ) )
                                        {
-                                                $query = sprintf("UPDATE USERS SET PASSWD=ENCRYPT('%s') WHERE %s AND USER='%s'",
-                                                               $u_pass,
-                                                               $host_cond,
-                                                               $u_name);
+                                       			$result = $adb->update_user_passwd($u_name, $u_pass, $hosts);
+                                                
                                                 //print ($query);
-                                                if ( mysql_query($query) ) {
-                                                      if ( 1 == mysql_affected_rows () )
+                                                      if ( $result )
                                                       {
                                                                print '<p class="HiLiteWarn">' . sprintf ($fmtPasswdUpdated, $u_name, $u_host) . '</p>' ."\n";
                                                                print '<br><center><a href="'.$conf['prefix'].'/admin/user-list.php">'.$l_user_list.'</a><center>' ."\n";
@@ -71,10 +68,6 @@ if ( isset($cmd) )
                                                                print '<p class="HiLiteErr">' . sprintf ($fmtPasswdUpdated2, $u_name, $u_host) . '</p>' ."\n";
                               print_go_back();
                                                       }
-                                                } else {
-                                                               print '<p class="HiLiteErr">' . sprintf ($fmtPasswdUpdated3, $u_name, $u_host, mysql_error() ) . '</p>' ."\n";
-                              print_go_back();
-                                                }
                   } else {
                                                 print '<p class="HiLiteWarn">' . sprintf ($fmtPasswdUpdated, $u_name, $u_host) . '</p>' ."\n";
       print '<div class="warn">'.$strOnUsersUpdateMsg."</div>\n";
@@ -116,6 +109,5 @@ print '<input type="submit" name="submit_btn" value="'.$strChange.'">'."\n";
 print '<input type="reset" name="reset_btn" value="'.$strRevoke.'" onclick="reset_to_list();">'."\n";
 print '</form>'."\n";
 
-require ('../lib/my_close.inc.php');
 require ('../foot.inc.php');
 ?>

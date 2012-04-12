@@ -24,13 +24,10 @@ if ( isset($cmd) && isset($u_host) && isset($u_name) && isset($groups) )
    switch ( $cmd )
    {
    case 'ADD_NEW_USER':
-      if ( empty($u_pass) )
-         $passwd_f = '\'\',';
-      else
-         $passwd_f = sprintf('encrypt(\'%s\'), ', $u_pass);
+     
          
          
-      $adb->add_user($u_host, $u_name, $passwd_f, $groups, $u_devacl, $u_forced_saving_limit, $sessions_per_cam,$limit_fps,$nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user);   
+      $adb->add_user($u_host, $u_name, $u_pass, $groups, $u_devacl, $u_forced_saving_limit, $sessions_per_cam,$limit_fps,$nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user);   
          
          
       

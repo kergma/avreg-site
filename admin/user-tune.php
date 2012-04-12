@@ -23,12 +23,8 @@ if ( isset($cmd) )
    switch ( $cmd )
    {
    case 'UPDATE_USER':
-      if ( 0 === strcmp($u_pass, $old_u_passwd) )
-         $passwd_changed = '';
-      else
-         $passwd_changed = sprintf('PASSWD=encrypt(\'%s\'), ', $u_pass);
-         
-         $adb->update_user($u_host,$u_name,$passwd_changed, $groups, $u_devacl, $u_forced_saving_limit, $sessions_per_cam, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name);
+              
+         $adb->update_user($u_host,$u_name,$u_pass, $groups, $u_devacl, $u_forced_saving_limit, $sessions_per_cam, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name);
 
       break;
    default:
