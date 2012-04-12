@@ -266,7 +266,6 @@ class Adb {
 		$query .= " AND E1.EVT_ID in (13)";
 		$query .= " AND ((E1.DT1 between '$timebegin' and '$timeend') and (E2.DT1 is null or E2.DT1 between '$timebegin' and '$timeend'))";
 		$query .= " ORDER BY E1.DT1 " .$order;
-		var_dump($query);
 		$res = $this->_db->query($query);
 		while($res->fetchInto($line)){
 			$f = array();
@@ -278,6 +277,81 @@ class Adb {
 		}
 		return $files;
 	}	
+	
+	
+	public function events_select($cams, $timemode = false, $date, $evt_ids, $dayofweek, $page = false){
+		
+		
+		$all_continuous_events = array(12,23,32);
+		$query_continuous_events    = array_intersect($all_continuous_events,  $evt_ids);
+		$query_noncontinuous_events = array_diff($evt_ids, $all_continuous_events);
+		
+		
+		
+		$events = array();
+		$query = 'SELECT '.$this->_date_part('timestamp', 'DT1').' as UDT1, '.$this->_date_part('timestamp', 'DT1').' as UDT2,';
+		$query .= ' CAM_NR, EVT_ID, SESS_NR AS SER_NR, FILESZ_KB, FRAMES, ALT1 as U16_1, ALT2 as U16_2, EVT_CONT';
+		$query .= ' FROM EVENTS';
+		$query .= ' WHERE';
+		$query .= " CAM_NR in (0, ".implode(',', $cams).")";
+		$query .= " AND (";
+		
+		if (!empty($timemode) && $timemode == 1) {
+			$timebegin = sprintf('20%02s-%02u-%02u %02u:%02u:00',$date['from'][0],$date['from'][1],$date['from'][2],$date['from'][3],$date['from'][4]);
+			$timeend   = sprintf('20%02s-%02u-%02u %02u:%02u:59',$date['to'][0],$date['to'][1],$date['to'][2],$date['to'][3],$date['to'][4]);
+			
+			
+			if ( count($query_continuous_events) > 0 ) {
+				$query .= " ( EVT_ID in (".implode(',', $query_continuous_events).") and ( (DT1 between '$timebegin' and '$timeend') or (DT2 between '$timebegin' and '$timeend') ))";
+			}
+			if ( count($query_noncontinuous_events) > 0 ) {
+				if (count($query_continuous_events) > 0)
+					$query .= " OR ";
+				$query .= "(EVT_ID in (".implode(',', $query_noncontinuous_events).") and (DT1 between '$timebegin' and '$timeend'))";
+   			}
+			
+			
+			
+		} else {
+			$timebegin = sprintf('20%02s-%02u-%02u 00:00:00',$date['from'][0],$date['from'][1],$date['from'][2]);
+			$timeend   = sprintf('20%02s-%02u-%02u 23:59:59',$date['to'][0],$date['to'][1],$date['to'][2]);
+			$time_in_day_begin = sprintf('%02u:%02u:00',$date['from'][3],$date['from'][4]);
+			$time_in_day_end   = sprintf('%02u:%02u:59',$date['to'][3],$date['to'][4]);
+		   
+		   
+			if ( count($query_continuous_events) > 0 ) {
+					$query .= "( EVT_ID in (".implode(',', $query_continuous_events).") and ( ( DT1 between '$timebegin' and '$timeend' )";
+				$query .= " or ( DT2 between '$timebegin' and '$timeend' ) ) and ( ".$this->_date_part('weekday', 'DT1')." in (".implode(',', $dayofweek).") or ".$this->_date_part('weekday', 'DT2')." in (".implode(',', $dayofweek).") )";
+				$query .= " and ( ( ".$this->_date_part('time', 'DT1')." between '$time_in_day_begin' and '$time_in_day_end' ) or ( ".$this->_date_part('time', 'DT2')." between '$time_in_day_begin' and '$time_in_day_end' ) ))";
+			}
+		
+			if ( count($query_noncontinuous_events) > 0 ) {
+				if (count($query_continuous_events) > 0)
+					$query .= " OR ";
+		      	$query .= "( EVT_ID in (".implode(',', $query_noncontinuous_events).")and ( DT1 between '$timebegin' and '$timeend' )";
+				$query .=" and ( ".$this->_date_part('weekday', 'DT1')." in (".implode(',', $dayofweek).") ) and ( (".$this->_date_part('time', 'DT1')." between '$time_in_day_begin' and '$time_in_day_end') ))";
+			}
+		}
+		
+		$query .= " )";
+		$query .= ' ORDER BY DT1';
+		if (!empty($page)) {
+			$query .= ' LIMIT '.$page['limit'];
+			$query .= ' OFFSET '.$page['offset'];
+		}
+		$res = $this->_db->query($query);
+		while($res->fetchInto($line, DB_FETCHMODE_ASSOC)){
+			$f = array();
+    		foreach ($line as $k=>$v) {
+    			$k = strtoupper($k);
+    			$f[$k] = trim($v);
+    		}
+			$events[] = $f;
+		}
+		return $events;
+	}
+	
+	
 	
 	
 	
@@ -360,14 +434,21 @@ class Adb {
 		return  $cams;
 	}
 	
-	public function get_cameras_name() {
+	public function get_cameras_name($cams_list = false) {
 		$cams = array();
    	/* Performing new SQL query */
   	 $query = 'SELECT c1.CAM_NR, c1.PARVAL as work , c2.PARVAL as text_left, '.
       'c1.CHANGE_HOST, c1.CHANGE_USER, c1.CHANGE_TIME '.
       'FROM CAMERAS c1 LEFT OUTER JOIN CAMERAS c2 '.
       'ON ( c1.CAM_NR = c2.CAM_NR AND c1.BIND_MAC=c2.BIND_MAC AND c2.PARNAME = \'text_left\' ) '.
-      'WHERE c1.BIND_MAC=\'local\' AND c1.CAM_NR>0 AND c1.PARNAME = \'work\' '.
+      'WHERE c1.BIND_MAC=\'local\' AND';
+  	 if (empty($cams_list)) {
+  	 	$query .= ' c1.CAM_NR>0';
+  	 } else {
+  	 	 $query .= " c1.CAM_NR in($cams_list)";
+  	 }
+  	 
+      $query .=' AND c1.PARNAME = \'work\' '.
       'ORDER BY c1.CAM_NR';
   	 $res = $this->_db->query($query);
 		while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
@@ -479,7 +560,7 @@ class Adb {
 		return  $mon;
 	}
    
-	public function add_user($u_host, $u_name, $passwd_f, $groups, $u_devacl, $u_forced_saving_limit, $sessions_per_cam,$limit_fps,$nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user) {
+	public function add_user($u_host, $u_name, $passwd, $groups, $u_devacl, $u_forced_saving_limit, $sessions_per_cam,$limit_fps,$nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user) {
 		$query = sprintf('INSERT INTO USERS 
          ( ALLOW_FROM, USER_LOGIN, PASSWD, STATUS, ALLOW_CAMS, FORCED_SAVING_LIMIT, SESSIONS_PER_CAM,
          LIMIT_FPS, NONMOTION_FPS, LIMIT_KBPS,
@@ -488,7 +569,7 @@ class Adb {
          VALUES ( %s, %s, %s %u, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())',
             sql_format_str_val($u_host),
             sql_format_str_val($u_name),
-            $passwd_f,
+            $this->_crypt($passwd),
             $groups,
             sql_format_str_val($u_devacl),
             sql_format_int_val($u_forced_saving_limit),
@@ -505,12 +586,12 @@ class Adb {
       $this->_db->query($query);   
 	}
 	
-	 public function update_user($u_host,$u_name,$passwd_changed, $groups, $u_devacl, $u_forced_saving_limit, $sessions_per_cam, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name){
+	 public function update_user($u_host,$u_name,$passwd, $groups, $u_devacl, $u_forced_saving_limit, $sessions_per_cam, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name){
 	 	$query = sprintf(
-         'UPDATE USERS SET ALLOW_FROM=%s, USER_LOGIN=%s, %s STATUS=%d, ALLOW_CAMS=%s, FORCED_SAVING_LIMIT=%s, SESSIONS_PER_CAM=%s, LIMIT_FPS=%s, NONMOTION_FPS=%s, LIMIT_KBPS=%s, SESSION_TIME=%s, SESSION_VOLUME=%s, LONGNAME=%s, CHANGE_HOST=%s, CHANGE_USER=%s, CHANGE_TIME=NOW() WHERE HOST=%s AND USER=%s',
+         'UPDATE USERS SET ALLOW_FROM=%s, USER_LOGIN=%s, PASSWD=%s, STATUS=%d, ALLOW_CAMS=%s, FORCED_SAVING_LIMIT=%s, SESSIONS_PER_CAM=%s, LIMIT_FPS=%s, NONMOTION_FPS=%s, LIMIT_KBPS=%s, SESSION_TIME=%s, SESSION_VOLUME=%s, LONGNAME=%s, CHANGE_HOST=%s, CHANGE_USER=%s, CHANGE_TIME=NOW() WHERE HOST=%s AND USER=%s',
          sql_format_str_val($u_host),
          sql_format_str_val($u_name),
-         $passwd_changed,
+         $this->_crypt($passwd),
          $groups,
          sql_format_str_val($u_devacl),
          sql_format_int_val($u_forced_saving_limit),
@@ -536,9 +617,23 @@ class Adb {
 		 $this->_db->query($query);   
 	}
 	
-	
-	
+	public function get_user_passwd($u_name, $hosts) {
+		$query = sprintf("SELECT PASSWD FROM USERS WHERE ALLOW_FROM in(%s) AND USER_LOGIN='%s'", "'".implode("','",$hosts)."'", $u_name);
+		$res = $this->_db->query($query);  
+		$res->fetchInto($line);
+		return isset($line[0]) ? trim($line[0]) : false;
+	}
 
+	public function update_user_passwd($u_name, $u_pass, $hosts) {
+		$query = sprintf("UPDATE USERS SET PASSWD=%s	 WHERE ALLOW_FROM in(%s) AND USER_LOGIN='%s'",
+                                                               $this->_crypt($u_pass),
+                                                               "'".implode("','",$hosts)."'",
+                                                               $u_name);		
+        $this->_db->query($query);  
+		return true;
+	}
+	
+	
 	
 	
 	public function get_users($status = false) {
@@ -602,6 +697,12 @@ class Adb {
 				case 'hour':
 					$str = "date_part('hour', %%)";
 				break;
+				case 'weekday':
+					$str = "date_part('dow', %%)";
+				break;
+				case 'time':
+					$str = "%%::time";
+				break;
 				case 'timestamp':
 					$str = "date_part('epoch', %%)";
 				break;
@@ -621,6 +722,13 @@ class Adb {
 				case 'hour':
 					$str = 'HOUR(%%)';
 				break;
+				case 'weekday':
+					$str = 'weekday(%%)';
+				break;
+				case 'time':
+					$str = 'time(%%)';
+				break;
+				
 				case 'timestamp':
 					$str = "UNIX_TIMESTAMP(%%)";
 				break;
@@ -653,6 +761,18 @@ class Adb {
 		return $str;
 		
 	}
+	
+	
+	private function _crypt($value) {
+		if ($this->_dbtype == 'pgsql') {
+			$str = "crypt('%%', 'av')";
+		} else {
+			$str = "encrypt('%%')";
+		}
+		$str = str_replace('%%', $value,$str);
+		return $str;
+	}
+	
 }
 
 
