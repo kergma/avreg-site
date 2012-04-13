@@ -4,10 +4,10 @@ require_once '/usr/share/php/DB.php';
 
 require_once('config.inc.php');
 
-$adb = new Adb($conf);
+//$adb = new Adb($conf);
 
 
-//$adb = new Adb(array('db-user' => 'moonion', 'db-passwd' => 'B0nxgsGrdguSjMxv', 'db-name' => 'avreg_test2'));
+$adb = new Adb(array('db-user' => 'moonion', 'db-passwd' => 'B0nxgsGrdguSjMxv', 'db-name' => 'avreg_test2'));
 
 //$adb = new Adb(array('user' => 'moonion', 'password' => 'bt7J2Y9xKhmbm2lM', 'database' => 'avreg_test', 'dbtype' =>'pgsql'));
 
@@ -172,7 +172,7 @@ class Adb {
 	}
 	
 	
-	public function gallery_update_tree_events($start, $end, $cameras) {
+	public function gallery_update_tree_events($start, $end, $cameras = false) {
 		$query = "SELECT *";
     	$query .= " FROM EVENTS";
     	$query .= ' WHERE EVT_ID in (15,16,17,18,19,20,21,23,32)';
@@ -520,14 +520,18 @@ class Adb {
 			
  	 
 	public function update_monitors ($display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS,$bind_mac = 'local') {
-		$query = 'UPDATE CAMERAS SET ';
+		$query = 'UPDATE MONITORS SET ';
    		$query .= "MON_TYPE = '$mon_type'";
-   		$query .= ", MON_NAME = '$mon_name;";
+   		$query .= ", MON_NAME = '$mon_name'";
    		$query .= ", CHANGE_HOST = '$host'";
    		$query .= ", CHANGE_USER = '$user'";
    		
    		for ($i = 0; $i < count($vWINS); $i++) {
-   			$query .= ", {$fWINS[$i]} = {$vWINS[$i]}";
+   			if (is_int($vWINS[$i])) {
+   				$query .= ", {$fWINS[$i]} = {$vWINS[$i]}";
+   			} else {
+   				$query .= ", {$fWINS[$i]} = '{$vWINS[$i]}'";
+   			}
    		}
    		   		
    		
@@ -539,7 +543,7 @@ class Adb {
 		$this->_error($res);
 	}
 	
-	public function replace_monitors ($fWINS,$display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS, $bind_mac = 'local') {
+	public function replace_monitors ($display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS, $bind_mac = 'local') {
 		$query = 'SELECT * FROM MONITORS ';
    		$query .= " WHERE BIND_MAC = '$bind_mac'";
    		$query .= " AND MON_NR = $mon_nr";
