@@ -4,7 +4,7 @@ require_once '/usr/share/php/DB.php';
 
 require_once('config.inc.php');
 
-//$adb = new Adb($conf);
+$adb = new Adb($conf);
 
 
 //$adb = new Adb(array('db-user' => 'moonion', 'db-passwd' => 'B0nxgsGrdguSjMxv', 'db-name' => 'avreg_test2'));
