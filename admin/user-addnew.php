@@ -37,9 +37,10 @@ if ( isset($cmd) && isset($u_host) && isset($u_name) && isset($groups) )
    }
    // print ($query);
    
-      print '<div class="error">'.sprintf ($fmtUserAddErr2, $u_name, $u_host, mysql_error() ). "</div>\n";
-      if ( $conf['debug'] ) tohtml($query);      
-      print_go_back();
+     print '<p class="HiLiteWarn">' . sprintf ($fmtUserAdded, $u_name, $u_host) . '</p>' ."\n";
+     print '<div class="warn">'.$strOnUsersUpdateMsg."</div>\n";
+     print '<br><center><a href="'.$conf['prefix'].'/admin/user-list.php">'.$l_user_list.'</a><center>' ."\n";
+    
    require ('../foot.inc.php');
    exit;
 } else {
