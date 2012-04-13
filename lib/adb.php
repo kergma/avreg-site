@@ -2,7 +2,7 @@
 
 require_once '/usr/share/php/DB.php';
 
-require_once('../lib/config.inc.php');
+require_once('config.inc.php');
 
 //$adb = new Adb(array('host' => $conf['db-host'],'user' => $conf['db-user'], 'password' => $conf['db-passwd'], 'database' => $conf['db-name'], 'dbtype' =>$conf['db-type']));
 
@@ -10,10 +10,6 @@ require_once('../lib/config.inc.php');
 $adb = new Adb(array('user' => 'moonion', 'password' => 'B0nxgsGrdguSjMxv', 'database' => 'avreg_test2'));
 
 //$adb = new Adb(array('user' => 'moonion', 'password' => 'bt7J2Y9xKhmbm2lM', 'database' => 'avreg_test', 'dbtype' =>'pgsql'));
-
-
-
-
 
 class Adb {
 	
@@ -37,7 +33,7 @@ class Adb {
 		}
 		
 		$dsn = "{$this->_dbtype}://{$this->_user }:{$this->_password}@{$this->_host}/{$this->_database}";
-		$this->_db = DB::connect($dsn,true);	
+		$this->_db = DB::connect($dsn,true);
 		if (PEAR::isError($this->_db)) {
 			die('Could not connect to mysql server: '. $this->_db->getMessage());
 			return false;
@@ -374,10 +370,6 @@ class Adb {
 		return $events;
 	}
 	
-	
-	
-	
-	
 	public function add_camera ($bind_mac, $cam_nr, $parname, $parval, $host, $user) {
 		$parval = $parval == null ? 'NULL' : "'$parval'";
 		$query = 'INSERT INTO CAMERAS ';
@@ -452,10 +444,16 @@ class Adb {
         }
         $query .= ')';
         $query .= ' AND PARNAME IN ('.$param_list.') AND  PARVAL<>\'\' AND PARVAL IS NOT NULL ';
+<<<<<<< HEAD
    		$query .= ' ORDER BY CAM_NR';
 		$res = $this->_db->query($query);
 		$this->_error($res);
     	while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
+=======
+        $query .= ' ORDER BY CAM_NR';
+        $res = $this->_db->query($query);
+    	 while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
+>>>>>>> fbb3c2dab4284842637106a7b09d3a007d2c4648
     		$cams[] = array(
     			'CAM_NR' => trim($line[$this->_key('CAM_NR')]),
    				'PARAM' => trim($line[$this->_key('PARNAME')]),

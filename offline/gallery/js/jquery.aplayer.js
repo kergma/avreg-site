@@ -16,8 +16,6 @@
 			'mozilla' : {
 				'mp4' : {   '11':'MYTEST',
 							'10':'htyjntym',
-						   	'5':'hren', 
-						   	'6':'hren'
 						   },
 
 				'webm': { '11.0':'video' },

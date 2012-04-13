@@ -317,7 +317,7 @@ $WellKnownAspects = array(
 
 
 
-require_once('../lib/adb.php');
+require_once('adb.php');
 $result = $adb->get_users();
 
 foreach ($result as $row  )

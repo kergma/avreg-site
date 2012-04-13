@@ -28,7 +28,6 @@ if ( isset($cmd) )
       	
       	$adb->delete_camera($cam_nr);
       	
-
          echo '<p class="HiLiteWarn">' . sprintf ($strDeleteCam, $cam_nr, $cam_name) . '</p>' ."\n";
       }
       unset($cam_nr);
