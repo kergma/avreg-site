@@ -4,10 +4,10 @@ require_once '/usr/share/php/DB.php';
 
 require_once('config.inc.php');
 
-//$adb = new Adb($conf);
+$adb = new Adb($conf);
 
 
-$adb = new Adb(array('db-user' => 'moonion', 'db-passwd' => 'B0nxgsGrdguSjMxv', 'db-name' => 'avreg_test2'));
+//$adb = new Adb(array('db-user' => 'moonion', 'db-passwd' => 'B0nxgsGrdguSjMxv', 'db-name' => 'avreg_test2'));
 
 //$adb = new Adb(array('user' => 'moonion', 'password' => 'bt7J2Y9xKhmbm2lM', 'database' => 'avreg_test', 'dbtype' =>'pgsql'));
 
