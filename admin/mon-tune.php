@@ -90,7 +90,6 @@ if (isset($cmd)) {
          array_push($aaa, $a );
       }
       /* Free last resultset */
-      mysql_free_result($result);
       $result = NULL;
 
       // print "<pre><code>".var_dump($aaa)."</code></pre>";

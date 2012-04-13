@@ -4,7 +4,6 @@ DENY($admin_status);
 require('warn.inc.php');
 
 /*
-$charset = mysql_client_encoding($link);
 printf ("current character set is %s\n", $charset);
  */
 
