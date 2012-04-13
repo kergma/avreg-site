@@ -4,10 +4,10 @@ require_once '/usr/share/php/DB.php';
 
 require_once('config.inc.php');
 
-$adb = new Adb($conf);
+//$adb = new Adb($conf);
 
 
-//$adb = new Adb(array('user' => 'moonion', 'password' => 'B0nxgsGrdguSjMxv', 'database' => 'avreg_test2'));
+//$adb = new Adb(array('db-user' => 'moonion', 'db-passwd' => 'B0nxgsGrdguSjMxv', 'db-name' => 'avreg_test2'));
 
 //$adb = new Adb(array('user' => 'moonion', 'password' => 'bt7J2Y9xKhmbm2lM', 'database' => 'avreg_test', 'dbtype' =>'pgsql'));
 
@@ -438,11 +438,10 @@ class Adb {
 	public function get_cam_params($cams_list = '', $param_list = '', $bind_mac = 'local') {
 		$cams = array();
 		$query = 'SELECT CAM_NR, PARNAME, PARVAL FROM CAMERAS';
-        $query .= ' WHERE BIND_MAC=\''.$bind_mac.'\' AND (CAM_NR=0 ';
+        $query .= ' WHERE BIND_MAC=\''.$bind_mac.'\'';
         if (!empty($cams_list)) {
-        	 $query .= ' OR CAM_NR in('.$cams_list.')';
+        	 $query .= ' AND (CAM_NR=0  OR CAM_NR in('.$cams_list.'))';
         }
-        $query .= ')';
         $query .= ' AND PARNAME IN ('.$param_list.') AND  PARVAL<>\'\' AND PARVAL IS NOT NULL ';
    		$query .= ' ORDER BY CAM_NR';
 		$res = $this->_db->query($query);
