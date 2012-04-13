@@ -4,10 +4,10 @@ require_once '/usr/share/php/DB.php';
 
 require_once('../lib/config.inc.php');
 
-$adb = new Adb(array('host' => $conf['db-host'],'user' => $conf['db-user'], 'password' => $conf['db-passwd'], 'database' => $conf['db-name'], 'dbtype' =>$conf['db-type']));
+//$adb = new Adb(array('host' => $conf['db-host'],'user' => $conf['db-user'], 'password' => $conf['db-passwd'], 'database' => $conf['db-name'], 'dbtype' =>$conf['db-type']));
 
 
-//$adb = new Adb(array('user' => 'moonion', 'password' => 'B0nxgsGrdguSjMxv', 'database' => 'avreg_test'));
+$adb = new Adb(array('user' => 'moonion', 'password' => 'B0nxgsGrdguSjMxv', 'database' => 'avreg_test2'));
 
 //$adb = new Adb(array('user' => 'moonion', 'password' => 'bt7J2Y9xKhmbm2lM', 'database' => 'avreg_test', 'dbtype' =>'pgsql'));
 
@@ -39,14 +39,29 @@ class Adb {
 		$dsn = "{$this->_dbtype}://{$this->_user }:{$this->_password}@{$this->_host}/{$this->_database}";
 		$this->_db = DB::connect($dsn,true);	
 		if (PEAR::isError($this->_db)) {
+			die('Could not connect to mysql server: '. $this->_db->getMessage());
 			return false;
 		}
-		$this->_db->query("SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
+		if ($this->_dbtype == 'mysql') {
+			$res = $this->_db->query("SET NAMES 'utf8'");
+		} else {
+			$res = $this->_db->query("SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
+		}
+		$this->_error($res);
 		return true;
 	}
 
 	public function __destruct() {
-		$this->_db->disconnect();
+		if (!PEAR::isError($this->_db)) {
+			$this->_db->disconnect();
+		}
+	}
+	private function _error($r) {
+		if (PEAR::isError($r)) {
+			echo $r->getDebugInfo();
+			die($r->getMessage());
+			return false;
+		}
 	}
 	public function gallery_get_event($param) {
 		$events = array();
@@ -76,6 +91,7 @@ class Adb {
 	    // сортировать по дате, от текущей позиции с лимитом заданный в конфиге
 	    $query .= ' ORDER BY DT1 ASC LIMIT '.$param['limit']. ' OFFSET '.$param['offset'];
 	    $res = $this->_db->query($query);
+	    $this->_error($res);
 		while ($res->fetchInto($line)) {
 			$line[6] = filesizeHuman($line[6]);
     		if (in_array((int)$line[7], array(15,16,17,18,19,20,21))) {
@@ -106,6 +122,7 @@ class Adb {
     	// групировать и сортировать по дате
     	$query .= ' ORDER BY DT1 DESC LIMIT 1';
 		$res = $this->_db->query($query);
+		$this->_error($res);
 		if ($res->fetchInto($line)){
 			$event = $line[0];
 		}
@@ -124,6 +141,7 @@ class Adb {
     	}
     	$query .= ' ORDER BY LAST_UPDATE DESC LIMIT 1';
 		$res = $this->_db->query($query);
+		$this->_error($res);
 		if ($res->fetchInto($line)){
 			$event = $line[0];
 		}	
@@ -139,6 +157,7 @@ class Adb {
     	$query .= ' WHERE TREE_EVENTS.CAM_NR in ('. implode(",", $param['cameras']).')';
     	$query .= ' ORDER BY '.$this->_date_part('year', 'LAST_UPDATE').' DESC, LAST_UPDATE ASC';
     	$res = $this->_db->query($query);
+    	$this->_error($res);
     	while ($res->fetchInto($v, DB_FETCHMODE_ASSOC)){
     		$date = $v[$this->_key('BYHOUR')];
     		if (!isset($tree_events_result[$date])) {
@@ -175,7 +194,7 @@ class Adb {
     	$query .= ' ORDER BY DT1 ASC';
     	
     	$res = $this->_db->query($query);
-    	
+    	$this->_error($res);
     	 
     	
     	$tree_events = array();
@@ -221,14 +240,15 @@ class Adb {
     		$query .= ' AND CAM_NR in ('.$cameras.')';
     	}
     	
-    	$this->_db->query($query);
-    	
+    	$res = $this->_db->query($query);
+    	$this->_error($res);
     	foreach ($tree_events as $row) {
     		
     		$query = 'INSERT INTO TREE_EVENTS ';
     		$query .= '(BYHOUR, CAM_NR, IMAGE_COUNT, IMAGE_SIZE, VIDEO_COUNT, VIDEO_SIZE, AUDIO_COUNT, AUDIO_SIZE, LAST_UPDATE)';
     		$query .=" VALUES ('".$row['DATE']."',".$row['CAM_NR'].','.$row['IMAGE_COUNT'].','.$row['IMAGE_SIZE'].','.$row['VIDEO_COUNT'].','.$row['VIDEO_SIZE'].','.$row['AUDIO_COUNT'].','.$row['AUDIO_SIZE'].",'".$row['LAST_UPDATE']."')";
-			$this->_db->query($query);
+			$res = $this->_db->query($query);
+			$this->_error($res);
     	}
 	}
 	
@@ -246,6 +266,7 @@ class Adb {
 		}
 		$query .= " ORDER BY DT1 " .$order;
 		$res = $this->_db->query($query);
+		$this->_error($res);
 		while($res->fetchInto($line)){
 			$f = array();
     		foreach ($line as $k=>$v) {
@@ -267,6 +288,7 @@ class Adb {
 		$query .= " AND ((E1.DT1 between '$timebegin' and '$timeend') and (E2.DT1 is null or E2.DT1 between '$timebegin' and '$timeend'))";
 		$query .= " ORDER BY E1.DT1 " .$order;
 		$res = $this->_db->query($query);
+		$this->_error($res);
 		while($res->fetchInto($line)){
 			$f = array();
     		foreach ($line as $k=>$v) {
@@ -340,6 +362,7 @@ class Adb {
 			$query .= ' OFFSET '.$page['offset'];
 		}
 		$res = $this->_db->query($query);
+		$this->_error($res);
 		while($res->fetchInto($line, DB_FETCHMODE_ASSOC)){
 			$f = array();
     		foreach ($line as $k=>$v) {
@@ -360,7 +383,8 @@ class Adb {
 		$query = 'INSERT INTO CAMERAS ';
    		$query .= '(BIND_MAC, CAM_NR, PARNAME, PARVAL, CHANGE_HOST, CHANGE_USER)';
    		$query .=" VALUES ('".$bind_mac."',".$cam_nr.",'".$parname."',".$parval.",'".$host."','".$user."')";
-		$this->_db->query($query);
+		$res = $this->_db->query($query);
+		$this->_error($res);
 	}
 	
 	public function update_camera ($bind_mac, $cam_nr, $parname, $parval, $host, $user) {
@@ -372,7 +396,8 @@ class Adb {
    		$query .= " WHERE BIND_MAC = '$bind_mac'";
    		$query .= " AND CAM_NR = $cam_nr";
 		$query .= " AND PARNAME = '$parname'";
-		$this->_db->query($query);
+		$res = $this->_db->query($query);
+		$this->_error($res);
 	}
 	
 	public function replace_camera ($bind_mac, $cam_nr, $parname, $parval, $host, $user) {
@@ -381,6 +406,7 @@ class Adb {
    		$query .= " AND CAM_NR = $cam_nr";
   		$query .= " AND PARNAME = '$parname'";
 		$res = $this->_db->query($query);
+		$this->_error($res);
 		$res->fetchInto($line);
 		if (empty($line)) {
 			$this->add_camera($bind_mac, $cam_nr, $parname, $parval, $host, $user);
@@ -396,6 +422,10 @@ class Adb {
         $query .= ' WHERE BIND_MAC=\''.$bind_mac.'\' AND (CAM_NR=0 OR CAM_NR='.$cam_nr.')';
 		 
 		$res = $this->_db->query($query);
+
+		$this->_error($res);
+		
+		
     	while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
     		    		
     		
@@ -424,6 +454,7 @@ class Adb {
         $query .= ' AND PARNAME IN ('.$param_list.') AND  PARVAL<>\'\' AND PARVAL IS NOT NULL ';
    		$query .= ' ORDER BY CAM_NR';
 		$res = $this->_db->query($query);
+		$this->_error($res);
     	while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
     		$cams[] = array(
     			'CAM_NR' => trim($line[$this->_key('CAM_NR')]),
@@ -451,6 +482,7 @@ class Adb {
       $query .=' AND c1.PARNAME = \'work\' '.
       'ORDER BY c1.CAM_NR';
   	 $res = $this->_db->query($query);
+  	 $this->_error($res);
 		while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
     		$cams[] = array(
     			'CAM_NR' => trim($line[$this->_key('CAM_NR')]),
@@ -470,12 +502,14 @@ class Adb {
 	public function max_cam_nr($bind_mac = 'local') {
 		$query = 'SELECT MAX(CAM_NR) AS LAST_NUM FROM CAMERAS WHERE BIND_MAC=\''.$bind_mac.'\'';
 		$res = $this->_db->query($query);
+		$this->_error($res);
 		$res->fetchInto($line);
 		return isset($line[0]) ? $line[0] : false; 
 	}	
 	public function delete_camera($cam_nr, $bind_mac = 'local') {
 	    $query = sprintf('DELETE FROM CAMERAS WHERE BIND_MAC=\''.$bind_mac.'\' AND CAM_NR=%d', $cam_nr);
-		$this->_db->query($query);
+		$res = $this->_db->query($query);
+		$this->_error($res);
 	}
 	
 	
@@ -483,14 +517,16 @@ class Adb {
 	public function add_monitors($display,$mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $fWINS, $vWINS,$bind_mac = 'local') {
 		$query = sprintf('INSERT INTO MONITORS (BIND_MAC, DISPLAY, MON_NR, MON_TYPE, MON_NAME, %s, CHANGE_HOST, CHANGE_USER) VALUES (\'local\', \'%s\', %d, \'%s\', \'%s\', %s, \'%s\', \'%s\')',
 		implode (', ',$fWINS), $display, $mon_nr, $mon_type, $mon_name, implode (', ',$vWINS), $remote_addr, $login_user);
-		$this->_db->query($query);
+		$res = $this->_db->query($query);
+		$this->_error($res);
 	}
 	public function delete_monitors($display, $mon_nr, $bind_mac = 'local') {
 		$query = 'DELETE FROM MONITORS';
 		$query .= " WHERE BIND_MAC ='$bind_mac'";
 		$query .= " AND DISPLAY ='$display'";
 		$query .= " AND MON_NR = $mon_nr";		
-		$this->_db->query($query);
+		$res = $this->_db->query($query);
+		$this->_error($res);
 	}
 			
  	 
@@ -510,7 +546,8 @@ class Adb {
 		$query .= " AND DISPLAY ='$display'";
 		$query .= " AND MON_NR = $mon_nr";		
    		
-		$this->_db->query($query);
+		$res = $this->_db->query($query);
+		$this->_error($res);
 	}
 	
 	public function replace_monitors ($fWINS,$display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS, $bind_mac = 'local') {
@@ -519,6 +556,7 @@ class Adb {
    		$query .= " AND MON_NR = $mon_nr";
   		$query .= " AND DISPLAY = '$display'";
 		$res = $this->_db->query($query);
+		$this->_error($res);
 		$res->fetchInto($line);
 		if (empty($line)) {
 			$this->add_monitors($display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS);
@@ -534,6 +572,7 @@ class Adb {
          'FROM MONITORS '.
          'WHERE BIND_MAC=\''.$bind_mac.'\' AND DISPLAY=\''.$display.'\' AND MON_NR='.$mon_nr;
 		 $res = $this->_db->query($query);
+		 $this->_error($res);
 		 $res->fetchInto($line);
 		 return $line;
 	}
@@ -547,6 +586,7 @@ class Adb {
 		$query .= " ORDER BY MON_NR";
 		
    		$res = $this->_db->query($query);
+   		$this->_error($res);
     	while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
     		$m = array();
     		foreach ($line as $k=>$v) {
@@ -566,7 +606,7 @@ class Adb {
          LIMIT_FPS, NONMOTION_FPS, LIMIT_KBPS,
          SESSION_TIME, SESSION_VOLUME,
          LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME) 
-         VALUES ( %s, %s, %s %u, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())',
+         VALUES ( %s, %s, %s, %u, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())',
             sql_format_str_val($u_host),
             sql_format_str_val($u_name),
             $this->_crypt($passwd),
@@ -583,7 +623,8 @@ class Adb {
             sql_format_str_val($remote_addr),
             sql_format_str_val($login_user));
             
-      $this->_db->query($query);   
+      $res = $this->_db->query($query);   
+      $this->_error($res);
 	}
 	
 	 public function update_user($u_host,$u_name,$passwd, $groups, $u_devacl, $u_forced_saving_limit, $sessions_per_cam, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name){
@@ -606,7 +647,8 @@ class Adb {
          sql_format_str_val($login_user),
          sql_format_str_val($old_u_host),
          sql_format_str_val($old_u_name));
-         $this->_db->query($query);   
+         $res = $this->_db->query($query);  
+         $this->_error($res); 
 	 }
       
 	
@@ -614,12 +656,14 @@ class Adb {
 	public function delete_user($u_name, $u_host, $u_status){
 		$query = sprintf('DELETE FROM USERS WHERE USER_LOGIN="%s" AND ALLOW_FROM="%s" AND STATUS=%u',
 			$u_name, $u_host, $u_status);
-		 $this->_db->query($query);   
+		 $res = $this->_db->query($query);   
+		 $this->_error($res);
 	}
 	
 	public function get_user_passwd($u_name, $hosts) {
 		$query = sprintf("SELECT PASSWD FROM USERS WHERE ALLOW_FROM in(%s) AND USER_LOGIN='%s'", "'".implode("','",$hosts)."'", $u_name);
 		$res = $this->_db->query($query);  
+		$this->_error($res);
 		$res->fetchInto($line);
 		return isset($line[0]) ? trim($line[0]) : false;
 	}
@@ -629,7 +673,8 @@ class Adb {
                                                                $this->_crypt($u_pass),
                                                                "'".implode("','",$hosts)."'",
                                                                $u_name);		
-        $this->_db->query($query);  
+        $res = $this->_db->query($query);
+        $this->_error($res);  
 		return true;
 	}
 	
@@ -646,6 +691,7 @@ class Adb {
 		$query .=  'ORDER BY ALLOW_FROM, USER_LOGIN';
 		
 		$res = $this->_db->query($query);
+		$this->_error($res);
     	while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
     		
     		$users[] =array(
@@ -764,6 +810,9 @@ class Adb {
 	
 	
 	private function _crypt($value) {
+		if (empty($value)) {
+			return "''";
+		}
 		if ($this->_dbtype == 'pgsql') {
 			$str = "crypt('%%', 'av')";
 		} else {
