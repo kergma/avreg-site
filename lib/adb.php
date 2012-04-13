@@ -4,10 +4,10 @@ require_once '/usr/share/php/DB.php';
 
 require_once('config.inc.php');
 
-$adb = new Adb($conf);
+//$adb = new Adb($conf);
 
 
-//$adb = new Adb(array('db-user' => 'moonion', 'db-passwd' => 'B0nxgsGrdguSjMxv', 'db-name' => 'avreg_test2'));
+$adb = new Adb(array('db-user' => 'moonion', 'db-passwd' => 'B0nxgsGrdguSjMxv', 'db-name' => 'avreg_test2'));
 
 //$adb = new Adb(array('user' => 'moonion', 'password' => 'bt7J2Y9xKhmbm2lM', 'database' => 'avreg_test', 'dbtype' =>'pgsql'));
 
@@ -52,12 +52,13 @@ class Adb {
 			$this->_db->disconnect();
 		}
 	}
-	private function _error($r) {
+	private function _error($r, $die = true) {
 		if (PEAR::isError($r)) {
 			echo $r->getDebugInfo();
-			die($r->getMessage());
-			return false;
+			if ($die) die($r->getMessage());
+			return true;
 		}
+		return false;
 	}
 	public function gallery_get_event($param) {
 		$events = array();
@@ -617,12 +618,12 @@ class Adb {
             sql_format_str_val($login_user));
             
       $res = $this->_db->query($query);   
-      $this->_error($res);
+      return !$this->_error($res, false);
 	}
 	
 	 public function update_user($u_host,$u_name,$passwd, $groups, $u_devacl, $u_forced_saving_limit, $sessions_per_cam, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name){
 	 	$query = sprintf(
-         'UPDATE USERS SET ALLOW_FROM=%s, USER_LOGIN=%s, PASSWD=%s, STATUS=%d, ALLOW_CAMS=%s, FORCED_SAVING_LIMIT=%s, SESSIONS_PER_CAM=%s, LIMIT_FPS=%s, NONMOTION_FPS=%s, LIMIT_KBPS=%s, SESSION_TIME=%s, SESSION_VOLUME=%s, LONGNAME=%s, CHANGE_HOST=%s, CHANGE_USER=%s, CHANGE_TIME=NOW() WHERE HOST=%s AND USER=%s',
+         'UPDATE USERS SET ALLOW_FROM=%s, USER_LOGIN=%s, PASSWD=%s, STATUS=%d, ALLOW_CAMS=%s, FORCED_SAVING_LIMIT=%s, SESSIONS_PER_CAM=%s, LIMIT_FPS=%s, NONMOTION_FPS=%s, LIMIT_KBPS=%s, SESSION_TIME=%s, SESSION_VOLUME=%s, LONGNAME=%s, CHANGE_HOST=%s, CHANGE_USER=%s, CHANGE_TIME=NOW() WHERE ALLOW_FROM=%s AND USER_LOGIN=%s',
          sql_format_str_val($u_host),
          sql_format_str_val($u_name),
          $this->_crypt($passwd),
@@ -641,7 +642,8 @@ class Adb {
          sql_format_str_val($old_u_host),
          sql_format_str_val($old_u_name));
          $res = $this->_db->query($query);  
-         $this->_error($res); 
+         $res = $this->_db->query($query);   
+			return !$this->_error($res, false);
 	 }
       
 	
