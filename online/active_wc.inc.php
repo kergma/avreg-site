@@ -1,5 +1,4 @@
 <?php
-require_once ('../lib/my_conn.inc.php');
 /* phpinfo(); */
 
 echo '<h2 align="center">'.$r_webcam_list.'</h2>' ."\n";

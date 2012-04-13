@@ -15,14 +15,19 @@ if ( isset ($wclist_show) ) {
 }
 require ('../head.inc.php');
 if ( $user_status < $operator_status )
+
    print '<div align="center"><b><a href="'.$conf['prefix'].'/" target="_parent">'.$MainPage.'</a></b></div>'."\n";
 require ('./active_wc.inc.php');
 if ($tot_wc_nr===0) {
+	
    require ('../foot.inc.php');
    die();
 }
 
 require ('../admin/mon-type.inc.php');
+
+if (!isset($mon_type)) 
+  die('not set mon_type');
 if (!isset($mon_type) || empty($mon_type) || !array_key_exists($mon_type, $layouts_defs) ) 
    MYDIE("not set ot invalid \$mon_type=\"$mon_type\"",__FILE__,__LINE__);
 $l_defs = &$layouts_defs[$mon_type];
