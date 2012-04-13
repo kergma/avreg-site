@@ -122,15 +122,6 @@ class Gallery {
     public function print_result() {
     	echo json_encode($this->result);
     }
-    // функция выполнения запроса к БД
-    private function _fetch_array($query, $type = MYSQL_ASSOC) {
-    	$a = array();
-    	
-    	$result = mysql_query($query) or die("Query failed");
-    	while ($line = mysql_fetch_array($result, $type)) {
-    		$a[] = $line;
-    	}
-    	return $a;
-    }
+
 }
 ?>

@@ -3,7 +3,15 @@
 
 	//Загрузка исходнгого изображения
 	$id = $_GET['url'];
-	$im = imagecreatefromjpeg($id);
+
+	
+	
+	try {
+		$im = imagecreatefromjpeg($id);
+	} catch (Exception $e) {
+		echo($e.message);
+	}
+		
 	//Определение размеров исходного изображения
 	$im_width=imageSX($im);
 	$im_height=imageSY($im);
@@ -93,13 +101,13 @@
 	ImageCopyResized($new_im,$im,0,0,0,0,$new_width,$new_height,$im_width,$im_height);
 	
 	
-	
+/*	
 	//output
 	header("Content-type: image/jpeg");
 	Imagejpeg($new_im,'',80); // quality 80
 	ImageDestroy($im);
 	ImageDestroy($new_im);
 	
-
+*/
 
 ?>
