@@ -444,16 +444,11 @@ class Adb {
         }
         $query .= ')';
         $query .= ' AND PARNAME IN ('.$param_list.') AND  PARVAL<>\'\' AND PARVAL IS NOT NULL ';
-<<<<<<< HEAD
    		$query .= ' ORDER BY CAM_NR';
 		$res = $this->_db->query($query);
 		$this->_error($res);
     	while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
-=======
-        $query .= ' ORDER BY CAM_NR';
-        $res = $this->_db->query($query);
-    	 while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
->>>>>>> fbb3c2dab4284842637106a7b09d3a007d2c4648
+
     		$cams[] = array(
     			'CAM_NR' => trim($line[$this->_key('CAM_NR')]),
    				'PARAM' => trim($line[$this->_key('PARNAME')]),
@@ -491,9 +486,6 @@ class Adb {
 		return  $cams;
 		
 	}
-	
-	
-	
 	
 	
 	
