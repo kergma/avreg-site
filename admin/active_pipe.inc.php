@@ -48,7 +48,6 @@ function sel_change(sel) {
 </script>
 
 <?php
-require_once ('../lib/my_conn.inc.php');
 require_once('../lib/cams_main_detail.inc.php');
 
 echo '<h2 align="center">'.$r_moncam_list.'</h2>' ."\n";
