@@ -4,7 +4,7 @@ require_once '/usr/share/php/DB.php';
 
 require_once('config.inc.php');
 
-$adb = new Adb(array('host' => $conf['db-host'],'user' => $conf['db-user'], 'password' => $conf['db-passwd'], 'database' => $conf['db-name'], 'dbtype' =>$conf['db-type']));
+$adb = new Adb($conf);
 
 
 //$adb = new Adb(array('user' => 'moonion', 'password' => 'B0nxgsGrdguSjMxv', 'database' => 'avreg_test2'));
@@ -22,14 +22,14 @@ class Adb {
 		$_db = false;
 	
 	public function __construct($param) {
-		$this->_database = $param['database'];
-		$this->_user = $param['user'];
-		$this->_password = $param['password'];
-		if (isset($param['dbtype']) && !empty($param['dbtype'])) {
-			$this->_dbtype = $param['dbtype'];
+		$this->_database = $param['db-name'];
+		$this->_user = $param['db-user'];
+		$this->_password = $param['db-passwd'];
+		if (isset($param['db-type']) && !empty($param['db-type'])) {
+			$this->_dbtype = $param['db-type'];
 		}
-		if (isset($param['host']) && !empty($param['host'])) {
-			$this->_host = $param['host'];
+		if (isset($param['db-host']) && !empty($param['db-host'])) {
+			$this->_host = $param['db-host'];
 		}
 		
 		$dsn = "{$this->_dbtype}://{$this->_user }:{$this->_password}@{$this->_host}/{$this->_database}";
