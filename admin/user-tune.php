@@ -2,6 +2,7 @@
 $lang_file='_admin_users.php';
 require ('../head.inc.php');
 DENY($admin_status);
+require_once ('../lib/utils-inet.php');
 ?>
 
 <script type="text/javascript" language="javascript">
@@ -14,27 +15,35 @@ DENY($admin_status);
 </script>
 
 <?php
-
 echo '<h1>' . sprintf($r_users, $named, $sip) . '</h1>' ."\n";
-
-if ( isset($cmd) )
+if ( isset($cmd) && isset($u_host) && isset($u_name) && isset($groups) )
 {
+	$limit_kbps = NULL;
    require('user-check.inc.php');
    switch ( $cmd )
    {
    case 'UPDATE_USER':
-              
-         $adb->update_user($u_host,$u_name,$u_pass, $groups, $u_devacl, $u_forced_saving_limit, $sessions_per_cam, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name);
-
+        $result =  $adb->update_user($u_host,$u_name,$u_pass, $groups, $u_devacl, $u_forced_saving_limit, $sessions_per_cam, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name);
       break;
    default:
       die('crack?');
    }
 
-   // tohtml($query);
+   
+	if ( $result )
+   {
       print '<p class="HiLiteWarn">' . sprintf ($fmtUserUpdated, $u_name, $u_host) . '</p>' ."\n";
       print '<div class="warn">'.$strOnUsersUpdateMsg."</div>\n";
       print '<br><center><a href="'.$conf['prefix'].'/admin/user-list.php">'.$l_user_list.'</a><center>' ."\n";
+   } else {
+      print '<p class="HiLiteErr">'.sprintf ($fmtUserUpdated2, $u_name, $u_host, "DB:error" ).
+         '</p>' ."\n";
+      print '<br><center><a href="javascript:window.history.back();" title="'.$strBack.'">'.
+         '<img src="'.$conf['prefix'].'/img/undo_dark.gif" alt="'.$strBack.
+         '" width="24" hspace="24" border="0"></a></center>' ."\n";
+   }
+   
+  
    unset($u_name);
 }
 

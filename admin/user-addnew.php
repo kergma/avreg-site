@@ -24,27 +24,32 @@ if ( isset($cmd) && isset($u_host) && isset($u_name) && isset($groups) )
    switch ( $cmd )
    {
    case 'ADD_NEW_USER':
-     
-         
-         
-      $adb->add_user($u_host, $u_name, $u_pass, $groups, $u_devacl, $u_forced_saving_limit, $sessions_per_cam,$limit_fps,$nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user);   
-         
-         
-      
+      $result = $adb->add_user($u_host, $u_name, $u_pass, $groups, $u_devacl, $u_forced_saving_limit, $sessions_per_cam,$limit_fps,$nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user);   
       break;
    default:
       die('crack');
    }
    // print ($query);
    
-     print '<p class="HiLiteWarn">' . sprintf ($fmtUserAdded, $u_name, $u_host) . '</p>' ."\n";
-     print '<div class="warn">'.$strOnUsersUpdateMsg."</div>\n";
-     print '<br><center><a href="'.$conf['prefix'].'/admin/user-list.php">'.$l_user_list.'</a><center>' ."\n";
+  
     
+	if ( $result )
+   {
+      print '<p class="HiLiteWarn">' . sprintf ($fmtUserAdded, $u_name, $u_host) . '</p>' ."\n";
+      print '<div class="warn">'.$strOnUsersUpdateMsg."</div>\n";
+      print '<br><center><a href="'.$conf['prefix'].'/admin/user-list.php">'.$l_user_list.'</a><center>' ."\n";
+   } else {
+      print '<div class="error">'.sprintf ($fmtUserAddErr2, $u_name, $u_host, "DB: error" ). "</div>\n";
+      print_go_back();
+   }
+     
+     
+     
    require ('../foot.inc.php');
    exit;
-} else {
+} else if (isset($cmd)){
    print '<p class="HiLiteErr">'.$strInvalidFormParams.'</p>' ."\n";
+   print_go_back();
 }
 
 echo '<h2>' . $r_user_add . '</h2>' ."\n";

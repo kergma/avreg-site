@@ -94,7 +94,7 @@ if ( !isset($u_name) || empty($u_name) )
 							$_SERVER['PHP_SELF'],
 							urlencode ($row['USER']),
 							urlencode ($row['HOST']));
-				$a_change = sprintf('./user-tune.php?cmd=UPDATE_USER&u_name=%s&u_host=%s',
+				$a_change = sprintf('./user-tune.php?u_name=%s&u_host=%s',
                                 urlencode($row['USER']), urlencode($row['HOST']));
                 if ( $row['USER'] == $login_user )
                 {

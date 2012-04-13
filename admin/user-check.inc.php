@@ -77,7 +77,6 @@ trim($limit_kbps);
 if ( !empty($limit_kbps) && ( !settype($limit_kbps,'int') || ($limit_kbps < 0 || $limit_kbps > 99999))) {
    echo '<p class="HiLiteErr">' . sprintf ($fmtEmptyF, 'limit_kbps') . '</p>' ."\n";
 } else $good++;
-
 if ($good<10) {
    print '<p class="HiLiteErr">' . $strAddUserErr1 . '</p>' ."\n";
    print_go_back();
