@@ -999,15 +999,15 @@ if (isset($_SERVER['AUTH_TYPE']) && !empty($_SERVER['AUTH_TYPE']) && isset($_SER
 	
 	$lines = file($conf['ExternalAuthMappin']);
 	foreach ($lines as $line) {
-		list($ruser, $auser) = explode('=', $line);
-		if ($ruser == $_SERVER['REMOTE_USER']) {
+		list($ruser, $auser) = explode('=', trim($line));
+		if (trim($ruser) == $_SERVER['REMOTE_USER']) {
 			$ExternalAuth = true;
 			break;
 		}
 	}
 	
 	if ($ExternalAuth !== FALSE) {
-		$_SERVER['PHP_AUTH_USER'] = $auser;
+		$_SERVER['PHP_AUTH_USER'] = trim($auser);
 	} else {
 		$_SERVER['PHP_AUTH_USER'] = $_SERVER['REMOTE_USER'];
 		 DENY(null,403);
