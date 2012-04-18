@@ -13,15 +13,17 @@ if (!isset($_POST['method']) && !isset($_GET['method'])) {
 				'offline/gallery/css/jquery-ui-1.8.17.custom.css',
 				'offline/gallery/css/tooltip.css'
 	);
+	$USE_JQUERY = true;
 	// Подключение js скриптов
-	$link_javascripts = array(	'offline/gallery/js/jquery-1.7.1.min.js',
+	$link_javascripts = array(	
+	//'offline/gallery/js/jquery-1.7.1.min.js',
 								'offline/gallery/js/jquery.jstree.js',
 
 								'offline/gallery/js/jquery.mousewheel.min.js',
 								'offline/gallery/js/main.js',
 								'offline/gallery/js/jquery.scrollTo-min.js',
 								'offline/gallery/js/jquery-ui-1.8.16.custom.min.js',
-								'offline/gallery/js/jquery-ui-1.8.17.custom.min.js',
+//								'offline/gallery/js/jquery-ui-1.8.17.custom.min.js',
 								'offline/gallery/js/jquery.checkbox.js',
 
 //								'offline/gallery/js/jquery-ui-1.8.17.custom.min.js',

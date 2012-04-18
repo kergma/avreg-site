@@ -13,23 +13,26 @@
 
 		//Пример глобальной пользовательской настройки
 /*		$.aplayerConfiguration({		
-			'mozilla' : {
-				'mp4' : {   '11':'MYTEST',
-							'10':'htyjntym',
-						   },
+			'*':{
+				'jpg' :{'*':'image'},
+				'jepg':{'*':'image'},
+				'png' :{'*':'image'},
+				'bmp' :{'*':'image'},
+				'gif' :{'*':'image'},
+				'tiff':{'*':'image'},
+				'*'   :{'*':'embed'}
+			},
+			
+			'mozilla' : { 
+					'ogg' :	{ '9':'video'	},
+					'ogv' :	{ '9':'video'	},
+					'oga' : { '9':'audio'	},
+					'webm':	{ '9':'video'	}
+			},
 
-				'webm': { '11.0':'video' },
-				
-				'wav':{'11': "embed"}
-			},
-			'safari' : {
-				'webm' : {
-					'535.2':'nover',					
-					'535.11':'embed'
-					
-				}
-			},
+			'chrome' : {},
 			'opera':{},
+			'safari' : {},
 			'msie':{}
 		});
 */
@@ -286,57 +289,43 @@
           	
            if($(Container)!=null && $(Container).height()!=null && $(Container).width()!=null ) $(Container).height(H).width(W).css({'overflow':'hidden'});
     	},
-
-		
-		
 		
 		//Установка базовых настроек плеера для популярных браузеров
 		baseSettings : {
-			'mozilla' : {
-					'wav' : { '9':'embed'	},
-					'mp3' :	{ '9':'embed'	},
+			'*':{
+				'jpg' :{'*':'image'},
+				'jepg':{'*':'image'},
+				'png' :{'*':'image'},
+				'bmp' :{'*':'image'},
+				'gif' :{'*':'image'},
+				'tiff':{'*':'image'},
+				'*'   :{'*':'embed'}
+			},
+			
+			'mozilla' : { 
 					'ogg' :	{ '9':'video'	},
 					'ogv' :	{ '9':'video'	},
-					'mp4' :	{ '9':'embed'	},
-					'webm':	{ '9':'video'	},
-					'avi' :	{ '9':'embed'	},
-					'wmv' :	{ '9':'embed'	},
-					'mov' :	{ '9':'embed'	},
-					'oga' : { '9':'audio'	}
+					'oga' : { '9':'audio'	},
+					'webm':	{ '9':'video'	}
 			},
 
 			'chrome' : {
-					'wav' :	{ '17':'embed'	},
-					'mp3' :	{ '17':'embed'	},
-					'mp4' :	{ '17':'embed'	},
 					'ogg' :	{ '17':'video'	},
 					'ogv' :	{ '17':'video'	},
 					'webm':	{ '17':'video'	},
-					'avi' :	{ '17':'embed'	},
-					'wmv' :	{ '17':'embed'	},
-					'mov' :	{ '17':'embed'	},
 					'oga' : { '17':'audio'	}
-
-			},
-			
-			'safari' : {
-					'wav' :	{ '1':'embed'	},
-					'mp3' :	{ '1':'embed'	},
-					'mp4' :	{ '1':'embed'	}
 			},
 			
 			'opera':{
 					'wav' :	{ '11':'audio'	},
-					'mp3' :	{ '11':'embed'	},
 					'ogg' :	{ '11':'video'	},
 					'ogv' :	{ '11':'video'	},
-					'mp4' :	{ '11':'embed'	},
 					'webm':	{ '11':'video'	},
-					'avi' :	{ '11':'embed'	},
-					'wmv' :	{ '11':'embed'	},
-					'mov' :	{ '11':'embed'	},
 					'oga' : { '11':'audio'	}
 			},
+
+			'safari' : {},
+			
 			'msie':{}
 		},
 		
@@ -346,7 +335,7 @@
 		//начальная инициализация
 		init : function(globalSettings){
 			
-			if($.aplayer.IsConfigurate) return;
+			if($.aplayer.IsConfigurate && globalSettings=={} ) return;
 			$.aplayer.IsConfigurate = true;
 			
 			//сбор информации о браузере
@@ -360,16 +349,20 @@
 			
 			//временный объект для прохода по всем установленным значениям для текущего браузера
 			var totalObj = $.extend({}, 
+				$.aplayer.baseSettings['*']==null?{}:$.aplayer.baseSettings['*'],
 				$.aplayer.baseSettings==null?{}:$.aplayer.baseSettings[$.browserInfo.browser], 
+				globalSettings==null?{}:globalSettings['*'],
 				globalSettings==null?{}:globalSettings[$.browserInfo.browser]);
 
 			//установка базовых настроек для данной версии браузера
 			for(var ext in totalObj){
 				
-				var extVers = $.extend({}, 
-					$.aplayer.baseSettings[$.browserInfo.browser]==null?{}:$.aplayer.baseSettings[$.browserInfo.browser][ext], 
-					globalSettings[$.browserInfo.browser]==null? {}:globalSettings[$.browserInfo.browser][ext]);
-				
+				var extVers = $.extend({},
+						$.aplayer.baseSettings['*']==null?{}:$.aplayer.baseSettings['*'][ext],
+						$.aplayer.baseSettings[$.browserInfo.browser]==null?{}:$.aplayer.baseSettings[$.browserInfo.browser][ext], 
+						globalSettings['*']==null? {}:globalSettings['*'][ext],
+						globalSettings[$.browserInfo.browser]==null? {}:globalSettings[$.browserInfo.browser][ext]);
+	
 				//если значение для данной версии заданно непосредственно
 				if(extVers[$.browserInfo.version]!=null){
 					curSets[ext] = extVers[$.browserInfo.version];
@@ -378,7 +371,9 @@
 				else{ //если значение для данной версии не заданно непосредственно - ищем максимальную версию, которая меньше версии браузера
 					//создаем массив версий, включая и версию браузера
 					var arrVer = [$.browserInfo.version]; 
-					for(var ver in extVers) arrVer.push(ver);
+					
+					for(var ver in extVers)	arrVer.push( ver=='*'? '0': ver );
+					
 					//сортируем массив по возрастанию
 					arrVer.sort($.aplayer.versionPredicate);
 					//получаем версию предшествующую версии браузера
@@ -386,7 +381,8 @@
 						if(val == $.browserInfo.version){
 							if((i-1)<0)return;
 							else{
-								curSets[ext] = extVers[arrVer[i-1]];
+								if(arrVer[i-1]=='0') curSets[ext] = extVers['0']==null? extVers['*']: extVers['0'];
+								else curSets[ext] = extVers[arrVer[i-1]];
 								return;
 							}
 						}
@@ -397,7 +393,7 @@
 
 			//проверка допустимых значений
 			$.each(curSets, function(i, value){
-				if(value!='embed' && value!='video' && value!='audio'){
+				if(value!='embed' && value!='video' && value!='audio' && value!='image' ){
 					alert("Установленно недопустимое значение конфигурации: \n"+ i +' : '+value );
 					curSets[i]='embed';
 				}
@@ -486,7 +482,7 @@
 
 			//типы файлов для автоопределения
 			extTypes:{
-				image:['png', 'jpg','gif', 'bmp', 'jpeg'],
+				image:['png', 'jpg','gif', 'bmp', 'jpeg', 'tiff'],
 				video:['mp4', 'ogg', 'ogv', 'webm'],
 				audio:['oga','mp3', 'm4a', 'wav'],
 				application:['avi']
@@ -494,6 +490,7 @@
 
 			//Расширения и соответствующие MIME types
 			MIMEtypes:{
+				tiff	:'image/bmp',
 				bmp		:'image/bmp',
 				png		:'image/png', 
 				jpeg	:'image/jpeg',
@@ -531,13 +528,13 @@
 				ogv		:'video/ogg',
 				oga		:'audio/ogg',
 				ogg 	:'application/ogg',
-				webm	: 'video/webm'
+				webm	:'video/webm'
 			},
 
 			//метод определения mime type для воспроизведения файла
 			setApplicationType : function(extension, elementMediaType, settings){
 				if(extension==null){
-					var reg = new RegExp('\\.\\w{3,4}\\s*', 'i');
+					var reg = new RegExp('\\.\\w{3,4}\\s*', 'gi');
 					 extension=settings.src.match(reg);
 					 extension=extension[extension.length-1].slice(1);
 				}
@@ -563,7 +560,7 @@
 
 				//получение расширения и майм-типа
 				if(ext==null){
-					var reg = new RegExp('\\.\\w{3,4}\\s*', 'i'); //для получения расширения файла
+					var reg = new RegExp('\\.\\w{3,4}\\s*', 'ig'); //для получения расширения файла
 					var extArr = src.match(reg);
 					if(extArr.length>0){
 						ext = extArr[extArr.length-1].slice(1); 
@@ -571,7 +568,7 @@
 					}
 				}
 				
-				//если задан в конфигурации способ воспроизведения - исползуем его, нет -> автоопределение
+				//если задан в конфигурации способ воспроизведения - используем его
 				if($.aplayer.config[ext]!=null)
 				{
 					if(elementMediaType==null){
@@ -581,6 +578,22 @@
 					$.extend(settings, {mediaType : $.aplayer.config[ext], 'type' :elementMediaType });
 					return settings;
 				}
+				
+//----------------------------				
+				//если в конфигурации способ воспроизведения для "всех остальных файлов"(т.е. - "*") - исползуем его
+				if($.aplayer.config['*']!=null)
+				{
+					if(elementMediaType==null){
+						if($.aplayer.config['*']=='embed')elementMediaType = 'application/'+ext;
+						else elementMediaType = $.aplayer.config['*']+'/'+ext;
+					}
+					$.extend(settings, {mediaType : $.aplayer.config['*'], 'type' :elementMediaType });
+					return settings;
+				}
+				
+//----------------------------				
+				
+				
 				
 				//автоматическое определение способа воспроизведения				
 				$.each($.aplayer.extTypes, function(i, type){
@@ -1036,7 +1049,7 @@
 			
         ControlBar:{
 			//Control's images location
-        	 // controlsImg:'aplayerControls/',
+        	//controlsImg:'aplayerControls/',
         	controlsImg:'gallery/img/aplayerControls/',
 
 

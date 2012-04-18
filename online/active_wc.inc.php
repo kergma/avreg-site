@@ -88,7 +88,6 @@ if ( $GCP_cams_nr > 0 )
 
 if ($wclist_show>0)
    print "</table>\n";
-require ('../lib/my_close.inc.php');
 
 $tot_wc_nr = count($tot_act_cams_ar);
 if ( $tot_wc_nr )

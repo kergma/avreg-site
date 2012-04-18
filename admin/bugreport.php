@@ -1,6 +1,5 @@
 <?php
 require ('../head.inc.php');
-// require ('../lib/my_conn.inc.php');
 ?>
 
 <script type="text/javascript" language="JavaScript">

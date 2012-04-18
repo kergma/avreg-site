@@ -34,10 +34,8 @@ class Adb {
 		
 		$dsn = "{$this->_dbtype}://{$this->_user }:{$this->_password}@{$this->_host}/{$this->_database}";
 		$this->_db = DB::connect($dsn,true);
-		if (PEAR::isError($this->_db)) {
-			die('Could not connect to mysql server: '. $this->_db->getMessage());
-			return false;
-		}
+		$this->_error($this->_db);
+		
 		if ($this->_dbtype == 'mysql') {
 			$res = $this->_db->query("SET NAMES 'utf8'");
 		} else {
@@ -54,6 +52,15 @@ class Adb {
 	}
 	private function _error($r, $die = true) {
 		if (PEAR::isError($r)) {
+			echo 'Standard Message: ' . $r->getMessage() . "<br>";
+		    echo 'Standard Code: ' . $r->getCode() . "<br>";
+		    echo 'DBMS/User Message: ' . $r->getUserInfo() . "<br>";
+		    echo 'DBMS/Debug Message: ' . $r->getDebugInfo() . "<br>";
+		    
+		    if ($die) die($r->getMessage());
+			return true;
+			
+			
 			echo $r->getDebugInfo();
 			if ($die) die($r->getMessage());
 			return true;

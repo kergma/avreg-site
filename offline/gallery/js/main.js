@@ -1289,8 +1289,10 @@ var matrix = {
 		
 		// если элемента скрола нет, то создаем его
 		if (matrix.scroll == true) {
+			
+			var prev_sp =  scroll.position;
 			var sp = scroll.position;
-
+			
 			scroll.init({
 				height:matrix.height-82, 
 				cell_count:Math.ceil(matrix.count_item/matrix.count_column), 
@@ -1298,16 +1300,101 @@ var matrix = {
 				matrix_count: Math.ceil(matrix.cell_count/matrix.count_column)
 			});
 
-			sp = Math.floor(matrix.num/scroll.row_count)*scroll.row_count-scroll.row_count;
+			//определение позиции скролла
+			sp = Math.floor(prev_sp/scroll.row_count)*scroll.row_count-scroll.row_count;
+			
+			while(sp > matrix.num || sp+matrix.cell_count-1 < matrix.num ){
+				if(sp > matrix.num){
+					sp -= scroll.row_count;
+				}
+				else{
+					sp += scroll.row_count;
+				}
+			}
+			
+			//определение позиции скролла (относительно выбранной ячейки) - старый варириант
+//			sp = Math.floor(matrix.num/scroll.row_count)*scroll.row_count-scroll.row_count;
+	
+			//проверка допустимости значения
 			if(sp<0)sp=0;
 
-			scroll.updateposition(sp, true);
+/// Убрать вызов >>>>>> scroll.updateposition(sp, true); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//			scroll.updateposition(sp, true);
+
+			//модификация матрицы
+			matrix.modify(sp, prev_sp);
+			
 			scroll.setposition(sp);
+
 		}
 
 		//если в detail режиме - перезапускаем detail
 		if(matrix.mode=='detail') matrix.detail();
 		
+	},
+	
+	//модификация матрицы при ресайзе окна или при изменении масштаба
+	modify : function(sp, prev_sp){
+		
+/// ------------------------- To Delete 
+/// Убрать вызов >>>>>> scroll.updateposition(sp, true); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			scroll.updateposition(sp, true);
+/// ------------------------- To Delete 		
+
+console.log('TEST')			
+			
+		//модификация матрицы
+		/*
+		 *  - реализовать механизм удаления / добавления ячеек
+		 * */
+
+
+
+		//удаляем лишние ячейки
+		$(".content_item").each(function(index, value){
+			//если номер текущей ячейки меньше нового значения позиции скролла, 
+			//либо больше максимального номера в матрице - удаляем ячейку
+			if(prev_sp+index < sp || index > sp+matrix.cell_count-1 ){
+				$(this).remove();
+			}
+		});
+
+		//добавить ячейки в начало матрицы
+		if(prev_sp < sp  ){
+//////////////////////////////////////////////////////////////////// придумать как ------------------------------------<<<<<<<<<<<<<<<<<		
+		}
+		
+		//если размер матрицы больше, чем текущее кол-во ячеек - добавляем недостающее кол-во ячеек в конец матрицы
+		if(matrix.cell_count > $(".content_item").length){
+//////////////////////////////////////////////////////////////////// придумать как ------------------------------------<<<<<<<<<<<<<<<<<		
+		}
+		
+		
+		
+		
+		//устанавливаем новую позицию скролла
+		scroll.position = sp;
+		
+		
+		//ресайз элементов ячейки
+		/*
+		 * вызов matrix.setimagesize()
+		 * 		 * 
+		 * 1 вариант - перебор всех значений по индексу + скролл позишн
+		 * 2 вариатн - парсинг айди селлов
+		 * */
+		
+		
+		$(".content_item").each(function(index, value){
+			//если номер текущей ячейки меньше нового значения позиции скролла, 
+			//либо больше максимального номера в матрице - удаляем ячейку
+			if(prev_sp+index < sp || index > sp+matrix.cell_count-1 ){
+				$(this).remove();
+			}
+		});
+		
+		
+	
 	},
 	
 	// задаем размер изображения в ячейке
@@ -2535,7 +2622,7 @@ var scale = {
 		$(scale.id + ' .scale_max').click(function() {
 			scale.click_max();
 		});
-		// обработка перепещения ползунка
+		// обработка перемещения ползунка
 		$(scale.id + ' .scale_polz').unbind('mousedown');
 		$(scale.id + ' .scale_polz').mousedown(function(e){
 			e.preventDefault();
@@ -2551,7 +2638,6 @@ var scale = {
 					}
 				}
 			});
-
 		});
 		$(document).mouseup(function(e){
 			$(document).unbind('mousemove');

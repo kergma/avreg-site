@@ -33,7 +33,6 @@ if (in_array('-m',$argv) && isset($argv[array_search('-m', $argv)+1]) && in_arra
 		$conf = array_merge($conf, $res);   
 	   
 	$link=NULL;
-	require_once( $conf['site-dir'].'/lib/my_conn.inc.php');
    	require_once($conf['site-dir'].'/offline/gallery/memcache.php');
 	require_once($conf['site-dir'].'/offline/gallery/gallery.php');
 	// Инициализация класа галереи
@@ -41,7 +40,6 @@ if (in_array('-m',$argv) && isset($argv[array_search('-m', $argv)+1]) && in_arra
 	$gallery = new Gallery($params);
 	$gallery->{$method}($params);
 	// Возврат ответа запроса
-	require_once($conf['site-dir'].'/lib/my_close.inc.php');
 	
 } 
 

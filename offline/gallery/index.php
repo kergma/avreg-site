@@ -247,7 +247,9 @@ function readableFileSize(size) {
 }
 
 $(function(){
-	
+
+$.aplayerConfiguration(<?php print json_encode($conf['aplayerConfig']);?>);
+
 	// переопределение настроек
 	var conf = {
 			matrix : {

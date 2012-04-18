@@ -3,7 +3,6 @@
 //$lang_file = '_admin_cams.php';
 require ('head_pda.inc.php');
 session_write_close();
-require ('../lib/my_conn.inc.php');
 require('../lib/cams_main_detail.inc.php');
 
 $GCP_query_param_list=array('work', 'allow_networks', 'text_left', 'geometry', 'Hx2');
@@ -106,6 +105,5 @@ function sel_desel(elem)
 
 <?php
 
-require ('../lib/my_close.inc.php');
 require ('../foot.inc.php');
 ?>

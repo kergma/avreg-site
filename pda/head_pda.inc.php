@@ -7,7 +7,6 @@ session_name($sess_name);
 session_start();
 
 require_once('../lib/config.inc.php');
-require ('../lib/my_conn.inc.php');
 /**
  * Send http headers
  */
