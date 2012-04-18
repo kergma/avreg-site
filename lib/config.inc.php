@@ -996,7 +996,7 @@ $ExternalAuth = false;
 
 
 
-if (isset($_SERVER['AUTH_TYPE']) && !empty($_SERVER['AUTH_TYPE']) && isset($_SERVER['REMOTE_USER']) && !empty($_SERVER['REMOTE_USER']) && !empty($conf['ExternalAuthMappin']) && file_exists($conf['ExternalAuthMappin'])) {
+if (isset($_SERVER['AUTH_TYPE']) && !empty($_SERVER['AUTH_TYPE']) && isset($_SERVER['REMOTE_USER']) && !empty($_SERVER['REMOTE_USER']) && isset($conf['ExternalAuthMappin']) && !empty($conf['ExternalAuthMappin']) && file_exists($conf['ExternalAuthMappin'])) {
 	
 	$lines = file($conf['ExternalAuthMappin']);
 	foreach ($lines as $line) {
