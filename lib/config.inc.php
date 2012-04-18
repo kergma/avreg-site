@@ -117,7 +117,8 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
       } else {
          /* обычное параметр = значение */
          /* проверяем парамет - а мож это массив */
-         if ( 1 === preg_match("/^([^\[]+)\[([\"']?)([^\]]*?)([\"']?)\]$/Su",$param,$match2) ) {
+         if ( 1 === preg_match("/^([^\[]+)\[([\"']?)([^\]]*?)([\"']?)\](.*)/Su",$param,$match2) ) {
+         	
             /* наш параметр -- массив */
             $param = $match2[1];
             $key = $match2[3];
@@ -125,7 +126,12 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
             if ( 0 !== strcasecmp($vt, 'array')) {
                $res=false;  break;
             }
-            $ret_array[$param][$key] = $value;
+            //$ret_array[$param][$key] = $value;
+            
+            $str = '$ret_array[$param][$key]'.$match2[5].' = $value;';
+
+            eval($str);
+            
          } else {
             /* простое параметр, не массив */
             /* пробуем установить тип значения с учётом дефолтного $conf[param] */
@@ -148,6 +154,9 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
       return false;
    }
 } /* confparse() */
+
+
+
 
 $res=confparse($conf, 'avreg-site');
 if (!$res) {
@@ -983,6 +992,30 @@ if ( !empty($logout) ) {
    exit();
 }
 
+$ExternalAuth = false;
+
+
+if (isset($_SERVER['AUTH_TYPE']) && !empty($_SERVER['AUTH_TYPE']) && isset($_SERVER['REMOTE_USER']) && !empty($_SERVER['REMOTE_USER']) && !empty($conf['ExternalAuthMappin']) && file_exists($conf['ExternalAuthMappin'])) {
+	
+	$lines = file($conf['ExternalAuthMappin']);
+	foreach ($lines as $line) {
+		list($ruser, $auser) = explode('=', $line);
+		if ($ruser == $_SERVER['REMOTE_USER']) {
+			$ExternalAuth = true;
+			break;
+		}
+	}
+	
+	if ($ExternalAuth !== FALSE) {
+		$_SERVER['PHP_AUTH_USER'] = $auser;
+	} else {
+		$_SERVER['PHP_AUTH_USER'] = $_SERVER['REMOTE_USER'];
+		 DENY(null,403);
+	}
+	
+	
+} 
+
 if ( isset($_SERVER['PHP_AUTH_USER']))
 {
    require_once($wwwdir . 'lib/utils-inet.php');
@@ -990,11 +1023,12 @@ if ( isset($_SERVER['PHP_AUTH_USER']))
       $_SERVER['REMOTE_USER'] = $_SERVER['PHP_AUTH_USER'];
 
    $user_info = avreg_find_user(ip2long($_SERVER['REMOTE_ADDR']), -1, $_SERVER['PHP_AUTH_USER']);
-   if ($user_info !== FALSE)
-      check_passwd($_SERVER['PHP_AUTH_PW'], $user_info['PASSWD']);
-   else
-      DENY(null,403);
-
+   if ($ExternalAuth === false) {
+	   if ($user_info !== FALSE)
+	      check_passwd($_SERVER['PHP_AUTH_PW'], $user_info['PASSWD']);
+	   else
+	      DENY(null,403);
+   }
    $login_user = &$_SERVER['REMOTE_USER'];
    $user_status = &$user_info['STATUS'];
    $login_user_name = &$row['LONGNAME'];
