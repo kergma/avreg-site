@@ -235,4 +235,4 @@ if ( $pl_fmt === 'XSPF' ) {
 }
 
 if (isset($_SESSION) && isset($_SESSION['error']))
-  @session_unregister('error');
+  unset($_SESSION['error']);

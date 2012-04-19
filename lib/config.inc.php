@@ -618,7 +618,6 @@ function print_syslog($priority, $message)
 {
    if (!isset($GLOBALS['syslog_opened'])) {
       $GLOBALS['syslog_opened'] = 1;
-      define_syslog_variables();
       openlog(isset($GLOBALS['AVREG_PROFILE']) ? 'avreg-site-' . $GLOBALS['AVREG_PROFILE'] : 'avreg-site', 0, LOG_DAEMON);
    }
    if ( $GLOBALS['login_user'] === 'unknown' ) {
