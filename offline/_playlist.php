@@ -159,7 +159,7 @@ foreach ( $_ipacl_list as &$_ipacl_str ) {
   }
 }
 if ( !isset($MediaUrlPref) /* не нашли совпадения по ACL */ )
-   $MediaUrlPref = 'http://' . $_SERVER['HTTP_HOST'] . $conf['prefix'] . $conf['media-alias'];
+   $MediaUrlPref = (!empty($_SERVER['HTTPS'])?'https://':'http://') . $_SERVER['HTTP_HOST'] . $conf['prefix'] . $conf['media-alias'];
 
 $fname="avreg_cams-$_cams_csv";
 if ( $pl_fmt === 'XSPF' ) {
