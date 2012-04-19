@@ -37,11 +37,11 @@ function parse_csv_numlist($str) {
             $start = (int)$matches[1];
             $end   = (int)$matches[2];
             if ($start >= $end)
-               return false;
+               return FALSE;
             for(; $start <= $end; $start++)
                $res[] = (int)$start;
          } else
-            return false; /* Error */
+            return FALSE; /* Error */
       }
    }
    return $res;
@@ -51,12 +51,12 @@ function parse_csv_numlist($str) {
 function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params=NULL)
 {
    $confile = fopen($path, 'r');
-   if (false === $confile)
-      return false;
-   $skip_section = false;
+   if (FALSE === $confile)
+      return FALSE;
+   $skip_section = FALSE;
    $linenr=0;
    $ret_array = array();
-   $res = true;
+   $res = TRUE;
 
    while (!feof($confile)) {
       $line = trim(fgets($confile, 1024));
@@ -70,13 +70,13 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
       if ( preg_match('/^([^\s=]+)[\s=]*\{$/', $line, $matches)) {
          # begin section
          if ( empty($section) || 0 !== strcasecmp ($matches[1],$section) ) {
-            $skip_section = true;
+            $skip_section = TRUE;
          }
          continue;
       }
 
       if ( preg_match('/.*\}$/',$line) ) {
-         $skip_section = false;
+         $skip_section = FALSE;
          continue;
       }
 
@@ -85,7 +85,7 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
 
       if ( 1 !== preg_match("/^[\s]*([^\s#;=]+)[\s=]+([\"']?)(.*?)(?<!\\\)([\"']?)\s*$/Su",
          $line, $matches)) {
-            $res = false;
+            $res = FALSE;
             break;
          }
       // var_dump($matches);
@@ -93,7 +93,7 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
       $start_quote = &$matches[2];
       $end_quote = &$matches[4];
       if ( $start_quote !== $end_quote ) {
-         $res = false; break;
+         $res = FALSE; break;
       }
 
       $param = &$matches[1];
@@ -110,7 +110,7 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
          $res = confparse($_conf, $section, $value);
          if (!$res) {
             echo "ERROR INCLUDE FILE \"$value\" from $path:$linenr\n";
-            $res=false;  break;
+            $res=FALSE;  break;
          } else {
             $ret_array = array_merge($ret_array, $res);
          }
@@ -124,7 +124,7 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
             $key = $match2[3];
             $vt = gettype(@$_conf[$param]);
             if ( 0 !== strcasecmp($vt, 'array')) {
-               $res=false;  break;
+               $res=FALSE;  break;
             }
             //$ret_array[$param][$key] = $value;
             
@@ -137,7 +137,7 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
             /* пробуем установить тип значения с учётом дефолтного $conf[param] */
             $vt = gettype(@$_conf[$param]);
             if ( $vt !== 'NULL' && !settype($value, $vt) ) {
-               $res = false; break;
+               $res = FALSE; break;
             }
             $ret_array[$param] = $value;
          }
@@ -151,7 +151,7 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
    } else {
       // invalid pair param = value
       echo ("INVALID LINE in file $path:$linenr => [ $line ]\n");
-      return false;
+      return FALSE;
    }
 } /* confparse() */
 
@@ -196,7 +196,7 @@ if ($conf['debug']) {
 function load_profiles_cams_confs($application='avreg-site')
 {
    if ( !empty($AVREG_PROFILE) || empty($GLOBALS['EXISTS_PROFILES']) )
-      return false;
+      return FALSE;
 
    $cams_profiles = Array();
    $profiles_conf = Array();
@@ -222,16 +222,16 @@ else
 $localip = ip2long($sip);
 
 $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
-$MSIE = $GECKO  = $PRESTO = $WEBKIT = false;
+$MSIE = $GECKO  = $PRESTO = $WEBKIT = FALSE;
 
-if ( false !== strpos($ua, 'msie') )
-   $MSIE  = true;
-else if ( false !== strpos($ua, 'gecko') )
-   $GECKO = true;
-else if ( false !== strpos($ua, 'presto') )
-   $PRESTO = true;
-else if ( false !== strpos($ua, 'webkit') || false !== strpos($ua, 'khtml') )
-   $WEBKIT = true;
+if ( FALSE !== strpos($ua, 'msie') )
+   $MSIE  = TRUE;
+else if ( FALSE !== strpos($ua, 'gecko') )
+   $GECKO = TRUE;
+else if ( FALSE !== strpos($ua, 'presto') )
+   $PRESTO = TRUE;
+else if ( FALSE !== strpos($ua, 'webkit') || FALSE !== strpos($ua, 'khtml') )
+   $WEBKIT = TRUE;
 
 
 $login_user = 'unknown';
@@ -287,7 +287,7 @@ else
 if (file_exists('/etc/linuxdvr-release')) {
    $LDVR_VER=@file('/etc/linuxdvr-release');
 } else
-   $LDVR_VER=false;
+   $LDVR_VER=FALSE;
 
 
 $font_family = 'sans-serif';
@@ -356,25 +356,25 @@ unset($result);
 function get_user_info($ipacl, $name)
 {
    if (!isset($ipacl) || !isset($name))
-      return false;
+      return FALSE;
    if (empty($ipacl) || empty($name))
-      return false;
+      return FALSE;
 
    foreach ($GLOBALS['users'] as $ui) {
       if ( 0 === strcasecmp($ui['HOST'], $ipacl) && 
          0 === strcmp($ui['USER'], $name) )
          return $ui;
    }
-   return false;
+   return FALSE;
 }
 
 function avreg_find_user($addr, $mask, $name)
 {
    if (!isset($addr) || !isset($mask) || !isset($name))
-      return false;
+      return FALSE;
    if (is_null($addr) || is_null($mask) || is_null($name) )
-      return false;
-   $found = false;
+      return FALSE;
+   $found = FALSE;
    foreach ($GLOBALS['users'] as $ui) {
       if ( 0 !== strcmp($ui['USER'], $name) )
          continue;
@@ -441,7 +441,7 @@ function proc_info($proc_name, $__pid=NULL)
    exec($_cmd, $lines, $retval);
 
    if ( $retval !== 0 )
-      return false;
+      return FALSE;
 
    $pids=count($lines);
    $cpu=0;
@@ -495,15 +495,15 @@ function ETA($sec) {
 }
 
 /* $start,$finish - unix timestamp */
-function TimeRangeHuman($start, $finish, $print_year=false, $print_sec=false)
+function TimeRangeHuman($start, $finish, $print_year=FALSE, $print_sec=FALSE)
 {
    if ( $print_sec )
       $time_fmt = '%02u:%02u:%02u';
    else
       $time_fmt = '%02u:%02u';
 
-   $start_tm   = localtime($start, true);
-   $finish_tm  = localtime($finish,true);
+   $start_tm   = localtime($start, TRUE);
+   $finish_tm  = localtime($finish,TRUE);
    $same_year  = ( $start_tm['tm_year'] === $finish_tm['tm_year'] );
    $same_month = $same_year  && ( $start_tm['tm_mon'] === $finish_tm['tm_mon'] );
    $same_day   = $same_month && ( $start_tm['tm_mday'] === $finish_tm['tm_mday'] );
@@ -669,13 +669,13 @@ function DENY($good_status=NULL, $http_status=403)
    if (!headers_sent()) {
       switch ($http_status) {
       case 401:
-         header('WWW-Authenticate: Basic realm="AVReg server"', true, 401);
+         header('WWW-Authenticate: Basic realm="AVReg server"', TRUE, 401);
          exit();
 
       case 403:
       default:
          header('Content-Type: text/html; charset=' . $chset);
-         header('Connection: close', true, 403);
+         header('Connection: close', TRUE, 403);
       }
    }
 
@@ -881,7 +881,7 @@ function getSelectByAssocAr($_name, $assoc_array, $_multiple=FALSE ,
    $_size = 1, $start_val=NULL, $selected=NULL,
    $first_empty=TRUE, $onch=FALSE,
    $text_prefix = NULL,$TITLE=NULL, 
-   $reverse=false)
+   $reverse=FALSE)
 {
    $array_cnt = count($assoc_array);
    if ( $array_cnt == 0 ) return '';
@@ -977,8 +977,8 @@ if ( !empty($logout) ) {
    print_syslog(LOG_CRIT, '_COOKIE[avreg_logout]: [' . $_COOKIE['avreg_logout'] . ']');
    if ( isset($_COOKIE) && empty($_COOKIE['avreg_logout']) ) {
       // ob_start();
-      header('WWW-Authenticate: Basic realm="AVReg server"', true, 401);
-      setcookie('avreg_logout', 1 ); // FIXME google не воспринимает
+      header('WWW-Authenticate: Basic realm="AVReg server"', TRUE, 401);
+      setcookie('avreg_logout', 1 ); // FIXME google chrome не воспринимает
    } else {
       $https = (0 === strpos($_SERVER['SERVER_PROTOCOL'], 'HTTPS'));
       header(sprintf('Location: %s://%s%s%s%s',
@@ -992,30 +992,27 @@ if ( !empty($logout) ) {
    exit();
 }
 
-$ExternalAuth = false;
-
-
-
-if (isset($_SERVER['AUTH_TYPE']) && !empty($_SERVER['AUTH_TYPE']) && isset($_SERVER['REMOTE_USER']) && !empty($_SERVER['REMOTE_USER']) && isset($conf['ExternalAuthMappin']) && !empty($conf['ExternalAuthMappin']) && file_exists($conf['ExternalAuthMappin'])) {
+$ExternalAuth = FALSE;
+if (!empty($_SERVER['AUTH_TYPE']) && !empty($_SERVER['REMOTE_USER'])
+    && !empty($conf['ExternalAuthMap'])
+    && file_exists($conf['ExternalAuthMap'])) {
 	
-	$lines = file($conf['ExternalAuthMappin']);
+	$lines = file($conf['ExternalAuthMap']);
 	foreach ($lines as $line) {
-		list($ruser, $auser) = explode('=', trim($line));
+      list($ruser, $auser) = explode('=', trim($line));
 		if (trim($ruser) == $_SERVER['REMOTE_USER']) {
-			$ExternalAuth = true;
+			$ExternalAuth = TRUE;
 			break;
 		}
 	}
 	
-	if ($ExternalAuth !== FALSE) {
-		$_SERVER['PHP_AUTH_USER'] = trim($auser);
-	} else {
+	if ($ExternalAuth !== FALSE)
+		$_SERVER['PHP_AUTH_USER'] = $_SERVER['REMOTE_USER'] = trim($auser);
+	else {
 		$_SERVER['PHP_AUTH_USER'] = $_SERVER['REMOTE_USER'];
 		 DENY(null,403);
 	}
-	
-	
-} 
+}
 
 if ( isset($_SERVER['PHP_AUTH_USER']))
 {
@@ -1024,7 +1021,7 @@ if ( isset($_SERVER['PHP_AUTH_USER']))
       $_SERVER['REMOTE_USER'] = $_SERVER['PHP_AUTH_USER'];
 
    $user_info = avreg_find_user(ip2long($_SERVER['REMOTE_ADDR']), -1, $_SERVER['PHP_AUTH_USER']);
-   if ($ExternalAuth === false) {
+   if ($ExternalAuth === FALSE) {
 	   if ($user_info !== FALSE)
 	      check_passwd($_SERVER['PHP_AUTH_PW'], $user_info['PASSWD']);
 	   else
@@ -1039,13 +1036,12 @@ if ( isset($_SERVER['PHP_AUTH_USER']))
       $GCP_cams_list = @implode(',', $allow_cams);
    else
       $GCP_cams_list = NULL;
-   if ( $user_status <= $install_status )  $install_user = true;
-   if ( $user_status <= $admin_status )    $admin_user = true;
-   if ( $user_status <= $arch_status )     $arch_user = true;
-   if ( $user_status <= $operator_status ) $operator_user = true;
-   if ( $user_status <= $viewer_status )   $viewer_user = true;
-} else {
+   if ( $user_status <= $install_status )  $install_user  = TRUE;
+   if ( $user_status <= $admin_status )    $admin_user    = TRUE;
+   if ( $user_status <= $arch_status )     $arch_user     = TRUE;
+   if ( $user_status <= $operator_status ) $operator_user = TRUE;
+   if ( $user_status <= $viewer_status )   $viewer_user   = TRUE;
+} else
    DENY(null,401);
-}
 
 ?>
