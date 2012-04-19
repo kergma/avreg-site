@@ -132,7 +132,14 @@ function brout(win_nr, win_div, win_geo) {
       $('<img src="'+url+'&ab='+___abenc+'" id="'+id+'" name="cam" alt="' +alt+'" '+
             'width="'+orig_w+'px" height="'+orig_h+'px" ' +
             'align="middle" border="0px" />').appendTo(win_div).width(win_geo.cam_w).height(win_geo.cam_h);
-      win_div.click( function() { img_click(this); } ); 
+      win_div.click( function(e) {
+            if ( typeof(e.target) == "undefined" || typeof(e.target.tagName) == "undefined" )
+               return img_click(this);
+            else {
+               if ( e.target.tagName != 'A')
+                  return img_click(this);
+            }
+         } );
       win_div.mouseover( function() { img_mouseover(this, win_nr);} );
       win_div.mouseout( function() { hideddrivetip(); } ); 
    }
@@ -384,12 +391,20 @@ function try_fs() {
             win_div.appendTo(CANVAS);
 
             if (PrintCamNames) {
+               var ipcamhost_link_begin = '';
+               var ipcamhost_link_end = '';
+               if ( typeof(WINS_DEF[win_nr].cam.netcam_host) == "string" ) {
+                  ipcamhost_link_begin = '<a href="http://' +
+                                           WINS_DEF[win_nr].cam.netcam_host +
+                                           '" target="_blank" style="color:inherit;" title="Перейти в веб интерфейс IP-камеры">';
+                  ipcamhost_link_end   = ' &rarr;<\/a>';
+               }
                $('<div style="background-color:#666699;'+
                      ' padding:0px; margin:0px; overflow:hidden; border:0px;'+
                      ' height:'+ NAME_DIV_H*win_def.rowspan +'px;"><span style="'+
                      'vertical-align: middle; padding-left:8px; padding-top:2px; padding-bottom:2px; padding-right:2px;'+
                      ' color:#e5e5e5; font-size:'+14*win_def.rowspan+'px; font-weight: bold; width:100%; overflow:hidden;">'+
-                     WINS_DEF[win_nr].cam.name+
+                     ipcamhost_link_begin + WINS_DEF[win_nr].cam.name + ipcamhost_link_end +
                      '<\/span><\/div>').appendTo(win_div);
             }
             brout(win_nr, win_div, win_geo);

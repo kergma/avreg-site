@@ -72,6 +72,8 @@ $major_win_nr = $l_defs[4] - 1;
 $msie_addons_scripts=array();
 
 $GCP_query_param_list=array('work', 'allow_networks', 'text_left', 'geometry', 'Hx2');
+if ( $operator_user )
+   array_push($GCP_query_param_list, 'cam_type', 'InetCam_IP');
 require('../lib/get_cams_params.inc.php');
 if ( $GCP_cams_nr == 0 )
    die('There are no available cameras!');
@@ -95,7 +97,10 @@ for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
    if (is_null($major_win_cam_geo) || $major_win_nr === $win_nr )
       $major_win_cam_geo = array($width, $height);
    $l_wins = &$l_defs[3][$win_nr];
-
+   if ( $operator_user && ( $GCP_cams_params[$cam_nr]['cam_type'] == 'netcam' ) )
+      $netcam_host = '"' . $GCP_cams_params[$cam_nr]['InetCam_IP'] . '"';
+   else
+      $netcam_host = 'null';
    printf(
 'WINS_DEF[%d]={
    row: %u,
@@ -107,13 +112,16 @@ for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
       name: "%s",
       url:  "%s",
       orig_w: %u,
-      orig_h: %u
+      orig_h: %u,
+      netcam_host: %s
    }
 };%s',
    $win_nr, $l_wins[0], $l_wins[1],$l_wins[2],$l_wins[3],
    $cam_nr, getCamName($GCP_cams_params[$cam_nr]['text_left']),
    get_cam_http_url($conf, $cam_nr, 'mjpeg'),
-   $width, $height, "\n" );
+   $width, $height,
+   $netcam_host,
+   "\n" );
 
 if ( $MSIE )
    $msie_addons_scripts[] = sprintf('<script for="cam%d" event="OnClick()">
