@@ -30,9 +30,9 @@ class Adb {
       $this->_error($this->_db);
 
       if ($this->_dbtype == 'mysql')
-         $res = $this->_db->query("SET NAMES 'utf8'");
-      else
          $res = $this->_db->query("SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
+      else
+         $res = $this->_db->query("SET NAMES 'utf8'");
       $this->_error($res);
       return true;
    }
@@ -43,7 +43,7 @@ class Adb {
    }
    private function _error($r, $die = true) {
       if (PEAR::isError($r)) {
-         @header('Content-Type: text/html; charset=' . $chset);
+         @header('Content-Type: text/html; charset=' . $GLOBALS['chset']);
 
          echo 'Standard Message: ' . $r->getMessage() . "<br>";
          echo 'Standard Code: ' . $r->getCode() . "<br>";
