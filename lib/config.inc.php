@@ -974,7 +974,7 @@ function check_passwd($saved_pw, $pw)
 }
 
 if ( !empty($logout) ) {
-   print_syslog(LOG_CRIT, '_COOKIE[avreg_logout]: [' . $_COOKIE['avreg_logout'] . ']');
+   // print_syslog(LOG_CRIT, '_COOKIE[avreg_logout]: [' . $_COOKIE['avreg_logout'] . ']');
    if ( isset($_COOKIE) && empty($_COOKIE['avreg_logout']) ) {
       // ob_start();
       header('WWW-Authenticate: Basic realm="AVReg server"', TRUE, 401);
