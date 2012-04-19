@@ -18,7 +18,7 @@ class Adb {
 		$_user = '',
 		$_password = '',
 		$_dbtype = 'mysql',
-		$_host = 'localhost',
+		$_host = '',
 		$_db = false;
 	
 	public function __construct($param) {
