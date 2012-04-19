@@ -43,6 +43,8 @@ class Adb {
    }
    private function _error($r, $die = true) {
       if (PEAR::isError($r)) {
+         @header('Content-Type: text/html; charset=' . $chset);
+
          echo 'Standard Message: ' . $r->getMessage() . "<br>";
          echo 'Standard Code: ' . $r->getCode() . "<br>";
          echo 'DBMS/User Message: ' . $r->getUserInfo() . "<br>";
