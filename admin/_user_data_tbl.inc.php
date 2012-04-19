@@ -14,11 +14,11 @@ print '<td><input type="text" name="u_longname" value="'.$longname2html.'" size=
 print '</tr>'."\n";
 print '<tr>'."\n";
 print '<td colspan="2">'.$strPassword.'<br>'.$strPasswordAllowed.'</td>'."\n";
-print '<td><input type="password" name="u_pass" size="16" maxlength="16"  value="'.$passwd2html.'">'."\n";
+print '<td><input type="password" name="u_pass" maxlength="8" value="'.$passwd2html.'">'."\n";
 print '</tr>'."\n";
 print '<tr>'."\n";
 print '<td colspan="2">'.$strPassword2.'</td>'."\n";
-print '<td><input type="password" name="u_pass2" size="16" maxlength="16" value="'.$passwd2html.'">'."\n";
+print '<td><input type="password" name="u_pass2" maxlength="8" value="'.$passwd2html.'">'."\n";
 print '</tr>'."\n";
 print '<tr>'."\n";
 print '<td colspan="2">'.$str_group1.'</td>'."\n";
