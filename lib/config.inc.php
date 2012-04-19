@@ -289,6 +289,8 @@ if (file_exists('/etc/linuxdvr-release')) {
 } else
    $LDVR_VER=FALSE;
 
+/* set timezone "You are *required* to use the date.timezone setting or the date_default_timezone_set() function." */
+date_default_timezone_set(rtrim(file_get_contents('/etc/timezone')));
 
 $font_family = 'sans-serif';
 $font_size = 'small';
