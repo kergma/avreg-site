@@ -112,7 +112,7 @@ for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
 };%s',
    $win_nr, $l_wins[0], $l_wins[1],$l_wins[2],$l_wins[3],
    $cam_nr, getCamName($GCP_cams_params[$cam_nr]['text_left']),
-   get_cam_http_url(&$conf, $cam_nr, 'mjpeg'),
+   get_cam_http_url($conf, $cam_nr, 'mjpeg'),
    $width, $height, "\n" );
 
 if ( $MSIE )

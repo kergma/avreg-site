@@ -15,7 +15,7 @@ $cam_name = $cam_conf['text_left'];
 list($w, $h) = sscanf($cam_conf['geometry'], '%ux%u');
 if ( $cam_conf['Hx2'] )
    $h *= 2;
-$cam_url = get_cam_http_url(&$conf, $camera, 'jpeg', true);
+$cam_url = get_cam_http_url($conf, $camera, 'jpeg', true);
 
 if ( !isset($refresh) ) {
    printf('<IMG id="viewport" src="%s" height="160" border="1px" alt="%s снапшот" onerror="img_evt(1);" />',

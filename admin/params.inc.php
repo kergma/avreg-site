@@ -231,10 +231,9 @@ function checkParam ( $parname, $parval )
    return $ret;
 }
 
-/* CorrectParVal($parname, &$parval) */
-function CorrectParVal($parname, $parval)
+function CorrectParVal($parname, &$parval)
 {
-   return; /* disable function */
+   return; /* disable function, utf8 text_left would translit by avregd now */
    switch ( $parname )
    {
    case 'text_left':

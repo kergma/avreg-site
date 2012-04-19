@@ -126,7 +126,7 @@ if ( $GCP_cams_nr === 0 ) {
             print '<tr style="background-color:#FCFCFC">'."\n";
          else
             print "<tr>\n";
-         print_cam_detail_row(&$conf, $__cam_nr, &$cam_detail);
+         print_cam_detail_row($conf, $__cam_nr, $cam_detail);
 
          if ($pipes_show>1) {
             // показывыть все c причиной почему не доступно

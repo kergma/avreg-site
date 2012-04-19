@@ -39,7 +39,7 @@ if ( isset($cmd) )
             // print "<p>'$param'='$value' old='$olds[$param]' types='$types[$param]'</p>\n";
             if ( ($olds[$param] != $value) && CheckParVal($param, $value) )
             {
-               CorrectParVal($param, &$value);
+               CorrectParVal($param, $value);
                if ($value == '')
                   $_val = null;
                else

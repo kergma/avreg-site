@@ -35,7 +35,7 @@ else
   $platform = 'other';
 
 $_found = false;
-$_ipacl_list = array_keys(&$conf["murl-pre-$platform"]);
+$_ipacl_list = array_keys($conf["murl-pre-$platform"]);
 foreach ( $_ipacl_list as &$_ipacl_str ) {
   $_ipacl = avreg_inet_network($_ipacl_str);
   if ( $_ipacl === false ) {

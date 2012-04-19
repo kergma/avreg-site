@@ -73,7 +73,7 @@ if ( !isset($cam_nr) )
       }
       $__cam_nr = 0;
       $cam_detail = &$GCP_def_pars;
-      print_cam_detail_row(&$conf, $__cam_nr, &$cam_detail);
+      print_cam_detail_row($conf, $__cam_nr, $cam_detail);
       print "</tr>\n";
 
       $r_count = 0;
@@ -102,7 +102,7 @@ if ( !isset($cam_nr) )
                $__cam_nr, $cam_name, $strTune);
             print '<td>'.$ggg.'</td>' . "\n";
          }
-         print_cam_detail_row(&$conf, $__cam_nr, &$cam_detail);
+         print_cam_detail_row($conf, $__cam_nr, $cam_detail);
          print "</tr>\n";
       }
       print "</table>\n";
