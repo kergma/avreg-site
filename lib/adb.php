@@ -290,7 +290,7 @@ class Adb {
       $query_noncontinuous_events = array_diff($evt_ids, $all_continuous_events);
 
       $events = array();
-      $query = 'SELECT '.$this->_date_part('timestamp', 'DT1').' as UDT1, '.$this->_date_part('timestamp', 'DT1').' as UDT2,';
+      $query = 'SELECT '.$this->_date_part('timestamp', 'DT1').' as UDT1, '.$this->_date_part('timestamp', 'DT2').' as UDT2,';
       $query .= ' CAM_NR, EVT_ID, SESS_NR AS SER_NR, FILESZ_KB, FRAMES, ALT1 as U16_1, ALT2 as U16_2, EVT_CONT';
       $query .= ' FROM EVENTS';
       $query .= ' WHERE';
