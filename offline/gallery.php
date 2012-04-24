@@ -22,8 +22,8 @@ if (!isset($_POST['method']) && !isset($_GET['method'])) {
 								'offline/gallery/js/jquery.mousewheel.min.js',
 								'offline/gallery/js/main.js',
 								'offline/gallery/js/jquery.scrollTo-min.js',
-								'offline/gallery/js/jquery-ui-1.8.16.custom.min.js',
-//								'offline/gallery/js/jquery-ui-1.8.17.custom.min.js',
+//								'offline/gallery/js/jquery-ui-1.8.16.custom.min.js',
+								'offline/gallery/js/jquery-ui-1.8.17.custom.min.js',
 								'offline/gallery/js/jquery.checkbox.js',
 
 //								'offline/gallery/js/jquery-ui-1.8.17.custom.min.js',

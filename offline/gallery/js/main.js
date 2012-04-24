@@ -639,9 +639,6 @@ var gallery = {
 						//$('#matrix_load').hide();
 					}
 				});
-
-
-
 			}
 		},
 		// объект управлением цветом камер
@@ -776,10 +773,7 @@ var gallery = {
 					}
 					self.close();
 				});
-
 			}
-
-
 		},
 		// инициализация галереи
 		init : function(config) {
@@ -857,28 +851,8 @@ var gallery = {
 					$(this).children().attr('checked', 'checked');
 				}
 			});
-		//Кнопка смены режима просмотра - детальный/миниатюры
-/*			
-			var tumbCangeMode =  $('<fieldset class="switch" >' +
-					'<label class="off">Off<input type="radio" class="on_off" name="on_off" value="off"/></label>\
-    				<label class="on">On<input type="radio" class="on_off" name="on_off" value="on"/></label>\
-				</fieldset>');
-				
-		   	$(tumbCangeMode).css('background-image', 'url("gallery/img/switch.png")')
-    		.find('.on_off').css('display','none').end()
-    		.find('.on, .off').css('text-indent','-10000px');
- 
-    		$(tumbCangeMode).find("[name=on_off]").change(function() {
-      			var button = $(this).val();
-        		if(button == 'off'){ $('.switch').css('background-position', 'right'); }
-        		if(button == 'on'){ $('.switch').css('background-position', 'left'); }  
-   			});
-
-		$("#toolbar>#toolbar_left:first-child").prepend(tumbCangeMode);
-
-*/				
-			
-			
+	
+			//Кнопка смены режима просмотра - детальный/миниатюры
 			var btnCangeMode =	$('<div class="select_mode"> <button id="btn_PreviewMode" disabled="disabled" >Минниаюры</button> <button id="btn_DetailMode" >Просмотр</button>	</div>');
 			$(btnCangeMode).find("button").width(100).height(25);
 			
@@ -891,11 +865,7 @@ var gallery = {
 						matrix.preview();
 				});
 
-
-
-				
-		$("#toolbar>#toolbar_left:first-child").prepend(btnCangeMode);
-
+			$("#toolbar>#toolbar_left:first-child").prepend(btnCangeMode);
 			
 			// инициализация изменения размеров столбцов
 			self.resize_column.init();
@@ -931,7 +901,6 @@ var matrix = {
 		event_limit : 20000
 	},
 	keyBoardTree: 'all',
-//	imageDetail: null,
 	currentOffset: null,
 	tree: 'all', // текущий временной диапазон
 	height: 0, // текущая высота матрицы
@@ -955,6 +924,7 @@ var matrix = {
 	cur_count_item : 0, // текущее количество загруженных событий
 	send_query: false, // можно ли посылать запросы к базе
 	select_node : false, // можно ли выбирать другой диапазон
+	isResizeMode:false, //активирован режим ресайза
 	//объект для востановления матрицы при выходе из режима просмотра
 	recover:{
 		cell_style:null,
@@ -1043,36 +1013,33 @@ var matrix = {
 		// изменить размер матрицы если было изменено размеры окна
 		$(window).bind("resize", function(){
 			
-			clearInterval(self.res);
+		clearInterval(self.res);
 
-
-			self.res = setTimeout(function() {
+		self.res = setTimeout(function() {
 				
-				pageX = parseInt(gallery.cookie.get('resize_column'));
+		pageX = parseInt(gallery.cookie.get('resize_column'));
 
-				if (pageX) {
-
-					if( typeof( window.innerWidth ) == 'number' ) {
-						//Non-IE
-						gallery.resize_column.myWidth = window.innerWidth;
-						gallery.resize_column.myHeight = window.innerHeight;
-					} else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
-						//IE 6+ in 'standards compliant mode'
-						gallery.resize_column.myWidth = document.documentElement.clientWidth;
-						gallery.resize_column.myHeight = document.documentElement.clientHeight;
-					}
-					if (pageX < gallery.resize_column.myWidth - 535 && pageX - (gallery.resize_column.myWidth - 535) < 300 ) {
-
-						pageX = pageX - (gallery.resize_column.myWidth - 535);
-					} else {
-						pageX = 300;
-					}
-					
-					gallery.cookie.set('resize_column', pageX);
-					gallery.resize_column.resize(pageX);
-					
+		if (pageX) {
+				if( typeof( window.innerWidth ) == 'number' ) {
+				//Non-IE
+				gallery.resize_column.myWidth = window.innerWidth;
+				gallery.resize_column.myHeight = window.innerHeight;
+				} else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
+					//IE 6+ in 'standards compliant mode'
+					gallery.resize_column.myWidth = document.documentElement.clientWidth;
+					gallery.resize_column.myHeight = document.documentElement.clientHeight;
 				}
-				matrix.resize();clearInterval(self.res);}, 200);
+				if (pageX < gallery.resize_column.myWidth - 535 && pageX - (gallery.resize_column.myWidth - 535) < 300 ) {
+						pageX = pageX - (gallery.resize_column.myWidth - 535);
+				} else {
+						pageX = 300;
+				}
+					
+				gallery.cookie.set('resize_column', pageX);
+				gallery.resize_column.resize(pageX);
+					
+			}
+			matrix.resize();clearInterval(self.res);}, 200);
 		});
 	},
 
@@ -1119,7 +1086,6 @@ var matrix = {
 		$('#btn_DetailMode').attr("disabled","disabled");
 		$('#btn_PreviewMode').removeAttr("disabled")
 		
-//		keyBoard.beforeView = keyBoard.view;
 		keyBoard.view = keyBoard.views.detail;
 		
 		//скрываем все ячейки матрицы за исключением активной
@@ -1131,9 +1097,8 @@ var matrix = {
 			else{
 				matrix.recover.cell_style = $(this).attr('style');
 				matrix.recover.refBox_style = $(this).find(".refBox").attr('style');
-				
 			}
-			});
+		});
 
 		//фиксируем высоту tool bar		
 		$('#toolbar').height($('#toolbar').height());
@@ -1156,8 +1121,11 @@ var matrix = {
 			
 		//Установка размеров отображаемого элемента
 		matrix.loaddetailsrc();
-	 	scale2.updateposition(scale2.position);
-
+	
+		scale2.setposition(scale2.position);
+		
+//	 	scale2.updateposition(scale2.position);
+	 	
 	},
 	
 	
@@ -1272,10 +1240,6 @@ var matrix = {
 			scale.reload(old_width);
 		}
 
-		// задаем новые размеры ячейки
-		$('#scroll_content .content_item').height(matrix.cell_height);
-		$('#scroll_content .content_item').width(matrix.cell_width);
-
 		// высчитываем количество, рядов, столбцов ячеек в матрице
 		matrix.count_column = Math.floor(matrix.width /  (matrix.cell_width+(matrix.config.cell_padding+matrix.config.cell_border)*2));
 		matrix.count_row = Math.floor(matrix.height /  (matrix.cell_height+(matrix.config.cell_padding+matrix.config.cell_border)*2));
@@ -1299,33 +1263,34 @@ var matrix = {
 				row_count: matrix.count_column, 
 				matrix_count: Math.ceil(matrix.cell_count/matrix.count_column)
 			});
-
-			//определение позиции скролла
-			sp = Math.floor(prev_sp/scroll.row_count)*scroll.row_count-scroll.row_count;
 			
+			//начальное определение позиции скролла
+			sp = Math.floor(prev_sp/matrix.count_column)*matrix.count_column;
+			//пытаемся избежать запроса ивентов
+			if(prev_sp > sp) sp += scroll.row_count;
+			//проверка условия попадания выбранной ячейки в диапазон матрицы
 			while(sp > matrix.num || sp+matrix.cell_count-1 < matrix.num ){
 				if(sp > matrix.num){
 					sp -= scroll.row_count;
 				}
-				else{
+				if(sp+matrix.cell_count-1 < matrix.num){
 					sp += scroll.row_count;
 				}
 			}
 			
-			//определение позиции скролла (относительно выбранной ячейки) - старый варириант
-//			sp = Math.floor(matrix.num/scroll.row_count)*scroll.row_count-scroll.row_count;
-	
 			//проверка допустимости значения
-			if(sp<0)sp=0;
-
-/// Убрать вызов >>>>>> scroll.updateposition(sp, true); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//			scroll.updateposition(sp, true);
-
+			if(sp<0)
+			{
+				sp=0;
+			console.log("sp < 0");	
+			}
+			//устанавливаем новую позицию скролла
+			scroll.position = sp;
+			
 			//модификация матрицы
 			matrix.modify(sp, prev_sp);
 			
 			scroll.setposition(sp);
-
 		}
 
 		//если в detail режиме - перезапускаем detail
@@ -1335,66 +1300,188 @@ var matrix = {
 	
 	//модификация матрицы при ресайзе окна или при изменении масштаба
 	modify : function(sp, prev_sp){
-		
-/// ------------------------- To Delete 
-/// Убрать вызов >>>>>> scroll.updateposition(sp, true); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			scroll.updateposition(sp, true);
-/// ------------------------- To Delete 		
 
-console.log('TEST')			
-			
-		//модификация матрицы
-		/*
-		 *  - реализовать механизм удаления / добавления ячеек
-		 * */
+		var i=0;
+		//удаляем лишние ячейки
+		$(".content_item").each(function(index, value){
+			i = prev_sp+index;
+			//если номер текущей ячейки меньше нового значения позиции скролла - удаляем ячейку
+			if(i < sp ){ 
+				$(this).remove();
+			}
+			//ресайз ячеек
+			else{ 
+				matrix.setimagesize(prev_sp+index); 
+				if(matrix.events[i][7]=='image')
+				{
+					//формирование src ресайза картинки
+					 NewSRC = matrix.getResizedImageSrc(i, matrix.cell_height, matrix.cell_width);
+					//Загрузка изображения соответствующего размера
+					$(this).find(".refBox").aplayerSetImgSrc(NewSRC);
+				}
+				$(this).find(".refBox").aplayerResizeToParent();
+			}
+		});
 
-
+		//добавить ячейки в начало матрицы в обратном порядке
+		if(prev_sp > sp){
+			for(var i = prev_sp-1; i>=sp; i-- ){
+				matrix.create_cell(i, 'prepend');
+			}
+		}
 
 		//удаляем лишние ячейки
 		$(".content_item").each(function(index, value){
-			//если номер текущей ячейки меньше нового значения позиции скролла, 
-			//либо больше максимального номера в матрице - удаляем ячейку
-			if(prev_sp+index < sp || index > sp+matrix.cell_count-1 ){
+			//если больше максимального номера в матрице - удаляем ячейку
+			if(index > matrix.cell_count-1 ){
 				$(this).remove();
 			}
-		});
-
-		//добавить ячейки в начало матрицы
-		if(prev_sp < sp  ){
-//////////////////////////////////////////////////////////////////// придумать как ------------------------------------<<<<<<<<<<<<<<<<<		
-		}
+		});		
 		
 		//если размер матрицы больше, чем текущее кол-во ячеек - добавляем недостающее кол-во ячеек в конец матрицы
+		var ix = sp+$(".content_item").length 
 		if(matrix.cell_count > $(".content_item").length){
-//////////////////////////////////////////////////////////////////// придумать как ------------------------------------<<<<<<<<<<<<<<<<<		
+			for( ; ix < sp+matrix.cell_count ; ix++){
+				matrix.create_cell(ix, 'append');
+			}
 		}
 		
+		// обновляем размеры и позиционирование ячеек в матрице  
+		$('#scroll_content .content_item').height(matrix.cell_height);
+		$('#scroll_content .content_item').width(matrix.cell_width);
+		$('#scroll_content .content_item').css({'padding' : matrix.cell_padding});
 		
-		
-		
-		//устанавливаем новую позицию скролла
-		scroll.position = sp;
-		
-		
-		//ресайз элементов ячейки
-		/*
-		 * вызов matrix.setimagesize()
-		 * 		 * 
-		 * 1 вариант - перебор всех значений по индексу + скролл позишн
-		 * 2 вариатн - парсинг айди селлов
-		 * */
-		
-		
-		$(".content_item").each(function(index, value){
-			//если номер текущей ячейки меньше нового значения позиции скролла, 
-			//либо больше максимального номера в матрице - удаляем ячейку
-			if(prev_sp+index < sp || index > sp+matrix.cell_count-1 ){
-				$(this).remove();
-			}
+		//корректировка позиционирования лого-плей
+		$('.logoPlay').each(function(){
+			$(this).removeAttr('style').css({'position':'relative', 'top': ($(this).parent().height()- $(this).height())/2 });
 		});
 		
+		//Включаем тултип
+		$(".elem").tooltip();
 		
+		//установка активного элемента 
+		$('.active').removeAttr('active');
+		$('#cell_'+matrix.num).addClass('active');
+		
+	},
+		
+	//создание недостающих ячеек (при модификации матрицы в ходе ресайза)
+	create_cell : function(el_num, att_mode) {
 	
+		var height, width; //размер ячейки
+		var img_height, img_width;//размер изображения
+		
+		var reg = new RegExp('\\.\\w{3,4}\\s*', 'i'); //для получения расширения файла
+
+		var active = '';
+	
+		var html = '';
+
+		if (typeof( matrix.events[el_num]) == 'undefined') {
+			matrix.get_events(scroll.position);
+		}
+					
+	
+		if (typeof( matrix.events[el_num]) != 'undefined'){
+			value = matrix.events[el_num];
+
+			camera_class = gallery.cookie.get('camera_'+value[5]+'_color');
+			if (camera_class != '') {
+				camera_class = ' '+camera_class;
+			}
+
+			html += '<div id="cell_'+el_num+'" class="content_item show'+' camera_'+value[5]+' '+camera_class+'" style="display:block;">';
+			html += '<div class="elem">';
+
+			html += '<div class="img_block"><a class="refBox" '+matrix.reference+'="#cell_'+el_num+'"></a></div>';
+
+			html += '<a '+matrix.reference+'="#cell_'+el_num+'"><div class="info_block"';
+			if ($('#info').attr('checked')) {
+				html += ' style="display:block;"';
+			} else {
+				html += ' style="display:none;"';
+			}
+						
+						
+			//Получить расширение файла 
+			var extension=value[2].match(reg);
+			extension=extension[extension.length-1].slice(1);
+					 	
+			html += '>'+matrix.cameras[value[5]].text_left+'<br /> '+value[7]+': '+extension;
+							
+			if (value[7] == 'image') html +=' ('+ value[6]+') <br /> </div></a>';
+			else html +=' ('+ value[8]+') <br /> </div></a>';
+						
+			html += '</div>';
+			html += '</div>';
+		}
+
+		//добавляем элементы
+		if(att_mode == 'prepend')$('#scroll_content').prepend($(html));
+		else $('#scroll_content').append($(html));
+			
+		//Устанавливаем плеер в матрицу
+		matrix.setimagesize(el_num);
+		if (typeof( matrix.events[el_num]) != 'undefined'){
+			var value = matrix.events[el_num];
+
+			//формирование html ToolTip
+			var ttl = '<tr><td>Камера</td> <td>'+matrix.cameras[value[5]].text_left+'</td> </tr>';
+			if (value[7] == 'image'){
+				ttl +='<tr><td>Файл</td>   <td>'+value[2].slice((value[2].lastIndexOf('/')+1))+'</td> </tr>';
+				ttl +='<tr><td>Размер</td> <td>'+ value[6]+' ['+value[3]+'x'+value[4]+']</td> </tr>';
+				ttl +='<tr><td>Создан</td> <td>'+value[1]+'</td> </tr>';
+			}
+			else{
+				ttl += '<tr><td>Файл</td>   <td>'+value[2].slice((value[2].lastIndexOf('/')+1))+' ['+value[3]+'x'+value[4]+']</td> </tr>';
+				ttl +='<tr><td>Размер</td> <td>'+value[6]+', '+ value[8]+'</td> </tr>';
+				ttl +='<tr><td>Начало</td> <td>'+value[9]+'</td> </tr>';
+				ttl +='<tr><td>Конец</td> <td>'+value[1]+'</td> </tr>';
+			}
+
+			var ResizedImgSrc = MediaUrlPref+ value[2];
+			//Установка прямой ссылки на ресурс
+			$('#cell_'+el_num+' a').attr({'href': ResizedImgSrc })
+			if (value[7] == 'image') {
+
+			//определяем размеры изображения
+			height =  $('#cell_'+el_num+' .refBox').height();
+			width = $('#cell_'+el_num+' .refBox').width();
+							
+			img_height = height;
+			img_width = width;
+							
+			//если включен режим пропорций
+			if( $('#proportion').attr('checked')=='checked' ){
+				var img_height = value[3];
+				var img_width = value[4];
+				var origin_proportion = img_width/img_height;
+			
+				elem_proportion = width/height;
+				
+				if(origin_proportion > elem_proportion ){
+									img_height = parseInt(width/origin_proportion);
+									img_width = width;
+				}
+				else {
+					img_width = parseInt( height*origin_proportion);
+					img_height = height;
+				}
+			}
+			//формирование src ресайза картинки
+			var ResizedImgSrc = matrix.getResizedImageSrc(el_num, img_height, img_width);
+							
+			$('#cell_'+el_num).find(".elem").attr('tooltip',ttl).end()
+			.find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'useImageSize':'true' })
+			.aplayerResizeToParent();
+			}
+			else {
+				$('#cell_'+el_num).find(".elem").attr('tooltip',ttl).end()
+				.find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'logoPlay':'true' })
+				.aplayerResizeToParent();
+			}
+		}
+		
 	},
 	
 	// задаем размер изображения в ячейке
@@ -1403,7 +1490,6 @@ console.log('TEST')
 			
 			var thumb_width = 	matrix.thumb_width;
 			var thumb_height = matrix.thumb_height;
-			
 			
 			if ($('#proportion').attr('checked') && matrix.events[el][7]=='image' ) {
 				// если выбран чекбокс сохранять пропорции
@@ -1420,16 +1506,13 @@ console.log('TEST')
 			}
 			
 			// задаем новые размеры
-			if($('#cell_'+el+' a.refBox').aplayerIsImage())
-			{
+			if($('#cell_'+el+' a.refBox').aplayerIsImage())	{
 				$('#cell_'+el+' a.refBox').css({'display':'block'})
 				.height(thumb_height)
 				.width(thumb_width)
 				.aplayerSetSize({'height':thumb_height, 'width': thumb_width });
 				
-			}
-			else
-			{
+			} else 	{
 				$('#cell_'+el+' a.refBox').css({'display':'block'})
 				.height(thumb_height)
 				.width(thumb_width)
@@ -1439,55 +1522,13 @@ console.log('TEST')
 		}
 	},
 	
-	
-	
 	//Устанавливает размеры элементов в режиме делального просмотра
 	loaddetailsrc : function() {
 		if (typeof(matrix.events[matrix.num]) != 'undefined') {
 			var value = matrix.events[matrix.num];
-/*
-			// размер матрицы
-			var width = matrix.width;
-			var height = matrix.height;
-			// максимальный размер увеличения
-			var wm = width*2;
-			var hm = height*2;
-			if ($('#proportion').attr('checked') || value[7]=='video') {
-				// если выбран режим сохранять пропорции
-				if (value[3] < matrix.height && value[4] < matrix.width) {
-					// если изображение влазит в окно просмотра, то используем оригинальные размеры
-					width = value[4];
-					height = value[3];
-					wm = width*2;
-					hm = height*2;
-				} else {
-					// если не влазит то используем ширину матрицы а высоту в впропорциях изменяем
-					var w = matrix.width;
-					var h = Math.floor(value[3]*w/value[4]);
-					wm = value[4];
-					hm = Math.floor(h*value[4]/w);
 
-					// если высота не влазит, то используем высоту матрицы, а ширину подгоняем в пропорциях
-					if (h > matrix.height) {
-						h = matrix.height;
-						w = Math.floor(value[4]*h/value[3]);
-						hm = value[3];
-						wm = Math.floor(w*value[4]/h);
-					}
-
-					width = w;
-					height = h;
-				}
-			}
-*/
+			//Визуализируем активную ячейку в режиме детального просмотра
 			
-			// обновляем параметры элемента масштаба
-//			scale2.min_width = width;
-//			scale2.min_height = height;
-//			scale2.max_width = wm;
-//			scale2.max_height = hm;
-			
-		//Визуализируем активную ячейку в режиме детального просмотра
 			//сохраняем необходимые параметры нового активного элемента
 			$(".content_item.active").each(function(){
 				matrix.recover.cell_style = $(this).attr('style');
@@ -1510,8 +1551,6 @@ console.log('TEST')
 					'height':matrix.height-5,
 					'width':(matrix.width + $("#scroll_v").width())
 					});
-//					.aplayerResizeToParent();
-//					.aplayerResizeContanerOnlyToParent();
 				});
 			
 			// обновляем статистику события
@@ -1646,7 +1685,6 @@ console.log('TEST')
 		} 
 		else 
 		{
-			
 			//Если кол-во элтов матрицы не соответствует кол-ву установленных плееров- Пересоздаем матрицу 
 			if(matrix.cell_count != $("[id^="+$.aplayer.idContainer+"]").length)	
 			{
@@ -1657,8 +1695,7 @@ console.log('TEST')
 				var loadimage = {};
 
 				for (var i = sp; i < sp+ matrix.cell_count; i++) {
-					if (typeof( matrix.events[i]) != 'undefined') 
-						{
+					if (typeof( matrix.events[i]) != 'undefined'){
 						
 						value = matrix.events[i];
 
@@ -1694,9 +1731,7 @@ console.log('TEST')
 					 	var extension=value[2].match(reg);
 					 	extension=extension[extension.length-1].slice(1);
 					 	
-						html += '>'+matrix.cameras[value[5]].text_left+'<br />\
-							'+value[7]+': '+extension;
-							
+						html += '>'+matrix.cameras[value[5]].text_left+'<br />'+value[7]+': '+extension;
 							
 						if (value[7] == 'image') html +=' ('+ value[6]+') <br /> </div></a>';
 						else html +=' ('+ value[8]+') <br /> </div></a>';
@@ -1708,29 +1743,27 @@ console.log('TEST')
 				}
 				$('#scroll_content').html(html);
 			
-			
-				// проверяем какие изображения есть в кеше браузера, а какаие надо загрузить
-				var ci = i + matrix.count_column;
-				var hide_over = true;
-				for(i; i<=ci; i++) {
-					if (typeof( matrix.events[i]) != 'undefined' && matrix.events[i][7] == 'image') {
-						if (typeof( matrix.events[i].image_chache) != 'undefined' && matrix.events[i].image_chache) {
-							loadimage[i] = true;
-						} else {
-							loadimage[i] = false;
-							hide_over = false;
-						}
+			// проверяем какие изображения есть в кеше браузера, а какаие надо загрузить
+			var ci = i + matrix.count_column;
+			var hide_over = true;
+			for(i; i<=ci; i++) {
+				if (typeof( matrix.events[i]) != 'undefined' && matrix.events[i][7] == 'image') {
+					if (typeof( matrix.events[i].image_chache) != 'undefined' && matrix.events[i].image_chache) {
+						loadimage[i] = true;
+					} else {
+						loadimage[i] = false;
+						hide_over = false;
 					}
 				}
-			
+			}
 			
 				// загружаем изображения и меняем размеры
-				$.each(loadimage, function(key, value) {
-					if (value) {
-						matrix.setimagesize(key);
-					}else {
-						matrix.loadsrc(key);
-					}
+			$.each(loadimage, function(key, value) {
+				if (value) {
+					matrix.setimagesize(key);
+				}else {
+					matrix.loadsrc(key);
+				}
 			});
 			// обновляем размеры и позиционирование ячеек в матрице
 			$('#scroll_content .content_item').height(matrix.cell_height);
@@ -1816,27 +1849,23 @@ console.log('TEST')
 			// все элементы матрицы есть в кеше, перезаполняем матрицу
 			var loadimage = {};
 			
-		var cells = $('div [id ^=cell_]').each(function(i){
+			var cells = $('div [id ^=cell_]').each(function(i){
 		
 			if (typeof( matrix.events[i]) != 'undefined')
 				{
 					value = matrix.events[i];
-
-				var cont = $(this).attr({'id': 'cell_'+(i)}).find('div.elem a').attr({reference: '#cell_'+(i) });
-	
-				if (value[7] == 'image') 
-				{
-					if (typeof( value.image_chache) != 'undefined' && value.image_chache) loadimage[i] = true;
-					else loadimage[i] = false;
+					var cont = $(this).attr({'id': 'cell_'+(i)}).find('div.elem a').attr({reference: '#cell_'+(i) });
+					if (value[7] == 'image') {
+						if (typeof( value.image_chache) != 'undefined' && value.image_chache) loadimage[i] = true;
+						else loadimage[i] = false;
+					}
+					//Не картинка //ad hoc
+					else
+					{
+						loadimage[i] = true;
+					}
 				}
-				//Не картинка //ad hoc
-				else
-				{
-					loadimage[i] = true;
-				}
-			}
-		});
-			
+			});
 			
 			// проверяем какие изображения есть в кеше браузера, а какаие надо загрузить
 			var ci = i + matrix.count_column;
@@ -1928,18 +1957,14 @@ console.log('TEST')
 							$(cont).empty().addPlayer({'src': NewSRC, 'useImageSize':'true' }).aplayerResizeContanerOnlyToParent();	
 						}
 					}
-					
 					else
 					{
-						//Не картинка  - 
-						// задаем новые размеры
+						//Не картинка  - задаем новые размеры
 						matrix.setimagesize(i);
 						
 						//пересоздаем плеер
 						$(this).find('a.refBox').empty().addPlayer({'src': NewSRC, 'logoPlay':'true' }).aplayerResizeContanerOnlyToParent();	
-						//, 'type': value[7]+'/application'
 					}
-					
 
 					//Получить расширение файла 
 				 	var extension=value[2].match(reg);
@@ -1960,7 +1985,6 @@ console.log('TEST')
 						ttl +='<tr><td>Начало</td> <td>'+value[9]+'</td> </tr>';
 						ttl +='<tr><td>Конец</td> <td>'+value[1]+'</td> </tr>';
 					}
-
 					
 				 	//Заполнение инфо-блока
 				 	$(this)
@@ -1984,7 +2008,6 @@ console.log('TEST')
 				$('#matrix_load').hide();
 			}
 		}
-	
 		
 		//корректировка позиционирования лого-плей
 		$('.logoPlay').each(function(){
@@ -1997,8 +2020,7 @@ console.log('TEST')
 		$('#cell_'+matrix.num).addClass('active');
 		
 		//Если включен режим детального просмотра - хайдим ячейки и выключаем тултип
-		if(matrix.mode=="detail") 
-		{
+		if(matrix.mode=="detail") {
 			$(".elem").tooltipOff();
 			$('#scroll_content .content_item').hide();
 		}
@@ -2080,8 +2102,12 @@ console.log('TEST')
 					}
 				}
 		}
+		
+		//если не режим ресайза
+		if(!matrix.isResizeMode){
 			//обновляем матрицу
 			matrix.update(sp);
+		}
 
 			//если режим детального просмотра - отображаем текущий элемент
 			if(matrix.mode=='detail'){
@@ -2166,7 +2192,6 @@ console.log('TEST')
 			sp = 0;
 		}
 
-
 		if(count_events < matrix.cell_count && count_events < matrix.curent_tree_events[matrix.tree].count) {
 			// если нет элементов, то выполняем запрос на сервер
 			matrix.get_events(sp);
@@ -2181,30 +2206,6 @@ console.log('TEST')
 	
 	//возвращает src ресайзенного изображения
 	getResizedImageSrc : function(cell_num, height, width){
-/*		
-		//определение размеров изображения
-		height = $('#cell_'+cell_num+' .refBox').height();
-		width = $('#cell_'+cell_num+' .refBox').width();
-		//проверка полученных значений (при вызове matrix.get_events() - элементы матрицы еще не сформированны)
-		if(height == null || height <= 0 || width == null || width <= 0 )
-		{
-			//поэтому вычисляем необходимые размеры здесь
-			width = matrix.thumb_width;
-			height = matrix.thumb_height;
-			if ($('#proportion').attr('checked')) {
-				// если выбран чекбокс сохранять пропорции
-				var w = width;
-				var h = Math.floor(matrix.events[cell_num][3]*w/matrix.events[cell_num][4]);
-				if (h > height) {
-					h = height;
-					w = Math.floor(matrix.events[cell_num][4]*h/matrix.events[cell_num][3]);
-				}
-				width = w;
-				height = h;
-			}
-		}
-*/
-		
 		//формируем строку src
 		var ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url=http://'+document.location.host+MediaUrlPref+ matrix.events[cell_num][2];
 		ResizedImgSrc += '&h='+height;
@@ -2215,7 +2216,6 @@ console.log('TEST')
 		}
 	
 };
-
 
 
 // элемент скрол
@@ -2643,7 +2643,6 @@ var scale = {
 			$(document).unbind('mousemove');
 		});
 
-
 		if (gallery.cookie.get('scale')) {
 			scale.setposition(gallery.cookie.get('scale'));
 		}
@@ -2695,6 +2694,7 @@ var scale2 = {
 		},
 
 		updateposition : function(sp) {
+			
 			var self = this;
 			self.position = sp;
 			var value = matrix.events[matrix.num];
@@ -2708,9 +2708,6 @@ var scale2 = {
 			//Изменение положения ползунка масштаба 	
 			if(value[7]=='image') //Если картинка
 			{
-			
-				
-				
 				//определяем размеры изображения
 				var height =  $(".active .refBox").height();
 				var width = $(".active .refBox").width();
@@ -2721,22 +2718,17 @@ var scale2 = {
 				var img_width = width;
 				
 				//если включен режим пропорций
-				if( $('#proportion').attr('checked')=='checked' )
-				{
-				
+				if( $('#proportion').attr('checked')=='checked' ){
 					var img_height = matrix.events[matrix.num][3];
 					var img_width = matrix.events[matrix.num][4];
 					var origin_proportion = img_width/img_height;
 
 					elem_proportion = width/height;
 					
-					if(origin_proportion > elem_proportion )
-					{
+					if(origin_proportion > elem_proportion ){
 						img_height = parseInt( width/origin_proportion);
 						img_width = width;
-					}
-					else 
-					{
+					} else {
 						img_width = parseInt(height*origin_proportion);
 						img_height = height;
 					}
@@ -2748,14 +2740,13 @@ var scale2 = {
 				//Загрузка изображения соответствующего размера
 				$('.active .refBox')
 				.aplayerSetImgSrc(ResizedImgSrc)
-				.aplayerSetSizeMediaElt({'height': img_height, 'width': img_width})
-				.aplayerResizeContanerOnlyToParent();
+				.aplayerResizeContanerOnlyToParent()
+				.aplayerSetSizeMediaElt({'height': img_height, 'width': img_width});
 				
 				//визуализируем скролл масштаба режима просмотра
 				$('#scale2').show();
 				//показываем чекбокс пропорций
 				$('div.propotion').show();
-				
 			}
 			else if( $('.active .refBox').aplayerIsEmbededObject() || value[7]=='audio' ) //Если внедренный объект или  аудио
 			{
@@ -2771,13 +2762,46 @@ var scale2 = {
 			}
 			else // HTML5-player
 			{
+				// размер матрицы
+				var width = matrix.width;
+				var height = matrix.height;
+				// максимальный размер увеличения
+				var wm = width*2;
+				var hm = height*2;
+				if ($('#proportion').attr('checked') || value[7]=='video') {
+					// если выбран режим сохранять пропорции
+					if (value[3] < matrix.height && value[4] < matrix.width) {
+						// если изображение влазит в окно просмотра, то используем оригинальные размеры
+						width = value[4];
+						height = value[3];
+						wm = width*2;
+						hm = height*2;
+					} else {
+						// если не влазит то используем ширину матрицы а высоту в впропорциях изменяем
+						var w = matrix.width;
+						var h = Math.floor(value[3]*w/value[4]);
+						wm = value[4];
+						hm = Math.floor(h*value[4]/w);
+	
+						// если высота не влазит, то используем высоту матрицы, а ширину подгоняем в пропорциях
+						if (h > matrix.height) {
+							h = matrix.height;
+							w = Math.floor(value[4]*h/value[3]);
+							hm = value[3];
+							wm = Math.floor(w*value[4]/h);
+						}
+						width = w;
+						height = h;
+					}
+				}
+
 				sp+=3; //Несколько увеличиваем размер медиаэлемента 
 				//установка размеров плеера в соответствии с размерами родительского элемента
-				$('.active .refBox').aplayerResizeToParent();
+				$('.active .refBox').aplayerResizeContanerOnlyToParent(); //.aplayerResizeToParent(); 
 				//Изменение размеров медиа-элемента плеера 
 				$('.active .refBox').aplayerSetSizeMediaElt({
-					'width':  parseInt(self.min_width) + Math.floor((self.max_width - self.min_width)*sp/self.max),
-					'height': parseInt(self.min_height) + Math.floor((self.max_height - self.min_height)*sp/self.max)
+					'width':  parseInt(width) + Math.floor((wm - width)*sp/self.max),
+					'height': parseInt(height) + Math.floor((hm - height)*sp/self.max)
 				} );
 				
 				//визуализируем скролл масштаба режима просмотра
@@ -2831,7 +2855,6 @@ var scale2 = {
 				self.setposition(gallery.cookie.get('scale2'));
 			}
 
-
 			// обработка нажатия на область между ползунком и края
 			$(self.id + ' .scale_body').unbind('click');
 			$(self.id + ' .scale_body').click(function(e){
@@ -2843,13 +2866,9 @@ var scale2 = {
 					self.click_max();
 				}
 			});
-
 		}
-
-
-
-
 	};
+	
 var keyBoard = {
 	boxesEnum : {},
 	keys : {
@@ -2954,7 +2973,6 @@ var keyBoard = {
 
 			$('#more_cam').hide();
 			$('#win_top').height('auto');
-
 		}
 	},
 	init : function() {
@@ -2963,7 +2981,6 @@ var keyBoard = {
 		keyBoard.boxesEnum = new Enum('INSIDE','TREE','CAMS');
 
 		keyBoard.chooseDialogTab = new Enum('check','yes','no');
-
 
 		keyBoard.selectBox($('#scroll_content'));
 
@@ -3067,61 +3084,17 @@ var keyBoard = {
 					} else if(e.which == keyBoard.keys.enter) {
 						matrix.preview();
 					} else if(e.which == keyBoard.keys.down) {
-//DETAIL: Нажатие стрелки вниз
+						//DETAIL: Нажатие стрелки вниз
 						scroll.num_down();
-						
-						
-/*						var imgHeight = parseInt(matrix.imageDetail.attr('height'));
-						if(imgHeight<matrix.height) { return; }
-						var pos = matrix.imageDetail.offset();
-						pos.top -= 20;
-						var imgHeight = parseInt(matrix.imageDetail.attr('height'));
-						if(matrix.height - pos.top + matrix.currentOffset.top >=imgHeight)
-							pos.top = matrix.height - imgHeight + matrix.currentOffset.top;
-						matrix.imageDetail.offset(pos);
-*/
 					} else if(e.which == keyBoard.keys.up) {
-//DETAIL: Нажатие стрелки вверх	
+						//DETAIL: Нажатие стрелки вверх	
 						scroll.num_up();
-						
-						
-						
-/*						var imgHeight = parseInt(matrix.imageDetail.attr('height'));
-						if(imgHeight<matrix.height) { return; }
-						var pos = matrix.imageDetail.offset();
-						pos.top += 20;
-						if(pos.top>matrix.currentOffset.top)
-							pos.top = matrix.currentOffset.top;
-						matrix.imageDetail.offset(pos);
-*/
-						
 					} else if(e.which == keyBoard.keys.right) {
-//DETAIL: Нажатие стрелки вправо
+						//DETAIL: Нажатие стрелки вправо
 						scroll.num_right();
-						
-/*						var imgWidth = parseInt(matrix.imageDetail.attr('width'))-28;
-						if(imgWidth<matrix.width) { return;	}
-						var pos = matrix.imageDetail.offset();
-						pos.left -= 20;
-						var imgWidth = parseInt(matrix.imageDetail.attr('width'))-28;
-						if(matrix.width-pos.left + matrix.currentOffset.left>imgWidth)
-							pos.left = matrix.width - imgWidth + matrix.currentOffset.left;
-						matrix.imageDetail.offset(pos);
-*/						
-						
 					} else if(e.which == keyBoard.keys.left) {
-//DETAIL: Нажатие стрелки влево
+						//DETAIL: Нажатие стрелки влево
 						scroll.num_left();
-						
-/*						var imgWidth = parseInt(matrix.imageDetail.attr('width'))-28;
-						if(imgWidth<matrix.width) {	return;	}
-						var pos = matrix.imageDetail.offset();
-						pos.left += 20;
-						if(pos.left>matrix.currentOffset.left){
-							pos.left = matrix.currentOffset.left;
-						}
-						matrix.imageDetail.offset(pos);
-*/
 					}
 				}
 

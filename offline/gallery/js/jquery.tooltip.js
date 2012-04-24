@@ -9,12 +9,12 @@
 			 .mouseover(function(e){
 				 if($(".tooltip").length>0)return; //ограничение кол-ва эдентичных тултипов(при отключении logo_play)
 				 $('<div class="tooltip" id="tooltip_'+i+'" ><table >'+$(this).attr('tooltip')+'</table></div>')
-				 	.css({'left':e.pageX-10, 'top':e.pageY+20 })
+				 	.css({'left':e.pageX-200, 'top':e.pageY+20 })
 				 	.fadeIn(400)
 				 	.appendTo('body');
 			 })
 			 .mousemove(function(kmouse){
-				 $(".tooltip").css({left:kmouse.pageX-10, top:kmouse.pageY+20});
+				 $(".tooltip").css({left:kmouse.pageX-200, top:kmouse.pageY+20});
 			 })
 			 .mouseout(function(){
 				 $(".tooltip").fadeOut(400);
