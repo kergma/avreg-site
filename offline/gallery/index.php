@@ -248,7 +248,9 @@ function readableFileSize(size) {
 
 $(function(){
 
-$.aplayerConfiguration(<?php print json_encode($conf['aplayerConfig']);?>);
+<?php if (isset($conf['aplayerConfig']) && !empty($conf['aplayerConfig']) && is_array($conf['aplayerConfig'])) :?>	
+	$.aplayerConfiguration(<?php print json_encode($conf['aplayerConfig']);?>);
+<?php endif; ?>
 
 	// переопределение настроек
 	var conf = {
