@@ -1,4 +1,6 @@
+//мышь над изображением
 function img_mouseover(eimg, win_nr) {
+	
    if ( WINS_DEF[win_nr] == undefined )
       return;
 
@@ -33,124 +35,172 @@ function img_mouseover(eimg, win_nr) {
    ddrivetip();
 }
 
+//Обработчик клика по изображению с камеры
 function img_click(clicked_div) {
-   var img_jq = $('img',clicked_div);
+
+   var plcont = $('.pl_cont', clicked_div);
    var tmp_div;
    var clicked_div_jq = $(clicked_div);
    var win_geo; 
    var i;
+   var win_nr = ($(clicked_div_jq).attr('id')).match(/\d+/); //номер ячейки
+   //если номер камеры не определен
+   if(win_nr == null ) return;
+   
+   //Если включем режим - камера на весь экран
    if ( FS_WIN_DIV ) {
       // current - fullscreen
-
-      if ( WIN_DIV_W == undefined ) {
-         /* в момент FS было изменение CANVAS */
-         change_wins_geo();
+	   if ( WIN_DIV_W == undefined ) {
+		   change_wins_geo();
+		   
+		   //если в режиме просмотра одной камеры происходил ресайз окна браузера
+         if ( MSIE ){
+      		$('.pl_cont',clicked_div_jq)
+      		.aplayerSetMjpegSrc( CAM_SRCS[win_nr]['cell'] ) ;
+          }else{
+         	 $('.pl_cont',clicked_div_jq)
+         	 .aplayerSetMjpegSrc( CAM_SRCS[win_nr]['cell'] );
+          }
+         
       } else {
-         var border_w = clicked_div.offsetWidth - clicked_div.clientWidth;
-         var border_h = clicked_div.offsetHeight - clicked_div.clientHeight;
-         clicked_div.style.width = WIN_DIV_W + border_w + 'px';
-         clicked_div.style.height = WIN_DIV_H + border_h + 'px';
-         clicked_div.style.left = WIN_DIV_LEFT + 'px';
-         clicked_div.style.top = WIN_DIV_TOP + 'px';
-         img_jq.css('width', IMG_IN_DIV_W);
-         img_jq.css('height', IMG_IN_DIV_H);
-      }
 
+    	  //востанавливаем исходные размеры отображения камеры
+    	 var border_w = clicked_div.offsetWidth - clicked_div.clientWidth;
+         var border_h = clicked_div.offsetHeight - clicked_div.clientHeight;
+         $(clicked_div)
+         .width(WIN_DIV_W + border_w )
+         .height(WIN_DIV_H + border_h);
+         
+         $('.pl_cont',clicked_div_jq)
+	      .width(IMG_IN_DIV_W)
+	      .height(IMG_IN_DIV_H);
+
+         if ( MSIE ){
+     		$('.pl_cont',clicked_div_jq)
+     		.aplayerSetSize({'height':IMG_IN_DIV_H, 'width': IMG_IN_DIV_W})
+     		.aplayerSetMjpegSrc( CAM_SRCS[win_nr]['cell'] ) ;
+         }else{
+        	 $('.pl_cont',clicked_div_jq)
+        	 .aplayerResizeToParent()
+        	 .aplayerSetMjpegSrc( CAM_SRCS[win_nr]['cell'] );
+         }
+         
+       $(clicked_div).css({'left': WIN_DIV_LEFT + 'px', 'top': WIN_DIV_TOP + 'px' });
+
+      }
+      
       for (i=0;i<WIN_DIVS.length;i++) {
          tmp_div=WIN_DIVS[i];
-         if ( tmp_div == clicked_div )
-            continue;
-         tmp_div.style.visibility='visible';
+         if ( tmp_div == clicked_div ){
+        	 continue;
+         }else{
+        	 //отображаем остальные камеры
+        	 $(tmp_div).show();
+         }
       }
       FS_WIN_DIV = undefined;
+    //Если включем режим - просмотра всех камер
    } else {
+	   
       // current - NO fullscreen
       for (i=0;i<WIN_DIVS.length;i++) {
          tmp_div=WIN_DIVS[i];
-         if ( tmp_div == clicked_div )
-            continue;
-         tmp_div.style.visibility='hidden';
+         if(tmp_div == clicked_div ){
+        	 continue;
+         }else{
+        	 //прячем остальные камеры
+        	 $(tmp_div).hide();
+         }
       }
-
+      
+      //Выбранную камеру разворачиваем на весь экран
       WIN_DIV_H = clicked_div.clientHeight;
       WIN_DIV_W = clicked_div.clientWidth;
       WIN_DIV_LEFT=clicked_div.offsetLeft;
       WIN_DIV_TOP=clicked_div.offsetTop;
-      IMG_IN_DIV_W=img_jq.width();
-      IMG_IN_DIV_H=img_jq.height();
-
+      IMG_IN_DIV_W=plcont.width();
+      IMG_IN_DIV_H=plcont.height();
 
       win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, 1, 1, 1);
 
       clicked_div_jq.css('top',  calc_win_top (win_geo, 0));
       clicked_div_jq.css('left', calc_win_left(win_geo, 0));
-      clicked_div_jq.width(win_geo.win_w);
-      clicked_div_jq.height(win_geo.win_h);
-      $('img',clicked_div_jq).width(win_geo.cam_w).height(win_geo.cam_h)
-         // .attr('alt',win_geo.cam_w + 'x' + win_geo.cam_h);
+  
+      $('.pl_cont',clicked_div_jq)
+	      .width(win_geo.cam_w+correct_w)
+	      .height(win_geo.cam_h+correct_h);
 
-         clicked_div.style.visibility='visible';
 
+  	if ( MSIE ){
+		$(clicked_div_jq).width(win_geo.win_w+correct_w).height(win_geo.win_h+correct_h);
+		$('.pl_cont',clicked_div_jq)
+		.aplayerSetSize({'height':win_geo.cam_h+correct_h, 'width': win_geo.cam_w+correct_w}) 
+		.aplayerSetMjpegSrc( CAM_SRCS[win_nr]['full_screen'] );
+    }else{
+    	$(clicked_div_jq).width(win_geo.win_w).height(win_geo.win_h);
+    	$('.pl_cont',clicked_div_jq)
+    	.aplayerResizeToParent()
+    	.aplayerSetMjpegSrc( CAM_SRCS[win_nr]['full_screen'] );
+    }
       FS_WIN_DIV = clicked_div;
    }
+
+   
 } // img_click()
 
+//установка плеера
 function brout(win_nr, win_div, win_geo) {
-   if ( WINS_DEF[win_nr] == undefined )
-      return;
-   var cam_nr = WINS_DEF[win_nr].cam.nr;
-   var id='cam'+cam_nr;
-   var orig_w = WINS_DEF[win_nr].cam.orig_w;
-   var orig_h = WINS_DEF[win_nr].cam.orig_h;
-   var url = WINS_DEF[win_nr].cam.url;
+	
+   if ( WINS_DEF[win_nr] == undefined ) return;
 
-   var alt = 'Camera #' + cam_nr + ' ' + WINS_DEF[win_nr].cam.name + ' ['+orig_w+'x'+orig_h+'] ' + url;
-   if (MSIE) {
-      var amc = document.createElement('object');
-      amc.id = id;
-      amc.alt = alt + ' Microsoft Internet Explorer on Windows system found. Try ActiveX viewer.';
-      amc.border = 0;
-      amc.hspace = 0;
-      amc.vspace = 0;
-      amc.width = win_geo.cam_w;
-      amc.height = win_geo.cam_h;
-      win_div.get(0).appendChild(amc);
-      amc.codeBase = "AMC.cab#Version=5,6,2,5";
-      amc.classid = "clsid:745395C8-D0E1-4227-8586-624CA9A10A8D";
-      amc.UIMode = "none";
-      amc.ShowToolbar = false;
-      amc.ShowStatusBar = false;
-      amc.StretchToFit = true;
-      amc.Popups = 6;
-      amc.EnableReconnect = EnableReconnect;
-      amc.EnableContextMenu = 1;
-      amc.MediaType = "mjpeg";
-      amc.MediaURL = url+'&ab='+___abenc;
-      amc.AutoStart = true;
-   } else {
-      // $('<img src="/640x480r.png" id="'+id+'" name="cam" alt="' +alt+'" '+
-      $('<img src="'+url+'&ab='+___abenc+'" id="'+id+'" name="cam" alt="' +alt+'" '+
-            'width="'+orig_w+'px" height="'+orig_h+'px" ' +
-            'align="middle" border="0px" />').appendTo(win_div).width(win_geo.cam_w).height(win_geo.cam_h);
-      win_div.click( function(e) {
-            if ( typeof(e.target) == "undefined" || typeof(e.target.tagName) == "undefined" )
-               return img_click(this);
-            else {
-               if ( e.target.tagName != 'A')
-                  return img_click(this);
-            }
-         } );
+//   var url = WINS_DEF[win_nr].cam.url;
+
+   //добавляем в массив src источники для различных режимов камеры
+	var cam_sources = new Array();
+	
+	cam_sources['cell'] = WINS_DEF[win_nr].cam.url; // + '&cell'; ///---------------------- DELETE:    + '&cell'
+	cam_sources['full_screen']= WINS_DEF[win_nr].cam.url_fs; // + '&full_screen'; ///---------------------- DELETE:   + '&full_screen'
+	CAM_SRCS[win_nr] = cam_sources;
+
+   
+   //Установка плеера в элемент  // win_geo.cam_h 
+   var cont = $('<div class="pl_cont" />').width(win_geo.cam_w+correct_w).height(win_geo.cam_h+correct_h);
+
+	$(win_div).append(cont);
+	$(cont).addPlayer({'src': CAM_SRCS[win_nr]['cell'] , 'controls': false }); 
+	
+	if ( MSIE ){
+		$(win_div).width(win_geo.win_w+correct_w).height(win_geo.win_h+correct_h);
+		$('.pl_cont',cont).aplayerSetSize({'height':win_geo.cam_h+correct_h+2 , 'width': win_geo.cam_w+correct_w+2});
+
+    }else{
+	   $(cont).aplayerResizeToParent();
+    }
+
+	//установка обработчика клика по изображению камеры
+	$(win_div).click( function(e) {
+	if ( typeof(e.target) == "undefined" || typeof(e.target.tagName) == "undefined" )
+    	return img_click(this);
+	else {
+		if ( e.target.tagName != 'A')
+        	return img_click(this);
+        }
+	});
+	   
+	   //установка тултипа
       win_div.mouseover( function() { img_mouseover(this, win_nr);} );
       win_div.mouseout( function() { hideddrivetip(); } ); 
-   }
 }
 
 /* global variables */
+var CAM_SRCS = new Array(); // sources для камеры в режимах раскладки и на весь экран 
 var CANVAS;
 var CANVAS_W = -1;
 var CANVAS_H = -1;
 
 var WIN_DIVS;
+
+var correct_h = correct_w = 2; //корректировка размеров контейнера для плеера
 
 // global vars for tooltip
 var WIN_DIV_LEFT;
@@ -217,35 +267,53 @@ function calc_win_top(win_geo, row) {
    return _top; 
 }
 
-
+//Обработчик ресайза окна в режиме просмотра одной камеры
 function change_fs_win_geo(fs_win) {
    var win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, 1, 1, 1);
+ 
    var fs_win_div_jq = $(fs_win);
+   
    fs_win_div_jq.css('top',  calc_win_top (win_geo, 0));
    fs_win_div_jq.css('left', calc_win_left(win_geo, 0));
-   fs_win_div_jq.width(win_geo.win_w);
-   fs_win_div_jq.height(win_geo.win_h);
+   
    if ( GECKO ) {
-      $('img',fs_win_div_jq).width(win_geo.cam_w).height(win_geo.cam_h)
-         // .attr('alt',win_geo.cam_w + 'x' + win_geo.cam_h);
+	   
+	   $(fs_win_div_jq)
+	   .width(win_geo.win_w)
+	   .height(win_geo.win_h);
+	   
+	   $('.pl_cont',fs_win_div_jq).width(win_geo.cam_w+correct_w).height(win_geo.cam_h+correct_h).aplayerResizeToParent();
+
    } else if ( MSIE ) {
-      var r = $('object',fs_win_div_jq).width(win_geo.cam_w).height(win_geo.cam_h)
-         // .text(win_geo.cam_w + 'x' + win_geo.cam_h)
+       	$(fs_win_div_jq)
+       	.width(win_geo.win_w+correct_w)
+       	.height(win_geo.win_h+correct_h);
+       	
+       	$('.pl_cont',fs_win_div_jq)
+       	.width(win_geo.cam_w+correct_w)
+       	.height(win_geo.cam_h+correct_h)
+       	.aplayerSetSize({'height':win_geo.cam_h+correct_h , 'width': win_geo.cam_w+correct_w }) ;
    }
 
 } // change_fs_win_geo()
 
+//Обработчик ресайза окна в режиме просмотра всех камер
 function change_wins_geo() {
    var base_win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, ROWS_NR, COLS_NR, 1);
    var win_geo;
    var i,tmp_div,win_def,win_nr,win_id;
+   
    for (i=WIN_DIVS.length-1; i>=0; i--) {
+	   
       win_id = WIN_DIVS[i].id;
+      //win_nr - номер текущего элемента
       win_nr = parseInt(win_id.substr(3));
       if ( win_nr == NaN ) {
          alert('Error: win.id="' + WIN_DIVS[i].id + '"');
          return;
       }
+      
+      //tmp_div - текущий элемент
       tmp_div=$(WIN_DIVS[i]);
       win_def = WINS_DEF[win_nr];
       if ( win_def.rowspan == 1 && win_def.colspan == 1 )
@@ -256,25 +324,25 @@ function change_wins_geo() {
                CamsAspectRatio, 1, 1, win_def.rowspan);
       tmp_div.css('top',  calc_win_top (base_win_geo, win_def.row));
       tmp_div.css('left', calc_win_left(base_win_geo, win_def.col));
-      tmp_div.width(win_geo.win_w);
-      tmp_div.height(win_geo.win_h);
       if ( GECKO ) {
-         $('img',tmp_div).width(win_geo.cam_w).height(win_geo.cam_h)
-            // attr('alt',win_geo.cam_w + 'x' + win_geo.cam_h);
-      } else if (MSIE) {
-         // $('img',tmp_div).width(win_geo.cam_w).height(win_geo.cam_h)
-         $('object',tmp_div).width(win_geo.cam_w).height(win_geo.cam_h)
-            // .text(win_geo.cam_w + 'x' + win_geo.cam_h)
+          $(tmp_div).width(win_geo.win_w).height(win_geo.win_h);    	  
+    	  $('.pl_cont',tmp_div).width(win_geo.cam_w+correct_w).height(win_geo.cam_h+correct_h).aplayerResizeToParent();
+      } else if (MSIE) { 
+        	$(tmp_div).width(win_geo.win_w+correct_w).height(win_geo.win_h+correct_h);
+        	$('.pl_cont',tmp_div).width(win_geo.cam_w+correct_w).height(win_geo.cam_h+correct_h)
+        	.aplayerSetSize({'height':win_geo.cam_h+correct_h , 'width': win_geo.cam_w+correct_w }) ;
       } else {
          $('applet',tmp_div).width(win_geo.cam_w).height(win_geo.cam_h)
       }
    } // for(allwin)
+
 } // change_wins_geo()
 
 function canvas_growth() {
    var canvas_changed = false;
    var avail_h = (($.browser.msie)?ietruebody().clientHeight:window.innerHeight) - $('#toolbar').height();
    var avail_w = (($.browser.msie)?ietruebody().clientWidth:window.innerWidth);
+   
    if ( avail_h !=  CANVAS_H) {
       CANVAS_H = avail_h;
       CANVAS.height(CANVAS_H);
@@ -327,13 +395,13 @@ function try_fs() {
    if (GECKO)
    {
       if (window.outerWidth < window.screen.availWidth)
-         window.resizeTo(window.screen.availWidth,window.screen.availHeight);
+         window.resizeTo(window.screen.availWidth, window.screen.availHeight);
    } else
-      window.resizeTo(window.screen.availWidth,window.screen.availHeight);
+      window.resizeTo(window.screen.availWidth, window.screen.availHeight);
    }
 
    $(document).ready( function() {
-
+	   
          if (ie||ns6) {
          tipobj=document.all? 
          document.all['tooltip'] :
@@ -399,7 +467,8 @@ function try_fs() {
                                            '" target="_blank" style="color:inherit;" title="Перейти в веб интерфейс IP-камеры">';
                   ipcamhost_link_end   = ' &rarr;<\/a>';
                }
-               $('<div style="background-color:#666699;'+
+               // background-color:#666699;
+               $('<div style="background-color:#464659; cursor:default;'+
                      ' padding:0px; margin:0px; overflow:hidden; border:0px;'+
                      ' height:'+ NAME_DIV_H*win_def.rowspan +'px;"><span style="'+
                      'vertical-align: middle; padding-left:8px; padding-top:2px; padding-bottom:2px; padding-right:2px;'+
@@ -413,8 +482,8 @@ function try_fs() {
          WIN_DIVS = $('div.win');
 
          $('#dialog').jqm({
-overlay: 90
-});
+        	 overlay: 90
+         });
 });
 
 

@@ -5,7 +5,11 @@ $pageTitle = 'WebCam';
 $body_style='overflow: hidden;  overflow-y: hidden !important; padding: 0; margin: 0; width: 100%; height: 100%;';
 $css_links=array('lib/js/jqModal.css');
 $USE_JQUERY = true;
-$link_javascripts=array('lib/js/jqModal.js');
+$link_javascripts=array(
+						'lib/js/jqModal.js', 
+						'offline/gallery/js/jquery-ui-1.8.17.custom.min.js',
+						'offline/gallery/js/jquery.aplayer.js',
+						);
 $body_addons='scroll="no"';
 $ie6_quirks_mode = true;
 $lang_file='_online.php';
@@ -111,6 +115,7 @@ for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
       nr:   %s,
       name: "%s",
       url:  "%s",
+      url_fs : "%s",
       orig_w: %u,
       orig_h: %u,
       netcam_host: %s
@@ -119,6 +124,7 @@ for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
    $win_nr, $l_wins[0], $l_wins[1],$l_wins[2],$l_wins[3],
    $cam_nr, getCamName($GCP_cams_params[$cam_nr]['text_left']),
    get_cam_http_url($conf, $cam_nr, 'mjpeg'),
+   get_cam_http_url($conf, $cam_nr, 'mjpeg', false, true),
    $width, $height,
    $netcam_host,
    "\n" );

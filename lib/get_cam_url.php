@@ -6,7 +6,7 @@ $__tmp = &$conf['avregd-httpd'];
 eval("\$http_cam_location = \"$__tmp\";");
 unset($__tmp);
 
-function get_cam_http_url($conf, $cam_nr, $media, $append_abenc=false)
+function get_cam_http_url($conf, $cam_nr, $media, $append_abenc=false, $full_screen = false)
 {
    $cams_subconf = &$GLOBALS['cams_subconf'];
    if ( $cams_subconf && isset($cams_subconf[$cam_nr])
