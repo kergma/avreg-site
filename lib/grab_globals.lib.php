@@ -1,13 +1,9 @@
 <?php
-/* $Id: grab_globals.lib.php,v 1.8 2002/08/12 08:43:45 rabus Exp $ */
-
-
 /**
- * This library grabs the names and values of the variables sent or posted to a
- * script in the '$HTTP_*_VARS' arrays and sets simple globals variables from
- * them. It does the same work for the $PHP_SELF variable.
- *
- * loic1 - 2001/25/11: use the new globals arrays defined with php 4.1+
+ * 
+ * @file lib/grab_globals.lib.php
+ * ???
+ * 
  */
 if (!defined('PMA_GRAB_GLOBALS_INCLUDED')) {
     define('PMA_GRAB_GLOBALS_INCLUDED', 1);

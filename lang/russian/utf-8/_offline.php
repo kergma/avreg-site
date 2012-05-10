@@ -1,5 +1,15 @@
 <?php
-
+/**
+ * @file lang/russian/utf-8/_offline.php
+ * @brief Файл переводов для страниц 
+ * - offline/index.php	
+ * - offline/query.php
+ * - offline/result.php
+ * - offline/_res.form.inc.php
+ * - offline/view-image.php
+ * - offline/playlist.php
+ * - offline/_playlist.php
+ */
 $strCamChoiseHelp='Можно выбрать несколько камер сразу.\nДля этого, выбирая камеры мышью,\nудерживайте клавиши SHIFT или CTRL';
 
 $strFilterHelp='Определите какие события и файлы искать в базе данных.\n\n'.

@@ -1,4 +1,9 @@
 <?php
+/**
+ * 
+ * @file offline/_res.form.inc.php
+ * @brief Форма скрытых параметров фильтрации для просмотра предыдущих/следующих записей
+ */
 if (isset($strLastSql) || isset($strNextSql))
 {
 	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST" enctype="application/x-www-form-urlencoded">'."\n";

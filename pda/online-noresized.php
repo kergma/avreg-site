@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file pda/online-noresized.php
+ * @brief 
+ */
 $pageTitle = sprintf('Камера №%u', $_GET['camera']);
 // $body_onload='body_loaded();';
 require ('head_pda.inc.php');

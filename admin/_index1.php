@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * @brief Стартовый iframe админки
+ */
 require ('../head.inc.php');
 require('warn.inc.php');
 echo '<h1>' . $r_menu . '</h1>' ."\n";

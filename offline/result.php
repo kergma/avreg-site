@@ -1,4 +1,9 @@
 <?php
+/**
+ * 
+ * @file offline/result.php
+ * @brief Просмотр списка отфильтованных событий
+ */
 if (isset($_POST)) {
    $expire=time()+5184000;
    $_pg = dirname($_SERVER['SCRIPT_NAME']) . '/' ;

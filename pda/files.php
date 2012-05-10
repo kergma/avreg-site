@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file pda/files.php
+ * @brief 
+ */
 $pageTitle = sprintf('Камера №%u - файлы сеанса №%u', $_GET['camera'], $_GET['ser_nr']);
 $lang_file = '_admin_cams.php';
 require ('head_pda.inc.php');

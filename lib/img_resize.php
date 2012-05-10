@@ -1,27 +1,53 @@
 <?php
+/**
+ * 
+ * @file lib/img_resize.php
+ * @brief Изменение размеров изображения
+ * 
+ */
 require_once('../lib/config.inc.php');
 // TODO  rotate live image
 
+/// разрешить ресайз только локально
 $local = true; /* local or http only supported */
-
+/**
+ * 
+ * Функция отправляющая заголовки о 412 ошибке
+ * @param string $msg сообщение
+ */
 function die412($msg)
 {
    header("$_SERVER[SERVER_PROTOCOL] 412 Precondition failed");
    echo $msg;
    exit;
 }
+/**
+ * 
+ * Функция отправляющая заголовки о 403 ошибке
+ * @param string $msg сообщение
+ */
 function die403($msg)
 {
    header("$_SERVER[SERVER_PROTOCOL] 403 Forbidden");
    echo $msg;
    exit;
 }
+/**
+ * 
+ * Функция отправляющая заголовки о 404 ошибке
+ * @param string $msg сообщение
+ */
 function die404($msg)
 {
    header("$_SERVER[SERVER_PROTOCOL] 404 Not found");
    echo $msg;
    exit;
 }
+/**
+ * 
+ * Функция отправляющая заголовки о 500 ошибке
+ * @param string $msg сообщение
+ */
 function die500($msg)
 {
    header("$_SERVER[SERVER_PROTOCOL] 500 Server Error");
@@ -31,13 +57,17 @@ function die500($msg)
 
 if ( empty($_REQUEST['file']) && !isset($_REQUEST['camera']) )
    die412("couldn't set either \"file\" or \"camera\" param");
-
+/// текущее время
 $now = time();
+/// максимальный ресайз
 $max_age = &$conf['pda-thumb-image-max-age'];
+/// кеш изображения
 $etag  = null;
+/// ссылка на изображение
 $img_uri  = '';
+/// файл изображения
 $img_file_stat = false;
-
+/// локальный просмотр
 $is_local = !empty($_REQUEST['file']);
 if ( $is_local ) {
    /* get the local file */
@@ -108,10 +138,11 @@ if ( $is_local ) {
 }
 
 
-// Get/calc new image resolution
+/// ширина изображения
 $width_src  = imagesx($gd);
+/// высота изображения
 $height_src = imagesy($gd);
-
+/// новая ширина
 $width_new = $conf['pda-max-image-width'];
 if ( !empty($_REQUEST['width']) ) {
    if ( (int)$_REQUEST['width'] < $width_new )
@@ -120,13 +151,14 @@ if ( !empty($_REQUEST['width']) ) {
 if ( empty($_REQUEST['height']) ) {
    $height_new = (int)(((float)$width_new / (float)$width_src) * (float)$height_src);
 } else
+/// новая высота
    $height_new = (int)$_REQUEST['height'];
 // die("[$width_src x $height_src] -> [$width_new x $height_new]");
-
+/// новое изображение
 $thumb = imagecreatetruecolor($width_new, $height_new);
 // Resize
 imagecopyresized($thumb, $gd, 0, 0, 0, 0, $width_new, $height_new, $width_src, $height_src);
-
+/// дата для заголовков
 $gmt_now = gmdate('D, d M Y H:i:s', $now) . ' GMT';
 if ( $is_local ) {
    /* включаем агрессивное кеширование */

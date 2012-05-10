@@ -1,7 +1,11 @@
 <?php
+/**
+ * @file /admin/update.php
+ * @brief Информация по обновлению системы
+ */
 require ('../head.inc.php');
 
-echo '<h1>' . sprintf($r_update,$named) . '</h1>' ."\n";
+echo '<h1>' . sprintf($r_update,$named) . '</h1>' ."	n";
 
 if ( isset($updateSW) )
 {
@@ -11,7 +15,7 @@ if ( isset($updateSW) )
        move_uploaded_file($_FILES['updates_file']['tmp_name'], $uploadfile))
 	{
 		print '<pre>'."\n";
-		passthru("$conf['sudo'] $UPDATEPROC " .$_FILES['updates_file']['name'], $retval);
+		passthru("{$conf['sudo']} $UPDATEPROC " .$_FILES['updates_file']['name'], $retval);
 		print '</pre>'."\n";
         if ( $retval == 0 )
         	print '<p class="HiLiteBigWarn">' . $update_success . '</p>' ."\n";

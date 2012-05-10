@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * 
+ * @file admin/mon-type.inc.php
+ * @brief Параметры раскладок
+ */
 $onecam_wins = array( array(0,0,1,1) );
 $quad_4_4_wins = array(
    array(0,0,1,1), array(0,1,1,1),
@@ -130,7 +134,14 @@ $layouts_defs = array(
 */
 );
 
-
+/**
+ * 
+ * Функция строит таблицу определенной раскладки
+ * @param string $mon_type тип раскладки
+ * @param int $max_width максимальная ширина раскладки
+ * @param array $win_text_array 
+ * @param string $win_text
+ */
 function layout2table ( $mon_type, $max_width, $win_text_array = array(), $win_text = '' )
 {
 	// print "<pre>".var_dump($win_text_array)."</pre>";

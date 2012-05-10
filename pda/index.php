@@ -1,4 +1,28 @@
 <?php
+
+/**
+ * @file pda/index.php
+ * @brief Страница PDA-версии
+ * 
+ * 
+ * @page pda Модуль PDA-версии 
+ * Модуль PDA-версии
+ * 
+ * Файлы модуля:
+ * - pda/index.php	
+ * - pda/files.php
+ * - pda/head_pda.inc.php
+ * - pda/offline.php
+ * - pda/online-noresized.php
+ * - pda/online.php
+ * - pda/paginator.inc.php
+ */
+
+/**
+ * @page pda Модуль PDA-версии 
+ * Модуль просмотра записанного материала на pda-устройствах
+ */
+
 # $pageTitle = '';
 //$lang_file = '_admin_cams.php';
 require ('head_pda.inc.php');

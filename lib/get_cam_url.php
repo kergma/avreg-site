@@ -1,11 +1,26 @@
 <?php
 
+/**
+ * 
+ * @file lib/get_cam_url.php
+ * @brief Функция, которая возвращает ссылку на просмотр видео с камеры
+ * 
+ */
+
 $cams_subconf = load_profiles_cams_confs();
 
 $__tmp = &$conf['avregd-httpd'];
 eval("\$http_cam_location = \"$__tmp\";");
 unset($__tmp);
-
+/**
+ * 
+ * Функция, которая возвращает ссылку на просмотр видео с камеры
+ * @param array $conf масив настроек
+ * @param int $cam_nr номер камеры
+ * @param string $media тип медиа
+ * @param bool $append_abenc аутентификация пользователя
+ * @return string
+ */
 function get_cam_http_url($conf, $cam_nr, $media, $append_abenc=false)
 {
    $cams_subconf = &$GLOBALS['cams_subconf'];

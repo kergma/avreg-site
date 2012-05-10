@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file lang/russian/utf-8/_admin_stats.php
+ * @brief Файл переводов для страницы admin/stats.php
+ */
 /* ru_RU.UTF-8 /admin/stat.php messages */
 $r_stats = 'Используемые ресурсы.';
 $r_cpu_stat='Использование процесора ЦПУ.<br />[ команды &quot;iostat,&quot; &quot;top&quot;,  &quot;ps aux&quot; ]';

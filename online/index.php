@@ -1,4 +1,19 @@
 <?php
+
+/**
+ * @file online/index.php
+ * @brief Наблюдение в реальном времени
+ * 
+ * 
+ * @page online Модуль наблюдения
+ * Модуль наблюдения в реальном времени
+ *  
+ * Файлы модуля:
+ * - online/index.php	
+ * - online/build_mon.php
+ * - online/view.php
+ * - online/active_wc.inc.php
+ */
 $pageTitle = 'strWcMons';
 $lang_file='_online.php';
 

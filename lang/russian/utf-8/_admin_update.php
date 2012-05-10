@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file lang/russian/utf-8/_admin_update.php
+ * @brief Файл переводов для страницы admin/update.php
+ */
 $attention='<div class="warn">'.
 '<span class="HiLiteBig">Внимание!!! Сохраните или распечатайте то что будет сказано ниже.</span>'.
 '<ul>'.

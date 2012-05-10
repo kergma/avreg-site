@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file pda/head_pda.inc.php
+ * @brief 
+ */
 ob_start();
 $sess_name = 'avreg_pda';
 session_set_cookie_params(null, dirname($_SERVER['SCRIPT_NAME']) . '/');

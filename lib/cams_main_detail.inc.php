@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * 
+ * @file lib/cams_main_detail.inc.php
+ * @brief Функция позволяет вывести детальную информацию о камере
+ * 
+ */
+
+/// поля по умолчанию
 $__DEF_CAM_DETAIL_COLUMNS = array(
    'ICONS'  => true,
    'CAM_NR' => true,
@@ -7,7 +15,14 @@ $__DEF_CAM_DETAIL_COLUMNS = array(
    'SRC'    => true,
    'CAPS'   => true,
 );
-
+/**
+ * 
+ * Функция позволяет вывести детальную информацию о камере
+ * @param array $conf настройки
+ * @param int $cam_nr номер камеры
+ * @param array $cam_detail детальная информация
+ * @param array $columns поля
+ */
 function print_cam_detail_row($conf, $cam_nr, $cam_detail, $columns = null)
 {
    if (isset($columns))

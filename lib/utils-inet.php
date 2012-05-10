@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * 
+ * @file lib/utils-inet.php
+ * ??
+ * 
+ */
 function
 avreg_ipv4_cmp($a1, $m1, $a2, $m2)
 {

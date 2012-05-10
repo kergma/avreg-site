@@ -1,10 +1,14 @@
 <?php
-
+/**
+ * @file admin/cam-tune.php
+ * @brief Изменение параметров камер
+ */
 if (isset($_POST)) {
    $expire=time()+5184000;
    if (isset($_POST['par_filter']))
       setcookie('avreg_par_filter',$_POST['par_filter'],$expire,$_SERVER['SCRIPT_NAME']);
 }
+/// Языковый файл
 $lang_file = '_admin_cams.php';
 require ('../head.inc.php');
 DENY($admin_status);

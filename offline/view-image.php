@@ -1,4 +1,10 @@
 <?php
+/**
+ * 
+ * @file offline/view-image.php
+ * @brief Подробный просмотр события
+ */
+
 $include_javascripts = array('offline/view.js');
 $USE_JQUERY = true;
 $ie6_quirks_mode = true;

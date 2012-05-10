@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file admin/cam-addnew.php
+ * @brief Добавление новой видеокамеры на видеосервере
+ */
+/// Языковый файл
 $lang_file = '_admin_cams.php';
 require ('../head.inc.php');
 DENY($install_status);
@@ -49,8 +54,7 @@ if ( isset($cmd) && $cmd == '_ADD_NEW_CAM_' )
 	}
 }
 
-/* GET LAST NOT DEFINED CAM NUMBER */
-/* Performing new SQL query */
+/// Номер добавляемой камеры
 $cam_nr = $adb->max_cam_nr();
 if ( $cam_nr )
 	$cam_nr = $cam_nr + 1;

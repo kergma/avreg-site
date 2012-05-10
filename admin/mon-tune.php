@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file admin/mon-tune.php
+ * @brief Редактирование раскладки
+ */
 if (isset($_POST['pipes_show']))
    $pipes_show = $_POST['pipes_show'];
 if ( isset($pipes_show) ) {

@@ -1,6 +1,13 @@
 <?php
+/**
+ * @file admin/key.php 
+ * @brief Ключ защиты определяет разрешённые (оплаченные) возможности видеорегистратора.
+ */
 require ('../head.inc.php');
-
+/**
+ * 
+ * Функция возвращает mac-адресс ethernet устройства
+ */
 function getmacs()
 {
    $mac = '<not ethernet card>';

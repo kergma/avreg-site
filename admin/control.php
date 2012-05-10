@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file admin/control.php
+ * @brief Управление основной программой «avregd» и контроль её состояния.
+ * 
+ */
 require ('../head.inc.php');
 DENY($admin_status);
 require('warn.inc.php');
@@ -9,7 +14,10 @@ printf ("current character set is %s\n", $charset);
 
 if ( isset($AVREG_PROFILE) )
    $profile = &$AVREG_PROFILE;
-
+/**
+ * 
+ * Функция выводит информацию из лог-файла
+ */
 function print_messages()
 {
    if ( isset($GLOBALS['profile']) )
@@ -37,16 +45,14 @@ function print_messages()
 }
 
 echo '<h1>' . $r_control . '</h1>' ."\n";
-
+/// Флаг выполнения команды
 $cmd_released=NULL;
-
-if (isset($cmd)) {
-
-   if ( isset($profile))
+if ( isset($cmd) ) {
+   if ( isset($profile) ){
       exec($GLOBALS['conf']['sudo'].' '.$GLOBALS['conf']['daemon'].' status '. $profile, $outs, $retval);
-   else
+   } else {
       exec($GLOBALS['conf']['sudo'].' '.$GLOBALS['conf']['daemon'].' status', $outs, $retval);
-
+   }
    $srun = ($retval === 0)?true:false;
 
    if ($srun)
@@ -65,15 +71,14 @@ if (isset($cmd)) {
       print ('<p class="HiLiteBigErr">'.$wrn.'</p>');
 } 
 
-if ( isset($cmd) )
-{
+if ( isset($cmd) ){
    $cmd = strtolower($cmd);
    if ( isset($confirm_btn) )
    {
       if ( $confirm_btn ===  $strYes )
       {
          $strwarning = '';
-         if       ( $cmd == 'start' ) {
+         if ( $cmd == 'start' ) {
             $strwarning = $strRunA;
          } elseif ( $cmd == 'restart' ) {
             $strwarning = $strRestartA;

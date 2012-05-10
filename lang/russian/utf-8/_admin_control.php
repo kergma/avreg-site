@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file lang/russian/utf-8/_admin_control.php
+ * @brief Файл переводов для страницы admin/control.php
+ */
 /* CONTROL START */
 $r_control = 'Управление основной программой сервера - демоном &#171;'.$conf['daemon-name'].'&#187;';
 $r_conrol_control = 'Подать команду демону';

@@ -1,22 +1,34 @@
 <?php
+
+/**
+ * 
+ * @file lib/get_cams_params.inc.php
+ * @brief Получение параметров настроек камер
+ * 
+ */
+
+
 if ( isset($GCP_cams_list) && empty($GCP_cams_list))
    die('not set cam list');
 if (!isset($GCP_query_param_list) || !is_array($GCP_query_param_list))
    die('not set params list');
-
+/// Параметры по умолчанию
 $GCP_def_pars = array();
+/// Номер камеры где используються настройки по умолчанию
 $GCP_def_pars_nr=0;
+/// Параметры камер
 $GCP_cams_params = array();
+/// Номер камеры
 $GCP_cams_nr=0;
 
-$GCP_SQL='';
+/// Список параметров
 $GCP_sql_in_par=NULL;
-$GCP_sql_cams='';
 
+/// ip пользователя
 $_sip=ip2long($sip);
 require_once ($params_module_name);
 
-/* build default in progs params */
+
 
 for ($GCP_i=0;$GCP_i<$PARAMS_NR;$GCP_i++)
 {
@@ -31,7 +43,7 @@ for ($GCP_i=0;$GCP_i<$PARAMS_NR;$GCP_i++)
 }
 
 
-
+/// получить данные из БД
 $result = $adb->get_cam_params($GCP_cams_list, $GCP_sql_in_par);
 foreach ( $result as $row )
 {
@@ -44,7 +56,7 @@ foreach ( $result as $row )
 $result=NULL;
 
 
-
+/// Список камер с параметрами
 $GCP_cams_list=array_keys($GCP_cams_params);
 $GCP_cams_nr=count($GCP_cams_list);
 if ($GCP_cams_nr)

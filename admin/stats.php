@@ -1,6 +1,17 @@
 <?php
+/**
+ * @file
+ * @brief Статистика используемых ресурсов
+ */
 require ('../head.inc.php');
-
+/**
+ * 
+ * Функция определяющая критичность загрузки, возвращая цвет кретичности
+ * @param int $val текущее значение
+ * @param int $warn_val предупреждающее значение
+ * @param int $max_val максимальное критическое значение
+ * @return string color
+ */
 function color_level ($val, $warn_val, $max_val)
 {
   if ($val >= $max_val ) 
@@ -47,7 +58,12 @@ if ( $retval === 0 ) {
 	print '</tr>'."\n";
  	print '</table><br />'."\n";
 }
-
+/**
+ * 
+ * Функция выводящая информацию о процессе: cpu, mem... 
+ * @param string $proc_name имя процесса
+ * @param int $pid ид процесса
+ */
 function pr_proc_stat($proc_name, $pid=NULL) 
 {
    $p_info = proc_info($proc_name, $pid);
@@ -68,10 +84,9 @@ function pr_proc_stat($proc_name, $pid=NULL)
       return true;
    }
 }
-
+/// ид процессов
 $server_pids = @glob('/var/run/avreg/'.$conf['daemon-name'].'*\.pid');
-if ( $server_pids )
-{
+if ( $server_pids ) 	{
    print '<table cellspacing="0" border="1" cellpadding="5">'."\n";
    print '<tr bgcolor="'.$header_color.'">'."\n";
    print '<th>&nbsp;</th>'."\n";
@@ -94,6 +109,7 @@ if ( $server_pids )
 }
 
 echo '<h2>' . $r_mem_stat . '</h2>' ."\n";
+/// Получение информации о памяти
 $lines = file('/proc/meminfo');
 if ( count($lines) > 0 ) {
 /* kernel 2.6 */
@@ -142,8 +158,10 @@ print '</table>'."\n";
 
 echo '<h2>' . sprintf($r_stats_df,$conf['storage-dir'])  . '</h2>' ."\n";
 //$dts = round( disk_total_space($conf['storage-dir']) /  (1024*1024*1024) , 1) ;
+/// Размер свободного места на диске в Гб
 $dfs = round( disk_free_space($conf['storage-dir']) / (1024*1024*1024) , 1);
 
+/// команда определения использования диска
 $cmd = $conf['df'].' -hT '.$conf['storage-dir'];
 unset($outs);
 exec('LANG='.$locale_str.' '.$cmd,$outs,$retval);

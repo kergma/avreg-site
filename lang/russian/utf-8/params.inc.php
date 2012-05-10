@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file lang/russian/utf-8/params.inc.php
+ * @brief Перевод с параметром
+ */
+
 
 $F_IN_DEF   = 0x0001;
 $F_IN_CAM   = 0x0002;

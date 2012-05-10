@@ -1,4 +1,10 @@
 <?php
+/**
+ * @file admin/user-tune.php
+ * @brief Настройка доступа к веб-интерфейсу (http://...) видеосервера
+ * Редактирование пользователя
+ */
+/// Файл переводов
 $lang_file='_admin_users.php';
 require ('../head.inc.php');
 DENY($admin_status);

@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file online/view.php
+ * @brief Наблюдение с камер
+ */
 $NO_OB_END_FLUSH = true; // for setcookie()
 $pageTitle = 'WebCam';
 $body_style='overflow: hidden;  overflow-y: hidden !important; padding: 0; margin: 0; width: 100%; height: 100%;';

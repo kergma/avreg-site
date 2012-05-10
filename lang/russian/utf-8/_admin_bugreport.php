@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file lang/russian/utf-8/_admin_bugreport.php
+ * @brief Файл переводов для страницы admin/bugreport.php
+ */
 /* BUG START ******************************/
 $r_bugs = 'Сообщить о ошибках в программе для ЭВМ AVReg<br />
 на видеосервере &#171;%s&#187; [%s].';

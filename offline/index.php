@@ -1,11 +1,28 @@
 <?php
-
+/**
+ * @file offline/index.php
+ * @brief Архив : поиск
+ * 
+ * 
+ * @page offline Модуль Архив
+ * Модуль просмотра записанного материала
+ * 
+ * Файлы модуля:
+ * - offline/index.php	
+ * - offline/query.php
+ * - offline/result.php
+ * - offline/_res.form.inc.php
+ * - offline/view-image.php
+ * - offline/playlist.php
+ * - offline/_playlist.php
+ */
 require('../lib/config.inc.php');
 
 /**
  * Send http headers
  */
 // Don't use cache (required for Opera)
+/// Текущее время и дата
 $now = gmdate('D, d M Y H:i:s') . ' GMT';
 header('Expires: ' . $now);
 header('Last-Modified: ' . $now);

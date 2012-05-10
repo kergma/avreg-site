@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file pda/offline.php
+ * @brief 
+ */
 $pageTitle = 'Сеансы записи';
 
 $lang_file = '_admin_cams.php';

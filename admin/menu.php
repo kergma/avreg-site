@@ -1,5 +1,11 @@
 <?php
+/**
+ * @file
+ * @brief Меню админки
+ */
+/// Заголовок страницы в файле переводов
 $PgTitle = 'left_tune';
+/// Меню используеться	
 $MENU=1;
 require('../head.inc.php');
 print '<div align="center"><a href="'.$conf['prefix'].'/" target="_parent">'.$MainPage.'</a></div>'."\n";

@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * 
+ * @file offline/query.php
+ * @brief Фильтр событий
+ */
 $pageTitle = 'strRunQuery';
 $pageBgColor = '#D0DCE0';
 $lang_file = '_offline.php';

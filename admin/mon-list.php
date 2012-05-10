@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file admin/mon-list.php
+ * @brief Список определённых раскладок.
+ */
 require ('../head.inc.php');
 require ('./mon-type.inc.php');
 
@@ -35,7 +39,14 @@ if ( isset($cmd) )
 }
 
 echo '<h2>' . $r_mon_list . '</h2>' ."\n";
-
+/**
+ * 
+ * Функция выводит информацию о раскладке монитора
+ * @param string $display правый или левый монитор
+ * @param int $l_nr Номер монитора
+ * @param array $l_def Настройки монитора
+ * @param bool $is_admin Админ
+ */
 function prt_l ($display, $l_nr, $l_def, $is_admin)
 {
    print "<td>\n";

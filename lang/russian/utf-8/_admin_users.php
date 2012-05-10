@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file lang/russian/utf-8/_admin_users.php
+ * @brief Файл переводов для страниц 
+ * - admin/user-addnew.php
+ * - admin/user-list.php
+ * - admin/user-tune.php
+ * - admin/user-passwd.php
+ */
 /* USERS START ******************************/
 $r_user_list = 'Список пользователей.';
 $r_users = 'Настройка доступа <span class="HiLite">к веб-интерфейсу (http://...)</span> '.

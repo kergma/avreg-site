@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file offline/playlist.php
+ * @brief Архив : плейлист
+ */
 session_start();
 $pageTitle = 'PlaylistTitle';
 $pageBgColor = '#D0DCE0';

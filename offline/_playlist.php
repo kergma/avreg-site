@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file offline/_playlist.php
+ * @brief Страица формирования плейлиста
+ */
 ob_start();
 
 require('../lib/config.inc.php');

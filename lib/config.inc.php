@@ -1,6 +1,12 @@
 <?php
 
+/**
+ * @file lib/config.inc.php
+ * @brief Файл конфигурации
+ */
+
 require ('/etc/avreg/site-defaults.php');
+/// Путь к директории сайта
 $wwwdir = $conf['site-dir'] . '/';
 
 /*
@@ -10,22 +16,38 @@ else
    $wwwdir = $_SERVER['DOCUMENT_ROOT'] . $conf['prefix'] . '/';
  */
 require($wwwdir . 'lib/grab_globals.lib.php');
-
+///  1
 $BOOL_VAL = 1;
+///  2
 $INT_VAL  = 2;
+///  3
 $INTPROC_VAL  = 3; // int or %
+/// 4
 $CHECK_VAL = 4;
+///  5
 $STRING_VAL = 5;
+///  6
 $STRING200_VAL = 6;
+///  7
 $PASSWORD_VAL = 7;
-
+/**
+ * 
+ * Форматирование и вывод дампа переменной
+ * @param unknown_type $var переменная
+ * 
+ */
 function tohtml($var)
 {
    print '<div class="dump"><pre class="dump">'."\n";
    var_dump($var);
    print '</pre></div>'."\n";
 }
-
+/**
+ * 
+ * Ыцнкция парсит строки в csv формате в масив
+ * @param string $str csv строка
+ * @return array
+ */
 function parse_csv_numlist($str) {
    $res = Array();
    foreach ( explode(',', $str) as $value ) {
@@ -48,6 +70,15 @@ function parse_csv_numlist($str) {
 } /* parse_csv_numlist() */
 
 /* $params строковый массив, список параметров, которые нужно читать из файла */
+/**
+ * 
+ * Функция извлекает конфигурационные парамеиры из файла
+ * @param array $_conf масив текущих параметров
+ * @param string $section секция в которой искать параметры
+ * @param string $path путь к файлу
+ * @param array $params параметры, которые нужно извлечь, null если все
+ * @return array масив параметров
+ */
 function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params=NULL)
 {
    $confile = fopen($path, 'r');
@@ -157,11 +188,12 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
 
 
 
-
+/// переменная содержащая настройки avreg-site
 $res=confparse($conf, 'avreg-site');
 if (!$res) {
    die();
 } else
+/// масив содержащий настройки
    $conf = array_merge($conf, $res);
 
 unset($EXISTS_PROFILES);
@@ -181,9 +213,9 @@ if ( !empty($conf['prefix']) && preg_match('@^/([^/]+).*@', $_SERVER['REQUEST_UR
          $conf['daemon-name'] .= '-'.$AVREG_PROFILE;
       }
    }
-} else // for empty prefix and SMP's profiles
+} else {
    $EXISTS_PROFILES = glob($conf['profiles-dir'].'/[A-Za-z0-9][A-Za-z0-9_-:]*', GLOB_NOSORT);
-
+}
 if ($conf['debug']) {
    ini_set ('display_errors', '1' );
    ini_set ('log_errors', '1');
@@ -193,6 +225,12 @@ if ($conf['debug']) {
       E_USER_NOTICE);
 }
 
+/**
+ * 
+ * Функция позволяет получить настройки камер
+ * @param string $application
+ * @return array масив настроек
+ */
 function load_profiles_cams_confs($application='avreg-site')
 {
    if ( !empty($AVREG_PROFILE) || empty($GLOBALS['EXISTS_PROFILES']) )
@@ -215,13 +253,17 @@ function load_profiles_cams_confs($application='avreg-site')
 } /* get_profiles_cams_confs() */
 
 $sip = $_SERVER['SERVER_ADDR'];
+
 if ( $_SERVER['SERVER_ADDR'] === $_SERVER['SERVER_NAME'] )
    $named = $_SERVER['SERVER_ADDR'];
 else
+///  имя сервера
    $named = $_SERVER['SERVER_NAME'];
+///  ip сервера
 $localip = ip2long($sip);
-
+///  user agent пользователя
 $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
+///  Движок браузера пользователя
 $MSIE = $GECKO  = $PRESTO = $WEBKIT = FALSE;
 
 if ( FALSE !== strpos($ua, 'msie') )
@@ -233,44 +275,66 @@ else if ( FALSE !== strpos($ua, 'presto') )
 else if ( FALSE !== strpos($ua, 'webkit') || FALSE !== strpos($ua, 'khtml') )
    $WEBKIT = TRUE;
 
-
+///  логин пользователя
 $login_user = 'unknown';
+///  имя пользователя
 $login_user_name = 'unknown';
+///  ip пользователя
 $remote_addr = 'unknown';
+///  host пользователя
 $login_host = 'unknown';
+///  масив пользователей
 $users = array();
+///  информация пользователя
 $user_info = NULL;
 
 $link=NULL;
-
+///  статус пользователя
 $user_status = 555;
+///  статус пользователя групы install
 $install_status = 1;
+///  статус пользователя групы admin
 $admin_status = 2;
+///  статус пользователя групы arch
 $arch_status = 3;
+///  статус пользователя групы operator
 $operator_status = 4;
+///  статус пользователя групы view
 $viewer_status = 5;
-
+///  являеться ли пользователь в групе install
 $install_user = FALSE;
+///  являеться ли пользователь в групе admin
 $admin_user = FALSE;
+///  являеться ли пользователь в групе arch
 $arch_user = FALSE;
+///  являеться ли пользователь в групе operator
 $operator_user = FALSE;
+///  являеться ли пользователь в групе view
 $viewer_user = FALSE;
 
+///  кодировка
 $chset = 'UTF-8';
+///  язык
 $lang = 'russian';
+///  локаль
 $locale_str='ru_RU.'.$chset;
 setlocale(LC_ALL, $locale_str);
 // @apache_setenv('LANG','ru_RU.'.$chset);
 mb_internal_encoding( 'UTF-8' );
+///  путь к языковым файлам
 $lang_dir =  $wwwdir . 'lang/' . $lang . '/'  . strtolower($chset) . '/';
+///  языковый модуль
 $lang_module_name   = $lang_dir . 'common.inc.php';
+///  название локального языкового модуля
 $pt = substr($_SERVER['PHP_SELF'],strlen($conf['prefix']));
+///  параметры языкового модуля
 $params_module_name = $lang_dir . 'params.inc.php';
 require ($lang_module_name);
 
 if (isset($lang_file)) {
    $lang_module_name2  = $lang_dir . $lang_file;
 } else
+///  языковый модуль
    $lang_module_name2  = $lang_dir . str_replace ('/', '_', $pt);
 
 if (file_exists ($lang_module_name2))
@@ -287,28 +351,45 @@ else
 if (file_exists('/etc/linuxdvr-release')) {
    $LDVR_VER=@file('/etc/linuxdvr-release');
 } else
+///  linuxdvr-release
    $LDVR_VER=FALSE;
 
 /* set timezone "You are *required* to use the date.timezone setting or the date_default_timezone_set() function." */
 date_default_timezone_set(rtrim(file_get_contents('/etc/timezone')));
 
+///  шрифт текста
 $font_family = 'sans-serif';
+///  размер шрифта
 $font_size = 'small';
+///  цвет контента
 $ContentColor = '#F5F5F5';
+///  
 $inactive_h_color = 'darkGray';
+///  цвет ошибки
 $warn_color = '#003366';
+///  цвет критической ошибки
 $error_color = '#CC3333';
+///  цвет
 $rowHiLight = '#FFFFCC';
+///  цвет заголовка
 $header_color = '#D0DCE0';
+///  цвет
 $TextHiLight = '#009900';
 
+///  цвет
 $NotSetParColor = '#585858';
+///  цвет
 $ParDefColor = '#6633FF';
+///  цвет
 $ParSetColor = 'Red';
 
+///  максимальное количество камер
 $MAX_CAM = 1000;
+///  ширина левой колонки
 $cfg['LeftWidth'] = '170';
+///  цвет фона левой колонки
 $left_bgcolor = '#D0DCE0';
+///  тег таблиц
 $tabletag = '<table cellspacing="0" border="1" cellpadding="2" align="center">';
 
 $patternIP='[1-9]\d{1,2}\.\d{1,3}\.\d{1,3}\.\d{1,3}';
@@ -354,7 +435,13 @@ foreach ($result as $row  )
    $users[] = $ui;
 }
 unset($result);
-
+/**
+ * 
+ * Функция позволяет получить информацию о пользователе
+ * @param string $ipacl хосты
+ * @param string $name логин
+ * @return информация о пользователе или False
+ */
 function get_user_info($ipacl, $name)
 {
    if (!isset($ipacl) || !isset($name))
@@ -369,7 +456,13 @@ function get_user_info($ipacl, $name)
    }
    return FALSE;
 }
-
+/**
+ * Функция получает информацию о пользователю по заданым параметрам
+ * @param array $addr хосты
+ * @param string $mask маска сети
+ * @param string $name логин
+ * @return информация о пользователе или False
+ */
 function avreg_find_user($addr, $mask, $name)
 {
    if (!isset($addr) || !isset($mask) || !isset($name))
@@ -406,7 +499,11 @@ function avreg_find_user($addr, $mask, $name)
 
    return ($found)?$ui:FALSE;
 }
-
+/**
+ * 
+ * 
+ * @param string $dev_acl_str
+ */
 function parse_dev_acl($dev_acl_str=NULL)
 {
    if (empty($dev_acl_str))
@@ -430,7 +527,13 @@ function parse_dev_acl($dev_acl_str=NULL)
       return FALSE;
    return array_unique($ret);
 }
-
+/**
+ * 
+ * Функция позволяет получить информацию о процессе
+ *@param string $proc_name имя процесса
+ *@param int $__pid ид процесса
+ *@return array
+ */
 function proc_info($proc_name, $__pid=NULL)
 {
    $_cmd = $GLOBALS['conf']['ps'].' -o %cpu,%mem,vsz,rss --no-headers ';
@@ -460,7 +563,12 @@ function proc_info($proc_name, $__pid=NULL)
    }
    return array((float)$cpu,(float)$mem,(integer)$vsz,(integer)$rss);
 }
-
+/**
+ * 
+ * Функция формирует строку размера файла
+ * @param int $fsize_KB размер в килобайтах
+ * @return string
+ */
 function filesizeHuman($fsize_KB) {
    if ($fsize_KB >= 1048576 )
       return sprintf("%0.1f %s", $fsize_KB/1048576,$GLOBALS['byteUnits'][3]);
@@ -471,7 +579,12 @@ function filesizeHuman($fsize_KB) {
    else 
       return sprintf("%d %s", $fsize_KB*1024,$GLOBALS['byteUnits'][0]);
 }
-
+/**
+ * 
+ * Функция формирует строку времени
+ * @param int $sec время в секундах
+ * @return string
+ */
 function DeltaTimeHuman($sec) {
    settype($sec,'int');
    if ($sec >= 86400)
@@ -483,7 +596,12 @@ function DeltaTimeHuman($sec) {
    else
       return sprintf('%d сек', $sec);
 }
-/* Estimated Time of Arrival */
+/**
+ * 
+ * Функция формирует строку времени
+ * @param int $sec время в секундах
+ * @return string
+ */
 function ETA($sec) {
    settype($sec,'int');
    if ( $sec < 0 )
@@ -497,6 +615,15 @@ function ETA($sec) {
 }
 
 /* $start,$finish - unix timestamp */
+/**
+ * 
+ * Функция формирует строку промежутка времени
+ * @param int $start дата и время начала в unix timestamp
+ * @param int $finish дата и время окончания в unix timestamp
+ * @param bool $print_year учитывать год
+ * @param bool $print_sec учитывать секунды
+ * @return string
+ */
 function TimeRangeHuman($start, $finish, $print_year=FALSE, $print_sec=FALSE)
 {
    if ( $print_sec )
@@ -544,7 +671,12 @@ function TimeRangeHuman($start, $finish, $print_year=FALSE, $print_sec=FALSE)
    }
    return ($const_str . '[ ' . $diff_str . ' ]');
 }
-
+/**
+ * 
+ * Функция получает имя камеры
+ * @param string $_text_left имя камеры
+ * @return string имя камеры
+ */
 function getCamName ($_text_left)
 {
    if ( empty ($_text_left) )
@@ -559,25 +691,50 @@ function PrettyCamName($cam_desc=null)
       return '';
 }
  */
-
+/**
+ * 
+ * Функцыя выводит ссылку нажатия назат в истории браузера
+ */
 function print_go_back() {
    print '<br><center><a href="javascript:window.history.back();" title="'.$GLOBALS['strBack'].'">'.
       '<img src="'.$GLOBALS['conf']['prefix'].'/img/undo_dark.gif" alt="'.$GLOBALS['strBack'].
       '" width="24" hspace="24" border="0"></a></center>'."\n";
 }
 
-
+/**
+ * 
+ * Функция преобразовывает переменную в строку для sql запроса
+ * @param  $val
+ * @return string
+ */
 function sql_format_str_val($val) {
    return empty($val)?'NULL':"'".addslashes($val)."'";
 }
-
+/**
+ * 
+ * Функция преобразовывает целое число в строку для sql запроса
+ * @param  $val
+ * @return string
+ */
 function sql_format_int_val($val) {
    return empty($val)?'NULL':"'".(Int)$val."'";
 }
+/**
+ * 
+ * Функция преобразовывает число в строку для sql запроса
+ * @param  $val
+ * @return string
+ */
 function sql_format_float_val($val) {
    return empty($val)?'NULL':"'".str_replace(',', '.', $val)."'";
 }
-
+/**
+ * 
+ * Функция получения камер
+ * @param unknown_type $_sip
+ * @param bool $first_defs 
+ * @return array 
+ */
 function getCamsArray($_sip,$first_defs=FALSE)
 {
 	global $adb;
@@ -601,7 +758,13 @@ function getCamsArray($_sip,$first_defs=FALSE)
    unset ($result);
    return $arr;  
 }
-
+/**
+ * 
+ * Функция выводящая ошибку
+ * @param string $errstr строка ошибки
+ * @param string $file файл
+ * @param string $line строка
+ */
 function MYDIE($errstr='internal error', $file='', $line='')
 {
    if (empty($file))
@@ -615,7 +778,13 @@ function MYDIE($errstr='internal error', $file='', $line='')
    print '</html>'."\n";
    exit(1);
 }
-
+/**
+ * 
+ * Функция записывает в системный лог собщение
+ * @param unknown_type $priority Приоритет
+ * @param string $message Сообщение
+ * 
+ */
 function print_syslog($priority, $message)
 {
    if (!isset($GLOBALS['syslog_opened'])) {
@@ -636,7 +805,12 @@ function print_syslog($priority, $message)
       $raddr = $GLOBALS['remote_addr'];
    syslog($priority, sprintf ('%s@%s: %s', $luser, $raddr, $message));
 }
-
+/**
+ * 
+ * Функция доступа
+ * @param int $good_status статус
+ * @param int $http_status http статус 
+ */
 function DENY($good_status=NULL, $http_status=403)
 {
    $user_status=$GLOBALS['user_status'];
@@ -692,7 +866,14 @@ function DENY($good_status=NULL, $http_status=403)
    exit();
 }
 
-
+/**
+ * 
+ * функция проверяющая входит ли число в промежуток
+ * @param unknown_type $int чило
+ * @param unknown_type $min минимальное число
+ * @param unknown_type $max максимальное число
+ * @return bool
+ */
 function checkIntRange ($int, $min, $max)
 {
    if ( $int == NULL or $h < $min or $h > $max) {
@@ -701,7 +882,12 @@ function checkIntRange ($int, $min, $max)
       return TRUE;
    }
 }
-
+/**
+ * Функция возвращает текстовое представление месяца
+ * 
+ * @param int $m месяц от 1 до 12
+ * @return string
+ */
 function getMonth ($m)
 {
    if (empty ($m) or (($m < 0) or ($m > 12))) {
@@ -711,7 +897,12 @@ function getMonth ($m)
    }
    return $retval;
 }
-
+/**
+ * Функция возвращает текстовое представление дня
+ * 
+ * @param int $d день от 1 до 31
+ * @return string
+ */
 function getDay ($d)
 {
    if (empty ($d) or (($d < 1) or ($d > 31))) {
@@ -721,7 +912,12 @@ function getDay ($d)
    }
    return $retval;
 }
-
+/**
+ * Функция возвращает текстовое представление часа
+ * 
+ * @param int $h час от 1 до 23
+ * @return string
+ */
 function getHour ($h)
 {
    if ( $h == NULL or $h < 0 or $h > 23) {
@@ -731,7 +927,12 @@ function getHour ($h)
    }
    return $retval;
 }
-
+/**
+ * Функция возвращает текстовое представление минут
+ * 
+ * @param int $_min минуты от 1 до 59
+ * @return string
+ */
 function getMinute ($_min)
 {
    if ( $_min == NULL or $_min < 0 or $_min > 59 ) {
@@ -741,7 +942,12 @@ function getMinute ($_min)
    }
    return  $retval;
 }
-
+/**
+ * Функция возвращает текстовое представление дня недели
+ * 
+ * @param string $_weekday перечисление дней в неделе
+ * @return string
+ */
 function getWeekday ($_weekday)
 {
    $retval = '';
@@ -756,7 +962,20 @@ function getWeekday ($_weekday)
    }
    return $retval;
 }
-
+/**
+ * 
+ * Функция формирует и возвращает елемент select
+ * @param string $_name названи
+ * @param array $value_array масив значений
+ * @param bool $_multiple разрешить множественный выбор
+ * @param int $_size размер
+ * @param int $start_val начальное значение
+ * @param string $selected выбранные значения
+ * @param bool $first_empty пустое первое значение
+ * @param string $onch функция onchange
+ * @param string $TITLE заголовок
+ * @return string
+ */
 function getSelectHtml($_name, $value_array, $_multiple=FALSE , $_size = 1, $start_val=1, $selected='', $first_empty=TRUE, $onch=FALSE, $TITLE=NULL)
 {
    settype($selected,'string');
@@ -816,6 +1035,24 @@ function getSelectHtml($_name, $value_array, $_multiple=FALSE , $_size = 1, $sta
    $a .= '</select>'."\n";
    return $a;
 }
+
+
+/**
+ * 
+ * Функция формирует и возвращает елемент select используя значения 
+ * @param string $_name названи
+ * @param array $value_array масив значений
+ * @param bool $_multiple разрешить множественный выбор
+ * @param int $_size размер
+ * @param int $start_val начальное значение
+ * @param string $selected выбранные значения
+ * @param bool $first_empty пустое первое значение
+ * @param string $onch функция onchange
+ * @param string $text_prefix префикс 
+ * @param string $TITLE заголовок
+ * @return string
+ */
+
 
 function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
    $_size = 1, $start_val=0, $selected='',
@@ -877,7 +1114,23 @@ function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
    $a .= '</select>'."\n";
    return $a;
 }
+/**
+ * 
+ * Функция формирует и возвращает елемент select используя значения 
+ * @param string $_name названи
+ * @param unknown_type $assoc_array
+ * @param bool $_multiple разрешить множественный выбор
+ * @param int $_size размер
+ * @param int $start_val начальное значение
+ * @param string $selected выбранные значения
+ * @param bool $first_empty пустое первое значение
+ * @param string $onch функция onchange
+ * @param string $text_prefix префикс 
+ * @param string $TITLE заголовок
+ * @param bool $reverse использовать обратные ключи-значения
+ * @return string
 
+ */
 function getSelectByAssocAr($_name, $assoc_array, $_multiple=FALSE ,
    $_size = 1, $start_val=NULL, $selected=NULL,
    $first_empty=TRUE, $onch=FALSE,
@@ -952,7 +1205,12 @@ function getSelectByAssocAr($_name, $assoc_array, $_multiple=FALSE ,
    return $a;
 }
 
-
+/**
+ * 
+ * Функция 
+ * @param string $bin_str 
+ * @return string
+ */
 function getBinString($bin_str)
 {
    if ( strlen ($bin_str) == 0 ) return $bin_str;
@@ -963,7 +1221,12 @@ function getBinString($bin_str)
    $ret = str_replace("\x1a", '\Z', $ret);
    return $ret;
 }
-
+/**
+ * 
+ * Функция проверяющая доступ по паролю
+ * @param string $saved_pw сохраненный пароль
+ * @param string $pw проверяющий пароль
+ */
 function check_passwd($saved_pw, $pw)
 {
    if ( $saved_pw == '' && $pw == '')
@@ -992,7 +1255,7 @@ if ( !empty($logout) ) {
    }
    exit();
 }
-
+/// разрешить альтернативный аутентификацию
 $ExternalAuth = FALSE;
 if (!empty($_SERVER['AUTH_TYPE']) && !empty($_SERVER['REMOTE_USER'])
     && !empty($conf['ExternalAuthMap'])

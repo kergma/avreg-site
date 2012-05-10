@@ -1,4 +1,10 @@
 <?php
+/**
+ * @file admin/user-passwd.php
+ * @brief Настройка доступа к веб-интерфейсу (http://...) видеосервера
+ * Изменение пароля
+ */
+/// Файл переводов
 $lang_file='_admin_users.php';
 require ('../head.inc.php');
 ?>

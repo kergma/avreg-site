@@ -1,5 +1,14 @@
 <?php
-Class PDA_Paginator implements Iterator
+/**
+ * @file pda/paginator.inc.php
+ * @brief 
+ */
+/**
+ * @class PDA_Paginator
+ * @brief Клас реализовывающий функцию пагинации
+ *
+ */
+class PDA_Paginator implements Iterator
 {
    private $ary;
    private $position;

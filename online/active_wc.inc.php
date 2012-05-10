@@ -1,5 +1,8 @@
 <?php
-/* phpinfo(); */
+/**
+ * @file online/active_wc.inc.php
+ * @brief Видеокамеры, разрешённые для просмотра по протоколу HTTP (в интернет-браузерах)
+ */
 
 echo '<h2 align="center">'.$r_webcam_list.'</h2>' ."\n";
 print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";

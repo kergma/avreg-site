@@ -1,6 +1,14 @@
 <?php
+/**
+ * @file admin/menu-tune.php 
+ * @brief Меню настроек 
+ * 
+ */
+/// Заголовок страницы в файле переводов
 $pageTitle = 'tune_logo';
+/// Используеться меню
 $MENU=1;
+/// Открывать в следующем ифрейме
 $BaseTarget='content';
 require('../head.inc.php');
 print '<div align="center"><a href="'.$conf['prefix'].'/" target="_parent">'.$MainPage.'</a></div>'."\n";

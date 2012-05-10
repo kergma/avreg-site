@@ -1,4 +1,20 @@
 <?php
+
+/**
+ * 
+ * @mainpage AvregSite 
+ * 
+ * Веб-интерфейс
+ * 
+ * Состоит из следующих частей:
+ * - @ref lib 
+ * - @ref admin 
+ * - @ref lang 
+ * - @ref offline 
+ * - @ref online 
+ * - @ref pda 
+ */
+
 $NO_OB_END_FLUSH = true;
 require ('./head.inc.php');
 while (@ob_end_flush());

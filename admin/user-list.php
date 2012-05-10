@@ -1,4 +1,12 @@
 <?php
+/**
+ * 
+ * @file admin/user-list.php
+ * 
+ * @brief Настройка доступа к веб-интерфейсу (http://...) видеосервера 
+ * Группы пользователей
+ */
+/// Файл переводов
 $lang_file='_admin_users.php';
 require ('../head.inc.php');
 

@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @file admin/cam-list.php
+ * @brief Список сконфигурированных видеокамер на сервере
+ */
+/// Языковый файл
 $lang_file = '_admin_cams.php';
 require('../head.inc.php');
 require('../lib/cams_main_detail.inc.php');

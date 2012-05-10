@@ -1,5 +1,33 @@
 <?php
+
+
+/**
+ * @file admin/index.php 
+ * @brief Стартовая страница модуля 
+ * 
+ * 
+ * @page admin Модуль Админки
+ * Админка проекта 
+ *  
+ * Подмодули	:
+ * - @ref tune
+ *
+ * Файлы модуля:
+ * - admin/index.php	
+ * - admin/menu.php
+ * - admin/_index1.php
+ * - admin/control.php
+ * - admin/stats.php
+ * - admin/key.php
+ * - admin/update.php
+ * - admin/bugreport.php
+ *  
+ *  
+ */
+
+/// показывать body елемент
 $NOBODY=1;
+/// Тайтл страницы в файле переводов
 $pageTitle = 'left_logo';
 require('../head.inc.php');
 DENY($admin_status);
