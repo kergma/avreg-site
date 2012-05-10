@@ -111,6 +111,7 @@ $poly_3x4_wins = array(
    array(1,0,1,1), array(1,1,1,1), array(1,2,1,1), array(1,3,1,1),
    array(2,0,1,1), array(2,1,1,1), array(2,2,1,1), array(2,3,1,1),
 );
+/// Список допустимы раскладок
 $layouts_defs = array(
    'ONECAM'       => array(  1,   1, 1,  &$onecam_wins,       1, &$strONECAM      ),
    'QUAD_4_4'     => array(  4,   2, 2,  &$quad_4_4_wins,     1, &$strQUAD_4_4    ),
