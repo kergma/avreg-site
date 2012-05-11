@@ -2,7 +2,17 @@
 
 /**
  * @file lib/config.inc.php
- * @brief Файл конфигурации
+ * @brief Файл обеспечивает инициализацию глобальных переменных,<br />а также содержит функции для установки параметров конфигурации
+ * 
+ * Файл реализует функции:
+ * <ul>
+ * 	<li> Инициализации глобальных переменных </li>
+ * 	<li> Загрузки конфигурационных настроек из файлов конфигурации /etc/avreg/site-defaults.php </li>
+ * 	<li> Авторизации пользователя </li>
+ * 	<li> Настройки параметров камер </li>
+ * </ul>
+ * 
+ * 
  */
 
 require ('/etc/avreg/site-defaults.php');
@@ -71,7 +81,7 @@ function parse_csv_numlist($str) {
 /* $params строковый массив, список параметров, которые нужно читать из файла */
 /**
  * 
- * Функция извлекает конфигурационные парамеиры из файла
+ * Функция извлекает конфигурационные параметры из файла
  * @param array $_conf масив текущих параметров
  * @param string $section секция в которой искать параметры
  * @param string $path путь к файлу
@@ -330,11 +340,12 @@ $pt = substr($_SERVER['PHP_SELF'],strlen($conf['prefix']));
 $params_module_name = $lang_dir . 'params.inc.php';
 require ($lang_module_name);
 
+///  языковый модуль
+$lang_module_name2  = $lang_dir . str_replace ('/', '_', $pt);
+
 if (isset($lang_file)) {
    $lang_module_name2  = $lang_dir . $lang_file;
-} else
-///  языковый модуль
-   $lang_module_name2  = $lang_dir . str_replace ('/', '_', $pt);
+} 
 
 if (file_exists ($lang_module_name2))
    require ($lang_module_name2);
@@ -347,11 +358,12 @@ if ( $_SERVER['REMOTE_ADDR'] === '127.0.0.1' )
 else
    $remote_addr = &$_SERVER['REMOTE_ADDR'];
 
+///  linuxdvr-release
+$LDVR_VER=FALSE;
 if (file_exists('/etc/linuxdvr-release')) {
    $LDVR_VER=@file('/etc/linuxdvr-release');
-} else
-///  linuxdvr-release
-   $LDVR_VER=FALSE;
+} 
+
 
 /* set timezone "You are *required* to use the date.timezone setting or the date_default_timezone_set() function." */
 date_default_timezone_set(rtrim(file_get_contents('/etc/timezone')));
@@ -456,7 +468,7 @@ function get_user_info($ipacl, $name)
    return FALSE;
 }
 /**
- * Функция получает информацию о пользователю по заданым параметрам
+ * Функция получает информацию по пользователю по заданым параметрам
  * @param array $addr хосты
  * @param string $mask маска сети
  * @param string $name логин
@@ -692,7 +704,7 @@ function PrettyCamName($cam_desc=null)
  */
 /**
  * 
- * Функцыя выводит ссылку нажатия назат в истории браузера
+ * Функцыя выводит ссылку нажатия назад в истории браузера
  */
 function print_go_back() {
    print '<br><center><a href="javascript:window.history.back();" title="'.$GLOBALS['strBack'].'">'.

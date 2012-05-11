@@ -2,7 +2,7 @@
 /**
  * 
  * @file lib/utils-inet.php
- * ??
+ * @brief Функции для работы с IP-адресами
  * 
  */
 function

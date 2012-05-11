@@ -2,9 +2,10 @@
 /**
  * 
  * @file lib/grab_globals.lib.php
- * ???
+ * @brief Обеспечивает преобразование параметров запросов в переменные, используемые далее в скрипте
  * 
  */
+
 if (!defined('PMA_GRAB_GLOBALS_INCLUDED')) {
     define('PMA_GRAB_GLOBALS_INCLUDED', 1);
 
