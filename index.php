@@ -1,6 +1,9 @@
 <?php
 
 /**
+ *
+ * @file index.php
+ * @brief генерация стартовой страницы сайта Avreg
  * 
  * @mainpage AvregSite 
  * 
@@ -13,6 +16,7 @@
  * - @ref offline 
  * - @ref online 
  * - @ref pda 
+ * 
  */
 
 $NO_OB_END_FLUSH = true;

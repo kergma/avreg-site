@@ -1,7 +1,10 @@
 <?php
 /**
  * @file online/view.php
- * @brief Наблюдение с камер
+ * @brief Наблюдение с камер online
+ * 
+ * Формирует страницу с раскладкой камер для наблюдения в режиме online
+ * 
  */
 $NO_OB_END_FLUSH = true; // for setcookie()
 $pageTitle = 'WebCam';
@@ -46,7 +49,7 @@ while (@ob_end_flush());
 echo "<script type='text/javascript'>\n";
 
 function calcAspectForGeo($w,$h) {
-
+	
    foreach ($GLOBALS['WellKnownAspects'] as &$pair) {
       if ( 0 === $w % $pair[0] &&  0 === $h % $pair[1] ) {
          if ( $w/$pair[0] === $h/$pair[1] )

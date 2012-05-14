@@ -1,4 +1,12 @@
 <?php 
+
+/**
+* @file cron.php
+* @brief загрузка конфигурации отправки уведомлений
+*
+*/
+
+
 $methods = array(
 	'update_tree_events',
 	'cron_update_tree_events',

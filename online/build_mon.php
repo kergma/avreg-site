@@ -3,7 +3,9 @@
  * @file online/build_mon.php
  * @brief Создание раскладки для просмотра
  * 
+ * 
  */
+
 $pageTitle = 'WebCam';
 $lang_file='_online.php';
 $USE_JQUERY = true;

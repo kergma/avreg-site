@@ -3,6 +3,7 @@
  * 
  * @file offline/_res.form.inc.php
  * @brief Форма скрытых параметров фильтрации для просмотра предыдущих/следующих записей
+ * 
  */
 if (isset($strLastSql) || isset($strNextSql))
 {

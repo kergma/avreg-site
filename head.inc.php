@@ -1,5 +1,32 @@
 <?php
 
+/**
+*
+* @file head.inc.php
+* @brief В файле реализовано формирование базовой функциональности и структуры страниц сайта
+*
+*<ul>
+*<li> Формируется структура страницы
+*<li> Добавляется базовое содержимое тега \<head\>
+*<li> Инициализируются js-переменные
+*<li> Определяются  js-функции
+*<li> Добавляется тег \<body\> со стилями
+*</ul>
+*
+* 
+* @page lib Библиотеки
+* Файлы библиотек
+* - lib/adb.php
+* - lib/cams_main_detail.inc.php
+* - lib/config.inc.php
+* - lib/get_cam_url.php
+* - lib/get_cams_params.inc.php
+* - lib/grab_globals.lib.php
+* - lib/img_resize.php
+* - lib/utils-inet.php
+*
+*/
+
 ob_start();
 
 require_once('lib/config.inc.php');
@@ -55,6 +82,7 @@ printf("var StorageDir = '%s';\n", addcslashes($conf['storage-dir'], '\'"/\\'));
 printf("var WwwPrefix  = '%s';\n", addcslashes($conf['prefix'], '\'"/\\'));
 printf("var MediaAlias = '%s';\n", addcslashes($conf['media-alias'], '\'"/\\'));
 ?>
+
 var MSIE=false; // FIXME double calc with php
 var GECKO=false;
 
@@ -73,6 +101,7 @@ var enabletip=false;
 
 var hint=null;
 
+///очистка html-контента элемента 
 function clear_innerHTML(obj) {
    var child;
    while (child = obj.firstChild)
@@ -109,7 +138,7 @@ function positiontip(e) {
    if (enabletip){
       var curX=(ns6)?e.pageX : event.clientX+ietruebody().scrollLeft;
       var curY=(ns6)?e.pageY : event.clientY+ietruebody().scrollTop;
-      //Find out how close the mouse is to the corner of the window
+      //Find out how close the mouse is to the corner of the window 
       var rightedge=ie&&!window.opera?
          ietruebody().clientWidth-event.clientX-offsetxpoint :
          window.innerWidth-e.clientX-offsetxpoint-20;

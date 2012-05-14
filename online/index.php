@@ -14,6 +14,7 @@
  * - online/view.php
  * - online/active_wc.inc.php
  */
+
 $pageTitle = 'strWcMons';
 $lang_file='_online.php';
 

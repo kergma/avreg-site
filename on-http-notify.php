@@ -1,4 +1,10 @@
 <?php
+/**
+ * @file on-http-notify.php
+ * @brief генерирует уведомление
+ * 
+ */
+
 
 /* need for auth */
 require_once('lib/config.inc.php');

@@ -1,10 +1,20 @@
 <?php
-
+/**
+*
+* @file offline/gallery/gallery.php
+* @brief Содержит класс Gallery
+*
+* инициализируется в offline/gallery.php
+*
+*@class Gallery
+* Обеспечивает получение данных для построения и конфигурирования галереи 
+*
+*/
 
 class Gallery {
     public 	
-    	$method = '', // метод запроса
-    	$result = array(); // ответ запроса
+    	$method = '', /// метод запроса
+    	$result = array(); /// ответ запроса
     private 
     	$cache,
     	$db = '',
