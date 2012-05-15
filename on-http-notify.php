@@ -1,7 +1,7 @@
 <?php
 /**
  * @file on-http-notify.php
- * @brief генерирует уведомление
+ * @brief Генерирует уведомление
  * 
  */
 

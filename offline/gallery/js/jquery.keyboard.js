@@ -1,3 +1,7 @@
+/**
+ * @file offline/gallery/js/jquery.keyboard.js
+ * @brief Файл содержит функции обработки событий клавиатуры
+ */
 (function ($) {	
 	$.fn.keyboard = function () {
 		$k.bind(this, arguments);

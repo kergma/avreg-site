@@ -1,4 +1,19 @@
+/**
+ * @file online/view.js
+ * @brief JS скрипт страницы наблюдения в реальном времени
+ * Содержит функции и глобальные переменные, обеспечивающие соответствующий функционал,
+ * осуществляет инициализацию страницы
+ */
+
+
+/**
+ * Обработчик события mouseover для элементов раскладки камер.
+ * Обеспечивает формирование и вывод tooltip
+ * @param eimg - элемент раскладки
+ * @param win_nr - номер элемента раскладки
+ */
 function img_mouseover(eimg, win_nr) {
+	
    if ( WINS_DEF[win_nr] == undefined )
       return;
 
@@ -32,6 +47,13 @@ function img_mouseover(eimg, win_nr) {
 
    ddrivetip();
 }
+
+/**
+ * Обработчик события click по элементу раскладки камер.
+ * Если включен режим раскладки разворачивает контекстный елемент в полноэкранный режим.
+ * Если включен полноэкранном режим - востанавливает режим раскладки.
+ * @param clicked_div - элемент раскладки камер, по кот. осуществлен клик
+ */
 
 function img_click(clicked_div) {
    var img_jq = $('img',clicked_div);
@@ -95,6 +117,15 @@ function img_click(clicked_div) {
    }
 } // img_click()
 
+
+/**
+ * Функция осуществляет инициализацию и установку элемента,
+ * реализующего воспроизведение видеопотока с заданной камеры,
+ * в соответствующую ячейку раскладки камер
+ * @param win_nr - номер устанавливаемой ячейки
+ * @param win_div - элемент устанавливаемой ячейки
+ * @param win_geo - объект, содержащий параметры элемента(размеры, смещение и т.п.)
+ */
 function brout(win_nr, win_div, win_geo) {
    if ( WINS_DEF[win_nr] == undefined )
       return;
@@ -146,24 +177,44 @@ function brout(win_nr, win_div, win_geo) {
 }
 
 /* global variables */
+///Элемент, в который выводятся раскладка камер
 var CANVAS;
+///Ширина эл-та CANVAS
 var CANVAS_W = -1;
+///Высота эл-та CANVAS
 var CANVAS_H = -1;
 
+///Элемент раскладки камер
 var WIN_DIVS;
 
-// global vars for tooltip
+///global var for tooltip
 var WIN_DIV_LEFT;
+///global var for tooltip
 var WIN_DIV_TOP;
+///global var for tooltip
 var WIN_DIV_W;
+///global var for tooltip
 var WIN_DIV_H;
+///global var for tooltip
 var IMG_IN_DIV_W;
+///global var for tooltip
 var IMG_IN_DIV_H;
+///global var for tooltip
 var FS_WIN_DIV;
 
+///Высота элемента в кот. выводится название камеры
 var NAME_DIV_H = PrintCamNames?20:0;
 
 
+/**
+ * Функция осуществляет вычисление размеров и расположения элементов раскладки камер
+ * @param _canvas_w - ширина эл-та CANVAS
+ * @param _canvas_h - высота эл-та CANVAS
+ * @param img_aspect_ratio - объект, содержит коэфициенты для пропорционального преобразования размеров элементов воспроизведения
+ * @param _rows_nr - номер строки текущего элемента
+ * @param _cols_nr - номер столбца текущего элемента
+ * @param _rowspan - сколько позиций элемент занимает в раскладке
+ */
 // XXX need ie box model 
 function calc_win_geo(_canvas_w, _canvas_h, img_aspect_ratio, _rows_nr, _cols_nr, _rowspan) {
    var cam_w;
@@ -207,17 +258,44 @@ function calc_win_geo(_canvas_w, _canvas_h, img_aspect_ratio, _rows_nr, _cols_nr
 } // calc_win_geo()
 
 
+/**
+ * Вычисляет положение left для элементов раскладки
+ * Вызывается при:
+ * <ul>
+ * <li> Установке элементов в раскладке
+ * <li> При переходе в элемента в полноэкраный режим
+ * <li> При ресайзе окна
+ * <li>	При выходе из полноэкранного режима, если этом режиме был ресайз окна
+ * </ul>
+ * @param win_geo - объект, содержит параметры контекстного элемента
+ * @param col - колонка раскладки по которой позиционируется элемент
+ */
 function calc_win_left(win_geo, col) {
    var _left = parseInt(col*win_geo.win_w + win_geo.offsetX);
    return _left;
 }
 
+/**
+ * Вычисляет положение top для элементов раскладки
+ * Вызывается при:
+ * <ul>
+ * <li> Установке элементов в раскладке
+ * <li> При переходе в элемента в полноэкраный режим
+ * <li> При ресайзе окна
+ * <li>	При выходе из полноэкранного режима, если этом режиме был ресайз окна
+ * </ul>
+ * @param win_geo - объект, содержит параметры контекстного элемента
+ * @param row - строка раскладки по которой позиционируется элемент
+ */
 function calc_win_top(win_geo, row) {
    var _top = parseInt( row*win_geo.win_h + win_geo.offsetY );
    return _top; 
 }
 
-
+/**
+ * Вычисляет и устанавливает размеры отображаемого элемента в полноэкранном режиме при ресайзе окна
+ * @param fs_win - отображаемый  в полноэкранном режиме элемент
+ */
 function change_fs_win_geo(fs_win) {
    var win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, 1, 1, 1);
    var fs_win_div_jq = $(fs_win);
@@ -235,6 +313,10 @@ function change_fs_win_geo(fs_win) {
 
 } // change_fs_win_geo()
 
+
+/**
+ * Вычисляет и устанавливает размеры элементов раскладки после ресайза окна
+ */
 function change_wins_geo() {
    var base_win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, ROWS_NR, COLS_NR, 1);
    var win_geo;
@@ -271,6 +353,9 @@ function change_wins_geo() {
    } // for(allwin)
 } // change_wins_geo()
 
+/**
+ * Обработчик ресайза окна
+ */
 function canvas_growth() {
    var canvas_changed = false;
    var avail_h = (($.browser.msie)?ietruebody().clientHeight:window.innerHeight) - $('#toolbar').height();
@@ -289,7 +374,6 @@ function canvas_growth() {
       return;
    if ( WIN_DIVS == undefined )
       return;
-   // alert("canvas changed");
 
    WIN_DIV_W = undefined;
 

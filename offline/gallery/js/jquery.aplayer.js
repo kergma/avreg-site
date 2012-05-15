@@ -1,8 +1,14 @@
-﻿(function ($) { $(function () {
- 		//Установка плеера в элемент
-//		$('#win_bot_detail').addPlayer({'src':'/avreg/media/cam_02/2010-05/03/00_00_00.jpg'});
-    	//Установка общих параметров
-//		$.aplayer.init({'height':200, 'width':300, 'mediaType':'embed' });
+﻿/**
+ * @file offline/gallery/js/jquery.aplayer.js
+ * @brief Плагин медиаплеер
+ * 
+ * Устанавливает медиаплеер в заданные элементы
+ * пример установки плеера:
+ * $('#some_div').addPlayer({'src': media_content_source, 'logoPlay':'true' });	
+ * 
+ * 
+ */
+
 		//Вывод конфигурации
 //		$.aplayer.config.Show();
 		//Получить информацию о браузере
@@ -10,12 +16,11 @@
 		//Вывод инфо о браузере
 //		$.browserInfo.Show();
 //		$.aplayer.config.Show();
-
 		//Пример глобальной пользовательской настройки
 /*		$.aplayerConfiguration({		
 			'*':{
 				'jpg' :{'*':'image'},
-				'jepg':{'*':'image'},
+				'jpeg':{'*':'image'},
 				'png' :{'*':'image'},
 				'bmp' :{'*':'image'},
 				'gif' :{'*':'image'},
@@ -36,32 +41,16 @@
 			'msie':{}
 		});
 */
-
+(function ($) { $(function () {
 		//Начальная инициализация
 		$.aplayer.init({});
-
 });})(jQuery);
 
-
-
-
-
-
-
-
-
-//---------------------------------------------------- Player ------------------------------------
-
-
-(function($){
-	
-	//Метод установки пользовательских настроек
-	$.aplayerConfiguration = function(globalSettings){
-		$.aplayer.init(globalSettings);
-	};
-
-	//Установка плеера в заданные эл-ты html
-	//settings: src , type , config{}
+	/**
+	 *Установка плеера в заданные эл-ты html 
+	 * @param settings - settings: src , type , config{} etc.
+	 * @returns this
+	 */
 	$.fn.addPlayer = function(settings){
 				if(settings.src==null)
 				{
@@ -74,13 +63,29 @@
 		return this;
 	};
 
-	//Закрытие плеера
+	/**
+	 * Метод установки пользовательских настроек
+	 * @param globalSettings - объект настроек
+	 */
+	$.aplayerConfiguration = function(globalSettings){
+		$.aplayer.init(globalSettings);
+	};
+	
+	/**
+	 * Закрытие плеера
+	 * @returns this
+	 */
 	$.fn.aplayerClose=function(){
 		$(this).empty();
 		return this;
 	};
 
-	//Смена src изображения
+	/**
+	 * Смена src изображения
+	 * @param imageSource - src картинки
+	 * @returns this
+	 */
+	
 	$.fn.aplayerSetImgSrc = function(imageSource){
 		var pl =  $(this).children('[id ^=' + $.aplayer.idContainer + ']');
 			$(pl).removeAttr('t','s').unbind('click');
@@ -90,14 +95,21 @@
 		return this;
 	};
 
-	//Медиаэлемент использует размеры источника 
+	/**
+	 * Медиаэлемент использует размеры источника 
+	 * @returns this
+	 */
 	$.fn.aplayerSetSrcSizes = function(){
 		$(this).children('[id ^=' + $.aplayer.idContainer + ']').children(':first-child').removeAttr('height').removeAttr('width').css({'height':'', 'width':'' });
 		return this;
 	};
 
-	
-    //Изменение размеров медиаэлемента
+
+	/**
+	 * Изменение размеров медиаэлемента только
+	 * @param Sizes - объект {'height': val, 'width': val }
+	 * @returns this
+	 */
     $.fn.aplayerSetSizeMediaElt = function(Sizes) {
     	var Owner = this;
 	    $(this).children('[id ^=' + $.aplayer.idContainer + ']').each(function () {
@@ -117,7 +129,11 @@
         return this;
     };
 
-    //Установка размеров плеера
+	/**
+	 * Установка размеров плеера
+	 * @param Sizes - объект {'height': val, 'width': val }
+	 * @returns this
+	 */
     $.fn.aplayerSetSize = function(Sizes) {
 
 	    $(this).children('div[id ^=' + $.aplayer.idContainer + ']').each(function () {
@@ -138,7 +154,10 @@
     };
 
 
-    //Установка размеров внутренних контейнеров плеера(без медиа элемента) в соответствии с размерами его контейнера
+    /**
+     * Установка размеров внутренних контейнеров плеера(без медиа элемента) в соответствии с размерами его контейнера
+     * @returns this
+     */
     $.fn.aplayerResizeContanerOnlyToParent = function () {
 	    $(this).children('div[id ^=' + $.aplayer.idContainer + ']').each(function () {
 	    $(this).height($(this).parent().height() - 5);
@@ -154,7 +173,10 @@
     	return this;
     };
 
-    //Установка размеров плеера в соответствии с размерами его контейнера
+    /**
+     * Установка размеров плеера в соответствии с размерами его контейнера
+     * @returns this
+     */
     $.fn.aplayerResizeToParent = function () {
 	    $(this).children('div[id ^=' + $.aplayer.idContainer + ']').each(function () {
 	    $(this).height($(this).parent().height() - 2);
@@ -178,33 +200,37 @@
         return this;
     };
 
-    //Является ли медиа-элемент картинкой?
+    /**
+     * Является ли медиа-элемент картинкой?
+     * @returns {Boolean} true - картинка, false - не картинка 
+     */
     $.fn.aplayerIsImage = function(){
   		var el = $(this).children('div').children(':first-child');
   		if($(el).attr('name')=='img' && $(this).children('div').attr('t')== undefined) return true;
   		else return false;
     };
     
-    
-    //Является ли медиа-элемент embed || object?
+    /**
+     * Является ли медиа-элемент embed || object?
+     * @returns {Boolean} true - да , false - нет 
+     */
     $.fn.aplayerIsEmbededObject = function(){
   		if($(this).find('embed').size()>0) return true;
   		else return false;
     };
     
     
-    
-    //Скрыть плеер
+    ///Скрыть плеер
     $.fn.aplayerHide = function(){
   		$(this).children('[id^='+$.aplayer.idContainer+']').hide();
     };
     
-    //Отобразить плеер
+    ///Отобразить плеер
     $.fn.aplayerShow = function(){
   		$(this).children('[id^='+$.aplayer.idContainer+']').show();
     };
 
-	//Объект, инкапсулирующий свойства и методы плеера
+	///Объект, инкапсулирующий свойства и методы плеера
 	$.aplayer = {
 
 		draggable : function(Container){
@@ -291,7 +317,7 @@
 		baseSettings : {
 			'*':{
 				'jpg' :{'*':'image'},
-				'jepg':{'*':'image'},
+				'jpeg':{'*':'image'},
 				'png' :{'*':'image'},
 				'bmp' :{'*':'image'},
 				'gif' :{'*':'image'},
@@ -398,9 +424,6 @@
 			
 			//Устанавливаем результат в объект конфигурации
 			$.extend($.aplayer.config, curSets);
-			
-			//Вывод конфигурации
-//			$.aplayer.config.Show();
 		},
 
 		//предикат сравнения версий
@@ -575,8 +598,7 @@
 					$.extend(settings, {mediaType : $.aplayer.config[ext], 'type' :elementMediaType });
 					return settings;
 				}
-				
-//----------------------------				
+			
 				//если в конфигурации способ воспроизведения для "всех остальных файлов"(т.е. - "*") - исползуем его
 				if($.aplayer.config['*']!=null)
 				{
@@ -587,10 +609,6 @@
 					$.extend(settings, {mediaType : $.aplayer.config['*'], 'type' :elementMediaType });
 					return settings;
 				}
-				
-//----------------------------				
-				
-				
 				
 				//автоматическое определение способа воспроизведения				
 				$.each($.aplayer.extTypes, function(i, type){
@@ -778,20 +796,7 @@
 
 			//Метод вывода изображения
 			showImage:function(container, settings){
-/*
-				var im = new Image();
-				im.src = settings.src;
-				//ошбика при загрузке картинки
-				im.onerror = function(){
-					im.src = $.aplayer.ControlBar.controlsImg + $.aplayer.logo_error;
 
-					im.onerror = function(){
-
-						$(container).append('<div style="font-size:14; color:red;">Image\'s loading failed </div>');
-						return;
-					}
-				}
-*/			
 				if(settings.useImageSize!=null && settings.useImageSize=='true')
 				{
 					//  title="'+settings.type+'"
@@ -828,11 +833,7 @@
                else obj = $.aplayer.create_Embed(settings);
 
                $(container).height(settings.height);
-               
- //              $(obj).attr({'width': settings.width, 'height': settings.height});
-
-//              $(obj).append($('<noembed>Your browser does not support video!!!!!!!!!!!!!!!!!!!!! </noembed>'));
-
+ 
                $(container).html(obj);
         	},
 
@@ -952,41 +953,6 @@
                return obj;
             },
             
-            
-            /*
-             // Create object SWF
-            createObj_SWF:function(settings){
-               var obj;
-
-               if($.browser.msie){
-                    obj = $('<object type="application/x-shockwave-flash data="'+settings.src+'" ></object>');
-                }
-                else{
-                   obj = $('<object type="application/x-shockwave-flash" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0"></object>');
-                }
-               $(obj).append('<param name="movie" value="'+settings.src+'" />');
-               $(obj).append('<param name="quality" value="high" >');
-               $(obj).append('<param name="play" value="0" >');
-               $(obj).append('<param name="loop" value="0" >');
-               $(obj).append('<param name="wmode" value="window" >');
-               $(obj).append('<param name="scale" value="showall" >');
-               $(obj).append('<param name="menu" value="1" >')
-				.append('<param name="play" value="false" >');
-//               $(obj).append('<param name="devicefont" value="false" />');
-//			    $(obj).append('<param name="salign" value="" />');
-//				$(obj).append('<param name="allowScriptAccess" value="sameDomain" />');
-				$(obj).width(settings.width)
-                .height(settings.height);
-               $(obj).append($($.aplayer.create_Embed(settings)).removeAttr('type') );
-             //   $(obj).append('<div><h4>Content on this page requires a newer version of Adobe Flash Player.</h4><p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif"alt="Get Adobe Flash player" width="112" height="33" /></a></p></div>');
-               return obj;
-            },
-            
-            */
-            
-            
-			//-----------------------------------
-
 			//Метод для использования HTML5 video
 			showVideo:function(container, settings){
 				var vid = document.createElement("video");
@@ -1418,20 +1384,7 @@
     };
 
 
-
-})(jQuery);
-
-
-
-
-
-
-
-//------------------------GetBrowserInfo
-
-(function($){
-
-	//Инкапсулирует данные о браузере
+	///Объект инкапсулирует данные о браузере
 	$.browserInfo = {
 		
 		browser:'undefined',
@@ -1628,5 +1581,5 @@
 	;
 	
 
-})(jQuery);
+//})(jQuery);
 

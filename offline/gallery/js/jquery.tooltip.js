@@ -1,4 +1,8 @@
 
+/**
+ * @file offline/gallery/js/jquery.tooltip.js 
+ * @brif Файл содержит JS-плагин tooltipa для отображения информации о медиа файле в галереи
+ */
 (function ($) { $(function () {
 
 	//Плагин ToolTip использует значение атрибута "tooltip" для отображения в тултипе	
@@ -28,4 +32,3 @@
 	};
 
 });})(jQuery);
-

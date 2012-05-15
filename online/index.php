@@ -13,6 +13,8 @@
  * - online/build_mon.php
  * - online/view.php
  * - online/active_wc.inc.php
+ * - online/build_mon.js
+ * - online/view.js
  */
 
 $pageTitle = 'strWcMons';
