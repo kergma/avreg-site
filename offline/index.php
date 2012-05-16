@@ -15,6 +15,7 @@
  * - offline/view-image.php
  * - offline/playlist.php
  * - offline/_playlist.php
+ * - offline/gallery/memcache.php
  * - offline/gallery/js/main.js
  * - offline/gallery/js/jquery.aplayer.js
  * - offline/gallery/js/jquery.checkbox.js

@@ -1,5 +1,13 @@
 <?php 
 
+/**
+ * @file offline/gallery/memcache.php
+ * @brief Содержит класс Cache, через который осуществляется взаимодействие с memcache
+ *  
+ *@class Cache
+ *Осуществляет взаимодействие с memcache
+ */
+
 class Cache {
 	private $memcache;
 
