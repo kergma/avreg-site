@@ -1,0 +1,15 @@
+/**
+* @page lib Библиотечные модули
+*
+* Список модулей:
+*
+* - adb.php
+* - cams_main_detail.inc.php
+* - config.inc.php
+* - get_cams_params.inc.php
+* - get_cam_url.php
+* - grab_globals.lib.php
+* - img_resize.php
+* - utils-inet.php
+*/
+
