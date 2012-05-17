@@ -15,16 +15,6 @@
  * - offline/view-image.php
  * - offline/playlist.php
  * - offline/_playlist.php
- * - offline/gallery/memcache.php
- * - offline/gallery/js/main.js
- * - offline/gallery/js/jquery.aplayer.js
- * - offline/gallery/js/jquery.checkbox.js
- * - offline/gallery/js/jquery.jstree.js
- * - offline/gallery/js/jquery.keyboard.js
- * - offline/gallery/js/jquery.mousewheel.min.js
- * - offline/gallery/js/jquery.tooltip.js
- * - offline/gallery/js/jquery.scrollTo-min.js
- * 
  */
 require('../lib/config.inc.php');
 
