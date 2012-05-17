@@ -3,19 +3,19 @@
 /**
  *
  * @file index.php
- * @brief генерация стартовой страницы сайта Avreg
+ * @brief AVReg Site API
  * 
- * @mainpage AvregSite 
+ * @mainpage AvregSite
  * 
  * Веб-интерфейс
- * 
+ *
  * Состоит из следующих частей:
- * - @ref lib 
- * - @ref admin 
- * - @ref lang 
- * - @ref offline 
- * - @ref online 
- * - @ref pda 
+ * - @ref lib     - библиотечные функции
+ * - @ref admin   - админка
+ * - @ref lang    - переводы сообщений
+ * - @ref offline - просмотр архива
+ * - @ref online  - наблюдение в реальном времени
+ * - @ref pda     - PDA интерфейс (для мобилок)
  * 
  */
 
