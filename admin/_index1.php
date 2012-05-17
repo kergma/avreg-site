@@ -1,6 +1,6 @@
 <?php
 /**
- * @file
+ * @file admin/_index1.php
  * @brief Стартовый iframe админки
  */
 require ('../head.inc.php');
