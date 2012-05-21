@@ -106,9 +106,6 @@ class Adb {
       }
       return false;
    }
-         $res = $this->_db->query($query);
-         $this->_error($res);
-      }
 
 /**
  *  Метод получения событий
