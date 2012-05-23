@@ -418,6 +418,9 @@ function try_fs() {
 
    $(document).ready( function() {
 
+	   
+///---------------------------------------------- Заменить содержимое на вызов ---> fill_canvas();
+/*	   
          if (ie||ns6) {
          tipobj=document.all? 
          document.all['tooltip'] :
@@ -496,9 +499,12 @@ function try_fs() {
 
          WIN_DIVS = $('div.win');
 
-         $('#dialog').jqm({
-overlay: 90
-});
+         $('#dialog').jqm({overlay: 90});
+*/
+///---------------------------------------------- Заменить содержимое на вызов ---> fill_canvas();
+
+         fill_canvas();
+         
 });
 
 

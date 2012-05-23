@@ -25,6 +25,7 @@ unset($__tmp);
 function get_cam_http_url($conf, $cam_nr, $media, $append_abenc=false)
 {
    $cams_subconf = &$GLOBALS['cams_subconf'];
+   
    if ( $cams_subconf && isset($cams_subconf[$cam_nr])
         && !empty($cams_subconf[$cam_nr]['avregd-httpd'])) {
       $_a = &$cams_subconf[$cam_nr]['avregd-httpd'];

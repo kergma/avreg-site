@@ -3,6 +3,9 @@
  * 
  * @file admin/mon-type.inc.php
  * @brief Параметры раскладок
+ * 
+ * Содержит базовые вариатны раскладок камер и функцию для построения раскладки
+ * 
  */
 $onecam_wins = array( array(0,0,1,1) );
 $quad_4_4_wins = array(

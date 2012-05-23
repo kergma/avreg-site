@@ -3,6 +3,8 @@
  * @file admin/menu-tune.php 
  * @brief Меню настроек 
  * 
+ * Создает содержимое фрейма menu для страницы настроек admin/tune.php
+ * 
  */
 /// Заголовок страницы в файле переводов
 $pageTitle = 'tune_logo';
@@ -48,8 +50,8 @@ if ( isset($tab) && ($tab == 'users')){
 if ( isset($tab) && ($tab == 'cameras')){
    print '<div class="menu0active">-&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php" target="menu">'.$left_tune.'</a><sup style="font-size:85%;">&nbsp;'.$videoserv.'</sup>'."\n";
    if ( $admin_user )
-      print '<div class="menu1">&nbsp;&nbsp;-&nbsp;<a href="'.$conf['prefix'].'/admin/cam-tune.php?cam_nr=0">'.$l_cam_defaults.'</a></div>'."\n";
-   print '<div class="menu1">&nbsp;&nbsp;-&nbsp;<a href="'.$conf['prefix'].'/admin/cam-list.php">'.$l_cam_list.'</a></div>'."\n";
+    	print '<div class="menu1">&nbsp;&nbsp;-&nbsp;<a href="'.$conf['prefix'].'/admin/cam-tune.php?cam_nr=0">'.$l_cam_defaults.'</a></div>'."\n";
+   	print '<div class="menu1">&nbsp;&nbsp;-&nbsp;<a href="'.$conf['prefix'].'/admin/cam-list.php">'.$l_cam_list.'</a></div>'."\n";
    if ( $install_user )
       print '<div class="menu1">&nbsp;&nbsp;-&nbsp;<a href="'.$conf['prefix'].'/admin/cam-addnew.php">'.$l_cam_addnew.'</a></div>'."\n";
    print '</div>'."\n";
@@ -57,11 +59,21 @@ if ( isset($tab) && ($tab == 'cameras')){
    print '<div class="menu0">+&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php?tab=cameras&#038;load='.$conf['prefix'].'/admin/cam-list.php" target="menu">'.$left_tune.'</a><sup style="font-size:85%;">&nbsp;'.$videoserv.'</sup></div>'."\n";
 }
 
+//Создание новых раскладок
 if ( isset($tab) && ($tab == 'monitors')){
-   print '<div class="menu0active">-&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php?tab=monitors&#038;load='.$conf['prefix'].'/admin/mon-list.php" target="menu"  title="'.$left_monitors_title.'">'.$left_monitors.'</a><sup style="font-size:85%;">&nbsp;'.$local_player_name.'</sup></div>'."\n";
+	print '<div class="menu0active">-&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php" target="menu">'.$left_monitors.'</a>'."\n";
+	print '<div class="menu0">&nbsp;&nbsp;-&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php?tab=monitors&#038;load='.$conf['prefix'].'/admin/mon-list.php" target="menu"  title="'.$left_monitors_title.'">'.$left_monitors.'</a><sup style="color:red; font-size:85%;">&nbsp;'.$local_player_name.'</sup></div>'."\n";
+	print '<div class="menu0">&nbsp;&nbsp;-&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php?tab=monitors&#038;load='.$conf['prefix'].'/admin/web_mon_list.php" target="menu"  title="'.$left_monitors_title.'">'.$left_monitors.'</a><sup style="color:red; font-size:85%;">&nbsp;'.$remote_player_name.'</sup></div>'."\n";
+	print '</div>'."\n";
 } else {
-   print '<div class="menu0">+&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php?tab=monitors&#038;load='.$conf['prefix'].'/admin/mon-list.php" target="menu"  title="'.$left_monitors_title.'">'.$left_monitors.'</a><sup style="font-size:85%;">&nbsp;'.$local_player_name.'</sup></div>'."\n";
+	print '<div class="menu0">+&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php?tab=monitors&#038;load='.$conf['prefix'].'/admin/mon-list.php" target="menu">'.$left_monitors.'</a>'."\n";
 }
+
+//if ( isset($tab) && ($tab == 'monitors')){
+//   print '<div class="menu0active">-&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php?tab=monitors&#038;load='.$conf['prefix'].'/admin/mon-list.php" target="menu"  title="'.$left_monitors_title.'">'.$left_monitors.'</a><sup style="font-size:85%;">&nbsp;'.$local_player_name.'</sup></div>'."\n";
+//} else {
+//   print '<div class="menu0">+&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php?tab=monitors&#038;load='.$conf['prefix'].'/admin/mon-list.php" target="menu"  title="'.$left_monitors_title.'">'.$left_monitors.'</a><sup style="font-size:85%;">&nbsp;'.$local_player_name.'</sup></div>'."\n";
+//}
 
 print '<br><br><br><hr noshade>'."\n";
 

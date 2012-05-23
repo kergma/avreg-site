@@ -57,14 +57,17 @@ if ( isset($css_links) && is_array($css_links))
 if ( isset($USE_JQUERY) ) {
    if ( $conf['debug'] )
       print '<script type="text/javascript" src="'.$conf['prefix'].'/lib/js/jquery-1.7.1.js"></script>'."\n";
-   else
+   else{
       print '<script type="text/javascript" src="'.$conf['prefix'].'/lib/js/jquery-1.7.1.min.js"></script>'."\n";
+   }
 }
 if ( isset($link_javascripts) && is_array($link_javascripts))
    foreach ($link_javascripts as &$__js_link)
       print '<script type="text/javascript" src="'.$conf['prefix'].'/'.$__js_link.'"></script>'."\n";
 ?>
+
 <script type="text/javascript" language="JavaScript1.2">
+
 <!--
 <?php 
 printf("var StorageDir = '%s';\n", addcslashes($conf['storage-dir'], '\'"/\\'));
@@ -220,11 +223,12 @@ function ReadCookie(cookieName)
 
 <?php
 if ( isset($include_javascripts) && is_array($include_javascripts)) {
-   foreach ($include_javascripts as &$__js)
+   foreach ($include_javascripts as &$__js){
       if (eregi('.php$', $__js))
          require ($wwwdir.$__js);
       else
          readfile($wwwdir.$__js);
+   }
 }
 ?>
 // -->

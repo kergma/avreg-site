@@ -13,7 +13,6 @@
  * в противном случае выводит соотв. сообщение
  * @returns {Boolean} true - OK, false - не установленна ни одна камера
  */
-
 function validate(){
    var cams_selects = document.getElementsByName('cams_in_wins[]');
    if ( typeof(cams_selects) == 'undefined' )

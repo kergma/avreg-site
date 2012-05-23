@@ -78,7 +78,7 @@ print '<tr><td align="right">'.$strAspectRatio.":</td>\n";
 print '<td align="left">'.getSelectByAssocAr('AspectRatio', $AspectRatioArray, false , 1, 1, $AspectRatio, false)."</td></tr>\n";
 
 print '<tr><td align="right">'.$strPrintCamNames.":</td>\n";
-print '<td align="left"><input type="checkbox" name="PrintCamNames" '.$PrintCamNames.' />'."</td></tr>\n";
+print '<td align="left"><input type="checkbox" name="PrintCamNames" value = "'.$PrintCamNames.'" />'."</td></tr>\n";
 
 if ( $MSIE ) {
    print '<tr><td align="right">'.$strEnableReconnect.":</td>\n";

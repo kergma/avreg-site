@@ -16,6 +16,40 @@ $body_addons='scroll="no"';
 $ie6_quirks_mode = true;
 $lang_file='_online.php';
 require ('../head.inc.php');
+
+//Загрузка установленных раскладок
+$result = $adb->web_get_monitors();
+
+//Если нет установленных раскладок
+if(!count($result)) {
+	print "NO AVAILABLE LAYOUTS";
+	exit();
+}
+
+//Номер камеры по умолчанию
+$def_cam = null;
+
+//Поиск расколадки по умолчанию
+foreach($result as $key=>$value){
+	if($value['IS_DEFAULT']!='0') $def_cam = $value;
+}
+//Если расколадка по умолчанию не найдена - используем первую
+if ($def_cam == null){
+	$def_cam = $result[0];
+}
+
+//Определяем соответствующие параметры
+$PrintCamNames =  $def_cam['PRINT_CAM_NAME'];
+$AspectRatio =  $def_cam['PROPORTION'];
+$mon_type = $def_cam['MON_TYPE'];
+$cams_in_wins = array ($def_cam['WIN1'],  $def_cam['WIN2'],  $def_cam['WIN3'],  $def_cam['WIN4'], $def_cam['WIN5'],  $def_cam['WIN6'],  $def_cam['WIN7'],  $def_cam['WIN8'], $def_cam['WIN9'],  $def_cam['WIN10'], $def_cam['WIN11'], $def_cam['WIN12'], $def_cam['WIN13'], $def_cam['WIN14'], $def_cam['WIN15'], $def_cam['WIN16'], $def_cam['WIN17'],  $def_cam['WIN18'], $def_cam['WIN19'], $def_cam['WIN20'], $def_cam['WIN21'], $def_cam['WIN22'], $def_cam['WIN23'], $def_cam['WIN24'], $def_cam['WIN25']);
+
+//список раскладок для JS-script
+//$layouts_list = json_encode($result);
+//echo("<script type=\"text/javascript\">var layouts_list = {$layouts_list};</script>  ");
+//---------
+
+
 if ( !isset($cams_in_wins) || empty($cams_in_wins))
    die('should use "cams_in_wins" cgi param');
 if (is_string($cams_in_wins))
@@ -27,7 +61,9 @@ require('../admin/mon-type.inc.php');
 if (!isset($mon_type) || empty($mon_type) || !array_key_exists($mon_type, $layouts_defs) ) 
    MYDIE("not set ot invalid \$mon_type=\"$mon_type\"",__FILE__,__LINE__);
 $l_defs = &$layouts_defs[$mon_type];
-$wins_nr = $l_defs[0];
+$wins_nr = $l_defs[0]; //определяет количество камер в раскладке
+
+
 
 $_cookie_value = sprintf('%s-%u-%u-%u-%s',
    implode('.', $cams_in_wins),
@@ -38,6 +74,15 @@ $_cookie_value = sprintf('%s-%u-%u-%u-%s',
 setcookie("avreg_$mon_type", $_cookie_value, time()+5184000, dirname($_SERVER['SCRIPT_NAME']).'/build_mon.php');
 while (@ob_end_flush());
 
+
+//------
+
+// print "<pre>";
+// var_dump($GCP_cams_params);
+// print "</pre>";
+
+//--------
+
 ?>
 <div id="canvas"
      style="position:relative; background-color:#000000; width:100%; height:0px; margin:0; padding:0;
@@ -46,7 +91,17 @@ while (@ob_end_flush());
 
 <?php
 
+
 echo "<script type='text/javascript'>\n";
+
+//Передаем в JS список существующих раскладок
+print "var layouts_list = ".json_encode($result).";\n";
+//Передаем в JS возможные варианты раскладок
+print "var layouts_defs = ".json_encode($layouts_defs).";\n";
+//Передаем в JS возможные аспекты раскладок
+print "var WellKnownAspects = ".json_encode($WellKnownAspects).";\n";
+
+
 
 function calcAspectForGeo($w,$h) {
 	
@@ -81,23 +136,47 @@ $GCP_query_param_list=array('work', 'allow_networks', 'text_left', 'geometry', '
 if ( $operator_user )
    array_push($GCP_query_param_list, 'cam_type', 'InetCam_IP');
 require('../lib/get_cams_params.inc.php');
+
 if ( $GCP_cams_nr == 0 )
-   die('There are no available cameras!');
+   die('There are no available cameras!'); // не продублировано 1111111111111111111111111111111111111111111111111111
+
 require_once('../lib/get_cam_url.php');
+
+print 'var cams_subconf = '.json_encode($cams_subconf).";\n";
+//Передаем JS параметры конфигурации
+print 'var conf = '.json_encode($conf).";\n";
+
+//передаем базовую часть адреса в JS
+print "var http_cam_location = '$http_cam_location' ;\n";
+
+//Передаем инфо о пользователе в JS
+print "var user_info_USER = ".json_encode($GLOBALS['user_info']['USER']).";\n";
+print "var base64_encode_user_info_USER = '".base64_encode($GLOBALS['user_info']['USER'])."';\n";
+print "var PHP_AUTH_PW = '".$_SERVER['PHP_AUTH_PW']."';\n";
 
 print 'var WINS_DEF = new MakeArray('.$wins_nr.')'."\n";
 
+//Передаем JS параметры длосупных камер
+print "var GCP_cams_params = ".json_encode($GCP_cams_params).";\n";
+
+//Передаем JS параметр operator_user
+print "var operator_user = ".json_encode($operator_user).";\n";
+
+
+
+//--------------------------- it will be posible to delete ????????????????????????
+
 for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
 {
-   if ( empty($cams_in_wins[$win_nr]) || !array_key_exists($cams_in_wins[$win_nr], $GCP_cams_params) /* DeviceACL */ )
-      continue;
+   if ( empty($cams_in_wins[$win_nr]) || !array_key_exists($cams_in_wins[$win_nr], $GCP_cams_params)) continue; /// DeviceACL 
 
    $cam_nr = $cams_in_wins[$win_nr];
-
+   
    list($width,$height) = explode('x', $GCP_cams_params[$cam_nr]['geometry']);
    settype($width, 'integer'); settype($height, 'integer');
    if ( empty($width)  )  $width  = 640;
    if ( empty($height) )  $height = 480;
+   
    if ( !empty($GCP_cams_params[$cam_nr]['Hx2']) ) $height *= 2;
 
    if (is_null($major_win_cam_geo) || $major_win_nr === $win_nr )
@@ -139,7 +218,11 @@ else
 </script>', $cam_nr);
 }
 
+//--------------------------- it will be posible to delete ????????????????????????
+
+//не нужен????????
 printf("var FitToScreen = %s;\n", empty($FitToScreen) ? 'false' : 'true');
+
 printf("var PrintCamNames = %s;\n", empty($PrintCamNames) ? 'false' : 'true');
 printf("var EnableReconnect = %s;\n", empty($EnableReconnect) ? 'false' : 'true');
 if ( empty($AspectRatio) ) {
@@ -175,6 +258,8 @@ print "var ROWS_NR = $l_defs[1];\n";
 print "var COLS_NR = $l_defs[2];\n";
 
 readfile('view.js');
+readfile('layouts.js');
+
 echo "</script>\n";
 
 if ( !empty($msie_addons_scripts) || is_array($msie_addons_scripts) )  {
