@@ -44,12 +44,6 @@ $AspectRatio =  $def_cam['PROPORTION'];
 $mon_type = $def_cam['MON_TYPE'];
 $cams_in_wins = array ($def_cam['WIN1'],  $def_cam['WIN2'],  $def_cam['WIN3'],  $def_cam['WIN4'], $def_cam['WIN5'],  $def_cam['WIN6'],  $def_cam['WIN7'],  $def_cam['WIN8'], $def_cam['WIN9'],  $def_cam['WIN10'], $def_cam['WIN11'], $def_cam['WIN12'], $def_cam['WIN13'], $def_cam['WIN14'], $def_cam['WIN15'], $def_cam['WIN16'], $def_cam['WIN17'],  $def_cam['WIN18'], $def_cam['WIN19'], $def_cam['WIN20'], $def_cam['WIN21'], $def_cam['WIN22'], $def_cam['WIN23'], $def_cam['WIN24'], $def_cam['WIN25']);
 
-//список раскладок для JS-script
-//$layouts_list = json_encode($result);
-//echo("<script type=\"text/javascript\">var layouts_list = {$layouts_list};</script>  ");
-//---------
-
-
 if ( !isset($cams_in_wins) || empty($cams_in_wins))
    die('should use "cams_in_wins" cgi param');
 if (is_string($cams_in_wins))
@@ -73,15 +67,6 @@ $_cookie_value = sprintf('%s-%u-%u-%u-%s',
    isset($AspectRatio) ? $AspectRatio : 'calc' );
 setcookie("avreg_$mon_type", $_cookie_value, time()+5184000, dirname($_SERVER['SCRIPT_NAME']).'/build_mon.php');
 while (@ob_end_flush());
-
-
-//------
-
-// print "<pre>";
-// var_dump($GCP_cams_params);
-// print "</pre>";
-
-//--------
 
 ?>
 <div id="canvas"
@@ -162,10 +147,6 @@ print "var GCP_cams_params = ".json_encode($GCP_cams_params).";\n";
 //Передаем JS параметр operator_user
 print "var operator_user = ".json_encode($operator_user).";\n";
 
-
-
-//--------------------------- it will be posible to delete ????????????????????????
-
 for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
 {
    if ( empty($cams_in_wins[$win_nr]) || !array_key_exists($cams_in_wins[$win_nr], $GCP_cams_params)) continue; /// DeviceACL 
@@ -218,12 +199,10 @@ else
 </script>', $cam_nr);
 }
 
-//--------------------------- it will be posible to delete ????????????????????????
 
-//не нужен????????
 printf("var FitToScreen = %s;\n", empty($FitToScreen) ? 'false' : 'true');
 
-printf("var PrintCamNames = %s;\n", empty($PrintCamNames) ? 'false' : 'true');
+printf("var PrintCamNames = %s;\n", $PrintCamNames ? 'true'  : 'false');
 printf("var EnableReconnect = %s;\n", empty($EnableReconnect) ? 'false' : 'true');
 if ( empty($AspectRatio) ) {
    print 'var CamsAspectRatio = \'fs\';'."\n";
@@ -260,8 +239,8 @@ print "var WINS_NR = $wins_nr;\n";
 print "var ROWS_NR = $l_defs[1];\n";
 print "var COLS_NR = $l_defs[2];\n";
 
+//Подключаем файл 
 readfile('view.js');
-readfile('layouts.js');
 
 echo "</script>\n";
 

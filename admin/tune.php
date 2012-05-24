@@ -20,6 +20,12 @@
  * - admin/mon-addnew.php
  * - admin/mon-tune.php
  * - admin/mon-type.inc.php
+ * - admin/active_pipe.inc.php
+ * - admin/web_mon_list.php
+ * - admin/web_mon_addnew.php
+ * - admin/web_mon_tune.php
+ * - admin/web_set_def.php
+ * - admin/web_active_pipe.inc.php
  * 
  * @ref admin
  */

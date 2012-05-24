@@ -1,3 +1,9 @@
+<?php 
+/**
+ * @file admin/active_pipe.inc.php
+ * @brief Содержит js-функции и инициализирует переменные <br />необхоимые для усановки камер в раскладке
+ */
+?>
 <script type="text/javascript" language="JavaScript1.2">
 <!--
 function validate(){
