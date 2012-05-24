@@ -138,7 +138,7 @@ if ( $operator_user )
 require('../lib/get_cams_params.inc.php');
 
 if ( $GCP_cams_nr == 0 )
-   die('There are no available cameras!'); // не продублировано 1111111111111111111111111111111111111111111111111111
+   die('There are no available cameras!'); 
 
 require_once('../lib/get_cam_url.php');
 
@@ -236,6 +236,9 @@ if ( empty($AspectRatio) ) {
    } else
       print 'var CamsAspectRatio = \'fs\';'."\n";
 }
+
+
+
 
 printf("var BorderLeft   = %u;\n", empty($BorderLeft)   ? 2 : $BorderLeft);
 printf("var BorderRight  = %u;\n", empty($BorderRight)  ? 2 : $BorderRight);

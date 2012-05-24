@@ -32,7 +32,9 @@ print '<p><a href="'.$conf['prefix'].'/pda/">PDA-версия</a></p>'."\n";
 print '</td>'."\n";
 print '<td align="center" valign="top">'."\n";
 // $href1 = sprintf('/online/index.php?sip=%s&named=%s', urlencode($sip), urlencode($named));
-print '<a href="'.$conf['prefix'].'/online/index.php" title="'.$a_webcam.'"><img src="'.$conf['prefix'].'/img/online.jpg" width="251" height="165" border="0"></a>'."\n";
+
+//print '<a href="'.$conf['prefix'].'/online/index.php" title="'.$a_webcam.'"><img src="'.$conf['prefix'].'/img/online.jpg" width="251" height="165" border="0"></a>'."\n";
+print '<a href="'.$conf['prefix'].'/online/view.php" title="'.$a_webcam.'"><img src="'.$conf['prefix'].'/img/online.jpg" width="251" height="165" border="0"></a>'."\n";
 print '<p><a href="'.$conf['prefix'].'/online/index.php">'.$a_webcam.'</a></p>'."\n";
 print '</td>'."\n";
 
