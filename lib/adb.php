@@ -40,7 +40,7 @@ class Adb {
       /// Тип БД mysql - MySql, pgsql - PostgreSql
       $_dbtype = 'mysql',
       /// Хост БД
-      $_host = '',
+      $_host = 'localhost',
       /// Объект для работы с БД
       $_db = false;
 
@@ -56,12 +56,16 @@ class Adb {
       $this->_password = $param['db-passwd'];
       if (isset($param['db-type']) && !empty($param['db-type']))
          $this->_dbtype = $param['db-type'];
-
       if (isset($param['db-host']) && !empty($param['db-host']))
          $this->_host = $param['db-host'];
 
+//      $this->_host ='localhost';
+      
       $dsn = "{$this->_dbtype}://{$this->_user }:{$this->_password}@{$this->_host}/{$this->_database}";
+
+      
       $this->_db = DB::connect($dsn,true);
+      
       $this->_error($this->_db);
 
       if ($this->_dbtype == 'mysql')
@@ -693,7 +697,7 @@ class Adb {
    * @param string $bind_mac
    */
    public function web_add_monitors($display,$mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $fWINS, $vWINS,$bind_mac = 'local') {
-   	$query = sprintf('INSERT INTO WEB_MONITORS (BIND_MAC, DISPLAY, MON_NR, MON_TYPE, MON_NAME, %s, PRINT_CAM_NAME , PROPORTION, CHANGE_HOST, CHANGE_USER) VALUES (\'local\', \'%s\', %d, \'%s\', \'%s\', %s, \'%s\', \'%s\', \'%s\', \'%s\')',
+   	$query = sprintf('INSERT INTO WEB_LAYOUTS (BIND_MAC, DISPLAY, MON_NR, MON_TYPE, SHORT_NAME, %s, PRINT_CAM_NAME , PROPORTION, CHANGE_HOST, CHANGE_USER) VALUES (\'local\', \'%s\', %d, \'%s\', \'%s\', %s, \'%s\', \'%s\', \'%s\', \'%s\')',
    	implode (', ',$fWINS), $display, $mon_nr, $mon_type, $mon_name, implode (', ',$vWINS), $PrintCamNames , $AspectRatio , $remote_addr, $login_user);
    	$res = $this->_db->query($query);
    	$this->_error($res);
@@ -723,7 +727,7 @@ class Adb {
  * @param string $bind_mac
  */
    public function web_delete_monitors($display, $mon_nr, $bind_mac = 'local') {
-      $query = 'DELETE FROM WEB_MONITORS';
+      $query = 'DELETE FROM WEB_LAYOUTS';
       $query .= " WHERE BIND_MAC ='$bind_mac'";
       $query .= " AND DISPLAY ='$display'";
       $query .= " AND MON_NR = $mon_nr";		
@@ -781,9 +785,9 @@ class Adb {
  * @param string $bind_mac
  */
    public function web_update_monitors($display,$mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $fWINS, $vWINS,$bind_mac = 'local') {
-      $query = 'UPDATE WEB_MONITORS SET ';
+      $query = 'UPDATE WEB_LAYOUTS SET ';
       $query .= "MON_TYPE = '$mon_type'";
-      $query .= ", MON_NAME = '$mon_name'";
+      $query .= ", SHORT_NAME = '$mon_name'";
       $query .= ", CHANGE_HOST = '$host'";
       $query .= ", CHANGE_USER = '$user'";
 
@@ -812,12 +816,12 @@ class Adb {
    * @param unknown_type $mon_nr - номер раскладки, устанавливаемый по умолчанию
    */
    public function web_set_def_layout($mon_nr) {
-   	$query = 'UPDATE WEB_MONITORS SET ';
+   	$query = 'UPDATE WEB_LAYOUTS SET ';
    	$query .= "IS_DEFAULT = 0";
    	$res = $this->_db->query($query);
    	$this->_error($res);
    	
-   	$query = 'UPDATE WEB_MONITORS SET ';
+   	$query = 'UPDATE WEB_LAYOUTS SET ';
    	$query .= "IS_DEFAULT = 1";
    	$query .= " WHERE MON_NR = $mon_nr";
    
@@ -873,7 +877,7 @@ class Adb {
    	
    	//$PrintCamNames, $AspectRatio,
    	
-   	$query = 'SELECT * FROM WEB_MONITORS ';
+   	$query = 'SELECT * FROM WEB_LAYOUTS ';
    	$query .= " WHERE BIND_MAC = '$bind_mac'";
    	$query .= " AND MON_NR = $mon_nr";
    	$query .= " AND DISPLAY = '$display'";
@@ -918,10 +922,10 @@ class Adb {
  */
    public function web_get_monitor($display, $mon_nr, $bind_mac = 'local') {
    	
-      $query = 'SELECT MON_NR, MON_TYPE, MON_NAME, IS_DEFAULT, ' .
+      $query = 'SELECT MON_NR, MON_TYPE, SHORT_NAME, IS_DEFAULT, ' .
          'WIN1, WIN2, WIN3, WIN4, WIN5, WIN6, WIN7, WIN8, WIN9, WIN10, WIN11, WIN12, WIN13, WIN14, WIN15, WIN16, WIN17, WIN18, WIN19, WIN20, WIN21, WIN22, WIN23, WIN24, WIN25, '.
          'CHANGE_HOST, CHANGE_USER, CHANGE_TIME, PRINT_CAM_NAME, PROPORTION '.
-         'FROM WEB_MONITORS '.
+         'FROM WEB_LAYOUTS '.
          'WHERE BIND_MAC=\''.$bind_mac.'\' AND DISPLAY=\''.$display.'\' AND MON_NR='.$mon_nr;
       $res = $this->_db->query($query);
       $this->_error($res);
@@ -963,7 +967,7 @@ class Adb {
  */
    public function web_get_monitors($bind_mac = 'local'){
       $mon = array();
-      $query = 'SELECT * FROM WEB_MONITORS';
+      $query = 'SELECT * FROM WEB_LAYOUTS';
       $query .= " WHERE BIND_MAC='$bind_mac'";
       $query .= ' ORDER BY MON_NR';
 

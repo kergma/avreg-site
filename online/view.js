@@ -433,7 +433,7 @@ function try_fs() {
    	
    	$.each(layouts_list, function(i, value){
    		html+='<div style="float:left; padding:5px;"><a id="layout_'+value.MON_NR+'" onclick="change_layout('+value.MON_NR+')" href="#">';
-   		html+= (value.MON_NAME==''? value.MON_TYPE :value.MON_NAME);
+   		html+= (value.SHORT_NAME==''? value.MON_TYPE :value.SHORT_NAME);
    		html+= (value.IS_DEFAULT==1? '(def)' :'');
    		html+='</a>&nbsp;&nbsp;&nbsp;&nbsp;</div>';
    	});
@@ -532,8 +532,11 @@ function try_fs() {
    		};
    	});
    	
+   	
+   	
+   	
    	//Вывод в шапке элемента отображения камеры - названия камеры
-   	PrintCamNames = (layout['PRINT_CAM_NAME']==true)? true : false;
+   	PrintCamNames = (layout['PRINT_CAM_NAME']=='t' || layout['PRINT_CAM_NAME']==true)? true : false;
    	NAME_DIV_H = PrintCamNames?20:0;
    	
    	//Установка пропорций

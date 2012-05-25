@@ -217,8 +217,6 @@ if ( empty($AspectRatio) ) {
 }
 
 
-
-
 printf("var BorderLeft   = %u;\n", empty($BorderLeft)   ? 2 : $BorderLeft);
 printf("var BorderRight  = %u;\n", empty($BorderRight)  ? 2 : $BorderRight);
 printf("var BorderTop    = %u;\n", empty($BorderTop)    ? 2 : $BorderTop);
