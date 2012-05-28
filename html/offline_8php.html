@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>AvregSite: Файл pda/offline.php</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body onload='searchBox.OnSelectItem(0);'>
+<!-- Создано системой Doxygen 1.7.4 -->
+<script type="text/javascript"><!--
+var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
+--></script>
+<div id="top">
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">AvregSite</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Титульная&#160;страница</span></a></li>
+      <li><a href="pages.html"><span>Описания</span></a></li>
+      <li><a href="annotated.html"><span>Классы</span></a></li>
+      <li class="current"><a href="files.html"><span>Файлы</span></a></li>
+      <li id="searchli">
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Поиск" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Файлы</span></a></li>
+      <li><a href="globals.html"><span>Список&#160;членов&#160;всех&#160;файлов</span></a></li>
+    </ul>
+  </div>
+</div>
+<div class="header">
+  <div class="summary">
+<a href="#var-members">Переменные</a>  </div>
+  <div class="headertitle">
+<div class="title">Файл pda/offline.php</div>  </div>
+</div>
+<div class="contents">
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="var-members"></a>
+Переменные</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a19a3c439125b55fcedd6bb5dbabdcb"></a><!-- doxytag: member="offline.php::$pageTitle" ref="a3a19a3c439125b55fcedd6bb5dbabdcb" args="" -->
+&#160;</td><td class="memItemRight" valign="bottom"><b>$pageTitle</b> = 'Сеансы записи'</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aac04745a3b904bdf407b6f775d836286"></a><!-- doxytag: member="offline.php::$lang_file" ref="aac04745a3b904bdf407b6f775d836286" args="" -->
+&#160;</td><td class="memItemRight" valign="bottom"><b>$lang_file</b> = '_admin_cams.php'</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa8cafd9efa09d693536f91b11470c871"></a><!-- doxytag: member="offline.php::foreach" ref="aa8cafd9efa09d693536f91b11470c871" args="($cams as &amp;$value) settype($value" -->
+&#160;</td><td class="memItemRight" valign="bottom"><b>foreach</b> ($cams as &amp;$value) settype($value</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a84f16755a19e01076c04c9b0b829fdcc"></a><!-- doxytag: member="offline.php::$one_cam" ref="a84f16755a19e01076c04c9b0b829fdcc" args="" -->
+&#160;</td><td class="memItemRight" valign="bottom"><b>$one_cam</b> = ( count($cams) === 1 )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5eacb726cd140a644f11127545554701"></a><!-- doxytag: member="offline.php::$cams_csv" ref="a5eacb726cd140a644f11127545554701" args="" -->
+&#160;</td><td class="memItemRight" valign="bottom"><b>$cams_csv</b> = implode(',', $cams)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af10664c9ed7493816fe65a406d785607"></a><!-- doxytag: member="offline.php::$use_desc_order" ref="af10664c9ed7493816fe65a406d785607" args="" -->
+&#160;</td><td class="memItemRight" valign="bottom"><b>$use_desc_order</b> = empty($desc) ? '' : 'desc'</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a69a76fd74d211149772ba352da819b28"></a><!-- doxytag: member="offline.php::$timeend" ref="a69a76fd74d211149772ba352da819b28" args="" -->
+&#160;</td><td class="memItemRight" valign="bottom"><b>$timeend</b> = strftime('%Y-%m-%d %T', $timeend_unix)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1eda22d5b5a060faa35b79f7d3f4dcb3"></a><!-- doxytag: member="offline.php::$_SESSION" ref="a1eda22d5b5a060faa35b79f7d3f4dcb3" args="['cams']" -->
+&#160;</td><td class="memItemRight" valign="bottom"><b>$_SESSION</b> ['cams'] = $cams</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa96738d38c6815aa60839a83cf31c5ed"></a><!-- doxytag: member="offline.php::$_SESSION" ref="aa96738d38c6815aa60839a83cf31c5ed" args="['until']" -->
+&#160;</td><td class="memItemRight" valign="bottom"><b>$_SESSION</b> ['until'] = (int)$until</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a20622fc2fd3be1f011b7226db4f9b1c3"></a><!-- doxytag: member="offline.php::$_SESSION" ref="a20622fc2fd3be1f011b7226db4f9b1c3" args="['desc']" -->
+&#160;</td><td class="memItemRight" valign="bottom"><b>$_SESSION</b> ['desc'] = !empty($desc)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a21f238189b92eb53d52a7fe375688021"></a><!-- doxytag: member="offline.php::$_SESSION" ref="a21f238189b92eb53d52a7fe375688021" args="['oims']" -->
+&#160;</td><td class="memItemRight" valign="bottom"><b>$_SESSION</b> ['oims'] = !empty($oims)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><b>$recsess_sess_var_name</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ee9cca97f1ddface333cac69119424d"></a><!-- doxytag: member="offline.php::$rec_sessions" ref="a1ee9cca97f1ddface333cac69119424d" args="" -->
+&#160;</td><td class="memItemRight" valign="bottom"><b>$rec_sessions</b> = null</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><b>$pagi</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a624cc2f6f665327622fee3c64a16a71d"></a><!-- doxytag: member="offline.php::$GCP_query_param_list" ref="a624cc2f6f665327622fee3c64a16a71d" args="" -->
+&#160;</td><td class="memItemRight" valign="bottom"><b>$GCP_query_param_list</b> = array('work', 'text_left', 'geometry', 'Hx2')</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aecb266de8aa43e187598818a92148620"></a><!-- doxytag: member="offline.php::n" ref="aecb266de8aa43e187598818a92148620" args="" -->
+print&lt; br &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>n</b></td></tr>
+</table>
+<hr/><a name="details" id="details"></a><h2>Подробное описание</h2>
+<div class="textblock"></div><hr/><h2>Переменные</h2>
+<a class="anchor" id="a9d2cb44fafc6667237ca9aae697a85cf"></a><!-- doxytag: member="offline.php::$pagi" ref="a9d2cb44fafc6667237ca9aae697a85cf" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$pagi</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Инициализатор</b><div class="fragment"><pre class="fragment"> <span class="keyword">new</span> <a class="code" href="classPDA__Paginator.html" title="Клас реализовывающий функцию пагинации">PDA_Paginator</a>($rec_sessions,
+   isset($off) ? (<span class="keywordtype">int</span>)($off) : 0,
+   sprintf(<span class="stringliteral">&#39;offline.php?cams=%s&amp;s=%u&amp;f=%u%s%s&#39;</span>,
+      $cams_csv,  $timebegin_unix, $timeend_unix,
+      empty($desc) ? <span class="stringliteral">&#39;&#39;</span> : <span class="stringliteral">&#39;&amp;desc=1&#39;</span>,
+      empty($oims) ? <span class="stringliteral">&#39;&#39;</span> : <span class="stringliteral">&#39;&amp;oims=1&#39;</span>),
+      <a class="code" href="config_8inc_8php.html#a298d8edd82ce1dc3c3f61d36e01c326d" title="масив содержащий настройки">$conf</a>,
+      <a class="code" href="config_8inc_8php.html#a298d8edd82ce1dc3c3f61d36e01c326d" title="масив содержащий настройки">$conf</a>[<span class="stringliteral">&#39;pda-links-per-page&#39;</span>])
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="a55004fdddf9d0076029dd1701a4bc63c"></a><!-- doxytag: member="offline.php::$recsess_sess_var_name" ref="a55004fdddf9d0076029dd1701a4bc63c" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$recsess_sess_var_name</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Инициализатор</b><div class="fragment"><pre class="fragment"> sprintf(<span class="stringliteral">&#39;offline_%s_%u_%u_%u_%u&#39;</span>,
+   implode(<span class="charliteral">&#39;_&#39;</span>, $cams),
+   $use_desc_order ? 1 : 0, 
+   empty($oims) ? 0 : 1, 
+   $timebegin_unix, $timeend_unix)
+</pre></div>
+</div>
+</div>
+</div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>Указатель</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Классы</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Файлы</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Функции</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Переменные</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<hr class="footer"/><address class="footer"><small>Документация по AvregSite. Последние изменения: Чт 24 Май 2012 13:23:13. Создано системой&#160;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
+</body>
+</html>

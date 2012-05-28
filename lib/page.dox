@@ -1,0 +1,14 @@
+/**
+* @page lib Библиотеки
+* Файлы библиотек
+* - lib/adb.php
+* - lib/cams_main_detail.inc.php
+* - lib/config.inc.php
+* - lib/get_cam_url.php
+* - lib/get_cams_params.inc.php
+* - lib/grab_globals.lib.php
+* - lib/img_resize.php
+* - lib/utils-inet.php
+* 
+*
+*/
