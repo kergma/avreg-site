@@ -66,8 +66,7 @@ if ( !isset($u_name) || empty($u_name) )
 		// next($grps);
 		// print '<pre>'.$grp_status.'/'.$groups.'</pre>'."\n";
 		$result = $adb->get_users($grp_status);
-		
-		
+
 		$num_rows = count($result);
 		switch ($grp_status)
 		{
@@ -112,7 +111,8 @@ if ( !isset($u_name) || empty($u_name) )
                 	if ( $admin_user && $user_status < $grp_status)
                     {
 				        print '<td><a href="'.$a_del.'">'. $strDelete . '</a></td>' . "\n";
-                        print '<td><a href="'.$a_change.'">'. $strChange . '</a></td>' . "\n";                              } else {
+                        print '<td><a href="'.$a_change.'">'. $strChange . '</a></td>' . "\n";                              
+                    } else {
                        print ('<td>&nbsp;</td>');
                        print ('<td>&nbsp;</td>');
                     }

@@ -18,7 +18,7 @@ function prt_l ($display, $l_nr, $l_def, $is_admin, $layout_word, $counter, $Asp
 	else $PCN=false;
 
 	print "<div>\n";
-	print "<span style=\"font-size:20px; font-weight:bold\"> $layout_word №".$counter."</span>\n<br />\n<span style=\"font-size:16px; font-weight:bold\">";
+	print "<span style=\"font-size:20px; font-weight:bold\">$layout_word №".$counter." ID: $l_nr </span>\n<br />\n<span style=\"font-size:16px; font-weight:bold\">";
 	if ( !empty($l_def['layout_name']))
 	print $l_def['layout_name']."</span>\n";
 	else
@@ -152,7 +152,7 @@ if ( !isset($mon_nr) || $mon_nr =='')
    
    //Вывод готовых раскладок
    foreach ($LD as $mon_nr=>$res_val){
-	print "<div style=\"border: 1px solid black; padding: 5px; height:290px; width: 240px; text-align:center; float:left; margin:10px; \">\n";
+	print "<div style=\"border: 1px solid black; padding: 5px; height:290px; width: 260px; text-align:center; float:left; margin:10px; \">\n";
     if ( array_key_exists ( $mon_nr, $LD ) ) {
 	//левый монитор (правый вообще не используем)
     	prt_l('L', $mon_nr, $LD[$mon_nr], $admin_user, $layout_word, $counter, $LD[$mon_nr]['AspectRatio'], $LD[$mon_nr]['PrintCamNames'], $LD[$mon_nr]['isDefault']);

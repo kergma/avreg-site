@@ -785,7 +785,10 @@ class Adb {
  * @param string $bind_mac
  */
    public function web_update_monitors($display,$mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $fWINS, $vWINS,$bind_mac = 'local') {
-      $query = 'UPDATE WEB_LAYOUTS SET ';
+   	
+   	$this->web_clear_wins($display, $mon_nr, $bind_mac);
+   	
+   	  $query = 'UPDATE WEB_LAYOUTS SET ';
       $query .= "MON_TYPE = '$mon_type'";
       $query .= ", SHORT_NAME = '$mon_name'";
       $query .= ", CHANGE_HOST = '$host'";
@@ -793,9 +796,10 @@ class Adb {
 
       $query .= ", PRINT_CAM_NAME = '$PrintCamNames'";
       $query .= ", PROPORTION = '$AspectRatio'";
-
+      
       for ($i = 0; $i < count($vWINS); $i++) {
-         if (is_int($vWINS[$i]))
+      	
+      	if (is_int($vWINS[$i]))
             $query .= ", {$fWINS[$i]} = {$vWINS[$i]}";
          else
             $query .= ", {$fWINS[$i]} = '{$vWINS[$i]}'";
@@ -805,8 +809,34 @@ class Adb {
       $query .= " AND DISPLAY ='$display'";
       $query .= " AND MON_NR = $mon_nr";		
 
+      
+      
       $res = $this->_db->query($query);
       $this->_error($res);
+   }
+   
+   /**
+    * 
+    * Обнуляет все значения WINS для целевой раскладки
+    * @param unknown_type $display
+    * @param unknown_type $mon_nr
+    * @param unknown_type $bind_mac
+    */
+   public function web_clear_wins($display,$mon_nr, $bind_mac) {
+   
+   	$wins_ttl = 32;
+   	$query = 'UPDATE WEB_LAYOUTS SET ';
+   
+   	for ($i = 1; $i <= $wins_ttl; $i++) {
+   		$query=$query."WIN".$i."='NULL'";
+   		if($i!=$wins_ttl) $query=$query.", ";
+   	}
+   	$query .= " WHERE BIND_MAC ='$bind_mac'";
+   	$query .= " AND DISPLAY ='$display'";
+   	$query .= " AND MON_NR = $mon_nr";
+   
+   	$res = $this->_db->query($query);
+   	$this->_error($res);
    }
 
    
@@ -962,15 +992,62 @@ class Adb {
 /**
  * 
  * Метод позволяет получить параметры всех раскладок для WEB
+ * или WEB-раскладок, разрешенных для пользователя 
  * @param string $bind_mac
  * @return array раскладки
  */
-   public function web_get_monitors($bind_mac = 'local'){
+   public function web_get_monitors($user=NULL, $bind_mac = 'local'){
+   	
       $mon = array();
       $query = 'SELECT * FROM WEB_LAYOUTS';
-      $query .= " WHERE BIND_MAC='$bind_mac'";
-      $query .= ' ORDER BY MON_NR';
+      
+      $allowed_layouts=array();
+      //номер раскладки, указанный в пользовательских настройках первым, устанавливается по умолчанию
+      $def_num = null;
+ 		//     if($user!=NULL) $user = 'aaaa'; //тест пользователя--------------------------------->> to delete
+      
+      //Если пользователь указан - формируем запрос о разрешенных раскладках
+      if($user!=NULL){
+      	$sub_query = sprintf("SELECT ALLOW_LAYOUTS FROM USERS WHERE USER_LOGIN='%s'", $user); 
+      	$sub_res = $this->_db->query($sub_query);
+      	$this->_error($allowed_layouts);
+		//Определяем разрешенные раскладки 
+      	while ($sub_res->fetchInto($vl, DB_FETCHMODE_ASSOC)) {
+      		$l = array();
+      		foreach ($vl as $k=>$v) {
+      			$k = strtoupper($k);
+      			$l[$k] = trim($v);
+      		}
+      		$lo[] = $l;
+      	}
+      	
+      	$allowed_layouts = explode(',', trim( $lo[0]["ALLOW_LAYOUTS"]));
+      	
+      	//Первая указанная раскладка используется по умолчанию
+      	$def_num = $allowed_layouts[0];
 
+      	//если разрешены все раскладки(пустое поле разрешенных раскладок - обнуляем пользователя и раскладку по умолчанию)
+		if(trim( $lo[0]["ALLOW_LAYOUTS"])==''||$allowed_layouts[0]==''){
+			$user = null;
+			$def_num = null;
+		}
+		else{
+			
+			//определяем перечень разрешенных раскладок пользователя и формируем соотв. запрос
+			$lts = "'"; 
+			$lts =$lts.implode("', '", $allowed_layouts)."'";
+			
+			$query .= " WHERE BIND_MAC='$bind_mac' AND MON_NR IN ($lts)";
+			$query .= ' ORDER BY MON_NR';
+		}
+      }
+
+	  //Если пользователь не указан или не заданны конкретные раскладки - выбираем все раскладки     
+      if($user==NULL){
+      	$query .= " WHERE BIND_MAC='$bind_mac'";
+      	$query .= ' ORDER BY MON_NR';
+      }
+      
       $res = $this->_db->query($query);
       $this->_error($res);
       while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
@@ -980,6 +1057,16 @@ class Adb {
             $m[$k] = trim($v);
          }
          $mon[] = $m;
+      }
+
+      //если в пользовательских настройках указана раскладка по умолчанию
+      if($def_num!=null && $user!=NULL){
+      	foreach ($mon as $key=>$val){
+      		$mon[$key]["IS_DEFAULT"]="0";
+      		if ($mon[$key]['MON_NR']==$def_num){
+      			$mon[$key]["IS_DEFAULT"]='1';
+      		}
+      	}
       }
       return  $mon;
    }
@@ -1005,18 +1092,19 @@ class Adb {
  * @param string $login_user пользователь, который добавляет
  * @return bool результат добавления
  */
-   public function add_user($u_host, $u_name, $passwd, $groups, $u_devacl, $u_forced_saving_limit, $sessions_per_cam,$limit_fps,$nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user) {
+   public function add_user($u_host, $u_name, $passwd, $groups, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_cam,$limit_fps,$nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user) {
       $query = sprintf('INSERT INTO USERS 
-         ( ALLOW_FROM, USER_LOGIN, PASSWD, STATUS, ALLOW_CAMS, FORCED_SAVING_LIMIT, SESSIONS_PER_CAM,
+         ( ALLOW_FROM, USER_LOGIN, PASSWD, STATUS, ALLOW_CAMS, ALLOW_LAYOUTS, FORCED_SAVING_LIMIT, SESSIONS_PER_CAM,
          LIMIT_FPS, NONMOTION_FPS, LIMIT_KBPS,
          SESSION_TIME, SESSION_VOLUME,
          LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME) 
-         VALUES ( %s, %s, %s, %u, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())',
+         VALUES ( %s, %s, %s, %u, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())',
             sql_format_str_val($u_host),
             sql_format_str_val($u_name),
             $this->_crypt($passwd),
             $groups,
             sql_format_str_val($u_devacl),
+            sql_format_str_val($u_layouts),
             sql_format_int_val($u_forced_saving_limit),
             sql_format_int_val($sessions_per_cam),
             sql_format_str_val($limit_fps),
@@ -1053,14 +1141,15 @@ class Adb {
  * @param string $old_u_name старый логин
  * @return bool результат обновления
  */
-   public function update_user($u_host,$u_name,$passwd, $groups, $u_devacl, $u_forced_saving_limit, $sessions_per_cam, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name){
+   public function update_user($u_host,$u_name,$passwd, $groups, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_cam, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name){
       $query = sprintf(
-         'UPDATE USERS SET ALLOW_FROM=%s, USER_LOGIN=%s, PASSWD=%s, STATUS=%d, ALLOW_CAMS=%s, FORCED_SAVING_LIMIT=%s, SESSIONS_PER_CAM=%s, LIMIT_FPS=%s, NONMOTION_FPS=%s, LIMIT_KBPS=%s, SESSION_TIME=%s, SESSION_VOLUME=%s, LONGNAME=%s, CHANGE_HOST=%s, CHANGE_USER=%s, CHANGE_TIME=NOW() WHERE ALLOW_FROM=%s AND USER_LOGIN=%s',
+         'UPDATE USERS SET ALLOW_FROM=%s, USER_LOGIN=%s, PASSWD=%s, STATUS=%d, ALLOW_CAMS=%s, ALLOW_LAYOUTS=%s ,FORCED_SAVING_LIMIT=%s, SESSIONS_PER_CAM=%s, LIMIT_FPS=%s, NONMOTION_FPS=%s, LIMIT_KBPS=%s, SESSION_TIME=%s, SESSION_VOLUME=%s, LONGNAME=%s, CHANGE_HOST=%s, CHANGE_USER=%s, CHANGE_TIME=NOW() WHERE ALLOW_FROM=%s AND USER_LOGIN=%s',
          sql_format_str_val($u_host),
          sql_format_str_val($u_name),
          $this->_crypt($passwd),
          $groups,
          sql_format_str_val($u_devacl),
+         sql_format_str_val($u_layouts),
          sql_format_int_val($u_forced_saving_limit),
          sql_format_int_val($sessions_per_cam),
          sql_format_str_val($limit_fps),
@@ -1129,12 +1218,12 @@ class Adb {
  */
    public function get_users($status = false) {
       $users = array();
-      $query = 'SELECT ALLOW_FROM, USER_LOGIN,  PASSWD, STATUS, ALLOW_CAMS, FORCED_SAVING_LIMIT,  SESSIONS_PER_CAM, LIMIT_FPS, NONMOTION_FPS, LIMIT_KBPS, SESSION_TIME, SESSION_VOLUME,LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME '.
+      $query = 'SELECT ALLOW_FROM, USER_LOGIN,  PASSWD, STATUS, ALLOW_CAMS, ALLOW_LAYOUTS, FORCED_SAVING_LIMIT,  SESSIONS_PER_CAM, LIMIT_FPS, NONMOTION_FPS, LIMIT_KBPS, SESSION_TIME, SESSION_VOLUME,LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME '.
          'FROM USERS ';
       if ($status)
          $query .= "WHERE STATUS = $status ";
       $query .=  'ORDER BY ALLOW_FROM, USER_LOGIN';
-
+      
       $res = $this->_db->query($query);
       $this->_error($res);
       while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
@@ -1144,6 +1233,9 @@ class Adb {
             'PASSWD' => trim($line[$this->_key('PASSWD')]),
             'STATUS' => trim($line[$this->_key('STATUS')]),
             'ALLOW_CAMS' => trim($line[$this->_key('ALLOW_CAMS')]),
+            
+            'ALLOW_LAYOUTS' => trim($line[$this->_key('ALLOW_LAYOUTS')]),
+            
             'FORCED_SAVING_LIMIT' => trim($line[$this->_key('FORCED_SAVING_LIMIT')]),
             'SESSIONS_PER_CAM' => trim($line[$this->_key('SESSIONS_PER_CAM')]),
             'LIMIT_FPS' => trim($line[$this->_key('LIMIT_FPS')]),
@@ -1157,6 +1249,7 @@ class Adb {
             'CHANGE_TIME' => trim($line[$this->_key('CHANGE_TIME')]),
          );
       }
+
       return $users;
    }
 

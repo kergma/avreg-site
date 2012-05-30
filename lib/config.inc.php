@@ -425,6 +425,7 @@ $result = $adb->get_users();
 
 foreach ($result as $row  )
 {
+
    /* var_dump($row); */
    $ui = array();
    $ui['HOST'] = $row['HOST'];
@@ -432,6 +433,7 @@ foreach ($result as $row  )
    $ui['PASSWD'] = $row['PASSWD'];
    $ui['STATUS'] = (int)$row['STATUS'];
    $ui['ALLOW_CAMS'] = $row['ALLOW_CAMS'];
+   $ui['ALLOW_LAYOUTS']= $row['ALLOW_LAYOUTS'];
    $ui['FORCED_SAVING_LIMIT'] = is_null($row['FORCED_SAVING_LIMIT'])?NULL:(int)$row['FORCED_SAVING_LIMIT'];
    $ui['SESSIONS_PER_CAM'] = is_null($row['SESSIONS_PER_CAM'])?NULL:(int)$row['SESSIONS_PER_CAM'];
    $ui['LIMIT_FPS'] = is_null($row['LIMIT_FPS'])?NULL:$row['LIMIT_FPS'];
@@ -463,7 +465,8 @@ function get_user_info($ipacl, $name)
    foreach ($GLOBALS['users'] as $ui) {
       if ( 0 === strcasecmp($ui['HOST'], $ipacl) && 
          0 === strcmp($ui['USER'], $name) )
-         return $ui;
+
+      return $ui;
    }
    return FALSE;
 }

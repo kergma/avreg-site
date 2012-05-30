@@ -63,6 +63,16 @@ if ( !empty($u_devacl) &&
      echo '<p class="HiLiteErr">' . sprintf ($fmtEmptyF, 'DeviceACL') . '</p>' ."\n";
 } else $good++;
 
+//--->
+/*
+$u_layouts = trim($u_layouts);
+if ( !empty($u_layouts) &&
+FALSE === parse_dev_acl($u_layouts) ) {
+	echo '<p class="HiLiteErr">' . sprintf ($fmtEmptyF, 'WEB layout') . '</p>' ."\n";
+} else $good++;
+*/
+//--->
+
 trim($limit_fps);
 if ( !empty($limit_fps) && !preg_match('/\A\d+(\s*[x:\/]\s*\d+)*\Z/', $limit_fps) ) {
    echo '<p class="HiLiteErr">' . sprintf ($fmtEmptyF, 'limit_fps') . '</p>' ."\n";

@@ -36,11 +36,21 @@ while (list ( $gr_status, $groups ) = each ($grp_ar) )
       ' value="'.$gr_status.'">'.$grp_ar[$gr_status]['grname'].'<br>'."\n";
 }
 print '</td>'."\n";
+
+//доступные камеры
 print '</tr>'."\n";
 print '<tr>'."\n";
 print '<td colspan="2">'.$strDeviceACL.'</td>'."\n";
 print '<td><input type="text" name="u_devacl" size="40" maxlength="100" value="'.$u_devacl.'">'."\n";
 print '</tr>'."\n";
+
+//Доступные раскладки
+print '</tr>'."\n";
+print '<tr>'."\n";
+print '<td colspan="2">'.$strAllowedWEBLayouts.'</td>'."\n";
+print '<td><input type="text" name="u_layouts" size="40" maxlength="100" value="'.$u_layouts.'">'."\n";
+print '</tr>'."\n";
+
 print '<tr>'."\n";
 print '<td colspan="2">'.$strForcedSavingLimit.'</td>'."\n";
 print '<td><input type="text" name="u_forced_saving_limit" size="4" maxlength="4" value="'.$u_forced_saving_limit.'">'."\n";

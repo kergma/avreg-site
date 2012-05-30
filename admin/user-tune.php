@@ -29,7 +29,7 @@ if ( isset($cmd) && isset($u_host) && isset($u_name) && isset($groups) )
    switch ( $cmd )
    {
    case 'UPDATE_USER':
-        $result =  $adb->update_user($u_host,$u_name,$u_pass, $groups, $u_devacl, $u_forced_saving_limit, $sessions_per_cam, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name);
+        $result =  $adb->update_user($u_host,$u_name,$u_pass, $groups, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_cam, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name);
       break;
    default:
       die('crack?');
@@ -58,12 +58,17 @@ if ( isset($u_name) && !empty($u_name) )
    $ui = get_user_info($u_host, $u_name);
    if ( $ui === FALSE )
       die('crack?');
+
+   
    //tohtml($ui);
    $user2html = stripslashes (htmlspecialchars($ui['USER'], ENT_QUOTES, $chset));
    $host2html = stripslashes (htmlspecialchars($ui['HOST'], ENT_QUOTES, $chset));
    $longname2html = stripslashes (htmlspecialchars($ui['LONGNAME'], ENT_QUOTES, $chset));
    $passwd2html = stripslashes (htmlspecialchars($ui['PASSWD'], ENT_QUOTES, $chset));
    $u_devacl = stripslashes (htmlspecialchars($ui['ALLOW_CAMS'], ENT_QUOTES, $chset));
+	//Инициализация доступных раскладок //--->   
+   $u_layouts = stripslashes (htmlspecialchars($ui['ALLOW_LAYOUTS'], ENT_QUOTES, $chset));
+
    $u_forced_saving_limit = $ui['FORCED_SAVING_LIMIT'];
    $u_status = $ui['STATUS'];
    $sessions_per_cam = $ui['SESSIONS_PER_CAM'];
@@ -72,9 +77,13 @@ if ( isset($u_name) && !empty($u_name) )
    $limit_kbps = $ui['LIMIT_KBPS'];
    $session_time = $ui['SESSION_TIME'];
    $session_volume = $ui['SESSION_VOLUME'];
+   
    echo '<h2>' . sprintf ($fmtUserTune,$ui['USER'],$ui['HOST']) . '</h2>' ."\n";
    print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
+   
+   //Загрузка таблицы редактирования профиля пользователя
    require '_user_data_tbl.inc.php';
+   
    print '<br>'."\n";
    print '<input type="hidden" name="cmd" value="UPDATE_USER">'."\n";
    print '<input type="hidden" name="old_u_name" value="'.$user2html.'">'."\n";

@@ -18,7 +18,7 @@ $lang_file='_online.php';
 require ('../head.inc.php');
 
 //Загрузка установленных раскладок
-$result = $adb->web_get_monitors();
+$result = $adb->web_get_monitors($login_user);
 
 //Если нет установленных раскладок
 if(!count($result)) {
@@ -236,6 +236,7 @@ print 'var ___abenc="'.base64_encode($user_info['USER'].':'.$_SERVER["PHP_AUTH_P
 print "var WINS_NR = $wins_nr;\n";
 print "var ROWS_NR = $l_defs[1];\n";
 print "var COLS_NR = $l_defs[2];\n";
+
 
 //Подключаем файл 
 readfile('view.js');

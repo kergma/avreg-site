@@ -646,7 +646,7 @@ function try_fs() {
            if (GECKO)
            document.onmousemove=positiontip;
            }
-
+       
            // calc and set  CANVAS width & height
            CANVAS = $('#canvas');
            canvas_growth();
@@ -673,10 +673,11 @@ function try_fs() {
 
               if ( win_def.rowspan == 1 && win_def.colspan == 1 )
                  win_geo = base_win_geo;
-              else
+              else{
                  win_geo = new calc_win_geo(base_win_geo.win_w*win_def.colspan,
                        base_win_geo.win_h*win_def.rowspan,
                        CamsAspectRatio, 1, 1, win_def.rowspan);
+              }
               _top  = calc_win_top(base_win_geo, win_def.row);
               _left = calc_win_left(base_win_geo, win_def.col);
               win_div = $('<div id="win' + win_nr + '" name="win" class="win" ' + 

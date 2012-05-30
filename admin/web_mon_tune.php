@@ -54,6 +54,7 @@ if (isset($cmd)) {
       $i = 0;
       $fWINS = array();
       $vWINS = array();
+      
       while ( $i < count($mon_wins) ) {
          if ( !empty( $mon_wins[$i] ) ) {
             array_push( $fWINS, 'WIN'.($i+1) );
