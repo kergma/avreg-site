@@ -42,14 +42,10 @@ if ($def_cam == null){
 $PrintCamNames =  $def_cam['PRINT_CAM_NAME'];
 $AspectRatio =  $def_cam['PROPORTION'];
 $mon_type = $def_cam['MON_TYPE'];
-$cams_in_wins = array ($def_cam['WIN1'],  $def_cam['WIN2'],  $def_cam['WIN3'],  $def_cam['WIN4'], $def_cam['WIN5'],  $def_cam['WIN6'],  $def_cam['WIN7'],  $def_cam['WIN8'], $def_cam['WIN9'],  $def_cam['WIN10'], $def_cam['WIN11'], $def_cam['WIN12'], $def_cam['WIN13'], $def_cam['WIN14'], $def_cam['WIN15'], $def_cam['WIN16'], $def_cam['WIN17'],  $def_cam['WIN18'], $def_cam['WIN19'], $def_cam['WIN20'], $def_cam['WIN21'], $def_cam['WIN22'], $def_cam['WIN23'], $def_cam['WIN24'], $def_cam['WIN25']);
 
-if ( !isset($cams_in_wins) || empty($cams_in_wins))
-   die('should use "cams_in_wins" cgi param');
-if (is_string($cams_in_wins))
-   $cams_in_wins = explode('.', $cams_in_wins);
-foreach ($cams_in_wins as &$value)
-   settype($value, 'int');
+$win_cams =json_decode($def_cam['WINS'], true);
+if ( !isset($win_cams) || empty($win_cams))
+die('should use "$win_cams" cgi param');
 
 require('../admin/mon-type.inc.php');
 if (!isset($mon_type) || empty($mon_type) || !array_key_exists($mon_type, $layouts_defs) ) 
@@ -57,14 +53,14 @@ if (!isset($mon_type) || empty($mon_type) || !array_key_exists($mon_type, $layou
 $l_defs = &$layouts_defs[$mon_type];
 $wins_nr = $l_defs[0]; //определяет количество камер в раскладке
 
-
-
 $_cookie_value = sprintf('%s-%u-%u-%u-%s',
-   implode('.', $cams_in_wins),
-   isset($OpenInBlankPage),
-   isset($PrintCamNames),
-   isset($EnableReconnect),
-   isset($AspectRatio) ? $AspectRatio : 'calc' );
+$def_cam['WINS'], // implode('.', $cams_in_wins),
+isset($OpenInBlankPage),
+isset($PrintCamNames),
+isset($EnableReconnect),
+isset($AspectRatio) ? $AspectRatio : 'calc' );
+
+
 setcookie("avreg_$mon_type", $_cookie_value, time()+5184000, dirname($_SERVER['SCRIPT_NAME']).'/build_mon.php');
 while (@ob_end_flush());
 
@@ -117,7 +113,7 @@ $major_win_cam_geo = null;
 $major_win_nr = $l_defs[4] - 1;
 $msie_addons_scripts=array();
 
-$GCP_query_param_list=array('work', 'allow_networks', 'text_left', 'geometry', 'Hx2');
+$GCP_query_param_list=array('work', 'allow_networks', 'text_left', 'geometry', 'Hx2', 'fs_url_alt_1', 'cell_url_alt_1', 'fs_url_alt_2', 'cell_url_alt_2');
 if ( $operator_user )
    array_push($GCP_query_param_list, 'cam_type', 'InetCam_IP');
 require('../lib/get_cams_params.inc.php');
@@ -147,13 +143,19 @@ print "var GCP_cams_params = ".json_encode($GCP_cams_params).";\n";
 //Передаем JS параметр operator_user
 print "var operator_user = ".json_encode($operator_user).";\n";
 
+
+//для js сопоставление камер и источников
+$active_cams_srcs = array();
+
 for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
 {
-   if ( empty($cams_in_wins[$win_nr]) || !array_key_exists($cams_in_wins[$win_nr], $GCP_cams_params)) continue; /// DeviceACL 
-
-   $cam_nr = $cams_in_wins[$win_nr];
-   
-   list($width,$height) = explode('x', $GCP_cams_params[$cam_nr]['geometry']);
+	if ( empty($win_cams[$win_nr]) || !array_key_exists($win_cams[$win_nr][0], $GCP_cams_params)) { continue;  } /// DeviceACL
+	$cam_nr = $win_cams[$win_nr][0];
+	$temp[$win_nr] = $cam_nr;
+  
+	
+	
+	list($width,$height) = explode('x', $GCP_cams_params[$cam_nr]['geometry']);
    settype($width, 'integer'); settype($height, 'integer');
    if ( empty($width)  )  $width  = 640;
    if ( empty($height) )  $height = 480;
@@ -163,6 +165,33 @@ for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
    if (is_null($major_win_cam_geo) || $major_win_nr === $win_nr )
       $major_win_cam_geo = array($width, $height);
    $l_wins = &$l_defs[3][$win_nr];
+
+   //устанавливаем url камеры
+   $active_cams_srcs[$win_nr]=array();
+   switch($win_cams[$win_nr][1])
+   {
+   	case 0:
+   	case 1: //используем камеру avregd
+   		$cam_url = get_cam_http_url($conf, $cam_nr, 'mjpeg');
+   		$active_cams_srcs[$win_nr]['type']='avregd';
+   		$active_cams_srcs[$win_nr]['cell']=$cam_url;
+   		$active_cams_srcs[$win_nr]['fs']=$cam_url;
+   		break;
+   	case 2: //используем источник "alt 1"
+   		$cam_url = $GCP_cams_params[$cam_nr]['cell_url_alt_1'];
+   		$active_cams_srcs[$win_nr]['type']='alt_1';
+   		$active_cams_srcs[$win_nr]['cell']=$cam_url;
+   		$active_cams_srcs[$win_nr]['fs']=$GCP_cams_params[$cam_nr]['fs_url_alt_1'];
+   		break;
+    case 3: //используем камеру "alt 2"
+   		$cam_url = $GCP_cams_params[$cam_nr]['cell_url_alt_2'];
+   		$active_cams_srcs[$win_nr]['type']='alt_2';
+   		$active_cams_srcs[$win_nr]['cell']=$cam_url;
+   		$active_cams_srcs[$win_nr]['fs']=$GCP_cams_params[$cam_nr]['fs_url_alt_2'];
+   		break;
+   }
+
+   
    if ( $operator_user && ( $GCP_cams_params[$cam_nr]['cam_type'] == 'netcam' ) )
       $netcam_host = '"' . $GCP_cams_params[$cam_nr]['InetCam_IP'] . '"';
    else
@@ -184,7 +213,7 @@ for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
 };%s',
    $win_nr, $l_wins[0], $l_wins[1],$l_wins[2],$l_wins[3],
    $cam_nr, getCamName($GCP_cams_params[$cam_nr]['text_left']),
-   get_cam_http_url($conf, $cam_nr, 'mjpeg'),
+   $cam_url,
    $width, $height,
    $netcam_host,
    "\n" );
@@ -199,6 +228,8 @@ else
 </script>', $cam_nr);
 }
 
+
+printf("var active_cams_srcs = %s;\n", json_encode($active_cams_srcs) );
 
 printf("var FitToScreen = %s;\n", empty($FitToScreen) ? 'false' : 'true');
 
@@ -239,9 +270,12 @@ print "var COLS_NR = $l_defs[2];\n";
 
 
 //Подключаем файл 
-readfile('view.js');
+ readfile('view.js');
 
 echo "</script>\n";
+
+
+// print '<pre>'; var_export($active_cams_srcs);  print '</pre>'; //-----> TO DELETE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 if ( !empty($msie_addons_scripts) || is_array($msie_addons_scripts) )  {
    foreach ($msie_addons_scripts as $value)

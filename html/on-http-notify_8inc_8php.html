@@ -2,36 +2,55 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <title>AvregSite: Файл on-http-notify.inc.php</title>
+
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+
 </head>
-<body onload='searchBox.OnSelectItem(0);'>
-<!-- Создано системой Doxygen 1.7.4 -->
-<script type="text/javascript"><!--
-var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
---></script>
-<div id="top">
+<body>
+<div id="top"><!-- do not remove this div! -->
+
+
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  
+  
   <td style="padding-left: 0.5em;">
-   <div id="projectname">AvregSite</div>
+   <div id="projectname">AvregSite
+   
+   </div>
+   
   </td>
+  
+  
+  
  </tr>
  </tbody>
 </table>
 </div>
+
+<!-- Создано системой Doxygen 1.7.6.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
+</script>
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Титульная&#160;страница</span></a></li>
       <li><a href="pages.html"><span>Описания</span></a></li>
       <li><a href="annotated.html"><span>Классы</span></a></li>
       <li class="current"><a href="files.html"><span>Файлы</span></a></li>
-      <li id="searchli">
+      <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
           <img id="MSearchSelect" src="search/mag_sel.png"
@@ -59,13 +78,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 <div class="header">
   <div class="headertitle">
 <div class="title">Файл on-http-notify.inc.php</div>  </div>
-</div>
+</div><!--header-->
 <div class="contents">
 
 <p>Конфигурирование системы отправки уведомлений  
 <a href="#details">Подробнее...</a></p>
-<table class="memberdecls">
-</table>
 <hr/><a name="details" id="details"></a><h2>Подробное описание</h2>
 <div class="textblock"><p>Конфигурирование системы отправки уведомлений </p>
 <p>Кусок ВАШЕГО php-кода, выполняемый по событию получения HTTP уведомления (HTTP notification). Если вы хотите как-то реагировать на сработку дискретных входов ip-камер или ip-видеосерверов, правьте и используйте этот код. Естественно, для этого нужно настроить и сами устройства. В камерах Axis, например, настройка HTTP notification находится на веб-странице Setup-&gt;Event Configuration-&gt;Event Settings.</p>
@@ -76,7 +93,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 <li>"action" - действие "set" (по-умолч.) или "reset"</li>
 <li>"alarm" - код тревоги, по-умолч. - 1 пример: "nr=3&amp;alarm=2" или "nr=15&amp;action=reset" Прим.: в настройках Axis можно указывать в поле "Custom Parameters" array $_SERVER - См. документацию PHP, например, $_SERVER["REMOTE_ADDR"] - ip-адрес удалённой камеры или видеосервера, пославших HTTP-уведомление. array $AVREG_CAMS_NR - Массив номеров активных (work=Вкл.) AVReg-овых камер, найденных в AVReg-овой базе по IP-адресу $_SERVER["REMOTE_ADDR"] Если переменная $AVREG_CAMS_NR не определёна, то это значит, что запрос пришёл с "непрописанной" в базе AVReg камеры или видеосервера, т.е. с "чужого" устройства. Код нашего примера не обрабатывает "чужие" запросы, однако, никто не запрещает вам изменить это поведение. </li>
 </ul>
-</div></div>
+</div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -91,8 +108,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Документация по AvregSite. Последние изменения: Чт 24 Май 2012 13:23:13. Создано системой&#160;
-<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
+
+
+<hr class="footer"/><address class="footer"><small>
+Документация по AvregSite. Последние изменения: Чт 7 Июн 2012 10:35:03. Создано системой &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.7.6.1
+</small></address>
+
 </body>
 </html>

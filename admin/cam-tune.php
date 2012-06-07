@@ -86,6 +86,8 @@ else  {
 $WE_IN_DEFS=($cam_nr===0)?true:false;
 require ('./param-grp.inc.php');
 
+
+
 // выводим таблицу параметров
 if ( isset($categories) )
 {
@@ -93,9 +95,12 @@ if ( isset($categories) )
 	
 	
 	$result = $adb->get_def_cam_params($cam_nr);
-	
-	
-
+/*
+	print "<pre>";
+	var_export($result);
+	print "<pre>";
+*/
+		
    $cam_params = array();
    $def_params   = array();
    foreach ( $result as $row) 
@@ -139,7 +144,9 @@ if ( isset($categories) )
       print '<th>'.$strDescription.'</th>'."\n";
       print '<th>'.$strUpdateControl.'</th>'."\n";
       print '</tr>'."\n";
+      
       $p_count = count($PARAMS);
+      
    for ($i=0;$i<$p_count;$i++)
       {
       $parname1 = &$PARAMS[$i]['name'];
@@ -213,6 +220,7 @@ if ( isset($categories) )
       print '</span><br /><br /><div>'."\n";
       $max_len = (isset($PARAMS[$i]['max_len'])) ? $PARAMS[$i]['max_len'] : 0;
       $str_f_len = ($max_len > 25)?25:$max_len;
+      
       switch ( $VAL_TYPE )
       {
          case $INT_VAL:
@@ -237,6 +245,13 @@ if ( isset($categories) )
             $b = $max_len?$max_len:200;
             print '<input type="text" name="fields['.$parname1.']" value="' . $a .'" size='.$str_f_len.' maxlength=' .$b .'>';
             break;
+
+         case $STRING_URL_VAL:
+            $a = getBinString($val);
+            //$b = $max_len?$max_len:200;
+            print '<input type="text" name="fields['.$parname1.']" value="' . $a .'" size='.$str_f_len.' >';
+            break;
+
          case $PASSWORD_VAL:
             $a = getBinString($val);
             $b = $max_len?$max_len:60;

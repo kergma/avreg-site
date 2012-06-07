@@ -83,6 +83,14 @@ if ( !isset($cam_nr) )
       $r_count = 0;
       reset($GCP_cams_params);
       
+      //-->
+      /*
+      print '<pre>';
+      var_dump($GCP_cams_params);
+      print '</pre>';
+      */
+      //-->
+      
       while (list($__cam_nr, $cam_detail) = each($GCP_cams_params)) 
       {
          $cam_name = getCamName($cam_detail['text_left']);
@@ -94,6 +102,7 @@ if ( !isset($cam_nr) )
          if ( $install_user )
          {
             if ( $r_count == $GCP_cams_nr) {
+            	//удалить камеру
                $ggg = sprintf('<a href="%s/%s?cmd=DEL&cam_nr=%d&cam_name=%s">%s</a>',
                   $_SERVER['PHP_SELF'], $conf['prefix'],
                   $__cam_nr, $cam_name, $strDelete);
@@ -102,11 +111,14 @@ if ( !isset($cam_nr) )
                print '<td>&nbsp;</td>' . "\n";
          }
          if ( $admin_user ) {
+         	//настроить камеру
             $ggg = sprintf('<a href="./cam-tune.php?cam_nr=%d&cam_name=%s">%s</a>',
                $__cam_nr, $cam_name, $strTune);
             print '<td>'.$ggg.'</td>' . "\n";
          }
+         //вывести инфу о камере
          print_cam_detail_row($conf, $__cam_nr, $cam_detail);
+         
          print "</tr>\n";
       }
       print "</table>\n";

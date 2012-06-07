@@ -500,6 +500,7 @@ class Adb {
       $this->_error($res);
    }
 
+   
    /**
     * 
     * Обновление параметров камеры
@@ -696,9 +697,9 @@ class Adb {
    * @param array $vWINS
    * @param string $bind_mac
    */
-   public function web_add_monitors($display,$mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $fWINS, $vWINS,$bind_mac = 'local') {
-   	$query = sprintf('INSERT INTO WEB_LAYOUTS (BIND_MAC, DISPLAY, MON_NR, MON_TYPE, SHORT_NAME, %s, PRINT_CAM_NAME , PROPORTION, CHANGE_HOST, CHANGE_USER) VALUES (\'local\', \'%s\', %d, \'%s\', \'%s\', %s, \'%s\', \'%s\', \'%s\', \'%s\')',
-   	implode (', ',$fWINS), $display, $mon_nr, $mon_type, $mon_name, implode (', ',$vWINS), $PrintCamNames , $AspectRatio , $remote_addr, $login_user);
+   public function web_add_monitors($display,$mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $allWINS, $bind_mac = 'local') {
+   	$query = sprintf('INSERT INTO WEB_LAYOUTS (BIND_MAC, DISPLAY, MON_NR, MON_TYPE, SHORT_NAME, PRINT_CAM_NAME , PROPORTION, WINS, CHANGE_HOST, CHANGE_USER) VALUES (\'local\', \'%s\', %d, \'%s\', \'%s\', %s, \'%s\', \'%s\', \'%s\', \'%s\')',
+   	$display, $mon_nr, $mon_type, $mon_name, $PrintCamNames , $AspectRatio , $allWINS , $remote_addr, $login_user);
    	$res = $this->_db->query($query);
    	$this->_error($res);
    }
@@ -784,33 +785,19 @@ class Adb {
  * @param array $vWINS
  * @param string $bind_mac
  */
-   public function web_update_monitors($display,$mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $fWINS, $vWINS,$bind_mac = 'local') {
-   	
-   	$this->web_clear_wins($display, $mon_nr, $bind_mac);
-   	
+   public function web_update_monitors($display,$mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $allWINS,  $bind_mac = 'local') {
    	  $query = 'UPDATE WEB_LAYOUTS SET ';
       $query .= "MON_TYPE = '$mon_type'";
       $query .= ", SHORT_NAME = '$mon_name'";
       $query .= ", CHANGE_HOST = '$host'";
       $query .= ", CHANGE_USER = '$user'";
-
       $query .= ", PRINT_CAM_NAME = '$PrintCamNames'";
       $query .= ", PROPORTION = '$AspectRatio'";
-      
-      for ($i = 0; $i < count($vWINS); $i++) {
-      	
-      	if (is_int($vWINS[$i]))
-            $query .= ", {$fWINS[$i]} = {$vWINS[$i]}";
-         else
-            $query .= ", {$fWINS[$i]} = '{$vWINS[$i]}'";
-      }
-
+      $query .= ", WINS = '$allWINS'";
       $query .= " WHERE BIND_MAC ='$bind_mac'";
       $query .= " AND DISPLAY ='$display'";
       $query .= " AND MON_NR = $mon_nr";		
 
-      
-      
       $res = $this->_db->query($query);
       $this->_error($res);
    }
@@ -903,7 +890,7 @@ class Adb {
    * @param array $vWINS
    * @param string $bind_mac
    */
-   public function web_replace_monitors ($display,$mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $fWINS, $vWINS, $bind_mac = 'local') {
+   public function web_replace_monitors ($display,$mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $allWINS, $bind_mac = 'local') {
    	
    	//$PrintCamNames, $AspectRatio,
    	
@@ -915,9 +902,9 @@ class Adb {
    	$this->_error($res);
    	$res->fetchInto($line);
    	if (empty($line))
-   	$this->web_add_monitors($display,$mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $fWINS, $vWINS);
+   	$this->web_add_monitors($display,$mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $allWINS);
    	else
-   	$this->web_update_monitors($display,$mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $fWINS, $vWINS);
+   	$this->web_update_monitors($display,$mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $allWINS);
    }
    
    
@@ -952,11 +939,11 @@ class Adb {
  */
    public function web_get_monitor($display, $mon_nr, $bind_mac = 'local') {
    	
-      $query = 'SELECT MON_NR, MON_TYPE, SHORT_NAME, IS_DEFAULT, ' .
-         'WIN1, WIN2, WIN3, WIN4, WIN5, WIN6, WIN7, WIN8, WIN9, WIN10, WIN11, WIN12, WIN13, WIN14, WIN15, WIN16, WIN17, WIN18, WIN19, WIN20, WIN21, WIN22, WIN23, WIN24, WIN25, '.
+      $query = 'SELECT MON_NR, MON_TYPE, SHORT_NAME, IS_DEFAULT, WINS,' .
          'CHANGE_HOST, CHANGE_USER, CHANGE_TIME, PRINT_CAM_NAME, PROPORTION '.
          'FROM WEB_LAYOUTS '.
          'WHERE BIND_MAC=\''.$bind_mac.'\' AND DISPLAY=\''.$display.'\' AND MON_NR='.$mon_nr;
+      
       $res = $this->_db->query($query);
       $this->_error($res);
       $res->fetchInto($line);
@@ -1004,8 +991,7 @@ class Adb {
       $allowed_layouts=array();
       //номер раскладки, указанный в пользовательских настройках первым, устанавливается по умолчанию
       $def_num = null;
- 		//     if($user!=NULL) $user = 'aaaa'; //тест пользователя--------------------------------->> to delete
-      
+
       //Если пользователь указан - формируем запрос о разрешенных раскладках
       if($user!=NULL){
       	$sub_query = sprintf("SELECT ALLOW_LAYOUTS FROM USERS WHERE USER_LOGIN='%s'", $user); 

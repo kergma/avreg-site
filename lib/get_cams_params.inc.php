@@ -44,7 +44,6 @@ for ($GCP_i=0;$GCP_i<$PARAMS_NR;$GCP_i++)
       $GCP_sql_in_par.= ', \''.$GCP_parname.'\'';
 }
 
-
 /// получить данные из БД
 $result = $adb->get_cam_params($GCP_cams_list, $GCP_sql_in_par);
 foreach ( $result as $row )
@@ -55,6 +54,7 @@ foreach ( $result as $row )
    else
       $GCP_cams_params[$__cam_nr][$row['PARAM']] = $row['VALUE'];
 }
+
 $result=NULL;
 
 

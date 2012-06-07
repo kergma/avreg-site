@@ -7,6 +7,7 @@
  * Содержит базовые вариатны раскладок камер и функцию для построения раскладки
  * 
  */
+
 $onecam_wins = array( array(0,0,1,1) );
 $quad_4_4_wins = array(
    array(0,0,1,1), array(0,1,1,1),
@@ -131,11 +132,6 @@ $layouts_defs = array(
    'MULTI_19_25'  => array( 19,   5, 5,  &$multi_19_25_wins,  7, &$strMULTI_19_25 ),
    'MULTI_22_25'  => array( 22,   5, 5,  &$multi_22_25_wins,  7, &$strMULTI_22_25 ),
    'QUAD_25_25'   => array( 25,   5, 5,  &$quad_25_25_wins,  13, &$strQUAD_25_25  ),
-/*
-   'POLY_2x3'     => array(  6,   2, 3,  &$poly_2x3_wins,     2, ),
-   'POLY_2x4'     => array(  8,   2, 4,  &$poly_2x4_wins,     2, ),
-   'POLY_3x4'     => array( 12,   3, 4,  &$poly_3x4_wins,     6, ),
-*/
 );
 
 /**
@@ -237,3 +233,6 @@ $max_width/
    print $tbl_end;
 }
 ?>
+
+
+

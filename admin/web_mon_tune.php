@@ -13,6 +13,8 @@ if ( isset($pipes_show) ) {
 } else {
    $pipes_show = 1;
 }
+$USE_JQUERY = true;
+
 require ('../head.inc.php');
 
 DENY($admin_status);
@@ -30,6 +32,7 @@ require ('./mon-type.inc.php');
 // -->
 </script>
 
+
 <?php
 
 echo '<h1>' . sprintf($web_r_mons,$named,$sip) . '</h1>' ."\n";
@@ -40,8 +43,8 @@ if ( !isset($mon_nr) || $mon_nr =='' || empty($display) )
 if (!settype($mon_nr,'int'))
    die('$mon_nr is\'t integer value');
 
-if ($mon_nr < 0 || $mon_nr > 9)
-   die('$mon_nr in\'t in [0..9]');
+if ($mon_nr < 0 )
+   die('$mon_nr < 0');
 
 if ( !($display == 'L' || $display == 'R') )
    die('$display must be L or R char');
@@ -51,22 +54,30 @@ echo '<h2>' . sprintf($r_mon_tune, $counter, $mon_name, $display=='R'?$sRightDis
 if (isset($cmd)) {
    switch ( $cmd )	{
    case '_ADD_NEW_MON_OK_':
-      $i = 0;
-      $fWINS = array();
-      $vWINS = array();
-      
-      while ( $i < count($mon_wins) ) {
-         if ( !empty( $mon_wins[$i] ) ) {
-            array_push( $fWINS, 'WIN'.($i+1) );
-            array_push( $vWINS, $mon_wins[$i] );
-         }
-         $i++;
-      }
-      if ( count( $fWINS ) > 0 )	{
-
+   	$i = 0;
+   	$j = 0;
+   	
+   	$mwt = $_POST['mon_wins_type'];
+   	$allWINS = array();
+   		
+   	while ( $i < count($mon_wins) ) {
+   		if ( !empty( $mon_wins[$i] ) ) {
+   			//формирование единого объекта для всех ячеек раскладки
+   			$allWINS[$i]=array();
+   			array_push($allWINS[$i], $mon_wins[$i], $mwt[$j]);
+   			$j++;
+   		}
+   		$i++;
+   	}
+   		
+   	
+   	$allWINS = json_encode($allWINS);
+   	
+   	
+      if ( $allWINS!='' )	{
       	$PrintCamNames = ($PrintCamNames!=null)? 1 : 0;
 
-      	$adb->web_replace_monitors( $display, $mon_nr, $mon_type, $mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $fWINS, $vWINS);
+      	$adb->web_replace_monitors( $display, $mon_nr, $mon_type, $mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $allWINS );
          
          print '<p class="HiLiteBigWarn">' . sprintf($web_r_mon_changed, $counter, empty($mon_name)?$mon_type:$mon_name, $display=='R'?$sRightDisplay1:$sLeftDisplay1) . '</p>'."\n";
          print '<center><a href="'.$conf['prefix'].'/admin/web_mon_list.php" target="_self">'.$r_mon_goto_list.'</a></center>'."\n";
@@ -89,17 +100,29 @@ if (isset($cmd)) {
       exit;
    } else {
       $aaa = array();
-      
       $row = $adb->web_get_monitor($display, $mon_nr);
+      $wins_cams = json_decode($row[4], true);
+      
+      //формирование массива альтернативных источников видео
+      $cams_srcs = array();
+      foreach ($GCP_cams_params as $key => $val){
+      	$cams_srcs[$key] = array();
+      	$cams_srcs[$key]['avregd'] = 'true';
+      	$cams_srcs[$key]['alt_1'] = ($val['cell_url_alt_1']!=null || $val['fs_url_alt_1']!=null)? 'true':'false';
+      	$cams_srcs[$key]['alt_2'] = ($val['cell_url_alt_2']!=null || $val['fs_url_alt_2']!=null)? 'true':'false';
+      }
+      print '<script type="text/javascript">'."\n";
+      print 'var cams_alt ='.json_encode($cams_srcs).";\n";
+      print '</script>'."\n";
 
-      for ($i=4; $i<29; $i++) {
-         $a = getSelectHtmlByName('mon_wins[]',$wins_array, FALSE , 1, 1, $row[$i], TRUE, 'sel_change(this);');
+      //Создание эл-та селект ля ячеек раскладки
+      for ($i=0; $i<25; $i++) {
+      	$a = getSelectHtmlByName('mon_wins[]',$wins_array, FALSE , 1, 1, $wins_cams[$i], TRUE,  'sel_change(this); show_sub_select(this);', '', NULL, $cams_srcs );
          array_push($aaa, $a );
       }
       /* Free last resultset */
       $result = NULL;
 
-      // print "<pre><code>".var_dump($aaa)."</code></pre>";
       print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST"  onSubmit="return validate();">'."\n";
       print '<p class="HiLiteBigWarn">' . $strMonAddInfo2 . '</p>' ."\n";
       print '&nbsp;&nbsp;&nbsp;'.$strName.': <input type="text" name="mon_name" size=16 maxlength=16 value="'.$mon_name.'">'."\n";
@@ -112,12 +135,12 @@ if (isset($cmd)) {
       
       require_once ('../lang/russian/utf-8/_online.php');
       //Селектор сохранять пропорции/ на весь экран
-      $AspectRatio = $row[33];
+      $AspectRatio = $row[9];
       print '<br /><div><div style="float:left;" >'.$strAspectRatio.":&nbsp;&nbsp;</div> \n";
       print '<div >'.getSelectByAssocAr('AspectRatio', $AspectRatioArray, false , 1, 1, $AspectRatio, false)."</div></div>\n";
       
       //Выводить имена камер
-      $PrintCamNames = ($row[32]==1 || $row[32]=="t")? 'checked':'unchecked' ;
+      $PrintCamNames = ($row[8]==1 || $row[8]=="t")? 'checked':'unchecked' ;
       print '<br /><div><div style="float:left;" >'.$strPrintCamNames.":&nbsp;&nbsp;</div>\n";
       print '<div><input type="checkbox" name="PrintCamNames" '.$PrintCamNames.' />'."</div></div>\n";
 

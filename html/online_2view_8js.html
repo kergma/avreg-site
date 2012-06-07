@@ -2,36 +2,55 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <title>AvregSite: Файл online/view.js</title>
+
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+
 </head>
-<body onload='searchBox.OnSelectItem(0);'>
-<!-- Создано системой Doxygen 1.7.4 -->
-<script type="text/javascript"><!--
-var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
---></script>
-<div id="top">
+<body>
+<div id="top"><!-- do not remove this div! -->
+
+
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  
+  
   <td style="padding-left: 0.5em;">
-   <div id="projectname">AvregSite</div>
+   <div id="projectname">AvregSite
+   
+   </div>
+   
   </td>
+  
+  
+  
  </tr>
  </tbody>
 </table>
 </div>
+
+<!-- Создано системой Doxygen 1.7.6.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
+</script>
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Титульная&#160;страница</span></a></li>
       <li><a href="pages.html"><span>Описания</span></a></li>
       <li><a href="annotated.html"><span>Классы</span></a></li>
       <li class="current"><a href="files.html"><span>Файлы</span></a></li>
-      <li id="searchli">
+      <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
           <img id="MSearchSelect" src="search/mag_sel.png"
@@ -62,7 +81,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 <a href="#var-members">Переменные</a>  </div>
   <div class="headertitle">
 <div class="title">Файл online/view.js</div>  </div>
-</div>
+</div><!--header-->
 <div class="contents">
 
 <p>JS скрипт страницы наблюдения в реальном времени Содержит функции и глобальные переменные, обеспечивающие соответствующий функционал, осуществляет инициализацию страницы  
@@ -71,7 +90,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Функции</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6250e12fd6d95b6a3e9b6b931625b1de"></a><!-- doxytag: member="online/view.js::ready" ref="a6250e12fd6d95b6a3e9b6b931625b1de" args="(function(){fill_canvas();})" -->
-document&#160;</td><td class="memItemRight" valign="bottom"><b>ready</b> (function(){fill_canvas();})</td></tr>
+document&#160;</td><td class="memItemRight" valign="bottom"><b>ready</b> (function(){<a class="el" href="online_2view_8js.html#a5057c23f54a62675bbe5d56a9b2b692e">fill_canvas</a>();})</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="online_2view_8js.html#a566d0a4f148059932f24695c6f95f31c">img_mouseover</a> (eimg, win_nr)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Обработчик события mouseover для элементов раскладки камер.  <a href="#a566d0a4f148059932f24695c6f95f31c"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="online_2view_8js.html#ad8ee0249f269c8481ddfeceddfe534ac">img_click</a> (clicked_div)</td></tr>
@@ -92,10 +111,6 @@ function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5acf0f1f93d0ec4dc39929a4b9809b68"></a><!-- doxytag: member="online/view.js::canvas_growth" ref="a5acf0f1f93d0ec4dc39929a4b9809b68" args="()" -->
 function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="online_2view_8js.html#a5acf0f1f93d0ec4dc39929a4b9809b68">canvas_growth</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Обработчик ресайза окна <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8e1a4a5b1e97ff3535ef83154dc7f13c"></a><!-- doxytag: member="online/view.js::get_geo_str" ref="a8e1a4a5b1e97ff3535ef83154dc7f13c" args="(JQ_elem)" -->
-function&#160;</td><td class="memItemRight" valign="bottom"><b>get_geo_str</b> (JQ_elem)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6557e382aa94bf648a1e32ed07455c39"></a><!-- doxytag: member="online/view.js::try_fs" ref="a6557e382aa94bf648a1e32ed07455c39" args="()" -->
-function&#160;</td><td class="memItemRight" valign="bottom"><b>try_fs</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="online_2view_8js.html#a053489e2b8ab5ad1932b5e720227c0f6">layouts_to_list</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Выводит список доступных раскладок  <a href="#a053489e2b8ab5ad1932b5e720227c0f6"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="online_2view_8js.html#a9fccb9fd8060a2ae329d862e6a866ab0">change_layout</a> (mon_nr)</td></tr>
@@ -123,25 +138,25 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Элемент раскладки камер <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3c1690638cce335c816a6246c2769763"></a><!-- doxytag: member="online/view.js::WIN_DIV_LEFT" ref="a3c1690638cce335c816a6246c2769763" args="" -->
 var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="online_2view_8js.html#a3c1690638cce335c816a6246c2769763">WIN_DIV_LEFT</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">global var for tooltip <br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">значение left-позиции в раскладке развернутой ячейки <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8370a43c51ace4288b7d9478dc05d164"></a><!-- doxytag: member="online/view.js::WIN_DIV_TOP" ref="a8370a43c51ace4288b7d9478dc05d164" args="" -->
 var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="online_2view_8js.html#a8370a43c51ace4288b7d9478dc05d164">WIN_DIV_TOP</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">global var for tooltip <br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">значение top-позиции в раскладке развернутой ячейки <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab4e3ccbc8c0f45805c9dc8fc27ceb685"></a><!-- doxytag: member="online/view.js::WIN_DIV_W" ref="ab4e3ccbc8c0f45805c9dc8fc27ceb685" args="" -->
 var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="online_2view_8js.html#ab4e3ccbc8c0f45805c9dc8fc27ceb685">WIN_DIV_W</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">global var for tooltip <br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">значение ширины в раскладке развернутой ячейки <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af92ee083077183f888e0e827a4481d48"></a><!-- doxytag: member="online/view.js::WIN_DIV_H" ref="af92ee083077183f888e0e827a4481d48" args="" -->
 var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="online_2view_8js.html#af92ee083077183f888e0e827a4481d48">WIN_DIV_H</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">global var for tooltip <br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">значение высоты в раскладке развернутой ячейки <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a449dab3e87be0beabdde5156790e0517"></a><!-- doxytag: member="online/view.js::IMG_IN_DIV_W" ref="a449dab3e87be0beabdde5156790e0517" args="" -->
 var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="online_2view_8js.html#a449dab3e87be0beabdde5156790e0517">IMG_IN_DIV_W</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">global var for tooltip <br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">значение ширины в раскладке элемента отображения потокового видео <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa38c5443d4b7d5fd8ecc4afc67fdc58a"></a><!-- doxytag: member="online/view.js::IMG_IN_DIV_H" ref="aa38c5443d4b7d5fd8ecc4afc67fdc58a" args="" -->
 var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="online_2view_8js.html#aa38c5443d4b7d5fd8ecc4afc67fdc58a">IMG_IN_DIV_H</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">global var for tooltip <br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">значение высоты в раскладке элемента отображения потокового видео <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a5976bae1a3ff7ba65f1e37c614c70e"></a><!-- doxytag: member="online/view.js::FS_WIN_DIV" ref="a3a5976bae1a3ff7ba65f1e37c614c70e" args="" -->
 var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="online_2view_8js.html#a3a5976bae1a3ff7ba65f1e37c614c70e">FS_WIN_DIV</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">global var for tooltip <br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">текущий режим отображения : полноэкранный/в ячейке раскладки <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a463a56db069c863714168b6ed133e153"></a><!-- doxytag: member="online/view.js::NAME_DIV_H" ref="a463a56db069c863714168b6ed133e153" args="" -->
 var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="online_2view_8js.html#a463a56db069c863714168b6ed133e153">NAME_DIV_H</a> = PrintCamNames?20:0</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Высота элемента в кот. выводится название камеры <br/></td></tr>
@@ -154,7 +169,7 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">function brout </td>
+          <td class="memname">function <a class="el" href="online_2view_8js.html#a7c092267baec39567083664d5e6fc279">brout</a> </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>win_nr</em>, </td>
@@ -181,7 +196,7 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 <div class="memdoc">
 
 <p>Функция осуществляет инициализацию и установку элемента, реализующего воспроизведение видеопотока с заданной камеры, в соответствующую ячейку раскладки камер </p>
-<dl><dt><b>Аргументы:</b></dt><dd>
+<dl class="params"><dt><b>Аргументы:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">win_nr</td><td>- номер устанавливаемой ячейки </td></tr>
     <tr><td class="paramname">win_div</td><td>- элемент устанавливаемой ячейки </td></tr>
@@ -197,7 +212,7 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">function calc_win_geo </td>
+          <td class="memname">function <a class="el" href="online_2view_8js.html#ac6b4ea5a86a080f1114da679ff9620e5">calc_win_geo</a> </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>_canvas_w</em>, </td>
@@ -242,7 +257,7 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 <div class="memdoc">
 
 <p>Функция осуществляет вычисление размеров и расположения элементов раскладки камер </p>
-<dl><dt><b>Аргументы:</b></dt><dd>
+<dl class="params"><dt><b>Аргументы:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">_canvas_w</td><td>- ширина эл-та CANVAS </td></tr>
     <tr><td class="paramname">_canvas_h</td><td>- высота эл-та CANVAS </td></tr>
@@ -261,7 +276,7 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">function calc_win_left </td>
+          <td class="memname">function <a class="el" href="online_2view_8js.html#a15e465b3f2f4afc27e1f27c2c24208df">calc_win_left</a> </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>win_geo</em>, </td>
@@ -292,7 +307,7 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 <li>
 При выходе из полноэкранного режима, если этом режиме был ресайз окна </li>
 </ul>
-<dl><dt><b>Аргументы:</b></dt><dd>
+<dl class="params"><dt><b>Аргументы:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">win_geo</td><td>- объект, содержит параметры контекстного элемента </td></tr>
     <tr><td class="paramname">col</td><td>- колонка раскладки по которой позиционируется элемент </td></tr>
@@ -307,7 +322,7 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">function calc_win_top </td>
+          <td class="memname">function <a class="el" href="online_2view_8js.html#a85a13ae616c017ffa89877bf37cb45b7">calc_win_top</a> </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>win_geo</em>, </td>
@@ -338,7 +353,7 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 <li>
 При выходе из полноэкранного режима, если этом режиме был ресайз окна </li>
 </ul>
-<dl><dt><b>Аргументы:</b></dt><dd>
+<dl class="params"><dt><b>Аргументы:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">win_geo</td><td>- объект, содержит параметры контекстного элемента </td></tr>
     <tr><td class="paramname">row</td><td>- строка раскладки по которой позиционируется элемент </td></tr>
@@ -353,7 +368,7 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">function calcAspectForGeo </td>
+          <td class="memname">function <a class="el" href="view_8php.html#a2aea3f3bb4b091e60a499ff7cb05ba5b">calcAspectForGeo</a> </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>w</em>, </td>
@@ -374,7 +389,7 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 <div class="memdoc">
 
 <p>Расчет размеров элементов отображения камер в раскладке </p>
-<dl><dt><b>Аргументы:</b></dt><dd>
+<dl class="params"><dt><b>Аргументы:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">w</td><td>- ширина изображения камеры </td></tr>
     <tr><td class="paramname">h</td><td>- высота изображения камеры </td></tr>
@@ -390,7 +405,7 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">function change_fs_win_geo </td>
+          <td class="memname">function <a class="el" href="online_2view_8js.html#aad8bad3861f1602206d45d488f34a297">change_fs_win_geo</a> </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>fs_win</em></td><td>)</td>
@@ -401,7 +416,7 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 <div class="memdoc">
 
 <p>Вычисляет и устанавливает размеры отображаемого элемента в полноэкранном режиме при ресайзе окна </p>
-<dl><dt><b>Аргументы:</b></dt><dd>
+<dl class="params"><dt><b>Аргументы:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">fs_win</td><td>- отображаемый в полноэкранном режиме элемент </td></tr>
   </table>
@@ -415,7 +430,7 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">function change_layout </td>
+          <td class="memname">function <a class="el" href="online_2view_8js.html#a9fccb9fd8060a2ae329d862e6a866ab0">change_layout</a> </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>mon_nr</em></td><td>)</td>
@@ -426,7 +441,7 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 <div class="memdoc">
 
 <p>Смена раскладки </p>
-<dl><dt><b>Аргументы:</b></dt><dd>
+<dl class="params"><dt><b>Аргументы:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">mon_nr</td><td>- номер устанавливаемой раскладки (из MON_NR в WEB_MONITORS БД) </td></tr>
   </table>
@@ -440,7 +455,7 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">function get_cam_http_url </td>
+          <td class="memname">function <a class="el" href="online_2view_8js.html#a97644688e577be390aa5e2685714f23a">get_cam_http_url</a> </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>conf</em>, </td>
@@ -473,7 +488,7 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 <div class="memdoc">
 
 <p>Функция, которая возвращает ссылку на просмотр видео с камеры аналог php-функции из <a class="el" href="get__cam__url_8php.html" title="Формирование ссылки на видео с камеры сервера avregd.">lib/get_cam_url.php</a>. </p>
-<dl><dt><b>Аргументы:</b></dt><dd>
+<dl class="params"><dt><b>Аргументы:</b></dt><dd>
   <table class="params">
     <tr><td class="paramtype">array</td><td class="paramname">$conf</td><td>масив настроек </td></tr>
     <tr><td class="paramtype">int</td><td class="paramname">$cam_nr</td><td>номер камеры </td></tr>
@@ -491,7 +506,7 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">function img_click </td>
+          <td class="memname">function <a class="el" href="online_2view_8js.html#ad8ee0249f269c8481ddfeceddfe534ac">img_click</a> </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>clicked_div</em></td><td>)</td>
@@ -503,7 +518,7 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 
 <p>Обработчик события click по элементу раскладки камер. </p>
 <p>Если включен режим раскладки разворачивает контекстный елемент в полноэкранный режим. Если включен полноэкранном режим - востанавливает режим раскладки. </p>
-<dl><dt><b>Аргументы:</b></dt><dd>
+<dl class="params"><dt><b>Аргументы:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">clicked_div</td><td>- элемент раскладки камер, по кот. осуществлен клик </td></tr>
   </table>
@@ -517,7 +532,7 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">function img_mouseover </td>
+          <td class="memname">function <a class="el" href="online_2view_8js.html#a566d0a4f148059932f24695c6f95f31c">img_mouseover</a> </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>eimg</em>, </td>
@@ -539,7 +554,7 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 
 <p>Обработчик события mouseover для элементов раскладки камер. </p>
 <p>Обеспечивает формирование и вывод tooltip </p>
-<dl><dt><b>Аргументы:</b></dt><dd>
+<dl class="params"><dt><b>Аргументы:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">eimg</td><td>- элемент раскладки </td></tr>
     <tr><td class="paramname">win_nr</td><td>- номер элемента раскладки </td></tr>
@@ -554,7 +569,7 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">function layouts_to_list </td>
+          <td class="memname">function <a class="el" href="online_2view_8js.html#a053489e2b8ab5ad1932b5e720227c0f6">layouts_to_list</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -568,7 +583,7 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 
 </div>
 </div>
-</div>
+</div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -583,8 +598,13 @@ var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onlin
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Документация по AvregSite. Последние изменения: Чт 24 Май 2012 13:23:13. Создано системой&#160;
-<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
+
+
+<hr class="footer"/><address class="footer"><small>
+Документация по AvregSite. Последние изменения: Чт 7 Июн 2012 10:35:03. Создано системой &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.7.6.1
+</small></address>
+
 </body>
 </html>

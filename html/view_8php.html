@@ -2,36 +2,55 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <title>AvregSite: Файл online/view.php</title>
+
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+
 </head>
-<body onload='searchBox.OnSelectItem(0);'>
-<!-- Создано системой Doxygen 1.7.4 -->
-<script type="text/javascript"><!--
-var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
---></script>
-<div id="top">
+<body>
+<div id="top"><!-- do not remove this div! -->
+
+
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  
+  
   <td style="padding-left: 0.5em;">
-   <div id="projectname">AvregSite</div>
+   <div id="projectname">AvregSite
+   
+   </div>
+   
   </td>
+  
+  
+  
  </tr>
  </tbody>
 </table>
 </div>
+
+<!-- Создано системой Doxygen 1.7.6.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
+</script>
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Титульная&#160;страница</span></a></li>
       <li><a href="pages.html"><span>Описания</span></a></li>
       <li><a href="annotated.html"><span>Классы</span></a></li>
       <li class="current"><a href="files.html"><span>Файлы</span></a></li>
-      <li id="searchli">
+      <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
           <img id="MSearchSelect" src="search/mag_sel.png"
@@ -62,7 +81,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 <a href="#var-members">Переменные</a>  </div>
   <div class="headertitle">
 <div class="title">Файл online/view.php</div>  </div>
-</div>
+</div><!--header-->
 <div class="contents">
 
 <p>Наблюдение с камер online.  
@@ -92,7 +111,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aac04745a3b904bdf407b6f775d836286"></a><!-- doxytag: member="view.php::$lang_file" ref="aac04745a3b904bdf407b6f775d836286" args="" -->
 &#160;</td><td class="memItemRight" valign="bottom"><b>$lang_file</b> = '_online.php'</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a112ef069ddc0454086e3d1e6d8d55d07"></a><!-- doxytag: member="view.php::$result" ref="a112ef069ddc0454086e3d1e6d8d55d07" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$result</b> = $adb-&gt;web_get_monitors()</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>$result</b> = $adb-&gt;web_get_monitors($login_user)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa14f7b6057c37999e9df026f07772bf0"></a><!-- doxytag: member="view.php::$def_cam" ref="aa14f7b6057c37999e9df026f07772bf0" args="" -->
 if(!count($result))&#160;</td><td class="memItemRight" valign="bottom"><b>$def_cam</b> = null</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70de386dfde8ae67939f8530b0d8c60b"></a><!-- doxytag: member="view.php::$PrintCamNames" ref="a70de386dfde8ae67939f8530b0d8c60b" args="" -->
@@ -102,17 +121,15 @@ foreach($result as $key=&gt;<br class="typebreak"/>
 &#160;</td><td class="memItemRight" valign="bottom"><b>$AspectRatio</b> = $def_cam['PROPORTION']</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a45cef8dd9f82e5c9681f68a3bed404a5"></a><!-- doxytag: member="view.php::$mon_type" ref="a45cef8dd9f82e5c9681f68a3bed404a5" args="" -->
 &#160;</td><td class="memItemRight" valign="bottom"><b>$mon_type</b> = $def_cam['MON_TYPE']</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aab33b4fb96823d5eefbc37feb87ab20d"></a><!-- doxytag: member="view.php::$cams_in_wins" ref="aab33b4fb96823d5eefbc37feb87ab20d" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$cams_in_wins</b> = array ($def_cam['WIN1'], $def_cam['WIN2'], $def_cam['WIN3'], $def_cam['WIN4'], $def_cam['WIN5'], $def_cam['WIN6'], $def_cam['WIN7'], $def_cam['WIN8'], $def_cam['WIN9'], $def_cam['WIN10'], $def_cam['WIN11'], $def_cam['WIN12'], $def_cam['WIN13'], $def_cam['WIN14'], $def_cam['WIN15'], $def_cam['WIN16'], $def_cam['WIN17'], $def_cam['WIN18'], $def_cam['WIN19'], $def_cam['WIN20'], $def_cam['WIN21'], $def_cam['WIN22'], $def_cam['WIN23'], $def_cam['WIN24'], $def_cam['WIN25'])</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a46d9ae17200d8dd54199e4442ab00507"></a><!-- doxytag: member="view.php::foreach" ref="a46d9ae17200d8dd54199e4442ab00507" args="($cams_in_wins as &amp;$value) settype($value" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>foreach</b> ($cams_in_wins as &amp;$value) settype($value = NULL</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac8afa2db4fa0d6a82d4f6e780496aad7"></a><!-- doxytag: member="view.php::$win_cams" ref="ac8afa2db4fa0d6a82d4f6e780496aad7" args="" -->
+&#160;</td><td class="memItemRight" valign="bottom"><b>$win_cams</b> = json_decode($def_cam['WINS'], true)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a365c5b2d07733424aeb232164eac0db0"></a><!-- doxytag: member="view.php::__FILE__" ref="a365c5b2d07733424aeb232164eac0db0" args="" -->
 if(!isset($mon_type)||empty($mon_type)||!array_key_exists($mon_type, <br class="typebreak"/>
-$layouts_defs)) MYDIE(&quot;not set <br class="typebreak"/>
+$layouts_defs)) <a class="el" href="config_8inc_8php.html#a8201d3982c2b35cb0e177adc74aa3f68">MYDIE</a>(&quot;not set <br class="typebreak"/>
 ot invalid \$mon_type&#160;</td><td class="memItemRight" valign="bottom"><b>__FILE__</b> = &quot;$mon_type\&quot;&quot;</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a93892b39a583b1bcf08a39e8bf905b03"></a><!-- doxytag: member="view.php::__LINE__" ref="a93892b39a583b1bcf08a39e8bf905b03" args="" -->
 if(!isset($mon_type)||empty($mon_type)||!array_key_exists($mon_type, <br class="typebreak"/>
-$layouts_defs)) MYDIE(&quot;not set <br class="typebreak"/>
+$layouts_defs)) <a class="el" href="config_8inc_8php.html#a8201d3982c2b35cb0e177adc74aa3f68">MYDIE</a>(&quot;not set <br class="typebreak"/>
 ot invalid \$mon_type&#160;</td><td class="memItemRight" valign="bottom"><b>__LINE__</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a51178f30c9e07e3a661588086bc98d49"></a><!-- doxytag: member="view.php::$l_defs" ref="a51178f30c9e07e3a661588086bc98d49" args="" -->
 &#160;</td><td class="memItemRight" valign="bottom"><b>$l_defs</b> = &amp;$layouts_defs[$mon_type]</td></tr>
@@ -134,7 +151,7 @@ print var&#160;</td><td class="memItemRight" valign="bottom"><b>WellKnownAspects
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6305c46ecc900f26e6148a05bb9da3b5"></a><!-- doxytag: member="view.php::$msie_addons_scripts" ref="a6305c46ecc900f26e6148a05bb9da3b5" args="" -->
 &#160;</td><td class="memItemRight" valign="bottom"><b>$msie_addons_scripts</b> = array()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a624cc2f6f665327622fee3c64a16a71d"></a><!-- doxytag: member="view.php::$GCP_query_param_list" ref="a624cc2f6f665327622fee3c64a16a71d" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>$GCP_query_param_list</b> = array('work', 'allow_networks', 'text_left', 'geometry', 'Hx2')</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>$GCP_query_param_list</b> = array('work', 'allow_networks', 'text_left', 'geometry', 'Hx2', 'fs_url_alt_1', 'cell_url_alt_1', 'fs_url_alt_2', 'cell_url_alt_2')</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a71b5619c09b0c89ffe8b6d8653121928"></a><!-- doxytag: member="view.php::if" ref="a71b5619c09b0c89ffe8b6d8653121928" args="($operator_user) array_push($GCP_query_param_list" -->
 &#160;</td><td class="memItemRight" valign="bottom"><b>if</b> ($operator_user) array_push($GCP_query_param_list</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5ac9160a557099dbebf6044ee4f4d35c"></a><!-- doxytag: member="view.php::http_cam_location" ref="a5ac9160a557099dbebf6044ee4f4d35c" args="" -->
@@ -149,6 +166,8 @@ print var&#160;</td><td class="memItemRight" valign="bottom"><b>PHP_AUTH_PW</b> 
 print var&#160;</td><td class="memItemRight" valign="bottom"><b>GCP_cams_params</b> = &quot;.json_encode($GCP_cams_params).&quot;</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a221f778d7fcfc82ee111833c8555d8bd"></a><!-- doxytag: member="view.php::operator_user" ref="a221f778d7fcfc82ee111833c8555d8bd" args="" -->
 print var&#160;</td><td class="memItemRight" valign="bottom"><b>operator_user</b> = &quot;.json_encode($operator_user).&quot;</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adfbef9e43ae8d19d4e4a6296d8bed073"></a><!-- doxytag: member="view.php::$active_cams_srcs" ref="adfbef9e43ae8d19d4e4a6296d8bed073" args="" -->
+&#160;</td><td class="memItemRight" valign="bottom"><b>$active_cams_srcs</b> = array()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4f8827fd67e7786075346681214630a7"></a><!-- doxytag: member="view.php::WINS_NR" ref="a4f8827fd67e7786075346681214630a7" args="" -->
 print var&#160;</td><td class="memItemRight" valign="bottom"><b>WINS_NR</b> = $wins_nr</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7419d902b8313ad25b562067252fbecd"></a><!-- doxytag: member="view.php::ROWS_NR" ref="a7419d902b8313ad25b562067252fbecd" args="" -->
@@ -165,7 +184,7 @@ print var&#160;</td><td class="memItemRight" valign="bottom"><b>COLS_NR</b> = $l
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">calcAspectForGeo </td>
+          <td class="memname"><a class="el" href="view_8php.html#a2aea3f3bb4b091e60a499ff7cb05ba5b">calcAspectForGeo</a> </td>
           <td>(</td>
           <td class="paramtype">$&#160;</td>
           <td class="paramname"><em>w</em>, </td>
@@ -184,9 +203,7 @@ print var&#160;</td><td class="memItemRight" valign="bottom"><b>COLS_NR</b> = $l
       </table>
 </div>
 <div class="memdoc">
-
-<p><p>DeviceACL </p>
-</p>
+<p>DeviceACL </p>
 
 </div>
 </div>
@@ -202,15 +219,15 @@ print var&#160;</td><td class="memItemRight" valign="bottom"><b>COLS_NR</b> = $l
 </div>
 <div class="memdoc">
 <b>Инициализатор</b><div class="fragment"><pre class="fragment"> sprintf(<span class="stringliteral">&#39;%s-%u-%u-%u-%s&#39;</span>,
-   implode(<span class="charliteral">&#39;.&#39;</span>, $cams_in_wins),
-   isset($OpenInBlankPage),
-   isset($PrintCamNames),
-   isset($EnableReconnect),
-   isset($AspectRatio) ? $AspectRatio : <span class="stringliteral">&#39;calc&#39;</span> )
+$def_cam[<span class="stringliteral">&#39;WINS&#39;</span>], 
+isset($OpenInBlankPage),
+isset($PrintCamNames),
+isset($EnableReconnect),
+isset($AspectRatio) ? $AspectRatio : <span class="stringliteral">&#39;calc&#39;</span> )
 </pre></div>
 </div>
 </div>
-</div>
+</div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -225,8 +242,13 @@ print var&#160;</td><td class="memItemRight" valign="bottom"><b>COLS_NR</b> = $l
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Документация по AvregSite. Последние изменения: Чт 24 Май 2012 13:23:13. Создано системой&#160;
-<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
+
+
+<hr class="footer"/><address class="footer"><small>
+Документация по AvregSite. Последние изменения: Чт 7 Июн 2012 10:35:03. Создано системой &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.7.6.1
+</small></address>
+
 </body>
 </html>

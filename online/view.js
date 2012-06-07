@@ -6,6 +6,37 @@
  */
 
 
+/* global variables */
+///Элемент, в который выводятся раскладка камер
+var CANVAS;
+///Ширина эл-та CANVAS
+var CANVAS_W = -1;
+///Высота эл-та CANVAS
+var CANVAS_H = -1;
+
+///Элемент раскладки камер
+var WIN_DIVS;
+
+///значение left-позиции в раскладке развернутой ячейки
+var WIN_DIV_LEFT;
+///значение top-позиции в раскладке развернутой ячейки
+var WIN_DIV_TOP;
+///значение ширины в раскладке развернутой ячейки
+var WIN_DIV_W;
+///значение высоты в раскладке развернутой ячейки
+var WIN_DIV_H;
+///значение ширины в раскладке элемента отображения потокового видео
+var IMG_IN_DIV_W;
+///значение высоты в раскладке элемента отображения потокового видео
+var IMG_IN_DIV_H;
+///текущий режим отображения : полноэкранный/в ячейке раскладки  
+var FS_WIN_DIV;
+
+///Высота элемента в кот. выводится название камеры
+var NAME_DIV_H = PrintCamNames?20:0;
+
+
+
 //Запуск сценария
 $(document).ready( function() {
 	fill_canvas();
@@ -40,16 +71,6 @@ function img_mouseover(eimg, win_nr) {
       '<\/tr><tr>\n' +
       '<td align="right">Размер:<\/td>\n' +
       '<td>'+orig_w+'x'+orig_h+' (исходный), ' + img_jq.width()+'x'+img_jq.height()+' (на экране)<\/td>\n' +
-      /*  
-          '<\/tr><tr>\n' +
-          '<td align="right">CANVAS:<\/td>\n' +
-          '<td>'+CANVAS_W+'x'+CANVAS_H+'<\/td>\n' +
-          '<\/tr><tr>\n' +
-          '<td align="right">win div:<\/td>\n' +
-          '<td>'+div.offsetTop+','+div.offsetLeft+ '  cl=' +div.clientWidth+'x'+div.clientHeight+'  Off='+
-          div.offsetWidth+'x'+div.offsetHeight+'  Scr='+
-          div.scrollWidth+'x'+div.scrollHeight+'  wh='+div.style.width+' x '+div.style.height+'<\/td>\n' +
-          */
       '<\/tr><\/tbody><\/table>\n';
 
    ddrivetip();
@@ -68,11 +89,14 @@ function img_click(clicked_div) {
    var clicked_div_jq = $(clicked_div);
    var win_geo; 
    var i;
+   //номер ячейки
+   var win_nr = parseInt(($(clicked_div).attr('id')).match(/\d+/gi));
+   
    if ( FS_WIN_DIV ) {
       // current - fullscreen
 
       if ( WIN_DIV_W == undefined ) {
-         /* в момент FS было изменение CANVAS */
+         //в режиме FS был ресайз CANVAS'a
          change_wins_geo();
       } else {
          var border_w = clicked_div.offsetWidth - clicked_div.clientWidth;
@@ -91,6 +115,12 @@ function img_click(clicked_div) {
             continue;
          tmp_div.style.visibility='visible';
       }
+      //меняем наисточник для ячейки
+      if (active_cams_srcs[win_nr]['type']!='avregd'){
+    	  if(active_cams_srcs[win_nr]['cell']!=null || active_cams_srcs[win_nr]['cell']!='')
+    	  $(img_jq).attr({'src': active_cams_srcs[win_nr]['cell'] });
+      }
+      
       FS_WIN_DIV = undefined;
    } else {
       // current - NO fullscreen
@@ -120,6 +150,12 @@ function img_click(clicked_div) {
 
          clicked_div.style.visibility='visible';
 
+      //меняем наисточник для ячейки
+      if (active_cams_srcs[win_nr]['type']!='avregd'){
+    	  if(active_cams_srcs[win_nr]['fs']!=null || active_cams_srcs[win_nr]['fs']!='')
+    	  $(img_jq).attr({'src': active_cams_srcs[win_nr]['fs'] });
+      }
+      
       FS_WIN_DIV = clicked_div;
    }
 } // img_click()
@@ -166,7 +202,6 @@ function brout(win_nr, win_div, win_geo) {
       amc.MediaURL = url+'&ab='+___abenc;
       amc.AutoStart = true;
    } else {
-      // $('<img src="/640x480r.png" id="'+id+'" name="cam" alt="' +alt+'" '+
       $('<img src="'+url+'&ab='+___abenc+'" id="'+id+'" name="cam" alt="' +alt+'" '+
             'width="'+orig_w+'px" height="'+orig_h+'px" ' +
             'align="middle" border="0px" />').appendTo(win_div).width(win_geo.cam_w).height(win_geo.cam_h);
@@ -182,35 +217,6 @@ function brout(win_nr, win_div, win_geo) {
       win_div.mouseout( function() { hideddrivetip(); } ); 
    }
 }
-
-/* global variables */
-///Элемент, в который выводятся раскладка камер
-var CANVAS;
-///Ширина эл-та CANVAS
-var CANVAS_W = -1;
-///Высота эл-та CANVAS
-var CANVAS_H = -1;
-
-///Элемент раскладки камер
-var WIN_DIVS;
-
-///global var for tooltip
-var WIN_DIV_LEFT;
-///global var for tooltip
-var WIN_DIV_TOP;
-///global var for tooltip
-var WIN_DIV_W;
-///global var for tooltip
-var WIN_DIV_H;
-///global var for tooltip
-var IMG_IN_DIV_W;
-///global var for tooltip
-var IMG_IN_DIV_H;
-///global var for tooltip
-var FS_WIN_DIV;
-
-///Высота элемента в кот. выводится название камеры
-var NAME_DIV_H = PrintCamNames?20:0;
 
 
 /**
@@ -391,19 +397,21 @@ function canvas_growth() {
    } // if ( FS_WIN_DIV )
 } // canvas_growth()
 
+/*
 function get_geo_str(JQ_elem) {
    return JQ_elem.attr('nodeName') + '#' +  JQ_elem.attr('id') +
       ': [ ' + JQ_elem.css('left') + ',' +  JQ_elem.css('top') + ' : ' +
       JQ_elem.width() + ' x ' + JQ_elem.height() + ' ]';
 }
-
+*/
+/*
 function try_fs() {
    var winX;
    var winY;
    if (MSIE) {
       winX=window.screenLeft;
       winY=window.screenTop;
-   } else { /* else if (GECKO) { */
+   } else { // else if (GECKO) { 
       winX=window.screenX;
       winY=window.screenY;
    }
@@ -422,6 +430,8 @@ function try_fs() {
    } else
       window.resizeTo(window.screen.availWidth,window.screen.availHeight);
    }
+*/
+
 
    /**
     * Выводит список доступных раскладок
@@ -441,18 +451,13 @@ function try_fs() {
    	return html;
    }
 
-
-
-
    /**
     * Смена раскладки
     * @param mon_nr - номер устанавливаемой раскладки (из MON_NR в WEB_MONITORS БД)
     */
    function change_layout(mon_nr){
-
    	//Если был включен режим - 1 камера на весь экран
    	FS_WIN_DIV = null;
-   	
    	//целевая раскладка
    	var layout=null;
    	//кол-во элементов для отображения камер в целевой раскладке
@@ -461,9 +466,7 @@ function try_fs() {
    	var l_defs = null;
    	//Пропорции
    	var AspectRatio;
-   	
-   	
-   	
+
    	//Устанавливаем целевую раскладку
    	$.each(layouts_list, function(i, value){
    		if(value['MON_NR']==mon_nr){
@@ -474,12 +477,11 @@ function try_fs() {
    	
    	//Чистим канвас
    	$('#canvas').empty();
-   	
 
-      l_defs = layouts_defs[layout['MON_TYPE']];
+   	l_defs = layouts_defs[layout['MON_TYPE']];
 
    	//кол-во элементов для отображения камер
-       wins_nr = l_defs[0];
+    wins_nr = l_defs[0];
 
    	//пересоздаем объект текущей раскладки
    	WINS_DEF = new MakeArray(wins_nr);
@@ -487,35 +489,59 @@ function try_fs() {
    	//размеры камер
    	major_win_cam_geo = null;
    	
+   	layout_wins = $.parseJSON(layout['WINS']);
+   	active_cams_srcs = new Array();
+   	
    	//и перезаполняем новыми значениями
    	$.each(WINS_DEF, function(i, value){
-   		//корректировка индекса
-   		var index = i+1;
-
-   		if(layout['WIN'+index]=='' || layout['WIN'+index]==null || GCP_cams_params[layout['WIN'+index]] == null) return;
-   		
+   		if(layout_wins[i]==null || GCP_cams_params[layout_wins[i][0]]==null ) return;
    		//Параметры текущего типа раскладки
    		var l_wins = l_defs[3][i];
-   		var cam_nr = layout['WIN'+index];
-   		var wxh = GCP_cams_params[layout['WIN'+index]]['geometry'];
+   		var cam_nr = layout_wins[i][0];
+   		//установка url камеры
+   		active_cams_srcs[i] = new Array();
+   		var cam_url = '';
+   		switch(layout_wins[i][1]){
+   		case '0':
+   		case '1': //avregd
+   			cam_url =  get_cam_http_url(conf, cam_nr,'mjpeg', false );
+   	   		active_cams_srcs[i]['type']='avregd';
+   	   		active_cams_srcs[i]['cell']=cam_url;
+   	   		active_cams_srcs[i]['fs']=cam_url;
+   	   		break;
+   		case '2': //alt 1
+   			cam_url = GCP_cams_params[layout_wins[i][0]]['cell_url_alt_1'];
+   	   		active_cams_srcs[i]['type']='alt_1';
+   	   		active_cams_srcs[i]['cell']=cam_url;
+   	   		active_cams_srcs[i]['fs']=GCP_cams_params[cam_nr]['fs_url_alt_1'];
+   			break;
+   		case '3': //alt 2
+   			cam_url =GCP_cams_params[layout_wins[i][0]]['cell_url_alt_2'];
+   	   		active_cams_srcs[i]['type']='alt_1';
+   	   		active_cams_srcs[i]['cell']=cam_url;
+   	   		active_cams_srcs[i]['fs']=GCP_cams_params[cam_nr]['fs_url_alt_2'];
+   			break;
+   		}
+   		
+   		var wxh = GCP_cams_params[ layout_wins[i][0] ]['geometry'];
    		var cam_width = parseInt(wxh.slice(0, wxh.indexOf('x')));
    		var cam_height = parseInt(wxh.slice(wxh.indexOf('x')+1));
    		if(cam_width==null || cam_width==0) cam_width = 640;
    		if(cam_height==null || cam_height==0) cam_height = 480;
-   		//Что это такое и зачем надо - не понятно, а потому может неверно интерпретировано: if(!empty($GCP_cams_params[$cam_nr]['Hx2'])) $height*=2;
-   		if( GCP_cams_params[layout['WIN'+index]]['Hx2']!=0 && GCP_cams_params[layout['WIN'+index]]['Hx2']!=null ) cam_height *=2;
+   		//Возможно неверно интерпретировано: if(!empty($GCP_cams_params[$cam_nr]['Hx2'])) $height*=2;
+   		if( GCP_cams_params[layout_wins[i][0]]['Hx2']!=0 && GCP_cams_params[layout_wins[i][0]]['Hx2']!=null ) cam_height *=2;
    		
    		if (major_win_cam_geo == null /* || major_win_nr === win_nr */ )
    		      major_win_cam_geo = new Array(cam_width, cam_height);
    		
    		var net_cam_host=null;
-   		if (operator_user && ( GCP_cams_params[layout['WIN'+index]]['cam_type'] == 'netcam' ) ){
-   			      net_cam_host = GCP_cams_params[layout['WIN'+index]]['InetCam_IP'];
+   		if (operator_user && ( GCP_cams_params[layout_wins[i][0]]['cam_type'] == 'netcam' ) ){
+   			      net_cam_host = GCP_cams_params[layout_wins[i][0]]['InetCam_IP'];
    		}
    	   else{
    		   net_cam_host = null;
    	   }
-
+   		//устанавливаем параметры и камеру для ячейки
    		WINS_DEF[i] = {
    				row : l_wins[0],
    			    col : l_wins[1],
@@ -523,17 +549,14 @@ function try_fs() {
    			    colspan : l_wins[3],
    			    cam: {
    			    	nr:   cam_nr,
-   			        name: GCP_cams_params[layout['WIN'+index]]['text_left'] ,
-   			        url:  get_cam_http_url(conf, cam_nr,'mjpeg', false ), 
+   			        name: GCP_cams_params[layout_wins[i][0]]['text_left'] ,
+   			        url:  cam_url, 
    			        orig_w: cam_width,
    			        orig_h: cam_height,
    			        netcam_host: net_cam_host
    			    }
    		};
    	});
-   	
-   	
-   	
    	
    	//Вывод в шапке элемента отображения камеры - названия камеры
    	PrintCamNames = (layout['PRINT_CAM_NAME']=='t' || layout['PRINT_CAM_NAME']==true)? true : false;

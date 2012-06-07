@@ -13,13 +13,14 @@ if ( isset ($pipes_show) ) {
 } else {
    $pipes_show = 1;
 }
+
+$USE_JQUERY = true;
+
 require ('../head.inc.php');
 
 DENY($admin_status);
 
 require ('./mon-type.inc.php');
-
-
 
 ?>
 
@@ -33,6 +34,7 @@ function reset_to_list()
 </script>
 
 <?php
+
 echo '<h1>' . sprintf($web_r_mons,$named,$sip) . '</h1>' ."\n";
 
 if ( !isset($mon_nr) || $mon_nr =='' || empty($display) )
@@ -41,8 +43,8 @@ if ( !isset($mon_nr) || $mon_nr =='' || empty($display) )
 if (!settype($mon_nr,'int'))
 	die('$mon_nr is\'t integer value');
 	
-if ($mon_nr < 0 || $mon_nr > 9)
-	die('$mon_nr in\'t in [0..9]');
+if ($mon_nr < 0 )
+	die('Error: $mon_nr < 0');
 
 if ( !($display == 'L' || $display == 'R') )
 	die('$display must be L or R char');
@@ -55,17 +57,35 @@ if ( isset($cmd) ) {
 		exit;		
 	}
 	switch ( $cmd ) {
+		
 		case '_ADD_NEW_MON_':
 			require('web_active_pipe.inc.php');
 			
 			$wins_array = &$active_pipes;
+			
 			if ( count($wins_array) > 0 ) {
 				print '<p class="HiLiteBigWarn">' . sprintf ($fmtMonAddInfo,$mon_type, $mon_nr, $mon_name, $display=='R'?$sRightDisplay1:$sLeftDisplay1) . '</p>' ."\n";
 				print '<p class="HiLiteBigWarn">' . $strMonAddInfo2 . '</p>' ."\n";
-				$a = getSelectHtmlByName('mon_wins[]',	$wins_array, FALSE , 1, 1, '', TRUE, 'sel_change(this);');
-				//print('<pre><code>');print_r($a);print('</code></pre>');
+
+				//формирование массива альтернативных источников видео
+				$cams_srcs = array();
+				foreach ($GCP_cams_params as $key => $val){
+					$cams_srcs[$key] = array();
+					$cams_srcs[$key]['avregd'] = 'true';
+					$cams_srcs[$key]['alt_1'] = ($val['cell_url_alt_1']!=null || $val['fs_url_alt_1']!=null)? 'true':'false';
+					$cams_srcs[$key]['alt_2'] = ($val['cell_url_alt_2']!=null || $val['fs_url_alt_2']!=null)? 'true':'false';
+				}
+				print '<script type="text/javascript">'."\n";
+				print 'var cams_alt ='.json_encode($cams_srcs).";\n";
+				print '</script>'."\n";
+				
+				//Создание эл-та селект ля ячеек раскладки
+				$a = getSelectHtmlByName('mon_wins[]',	$wins_array, FALSE , 1, 1, '', TRUE, 'sel_change(this); show_sub_select(this);', '', NULL, $cams_srcs);
+				
 				print '<form action="'.$_SERVER['PHP_SELF'].'"  onSubmit="return validate();" method="POST">'."\n";
+				
 				layout2table ( $mon_type, ($mon_type == 'QUAD_25_25')? 500:400, NULL,  $a);
+				
 				print '<input type="hidden" name="cmd" value="_ADD_NEW_MON_OK_">'."\n";
 				print '<input type="hidden" name="mon_nr" value="'.$mon_nr.'">'."\n";
 				print '<input type="hidden" name="display" value="'.$display.'">'."\n";
@@ -95,20 +115,29 @@ if ( isset($cmd) ) {
 			break; /**/
 		case '_ADD_NEW_MON_OK_':
 			$i = 0;
-			$fWINS = array();
-			$vWINS = array();
+			$j = 0;
+			
+			$mwt = $_POST['mon_wins_type'];
+			$allWINS = array();
+			
+			
 			while ( $i < count($mon_wins) ) {
 				if ( !empty( $mon_wins[$i] ) ) {
-					array_push( $fWINS, 'WIN'.($i+1) );
-					array_push( $vWINS, $mon_wins[$i] );
+					//формирование единого объекта для всех ячеек раскладки					
+					$allWINS[$i]=array();
+					array_push($allWINS[$i], $mon_wins[$i], $mwt[$j]);
+					$j++;
 				}
 				$i++;
 			}
-			if ( count( $fWINS ) > 0 ) {
-				
+
+			$allWINS = json_encode($allWINS);
+			 
+			if ( $allWINS!='') {
                 $PrintCamNames = ($PrintCamNames!=null)? 1 : 0;
                 
-				$adb->web_add_monitors($display,$mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $fWINS, $vWINS);
+				$adb->web_add_monitors($display,$mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $allWINS);
+
 				print "Ok!\n'";
 				print '<script type="text/javascript" language="javascript">reset_to_list();</script>'."\n";
 			} else {

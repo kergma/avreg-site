@@ -7,6 +7,7 @@
 
 <script type="text/javascript" language="JavaScript1.2">
 <!--
+
 function validate(){
    var cams_selects = document.getElementsByName('mon_wins[]');
    if (typeof(cams_selects) == 'undefined') 
@@ -51,10 +52,34 @@ function sel_change(sel) {
    }  
   return false;
 }
+
+
+//отображает эл-т селект для выбора типа источника камеры
+function show_sub_select(cam_select){
+	var el = $(cam_select).nextAll('.mon_wins_type');
+	$(el).remove();
+
+	if( $(cam_select).attr('value')!=''){
+		var cam_nr = $(cam_select).attr('value');
+		var slct = $('<select class="mon_wins_type" name="mon_wins_type[]" size="1" title="select source" style="font-size:8pt;" ></select>');
+
+		if(cams_alt[cam_nr]['avregd']=='true') $(slct).append('<option value="1">avregd</option>');
+		if(cams_alt[cam_nr]['alt_1']=='true') $(slct).append('<option value="2">alt 1</option>');
+		if(cams_alt[cam_nr]['alt_2']=='true') $(slct).append('<option value="3">alt 2</option>');
+
+		$(cam_select).parent().append(slct);
+	}
+
+}
 // -->
 </script>
 
+
+
+
+
 <?php
+
 require_once('../lib/cams_main_detail.inc.php');
 
 echo '<h2 align="center">'.$web_r_moncam_list.'</h2>' ."\n";
@@ -65,7 +90,7 @@ if ( !isset ($pipes_show) ) {
 }
 
 print '<form action="'.$_SERVER['REQUEST_URI'].'" method="POST">'."\n";
-print '<p align="center">'.$strWcListShow.getSelectHtml('pipes_show', $MonCamListShow, FALSE, 1, 0, $MonCamListShow[$pipes_show], FALSE, TRUE).'</p>'."\n";
+print '<p >'.$strWcListShow.getSelectHtml('pipes_show', $MonCamListShow, FALSE, 1, 0, $MonCamListShow[$pipes_show], FALSE, TRUE).'</p>'."\n";
 if (isset($_POST) && is_array($_POST))
 {
    reset($_POST);
@@ -75,12 +100,15 @@ if (isset($_POST) && is_array($_POST))
 
 }
 print '</form>'."\n";
-
-$GCP_query_param_list=array('work','cam_type','geometry','color','InetCam_IP','v4l_dev','input', 'V.http_get', 'A.http_get', 'Aviosys9100_chan','allow_local','v4l_pipe','text_left');
+// Определение перечня используемых параметров
+$GCP_query_param_list=array('cell_url_alt_1','fs_url_alt_1','cell_url_alt_2','fs_url_alt_2', 'work','cam_type','geometry','color','InetCam_IP','v4l_dev','input', 'V.http_get', 'A.http_get', 'Aviosys9100_chan','allow_local','v4l_pipe','text_left');
 require ('../lib/get_cams_params.inc.php');
 
 $active_pipes=array();
 $active_pipes_nr=0;
+
+$active_pipes_alt_src=array();
+
 
 if ( $GCP_cams_nr === 0 ) {
    print '<p class="HiLiteBigErr">' . $strNotViewCams . '</p>' ."\n";
@@ -94,8 +122,9 @@ if ( $GCP_cams_nr === 0 ) {
     var_dump($_POST);
     print '</pre></div>'. "\n";
  */
-      print '<div align="center">'. "\n";
-      print '<table cellspacing="0" border="1" cellpadding="3">'. "\n";
+      print '<div>'. "\n";
+      
+      print '<table cellspacing="0" border="1" cellpadding="3" >'. "\n";
       print '<tr bgcolor="'.$header_color.'">'."\n";
       print '<th>&nbsp;</th>'."\n";
       print '<th nowrap>'.$strCam.'</th>'."\n";
@@ -111,6 +140,7 @@ if ( $GCP_cams_nr === 0 ) {
    $c_mon_live=0;
    $c_v4l_pipe='';
 
+   
    reset($GCP_cams_params);
    while (list($__cam_nr, $cam_detail) = each($GCP_cams_params)) 
    {
@@ -119,6 +149,12 @@ if ( $GCP_cams_nr === 0 ) {
       $c_mon_live=intval($GCP_cams_params[$__cam_nr]['allow_local']);
       $c_v4l_pipe=&$GCP_cams_params[$__cam_nr]['v4l_pipe'];
 
+      $cell_alt_1 = &$GCP_cams_params[$__cam_nr]['cell_url_alt_1'];
+      $fs_alt_1 = &$GCP_cams_params[$__cam_nr]['fs_url_alt_1'];
+      $cell_alt_2 = &$GCP_cams_params[$__cam_nr]['cell_url_alt_2'];
+      $fs_alt_2 = &$GCP_cams_params[$__cam_nr]['fs_url_alt_2'];
+
+      //условие доступнсти камер
       if (($c_work && $c_mon_live && isset($c_v4l_pipe))) {
          $active_pipes[$active_pipes_nr]=$__cam_nr;
          $active_pipes_nr++;
@@ -150,6 +186,9 @@ if ( $GCP_cams_nr === 0 ) {
       }
    } // for
 
+//   print '<pre>'; var_export( $cam_detail );  print '</pre>';
+    
+   
    if ($pipes_show>0)
    {
       print '</table>'. "\n";

@@ -2,36 +2,55 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <title>AvregSite: Файл lang/russian/utf-8/_admin_users.php</title>
+
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+
 </head>
-<body onload='searchBox.OnSelectItem(0);'>
-<!-- Создано системой Doxygen 1.7.4 -->
-<script type="text/javascript"><!--
-var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
---></script>
-<div id="top">
+<body>
+<div id="top"><!-- do not remove this div! -->
+
+
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  
+  
   <td style="padding-left: 0.5em;">
-   <div id="projectname">AvregSite</div>
+   <div id="projectname">AvregSite
+   
+   </div>
+   
   </td>
+  
+  
+  
  </tr>
  </tbody>
 </table>
 </div>
+
+<!-- Создано системой Doxygen 1.7.6.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
+</script>
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Титульная&#160;страница</span></a></li>
       <li><a href="pages.html"><span>Описания</span></a></li>
       <li><a href="annotated.html"><span>Классы</span></a></li>
       <li class="current"><a href="files.html"><span>Файлы</span></a></li>
-      <li id="searchli">
+      <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
           <img id="MSearchSelect" src="search/mag_sel.png"
@@ -61,7 +80,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 <a href="#var-members">Переменные</a>  </div>
   <div class="headertitle">
 <div class="title">Файл lang/russian/utf-8/_admin_users.php</div>  </div>
-</div>
+</div><!--header-->
 <div class="contents">
 
 <p>Файл переводов для страниц  
@@ -96,6 +115,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af2aa8b6d43dd0ed580b1b5836c43439a"></a><!-- doxytag: member="_admin_users.php::$fmtEmptyF" ref="af2aa8b6d43dd0ed580b1b5836c43439a" args="" -->
 &#160;</td><td class="memItemRight" valign="bottom"><b>$fmtEmptyF</b> = 'Ошибка: не заполнено поле &amp;#171;%s&amp;#187; или содержит недопустимые символы.'</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><b>$strDeviceACL</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><b>$strAllowedWEBLayouts</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a37f631c53b3e79bc303594c66b7d7bd6"></a><!-- doxytag: member="_admin_users.php::$strForcedSavingLimit" ref="a37f631c53b3e79bc303594c66b7d7bd6" args="" -->
 &#160;</td><td class="memItemRight" valign="bottom"><b>$strForcedSavingLimit</b> = '&lt;b&gt;Максимальная длительность принудительной записи (по команде) в минутах&lt;/b&gt; для пользователей, исключая группу &amp;#171;Только просмотр&amp;#187;. Действует совместно с параметром &lt;b&gt;forced_saving_limit&lt;/b&gt; в настройках камер (читайте подробнее описание параметра - раздел &amp;#171;Запись&amp;#187;, показывать все параметры). Допустимые значения: 0 - не ограничивать или [1..4320] минут, по умолчанию: &amp;quot;&lt;b&gt;0 - используется только ограничение в настройках камеры.&lt;/b&gt;&amp;quot;.'</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4d03223db55c161d57d07401dc54d5ed"></a><!-- doxytag: member="_admin_users.php::$sEmptyDef" ref="a4d03223db55c161d57d07401dc54d5ed" args="" -->
@@ -224,6 +244,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 </pre></div>
 </div>
 </div>
+<a class="anchor" id="a016be9b5cdf1b77789ffeb554535d1b1"></a><!-- doxytag: member="_admin_users.php::$strAllowedWEBLayouts" ref="a016be9b5cdf1b77789ffeb554535d1b1" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$strAllowedWEBLayouts</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Инициализатор</b><div class="fragment"><pre class="fragment"> <span class="stringliteral">&#39;&lt;b&gt;Доступные раскладки для WEB просмотра.&lt;/b&gt;&lt;br/&gt;</span>
+<span class="stringliteral">Список раскладок, с которыми разрешено работать пользователю.&lt;br/&gt;Допустимо указание идентификационных номеров раскладок разделённых запятыми. Первая указанная раскладка устанавливается по умолчанию.  Например: 5,7,3,5 &lt;br /&gt;</span>
+<span class="stringliteral">Если список не определён &lt;b&gt;(пустое поле) - разрешены всё раскладки.&lt;/b&gt;&#39;</span>
+</pre></div>
+</div>
+</div>
 <a class="anchor" id="a2a81d7406b59259fc24c27c1b24bd794"></a><!-- doxytag: member="_admin_users.php::$strAllowHost" ref="a2a81d7406b59259fc24c27c1b24bd794" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -285,7 +321,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 </pre></div>
 </div>
 </div>
-</div>
+</div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -300,8 +336,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Документация по AvregSite. Последние изменения: Чт 24 Май 2012 13:23:13. Создано системой&#160;
-<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
+
+
+<hr class="footer"/><address class="footer"><small>
+Документация по AvregSite. Последние изменения: Чт 7 Июн 2012 10:35:03. Создано системой &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.7.6.1
+</small></address>
+
 </body>
 </html>

@@ -2,36 +2,55 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <title>AvregSite: Cписок членов класса</title>
+
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+
 </head>
-<body onload='searchBox.OnSelectItem(0);'>
-<!-- Создано системой Doxygen 1.7.4 -->
-<script type="text/javascript"><!--
-var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
---></script>
-<div id="top">
+<body>
+<div id="top"><!-- do not remove this div! -->
+
+
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  
+  
   <td style="padding-left: 0.5em;">
-   <div id="projectname">AvregSite</div>
+   <div id="projectname">AvregSite
+   
+   </div>
+   
   </td>
+  
+  
+  
  </tr>
  </tbody>
 </table>
 </div>
+
+<!-- Создано системой Doxygen 1.7.6.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
+</script>
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Титульная&#160;страница</span></a></li>
       <li><a href="pages.html"><span>Описания</span></a></li>
       <li class="current"><a href="annotated.html"><span>Классы</span></a></li>
       <li><a href="files.html"><span>Файлы</span></a></li>
-      <li id="searchli">
+      <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
           <img id="MSearchSelect" src="search/mag_sel.png"
@@ -60,7 +79,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 <div class="header">
   <div class="headertitle">
 <div class="title">Adb Cписок членов класса</div>  </div>
-</div>
+</div><!--header-->
 <div class="contents">
 Полный список членов класса <a class="el" href="classAdb.html">Adb</a>, включая наследуемые из базового класса<table>
   <tr class="memlist"><td><a class="el" href="classAdb.html#aaa10253b3397624fccffd7f058ce1195">$_db</a></td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
@@ -73,7 +92,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
   <tr class="memlist"><td><a class="el" href="classAdb.html#a4d9785bd4de54daef01fea2a61f0607f">_error</a>($r, $die=true)</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classAdb.html#a8aa082b9b97eb67f8a08a32f6c62dcc7">add_camera</a>($bind_mac, $cam_nr, $parname, $parval, $host, $user)</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classAdb.html#a17e0380699b716f6ce8d268368f8f04a">add_monitors</a>($display, $mon_nr, $mon_type, $mon_name, $remote_addr, $login_user, $fWINS, $vWINS, $bind_mac= 'local')</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="classAdb.html#aaf0a9969c88e7cffa5c3d69f26ee8ad8">add_user</a>($u_host, $u_name, $passwd, $groups, $u_devacl, $u_forced_saving_limit, $sessions_per_cam, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user)</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classAdb.html#a91a9268989d12ac5f4f3424a01dcc64e">add_user</a>($u_host, $u_name, $passwd, $groups, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_cam, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user)</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classAdb.html#a0bb897c8911c3b834a1f75d8a99f8e28">delete_camera</a>($cam_nr, $bind_mac= 'local')</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classAdb.html#a9c226e35f5ed88fb4156895e4609b229">delete_monitors</a>($display, $mon_nr, $bind_mac= 'local')</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classAdb.html#ad765123a3b20abcff50df48b3e09e311">delete_user</a>($u_name, $u_host, $u_status)</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
@@ -97,16 +116,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
   <tr class="memlist"><td><a class="el" href="classAdb.html#a644939c145d54ea663747b5eaba61e35">replace_monitors</a>($display, $mon_nr, $mon_type, $mon_name, $host, $user, $fWINS, $vWINS, $bind_mac= 'local')</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classAdb.html#a3e851cb11e81e7a69df9128c253986e9">update_camera</a>($bind_mac, $cam_nr, $parname, $parval, $host, $user)</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classAdb.html#ab47615020ccdfaf9d1c0e6191b4dde3f">update_monitors</a>($display, $mon_nr, $mon_type, $mon_name, $host, $user, $fWINS, $vWINS, $bind_mac= 'local')</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="classAdb.html#a8fcb867e436e8b529d2528748c80f275">update_user</a>($u_host, $u_name, $passwd, $groups, $u_devacl, $u_forced_saving_limit, $sessions_per_cam, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host, $old_u_name)</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classAdb.html#a7f523414e62bbad3e4ccefdb4205a375">update_user</a>($u_host, $u_name, $passwd, $groups, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_cam, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host, $old_u_name)</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classAdb.html#a51cdc634f86399bd32da2e6a0c47cb78">update_user_passwd</a>($u_name, $u_pass, $hosts)</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="classAdb.html#a7fa4bebc6af18060cdb7638b708d738b">web_add_monitors</a>($display, $mon_nr, $mon_type, $mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $fWINS, $vWINS, $bind_mac= 'local')</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classAdb.html#ad75a5390a2ba3c4cd1adadebce3f84ab">web_add_monitors</a>($display, $mon_nr, $mon_type, $mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $allWINS, $bind_mac= 'local')</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classAdb.html#a14a3fc8d3eaf6ad2e1945cea45f24cfc">web_clear_wins</a>($display, $mon_nr, $bind_mac)</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classAdb.html#a0e04b1e5cd820bf4cf2bcdff0800b257">web_delete_monitors</a>($display, $mon_nr, $bind_mac= 'local')</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classAdb.html#a81d5254344b5232e36e36a4facd9d59a">web_get_monitor</a>($display, $mon_nr, $bind_mac= 'local')</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="classAdb.html#a299c6bf01faad21d946651a898061426">web_get_monitors</a>($bind_mac= 'local')</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="classAdb.html#a09287cffa014c726ce86b6d99f9fc1f9">web_replace_monitors</a>($display, $mon_nr, $mon_type, $mon_name, $host, $user, $PrintCamNames, $AspectRatio, $fWINS, $vWINS, $bind_mac= 'local')</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classAdb.html#a31664f5b60205c16592dcfd468d75727">web_get_monitors</a>($user=NULL, $bind_mac= 'local')</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classAdb.html#a9f305ab2a0b819b28d4b2881508deb66">web_replace_monitors</a>($display, $mon_nr, $mon_type, $mon_name, $host, $user, $PrintCamNames, $AspectRatio, $allWINS, $bind_mac= 'local')</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classAdb.html#a430723f944226379598f1e505f56eb7d">web_set_def_layout</a>($mon_nr)</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="classAdb.html#a8e30772cbfd752ad9bfb497e3348a753">web_update_monitors</a>($display, $mon_nr, $mon_type, $mon_name, $host, $user, $PrintCamNames, $AspectRatio, $fWINS, $vWINS, $bind_mac= 'local')</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
-</table></div>
+  <tr class="memlist"><td><a class="el" href="classAdb.html#ad15f1a861c84520206b74d994bd96417">web_update_monitors</a>($display, $mon_nr, $mon_type, $mon_name, $host, $user, $PrintCamNames, $AspectRatio, $allWINS, $bind_mac= 'local')</td><td><a class="el" href="classAdb.html">Adb</a></td><td></td></tr>
+</table></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -121,8 +141,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Документация по AvregSite. Последние изменения: Чт 24 Май 2012 13:23:13. Создано системой&#160;
-<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
+
+
+<hr class="footer"/><address class="footer"><small>
+Документация по AvregSite. Последние изменения: Чт 7 Июн 2012 10:35:03. Создано системой &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.7.6.1
+</small></address>
+
 </body>
 </html>

@@ -2,36 +2,55 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <title>AvregSite: Файл offline/gallery/js/jquery.aplayer.js</title>
+
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+
 </head>
-<body onload='searchBox.OnSelectItem(0);'>
-<!-- Создано системой Doxygen 1.7.4 -->
-<script type="text/javascript"><!--
-var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
---></script>
-<div id="top">
+<body>
+<div id="top"><!-- do not remove this div! -->
+
+
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  
+  
   <td style="padding-left: 0.5em;">
-   <div id="projectname">AvregSite</div>
+   <div id="projectname">AvregSite
+   
+   </div>
+   
   </td>
+  
+  
+  
  </tr>
  </tbody>
 </table>
 </div>
+
+<!-- Создано системой Doxygen 1.7.6.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
+</script>
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Титульная&#160;страница</span></a></li>
       <li><a href="pages.html"><span>Описания</span></a></li>
       <li><a href="annotated.html"><span>Классы</span></a></li>
       <li class="current"><a href="files.html"><span>Файлы</span></a></li>
-      <li id="searchli">
+      <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
           <img id="MSearchSelect" src="search/mag_sel.png"
@@ -61,7 +80,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 <a href="#var-members">Переменные</a>  </div>
   <div class="headertitle">
 <div class="title">Файл offline/gallery/js/jquery.aplayer.js</div>  </div>
-</div>
+</div><!--header-->
 <div class="contents">
 
 <p>Плагин медиаплеер  
@@ -116,20 +135,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
       </table>
 </div>
 <div class="memdoc">
-<b>Инициализатор</b><div class="fragment"><pre class="fragment"> function(settings){
+<b>Инициализатор</b><div class="fragment"><pre class="fragment"> <span class="keyword">function</span>(settings){
                                 <span class="keywordflow">if</span>(settings.src==null)
                                 {
 
                                         <span class="keywordflow">return</span> <span class="keyword">this</span>;
                                 }
-                        <span class="keywordflow">else</span> $(<span class="keyword">this</span>).each(function(){
+                        <span class="keywordflow">else</span> $(<span class="keyword">this</span>).each(<span class="keyword">function</span>(){
                                 $.aplayer.play(<span class="keyword">this</span>, settings);
                         });
                 <span class="keywordflow">return</span> <span class="keyword">this</span>;
         }
 </pre></div>
 <p>Установка плеера в заданные эл-ты html. </p>
-<dl><dt><b>Аргументы:</b></dt><dd>
+<dl class="params"><dt><b>Аргументы:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">settings</td><td>- settings: src , type , config{} etc. </td></tr>
   </table>
@@ -149,7 +168,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
       </table>
 </div>
 <div class="memdoc">
-<b>Инициализатор</b><div class="fragment"><pre class="fragment">function(){
+<b>Инициализатор</b><div class="fragment"><pre class="fragment"><span class="keyword">function</span>(){
                 $(<span class="keyword">this</span>).empty();
                 <span class="keywordflow">return</span> <span class="keyword">this</span>;
         }
@@ -169,12 +188,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
       </table>
 </div>
 <div class="memdoc">
-<b>Инициализатор</b><div class="fragment"><pre class="fragment"> function(globalSettings){
+<b>Инициализатор</b><div class="fragment"><pre class="fragment"> <span class="keyword">function</span>(globalSettings){
                 $.aplayer.init(globalSettings);
         }
 </pre></div>
 <p>Метод установки пользовательских настроек </p>
-<dl><dt><b>Аргументы:</b></dt><dd>
+<dl class="params"><dt><b>Аргументы:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">globalSettings</td><td>- объект настроек </td></tr>
   </table>
@@ -193,7 +212,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
       </table>
 </div>
 <div class="memdoc">
-<b>Инициализатор</b><div class="fragment"><pre class="fragment"> function(){
+<b>Инициализатор</b><div class="fragment"><pre class="fragment"> <span class="keyword">function</span>(){
                 $(<span class="keyword">this</span>).children(<span class="stringliteral">&#39;[id^=&#39;</span>+$.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.idContainer+<span class="charliteral">&#39;]&#39;</span>).hide();
     }
 </pre></div>
@@ -211,7 +230,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
       </table>
 </div>
 <div class="memdoc">
-<b>Инициализатор</b><div class="fragment"><pre class="fragment"> function(){
+<b>Инициализатор</b><div class="fragment"><pre class="fragment"> <span class="keyword">function</span>(){
                 <span class="keywordflow">if</span>($(<span class="keyword">this</span>).find(<span class="stringliteral">&#39;embed&#39;</span>).size()&gt;0) <span class="keywordflow">return</span> <span class="keyword">true</span>;
                 <span class="keywordflow">else</span> <span class="keywordflow">return</span> <span class="keyword">false</span>;
     }
@@ -231,7 +250,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
       </table>
 </div>
 <div class="memdoc">
-<b>Инициализатор</b><div class="fragment"><pre class="fragment"> function(){
+<b>Инициализатор</b><div class="fragment"><pre class="fragment"> <span class="keyword">function</span>(){
                 var el = $(<span class="keyword">this</span>).children(<span class="stringliteral">&#39;div&#39;</span>).children(<span class="stringliteral">&#39;:first-child&#39;</span>);
                 <span class="keywordflow">if</span>($(el).attr(<span class="stringliteral">&#39;name&#39;</span>)==<span class="stringliteral">&#39;img&#39;</span> &amp;&amp; $(<span class="keyword">this</span>).children(<span class="stringliteral">&#39;div&#39;</span>).attr(<span class="charliteral">&#39;t&#39;</span>)== undefined) <span class="keywordflow">return</span> <span class="keyword">true</span>;
                 <span class="keywordflow">else</span> <span class="keywordflow">return</span> <span class="keyword">false</span>;
@@ -252,13 +271,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
       </table>
 </div>
 <div class="memdoc">
-<b>Инициализатор</b><div class="fragment"><pre class="fragment"> function () {
-            $(<span class="keyword">this</span>).children(<span class="stringliteral">&#39;div[id ^=&#39;</span> + $.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.idContainer + <span class="charliteral">&#39;]&#39;</span>).each(function () {
+<b>Инициализатор</b><div class="fragment"><pre class="fragment"> <span class="keyword">function</span> () {
+            $(<span class="keyword">this</span>).children(<span class="stringliteral">&#39;div[id ^=&#39;</span> + $.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.idContainer + <span class="charliteral">&#39;]&#39;</span>).each(<span class="keyword">function</span> () {
             $(<span class="keyword">this</span>).height($(<span class="keyword">this</span>).parent().height() - 5);
             $(<span class="keyword">this</span>).width($(<span class="keyword">this</span>).parent().width() - 5);
             var Cont = $(<span class="keyword">this</span>)
 
-                    $(Cont).children(<span class="charliteral">&#39;.&#39;</span>+$.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.classMediaCont).height(function(){
+                    $(Cont).children(<span class="charliteral">&#39;.&#39;</span>+$.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.classMediaCont).height(<span class="keyword">function</span>(){
                         <span class="keywordflow">return</span> $(Cont).height()-$(<span class="keyword">this</span>).next(<span class="stringliteral">&#39;div[id ^=&#39;</span> + $.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.idControlPanel + <span class="charliteral">&#39;]&#39;</span>).height();
                 });
                 $(Cont).find(<span class="stringliteral">&#39;.logoPlay&#39;</span>).removeAttr(<span class="stringliteral">&#39;style&#39;</span>).css({<span class="stringliteral">&#39;position&#39;</span>:<span class="stringliteral">&#39;relative&#39;</span>, <span class="stringliteral">&#39;top&#39;</span>: ($(Cont).height()- $(Cont).find(<span class="stringliteral">&#39;.logoPlay&#39;</span>).height())/2 });
@@ -282,23 +301,23 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
       </table>
 </div>
 <div class="memdoc">
-<b>Инициализатор</b><div class="fragment"><pre class="fragment"> function () {
-            $(<span class="keyword">this</span>).children(<span class="stringliteral">&#39;div[id ^=&#39;</span> + $.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.idContainer + <span class="charliteral">&#39;]&#39;</span>).each(function () {
+<b>Инициализатор</b><div class="fragment"><pre class="fragment"> <span class="keyword">function</span> () {
+            $(<span class="keyword">this</span>).children(<span class="stringliteral">&#39;div[id ^=&#39;</span> + $.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.idContainer + <span class="charliteral">&#39;]&#39;</span>).each(<span class="keyword">function</span> () {
             $(<span class="keyword">this</span>).height($(<span class="keyword">this</span>).parent().height() - 2);
             $(<span class="keyword">this</span>).width($(<span class="keyword">this</span>).parent().width() - 2);
             var Cont = $(<span class="keyword">this</span>);
 
-        $(Cont).children(<span class="stringliteral">&#39;object, embed, img&#39;</span>).each(function () {
+        $(Cont).children(<span class="stringliteral">&#39;object, embed, img&#39;</span>).each(<span class="keyword">function</span> () {
                 $(<span class="keyword">this</span>).height($(Cont).height() - 1).width($(Cont).width() - 1);
-                $(<span class="keyword">this</span>).children(<span class="stringliteral">&#39;embed&#39;</span>).each(function () {
+                $(<span class="keyword">this</span>).children(<span class="stringliteral">&#39;embed&#39;</span>).each(<span class="keyword">function</span> () {
                 $(<span class="keyword">this</span>).height($(Cont).height() - 1).width($(Cont).width() - 1);
                 });
                 
                 $(Cont).find(<span class="stringliteral">&#39;.logoPlay&#39;</span>).removeAttr(<span class="stringliteral">&#39;style&#39;</span>).css({<span class="stringliteral">&#39;position&#39;</span>:<span class="stringliteral">&#39;relative&#39;</span>, <span class="stringliteral">&#39;top&#39;</span>: ($(Cont).find(<span class="stringliteral">&#39;.logoPlay&#39;</span>).parent().height()- $(Cont).find(<span class="stringliteral">&#39;.logoPlay&#39;</span>).height())/2 });
                 
-        }).end().children(<span class="charliteral">&#39;.&#39;</span>+$.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.classMediaCont).height(function(){
+        }).end().children(<span class="charliteral">&#39;.&#39;</span>+$.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.classMediaCont).height(<span class="keyword">function</span>(){
                 <span class="keywordflow">return</span> $(Cont).height()-$(<span class="keyword">this</span>).next(<span class="stringliteral">&#39;div[id ^=&#39;</span> + $.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.idControlPanel + <span class="charliteral">&#39;]&#39;</span>).height();
-        }).children(<span class="stringliteral">&#39;video, audio&#39;</span>).each(function () { 
+        }).children(<span class="stringliteral">&#39;video, audio&#39;</span>).each(<span class="keyword">function</span> () { 
                 $(<span class="keyword">this</span>).height($(Cont).height() - $(<span class="keyword">this</span>).parent().next(<span class="stringliteral">&#39;div[id ^=&#39;</span> + $.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.idControlPanel + <span class="charliteral">&#39;]&#39;</span>).height() - 7).width($(Cont).width() - 6);
                 });
         });
@@ -320,7 +339,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
       </table>
 </div>
 <div class="memdoc">
-<b>Инициализатор</b><div class="fragment"><pre class="fragment"> function(imageSource){
+<b>Инициализатор</b><div class="fragment"><pre class="fragment"> <span class="keyword">function</span>(imageSource){
                 var pl =  $(<span class="keyword">this</span>).children(<span class="stringliteral">&#39;[id ^=&#39;</span> + $.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.idContainer + <span class="charliteral">&#39;]&#39;</span>);
                         $(pl).removeAttr(<span class="charliteral">&#39;t&#39;</span>,<span class="charliteral">&#39;s&#39;</span>).unbind(<span class="stringliteral">&#39;click&#39;</span>);
                 
@@ -330,7 +349,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
         }
 </pre></div>
 <p>Смена src изображения </p>
-<dl><dt><b>Аргументы:</b></dt><dd>
+<dl class="params"><dt><b>Аргументы:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">imageSource</td><td>- src картинки </td></tr>
   </table>
@@ -350,19 +369,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
       </table>
 </div>
 <div class="memdoc">
-<b>Инициализатор</b><div class="fragment"><pre class="fragment"> function(Sizes) {
+<b>Инициализатор</b><div class="fragment"><pre class="fragment"> <span class="keyword">function</span>(Sizes) {
 
-            $(<span class="keyword">this</span>).children(<span class="stringliteral">&#39;div[id ^=&#39;</span> + $.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.idContainer + <span class="charliteral">&#39;]&#39;</span>).each(function () {
+            $(<span class="keyword">this</span>).children(<span class="stringliteral">&#39;div[id ^=&#39;</span> + $.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.idContainer + <span class="charliteral">&#39;]&#39;</span>).each(<span class="keyword">function</span> () {
             $(<span class="keyword">this</span>).height(Sizes.height);
             $(<span class="keyword">this</span>).width(Sizes.width);
             var Cont = $(<span class="keyword">this</span>);
 
-            $(Cont).children(<span class="stringliteral">&#39;object, embed, img&#39;</span>).each(function () {
+            $(Cont).children(<span class="stringliteral">&#39;object, embed, img&#39;</span>).each(<span class="keyword">function</span> () {
                 $(<span class="keyword">this</span>).height(Sizes.height).width(Sizes.width);
-                $(<span class="keyword">this</span>).children(<span class="stringliteral">&#39;embed&#39;</span>).each(function () {
+                $(<span class="keyword">this</span>).children(<span class="stringliteral">&#39;embed&#39;</span>).each(<span class="keyword">function</span> () {
                 $(<span class="keyword">this</span>).height(Sizes.height).width(Sizes.width);
                 });
-        }).end().children(<span class="charliteral">&#39;.&#39;</span>+$.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.classMediaCont).children(<span class="stringliteral">&#39;video, audio&#39;</span>).each(function () { 
+        }).end().children(<span class="charliteral">&#39;.&#39;</span>+$.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.classMediaCont).children(<span class="stringliteral">&#39;video, audio&#39;</span>).each(<span class="keyword">function</span> () { 
                 $(<span class="keyword">this</span>).height(Sizes.height - $(<span class="keyword">this</span>).next(<span class="stringliteral">&#39;div[id ^=&#39;</span> + $.aplayer.idControlPanel + <span class="charliteral">&#39;]&#39;</span>).height() - 7).width(Sizes.width - 6);
                 });
         });
@@ -370,7 +389,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
     }
 </pre></div>
 <p>Установка размеров плеера </p>
-<dl><dt><b>Аргументы:</b></dt><dd>
+<dl class="params"><dt><b>Аргументы:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">Sizes</td><td>- объект {'height': val, 'width': val } </td></tr>
   </table>
@@ -390,17 +409,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
       </table>
 </div>
 <div class="memdoc">
-<b>Инициализатор</b><div class="fragment"><pre class="fragment"> function(Sizes) {
+<b>Инициализатор</b><div class="fragment"><pre class="fragment"> <span class="keyword">function</span>(Sizes) {
         var Owner = <span class="keyword">this</span>;
-            $(<span class="keyword">this</span>).children(<span class="stringliteral">&#39;[id ^=&#39;</span> + $.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.idContainer + <span class="charliteral">&#39;]&#39;</span>).each(function () {
+            $(<span class="keyword">this</span>).children(<span class="stringliteral">&#39;[id ^=&#39;</span> + $.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.idContainer + <span class="charliteral">&#39;]&#39;</span>).each(<span class="keyword">function</span> () {
             var Cont = $(<span class="keyword">this</span>);
             var H = $(Cont).height();
                 var W = $(Cont).width();
-            $(Cont).children(<span class="stringliteral">&#39;video, audio, object, embed, img, .&#39;</span>+$.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.classMediaCont).each(function () {
+            $(Cont).children(<span class="stringliteral">&#39;video, audio, object, embed, img, .&#39;</span>+$.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.classMediaCont).each(<span class="keyword">function</span> () {
                    <span class="keywordflow">if</span>(!( $(<span class="keyword">this</span>).hasClass($.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.classMediaCont))) {
                         $(<span class="keyword">this</span>).height(Sizes.height).width(Sizes.width);
                    }
-                       $(<span class="keyword">this</span>).children(<span class="stringliteral">&#39;video, audio, embed&#39;</span>).each(function () {
+                       $(<span class="keyword">this</span>).children(<span class="stringliteral">&#39;video, audio, embed&#39;</span>).each(<span class="keyword">function</span> () {
                                 $(<span class="keyword">this</span>).height(Sizes.height).width(Sizes.width);
                        });
             });
@@ -410,7 +429,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
     }
 </pre></div>
 <p>Изменение размеров медиаэлемента только </p>
-<dl><dt><b>Аргументы:</b></dt><dd>
+<dl class="params"><dt><b>Аргументы:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">Sizes</td><td>- объект {'height': val, 'width': val } </td></tr>
   </table>
@@ -430,7 +449,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
       </table>
 </div>
 <div class="memdoc">
-<b>Инициализатор</b><div class="fragment"><pre class="fragment"> function(){
+<b>Инициализатор</b><div class="fragment"><pre class="fragment"> <span class="keyword">function</span>(){
                 $(<span class="keyword">this</span>).children(<span class="stringliteral">&#39;[id ^=&#39;</span> + $.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.idContainer + <span class="charliteral">&#39;]&#39;</span>).children(<span class="stringliteral">&#39;:first-child&#39;</span>).removeAttr(<span class="stringliteral">&#39;height&#39;</span>).removeAttr(<span class="stringliteral">&#39;width&#39;</span>).css({<span class="stringliteral">&#39;height&#39;</span>:<span class="stringliteral">&#39;&#39;</span>, <span class="stringliteral">&#39;width&#39;</span>:<span class="stringliteral">&#39;&#39;</span> });
                 <span class="keywordflow">return</span> <span class="keyword">this</span>;
         }
@@ -450,7 +469,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
       </table>
 </div>
 <div class="memdoc">
-<b>Инициализатор</b><div class="fragment"><pre class="fragment"> function(){
+<b>Инициализатор</b><div class="fragment"><pre class="fragment"> <span class="keyword">function</span>(){
                 $(<span class="keyword">this</span>).children(<span class="stringliteral">&#39;[id^=&#39;</span>+$.<a class="code" href="jquery_8aplayer_8js.html#a0a9d7909754794761c96d54b214397a8" title="Объект, инкапсулирующий свойства и методы плеера">aplayer</a>.idContainer+<span class="charliteral">&#39;]&#39;</span>).show();
     }
 </pre></div>
@@ -458,7 +477,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 
 </div>
 </div>
-</div>
+</div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -473,8 +492,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Документация по AvregSite. Последние изменения: Чт 24 Май 2012 13:23:13. Создано системой&#160;
-<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
+
+
+<hr class="footer"/><address class="footer"><small>
+Документация по AvregSite. Последние изменения: Чт 7 Июн 2012 10:35:03. Создано системой &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.7.6.1
+</small></address>
+
 </body>
 </html>

@@ -135,8 +135,10 @@ if ( !isset($mon_nr) || $mon_nr =='')
       	 'PrintCamNames' => $row['PRINT_CAM_NAME'],
       	 'AspectRatio' => $row['PROPORTION'],
       	 'isDefault' => $row['IS_DEFAULT'],
-         'wins' => array ($row['WIN1'],  $row['WIN2'],  $row['WIN3'],  $row['WIN4'], $row['WIN5'],  $row['WIN6'],  $row['WIN7'],  $row['WIN8'], $row['WIN9'],  $row['WIN10'], $row['WIN11'], $row['WIN12'], $row['WIN13'], $row['WIN14'], $row['WIN15'], $row['WIN16'], $row['WIN17'],  $row['WIN18'], $row['WIN19'], $row['WIN20'], $row['WIN21'], $row['WIN22'], $row['WIN23'], $row['WIN24'], $row['WIN25']),
+         'wins' => json_decode($row['WINS'], true) ,
+      		
       );
+
    }
    
    //Создание перечня готовых раскладок
@@ -150,6 +152,7 @@ if ( !isset($mon_nr) || $mon_nr =='')
    	print '<div> &nbsp;'.$no_any_layout."</div>\n";
    }
    
+   
    //Вывод готовых раскладок
    foreach ($LD as $mon_nr=>$res_val){
 	print "<div style=\"border: 1px solid black; padding: 5px; height:290px; width: 260px; text-align:center; float:left; margin:10px; \">\n";
@@ -157,7 +160,14 @@ if ( !isset($mon_nr) || $mon_nr =='')
 	//левый монитор (правый вообще не используем)
     	prt_l('L', $mon_nr, $LD[$mon_nr], $admin_user, $layout_word, $counter, $LD[$mon_nr]['AspectRatio'], $LD[$mon_nr]['PrintCamNames'], $LD[$mon_nr]['isDefault']);
         print '<div class=\'camlayout\' >'; 
-        layout2table ( $LD[$mon_nr]['layout_type'], 160, $LD[$mon_nr]['wins'] ); 
+
+        //преобразование массива камер
+        $cams_array = array();
+        foreach ($LD[$mon_nr]['wins'] as $key=>$val){
+        	$cams_array[$key] = $val[0];
+        }
+        
+        layout2table ( $LD[$mon_nr]['layout_type'], 160 , $cams_array); 
         
         print '</div>'. "\n";
         if ( $admin_user ) {

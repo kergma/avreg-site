@@ -1,7 +1,8 @@
 <?php
 /**
  * @file lang/russian/utf-8/params.inc.php
- * @brief Перевод с параметром
+ * @brief Содержит элементы и папаметры ренерации страниц администраторских настроек
+ * камер и т.п. 
  */
 
 
@@ -1300,6 +1301,7 @@ array(
    'mstatus' => 1,
 ),
 
+//'cats'    => '15.2' -> настройка сетевых камер
 array(
    'name'    => 'wc_maxrate',
    'type'    => $INT_VAL,
@@ -1321,6 +1323,58 @@ array(
    'subcats' => NULL,
    'mstatus' => 1,
 ),
+
+//Алтернативные адреса веб-камер
+array(
+   'name'    => 'fs_url_alt_1',
+   'type'    => $STRING_URL_VAL,
+   'def_val' => "",
+   'desc'    => '<b>Алтернативный источник № 1 для полноэкранного отображения <br /> </b>  ',
+   'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
+   'cats'    => '15.2',
+   'subcats' => NULL,
+   'mstatus' => 1,
+),
+
+
+array(
+   'name'    => 'cell_url_alt_1',
+   'type'    => $STRING_URL_VAL,
+   'def_val' => "",
+   'desc'    => '<b>Алтернативный источник № 1 для отображения в ячейке раскладки <br /> </b>  ',
+   'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
+   'cats'    => '15.2',
+   'subcats' => NULL,
+   'mstatus' => 1,
+),
+
+
+array(
+   'name'    => 'fs_url_alt_2',
+   'type'    => $STRING_URL_VAL,
+   'def_val' => "",
+   'desc'    => '<b>Алтернативный источник № 2 для полноэкранного отображения <br /> </b>  ',
+   'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
+   'cats'    => '15.2',
+   'subcats' => NULL,
+   'mstatus' => 1,
+),
+
+
+array(
+   'name'    => 'cell_url_alt_2',
+   'type'    => $STRING_URL_VAL,
+   'def_val' => "",
+   'desc'    => '<b>Алтернативный источник № 2 для отображения в ячейке раскладки <br /> </b>  ',
+   'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM ,
+   'cats'    => '15.2',
+   'subcats' => NULL,
+   'mstatus' => 1,
+),
+
+
+
+
 
 
 /* EVENTS */

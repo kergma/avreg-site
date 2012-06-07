@@ -1070,7 +1070,7 @@ function getSelectHtml($_name, $value_array, $_multiple=FALSE , $_size = 1, $sta
 
 function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
    $_size = 1, $start_val=0, $selected='',
-   $first_empty=TRUE, $onch=FALSE, $text_prefix = '',$TITLE=NULL)
+   $first_empty=TRUE, $onch=FALSE, $text_prefix = '',$TITLE=NULL, $cams_srcs=null)
 {
    if ($_multiple) {$m = 'multiple="multiple"';} else {$m = '';}
       if ($onch===TRUE)
@@ -1091,41 +1091,109 @@ function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
       $_title,
       $onch);
 
-   if ($first_empty) $a .= '<option></option>'."\n";
+   
+   if ($first_empty) $a .= '<option> </option>'."\n";
    $_cnt = $start_val;
-   foreach ($value_array as $_element)
-   {
-      if ( $selected != '' )
-      {
-         if ($_multiple)
-         {
-            $_y = FALSE;
-            $ar = explode(',', $selected);
-            foreach ($ar as $sss)
-            {
-               if ($_cnt == $sss)
-               {
-                  $_y = TRUE;
-                  break;
-               }
-            }
-            if ($_y)
-               $a .= '<option value="'.$_element.'" selected>'.$text_prefix.$_element.'</option>'."\n";
-            else
-               $a .= '<option value="'.$_element.'">'.$text_prefix.$_element.'</option>'."\n";
-         } else {
-            /* not multiple */
-            if ($_element == $selected)
-               $a .= '<option value="'.$_element.'" selected>'.$text_prefix.$_element.'</option>'."\n";
-            else
-               $a .= '<option value="'.$_element.'">'.$text_prefix.$_element.'</option>'."\n";
-         }
-      } else {  // not selected
-         $a .= '<option value="'.$_element.'">'.$text_prefix.$_element.'</option>'."\n";
-      }
-      $_cnt++;
+   
+   //Если для веб-раскладок => $cams_srcs - содержит алтернативные источники  
+	if($cams_srcs!=null){
+		
+//		print('<pre><code>');print_r($cams_srcs);print('</code></pre>');
+		
+		
+		foreach ($value_array as $_element)
+		{
+			$set_src_type = 0;
+			if ( $selected != null )
+			{
+				if ($_multiple)
+				{
+					$_y = FALSE;
+					$ar = explode(',', $selected[0]);
+					foreach ($ar as $sss)
+					{
+						if ($_cnt == $sss)
+						{
+							$_y = TRUE;
+							break;
+						}
+					}
+					if ($_y)
+					$a .= '<option value="'.$_element.'" selected>'.$text_prefix.$_element.'</option>'."\n";
+					else
+					$a .= '<option value="'.$_element.'">'.$text_prefix.$_element.'</option>'."\n";
+				} else {
+					/* not multiple */
+					if ($_element == $selected[0]){
+						$a .= '<option value="'.$_element.'" selected>'.$text_prefix.$_element.'</option>'."\n";
+					}else{
+						$a .= '<option value="'.$_element.'">'.$text_prefix.$_element.'</option>'."\n";
+					}
+				}
+			} else {  // not selected
+				$a .= '<option value="'.$_element.'">'.$text_prefix.$_element.'</option>'."\n";
+			}
+			$_cnt++;
+		}
+		$a .= '</select>'."\n";
+		
+		
+		$set_src_type = ($selected[1]!=null? $selected[1]: 0);
+		$visi_val = $set_src_type!=0? 'visible':'hidden';
+	
+		
+		// $cams_srcs
+//		print('<pre><code>');print_r($cams_srcs[$set_src_type]['avregd'] );print('</code></pre>');
+		
+		//Добавление типа источника камеры для веб-раскладок
+		$a .='<br /><select class="mon_wins_type" name="mon_wins_type[]" size="'.$_size.'" '.$_title.' style="font-size:8pt; visibility:'.$visi_val.';" >'."\n";
+
+		
+		
+//		$a .='<option '.($set_src_type==0?'selected="selected"':'').' value="0"> </option>'."\n";
+	 	if($cams_srcs[$selected[0]]['avregd']=='true') $a .='<option '.($set_src_type==1?'selected="selected"':'').' value="1">avregd</option>'."\n";
+		if($cams_srcs[$selected[0]]['alt_1']=='true') $a .='<option '.($set_src_type==2?'selected="selected"':'').' value="2">alt 1</option>'."\n";
+		if($cams_srcs[$selected[0]]['alt_2']=='true') $a .='<option '.($set_src_type==3?'selected="selected"':'').' value="3">alt 2</option>'."\n";
+		$a .='</select>'."\n";
+	
+	
+	}else {
+		
+	   foreach ($value_array as $_element)
+	   {
+	      if ( $selected != '' )
+	      {
+	         if ($_multiple)
+	         {
+	            $_y = FALSE;
+	            $ar = explode(',', $selected);
+	            foreach ($ar as $sss)
+	            {
+	               if ($_cnt == $sss)
+	               {
+	                  $_y = TRUE;
+	                  break;
+	               }
+	            }
+	            if ($_y)
+	               $a .= '<option value="'.$_element.'" selected>'.$text_prefix.$_element.'</option>'."\n";
+	            else
+	               $a .= '<option value="'.$_element.'">'.$text_prefix.$_element.'</option>'."\n";
+	         } else {
+	            /* not multiple */
+	            if ($_element == $selected)
+	               $a .= '<option value="'.$_element.'" selected>'.$text_prefix.$_element.'</option>'."\n";
+	            else
+	               $a .= '<option value="'.$_element.'">'.$text_prefix.$_element.'</option>'."\n";
+	         }
+	      } else {  // not selected
+	         $a .= '<option value="'.$_element.'">'.$text_prefix.$_element.'</option>'."\n";
+	      }
+	      $_cnt++;
+	   }
+	   $a .= '</select>'."\n";
    }
-   $a .= '</select>'."\n";
+   
    return $a;
 }
 /**
