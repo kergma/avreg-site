@@ -120,13 +120,8 @@ if ( !isset($mon_nr) || $mon_nr =='')
     $result = $adb->web_get_monitors(); 
     
    $LD = array();
-   $RD = array();
    foreach ( $result as $row)	{
-      if ( $row['DISPLAY'] == 'R' )
-         $D = &$RD;
-      else
-         $D = &$LD;
-      $D[(int)$row['MON_NR']] = 	array(
+      $LD[(int)$row['MON_NR']] = 	array(
          'layout_type' => $row['MON_TYPE'],
          'layout_name' => $row['SHORT_NAME'],
          'CHANGE_TIME' => $row['CHANGE_TIME'],
@@ -136,7 +131,6 @@ if ( !isset($mon_nr) || $mon_nr =='')
       	 'AspectRatio' => $row['PROPORTION'],
       	 'isDefault' => $row['IS_DEFAULT'],
          'wins' => json_decode($row['WINS'], true) ,
-      		
       );
 
    }
@@ -155,7 +149,7 @@ if ( !isset($mon_nr) || $mon_nr =='')
    
    //Вывод готовых раскладок
    foreach ($LD as $mon_nr=>$res_val){
-	print "<div style=\"border: 1px solid black; padding: 5px; height:290px; width: 260px; text-align:center; float:left; margin:10px; \">\n";
+	print "<div style=\"border: 1px solid black; padding: 5px; height:290px; width: 290px; text-align:center; float:left; margin:10px; \">\n";
     if ( array_key_exists ( $mon_nr, $LD ) ) {
 	//левый монитор (правый вообще не используем)
     	prt_l('L', $mon_nr, $LD[$mon_nr], $admin_user, $layout_word, $counter, $LD[$mon_nr]['AspectRatio'], $LD[$mon_nr]['PrintCamNames'], $LD[$mon_nr]['isDefault']);

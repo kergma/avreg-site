@@ -37,17 +37,14 @@ function reset_to_list()
 
 echo '<h1>' . sprintf($web_r_mons,$named,$sip) . '</h1>' ."\n";
 
-if ( !isset($mon_nr) || $mon_nr =='' || empty($display) )
-	die('empty $mon_nr and/or $display');
+if ( !isset($mon_nr) || $mon_nr =='')
+	die('empty $mon_nr');
 
 if (!settype($mon_nr,'int'))
 	die('$mon_nr is\'t integer value');
 	
 if ($mon_nr < 0 )
 	die('Error: $mon_nr < 0');
-
-if ( !($display == 'L' || $display == 'R') )
-	die('$display must be L or R char');
 
 if ( isset($cmd) ) {
 	if ( empty($mon_type) ) {
@@ -64,7 +61,7 @@ if ( isset($cmd) ) {
 			$wins_array = &$active_pipes;
 			
 			if ( count($wins_array) > 0 ) {
-				print '<p class="HiLiteBigWarn">' . sprintf ($fmtMonAddInfo,$mon_type, $mon_nr, $mon_name, $display=='R'?$sRightDisplay1:$sLeftDisplay1) . '</p>' ."\n";
+				print '<p class="HiLiteBigWarn">' . sprintf ($fmtMonAddInfo,$mon_type, $mon_nr, $mon_name ) . '</p>' ."\n";
 				print '<p class="HiLiteBigWarn">' . $strMonAddInfo2 . '</p>' ."\n";
 
 				//формирование массива альтернативных источников видео
@@ -88,7 +85,6 @@ if ( isset($cmd) ) {
 				
 				print '<input type="hidden" name="cmd" value="_ADD_NEW_MON_OK_">'."\n";
 				print '<input type="hidden" name="mon_nr" value="'.$mon_nr.'">'."\n";
-				print '<input type="hidden" name="display" value="'.$display.'">'."\n";
 				print '<input type="hidden" name="mon_name" value="'.$mon_name.'">'."\n";
 				print '<input type="hidden" name="mon_type" value="'.$mon_type.'">'."\n";
 
@@ -136,7 +132,7 @@ if ( isset($cmd) ) {
 			if ( $allWINS!='') {
                 $PrintCamNames = ($PrintCamNames!=null)? 1 : 0;
                 
-				$adb->web_add_monitors($display,$mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $allWINS);
+				$adb->web_add_monitors($mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $allWINS);
 
 				print "Ok!\n'";
 				print '<script type="text/javascript" language="javascript">reset_to_list();</script>'."\n";
@@ -150,7 +146,7 @@ if ( isset($cmd) ) {
 	} // switch
 } else {
 
-	echo '<h2>' . sprintf($web_mon_addnew, $counter, $display=='R'?$sRightDisplay1:$sLeftDisplay1) . '</h2>' ."\n";
+	echo '<h2>' . sprintf($web_mon_addnew, $counter) . '</h2>' ."\n";
 
 	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
 	print $strNamed.': <input type="text" name="mon_name" size=16 maxlength=16 value="">'."\n";
@@ -179,7 +175,6 @@ if ( isset($cmd) ) {
    }
    print '</table>'."\n";
 	print '<input type="hidden" name="cmd" value="_ADD_NEW_MON_">'."\n";
-	print '<input type="hidden" name="display" value="'.$display.'">'."\n";
 	print '<input type="hidden" name="mon_nr" value="'.$mon_nr.'">'."\n";
 	print '<input type="submit" name="btn" value="'.$l_mon_addnew.'">'."\n";
 	print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="reset_to_list();">'."\n";

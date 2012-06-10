@@ -37,8 +37,8 @@ require ('./mon-type.inc.php');
 
 echo '<h1>' . sprintf($web_r_mons,$named,$sip) . '</h1>' ."\n";
 
-if ( !isset($mon_nr) || $mon_nr =='' || empty($display) )
-   die('empty $mon_nr and/or $display');
+if ( !isset($mon_nr) || $mon_nr =='')
+   die('empty $mon_nr');
 
 if (!settype($mon_nr,'int'))
    die('$mon_nr is\'t integer value');
@@ -46,10 +46,7 @@ if (!settype($mon_nr,'int'))
 if ($mon_nr < 0 )
    die('$mon_nr < 0');
 
-if ( !($display == 'L' || $display == 'R') )
-   die('$display must be L or R char');
-
-echo '<h2>' . sprintf($r_mon_tune, $counter, $mon_name, $display=='R'?$sRightDisplay1:$sLeftDisplay1) . '</h2>' ."\n";
+echo '<h2>' . sprintf($r_mon_tune, $counter, $mon_name ) . '</h2>' ."\n";
 
 if (isset($cmd)) {
    switch ( $cmd )	{
@@ -77,9 +74,9 @@ if (isset($cmd)) {
       if ( $allWINS!='' )	{
       	$PrintCamNames = ($PrintCamNames!=null)? 1 : 0;
 
-      	$adb->web_replace_monitors( $display, $mon_nr, $mon_type, $mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $allWINS );
+      	$adb->web_replace_monitors($mon_nr, $mon_type, $mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $allWINS );
          
-         print '<p class="HiLiteBigWarn">' . sprintf($web_r_mon_changed, $counter, empty($mon_name)?$mon_type:$mon_name, $display=='R'?$sRightDisplay1:$sLeftDisplay1) . '</p>'."\n";
+         print '<p class="HiLiteBigWarn">' . sprintf($web_r_mon_changed, $counter, empty($mon_name)?$mon_type:$mon_name ) . '</p>'."\n";
          print '<center><a href="'.$conf['prefix'].'/admin/web_mon_list.php" target="_self">'.$r_mon_goto_list.'</a></center>'."\n";
       } else {
          print '<p class="HiLiteBigErr">' . $strNotChoiceCam . '</p>' ."\n";
@@ -100,7 +97,7 @@ if (isset($cmd)) {
       exit;
    } else {
       $aaa = array();
-      $row = $adb->web_get_monitor($display, $mon_nr);
+      $row = $adb->web_get_monitor($mon_nr);
       $wins_cams = json_decode($row[4], true);
       
       //формирование массива альтернативных источников видео
@@ -128,19 +125,18 @@ if (isset($cmd)) {
       print '&nbsp;&nbsp;&nbsp;'.$strName.': <input type="text" name="mon_name" size=16 maxlength=16 value="'.$mon_name.'">'."\n";
       layout2table ( $mon_type, ($mon_type == 'QUAD_25_25')? 400:300, $aaa);
       print '<input type="hidden" name="cmd" value="_ADD_NEW_MON_OK_">'."\n";
-      print '<input type="hidden" name="display" value="'.$display.'">'."\n";
       print '<input type="hidden" name="mon_nr" value="'.$mon_nr.'">'."\n";
       print '<input type="hidden" name="counter" value="'.$counter.'">'."\n";
       print '<input type="hidden" name="mon_type" value="'.$mon_type.'">'."\n";
       
       require_once ('../lang/russian/utf-8/_online.php');
       //Селектор сохранять пропорции/ на весь экран
-      $AspectRatio = $row[9];
+      $AspectRatio =trim($row[9]);
       print '<br /><div><div style="float:left;" >'.$strAspectRatio.":&nbsp;&nbsp;</div> \n";
       print '<div >'.getSelectByAssocAr('AspectRatio', $AspectRatioArray, false , 1, 1, $AspectRatio, false)."</div></div>\n";
       
       //Выводить имена камер
-      $PrintCamNames = ($row[8]==1 || $row[8]=="t")? 'checked':'unchecked' ;
+      $PrintCamNames = ($row[8]==1)? 'checked':'unchecked' ;
       print '<br /><div><div style="float:left;" >'.$strPrintCamNames.":&nbsp;&nbsp;</div>\n";
       print '<div><input type="checkbox" name="PrintCamNames" '.$PrintCamNames.' />'."</div></div>\n";
 

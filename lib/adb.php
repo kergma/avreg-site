@@ -687,7 +687,6 @@ class Adb {
    /**
    *
    * Метод позволяет добавить раскладку для WEB
-   * @param string $display
    * @param int $mon_nr
    * @param string $mon_type
    * @param string $mon_name
@@ -697,9 +696,17 @@ class Adb {
    * @param array $vWINS
    * @param string $bind_mac
    */
-   public function web_add_monitors($display,$mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $allWINS, $bind_mac = 'local') {
-   	$query = sprintf('INSERT INTO WEB_LAYOUTS (BIND_MAC, DISPLAY, MON_NR, MON_TYPE, SHORT_NAME, PRINT_CAM_NAME , PROPORTION, WINS, CHANGE_HOST, CHANGE_USER) VALUES (\'local\', \'%s\', %d, \'%s\', \'%s\', %s, \'%s\', \'%s\', \'%s\', \'%s\')',
-   	$display, $mon_nr, $mon_type, $mon_name, $PrintCamNames , $AspectRatio , $allWINS , $remote_addr, $login_user);
+   public function web_add_monitors($mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $allWINS, $bind_mac = 'local') {
+   	$mon_type =trim($mon_type);
+   	$mon_name = trim($mon_name);
+   	$remote_addr = trim($remote_addr);
+   	$login_user = trim($login_user);
+   	$AspectRatio = trim($AspectRatio);
+   	$allWINS = trim($allWINS);
+   	$bind_mac = trim($bind_mac);
+   	
+   	$query = sprintf('INSERT INTO WEB_LAYOUTS (BIND_MAC, MON_NR, MON_TYPE, SHORT_NAME, PRINT_CAM_NAME , PROPORTION, WINS, CHANGE_HOST, CHANGE_USER) VALUES (\'local\', %d, \'%s\', \'%s\', %s, \'%s\', \'%s\', \'%s\', \'%s\')',
+   	$mon_nr, $mon_type, $mon_name, $PrintCamNames , $AspectRatio , $allWINS , $remote_addr, $login_user);
    	$res = $this->_db->query($query);
    	$this->_error($res);
    }
@@ -785,7 +792,7 @@ class Adb {
  * @param array $vWINS
  * @param string $bind_mac
  */
-   public function web_update_monitors($display,$mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $allWINS,  $bind_mac = 'local') {
+   public function web_update_monitors($mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $allWINS,  $bind_mac = 'local') {
    	  $query = 'UPDATE WEB_LAYOUTS SET ';
       $query .= "MON_TYPE = '$mon_type'";
       $query .= ", SHORT_NAME = '$mon_name'";
@@ -795,37 +802,11 @@ class Adb {
       $query .= ", PROPORTION = '$AspectRatio'";
       $query .= ", WINS = '$allWINS'";
       $query .= " WHERE BIND_MAC ='$bind_mac'";
-      $query .= " AND DISPLAY ='$display'";
       $query .= " AND MON_NR = $mon_nr";		
 
       $res = $this->_db->query($query);
       $this->_error($res);
    }
-   
-   /**
-    * 
-    * Обнуляет все значения WINS для целевой раскладки
-    * @param unknown_type $display
-    * @param unknown_type $mon_nr
-    * @param unknown_type $bind_mac
-    */
-   public function web_clear_wins($display,$mon_nr, $bind_mac) {
-   
-   	$wins_ttl = 32;
-   	$query = 'UPDATE WEB_LAYOUTS SET ';
-   
-   	for ($i = 1; $i <= $wins_ttl; $i++) {
-   		$query=$query."WIN".$i."='NULL'";
-   		if($i!=$wins_ttl) $query=$query.", ";
-   	}
-   	$query .= " WHERE BIND_MAC ='$bind_mac'";
-   	$query .= " AND DISPLAY ='$display'";
-   	$query .= " AND MON_NR = $mon_nr";
-   
-   	$res = $this->_db->query($query);
-   	$this->_error($res);
-   }
-
    
    /**
    *
@@ -890,21 +871,27 @@ class Adb {
    * @param array $vWINS
    * @param string $bind_mac
    */
-   public function web_replace_monitors ($display,$mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $allWINS, $bind_mac = 'local') {
+   public function web_replace_monitors ($mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $allWINS, $bind_mac = 'local') {
    	
-   	//$PrintCamNames, $AspectRatio,
+   	$mon_type = trim($mon_type);
+   	$mon_name = trim($mon_name);
+   	$host = trim($host);
+   	$user = trim($user);
+   	$AspectRatio = trim($AspectRatio);
+   	$allWINS = trim($allWINS);
+   	$bind_mac= trim($bind_mac);
    	
    	$query = 'SELECT * FROM WEB_LAYOUTS ';
    	$query .= " WHERE BIND_MAC = '$bind_mac'";
    	$query .= " AND MON_NR = $mon_nr";
-   	$query .= " AND DISPLAY = '$display'";
+
    	$res = $this->_db->query($query);
    	$this->_error($res);
    	$res->fetchInto($line);
    	if (empty($line))
-   	$this->web_add_monitors($display,$mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $allWINS);
+   	$this->web_add_monitors($mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $allWINS);
    	else
-   	$this->web_update_monitors($display,$mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $allWINS);
+   	$this->web_update_monitors( $mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $allWINS);
    }
    
    
@@ -932,17 +919,16 @@ class Adb {
    /**
  * 
  * Метод позволяет получить параметры раскладки для WEB
- * @param string $display
  * @param int $mon_nr
  * @param string $bind_mac
  * @return array параметры
  */
-   public function web_get_monitor($display, $mon_nr, $bind_mac = 'local') {
+   public function web_get_monitor($mon_nr, $bind_mac = 'local') {
    	
       $query = 'SELECT MON_NR, MON_TYPE, SHORT_NAME, IS_DEFAULT, WINS,' .
          'CHANGE_HOST, CHANGE_USER, CHANGE_TIME, PRINT_CAM_NAME, PROPORTION '.
          'FROM WEB_LAYOUTS '.
-         'WHERE BIND_MAC=\''.$bind_mac.'\' AND DISPLAY=\''.$display.'\' AND MON_NR='.$mon_nr;
+         'WHERE BIND_MAC=\''.$bind_mac.'\' AND MON_NR='.$mon_nr;
       
       $res = $this->_db->query($query);
       $this->_error($res);
