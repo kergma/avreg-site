@@ -1327,7 +1327,7 @@ array(
 //Алтернативные адреса веб-камер
 array(
    'name'    => 'fs_url_alt_1',
-   'type'    => $STRING_URL_VAL,
+   'type'    => isset($STRING_URL_VAL)? $STRING_URL_VAL : '',
    'def_val' => "",
    'desc'    => '<b>Алтернативный источник № 1 для полноэкранного отображения <br /> </b>  ',
    'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
@@ -1339,7 +1339,7 @@ array(
 
 array(
    'name'    => 'cell_url_alt_1',
-   'type'    => $STRING_URL_VAL,
+   'type'    => isset($STRING_URL_VAL)? $STRING_URL_VAL : '',
    'def_val' => "",
    'desc'    => '<b>Алтернативный источник № 1 для отображения в ячейке раскладки <br /> </b>  ',
    'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
@@ -1351,7 +1351,7 @@ array(
 
 array(
    'name'    => 'fs_url_alt_2',
-   'type'    => $STRING_URL_VAL,
+   'type'    => isset($STRING_URL_VAL)? $STRING_URL_VAL : '',
    'def_val' => "",
    'desc'    => '<b>Алтернативный источник № 2 для полноэкранного отображения <br /> </b>  ',
    'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
@@ -1363,7 +1363,7 @@ array(
 
 array(
    'name'    => 'cell_url_alt_2',
-   'type'    => $STRING_URL_VAL,
+   'type'    => isset($STRING_URL_VAL)? $STRING_URL_VAL : '',
    'def_val' => "",
    'desc'    => '<b>Алтернативный источник № 2 для отображения в ячейке раскладки <br /> </b>  ',
    'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM ,
