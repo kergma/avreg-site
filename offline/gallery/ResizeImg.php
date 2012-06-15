@@ -6,6 +6,7 @@
 
 // пробуем открыть файл для чтения
 if (@fopen($id, "r")) {
+
 	
 	$im = imagecreatefromjpeg($id);
 	

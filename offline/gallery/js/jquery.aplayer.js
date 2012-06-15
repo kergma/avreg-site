@@ -1,14 +1,8 @@
-﻿/**
- * @file offline/gallery/js/jquery.aplayer.js
- * @brief Плагин медиаплеер
- * 
- * Устанавливает медиаплеер в заданные элементы
- * пример установки плеера:
- * $('#some_div').addPlayer({'src': media_content_source, 'logoPlay':'true' });	
- * 
- * 
- */
-
+﻿(function ($) { $(function () {
+ 		//Установка плеера в элемент
+//		$('#win_bot_detail').addPlayer({'src':'/avreg/media/cam_02/2010-05/03/00_00_00.jpg'});
+    	//Установка общих параметров
+//		$.aplayer.init({'height':200, 'width':300, 'mediaType':'embed' });
 		//Вывод конфигурации
 //		$.aplayer.config.Show();
 		//Получить информацию о браузере
@@ -16,11 +10,12 @@
 		//Вывод инфо о браузере
 //		$.browserInfo.Show();
 //		$.aplayer.config.Show();
+
 		//Пример глобальной пользовательской настройки
 /*		$.aplayerConfiguration({		
 			'*':{
 				'jpg' :{'*':'image'},
-				'jpeg':{'*':'image'},
+				'jepg':{'*':'image'},
 				'png' :{'*':'image'},
 				'bmp' :{'*':'image'},
 				'gif' :{'*':'image'},
@@ -41,16 +36,25 @@
 			'msie':{}
 		});
 */
-(function ($) { $(function () {
+
 		//Начальная инициализация
 		$.aplayer.init({});
+
 });})(jQuery);
 
-	/**
-	 *Установка плеера в заданные эл-ты html 
-	 * @param settings - settings: src , type , config{} etc.
-	 * @returns this
-	 */
+
+//---------------------------------------------------- Player ------------------------------------
+
+
+(function($){
+	
+	//Метод установки пользовательских настроек
+	$.aplayerConfiguration = function(globalSettings){
+		$.aplayer.init(globalSettings);
+	};
+
+	//Установка плеера в заданные эл-ты html
+	//settings: src , type , config{}
 	$.fn.addPlayer = function(settings){
 				if(settings.src==null)
 				{
@@ -63,29 +67,13 @@
 		return this;
 	};
 
-	/**
-	 * Метод установки пользовательских настроек
-	 * @param globalSettings - объект настроек
-	 */
-	$.aplayerConfiguration = function(globalSettings){
-		$.aplayer.init(globalSettings);
-	};
-	
-	/**
-	 * Закрытие плеера
-	 * @returns this
-	 */
+	//Закрытие плеера
 	$.fn.aplayerClose=function(){
 		$(this).empty();
 		return this;
 	};
 
-	/**
-	 * Смена src изображения
-	 * @param imageSource - src картинки
-	 * @returns this
-	 */
-	
+	//Смена src изображения
 	$.fn.aplayerSetImgSrc = function(imageSource){
 		var pl =  $(this).children('[id ^=' + $.aplayer.idContainer + ']');
 			$(pl).removeAttr('t','s').unbind('click');
@@ -95,21 +83,35 @@
 		return this;
 	};
 
-	/**
-	 * Медиаэлемент использует размеры источника 
-	 * @returns this
-	 */
+
+	//Смена src для motion jpeg
+	$.fn.aplayerSetMjpegSrc = function(mjpegSource){
+		var pl =  $(this).children('[id ^=' + $.aplayer.idContainer + ']');
+		
+		if($.browserInfo.browser == 'msie'){
+			$.aplayer.activeX_arr[$('OBJECT', this).attr('id')].MediaURL = mjpegSource+'&ab='+___abenc;
+		}
+		else{
+			if($('img.'+$.aplayer.classElMedia, this).attr('src')=='#') {
+				$('img.'+$.aplayer.classElMedia, this).attr({'origsrc': mjpegSource});
+			}else{
+				$('img.'+$.aplayer.classElMedia, this).attr({'origsrc': mjpegSource, 'src':mjpegSource });
+			}
+		}
+
+		$.aplayer.draggable(pl);
+		return this;
+	};
+
+	
+	//Медиаэлемент использует размеры источника 
 	$.fn.aplayerSetSrcSizes = function(){
 		$(this).children('[id ^=' + $.aplayer.idContainer + ']').children(':first-child').removeAttr('height').removeAttr('width').css({'height':'', 'width':'' });
 		return this;
 	};
 
-
-	/**
-	 * Изменение размеров медиаэлемента только
-	 * @param Sizes - объект {'height': val, 'width': val }
-	 * @returns this
-	 */
+	
+    //Изменение размеров медиаэлемента
     $.fn.aplayerSetSizeMediaElt = function(Sizes) {
     	var Owner = this;
 	    $(this).children('[id ^=' + $.aplayer.idContainer + ']').each(function () {
@@ -120,7 +122,7 @@
 	           if(!( $(this).hasClass($.aplayer.classMediaCont))) {
 	            	$(this).height(Sizes.height).width(Sizes.width);
 	           }
-		       $(this).children('video, audio, embed').each(function () {
+		       $(this).children('video, audio, embed, img').each(function () {
 		       		$(this).height(Sizes.height).width(Sizes.width);
 		       });
             });
@@ -129,11 +131,7 @@
         return this;
     };
 
-	/**
-	 * Установка размеров плеера
-	 * @param Sizes - объект {'height': val, 'width': val }
-	 * @returns this
-	 */
+    //Установка размеров плеера
     $.fn.aplayerSetSize = function(Sizes) {
 
 	    $(this).children('div[id ^=' + $.aplayer.idContainer + ']').each(function () {
@@ -146,7 +144,7 @@
 	        $(this).children('embed').each(function () {
 	        $(this).height(Sizes.height).width(Sizes.width);
 	        });
-        }).end().children('.'+$.aplayer.classMediaCont).children('video, audio').each(function () { //Установка размера суб-элемента и вложенного медиа-элемента НЕ ПРОВЕРЯЛАСЬ!!!
+        }).end().children('.'+$.aplayer.classMediaCont).children('video, audio, img').each(function () { //Установка размера суб-элемента и вложенного медиа-элемента НЕ ПРОВЕРЯЛАСЬ!!!
 	        $(this).height(Sizes.height - $(this).next('div[id ^=' + $.aplayer.idControlPanel + ']').height() - 7).width(Sizes.width - 6);
 	        });
         });
@@ -154,10 +152,7 @@
     };
 
 
-    /**
-     * Установка размеров внутренних контейнеров плеера(без медиа элемента) в соответствии с размерами его контейнера
-     * @returns this
-     */
+    //Установка размеров внутренних контейнеров плеера(без медиа элемента) в соответствии с размерами его контейнера
     $.fn.aplayerResizeContanerOnlyToParent = function () {
 	    $(this).children('div[id ^=' + $.aplayer.idContainer + ']').each(function () {
 	    $(this).height($(this).parent().height() - 5);
@@ -169,20 +164,18 @@
 	        });
 	        $(Cont).find('.logoPlay').removeAttr('style').css({'position':'relative', 'top': ($(Cont).height()- $(Cont).find('.logoPlay').height())/2 });
         });
-        
     	return this;
     };
 
-    /**
-     * Установка размеров плеера в соответствии с размерами его контейнера
-     * @returns this
-     */
+    //Установка размеров плеера в соответствии с размерами его контейнера
     $.fn.aplayerResizeToParent = function () {
 	    $(this).children('div[id ^=' + $.aplayer.idContainer + ']').each(function () {
 	    $(this).height($(this).parent().height() - 2);
 	    $(this).width($(this).parent().width() - 2);
 	    var Cont = $(this);
 
+	    
+	    
 	$(Cont).children('object, embed, img').each(function () {
 	        $(this).height($(Cont).height() - 1).width($(Cont).width() - 1);
 	        $(this).children('embed').each(function () {
@@ -193,50 +186,54 @@
 	        
         }).end().children('.'+$.aplayer.classMediaCont).height(function(){
         	return $(Cont).height()-$(this).next('div[id ^=' + $.aplayer.idControlPanel + ']').height();
-        }).children('video, audio').each(function () { //Установка размера суб-элемента и вложенного медиа-элемента НЕ ПРОВЕРЯЛАСЬ!!!
-	        $(this).height($(Cont).height() - $(this).parent().next('div[id ^=' + $.aplayer.idControlPanel + ']').height() - 7).width($(Cont).width() - 6);
+        }).children('video, audio, img').each(function () { //Установка размера суб-элемента и вложенного медиа-элемента НЕ ПРОВЕРЯЛАСЬ!!!
+	        $(this).height($(Cont).height() - $(this).parent().next('div[id ^=' + $.aplayer.idControlPanel + ']').height() - 0).width($(Cont).width() - 0);
 	        });
         });
+
+//	    $('object', $(this)).width($(this).width() - 1).height($(this).height() - 1);
+	    
         return this;
     };
 
-    /**
-     * Является ли медиа-элемент картинкой?
-     * @returns {Boolean} true - картинка, false - не картинка 
-     */
+    //Является ли медиа-элемент картинкой?
     $.fn.aplayerIsImage = function(){
   		var el = $(this).children('div').children(':first-child');
   		if($(el).attr('name')=='img' && $(this).children('div').attr('t')== undefined) return true;
   		else return false;
     };
     
-    /**
-     * Является ли медиа-элемент embed || object?
-     * @returns {Boolean} true - да , false - нет 
-     */
+    
+    //Является ли медиа-элемент embed || object?
     $.fn.aplayerIsEmbededObject = function(){
   		if($(this).find('embed').size()>0) return true;
   		else return false;
     };
     
     
-    ///Скрыть плеер
+    
+    //Скрыть плеер
     $.fn.aplayerHide = function(){
   		$(this).children('[id^='+$.aplayer.idContainer+']').hide();
     };
     
-    ///Отобразить плеер
+    //Отобразить плеер
     $.fn.aplayerShow = function(){
   		$(this).children('[id^='+$.aplayer.idContainer+']').show();
     };
 
-	///Объект, инкапсулирующий свойства и методы плеера
+	//Объект, инкапсулирующий свойства и методы плеера
 	$.aplayer = {
 
 		draggable : function(Container){
 			var H = $(Container).height();
 	        var W = $(Container).width();
 			
+	        var matrix ={
+	        		'width' : $(Container).width(),
+	        		'height': $(Container).height()
+	        };
+	        
             $(Container).children('video, audio, object, embed, img, .'+$.aplayer.classMediaCont).each(function () {
 	           if(!( $(this).hasClass($.aplayer.classMediaCont))) {
 		       		//Проверяем на перетаскиваемость
@@ -273,7 +270,7 @@
 						$(this).draggable('destroy').css({'position':'relative', 'top':'0'});
 					}
 	           }
-		       $(this).children('video, audio, embed').each(function () {
+		       $(this).children('video, audio, embed, img').each(function () {
 		       		//Проверяем на перетаскиваемость
 					if($(this).height() > $(this).parent().height() || $(this).width() > $(this).parent().width()) 
 					{
@@ -316,8 +313,11 @@
 		//Установка базовых настроек плеера для популярных браузеров
 		baseSettings : {
 			'*':{
+				'cgi'  :{'*':'mjpeg'},
+				'mjpg' :{'*':'mjpeg'},
+				'mjpeg' :{'*':'mjpeg'},
 				'jpg' :{'*':'image'},
-				'jpeg':{'*':'image'},
+				'jepg':{'*':'image'},
 				'png' :{'*':'image'},
 				'bmp' :{'*':'image'},
 				'gif' :{'*':'image'},
@@ -416,7 +416,7 @@
 
 			//проверка допустимых значений
 			$.each(curSets, function(i, value){
-				if(value!='embed' && value!='video' && value!='audio' && value!='image' ){
+				if(value!='embed' && value!='video' && value!='audio' && value!='image' && value!='mjpeg' && value!='pseudo' ){
 					alert("Установленно недопустимое значение конфигурации: \n"+ i +' : '+value );
 					curSets[i]='embed';
 				}
@@ -424,6 +424,9 @@
 			
 			//Устанавливаем результат в объект конфигурации
 			$.extend($.aplayer.config, curSets);
+			
+			//Вывод конфигурации
+//			$.aplayer.config.Show();
 		},
 
 		//предикат сравнения версий
@@ -498,10 +501,10 @@
 					alert(str);
 				}
 			},
-		
 
 			//типы файлов для автоопределения
 			extTypes:{
+				mjpeg:['mjpeg'],
 				image:['png', 'jpg','gif', 'bmp', 'jpeg', 'tiff'],
 				video:['mp4', 'ogg', 'ogv', 'webm'],
 				audio:['oga','mp3', 'm4a', 'wav'],
@@ -510,6 +513,7 @@
 
 			//Расширения и соответствующие MIME types
 			MIMEtypes:{
+				mjpeg	:'multipart/x-mixed-replace',
 				tiff	:'image/bmp',
 				bmp		:'image/bmp',
 				png		:'image/png', 
@@ -554,7 +558,7 @@
 			//метод определения mime type для воспроизведения файла
 			setApplicationType : function(extension, elementMediaType, settings){
 				if(extension==null){
-					var reg = new RegExp('\\.\\w{3,4}\\s*', 'gi');
+					var reg = new RegExp('\\.\\w{3,5}\\s*', 'gi');
 					 extension=settings.src.match(reg);
 					 extension=extension[extension.length-1].slice(1);
 				}
@@ -580,7 +584,7 @@
 
 				//получение расширения и майм-типа
 				if(ext==null){
-					var reg = new RegExp('\\.\\w{3,4}\\s*', 'ig'); //для получения расширения файла
+					var reg = new RegExp('\\.\\w{3,5}(\\s*)', 'ig'); //для получения расширения файла
 					var extArr = src.match(reg);
 					if(extArr.length>0){
 						ext = extArr[extArr.length-1].slice(1); 
@@ -598,7 +602,7 @@
 					$.extend(settings, {mediaType : $.aplayer.config[ext], 'type' :elementMediaType });
 					return settings;
 				}
-			
+				
 				//если в конфигурации способ воспроизведения для "всех остальных файлов"(т.е. - "*") - исползуем его
 				if($.aplayer.config['*']!=null)
 				{
@@ -619,10 +623,18 @@
 						}
 					});
 				});
-				
+
 				if(elementMediaType==null){
 					elementMediaType = $.aplayer.setApplicationType(ext, elementMediaType,settings);
 					$.extend(settings, {mediaType : 'embed' });
+				}
+				else if(elementMediaType.indexOf('pseudo')!=-1){
+					elementMediaType=elementMediaType+'/'+ext;
+					$.extend(settings, {mediaType : 'pseudo'});	
+				}
+				else if(elementMediaType.indexOf('mjpeg')!=-1){
+					elementMediaType=elementMediaType+'/'+ext;
+					$.extend(settings, {mediaType : 'mjpeg'});	
 				}
 				else if(elementMediaType.indexOf('image')!=-1){
 					elementMediaType=elementMediaType+'/'+ext;
@@ -724,11 +736,11 @@
 			
 			
 			//Метод установки плеера
-			play:function(element, settings){
-
+			play : function(element, settings){
+				
 				//Установка параметров переданных через $.fn.add()
 				var sets = $.extend({}, $.aplayer.config, settings);
-
+				
 				//Определение и установка типа
 				sets = $.aplayer.setType(sets);
 				
@@ -750,7 +762,25 @@
 
 				$(element).html(container);
 
-				if(sets.mediaType == 'image'){
+				//---------------------------------------------------------------------To Delete !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			
+//				console.log(	
+//				sets.mediaType = 'pseudo';
+//				sets.mediaType = 'mjpeg';
+//				sets.src = 'http://localhost.sandbox.moonion.com/avreg/offline/gallery/pseudoSource.php';
+				
+				//---------------------------------------------------------------------To Delete !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!						
+
+				
+				if (sets.mediaType == 'pseudo'){	
+					//Вызов метода установки motion jpeg
+					$.aplayer.showPseudo(container, sets);
+				} 
+				else if (sets.mediaType == 'mjpeg'){	
+					//Вызов метода установки motion jpeg
+					$.aplayer.showMjpeg(container, sets);
+				}
+				else if(sets.mediaType == 'image'){
 					//Вызов метода вывода изображения
 					$.aplayer.showImage(container, sets);
 				}
@@ -795,8 +825,8 @@
 		},
 
 			//Метод вывода изображения
-			showImage:function(container, settings){
-
+			showImage : function(container, settings){
+				
 				if(settings.useImageSize!=null && settings.useImageSize=='true')
 				{
 					//  title="'+settings.type+'"
@@ -809,7 +839,249 @@
 				var im = $('<img  src="'+settings.src+'" '+size+' name="img"/>').attr({'height':settings.height, 'width':settings.width });
 				$(im).appendTo(container);
 			},
+	//////////---------------------------------------------------------------------------------------------------------------------------------			
 
+			//Массив объектов 
+			activeX_arr:{},
+			
+			//Установка motion jpeg
+			showMjpeg : function(container, settings)
+			{
+				
+				if($.browserInfo.browser == 'msie'){
+					var amc = document.createElement('object');
+				      amc.id = 'activX_'+$.aplayer.aplayerNo;
+				      amc.alt = 'Microsoft Internet Explorer on Windows system found. Try ActiveX viewer.';
+				      amc.border = 0;
+				      amc.hspace = 0;
+				      amc.vspace = 0;
+				      amc.width = settings.width;
+				      amc.height = settings.height;
+
+				      $(container).append(amc);
+	
+				      amc.codeBase = "AMC.cab#Version=5,6,2,5";
+				      amc.classid = "clsid:745395C8-D0E1-4227-8586-624CA9A10A8D";
+				      amc.UIMode = "none";
+				      amc.ShowToolbar = (settings.controls == false)? false:true;
+				      amc.ShowStatusBar = false;
+				      amc.StretchToFit = true;
+				      amc.Popups = 6;
+				      amc.EnableReconnect = EnableReconnect;
+				      amc.EnableContextMenu = 1;
+				      amc.MediaType = "mjpeg";
+				      amc.MediaURL = settings.src+'&ab='+___abenc;
+				      amc.AutoStart = true;
+				      
+				      $.aplayer.activeX_arr[amc.id]=amc;
+				      
+				}else{
+				//если HE ИнтернетЭксплорер
+					
+				var mim;
+				var meHeight;
+				
+				//установка изображения
+				if(settings.useImageSize!=null && settings.useImageSize=='true'){
+					
+					mim = $('<img  src="#" name="mjpeg"/>');
+				}
+				else {
+					var size = 'style="width:'+settings.width+'px; height:'+settings.height+'px; "';
+					mim = $('<img src="#" '+size+' name="mjpeg"/>').attr({'height':settings.height, 'width':settings.width });
+				}
+				
+				$(mim)
+				.attr({'id':$.aplayer.idElMedia+$.aplayer.aplayerNo, 'class':$.aplayer.classElMedia, 'origsrc':settings.src })
+				.appendTo(container);
+			
+				//Если не устанавливать пенель контролов
+				if(settings.controls==false ){
+					$(mim).attr({'src':settings.src});
+		            meHeight =  $('#'+$.aplayer.idContainer+ $.aplayer.aplayerNo).parent().height();
+					$(ControlBar).css({ 'width':'99.5%' }); 
+	            
+		            //Создаем субконтейнер для медиа-элемента, вставлем в него медиа элемент и помещаем в контейнер плеера
+					var SubCont = $('<div></div>').addClass($.aplayer.classMediaCont).css({'overflow':'hidden'}).height(meHeight);
+	
+					$('#'+$.aplayer.idElMedia + $.aplayer.aplayerNo).height(meHeight).appendTo($(SubCont));
+	
+					//Устанавливаем субконтейнер медиа-элемента и панель контролов плеер 
+		            $('#'+$.aplayer.idContainer + $.aplayer.aplayerNo)
+		            .append($(SubCont));
+					
+				}
+				else{
+					$(mim).css({'visibility':'hidden'});
+						
+					var Stop = $($.aplayer.ControlBar.stop)
+						.css($.aplayer.ControlBar.ControlsContainers)
+						.css({'padding':'5px'})
+						.attr({ id:$.aplayer.idStop+$.aplayer.aplayerNo})
+						.click(function(e){
+							e.preventDefault();
+							 $.aplayer.stopMjpegPlay(mim);
+							 return false;
+						})
+						.children('img').attr({'src': $.aplayer.ControlBar.controlsImg+'Stop.png'})
+						.end()
+						.attr({'title':$.aplayer.config.dictionery.stop,'alt': $.aplayer.config.dictionery.stop });
+	
+					var Play = $($.aplayer.ControlBar.play)
+						.css($.aplayer.ControlBar.ControlsContainers)
+						.css({'padding':'5px'})
+						.attr({ id: $.aplayer.idPlay+$.aplayer.aplayerNo })
+						.click(function(e){
+							e.preventDefault();
+							 $.aplayer.startMjpegPlay(mim);
+							 return false;
+						})
+						.children('img')
+						.attr({'src': $.aplayer.ControlBar.controlsImg+'Play.png'})
+						.end()
+						.attr({'title':$.aplayer.config.dictionery.play,'alt': $.aplayer.config.dictionery.play });
+	
+					//Создаем панель контролов
+		            var ControlBar = $($.aplayer.ControlBar.panel).height(37); //.css({'padding':'3px'});
+		            
+		            $('#'+$.aplayer.idContainer+ $.aplayer.aplayerNo).height($('#'+$.aplayer.idContainer+ $.aplayer.aplayerNo).parent().parent().height());
+	
+		              meHeight =  $('#'+$.aplayer.idContainer+ $.aplayer.aplayerNo).parent().height()-$(ControlBar).height()-10;
+		            
+						$(ControlBar).css({ 'width':'99.5%' }); 
+						
+						//вставляем в панель управления элементы управления
+						$(ControlBar).attr('id',$.aplayer.idControlPanel+$.aplayer.aplayerNo)
+						.append(Play)
+						.append(Stop);
+		            
+		            //Создаем субконтейнер для медиа-элемента, вставлем в него медиа элемент и помещаем в контейнер плеера
+					var SubCont = $('<div></div>').addClass($.aplayer.classMediaCont).css({'overflow':'hidden'}).height(meHeight);
+	
+					$('#'+$.aplayer.idElMedia + $.aplayer.aplayerNo).height(meHeight).appendTo($(SubCont));
+	
+					//Устанавливаем субконтейнер медиа-элемента и панель контролов плеер 
+		            $('#'+$.aplayer.idContainer + $.aplayer.aplayerNo)
+		            .append($(SubCont))
+		            .append($(ControlBar));
+					
+		            $(ControlBar).css({'border':'2px solid #333333', 'background-color':'#333333'});
+					}
+				}
+			},
+			
+			//начать воспроизведение Mjpeg
+			startMjpegPlay : function(mim){
+				$(mim).attr({'src': $(mim).attr('origsrc')+'&dummy'+Math.random() }).css({'visibility':'visible'});
+			},
+
+			//остановить воспроизведение Mjpeg
+			stopMjpegPlay : function(mim){
+				$(mim).attr({'src': '#'}).css({'visibility':'hidden'});
+			},
+			
+			
+			//Установка motion jpeg
+			showPseudo : function(container, settings)
+			{
+
+				var freq = 130; //частота смены кадров в миллисекундах
+				var mim;
+				
+				//установка изображения
+				if(settings.useImageSize!=null && settings.useImageSize=='true'){
+					mim = $('<img  src="'+settings.src+'" name="img"/>');
+				}
+				else {
+					var size = 'style="width:'+settings.width+'px; height:'+settings.height+'px; "';
+					mim = $('<img  src="'+settings.src+'" '+size+' name="pseudo"/>').attr({'height':settings.height, 'width':settings.width });
+				}
+				
+				$(mim)
+				.attr({'id':$.aplayer.idElMedia+$.aplayer.aplayerNo, 'class':$.aplayer.classElMedia, 'origsrc':settings.src })
+				.appendTo(container);
+			
+				var Stop = $($.aplayer.ControlBar.stop)
+					.css($.aplayer.ControlBar.ControlsContainers)
+					.css({'padding':'5px'})
+					.attr({ id:$.aplayer.idStop+$.aplayer.aplayerNo})
+					.click(function(e){
+						e.preventDefault();
+						 $.aplayer.stopPseudoPlay(mim);
+						 return false;
+					})
+					.children('img').attr({'src': $.aplayer.ControlBar.controlsImg+'Stop.png'})
+					.end()
+					.attr({'title':$.aplayer.config.dictionery.stop,'alt': $.aplayer.config.dictionery.stop });
+
+				var Play = $($.aplayer.ControlBar.play)
+					.css($.aplayer.ControlBar.ControlsContainers)
+					.css({'padding':'5px'})
+					.attr({ id: $.aplayer.idPlay+$.aplayer.aplayerNo })
+					.click(function(e){
+						e.preventDefault();
+						 $.aplayer.startPseudoPlay(mim, freq);
+						 return false;
+					})
+					.children('img')
+					.attr({'src': $.aplayer.ControlBar.controlsImg+'Play.png'})
+					.end()
+					.attr({'title':$.aplayer.config.dictionery.play,'alt': $.aplayer.config.dictionery.play });
+
+				//Создаем панель контролов
+	            var ControlBar = $($.aplayer.ControlBar.panel).height(37); //.css({'padding':'3px'});
+	            
+	            $('#'+$.aplayer.idContainer+ $.aplayer.aplayerNo).height($('#'+$.aplayer.idContainer+ $.aplayer.aplayerNo).parent().parent().height());
+
+	            var meHeight =  $('#'+$.aplayer.idContainer+ $.aplayer.aplayerNo).parent().height()-$(ControlBar).height()-10;
+	            
+				//автоматическая подгонка панели контролов под размеры плеера = {controls:'auto'}
+				if(settings.controls==null || settings.controls=='auto'){
+					$(ControlBar).css({ 'width':'99.5%' }); 
+					
+					//вставляем в панель управления элементы управления
+					$(ControlBar).attr('id',$.aplayer.idControlPanel+$.aplayer.aplayerNo)
+					.append(Play)
+					.append(Stop);
+				}
+	            
+				//автоматическая подгонка панели контролов под размеры плеера = {controls:'auto'}
+				if(settings.controls=='mini'){
+					$(ControlBar).css({ 'width':'99.3%'  }); 
+					
+					//вставляем в панель управления элементы управления
+					$(ControlBar).attr('id',$.aplayer.idControlPanel+$.aplayer.aplayerNo).css({ 'text-align':'center' })
+					.append(Search).append(Play).append(Stop).append(soundOff).append(soundOn);
+				}
+	            
+	            //Создаем субконтейнер для медиа-элемента, вставлем в него медиа элемент и помещаем в контейнер плеера
+				var SubCont = $('<div></div>').addClass($.aplayer.classMediaCont).css({'overflow':'hidden'}).height(meHeight);
+
+				$('#'+$.aplayer.idElMedia + $.aplayer.aplayerNo).height(meHeight).appendTo($(SubCont));
+
+				//Устанавливаем субконтейнер медиа-элемента и панель контролов плеер 
+	            $('#'+$.aplayer.idContainer + $.aplayer.aplayerNo)
+	            .append($(SubCont))
+	            .append($(ControlBar));
+				
+	            $(ControlBar).css({'border':'2px solid #333333', 'background-color':'#333333'});
+			},
+			
+			//начать воспроизведение pseudo
+			startPseudoPlay : function(mim, freq){
+				var tid = setInterval(function(){
+						var orig = $(mim).attr('origsrc');
+						var pr = orig+'?'+ Math.random();
+						$(mim).attr({'src': pr});
+					}, freq);
+				$(mim).attr({'tid':tid})
+			},
+
+			//остановить воспроизведение pseudo
+			stopPseudoPlay : function(mim){
+				clearInterval($(mim).attr('tid'));
+			},
+			
 			//Метод для использования плагина
 			showObject:function(container, settings){
 
@@ -833,7 +1105,11 @@
                else obj = $.aplayer.create_Embed(settings);
 
                $(container).height(settings.height);
- 
+               
+ //              $(obj).attr({'width': settings.width, 'height': settings.height});
+
+//              $(obj).append($('<noembed>Your browser does not support video!!!!!!!!!!!!!!!!!!!!! </noembed>'));
+
                $(container).html(obj);
         	},
 
@@ -953,6 +1229,41 @@
                return obj;
             },
             
+            
+            /*
+             // Create object SWF
+            createObj_SWF:function(settings){
+               var obj;
+
+               if($.browser.msie){
+                    obj = $('<object type="application/x-shockwave-flash data="'+settings.src+'" ></object>');
+                }
+                else{
+                   obj = $('<object type="application/x-shockwave-flash" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0"></object>');
+                }
+               $(obj).append('<param name="movie" value="'+settings.src+'" />');
+               $(obj).append('<param name="quality" value="high" >');
+               $(obj).append('<param name="play" value="0" >');
+               $(obj).append('<param name="loop" value="0" >');
+               $(obj).append('<param name="wmode" value="window" >');
+               $(obj).append('<param name="scale" value="showall" >');
+               $(obj).append('<param name="menu" value="1" >')
+				.append('<param name="play" value="false" >');
+//               $(obj).append('<param name="devicefont" value="false" />');
+//			    $(obj).append('<param name="salign" value="" />');
+//				$(obj).append('<param name="allowScriptAccess" value="sameDomain" />');
+				$(obj).width(settings.width)
+                .height(settings.height);
+               $(obj).append($($.aplayer.create_Embed(settings)).removeAttr('type') );
+             //   $(obj).append('<div><h4>Content on this page requires a newer version of Adobe Flash Player.</h4><p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif"alt="Get Adobe Flash player" width="112" height="33" /></a></p></div>');
+               return obj;
+            },
+            
+            */
+            
+            
+			//-----------------------------------
+
 			//Метод для использования HTML5 video
 			showVideo:function(container, settings){
 				var vid = document.createElement("video");
@@ -1012,9 +1323,9 @@
 			
         ControlBar:{
 			//Control's images location
-        	//controlsImg:'aplayerControls/',
-        	controlsImg:'gallery/img/aplayerControls/',
-
+        	// controlsImg:'aplayerControls/',
+        	//controlsImg:'gallery/img/aplayerControls/',
+        	controlsImg:'../img/aplayerControls/',
 
 			//Базовая разметка контролов
             panel:'<div style="cursor:default;"></div>',
@@ -1112,7 +1423,6 @@
 				var tStr = $.aplayer.ControlBar.FormatTime(tDur);
 
                 $('#'+$.aplayer.idCurrentTime+ElNum).html(tStr);
-
 			},
 
 
@@ -1235,8 +1545,6 @@
                 me.volume = $(Elem).slider('value')/40;
                 $(Elem).hide();
             }
-
-
         },
 
 		//Установка контролов
@@ -1270,6 +1578,7 @@
             //Установка стилей полосы поиска
             $(Volume).find('.ui-slider').css($.aplayer.ControlBar.Volume_line);
 
+            console.log('TEST');
 
 			var soundOn = $($.aplayer.ControlBar.soundOn).css($.aplayer.ControlBar.ControlsContainers).attr({
 					onclick: '$.aplayer.ControlBar.soundOnClickHandler("'+$.aplayer.aplayerNo+'")',
@@ -1340,7 +1649,6 @@
 
             var meHeight =  $('#'+$.aplayer.idContainer+ $.aplayer.aplayerNo).parent().height()-$(ControlBar).height()-10;
             
-			
 			//автоматическая подгонка панели контролов под размеры плеера = {controls:'auto'}
 			if(settings.controls==null || settings.controls=='auto'){
 				$(ControlBar).css({ 'width':'99.5%' }); 
@@ -1378,13 +1686,24 @@
 				onended:'$.aplayer.ControlBar.elMediaOnEnded('+$.aplayer.aplayerNo+')',
 				ondurationchanged:'$.aplayer.ControlBar.elDurationChanged('+$.aplayer.aplayerNo+')'
 			});
-
 		}
-
     };
 
 
-	///Объект инкапсулирует данные о браузере
+
+})(jQuery);
+
+
+
+
+
+
+
+//------------------------GetBrowserInfo
+
+(function($){
+
+	//Инкапсулирует данные о браузере
 	$.browserInfo = {
 		
 		browser:'undefined',
@@ -1581,5 +1900,6 @@
 	;
 	
 
-//})(jQuery);
+})(jQuery);
+
 

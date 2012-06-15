@@ -1,11 +1,3 @@
-<?php 
-/**
- * 
- * @file offline/gallery/index.php
- * @brief Формирование страницы галереи
- * 
- */
-?>
 		<div id="page"> 
 		<div id="matrix_load" style="display: none;"><img src="gallery/img/loading.gif"></div>
 		

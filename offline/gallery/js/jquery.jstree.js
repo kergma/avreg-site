@@ -1,8 +1,3 @@
-/**
- * @file offline/gallery/js/jquery.jstree.js
- * @brief JS плагин реализующий кросбраузерный компонент "tree"
- */
-
 /*
  * jsTree 1.0-rc3
  * http://jstree.com/
