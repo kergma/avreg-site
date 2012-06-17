@@ -34,18 +34,15 @@ if (!isset($_POST['method']) && !isset($_GET['method'])) {
 	);
 	$USE_JQUERY = true;
 	/// Подключение js скриптов
-	$link_javascripts = array(	
+	$link_javascripts = array(
+								'lib/js/jquery-ui-1.8.17.custom.min.js',
+								'lib/js/jquery.aplayer.js',
 								'offline/gallery/js/jquery.jstree.js',
-
 								'offline/gallery/js/jquery.mousewheel.min.js',
 								'offline/gallery/js/main.js',
 								'offline/gallery/js/jquery.scrollTo-min.js',
-								'offline/gallery/js/jquery-ui-1.8.17.custom.min.js',
 								'offline/gallery/js/jquery.checkbox.js',
-
-								'offline/gallery/js/jquery.aplayer.js',
 								'offline/gallery/js/jquery.tooltip.js'
-	
 						);
 	require_once('../head.inc.php');
 	$GCP_query_param_list=array('text_left', 'Hx2');

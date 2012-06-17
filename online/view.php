@@ -11,7 +11,12 @@ $pageTitle = 'WebCam';
 $body_style='overflow: hidden;  overflow-y: hidden !important; padding: 0; margin: 0; width: 100%; height: 100%;';
 $css_links=array('lib/js/jqModal.css');
 $USE_JQUERY = true;
-$link_javascripts=array('lib/js/jqModal.js');
+$link_javascripts=array(
+						'lib/js/jqModal.js', 
+						'lib/js/jquery-ui-1.8.17.custom.min.js',
+						'lib/js/jquery.aplayer.js'
+);
+
 $body_addons='scroll="no"';
 $ie6_quirks_mode = true;
 $lang_file='_online.php';
