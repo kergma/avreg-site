@@ -349,7 +349,7 @@ $fmtNext = 'след. %d';
 $fmtLast = 'пред. %d';
 $strGeo='Разрешение';
 
-$strEmpted = 'Не установлено';
+$strEmptied = 'не задано';
 
 /* MONITORS START */
 

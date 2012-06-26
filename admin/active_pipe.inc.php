@@ -75,7 +75,7 @@ if (isset($_POST) && is_array($_POST))
 }
 print '</form>'."\n";
 
-$GCP_query_param_list=array('work','cam_type','geometry','color','InetCam_IP','v4l_dev','input', 'V.http_get', 'A.http_get', 'Aviosys9100_chan','allow_local','v4l_pipe','text_left');
+$GCP_query_param_list=array('work', 'allow_local','v4l_pipe','text_left');
 require ('../lib/get_cams_params.inc.php');
 
 $active_pipes=array();

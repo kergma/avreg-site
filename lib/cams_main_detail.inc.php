@@ -1,13 +1,5 @@
 <?php
 
-/**
- * 
- * @file lib/cams_main_detail.inc.php
- * @brief Функция позволяет вывести детальную информацию о камере
- * 
- */
-
-/// поля по умолчанию
 $__DEF_CAM_DETAIL_COLUMNS = array(
    'ICONS'  => true,
    'CAM_NR' => true,
@@ -15,14 +7,143 @@ $__DEF_CAM_DETAIL_COLUMNS = array(
    'SRC'    => true,
    'CAPS'   => true,
 );
+
+define('COMPACT_URL_LEN', 30);
+function print_compact_url(&$url) {
+   if (strlen($url) < COMPACT_URL_LEN ) {
+      print($url);
+      return;
+   }
+   printf('<span title="%s">%s...&rarr;</span>', $url, substr($url, 0, COMPACT_URL_LEN - 1));
+}
+
+function _warn_emptied_param($param, $print_warn)
+{
+   if ($print_warn)
+      return '&nbsp;<span style="font-weight: bold;"> [«'.$param.'» '.$GLOBALS['strEmptied'].'] </span>&nbsp;';
+   else
+      return '${'.$param.'}';
+}
+
 /**
- * 
- * Функция позволяет вывести детальную информацию о камере
- * @param array $conf настройки
- * @param int $cam_nr номер камеры
- * @param array $cam_detail детальная информация
- * @param array $columns поля
+ * return NULL  if no video sorce
+ *        TRUE  if has video and complete url
+ *        FALSE if has video but not complete url 
  */
+function cam_has_video($cam_detail, $print_warn, &$url)
+{
+   $ret = TRUE;
+   $url = '';
+
+   $vproto = &$cam_detail['video_src'];
+
+   switch ( $vproto ) {
+   case 'video4linux':
+      $url = "v4l://";
+      if ( !isset($cam_detail['v4l_dev']) ) {
+         $url .= _warn_emptied_param('v4l_dev', $print_warn);
+         $ret = FALSE;
+      } else
+         $url .= '/dev/video' . $cam_detail['v4l_dev'];
+      $input = isset($cam_detail['input']) ? $cam_detail['input'] : 0;
+      $url .= ":$input"; 
+      break;
+   case 'http':
+      $url = 'http://';
+      if ( empty($cam_detail['InetCam_IP']) ) {
+         $url .= _warn_emptied_param('InetCam_IP', $print_warn);
+         $ret = FALSE;
+      } else
+         $url .= $cam_detail['InetCam_IP'];
+      if ( !empty($cam_detail['InetCam_http_port']) && $cam_detail['InetCam_http_port'] != 80 )
+         $url .= ':' . $cam_detail['InetCam_http_port'];
+
+      if ( empty($cam_detail['V.http_get']) ) {
+         $url .= _warn_emptied_param('V.http_get', $print_warn);
+         $ret = FALSE;
+      } else
+         $url .= $cam_detail['V.http_get'];
+      break;
+   case 'rtsp':
+      $url = 'rtsp://';
+      if ( empty($cam_detail['InetCam_IP']) ) {
+         $url .= _warn_emptied_param('InetCam_IP', $print_warn);
+         $ret = FALSE;
+      } else
+         $url .= $cam_detail['InetCam_IP'];
+      if ( !empty($cam_detail['InetCam_rtsp_port']) && $cam_detail['InetCam_rtsp_port'] != 554 )
+         $url .= ':' . $cam_detail['InetCam_rtsp_port'];
+      if ( empty($cam_detail['rtsp_play']) ) {
+         $url .= _warn_emptied_param('rtsp_play', $print_warn);
+         $ret = FALSE;
+      } else
+         $url .= $cam_detail['rtsp_play'];
+      break;
+   default:
+      return NULL;
+   }
+   return $ret;
+}
+/**
+ * return NULL  if no video sorce
+ *        TRUE  if has video and complete url
+ *        FALSE if has video but not complete url 
+ */
+function cam_has_audio($cam_detail, $print_warn, &$url)
+{
+   $ret = TRUE;
+   $url = '';
+
+   $aproto = &$cam_detail['audio_src'];
+
+   switch ( $aproto ) {
+   case 'alsa':
+      $url = "ALSA://????????????????????";
+      if ( empty($cam_detail['v4l_dev']) ) {
+         $url .= _warn_emptied_param('v4l_dev', $print_warn);
+         $ret = FALSE;
+      } else
+         $url .= '/dev/video' . $cam_detail['v4l_dev'];
+      $input = isset($cam_detail['input']) ? $cam_detail['input'] : 0;
+      $url .= ":$input"; 
+      break;
+   case 'http':
+      $url = 'http://';
+      if ( empty($cam_detail['InetCam_IP']) ) {
+         $url .= _warn_emptied_param('InetCam_IP', $print_warn);
+         $ret = FALSE;
+      } else
+         $url .= $cam_detail['InetCam_IP'];
+      if ( !empty($cam_detail['InetCam_http_port']) && $cam_detail['InetCam_http_port'] != 80 )
+         $url .= ':' . $cam_detail['InetCam_http_port'];
+
+      if ( empty($cam_detail['A.http_get']) ) {
+         $url .= _warn_emptied_param('A.http_get');
+         $ret = FALSE;
+      } else
+         $url .= $cam_detail['A.http_get'];
+      break;
+   case 'rtsp':
+      $url = 'rtsp://';
+      if ( empty($cam_detail['InetCam_IP']) ) {
+         $url .= _warn_emptied_param('InetCam_IP', $print_warn);
+         $ret = FALSE;
+      } else
+         $url .= $cam_detail['InetCam_IP'];
+      if ( !empty($cam_detail['InetCam_rtsp_port']) && $cam_detail['InetCam_rtsp_port'] != 554 )
+         $url .= ':' . $cam_detail['InetCam_rtsp_port'];
+      if ( empty($cam_detail['rtsp_play']) ) {
+         $url .= _warn_emptied_param('rtsp_play', $print_warn);
+         $ret = FALSE;
+      } else
+         $url .= $cam_detail['rtsp_play'];
+      break;
+   default:
+      return NULL;
+   }
+   return $ret;
+}
+
 function print_cam_detail_row($conf, $cam_nr, $cam_detail, $columns = null)
 {
    if (isset($columns))
@@ -34,22 +155,14 @@ function print_cam_detail_row($conf, $cam_nr, $cam_detail, $columns = null)
       $cam_name = &$cam_detail['text_left'];
    else
       $cam_name = $GLOBALS['r_cam_defs2'];
-   $cam_has_video = false;
-   $cam_has_audio = false;
-   if ( isset($cam_detail['cam_type']) && $cam_detail['cam_type'] === 'netcam' ) {
-      if ( $cam_detail['V.http_get'] ) {
-         $cam_has_video = true;
-      }
-      if ( isset($cam_detail['A.http_get']) && $cam_detail['A.http_get'] ) {
-         $cam_has_audio = true;
-      }
-   } else
-      $cam_has_video = true;
+
+   $cam_has_video = cam_has_video($cam_detail, ($cam_nr !== 0), $video_url);
+   $cam_has_audio = cam_has_audio($cam_detail, ($cam_nr !== 0), $audio_url);
 
    /* print icons <td> */
    if ( isset($_cols['ICONS']) && $_cols['ICONS'] ) {
       print '<td>';
-      if ($cam_has_video)
+      if ( !is_null($cam_has_video) )
          printf('<img src="'.$conf['prefix'].'%s" title="video" alt="%s" width="35" height="32" border="0">' . "\n",
             $cam_active ? '/img/cam_on_35x32.gif' : '/img/cam_off_35x32.gif',
             $cam_active ? $GLOBALS['flags'][1] : $GLOBALS['flags'][0]
@@ -57,7 +170,7 @@ function print_cam_detail_row($conf, $cam_nr, $cam_detail, $columns = null)
       else
          print '<span style="margin-left: 32px"></span>' . "\n";
 
-      if ($cam_has_audio)
+      if ( !is_null($cam_has_audio) )
          printf('<img src="'.$conf['prefix'].'%s" title="audio" alt="%s" width="32" height="32" border="0">' . "\n",
             $cam_active ? '/img/mic_on_32x32.gif' : '/img/mic_off_32x32.gif',
             $cam_active ? $GLOBALS['flags'][1] : $GLOBALS['flags'][0]
@@ -95,34 +208,32 @@ function print_cam_detail_row($conf, $cam_nr, $cam_detail, $columns = null)
 
    /* print cameras source/type <td> */
    if ( isset($_cols['SRC']) && $_cols['SRC'] ) {
-      if ( $cam_detail['cam_type'] === 'netcam' ) {
-         $proto_scheme='http://';
-         if (!is_null($cam_detail['Aviosys9100_chan']))
-            print '<td valign="center"  nowrap>'.$proto_scheme.
-            (empty($cam_detail['InetCam_IP'])?
-            'not_defined':$cam_detail['InetCam_IP']).
-            '&nbsp; chan '.$cam_detail['Aviosys9100_chan'].'</td>' . "\n";
-         else
-            print '<td valign="center"  nowrap>'.$proto_scheme.
-            (empty($cam_detail['InetCam_IP'])?'not_defined':$cam_detail['InetCam_IP']).
-            '</td>' . "\n";
-      } else {
-         if ($cam_has_video) {
-            print '<td valign="center"  nowrap>';
-            if ( isset($cam_detail['v4l_dev']) )
-               echo '/dev/video',$cam_detail['v4l_dev'];
-            else
-               echo '/dev/no_device';
-            if ( isset($cam_detail['input']) )
-               echo ':',$cam_detail['input'];
-            echo '</td>' . "\n";
-         }
+      print('<td>');
+      if ( $cam_has_video === TRUE ) {
+         print('V: ');
+         print_compact_url($video_url);
+      } else if ( $cam_has_video === FALSE )
+         print('V: ' . $video_url);
+      if ( $cam_has_audio === TRUE ) {
+         if (  !is_null($cam_has_video) )
+            print("<br />\n");
+         print('A: ');
+         print_compact_url($audio_url);
+      } else if ( $cam_has_audio === FALSE ) {
+          if ( !is_null($cam_has_video) )
+            print("<br />\n");
+        print('A: ');
+        print($audio_url);
       }
+      if ( is_null($cam_has_video) && is_null($cam_has_video) )
+         print('&nbsp;');
+      print('</td>');
+
    }
 
    /* print cameras short capabilities <td> */
    if ( isset($_cols['CAPS']) && $_cols['CAPS']) {
-      if ( $cam_has_video || $cam_nr == 0 )
+      if ( !is_null($cam_has_video) || $cam_nr == 0 )
          print '<td align="center" valign="center">'.$cam_detail['geometry'].
          ' ('.
          ((!isset($cam_detail['color']) || $cam_detail['color']>0)?'color':'grey').

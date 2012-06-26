@@ -175,7 +175,7 @@ function checkParam ( $parname, $parval )
       break;
    case 'mask_file':
       if (empty($parval) )
-         $ret = $GLOBALS['strEmpted'] . '<br>';
+         $ret = $GLOBALS['strEmptied'] . '<br>';
       else {
          $ret  = '<a href="'.$GLOBALS['conf']['prefix'].'/masks/'.basename($parval).'"  target="_blank">'.basename($parval).'</a><br>'."\n";
          $ret .= $GLOBALS['strDelete'].' &nbsp;&nbsp;<input type="checkbox" name="'.$parname.'_del"><br>'."\n";
@@ -183,31 +183,38 @@ function checkParam ( $parname, $parval )
       $ret .= '<input type="hidden" name="MAX_FILE_SIZE" value="500000">'."\n";
       $ret .= '<input type="file" name="'.$parname.'" size=20 maxlength=200>'."\n";
       break;
-   case 'cam_type':
-      $ret = getSelectHtmlByName('fields['.$parname.']', $GLOBALS['strCamType'], FALSE, 1, 0, $parval, TRUE, FALSE);
+   case 'video_src':
+      $ret = getSelectHtmlByName('fields['.$parname.']', $GLOBALS['video_sources'], FALSE, 1, 0, $parval, TRUE, FALSE);
       break;
-   case 'InetCam_Proto':
-      $ret = getSelectHtmlByName('fields['.$parname.']', $GLOBALS['strNetProto'], FALSE, 1, 0, $parval, TRUE, FALSE);
-      break; 
-   case 'recording':
+   case 'audio_src':
+      $ret = getSelectHtmlByName('fields['.$parname.']', $GLOBALS['audio_sources'], FALSE, 1, 0, $parval, TRUE, FALSE);
+      break;
+
+   case 'rec_mode':
       if ( $parval == '' || is_null($parval))
          $sel = '';
       else
          $sel = $GLOBALS['recording_mode'][$parval];
       $ret = getSelectHtml('fields['.$parname.']', $GLOBALS['recording_mode'], FALSE, 1, 0, $sel, TRUE, FALSE);
+      break;
 
+   case 'rec_format':
+      $ret = getSelectHtmlByName('fields['.$parname.']', $GLOBALS['recording_format'], FALSE, 1, 0, $parval, TRUE, FALSE);
       break;
-   case 'V.save_fmt':
-      $ret = getSelectHtmlByName('fields['.$parname.']', $GLOBALS['strFileFmt'], FALSE, 1, 0, $parval, TRUE, FALSE);
+
+   case 'rec_vcodec':
+      $ret = getSelectHtmlByName('fields['.$parname.']', $GLOBALS['rec_vcodec'], FALSE, 1, 0, $parval, TRUE, FALSE);
       break;
+
    case 'input':
       $ret = getSelectHtml('fields['.$parname.']', array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15), FALSE, 1, 0, $parval, TRUE, FALSE);
       break;
    case 'A.force_fmt':
       $ret = getSelectHtmlByName('fields['.$parname.']', $GLOBALS['str_audio_force_fmt'], FALSE, 1, 0, $parval, TRUE, FALSE);
       break;
-   case 'A.save_fmt':
-      $ret = getSelectHtmlByName('fields['.$parname.']', $GLOBALS['str_audio_save_fmt'], FALSE, 1, 0, $parval, TRUE, FALSE);
+
+   case 'rec_acodec':
+      $ret = getSelectHtmlByName('fields['.$parname.']', $GLOBALS['rec_acodec'], FALSE, 1, 0, $parval, TRUE, FALSE);
       break;
 
    case 'rotate':
@@ -231,9 +238,10 @@ function checkParam ( $parname, $parval )
    return $ret;
 }
 
-function CorrectParVal($parname, &$parval)
+/* CorrectParVal($parname, &$parval) */
+function CorrectParVal($parname, $parval)
 {
-   return; /* disable function, utf8 text_left would translit by avregd now */
+   return; /* disable function */
    switch ( $parname )
    {
    case 'text_left':

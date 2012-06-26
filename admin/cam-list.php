@@ -46,9 +46,11 @@ if ( !isset($cam_nr) )
    else if ( $admin_user )
       echo '<div class="warn">' . $r_cam_tips_admins . '</div>' ."\n";
 
-   $GCP_query_param_list=array('work','cam_type','geometry','color',
-      'text_left','InetCam_IP','v4l_dev','input',
-      'V.http_get','A.http_get','Aviosys9100_chan');
+   $GCP_query_param_list=array('work', 'video_src', 'audio_src', 'geometry', 'color',
+      'v4l_dev','input',
+      'InetCam_IP', 'InetCam_http_port', 'InetCam_rtsp_port',
+      'V.http_get', 'A.http_get', 'rtsp_play',
+      'text_left');
    require ('../lib/get_cams_params.inc.php');
    if ( $install_user )
       print '<p align="center"><a href="'.$conf['prefix'].'/admin/cam-addnew.php">'.$l_cam_addnew.'</a></p>'."\n";
