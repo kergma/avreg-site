@@ -1322,6 +1322,51 @@ array(
    'mstatus' => 1,
 ),
 
+//Алтернативные источники видео для веб-раскладок fs_url_alt_ cell_url_alt_
+array(
+   'name'    => 'cell_url_alt_1',
+   'type'    => $STRING200_VAL,
+   'def_val' => '',
+   'desc'    => '<b>Альтернативные источники видео (минуя avregd) для <a href="menu-tune.php?tab=layouts&load=/avreg/admin/web_mon_list.php">раскладок просмотра веб-браузерами</a>.</b><br><br>Альтернативный <b>URL #1</b> для камеры в раскладке.<br><br>Например: rtsp://axis-ip/axis-media/media.amp?resolution=320x240&videocodec=h264&audio=0<br><br>По умолчанию: не установлено (получать видео от avregd)',
+   'flags'   => $F_RELOADED | $F_IN_CAM,
+   'cats'    => '15.2',
+   'subcats' => NULL,
+   'mstatus' => 1,
+),
+
+array(
+   'name'    => 'fs_url_alt_1',
+   'type'    => $STRING200_VAL,
+   'def_val' => '',
+   'desc'    => 'Альтернативный <b>URL #1</b> для камеры развёрнутой в полный экран.',
+   'flags'   => $F_RELOADED | $F_IN_CAM,
+   'cats'    => '15.2',
+   'subcats' => NULL,
+   'mstatus' => 1,
+),
+
+array(
+   'name'    => 'cell_url_alt_2',
+   'type'    => $STRING200_VAL,
+   'def_val' => '',
+   'desc'    => 'Альтернативный <b>URL #2</b> для камеры в раскладке.',
+   'flags'   => $F_RELOADED | $F_IN_CAM,
+   'cats'    => '15.2',
+   'subcats' => NULL,
+   'mstatus' => 1,
+),
+
+array(
+   'name'    => 'cell_url_alt_2',
+   'type'    => $STRING200_VAL,
+   'def_val' => '',
+   'desc'    => 'Альтернативный <b>URL #2</b> для камеры развёрнутой в полный экран.</b>',
+   'flags'   => $F_RELOADED | $F_IN_CAM,
+   'cats'    => '15.2',
+   'subcats' => NULL,
+   'mstatus' => 1,
+),
+
 
 /* EVENTS */
 array(
