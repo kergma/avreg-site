@@ -60,20 +60,14 @@ if ( isset($tab) && ($tab == 'cameras')){
 }
 
 //Создание новых раскладок
-if ( isset($tab) && ($tab == 'monitors')){
-	print '<div class="menu0active">-&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php" target="menu">'.$left_monitors.'</a>'."\n";
-	print '<div class="menu0">&nbsp;&nbsp;-&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php?tab=monitors&#038;load='.$conf['prefix'].'/admin/mon-list.php" target="menu"  title="'.$left_monitors_title.'">'.$left_monitors.'</a><sup style="color:red; font-size:85%;">&nbsp;'.$local_player_name.'</sup></div>'."\n";
-	print '<div class="menu0">&nbsp;&nbsp;-&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php?tab=monitors&#038;load='.$conf['prefix'].'/admin/web_mon_list.php" target="menu"  title="'.$left_monitors_title.'">'.$left_monitors.'</a><sup style="color:red; font-size:85%;">&nbsp;'.$remote_player_name.'</sup></div>'."\n";
+if ( isset($tab) && ($tab == 'layouts')){
+	print '<div class="menu0active">-&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php" target="menu">'.$left_layouts.'</a>'."\n";
+	print '<div class="menu0">&nbsp;&nbsp;-&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php?tab=layouts&#038;load='.$conf['prefix'].'/admin/web_mon_list.php" target="menu">'.$strBrowser.'</a></div>'."\n";
+   print '<div class="menu0">&nbsp;&nbsp;-&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php?tab=layouts&#038;load='.$conf['prefix'].'/admin/mon-list.php" target="menu"  title="'.$left_layouts_local_title.'">'.$local_player_name."</a></div>\n";
 	print '</div>'."\n";
 } else {
-	print '<div class="menu0">+&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php?tab=monitors&#038;load='.$conf['prefix'].'/admin/mon-list.php" target="menu">'.$left_monitors.'</a>'."\n";
+	print '<div class="menu0">+&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php?tab=layouts&#038;load='.$conf['prefix'].'/admin/web_mon_list.php" target="menu">'.$left_layouts.'</a>'."\n";
 }
-
-//if ( isset($tab) && ($tab == 'monitors')){
-//   print '<div class="menu0active">-&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php?tab=monitors&#038;load='.$conf['prefix'].'/admin/mon-list.php" target="menu"  title="'.$left_monitors_title.'">'.$left_monitors.'</a><sup style="font-size:85%;">&nbsp;'.$local_player_name.'</sup></div>'."\n";
-//} else {
-//   print '<div class="menu0">+&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php?tab=monitors&#038;load='.$conf['prefix'].'/admin/mon-list.php" target="menu"  title="'.$left_monitors_title.'">'.$left_monitors.'</a><sup style="font-size:85%;">&nbsp;'.$local_player_name.'</sup></div>'."\n";
-//}
 
 print '<br><br><br><hr noshade>'."\n";
 

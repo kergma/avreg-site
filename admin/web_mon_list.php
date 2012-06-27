@@ -47,7 +47,6 @@ $USE_JQUERY=true;
 require ('../head.inc.php');
 require ('./mon-type.inc.php');
 
-
 //JS-для установки раскладки по умолчанию
 print '<script type="text/javascript">';
 
@@ -67,9 +66,6 @@ print '}';
 
 print '</script>';
 
-
-
-
 //Заголовок окна ($named,$sip - название и IP сервера; $r_mons - в lang/russian/utf-8/common.inc.php)
 echo '<h1>' . sprintf($web_r_mons,$named,$sip) . '</h1>' ."\n";
 
@@ -84,7 +80,7 @@ if ( isset($cmd) )
    DENY($admin_status);
    switch ( $cmd )	{
    case 'DEL':
-      echo '<p class="HiLiteBigWarn">' . sprintf ($fmtDeleteMonConfirm, $counter, $mon_name, $display=='R'?$sRightDisplay1:$sLeftDisplay1) . '</p>' ."\n";
+      echo '<p class="HiLiteBigWarn">' . sprintf ($fmtLayoutDelConfirm, $counter, $mon_name) . '</p>' ."\n";
       print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
       print '<input type="hidden" name="cmd" value="DEL_OK">'."\n";
       print '<input type="hidden" name="display" value="'.$display.'">'."\n";
@@ -103,7 +99,7 @@ if ( isset($cmd) )
       	
       	$adb->web_delete_monitors($display, $mon_nr);
  
-         echo '<p><font color="' . $warn_color . '">' . sprintf ($strDeleteMon, $counter, $mon_name, $display=='R'?$sRightDisplay1:$sLeftDisplay1) . '</font></p>' ."\n";
+         echo '<p><font color="' . $warn_color . '">' . sprintf ($fmtLayoutDeleted, $counter, $mon_name) . '</font></p>' ."\n";
       }
       unset($mon_nr);
       break;
@@ -178,15 +174,12 @@ if ( !isset($mon_nr) || $mon_nr =='')
    
    $mon_nr++;
    //Создать новую раскладку
-   	echo '<div style="clear:left;"><br /><h2>' . sprintf($r_mon_addnew, $counter, '1'). '</h2></div>' ."\n";
-//   	if($mon_nr<0) $mon_nr=0;
-   	print "<div>\n";
-	if ( $admin_user)
-   	print '<a href="'.$conf['prefix'].'/admin/web_mon_addnew?display=L&mon_nr='.$mon_nr.'&counter='.$counter.'">'.$l_mon_addnew.'</a>'."\n";
-   	else
-   	print '&nbsp;'. $l_mon_admin_only ."\n";
-   	print "</div>\n";
-   
+   print "<div style='clear:left;'><br>\n";
+   if ( $admin_user)
+      print '<a href="'.$conf['prefix'].'/admin/web_mon_addnew?display=L&mon_nr='.$mon_nr.'&counter='.$counter.'">'.$l_mon_addnew.'</a>'."\n";
+   else
+      print '&nbsp;'. $l_mon_admin_only ."\n";
+   print "</div>\n";
 }
 
 require ('../foot.inc.php');
