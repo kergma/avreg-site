@@ -100,8 +100,13 @@ if (isset($_POST) && is_array($_POST))
 
 }
 print '</form>'."\n";
+
 // Определение перечня используемых параметров
-$GCP_query_param_list=array('cell_url_alt_1','fs_url_alt_1','cell_url_alt_2','fs_url_alt_2', 'work','cam_type','geometry','color','InetCam_IP','v4l_dev','input', 'V.http_get', 'A.http_get', 'Aviosys9100_chan','allow_local','v4l_pipe','text_left');
+$GCP_query_param_list=array('work', 'text_left', 'video_src', 'audio_src', 'geometry', 'color',
+      'v4l_dev','input',
+      'InetCam_IP', 'InetCam_http_port', 'InetCam_rtsp_port',
+      'V.http_get', 'A.http_get', 'rtsp_play',
+      'allow_networks', 'cell_url_alt_1','fs_url_alt_1','cell_url_alt_2','fs_url_alt_2');
 require ('../lib/get_cams_params.inc.php');
 
 $active_pipes=array();
@@ -137,7 +142,7 @@ if ( $GCP_cams_nr === 0 ) {
    }
    $r_count = 0;
    $c_work=0;
-   $c_mon_live=0;
+   $c_allow_networks=0;
    $c_v4l_pipe='';
 
    
@@ -146,8 +151,7 @@ if ( $GCP_cams_nr === 0 ) {
    {
       $cam_name = getCamName($GCP_cams_params[$__cam_nr]['text_left']);
       $c_work = intval($GCP_cams_params[$__cam_nr]['work']);
-      $c_mon_live=intval($GCP_cams_params[$__cam_nr]['allow_local']);
-      $c_v4l_pipe=&$GCP_cams_params[$__cam_nr]['v4l_pipe'];
+      $c_allow_networks=intval($GCP_cams_params[$__cam_nr]['allow_networks']);
 
       $cell_alt_1 = &$GCP_cams_params[$__cam_nr]['cell_url_alt_1'];
       $fs_alt_1 = &$GCP_cams_params[$__cam_nr]['fs_url_alt_1'];
@@ -155,7 +159,7 @@ if ( $GCP_cams_nr === 0 ) {
       $fs_alt_2 = &$GCP_cams_params[$__cam_nr]['fs_url_alt_2'];
 
       //условие доступнсти камер
-      if (($c_work && $c_mon_live && isset($c_v4l_pipe))) {
+      if (($c_work && $c_allow_networks && isset($c_v4l_pipe))) {
          $active_pipes[$active_pipes_nr]=$__cam_nr;
          $active_pipes_nr++;
       } else if ($pipes_show==1) {
@@ -176,10 +180,8 @@ if ( $GCP_cams_nr === 0 ) {
             $off_reason = '&nbsp;';
             if ($c_work===0)
                $off_reason .= 'work="'.$flags[0].'";&nbsp;&nbsp;';
-            if ($c_mon_live===0)
-               $off_reason .= 'allow_local="'.$flags[0].'";&nbsp;&nbsp;';
-            if (!isset($c_v4l_pipe))
-               $off_reason .= 'v4l_pipe="'.$srtUndef.'";';
+            if ($c_allow_networks===0)
+               $off_reason .= 'allow_networks="'.$flags[0].'";&nbsp;&nbsp;';
             print '<td>'. $off_reason .'</td>' . "\n";
          }
          print '</tr>'."\n";
