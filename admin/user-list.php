@@ -82,12 +82,15 @@ if ( !isset($u_name) || empty($u_name) )
              .$groups['grname'].'</a>.  '.$groups['grdesc']. '</h4>' ."\n";
 		if ( $num_rows > 0 )
 		{
-			print '<table cellspacing=0 border=1 cellpadding=3>' . "\n";
+			print '<table cellspacing=0 border=1 cellpadding=3 style="text-align:center;">' . "\n";
 			print '<tr bgcolor="'.$header_color.'">'."\n";
 			print '<th>&nbsp;</th>'."\n";
 		    print '<th>&nbsp;</th>'."\n";
 			print '<th>&nbsp;</th>'."\n";
 			print '<th nowrap>'.$strLoginName.'</th>'."\n";
+//-->			
+			print '<th nowrap>'.$strGuestMode.'</th>'."\n";
+//-->			
 			print '<th>'.$strHost.'</th>'."\n";
 			print '<th>'.$FIO.'</th>'."\n";
 			print '<th>'.$strUpdateControl.'</th>'."\n";
@@ -118,6 +121,9 @@ if ( !isset($u_name) || empty($u_name) )
                     }
 				}
 				print '<td valign="center" nowrap><b>'. $row['USER'] . '</b></td>' . "\n";
+//-->
+				print '<td valign="center" nowrap><b>'. ($row['GUEST']? '+' : '-' ). '</b></td>' . "\n";
+//-->				
 				print '<td valign="center" nowrap><b>'. $row['HOST'] . '</b></td>' . "\n";
 				print '<td>'. htmlspecialchars( $row['LONGNAME'], ENT_QUOTES, $chset ) . '</td>' . "\n";
                                  if ( empty($row['CHANGE_TIME']) )

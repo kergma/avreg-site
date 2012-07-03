@@ -1064,17 +1064,18 @@ class Adb {
  * @param string $login_user пользователь, который добавляет
  * @return bool результат добавления
  */
-   public function add_user($u_host, $u_name, $passwd, $groups, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_cam,$limit_fps,$nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user) {
-      $query = sprintf('INSERT INTO USERS 
-         ( ALLOW_FROM, USER_LOGIN, PASSWD, STATUS, ALLOW_CAMS, ALLOW_LAYOUTS, FORCED_SAVING_LIMIT, SESSIONS_PER_CAM,
+   public function add_user($u_host, $u_name, $passwd, $groups, $guest, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_cam,$limit_fps,$nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user) {
+   	$query = sprintf('INSERT INTO USERS 
+         ( ALLOW_FROM, USER_LOGIN, PASSWD, STATUS, GUEST ,ALLOW_CAMS, ALLOW_LAYOUTS, FORCED_SAVING_LIMIT, SESSIONS_PER_CAM,
          LIMIT_FPS, NONMOTION_FPS, LIMIT_KBPS,
          SESSION_TIME, SESSION_VOLUME,
          LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME) 
-         VALUES ( %s, %s, %s, %u, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())',
+         VALUES ( %s, %s, %s, %u, %b, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())',
             sql_format_str_val($u_host),
             sql_format_str_val($u_name),
             $this->_crypt($passwd),
             $groups,
+      		$guest,
             sql_format_str_val($u_devacl),
             sql_format_str_val($u_layouts),
             sql_format_int_val($u_forced_saving_limit),
@@ -1113,13 +1114,14 @@ class Adb {
  * @param string $old_u_name старый логин
  * @return bool результат обновления
  */
-   public function update_user($u_host,$u_name,$passwd, $groups, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_cam, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name){
+   public function update_user($u_host,$u_name,$passwd, $groups, $guest, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_cam, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name){
       $query = sprintf(
-         'UPDATE USERS SET ALLOW_FROM=%s, USER_LOGIN=%s, PASSWD=%s, STATUS=%d, ALLOW_CAMS=%s, ALLOW_LAYOUTS=%s ,FORCED_SAVING_LIMIT=%s, SESSIONS_PER_CAM=%s, LIMIT_FPS=%s, NONMOTION_FPS=%s, LIMIT_KBPS=%s, SESSION_TIME=%s, SESSION_VOLUME=%s, LONGNAME=%s, CHANGE_HOST=%s, CHANGE_USER=%s, CHANGE_TIME=NOW() WHERE ALLOW_FROM=%s AND USER_LOGIN=%s',
+         'UPDATE USERS SET ALLOW_FROM=%s, USER_LOGIN=%s, PASSWD=%s, STATUS=%d, GUEST=%b, ALLOW_CAMS=%s, ALLOW_LAYOUTS=%s ,FORCED_SAVING_LIMIT=%s, SESSIONS_PER_CAM=%s, LIMIT_FPS=%s, NONMOTION_FPS=%s, LIMIT_KBPS=%s, SESSION_TIME=%s, SESSION_VOLUME=%s, LONGNAME=%s, CHANGE_HOST=%s, CHANGE_USER=%s, CHANGE_TIME=NOW() WHERE ALLOW_FROM=%s AND USER_LOGIN=%s',
          sql_format_str_val($u_host),
          sql_format_str_val($u_name),
          $this->_crypt($passwd),
          $groups,
+      	 $guest,
          sql_format_str_val($u_devacl),
          sql_format_str_val($u_layouts),
          sql_format_int_val($u_forced_saving_limit),
@@ -1190,7 +1192,7 @@ class Adb {
  */
    public function get_users($status = false) {
       $users = array();
-      $query = 'SELECT ALLOW_FROM, USER_LOGIN,  PASSWD, STATUS, ALLOW_CAMS, ALLOW_LAYOUTS, FORCED_SAVING_LIMIT,  SESSIONS_PER_CAM, LIMIT_FPS, NONMOTION_FPS, LIMIT_KBPS, SESSION_TIME, SESSION_VOLUME,LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME '.
+      $query = 'SELECT ALLOW_FROM, USER_LOGIN, GUEST,  PASSWD, STATUS, ALLOW_CAMS, ALLOW_LAYOUTS, FORCED_SAVING_LIMIT,  SESSIONS_PER_CAM, LIMIT_FPS, NONMOTION_FPS, LIMIT_KBPS, SESSION_TIME, SESSION_VOLUME,LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME '.
          'FROM USERS ';
       if ($status)
          $query .= "WHERE STATUS = $status ";
@@ -1203,11 +1205,10 @@ class Adb {
             'HOST' => trim($line[$this->_key('ALLOW_FROM')]),
             'USER' => trim($line[$this->_key('USER_LOGIN')]),
             'PASSWD' => trim($line[$this->_key('PASSWD')]),
+            'GUEST' => trim($line[$this->_key('GUEST')]),
             'STATUS' => trim($line[$this->_key('STATUS')]),
             'ALLOW_CAMS' => trim($line[$this->_key('ALLOW_CAMS')]),
-            
             'ALLOW_LAYOUTS' => trim($line[$this->_key('ALLOW_LAYOUTS')]),
-            
             'FORCED_SAVING_LIMIT' => trim($line[$this->_key('FORCED_SAVING_LIMIT')]),
             'SESSIONS_PER_CAM' => trim($line[$this->_key('SESSIONS_PER_CAM')]),
             'LIMIT_FPS' => trim($line[$this->_key('LIMIT_FPS')]),

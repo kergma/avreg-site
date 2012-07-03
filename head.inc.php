@@ -66,7 +66,7 @@ if ( isset($link_javascripts) && is_array($link_javascripts))
       print '<script type="text/javascript" src="'.$conf['prefix'].'/'.$__js_link.'"></script>'."\n";
 ?>
 
-<script type="text/javascript" language="JavaScript1.2">
+<script type="text/javascript" >
 
 <!--
 <?php 
@@ -236,6 +236,8 @@ if ( isset($include_javascripts) && is_array($include_javascripts)) {
 </head>
 
 <?php
+
+
 if (!isset($NOBODY))
 {
    if ( isset($MENU) )
@@ -277,6 +279,7 @@ if (!isset($NOBODY))
          print "</div>\n";
    }
 }
+
 ?>
 <noscript>
 <center><div class="help" style="width:50%;text-align:left;">

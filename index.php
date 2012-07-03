@@ -23,6 +23,7 @@ $NO_OB_END_FLUSH = true;
 require ('./head.inc.php');
 while (@ob_end_flush());
 
+
 print '<table width="600" cellspacing="20" border="0" cellpadding="0" align="center">'."\n";
 print '<tbody>'."\n";
 print '<tr>'."\n";

@@ -128,6 +128,7 @@ $strLinkNotFound = 'Связь не найдена';
 $strLinksTo = 'Связь с';
 $strLogin = 'Вход в систему';
 $strLoginName = 'Логин';
+$strGuestMode = 'Гость';
 $strLogout = 'Выйти из системы';
 $strLogPassword = 'Пароль:';
 $strLogUsername = 'Пользователь:';

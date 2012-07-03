@@ -432,6 +432,7 @@ foreach ($result as $row  )
    $ui['USER'] = $row['USER'];
    $ui['PASSWD'] = $row['PASSWD'];
    $ui['STATUS'] = (int)$row['STATUS'];
+   $ui['GUEST'] = (int)$row['GUEST'];
    $ui['ALLOW_CAMS'] = $row['ALLOW_CAMS'];
    $ui['ALLOW_LAYOUTS']= $row['ALLOW_LAYOUTS'];
    $ui['FORCED_SAVING_LIMIT'] = is_null($row['FORCED_SAVING_LIMIT'])?NULL:(int)$row['FORCED_SAVING_LIMIT'];
@@ -447,6 +448,7 @@ foreach ($result as $row  )
    $ui['CHANGE_TIME'] = $row['CHANGE_TIME'];
    $users[] = $ui;
 }
+
 unset($result);
 /**
  * 
@@ -707,7 +709,7 @@ function PrettyCamName($cam_desc=null)
  */
 /**
  * 
- * Функцыя выводит ссылку нажатия назад в истории браузера
+ * Функция выводит ссылку нажатия назад в истории браузера
  */
 function print_go_back() {
    print '<br><center><a href="javascript:window.history.back();" title="'.$GLOBALS['strBack'].'">'.
@@ -1054,7 +1056,7 @@ function getSelectHtml($_name, $value_array, $_multiple=FALSE , $_size = 1, $sta
 /**
  * 
  * Функция формирует и возвращает елемент select используя значения 
- * @param string $_name названи
+ * @param string $_name названиe
  * @param array $value_array масив значений
  * @param bool $_multiple разрешить множественный выбор
  * @param int $_size размер
@@ -1335,59 +1337,89 @@ if ( !empty($logout) ) {
          '/index.php'));
       setcookie('avreg_logout', 0 );
    }
+   setcookie('as_guest', 0, -100);
+   unset($_COOKIE['as_guest']);
+   
    exit();
 }
-/// разрешить альтернативный аутентификацию
-$ExternalAuth = FALSE;
-if (!empty($_SERVER['AUTH_TYPE']) && !empty($_SERVER['REMOTE_USER'])
-    && !empty($conf['ExternalAuthMap'])
-    && file_exists($conf['ExternalAuthMap'])) {
+
+
+//режим гостя
+$GuestAuth = FALSE;
+$as_guest = false;
+if(isset($_GET['user'])){
+	$as_guest = trim($_GET['user']);
+	setcookie('as_guest', $as_guest );
+}
+if(isset($_COOKIE['as_guest']) && !$as_guest ){
+	$as_guest = trim($_COOKIE['as_guest']);
+}
+if(isset($as_guest)){
 	
-	$lines = file($conf['ExternalAuthMap']);
-	foreach ($lines as $line) {
-      list($ruser, $auser) = explode('=', trim($line));
-		if (trim($ruser) == $_SERVER['REMOTE_USER']) {
-			$ExternalAuth = TRUE;
+	foreach($GLOBALS['users'] as $key=>$val ){
+		if($val["USER"] == $as_guest && $val["GUEST"]==1 ){
+			
+			$GuestAuth = TRUE;
+
+			$_SERVER['REMOTE_USER'] = $_SERVER['PHP_AUTH_USER'] = trim($_GET['user']);
 			break;
 		}
 	}
-	
-	if ($ExternalAuth !== FALSE)
-		$_SERVER['PHP_AUTH_USER'] = $_SERVER['REMOTE_USER'] = trim($auser);
-	else {
-		$_SERVER['PHP_AUTH_USER'] = $_SERVER['REMOTE_USER'];
-		 DENY(null,403);
-	}
 }
 
-if ( isset($_SERVER['PHP_AUTH_USER']))
-{
-   require_once($wwwdir . 'lib/utils-inet.php');
-   if (!isset($_SERVER['REMOTE_USER']))
-      $_SERVER['REMOTE_USER'] = $_SERVER['PHP_AUTH_USER'];
-
-   $user_info = avreg_find_user(ip2long($_SERVER['REMOTE_ADDR']), -1, $_SERVER['PHP_AUTH_USER']);
-   if ($ExternalAuth === FALSE) {
-	   if ($user_info !== FALSE)
-	      check_passwd($_SERVER['PHP_AUTH_PW'], $user_info['PASSWD']);
+	/// разрешить альтернативный аутентификацию
+	$ExternalAuth = FALSE;
+	if (!empty($_SERVER['AUTH_TYPE']) && !empty($_SERVER['REMOTE_USER'])
+	    && !empty($conf['ExternalAuthMap'])
+	    && file_exists($conf['ExternalAuthMap']) && $GuestAuth == false) {
+		
+		$lines = file($conf['ExternalAuthMap']);
+		foreach ($lines as $line) {
+	      list($ruser, $auser) = explode('=', trim($line));
+			if (trim($ruser) == $_SERVER['REMOTE_USER']) {
+				$ExternalAuth = TRUE;
+				break;
+			}
+		}
+		
+		if ($ExternalAuth !== FALSE)
+			$_SERVER['PHP_AUTH_USER'] = $_SERVER['REMOTE_USER'] = trim($auser);
+		else {
+			$_SERVER['PHP_AUTH_USER'] = $_SERVER['REMOTE_USER'];
+			 DENY(null,403);
+		}
+	}
+	
+	if ( isset($_SERVER['PHP_AUTH_USER']))
+	{
+	   require_once($wwwdir . 'lib/utils-inet.php');
+	   if (!isset($_SERVER['REMOTE_USER']))
+	      $_SERVER['REMOTE_USER'] = $_SERVER['PHP_AUTH_USER'];
+	
+	   $user_info = avreg_find_user(ip2long($_SERVER['REMOTE_ADDR']), -1, $_SERVER['PHP_AUTH_USER']);
+	   if ($ExternalAuth === FALSE && $GuestAuth === FALSE) {
+		   if ($user_info !== FALSE)
+		      check_passwd($_SERVER['PHP_AUTH_PW'], $user_info['PASSWD']);
+		   else
+		      DENY(null,403);
+	   }
+	   $login_user = &$_SERVER['REMOTE_USER'];
+	   $user_status = &$user_info['STATUS'];
+	   $login_user_name = &$row['LONGNAME'];
+	   $login_host = &$remote_addr;
+	   $allow_cams = parse_dev_acl($user_info['ALLOW_CAMS']);
+	   if ( is_array($allow_cams) && count($allow_cams) > 0 )
+	      $GCP_cams_list = @implode(',', $allow_cams);
 	   else
-	      DENY(null,403);
-   }
-   $login_user = &$_SERVER['REMOTE_USER'];
-   $user_status = &$user_info['STATUS'];
-   $login_user_name = &$row['LONGNAME'];
-   $login_host = &$remote_addr;
-   $allow_cams = parse_dev_acl($user_info['ALLOW_CAMS']);
-   if ( is_array($allow_cams) && count($allow_cams) > 0 )
-      $GCP_cams_list = @implode(',', $allow_cams);
-   else
-      $GCP_cams_list = NULL;
-   if ( $user_status <= $install_status )  $install_user  = TRUE;
-   if ( $user_status <= $admin_status )    $admin_user    = TRUE;
-   if ( $user_status <= $arch_status )     $arch_user     = TRUE;
-   if ( $user_status <= $operator_status ) $operator_user = TRUE;
-   if ( $user_status <= $viewer_status )   $viewer_user   = TRUE;
-} else
-   DENY(null,401);
+	      $GCP_cams_list = NULL;
+	   if ( $user_status <= $install_status && !$GuestAuth)  $install_user  = TRUE;
+	   if ( $user_status <= $admin_status && !$GuestAuth)    $admin_user    = TRUE;
+	   if ( $user_status <= $arch_status  )     $arch_user     = TRUE;
+	   if ( $user_status <= $operator_status ) $operator_user = TRUE;
+	   if ( $user_status <= $viewer_status )   $viewer_user   = TRUE;
+	   
+	} else{
+	   DENY(null,401);
+	}
 
 ?>

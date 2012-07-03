@@ -37,6 +37,16 @@ while (list ( $gr_status, $groups ) = each ($grp_ar) )
 }
 print '</td>'."\n";
 
+
+
+//Гостевой режим
+print '</tr>'."\n";
+print '<tr>'."\n";
+print '<td colspan="2">'.$str_GuestMode.'</td>'."\n";
+print '<td><input type="checkbox" name="guest" '.( (isset($guest) && $guest)? 'checked':'') .'>'.$strGuestMode."\n";
+print '</tr>'."\n";
+
+
 //доступные камеры
 print '</tr>'."\n";
 print '<tr>'."\n";

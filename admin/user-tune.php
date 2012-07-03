@@ -21,6 +21,7 @@ require_once ('../lib/utils-inet.php');
 </script>
 
 <?php
+
 echo '<h1>' . sprintf($r_users, $named, $sip) . '</h1>' ."\n";
 if ( isset($cmd) && isset($u_host) && isset($u_name) && isset($groups) )
 {
@@ -29,7 +30,8 @@ if ( isset($cmd) && isset($u_host) && isset($u_name) && isset($groups) )
    switch ( $cmd )
    {
    case 'UPDATE_USER':
-        $result =  $adb->update_user($u_host,$u_name,$u_pass, $groups, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_cam, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name);
+   		$guest = isset($guest);
+        $result =  $adb->update_user($u_host,$u_name,$u_pass, $groups, $guest, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_cam, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name);
       break;
    default:
       die('crack?');
@@ -66,6 +68,9 @@ if ( isset($u_name) && !empty($u_name) )
    $longname2html = stripslashes (htmlspecialchars($ui['LONGNAME'], ENT_QUOTES, $chset));
    $passwd2html = stripslashes (htmlspecialchars($ui['PASSWD'], ENT_QUOTES, $chset));
    $u_devacl = stripslashes (htmlspecialchars($ui['ALLOW_CAMS'], ENT_QUOTES, $chset));
+   
+   $guest = stripslashes (htmlspecialchars($ui['GUEST'], ENT_QUOTES, $chset));
+   
 	//Инициализация доступных раскладок //--->   
    $u_layouts = stripslashes (htmlspecialchars($ui['ALLOW_LAYOUTS'], ENT_QUOTES, $chset));
 
