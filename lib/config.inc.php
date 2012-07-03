@@ -1343,7 +1343,6 @@ if ( !empty($logout) ) {
    exit();
 }
 
-
 //режим гостя
 $GuestAuth = FALSE;
 $as_guest = false;
@@ -1361,7 +1360,7 @@ if(isset($as_guest)){
 			
 			$GuestAuth = TRUE;
 
-			$_SERVER['REMOTE_USER'] = $_SERVER['PHP_AUTH_USER'] = trim($_GET['user']);
+			$_SERVER['REMOTE_USER'] = $_SERVER['PHP_AUTH_USER'] = $as_guest;
 			break;
 		}
 	}
