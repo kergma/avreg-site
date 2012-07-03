@@ -1149,8 +1149,11 @@ class Adb {
  * @param int $u_status статус
  */   
    public function delete_user($u_name, $u_host, $u_status){
-      $query = sprintf('DELETE FROM USERS WHERE USER_LOGIN="%s" AND ALLOW_FROM="%s" AND STATUS=%u',
-         $u_name, $u_host, $u_status);
+      $query = sprintf('DELETE FROM USERS WHERE USER_LOGIN=%s AND ALLOW_FROM=%s AND STATUS=%u',
+   		sql_format_str_val($u_name),
+      	sql_format_str_val( $u_host),
+       	$u_status);
+      
       $res = $this->_db->query($query);   
       $this->_error($res);
    }
