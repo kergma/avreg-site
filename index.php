@@ -28,8 +28,12 @@ print '<table width="600" cellspacing="20" border="0" cellpadding="0" align="cen
 print '<tbody>'."\n";
 print '<tr>'."\n";
 print '<td align="center" valign="middle" rowspan="2" nowrap>'."\n";
-print '<a href="'.$conf['prefix'].'/pda/"><img src="'.$conf['prefix'].'/img/pda.gif" border="0px" /></a>'."\n";
-print '<p><a href="'.$conf['prefix'].'/pda/">PDA-версия</a></p>'."\n";
+
+if ($allow_pda) {
+	print '<a href="'.$conf['prefix'].'/pda/"><img src="'.$conf['prefix'].'/img/pda.gif" border="0px" /></a>'."\n";
+	print '<p><a href="'.$conf['prefix'].'/pda/">PDA-версия</a></p>'."\n";
+}
+
 print '</td>'."\n";
 print '<td align="center" valign="top">'."\n";
 // $href1 = sprintf('/online/index.php?sip=%s&named=%s', urlencode($sip), urlencode($named));

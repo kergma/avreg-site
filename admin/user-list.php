@@ -90,6 +90,7 @@ if ( !isset($u_name) || empty($u_name) )
 			print '<th nowrap>'.$strLoginName.'</th>'."\n";
 //-->			
 			print '<th nowrap>'.$strGuestMode.'</th>'."\n";
+			print '<th nowrap>'.$strPDAversion.'</th>'."\n";
 //-->			
 			print '<th>'.$strHost.'</th>'."\n";
 			print '<th>'.$FIO.'</th>'."\n";
@@ -123,6 +124,7 @@ if ( !isset($u_name) || empty($u_name) )
 				print '<td valign="center" nowrap><b>'. $row['USER'] . '</b></td>' . "\n";
 //-->
 				print '<td valign="center" nowrap><b>'. ($row['GUEST']? '+' : '-' ). '</b></td>' . "\n";
+				print '<td valign="center" nowrap><b>'. ($row['PDA']? '+' : '-' ). '</b></td>' . "\n";
 //-->				
 				print '<td valign="center" nowrap><b>'. $row['HOST'] . '</b></td>' . "\n";
 				print '<td>'. htmlspecialchars( $row['LONGNAME'], ENT_QUOTES, $chset ) . '</td>' . "\n";

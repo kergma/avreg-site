@@ -46,6 +46,12 @@ print '<td colspan="2">'.$str_GuestMode.'</td>'."\n";
 print '<td><input type="checkbox" name="guest" '.( (isset($guest) && $guest)? 'checked':'') .'>'.$strGuestMode."\n";
 print '</tr>'."\n";
 
+//Доступ к PDA версии
+print '</tr>'."\n";
+print '<tr>'."\n";
+print '<td colspan="2">'.$str_PDAversion.'</td>'."\n";
+print '<td><input type="checkbox" name="pda" '.( (isset($pda) && $pda)? 'checked':'') .'>'.$strPDAversion."\n";
+print '</tr>'."\n";
 
 //доступные камеры
 print '</tr>'."\n";

@@ -320,6 +320,8 @@ $arch_user = FALSE;
 $operator_user = FALSE;
 ///  являеться ли пользователь в групе view
 $viewer_user = FALSE;
+///	 Доступность PDA версии
+$allow_pda = FALSE;
 
 ///  кодировка
 $chset = 'UTF-8';
@@ -433,6 +435,7 @@ foreach ($result as $row  )
    $ui['PASSWD'] = $row['PASSWD'];
    $ui['STATUS'] = (int)$row['STATUS'];
    $ui['GUEST'] = (int)$row['GUEST'];
+   $ui['PDA'] = (int)$row['PDA'];
    $ui['ALLOW_CAMS'] = $row['ALLOW_CAMS'];
    $ui['ALLOW_LAYOUTS']= $row['ALLOW_LAYOUTS'];
    $ui['FORCED_SAVING_LIMIT'] = is_null($row['FORCED_SAVING_LIMIT'])?NULL:(int)$row['FORCED_SAVING_LIMIT'];
@@ -1416,6 +1419,8 @@ if(isset($as_guest)){
 	   if ( $user_status <= $arch_status  )     $arch_user     = TRUE;
 	   if ( $user_status <= $operator_status ) $operator_user = TRUE;
 	   if ( $user_status <= $viewer_status )   $viewer_user   = TRUE;
+	   
+	   $allow_pda = $user_info['PDA'];
 	   
 	} else{
 	   DENY(null,401);

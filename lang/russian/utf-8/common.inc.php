@@ -129,6 +129,7 @@ $strLinksTo = 'Связь с';
 $strLogin = 'Вход в систему';
 $strLoginName = 'Логин';
 $strGuestMode = 'Гость';
+$strPDAversion = 'PDA';
 $strLogout = 'Выйти из системы';
 $strLogPassword = 'Пароль:';
 $strLogUsername = 'Пользователь:';
