@@ -182,6 +182,9 @@ function img_click(clicked_div) {
       IMG_IN_DIV_W=pl_cont.width();
       IMG_IN_DIV_H=pl_cont.height();
 
+      NAME_DIV_H = $('#cell_header_'+win_nr, clicked_div_jq).height();
+      if(NAME_DIV_H==null)NAME_DIV_H=0;
+      
       win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, 1, 1, 1);
 
       clicked_div_jq.css('top',  calc_win_top (win_geo, 0));
@@ -240,7 +243,7 @@ function brout(win_nr, win_div, win_geo) {
    var cont = $('<div class="pl_cont" />').width(win_geo.cam_w+CORRECT_W).height(win_geo.cam_h+CORRECT_H);
 
 	$(win_div).append(cont);
-	$(cont).addPlayer({'src': url , 'controls': false, 'mediaType' : 'mjpeg' }); 
+	$(cont).addPlayer({'src': url , 'controls': 'mini', 'scale':'on', 'mediaType' : 'mjpeg' }); 
 	
 	if ( MSIE ){
 		$(win_div).width(win_geo.win_w+CORRECT_W).height(win_geo.win_h+CORRECT_H);
@@ -293,6 +296,9 @@ function calc_win_geo(_canvas_w, _canvas_h, img_aspect_ratio, _rows_nr, _cols_nr
    } else {
       // create wins
       var calc_canvas_h = _canvas_h - ((NAME_DIV_H*_rowspan + BorderTop + BorderBottom) * _rows_nr);
+
+      console.log( NAME_DIV_H );
+      console.log( _rowspan );
 
       if ( (_canvas_w/calc_canvas_h) >= 
             (img_aspect_ratio.num*_cols_nr)/(img_aspect_ratio.den*_rows_nr) ) {
@@ -750,7 +756,7 @@ function canvas_growth() {
                                              '" target="_blank" style="color:inherit;" title="Перейти в веб интерфейс IP-камеры">';
                     ipcamhost_link_end   = ' &rarr;<\/a>';
                  }
-                 $('<div style="background-color:#666699;'+
+                 $('<div id="cell_header_'+win_nr+'" style="background-color:#666699;'+
                        ' padding:0px; margin:0px; overflow:hidden; border:0px;'+
                        ' height:'+ NAME_DIV_H*win_def.rowspan +'px;"><span style="'+
                        'vertical-align: middle; padding-left:8px; padding-top:2px; padding-bottom:2px; padding-right:2px;'+

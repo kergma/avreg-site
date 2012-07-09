@@ -9,7 +9,7 @@
 $NO_OB_END_FLUSH = true; // for setcookie()
 $pageTitle = 'WebCam';
 $body_style='overflow: hidden;  overflow-y: hidden !important; padding: 0; margin: 0; width: 100%; height: 100%;';
-$css_links=array('lib/js/jqModal.css', 'online/view.css');
+$css_links=array('lib/js/jqModal.css');
 $USE_JQUERY = true;
 $link_javascripts=array(
 						'lib/js/jqModal.js', 
