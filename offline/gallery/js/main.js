@@ -250,8 +250,12 @@ var gallery = {
 					$(document).unbind('mousemove');
 				});
 				// востанавливаем расположения из куков
-				pageX = parseInt(gallery.cookie.get('resize_column'));
-
+				try{				
+					pageX = parseInt(gallery.cookie.get('resize_column'));
+				}catch (e) {
+					pageX = false;
+				}
+				
 				if (pageX) {
 					self.resize(pageX);
 				} else {
@@ -851,7 +855,7 @@ var gallery = {
 					$(this).children().attr('checked', 'checked');
 				}
 			});
-	
+			
 			//Кнопка смены режима просмотра - детальный/миниатюры
 			var btnCangeMode =	$('<div class="select_mode"> <button id="btn_PreviewMode" disabled="disabled" >Минниаюры</button> <button id="btn_DetailMode" >Просмотр</button>	</div>');
 			$(btnCangeMode).find("button").width(100).height(25);
@@ -871,7 +875,6 @@ var gallery = {
 			self.resize_column.init();
 
 			// инициализация матрицы
-
 			matrix.init(self.config.matrix);
 
 			// инициализация дерева событий

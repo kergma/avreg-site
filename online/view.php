@@ -9,12 +9,12 @@
 $NO_OB_END_FLUSH = true; // for setcookie()
 $pageTitle = 'WebCam';
 $body_style='overflow: hidden;  overflow-y: hidden !important; padding: 0; margin: 0; width: 100%; height: 100%;';
-$css_links=array('lib/js/jqModal.css');
+$css_links=array('lib/js/jqModal.css', 'online/view.css');
 $USE_JQUERY = true;
 $link_javascripts=array(
 						'lib/js/jqModal.js', 
 						'lib/js/jquery-ui-1.8.17.custom.min.js',
-						'lib/js/jquery.aplayer.js'
+						'lib/js/jquery.aplayer.js',
 );
 
 $body_addons='scroll="no"';
@@ -70,13 +70,14 @@ setcookie("avreg_$mon_type", $_cookie_value, time()+5184000, dirname($_SERVER['S
 while (@ob_end_flush());
 
 ?>
+
+
 <div id="canvas"
      style="position:relative; background-color:#000000; width:100%; height:0px; margin:0; padding:0;
            -ms-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; -webkit-box-sizing: border-box;">
 </div>
 
 <?php
-
 
 echo "<script type='text/javascript'>\n";
 

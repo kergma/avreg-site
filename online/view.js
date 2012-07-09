@@ -773,4 +773,3 @@ function canvas_growth() {
    }
   
    
-
