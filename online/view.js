@@ -297,9 +297,6 @@ function calc_win_geo(_canvas_w, _canvas_h, img_aspect_ratio, _rows_nr, _cols_nr
       // create wins
       var calc_canvas_h = _canvas_h - ((NAME_DIV_H*_rowspan + BorderTop + BorderBottom) * _rows_nr);
 
-      console.log( NAME_DIV_H );
-      console.log( _rowspan );
-
       if ( (_canvas_w/calc_canvas_h) >= 
             (img_aspect_ratio.num*_cols_nr)/(img_aspect_ratio.den*_rows_nr) ) {
          cam_h = parseInt(calc_canvas_h/_rows_nr);
