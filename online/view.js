@@ -160,6 +160,16 @@ function img_click(clicked_div) {
          	 $(tmp_div).show();
           }
        }
+      
+  	//меняем кнопку на Развернуть
+      $('img', '#cell_header_'+win_nr)
+      .height($('#cell_header_'+win_nr).height()-4)
+      .attr({
+      	'src': "../img/fs.png",
+      	'title':'Развернуть',
+      });
+
+      
        FS_WIN_DIV = undefined;
       
    } else {
@@ -215,7 +225,17 @@ function img_click(clicked_div) {
         		$('.pl_cont',clicked_div_jq).aplayerSetMjpegSrc( current_src );
         	}
         }
-      
+    	
+    	//меняем кнопку на Свернуть
+        $('img', '#cell_header_'+win_nr)
+        .height($('#cell_header_'+win_nr).height()-4)
+        .attr({
+        	'src': "../img/tc.png",
+        	'title':'Свернуть'
+        });
+ 
+        
+        
       FS_WIN_DIV = clicked_div;
       
    }
@@ -689,6 +709,13 @@ function canvas_growth() {
     * Выводит раскладку с он-лайн камерами в канвас
     */
    function fill_canvas(){
+
+	   var ico_fs = new Image();
+	   ico_fs.src =  "../img/fs.png";
+	   var ico_tc = new Image();
+	   ico_tc.src =  "../img/tc.png";
+	   
+	   
        if (ie||ns6) {
            tipobj=document.all? 
            document.all['tooltip'] :
@@ -753,13 +780,26 @@ function canvas_growth() {
                                              '" target="_blank" style="color:inherit;" title="Перейти в веб интерфейс IP-камеры">';
                     ipcamhost_link_end   = ' &rarr;<\/a>';
                  }
-                 $('<div id="cell_header_'+win_nr+'" style="background-color:#666699;'+
+                 var hdr = $('<div id="cell_header_'+win_nr+'" style="background-color:#555588;'+ // #666699
                        ' padding:0px; margin:0px; overflow:hidden; border:0px;'+
                        ' height:'+ NAME_DIV_H*win_def.rowspan +'px;"><span style="'+
                        'vertical-align: middle; padding-left:8px; padding-top:2px; padding-bottom:2px; padding-right:2px;'+
                        ' color:#e5e5e5; font-size:'+14*win_def.rowspan+'px; font-weight: bold; width:100%; overflow:hidden;">'+
                        ipcamhost_link_begin + WINS_DEF[win_nr].cam.name + ipcamhost_link_end +
-                       '<\/span><\/div>').appendTo(win_div);
+                       '<\/span><\/div>')
+                       .appendTo(win_div);
+
+                 $('<img src="'+ico_fs.src+'" title="Развернуть">')
+                 .height($(hdr).height()-4)
+                 .css({
+                	 'position':'absolute',
+                	 'cursor':'pointer',
+                	 'top':'1px',
+                	 'right':'1px'
+                 })
+                 .appendTo(hdr);
+                 
+                 
               }
               brout(win_nr, win_div, win_geo);
            }
