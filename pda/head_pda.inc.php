@@ -3,6 +3,7 @@
  * @file pda/head_pda.inc.php
  * @brief 
  */
+
 ob_start();
 $sess_name = 'avreg_pda';
 session_set_cookie_params(null, dirname($_SERVER['SCRIPT_NAME']) . '/');
@@ -60,9 +61,9 @@ if ( isset($css_links) && is_array($css_links))
       print '<link href="'.$conf['prefix'].'/'.$__css_link.'" rel="stylesheet" type="text/css" />'."\n";
 if ( isset($USE_JQUERY) ) {
    if ( $conf['debug'] )
-      print '<script type="text/javascript" src="'.$conf['prefix'].'/lib/js/jquery-1.4.2.js"></script>'."\n";
+      print '<script type="text/javascript" src="'.$conf['prefix'].'/lib/js/jquery-1.7.1.min.js"></script>'."\n";
    else
-      print '<script type="text/javascript" src="'.$conf['prefix'].'/lib/js/jquery-1.4.2.min.js"></script>'."\n";
+      print '<script type="text/javascript" src="'.$conf['prefix'].'/lib/js/jquery-1.7.1.min.js"></script>'."\n";
 }
 if ( isset($link_javascripts) && is_array($link_javascripts))
    foreach ($link_javascripts as &$__js_link)

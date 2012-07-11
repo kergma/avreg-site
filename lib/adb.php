@@ -384,6 +384,7 @@ class Adb {
 	* @return array масив событий
     */
    public function get_pda_events($cams_csv, $timebegin, $timeend , $order = ''){
+   	
       $files = array();
       $query = 'SELECT '.$this->_date_part('timestamp', 'E1.DT1').' as START, '.$this->_date_part('timestamp', 'E2.DT1').' as FINISH,  E1.CAM_NR, E1.SESS_NR AS SESS_NR';
       $query .= ' FROM EVENTS AS E1';
@@ -392,7 +393,9 @@ class Adb {
       $query .= " AND E1.EVT_ID in (13)";
       $query .= " AND ((E1.DT1 between '$timebegin' and '$timeend') and (E2.DT1 is null or E2.DT1 between '$timebegin' and '$timeend'))";
       $query .= " ORDER BY E1.DT1 " .$order;
+      
       $res = $this->_db->query($query);
+      
       $this->_error($res);
       while($res->fetchInto($line)){
          $f = array();

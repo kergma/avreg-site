@@ -2210,7 +2210,8 @@ var matrix = {
 	//возвращает src ресайзенного изображения
 	getResizedImageSrc : function(cell_num, height, width){
 		//формируем строку src
-		var ResizedImgSrc = '/avreg/offline/gallery/ResizeImg.php?url=http://'+document.location.host+MediaUrlPref+ matrix.events[cell_num][2];
+		var ResizedImgSrc = '/avreg/lib/resize_img.php?url=http://'+document.location.host+MediaUrlPref+ matrix.events[cell_num][2];
+
 		ResizedImgSrc += '&h='+height;
 		ResizedImgSrc += '&w='+width;						
 		ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';

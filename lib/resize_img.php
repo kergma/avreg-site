@@ -3,7 +3,9 @@
 
 	//Загрузка исходнгого изображения
 	$id = $_GET['url'];
-
+	
+//	$id = 'http://localhost/avreg/media/aqua_01.jpg';
+	
 // пробуем открыть файл для чтения
 if (@fopen($id, "r")) {
 
@@ -23,7 +25,7 @@ if (@fopen($id, "r")) {
 	$new_width = $w;
 	$new_height = $h;
 	
-	$saveProp = $_GET['prop'];
+	$saveProp = isset($_GET['prop'])? $_GET['prop'] : true;
 	//режим сохранять пропорции?
 	if($saveProp=='true')
 	{
