@@ -3,9 +3,7 @@
 
 	//Загрузка исходнгого изображения
 	$id = $_GET['url'];
-	
-//	$id = 'http://localhost/avreg/media/aqua_01.jpg';
-	
+
 // пробуем открыть файл для чтения
 if (@fopen($id, "r")) {
 
