@@ -46,18 +46,6 @@ $(document).ready( function() {
 	ico_tc.src =  "../img/tc.png";
 	//Запуск сценария	   
 	fill_canvas();
-	
-	$('.MediaCont').mousedown(function(e){ 
-		e.preventDefault();
-		 hideddrivetip(); 
-		 $(e.currentTarget).addClass('cursorMove');
-		 return false;
-	});
-	$('#canvas').mouseup(function(e){ 
-		$('.MediaCont').removeClass('cursorMove');
-	});
-
-	
 });
 
 
@@ -826,6 +814,18 @@ function canvas_growth() {
    $("#toolbar table tr")
    .html('<td>'+layouts_to_list()+'</td>');
            
+    //Убрать тултип при перетаскивании
+	$('.MediaCont').mousedown(function(e){ 
+		e.preventDefault();
+		 hideddrivetip(); 
+		 $(e.currentTarget).addClass('cursorMove');
+		 return false;
+	});
+	$('#canvas').mouseup(function(e){ 
+		$('.MediaCont').removeClass('cursorMove');
+	});
+   
+   
 }
   
    
