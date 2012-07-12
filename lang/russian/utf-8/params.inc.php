@@ -10,6 +10,8 @@ $vid_standarts = array ('PAL (цв.в/к)', 'NTSC (цв.в/к)', 'SECAM (не д
 $video_sources = array('video4linux', 'http', 'rtsp');
 $audio_sources = array('alsa', 'http', 'rtsp');
 
+$rtsp_transport = array('udp', 'tcp', 'udp_multicast', 'http');
+
 $v4l_hacks = array('v4lver1', 'v4lver1+block');
 
 $str_audio_force_fmt = array(
@@ -601,7 +603,7 @@ array(
    <br /><b>/axis-media/media.amp?resolution=640x480&amp;videocodec=h264&amp;audio=0</b>
    <br /><br />Не знаете запрос для вашей камеры - читайте <a href="http://www.soleratec.com/rtsp/" target="_blank">здесь &gt;&gt;</a>
    <br /><br />По умолчанию: <b>&quot;не установлено&quot;</b>',
-   'flags'=>$F_BASEPAR | $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
+   'flags'   => $F_BASEPAR | $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
    'cats'    => '3.1.2',
    'subcats' => NULL,
    'mstatus' => 1,
@@ -611,8 +613,42 @@ array(
    'name'    => 'InetCam_rtsp_port',
    'type'    => $INT_VAL,
    'def_val' => 554,
-   'desc'    => '<b>Номер порта TCP/IP</b> на котором сетевая камера или видеосервер слушают запросы RTSP.<br />По умолчанию: &quot;<b>554</b>&quot;.',
+   'desc'    => '<b>Номер порта TCP/IP</b> RTSP-сервера сетевай камеры или видеосервера.<br />По умолчанию: &quot;<b>554</b>&quot;.',
    'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
+   'cats'    => '3.1.2',
+   'subcats' => NULL,
+   'mstatus' => 1,
+),
+
+
+array(
+   'name'    => 'rtsp_transport',
+   'type'    => $CHECK_VAL,
+   'def_val' => 'tcp',
+   'desc'    => 'Транспортный протокол нижнего уровня для сеанса rtsp: udp, tcp, udp_multicast, http.<br />По умолчанию: &quot;<b>tcp</b>&quot;.',
+   'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
+   'cats'    => '3.1.2',
+   'subcats' => NULL,
+   'mstatus' => 1,
+),
+
+array(
+   'name'    => 'max_analize_duration',
+   'type'    => $INT_VAL,
+   'def_val' => 3,
+   'desc'    => 'Макс. время в секундах на анализ потока.<br />По умолчанию: <b>3</b> сек.',
+   'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
+   'cats'    => '3.1.2',
+   'subcats' => NULL,
+   'mstatus' => 1,
+),
+
+array(
+   'name'    => 'max_delay',
+   'type'    => $INT_VAL,
+   'def_val' => 2,
+   'desc'    => 'Макс. время в секундах на сортировку RTP(поверх UDP) пакетов в правильный порядок.<br />По умолчанию: <b>2</b> сек.',
+   'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
    'cats'    => '3.1.2',
    'subcats' => NULL,
    'mstatus' => 1,

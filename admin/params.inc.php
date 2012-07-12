@@ -190,6 +190,10 @@ function checkParam ( $parname, $parval )
       $ret = getSelectHtmlByName('fields['.$parname.']', $GLOBALS['audio_sources'], FALSE, 1, 0, $parval, TRUE, FALSE);
       break;
 
+   case 'rtsp_transport':
+      $ret = getSelectHtmlByName('fields['.$parname.']', $GLOBALS['rtsp_transport'], FALSE, 1, 0, $parval, TRUE, FALSE);
+      break;
+
    case 'rec_mode':
       if ( $parval == '' || is_null($parval))
          $sel = '';
