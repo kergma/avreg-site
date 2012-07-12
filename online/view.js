@@ -46,6 +46,18 @@ $(document).ready( function() {
 	ico_tc.src =  "../img/tc.png";
 	//Запуск сценария	   
 	fill_canvas();
+	
+	$('.MediaCont').mousedown(function(e){ 
+		e.preventDefault();
+		 hideddrivetip(); 
+		 $(e.currentTarget).addClass('cursorMove');
+		 return false;
+	});
+	$('#canvas').mouseup(function(e){ 
+		$('.MediaCont').removeClass('cursorMove');
+	});
+
+	
 });
 
 
@@ -287,7 +299,7 @@ function brout(win_nr, win_div, win_geo) {
 	});
 	   
 	   //установка тултипа
-      win_div.mouseover( function() { img_mouseover(this, win_nr);} );
+      $(win_div).bind('mouseover', function() { img_mouseover(this, win_nr);} );
       win_div.mouseout( function() { hideddrivetip(); } ); 
    
 }

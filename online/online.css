@@ -12,3 +12,7 @@
 .selectedLayout{
 	background-color: Black;
 }
+
+.cursorMove{
+	cursor:move;
+}
