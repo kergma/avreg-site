@@ -36,21 +36,18 @@ if(!count($result)) {
 
 //Номер камеры по умолчанию
 $def_cam = null;
-
-//Поиск расколадки по умолчанию
+$cur_layout = 0;
+//Поиск раскладки по умолчанию
 foreach($result as $key=>$value){
 	if($value['IS_DEFAULT']!='0'){
 		$def_cam = $value;
-		setcookie('cur_layout', $key);
+		$cur_layout = $key;
 	}
 }
-//Если расколадка по умолчанию не найдена - используем первую
+//Если раскладка по умолчанию не найдена - используем первую
 if ($def_cam == null){
 	$def_cam = $result[0];
-	setcookie('cur_layout', 0);
 }
-
-
 
 //Определяем соответствующие параметры
 $PrintCamNames =  $def_cam['PRINT_CAM_NAME'];
@@ -89,6 +86,9 @@ while (@ob_end_flush());
 <?php
 
 echo "<script type='text/javascript'>\n";
+
+//устанавливаем yjvth текущtq раскладкb
+print "var cur_layout = $cur_layout; \n";
 
 //Передаем в JS список существующих раскладок
 print "var layouts_list = ".json_encode($result).";\n";
@@ -132,6 +132,9 @@ $GCP_query_param_list=array('work', 'allow_networks', 'text_left', 'geometry', '
 if ( $operator_user )
    array_push($GCP_query_param_list, 'cam_type', 'InetCam_IP');
 require('../lib/get_cams_params.inc.php');
+
+
+
 
 if ( $GCP_cams_nr == 0 )
    die('There are no available cameras!'); 
@@ -205,12 +208,12 @@ for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
    		$active_cams_srcs[$win_nr]['fs']=$GCP_cams_params[$cam_nr]['fs_url_alt_2'];
    		break;
    }
-
    
    if ( $operator_user && ( $GCP_cams_params[$cam_nr]['cam_type'] == 'netcam' ) )
       $netcam_host = '"' . $GCP_cams_params[$cam_nr]['InetCam_IP'] . '"';
    else
       $netcam_host = 'null';
+   
    printf(
 'WINS_DEF[%d]={
    row: %u,
@@ -288,9 +291,6 @@ print "var COLS_NR = $l_defs[2];\n";
  readfile('view.js');
 
 echo "</script>\n";
-
-
-// print '<pre>'; var_export($active_cams_srcs);  print '</pre>'; //-----> TO DELETE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 if ( !empty($msie_addons_scripts) || is_array($msie_addons_scripts) )  {
    foreach ($msie_addons_scripts as $value)

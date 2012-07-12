@@ -38,9 +38,7 @@ var NAME_DIV_H = PrintCamNames?20:0;
 ///корректировка размеров контейнера для плеера
 var CORRECT_H = 2; var CORRECT_W = 2; 
 
-
 $(document).ready( function() {
-//	cookie.setCookie('cur_layout', null, 0);
 	//Кнопки свернуть/развернуть
 	var ico_fs = new Image();
 	ico_fs.src =  "../img/fs.png";
@@ -491,7 +489,6 @@ function canvas_growth() {
     */
 
    function layouts_to_list(){
-	   var cur_layout = cookie.getCookie('cur_layout');
 	   var html = '<div>';
    	$.each(layouts_list, function(i, value){
    		html+='<div class="layout'+((cur_layout==value.MON_NR)? ' selectedLayout':'' )+'" ><a id="layout_'+value.MON_NR+'" onclick="change_layout('+value.MON_NR+')" href="#">';
@@ -519,7 +516,8 @@ function canvas_growth() {
    	//Пропорции
    	var AspectRatio;
 
-   	cookie.setCookie('cur_layout', mon_nr, 1);
+   	
+   	cur_layout = mon_nr;
    	
    	//Устанавливаем целевую раскладку
    	$.each(layouts_list, function(i, value){
@@ -782,7 +780,7 @@ function canvas_growth() {
                                              '" target="_blank" style="color:inherit;" title="Перейти в веб интерфейс IP-камеры">';
                     ipcamhost_link_end   = ' &rarr;<\/a>';
                  }
-                 var hdr = $('<div id="cell_header_'+win_nr+'" style="background-color:#555588;'+ // #666699
+                 var hdr = $('<div id="cell_header_'+win_nr+'" style="cursor:default; background-color:#555588;'+ // #666699
                        ' padding:0px; margin:0px; overflow:hidden; border:0px;'+
                        ' height:'+ NAME_DIV_H*win_def.rowspan +'px;"><span style="'+
                        'vertical-align: middle; padding-left:8px; padding-top:2px; padding-bottom:2px; padding-right:2px;'+
