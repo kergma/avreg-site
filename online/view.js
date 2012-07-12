@@ -39,9 +39,14 @@ var NAME_DIV_H = PrintCamNames?20:0;
 var CORRECT_H = 2; var CORRECT_W = 2; 
 
 
-
-//Запуск сценария
 $(document).ready( function() {
+//	cookie.setCookie('cur_layout', null, 0);
+	//Кнопки свернуть/развернуть
+	var ico_fs = new Image();
+	ico_fs.src =  "../img/fs.png";
+	var ico_tc = new Image();
+	ico_tc.src =  "../img/tc.png";
+	//Запуск сценария	   
 	fill_canvas();
 });
 
@@ -486,10 +491,10 @@ function canvas_growth() {
     */
 
    function layouts_to_list(){
-   var html = '<div>';
-   	
+	   var cur_layout = cookie.getCookie('cur_layout');
+	   var html = '<div>';
    	$.each(layouts_list, function(i, value){
-   		html+='<div style="float:left; padding:5px;"><a id="layout_'+value.MON_NR+'" onclick="change_layout('+value.MON_NR+')" href="#">';
+   		html+='<div class="layout'+((cur_layout==value.MON_NR)? ' selectedLayout':'' )+'" ><a id="layout_'+value.MON_NR+'" onclick="change_layout('+value.MON_NR+')" href="#">';
    		html+= (value.SHORT_NAME==''? value.MON_TYPE :value.SHORT_NAME);
    		html+= (value.IS_DEFAULT==1? '(def)' :'');
    		html+='</a>&nbsp;&nbsp;&nbsp;&nbsp;</div>';
@@ -514,6 +519,8 @@ function canvas_growth() {
    	//Пропорции
    	var AspectRatio;
 
+   	cookie.setCookie('cur_layout', mon_nr, 1);
+   	
    	//Устанавливаем целевую раскладку
    	$.each(layouts_list, function(i, value){
    		if(value['MON_NR']==mon_nr){
@@ -635,6 +642,7 @@ function canvas_growth() {
    	COLS_NR = l_defs[2];
    	
    	fill_canvas();
+   	
    }
 
 
@@ -709,12 +717,6 @@ function canvas_growth() {
     * Выводит раскладку с он-лайн камерами в канвас
     */
    function fill_canvas(){
-
-	   var ico_fs = new Image();
-	   ico_fs.src =  "../img/fs.png";
-	   var ico_tc = new Image();
-	   ico_tc.src =  "../img/tc.png";
-	   
 	   
        if (ie||ns6) {
            tipobj=document.all? 
@@ -789,7 +791,7 @@ function canvas_growth() {
                        '<\/span><\/div>')
                        .appendTo(win_div);
 
-                 $('<img src="'+ico_fs.src+'" title="Развернуть">')
+                 $('<img src="../img/fs.png" title="Развернуть">')
                  .height($(hdr).height()-4)
                  .css({
                 	 'position':'absolute',
@@ -811,8 +813,46 @@ function canvas_growth() {
    });
 
    //Выводим список камер
-   $("#toolbar table tr").html('<td>'+layouts_to_list()+'</td>');
+   $("#toolbar table tr")
+   .html('<td>'+layouts_to_list()+'</td>');
            
-   }
+}
   
+   
+var cookie = {
+		getCookie : function(c_name)
+		{
+			var i,x,y,ARRcookies=document.cookie.split(";");
+			for (i=0;i<ARRcookies.length;i++)
+			  {
+			  x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+			  y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+			  x=x.replace(/^\s+|\s+$/g,"");
+			  if (x==c_name)
+			    {
+			    return unescape(y);
+			    };
+			  };
+		},
+
+		setCookie : function(c_name,value,exdays)
+		{
+			var exdate=new Date();
+			exdate.setDate(exdate.getDate() + exdays);
+			var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+			document.cookie=c_name + "=" + c_value;
+		},
+
+};
+   
+ 
+   
+   
+   
+   
+   
+   
+   
+   
+   
    

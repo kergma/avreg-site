@@ -9,7 +9,10 @@
 $NO_OB_END_FLUSH = true; // for setcookie()
 $pageTitle = 'WebCam';
 $body_style='overflow: hidden;  overflow-y: hidden !important; padding: 0; margin: 0; width: 100%; height: 100%;';
-$css_links=array('lib/js/jqModal.css');
+$css_links=array(
+						'lib/js/jqModal.css',
+						'online/online.css'
+);
 $USE_JQUERY = true;
 $link_javascripts=array(
 						'lib/js/jqModal.js', 
@@ -36,12 +39,18 @@ $def_cam = null;
 
 //Поиск расколадки по умолчанию
 foreach($result as $key=>$value){
-	if($value['IS_DEFAULT']!='0') $def_cam = $value;
+	if($value['IS_DEFAULT']!='0'){
+		$def_cam = $value;
+		setcookie('cur_layout', $key);
+	}
 }
 //Если расколадка по умолчанию не найдена - используем первую
 if ($def_cam == null){
 	$def_cam = $result[0];
+	setcookie('cur_layout', 0);
 }
+
+
 
 //Определяем соответствующие параметры
 $PrintCamNames =  $def_cam['PRINT_CAM_NAME'];

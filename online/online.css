@@ -1,0 +1,14 @@
+@CHARSET "UTF-8";
+
+.layout{
+	float:left; 
+	padding:5px;
+}
+
+.layout a{
+	color:#ffffff;
+}
+
+.selectedLayout{
+	background-color: Black;
+}
