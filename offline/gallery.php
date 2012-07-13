@@ -36,9 +36,9 @@ if (!isset($_POST['method']) && !isset($_GET['method'])) {
 	/// Подключение js скриптов
 	$link_javascripts = array(
 								'lib/js/jquery-ui-1.8.17.custom.min.js',
+								'lib/js/jquery.mousewheel.min.js',
 								'lib/js/jquery.aplayer.js',
 								'offline/gallery/js/jquery.jstree.js',
-								'offline/gallery/js/jquery.mousewheel.min.js',
 								'offline/gallery/js/main.js',
 								'offline/gallery/js/jquery.scrollTo-min.js',
 								'offline/gallery/js/jquery.checkbox.js',
