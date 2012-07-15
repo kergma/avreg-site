@@ -7,8 +7,23 @@
 // пробуем открыть файл для чтения
 if (@fopen($id, "r")) {
 
-	
-	$im = imagecreatefromjpeg($id);
+	$path_info = pathinfo($id);
+	switch ($path_info['extension']) {
+		case 'jpeg':
+		case 'jpg':
+		case 'JPEG':
+		case 'JPG':
+			$image_type = IMG_JPEG;
+			$im = @imagecreatefromjpeg($id);
+			break;
+		case 'png':
+		case 'PNG':
+			$image_type = IMG_PNG;
+			$im = @imagecreatefromjpeg($id);
+			break;
+		default:
+			die("only jpeg and png supported");
+	}
 	
 	//Определение размеров исходного изображения
 	$im_width=imageSX($im);
