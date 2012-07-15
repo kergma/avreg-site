@@ -137,27 +137,43 @@ if ( $is_local ) {
    }
 }
 
-
 /// ширина изображения
 $width_src  = imagesx($gd);
 /// высота изображения
 $height_src = imagesy($gd);
-/// новая ширина
-$width_new = $conf['pda-max-image-width'];
-if ( !empty($_REQUEST['width']) ) {
-   if ( (int)$_REQUEST['width'] < $width_new )
-      $width_new = (int)$_REQUEST['width'];
+
+//-->>
+// //размеры отображения
+ $w = (int)$_GET['width'];
+ $h = (int)$_GET['height'];
+
+// //resulted sizes
+ $new_width = $w;
+ $new_height = $h;
+
+$saveProp = isset($_GET['prop'])? $_GET['prop'] : true;
+//режим сохранять пропорции?
+if($saveProp=='true')
+{
+	$im_proportion = $width_src/$height_src;
+	$el_proportion = $w/$h;
+
+	if($im_proportion > $el_proportion )
+	{
+		$new_height = round($w/$im_proportion);
+	}
+	else
+	{
+		$new_width = round($h*$im_proportion);
+	}
 }
-if ( empty($_REQUEST['height']) ) {
-   $height_new = (int)(((float)$width_new / (float)$width_src) * (float)$height_src);
-} else
-/// новая высота
-   $height_new = (int)$_REQUEST['height'];
-// die("[$width_src x $height_src] -> [$width_new x $height_new]");
+
 /// новое изображение
-$thumb = imagecreatetruecolor($width_new, $height_new);
+$thumb = imagecreatetruecolor($new_width, $new_height);
 // Resize
-imagecopyresized($thumb, $gd, 0, 0, 0, 0, $width_new, $height_new, $width_src, $height_src);
+imagecopyresized($thumb, $gd, 0, 0, 0, 0, $new_width, $new_height, $width_src, $height_src);
+//-->>
+
 /// дата для заголовков
 $gmt_now = gmdate('D, d M Y H:i:s', $now) . ' GMT';
 if ( $is_local ) {

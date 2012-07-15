@@ -51,75 +51,22 @@ if ( isset($_SESSION[$files_sess_var_name]) ) {
 }
 session_write_close();
 
-//изменение масштаба
+//масштаб изображений
+$scale=0;
+if(isset($_GET['scl']))$scale = $_GET['scl'];
+include_once ('scale.inc.php');
 $tumb_sizes = get_scales($conf['pda_scale']);
 if($tumb_sizes == null || sizeof($tumb_sizes)==0 ){
 	//если ничего в конфиге не определено
 	$tumb_sizes = array(0=>array('w' => '160', 'h' => '80',));
 }
-//добавляем контролы масштаба
-print '<div id="scale">'."\n";
-print '<input type="button" value="-" id="zoomout"  />'."\n";
-print '<input type="button" value="+" id="zoomin" />'."\n";
-print "	</div>\n";
 
 ?>
 
-<script type="text/javascript" >
-
-var SELF_ADR = <?php print "\"".$_SERVER['REQUEST_URI']."\"" ; ?>; 
-var TOTAL_SCLS = <?php print sizeof($tumb_sizes); ?>; //кол-во предопределенных значений масштаба 
-
-	$(function(){
-		var expr = new RegExp('scl=\\d+', 'ig');
-		var scale = 0;
-		var isscl = expr.test(SELF_ADR);
-		//определяем текущий масштаб			
-		if(isscl){
-			scale = SELF_ADR.match(expr)[0];
-			scale = parseInt(scale.replace('scl=', ''));
-		}
-
-		if(scale>=TOTAL_SCLS-1){
-			 $('#zoomin').attr({'disabled':'disabled'});
-		}
-		if(scale<=0){
-			$('#zoomout').attr({'disabled':'disabled'});
-		}
-		//нажатие кнопоку изменения масштаба 
-		$('#scale>input[type=button]').click(function(e){
-			var act = SELF_ADR ; 
-			var toReload = true;
-			//устанавливаем новое значение масштаба 
-			if( $(e.target).attr('id')=='zoomin' ){
-				scale++;		
-				if(scale>= TOTAL_SCLS){
-					 scale = TOTAL_SCLS-1;
-					 toReload = false;
-				}
-			}
-			else{
-				scale--;
-				if(scale<0){
-					scale=0;
-					toReload = false;
-				}
-			}
-			if(isscl){
-				//если значение масштаба уже установлено 
-				act= act.replace(expr, "scl=" + scale );
-			}
-			else{
-				act +=  "&scl=" + scale;
-			}
-			if(toReload)window.open(act,'_self');
-		});
-	});
-	
-
+<script type="text/javascript">
+	var SELF_ADR = <?php print "\"".$_SERVER['REQUEST_URI']."\"" ; ?>;
+	var TOTAL_SCLS = <?php print sizeof($tumb_sizes); ?>; //кол-во предопределенных значений масштаба 
 </script>
-	
-	
 
 <?php 
 
@@ -167,31 +114,5 @@ if ($recsess_list_url)
 print "<a href='./' title='$strHome'>$strHome</a></div>\n";
 
 require ('../foot.inc.php');
-
-
-//сортирует массив размеров
-function get_scales($scales, $orderByWidth=true){
-	$sizes = array();
-	foreach($scales as $key=>$value ){
-		$temp;
-		preg_match_all('/\d+/', $value, $temp); 
-		if(sizeof($temp[0])!=2) continue;
-		$sizes[$key]=array('w'=>$temp[0][0], 'h'=>$temp[0][1]);
-	}
-	if($orderByWidth) usort($sizes, 'sort_by_width');
-	else usort($sizes, 'sort_by_height');
-	return  $sizes;
-}
-
-//предикаты сортировки
-function sort_by_width($f, $s){
-	return $f['w']-$s['w'];
-} 
-function sort_by_height($f, $s){
-	return $f['h']-$s['h'];
-}
-
-
-
 
 ?>

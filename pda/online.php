@@ -3,6 +3,9 @@
  * @file pda/online.php
  * @brief 
  */
+
+$USE_JQUERY = true;
+
 $pageTitle = sprintf('Камера №%u', $_GET['camera']);
 // $body_onload='body_loaded();';
 require ('head_pda.inc.php');
@@ -20,9 +23,27 @@ list($w, $h) = sscanf($cam_conf['geometry'], '%ux%u');
 if ( $cam_conf['Hx2'] )
    $h *= 2;
 $cam_url = "../lib/img_resize.php?camera=$camera";
+
+//масштаб изображений
+$scale=0;
+if(isset($_GET['scl']))$scale = $_GET['scl'];
+include_once ('scale.inc.php');
+$tumb_sizes = get_scales($conf['pda_online_scale']);
+if($tumb_sizes == null || sizeof($tumb_sizes)==0 ){
+	//если ничего в конфиге не определено
+	$tumb_sizes = array(0=>array('w' => '160', 'h' => '80',));
+}
+
+$width = $tumb_sizes[$scale]['w'];
+$heigt = $tumb_sizes[$scale]['h'];
+
 ?>
 
 <script type="text/javascript">
+	//переменные масштаба изображений 
+	var SELF_ADR = <?php print "\"".$_SERVER['REQUEST_URI']."\"" ; ?>;
+	var TOTAL_SCLS = <?php print sizeof($tumb_sizes); ?>; //кол-во предопределенных значений масштаба 
+
 function img_evt(e_id)
 {
    if ( (typeof window.img_evt2).charAt(0) != 'u' )
@@ -48,12 +69,19 @@ if ( !isset($refresh) ) {
    } else
       $refresh = 0;
 
-   printf('<IMG id="viewport" src="%s&width=%u" width="%u" style="border: 1px solid;" alt="%s снапшот" onerror="img_evt(1);" />',
-      $cam_url, $conf['pda-thumb-image-width'], $conf['pda-thumb-image-width'], $cam_name);
+   printf('<IMG id="viewport" src="%s&width=%u&height=%u" style="border: 1px solid;" alt="%s снапшот" onerror="img_evt(1);" />',
+   $cam_url,
+   $width,
+   $heigt,
+   $cam_name
+   );
+   
+   
 ?>
 <br>
 <form action="online.php" method="GET">
 <input type="hidden" name='camera' value="<?php echo $camera; ?>">
+<input type="hidden" name='scl' value="<?php echo $scale; ?>">
 <div>
 Обновлять изображение: 
 <?php print getSelectByAssocAr('refresh', $refresh_img_a, false, 1, 1, $refresh, false); ?>
@@ -65,14 +93,17 @@ if ( !isset($refresh) ) {
 </form>
 <?php
 } else {
-   /* смотрим детально и с обновлениями */
+	
+	/* смотрим детально и с обновлениями */
    $_SESSION['refresh'] = $refresh;
-
+   $scale = $_GET['scale'];
+   $cam_url.="&width=$width&height=$heigt&scl=&$scale";
    printf('<IMG id="viewport" src="%s"
       alt="Загружается изображение с %s ..."
       border="1px"
       onclick="refresh_img();" onload="img_evt(0);" onerror="img_evt(1);" oabort="img_evt(2);">',
-         $cam_url,  $cam_name);
+        $cam_url,  
+   		$cam_name);
 }
 ?>
 

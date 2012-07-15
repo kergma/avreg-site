@@ -105,6 +105,8 @@ $strHome = 'К началу';
 $strHost = 'Хост';
 $strHostEmpty = 'Пустое имя хоста!';
 
+$strScale = 'Масштаб';
+
 $strIdxFulltext = 'ПолнТекст';
 $strIgnore = 'Игнорировать';
 $strInsert = 'Вставить';
