@@ -36,7 +36,7 @@ var FS_WIN_DIV;
 var NAME_DIV_H = PrintCamNames?20:0;
 
 ///корректировка размеров контейнера для плеера
-var CORRECT_H = 2; var CORRECT_W = 2; 
+var CORRECT_H = 3; var CORRECT_W = 3; 
 
 $(document).ready( function() {
 	//Кнопки свернуть/развернуть
@@ -767,7 +767,7 @@ function canvas_growth() {
                     ' border-left: '+BorderLeft+'px solid  #ffa500;' +
                     ' border-bottom: '+BorderBottom+'px solid  #ffa500;' +
                     ' border-right: '+BorderRight+'px solid  #ffa500;' + 
-                    ' z-index=-' + win_nr + ';' +
+                    ' z-index: 30;' +
                     '"><\/div>');
               win_div.appendTo(CANVAS);
 
