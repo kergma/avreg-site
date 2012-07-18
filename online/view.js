@@ -264,11 +264,16 @@ function brout(win_nr, win_div, win_geo) {
    
    //Установка плеера в элемент  // win_geo.cam_h 
    var cont = $('<div class="pl_cont" />').width(win_geo.cam_w+CORRECT_W).height(win_geo.cam_h+CORRECT_H);
-
-   console.log(url);
    
 	$(win_div).append(cont);
-	$(cont).addPlayer({'src': url , 'controls': false, 'scale':'on', 'mediaType' : 'mjpeg', 'autostart':'on' }); 
+	$(cont).addPlayer({
+		'src': url , 
+		'controls': false, 
+		'scale':'on', 
+		'mediaType' : 'mjpeg', 
+		'autostart':'on', 
+		'aplayer_rtsp_php':'http://'+SERVER_ADR+'/avreg/lib/js/aplayer_rtsp.php' 
+	}); 
 	
 	if ( MSIE ){
 		$(win_div).width(win_geo.win_w+CORRECT_W).height(win_geo.win_h+CORRECT_H);

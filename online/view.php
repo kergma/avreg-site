@@ -163,6 +163,7 @@ print "var GCP_cams_params = ".json_encode($GCP_cams_params).";\n";
 print "var operator_user = ".json_encode($operator_user).";\n";
 
 
+
 //для js сопоставление камер и источников
 $active_cams_srcs = array();
 
@@ -286,6 +287,7 @@ print 'var ___abenc="'.base64_encode($user_info['USER'].':'.$_SERVER["PHP_AUTH_P
 print "var WINS_NR = $wins_nr;\n";
 print "var ROWS_NR = $l_defs[1];\n";
 print "var COLS_NR = $l_defs[2];\n";
+print "var SERVER_ADR = '{$_SERVER['SERVER_NAME']}';\n";
 
 
 //Подключаем файл 
@@ -293,10 +295,15 @@ print "var COLS_NR = $l_defs[2];\n";
 
 echo "</script>\n";
 
+
+
+
+
 if ( !empty($msie_addons_scripts) || is_array($msie_addons_scripts) )  {
    foreach ($msie_addons_scripts as $value)
       print "$value\n";
 }
+
 
 require ('../foot.inc.php');
 ?>

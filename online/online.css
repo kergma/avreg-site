@@ -16,3 +16,7 @@
 .cursorMove{
 	cursor:move;
 }
+
+.win{
+	overflow: hidden; 
+}
