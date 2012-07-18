@@ -38,12 +38,29 @@ var NAME_DIV_H = PrintCamNames?20:0;
 ///корректировка размеров контейнера для плеера
 var CORRECT_H = 4; var CORRECT_W = 4; 
 
+var imgs = new Array();
+
 $(document).ready( function() {
 	//Кнопки свернуть/развернуть
-	var ico_fs = new Image();
-	ico_fs.src =  "../img/fs.png";
-	var ico_tc = new Image();
-	ico_tc.src =  "../img/tc.png";
+	imgs['fs'] = new Image();
+	imgs['fs'].src =  "../img/fs.png";
+	imgs['tc'] = new Image();
+	imgs['tc'].src =  "../img/tc.png";
+	//шестерня - тулбар
+	imgs['gearwheel'] = new Image();
+	imgs['gearwheel'].src =  "../img/gearwheel.png";
+	//плэй
+	imgs['pl_start'] = new Image();
+	imgs['pl_start'].src =  "../img/StepForwardNormalBlue.png";
+	//стоп
+	imgs['pl_stop'] = new Image();
+	imgs['pl_stop'].src =  "../img/Stop1NormalBlue.png";
+	//масштаб - +/-
+	imgs['pl_plus'] = new Image();
+	imgs['pl_plus'].src =  "../img/ZoomIn.png";
+	imgs['pl_minus'] = new Image();
+	imgs['pl_minus'].src =  "../img/ZoomOut.png";
+
 	//Запуск сценария	   
 	fill_canvas();
 });
@@ -165,10 +182,10 @@ function img_click(clicked_div) {
        }
       
   	//меняем кнопку на Развернуть
-      $('img', '#cell_header_'+win_nr)
+      $('img.fs_tc', '#cell_header_'+win_nr)
       .height($('#cell_header_'+win_nr).height()-4)
       .attr({
-      	'src': "../img/fs.png",
+      	'src': imgs['fs'].src,
       	'title':'Развернуть',
       });
 
@@ -230,10 +247,10 @@ function img_click(clicked_div) {
         }
     	
     	//меняем кнопку на Свернуть
-        $('img', '#cell_header_'+win_nr)
+        $('img.fs_tc', '#cell_header_'+win_nr)
         .height($('#cell_header_'+win_nr).height()-4)
         .attr({
-        	'src': "../img/tc.png",
+        	'src': imgs['tc'].src,
         	'title':'Свернуть'
         });
  
@@ -788,26 +805,93 @@ function canvas_growth() {
                     ipcamhost_link_end   = ' &rarr;<\/a>';
                  }
                  var hdr = $('<div id="cell_header_'+win_nr+'" style="cursor:default; background-color:#555588;'+ // #666699
-                       ' padding:0px; margin:0px; overflow:hidden; border:0px;'+
-                       ' height:'+ NAME_DIV_H*win_def.rowspan +'px;"><span style="'+
-                       'vertical-align: middle; padding-left:8px; padding-top:2px; padding-bottom:2px; padding-right:2px;'+
-                       ' color:#e5e5e5; font-size:'+14*win_def.rowspan+'px; font-weight: bold; width:100%; overflow:hidden;">'+
+                       ' padding:0px; margin:0px; overflow:hidden; border:0px; height:'+ NAME_DIV_H*win_def.rowspan +'px;">'+
+                       '<span style="'+
+                       'vertical-align: middle; position: absolute; top: '+(NAME_DIV_H*win_def.rowspan/2 - 14)+'px; padding-left:8px; padding-top:2px; padding-bottom:2px; padding-right:2px;'+
+                       ' color:#e5e5e5; font-size:'+14 /* *win_def.rowspan*/+'px; font-weight: bold; width:100%; overflow:hidden;">'+
                        ipcamhost_link_begin + WINS_DEF[win_nr].cam.name + ipcamhost_link_end +
                        '<\/span><\/div>')
                        .appendTo(win_div);
-
-                 $('<img src="../img/fs.png" title="Развернуть">')
-                 .height($(hdr).height()-4)
+                 
+                 var ht = $(hdr).height()-4;
+                 //ToolBar
+                 var toolbar = $('<div class="tool_bar"></div>')
+                 .height(ht)
                  .css({
                 	 'position':'absolute',
-                	 'cursor':'pointer',
                 	 'top':'1px',
                 	 'right':'1px'
                  })
                  .appendTo(hdr);
                  
+                 //свернуть/развернуть
+                 $('<img src='+imgs['fs'].src+' class="tool fs_tc" title="Развернуть">')
+                 .height(ht-4)
+                 .appendTo(toolbar);
+                 //шестерня - вывести toolbar
+                 $('<img src='+imgs['gearwheel'].src+' id="gearwheel_'+win_nr+'" class="tool gearwheel" title="Отобразить панель управления" >')
+                 .height(ht-4)
+                 .click(function(e){
+                	 e.preventDefault();
+                	 e.stopPropagation();
+                	 controls_handlers.gearwheel_click(e);
+                	 return false;
+                 })
+                 .appendTo(toolbar);
+                 
+                 //панель контролов
+                 var start = $('<img id="pl_start_'+win_nr+'" class="pl_start" title="Старт" src='+imgs['pl_start'].src+' />')
+                 .height(ht-4)
+                 .click(function(e){
+                	 e.preventDefault();
+                	 e.stopPropagation();
+                	 controls_handlers.pl_start_click(e);
+                	 return false;
+                 })
+                 .hide();
+                 
+                 var stop =  $('<img id="pl_stop_'+win_nr+'" class="pl_stop" title="Стоп" src='+imgs['pl_stop'].src+' />')
+                 .height(ht-4)
+                 .click(function(e){
+                	 e.preventDefault();
+                	 e.stopPropagation();
+                	 controls_handlers.pl_stop_click(e);
+                	 return false;
+                 });
+                 
+                 var plus = $('<img id="pl_plus_'+win_nr+'" class="pl_plus" title="Старт" src='+imgs['pl_plus'].src+' />')
+                 .click(function(e){
+                	 e.preventDefault();
+                	 e.stopPropagation();
+                	 controls_handlers.pl_plus_click(e);
+                	 return false;
+                 })
+                 .height(ht-4);
+                 
+                 var minus = $('<img id="pl_minus_'+win_nr+'" class="pl_minus" title="Старт" src='+imgs['pl_minus'].src+' />')
+                 .click(function(e){
+                	 e.preventDefault();
+                	 e.stopPropagation();
+                	 controls_handlers.pl_minus_click(e);
+                	 return false;
+                 })
+                 .height(ht-4);
+                 
+                 $('<div class="pl_controls"></div>')
+                 .height(ht)
+                 .width($(hdr).width()-$(toolbar).width())
+                 .css({
+                	 'position':'absolute',
+                	 'top':'1px',
+                	 'left':'1px',
+                	 'padding': '3 5'
+                 })
+                 .append(start, stop, minus, plus)
+                 .hide()
+                 .prependTo(hdr);
                  
               }
+              //Установка плеера
               brout(win_nr, win_div, win_geo);
            }
 
@@ -816,7 +900,7 @@ function canvas_growth() {
            $('#dialog').jqm({
    overlay: 90
    });
-
+           
    //Выводим список камер
    $("#toolbar table tr")
    .html('<td>'+layouts_to_list()+'</td>');
@@ -834,11 +918,68 @@ function canvas_growth() {
    
    
 }
-  
-   
-
-   
  
+var controls_handlers = {   
+	/**
+	 * Скрывает.выводит панель инструментов для ячейки раскладки 
+	 * @param e - объект события
+	 */   
+	gearwheel_click : function(e){
+		
+		var gw = $(e.currentTarget);
+		var cell_nr = parseInt(($(gw).attr('id')).replace('gearwheel_',''));
+		var aplayer_id = $('.aplayer', '#win'+cell_nr).attr('id');
+	
+		if($('span',"#cell_header_"+cell_nr).hasClass('hidden')){
+			$('span',"#cell_header_"+cell_nr).removeClass('hidden');
+			$(".pl_controls", "#win"+cell_nr).fadeOut(200, function(){
+				$('span',"#cell_header_"+cell_nr).fadeIn(200);
+			});
+		}
+		else{
+			$('span',"#cell_header_"+cell_nr).addClass('hidden');
+			$('span',"#cell_header_"+cell_nr).fadeOut(200, function(){
+				$(".pl_controls", "#win"+cell_nr).fadeIn(200);
+			});
+		}
+	},
+
+	pl_start_click : function(e){
+		var start = $(e.currentTarget);
+		var cell_nr = parseInt(($(start).attr('id')).replace('pl_start_',''));
+		var aplayer_id = $('.aplayer', '#win'+cell_nr).attr('id');
+		
+		$('#pl_stop_'+cell_nr).show();
+		$(start).hide();
+		$.aplayer.startPlay(aplayer_id);
+	},
+
+	pl_stop_click : function(e){
+		var stop = $(e.currentTarget);
+		var cell_nr = parseInt(($(stop).attr('id')).replace('pl_stop_',''));
+		var aplayer_id = $('.aplayer', '#win'+cell_nr).attr('id');
+
+		$('#pl_start_'+cell_nr).show();
+		$(stop).hide();
+		$.aplayer.stopPlay(aplayer_id);
+	},
+	
+	pl_plus_click : function(e){
+		var plus = $(e.currentTarget);
+		var cell_nr = parseInt(($(plus).attr('id')).replace('pl_plus_',''));
+		var aplayer_id = $('.aplayer', '#win'+cell_nr).attr('id');
+		$.aplayer.zoomIn(aplayer_id);
+	},
+	
+	pl_minus_click : function(e){
+		var minus = $(e.currentTarget);
+		var cell_nr = parseInt(($(minus).attr('id')).replace('pl_minus_',''));
+		var aplayer_id = $('.aplayer', '#win'+cell_nr).attr('id');
+		$.aplayer.zoomOut(aplayer_id);
+	},
+	
+   
+};
    
    
    
