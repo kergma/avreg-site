@@ -740,7 +740,7 @@ class Adb {
    public function web_delete_monitors($display, $mon_nr, $bind_mac = 'local') {
       $query = 'DELETE FROM WEB_LAYOUTS';
       $query .= " WHERE BIND_MAC ='$bind_mac'";
-      $query .= " AND DISPLAY ='$display'";
+//      $query .= " AND DISPLAY ='$display'";
       $query .= " AND MON_NR = $mon_nr";		
       $res = $this->_db->query($query);
       $this->_error($res);
