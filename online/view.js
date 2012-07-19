@@ -813,8 +813,10 @@ function canvas_growth() {
                        '<\/span><\/div>')
                        .appendTo(win_div);
                  
-                 var ht = $(hdr).height()-4;
+                 
+                 
                  //ToolBar
+                 var ht = $(hdr).height()-4;
                  var toolbar = $('<div class="tool_bar"></div>')
                  .height(ht)
                  .css({
@@ -835,6 +837,18 @@ function canvas_growth() {
                 	 e.preventDefault();
                 	 e.stopPropagation();
                 	 controls_handlers.gearwheel_click(e);
+                	 return false;
+                 })
+                 .mouseover(function(e){
+                	 e.preventDefault();
+                	 e.stopPropagation();
+                	 controls_handlers.gearwheel_mouseover(e);
+                	 return false;
+                 })
+                .mouseout(function(e){
+                	 e.preventDefault();
+                	 e.stopPropagation();
+                	 controls_handlers.gearwheel_mouseout(e);
                 	 return false;
                  })
                  .appendTo(toolbar);
@@ -859,7 +873,7 @@ function canvas_growth() {
                 	 return false;
                  });
                  
-                 var plus = $('<img id="pl_plus_'+win_nr+'" class="pl_plus" title="Старт" src='+imgs['pl_plus'].src+' />')
+                 var plus = $('<img id="pl_plus_'+win_nr+'" class="pl_plus" title="Увеличить" src='+imgs['pl_plus'].src+' />')
                  .click(function(e){
                 	 e.preventDefault();
                 	 e.stopPropagation();
@@ -868,7 +882,7 @@ function canvas_growth() {
                  })
                  .height(ht-4);
                  
-                 var minus = $('<img id="pl_minus_'+win_nr+'" class="pl_minus" title="Старт" src='+imgs['pl_minus'].src+' />')
+                 var minus = $('<img id="pl_minus_'+win_nr+'" class="pl_minus" title="Уменьшить" src='+imgs['pl_minus'].src+' />')
                  .click(function(e){
                 	 e.preventDefault();
                 	 e.stopPropagation();
@@ -877,7 +891,7 @@ function canvas_growth() {
                  })
                  .height(ht-4);
                  
-                 $('<div class="pl_controls"></div>')
+                 $('<div id="pl_controls_'+win_nr+'" class="pl_controls"></div>')
                  .height(ht)
                  .width($(hdr).width()-$(toolbar).width())
                  .css({
@@ -887,6 +901,23 @@ function canvas_growth() {
                 	 'padding': '3 5'
                  })
                  .append(start, stop, minus, plus)
+                 .click(function(e){
+                	 e.preventDefault();
+                	 e.stopPropagation();
+                	 return false;
+                 })
+                 .mouseover(function(e){
+                	 e.preventDefault();
+                	 e.stopPropagation();
+                	 controls_handlers.controls_panel_mouseover(e);
+                	 return false;
+                 })
+                 .mouseout(function(e){
+                	 e.preventDefault();
+                	 e.stopPropagation();
+                	 controls_handlers.controls_panel_mouseout(e);
+                	 return false;
+                 })
                  .hide()
                  .prependTo(hdr);
                  
@@ -918,32 +949,101 @@ function canvas_growth() {
    
    
 }
- 
+
+/**
+ * Объект обработки событий котролов toolbar & controlbar
+ */
 var controls_handlers = {   
-	/**
-	 * Скрывает.выводит панель инструментов для ячейки раскладки 
-	 * @param e - объект события
-	 */   
+	timers : new Array(),
+	
+	clear_timer : function(cell_nr){
+		window.clearTimeout(this.timers[cell_nr]);
+	},
+	
+	
+	controls_panel_mouseover : function(e){
+		var cp = $(e.currentTarget);
+		var cell_nr = parseInt(($(cp).attr('id')).replace('pl_controls_',''));
+		this.clear_timer(cell_nr);
+	},
+
+	
+	
+	controls_panel_mouseout : function(e){
+		
+		
+		var cp = $(e.currentTarget);
+		var cell_nr = parseInt(($(cp).attr('id')).replace('pl_controls_',''));
+		if($("#cell_header_"+cell_nr).hasClass('control')){}
+		else{
+			this.timers[cell_nr] = window.setTimeout(function(){
+				controls_handlers.hide_cntrolpanel(e);
+			}, 100);
+		}
+	},
+	
 	gearwheel_click : function(e){
 		
 		var gw = $(e.currentTarget);
 		var cell_nr = parseInt(($(gw).attr('id')).replace('gearwheel_',''));
-		var aplayer_id = $('.aplayer', '#win'+cell_nr).attr('id');
-	
-		if($('span',"#cell_header_"+cell_nr).hasClass('hidden')){
-			$('span',"#cell_header_"+cell_nr).removeClass('hidden');
-			$(".pl_controls", "#win"+cell_nr).fadeOut(200, function(){
-				$('span',"#cell_header_"+cell_nr).fadeIn(200);
-			});
+
+		$("#cell_header_"+cell_nr).toggleClass('control');
+		if($("#cell_header_"+cell_nr).hasClass('control')){
+			$(gw).unbind('mouseout');
+			if(!$("span", "#cell_header_"+cell_nr).hasClass('hidden')){
+				this.show_cntrolpanel(e);
+			}
 		}
 		else{
-			$('span',"#cell_header_"+cell_nr).addClass('hidden');
-			$('span',"#cell_header_"+cell_nr).fadeOut(200, function(){
-				$(".pl_controls", "#win"+cell_nr).fadeIn(200);
+			this.hide_cntrolpanel(e);
+			$(gw).mouseout(function(e){
+           	 e.preventDefault();
+        	 e.stopPropagation();
+        	 controls_handlers.gearwheel_mouseout(e);
+        	 return false;
 			});
 		}
 	},
+	
+	gearwheel_mouseover : function(e){
+		this.show_cntrolpanel(e);
+	},
+	
+	gearwheel_mouseout : function(e){
+		var gw = $(e.currentTarget);
+		var cell_nr = parseInt(($(gw).attr('id')).replace('gearwheel_',''));
+		
+		if($("span", "#cell_header_"+cell_nr).hasClass('hidden')){
+				this.timers[cell_nr] = window.setTimeout(function(){
+					controls_handlers.hide_cntrolpanel(e);
+			}, 2000);
+		}
+	},
 
+	show_cntrolpanel : function(e){
+		var gw = $(e.currentTarget);
+		var cell_nr = parseInt(($(gw).attr('id')).replace('gearwheel_',''));
+
+		$('span',"#cell_header_"+cell_nr).addClass('hidden');
+		$('span',"#cell_header_"+cell_nr).fadeOut(200, function(){
+			$(".pl_controls", "#win"+cell_nr).fadeIn(200);
+		});
+	},
+	
+	hide_cntrolpanel : function(e){
+		var gw = $(e.currentTarget);
+		var cell_nr = parseInt(($(gw).attr('id')).replace('gearwheel_',''));
+
+		if(isNaN(cell_nr)){
+			cell_nr = parseInt(($(gw).attr('id')).replace('pl_controls_',''));
+		}
+
+		$('span',"#cell_header_"+cell_nr).removeClass('hidden');
+		$(".pl_controls", "#win"+cell_nr).fadeOut(200, function(){
+			$('span',"#cell_header_"+cell_nr).fadeIn(200);
+		});
+	},
+	
 	pl_start_click : function(e){
 		var start = $(e.currentTarget);
 		var cell_nr = parseInt(($(start).attr('id')).replace('pl_start_',''));
