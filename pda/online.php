@@ -28,7 +28,8 @@ $cam_url = "../lib/img_resize.php?camera=$camera";
 $scale=0;
 if(isset($_GET['scl']))$scale = $_GET['scl'];
 include_once ('scale.inc.php');
-$tumb_sizes = get_scales($conf['pda_online_scale']);
+//$tumb_sizes = get_scales($conf['pda_online_scale']);
+$tumb_sizes = get_resolutions($conf['pda_resolutions']);
 if($tumb_sizes == null || sizeof($tumb_sizes)==0 ){
 	//если ничего в конфиге не определено
 	$tumb_sizes = array(0=>array('w' => '160', 'h' => '80',));

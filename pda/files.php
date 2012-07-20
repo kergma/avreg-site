@@ -55,7 +55,8 @@ session_write_close();
 $scale=0;
 if(isset($_GET['scl']))$scale = $_GET['scl'];
 include_once ('scale.inc.php');
-$tumb_sizes = get_scales($conf['pda_scale']);
+//$tumb_sizes = get_scales($conf['pda_scale']);
+$tumb_sizes = get_resolutions($conf['pda_resolutions']);
 if($tumb_sizes == null || sizeof($tumb_sizes)==0 ){
 	//если ничего в конфиге не определено
 	$tumb_sizes = array(0=>array('w' => '160', 'h' => '80',));
@@ -101,7 +102,6 @@ foreach($pagi as $row)
       urlencode("http://".$_SERVER["SERVER_NAME"].$orig_src),
       $tumb_sizes[$scale]['w'],
       $tumb_sizes[$scale]['h']);
-      
       print "</a></div>\n";
    }
 }

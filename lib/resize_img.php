@@ -29,9 +29,25 @@ if (@fopen($id, "r")) {
 	$im_width=imageSX($im);
 	$im_height=imageSY($im);
 	
+	//пропорции изображения
+	$im_proportion = $im_width/$im_height;
+	
 	//размеры отображения
-	$w = $_GET['w'];
-	$h = $_GET['h'];
+	$w =isset($_GET['w'])? (int)$_GET['w']:0;
+	$h =isset($_GET['h'])? (int)$_GET['h']:0;
+	
+	if($w==0 && $h==0){
+		$w =$im_width;
+		$h =$im_height;
+	}
+	elseif($w==0){
+		$w = $h*$im_proportion;
+	}
+	elseif ($h==0){
+		$h = $w/$im_proportion;
+	}
+	
+	
 	
 	
 	//resulted sizes
@@ -42,7 +58,6 @@ if (@fopen($id, "r")) {
 	//режим сохранять пропорции?
 	if($saveProp=='true')
 	{
-		$im_proportion = $im_width/$im_height;
 		$el_proportion = $w/$h;
 	
 		if($im_proportion > $el_proportion )

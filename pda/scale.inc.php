@@ -8,6 +8,22 @@ print '<input type="button" value="+" id="zoomin" />'."\n";
 print "	</div>\n";
 
 //сортирует массив размеров
+function get_resolutions($strResolutions){
+	$sizes = array();
+	$sizes = explode(',', $strResolutions);
+	
+	$resol = array();
+
+	foreach ($sizes as $key=>$val){
+		$tmp = array();
+		$tmp = explode('x', $val);
+		array_push($resol, array('w'=>trim($tmp[0]), 'h'=>trim($tmp[1]) ));
+	}
+ 	return  $resol;
+}
+
+
+//сортирует массив размеров
 function get_scales($scales, $orderByWidth=true){
 	$sizes = array();
 	foreach($scales as $key=>$value ){
@@ -16,15 +32,20 @@ function get_scales($scales, $orderByWidth=true){
 		if(sizeof($temp[0])!=2) continue;
 		$sizes[$key]=array('w'=>$temp[0][0], 'h'=>$temp[0][1]);
 	}
+	
 	if($orderByWidth) usort($sizes, 'sort_by_width');
 	else usort($sizes, 'sort_by_height');
+	
 	return  $sizes;
 }
+
+
 
 //предикаты сортировки
 function sort_by_width($f, $s){
 	return $f['w']-$s['w'];
 }
+
 function sort_by_height($f, $s){
 	return $f['h']-$s['h'];
 }

@@ -143,9 +143,25 @@ $width_src  = imagesx($gd);
 $height_src = imagesy($gd);
 
 //-->>
-// //размеры отображения
- $w = (int)$_GET['width'];
- $h = (int)$_GET['height'];
+
+//пропорции изображения
+$im_proportion = $width_src/$height_src ;
+
+//размеры отображения
+$w =isset($_GET['width'])? (int)$_GET['width']:0;
+$h =isset($_GET['height'])? (int)$_GET['height']:0;
+
+if($w==0 && $h==0){
+	$w =$im_width;
+	$h =$im_height;
+}
+elseif($w==0){
+	$w = $h*$im_proportion;
+}
+elseif ($h==0){
+	$h = $w/$im_proportion;
+}
+
 
 // //resulted sizes
  $new_width = $w;
