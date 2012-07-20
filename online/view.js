@@ -580,23 +580,42 @@ function canvas_growth() {
    		switch(layout_wins[i][1]){
    		case '0':
    		case '1': //avregd
-   			cam_url =  get_cam_http_url(conf, cam_nr,'mjpeg', false );
+   			cam_url =  get_cam_http_url(conf, cam_nr,'mjpeg', true);
    	   		active_cams_srcs[i]['type']='avregd';
    	   		active_cams_srcs[i]['cell']=cam_url;
    	   		active_cams_srcs[i]['fs']=cam_url;
    	   		break;
    		case '2': //alt 1
-   			cam_url = GCP_cams_params[layout_wins[i][0]]['cell_url_alt_1'];
+   			cam_url = get_cam_alt_url(GCP_cams_params[layout_wins[i][0]]['cell_url_alt_1'], true);
    	   		active_cams_srcs[i]['type']='alt_1';
    	   		active_cams_srcs[i]['cell']=cam_url;
-   	   		active_cams_srcs[i]['fs']=GCP_cams_params[cam_nr]['fs_url_alt_1'];
+   	   		active_cams_srcs[i]['fs']=get_cam_alt_url(GCP_cams_params[cam_nr]['fs_url_alt_1'], true);
    			break;
    		case '3': //alt 2
-   			cam_url =GCP_cams_params[layout_wins[i][0]]['cell_url_alt_2'];
+   			cam_url =get_cam_alt_url(GCP_cams_params[layout_wins[i][0]]['cell_url_alt_2'], true);
    	   		active_cams_srcs[i]['type']='alt_1';
    	   		active_cams_srcs[i]['cell']=cam_url;
-   	   		active_cams_srcs[i]['fs']=GCP_cams_params[cam_nr]['fs_url_alt_2'];
+   	   		active_cams_srcs[i]['fs']= get_cam_alt_url(GCP_cams_params[cam_nr]['fs_url_alt_2'], true);
    			break;
+
+//   		case '1': //avregd
+//   			cam_url =  get_cam_http_url(conf, cam_nr,'mjpeg', false );
+//   	   		active_cams_srcs[i]['type']='avregd';
+//   	   		active_cams_srcs[i]['cell']=cam_url;
+//   	   		active_cams_srcs[i]['fs']=cam_url;
+//   	   		break;
+//   		case '2': //alt 1
+//   			cam_url = GCP_cams_params[layout_wins[i][0]]['cell_url_alt_1'];
+//   	   		active_cams_srcs[i]['type']='alt_1';
+//   	   		active_cams_srcs[i]['cell']=cam_url;
+//   	   		active_cams_srcs[i]['fs']=GCP_cams_params[cam_nr]['fs_url_alt_1'];
+//   			break;
+//   		case '3': //alt 2
+//   			cam_url =GCP_cams_params[layout_wins[i][0]]['cell_url_alt_2'];
+//   	   		active_cams_srcs[i]['type']='alt_1';
+//   	   		active_cams_srcs[i]['cell']=cam_url;
+//   	   		active_cams_srcs[i]['fs']=GCP_cams_params[cam_nr]['fs_url_alt_2'];
+//   			break;
    		}
    		
    		var wxh = GCP_cams_params[ layout_wins[i][0] ]['geometry'];
@@ -714,6 +733,7 @@ function canvas_growth() {
     * @return string адрес видео с камеры
     */
    function get_cam_http_url(conf, cam_nr, media, append_abenc){
+//	   console.log(append_abenc);
    	var url = '';
    	   if (cams_subconf && cams_subconf[cam_nr]!=null && (cams_subconf[cam_nr]['avregd-httpd']).length!=0) {
    		   url = cams_subconf[$cam_nr]['avregd-httpd'];
@@ -734,6 +754,25 @@ function canvas_growth() {
    	   return url;
    }
 
+   /**
+    * 
+    * Функция, которая возвращает ссылку на просмотр видео с альтернативных камер камеры 
+    * аналог php-функции из lib/get_cam_url.php
+    * @param alt_src альтернативный источник
+    * @param bool append_abenc аутентификация пользователя
+    * @return string адрес видео с камеры
+    */
+   function get_cam_alt_url(alt_src, append_abenc){
+   	   var url = alt_src;
+   	   
+   	   if (append_abenc && user_info_USER.length>0 ) {
+   	      url += '&ab='+base64_encode_user_info_USER+':'+PHP_AUTH_PW;
+   	   }
+   	   return url;
+   }
+   
+   
+   
 
    /**
     * Выводит раскладку с он-лайн камерами в канвас
