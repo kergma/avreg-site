@@ -61,6 +61,12 @@ $(document).ready( function() {
 	imgs['pl_minus'] = new Image();
 	imgs['pl_minus'].src =  "../img/ZoomOut.png";
 
+	imgs['original_size'] = new Image();
+	imgs['original_size'].src =  "../img/misc.png";
+	
+	imgs['normal_size'] = new Image();
+	imgs['normal_size'].src =  "../img/misc.png";
+	
 	//Запуск сценария	   
 	fill_canvas();
 });
@@ -764,7 +770,6 @@ function canvas_growth() {
     */
    function get_cam_alt_url(alt_src, append_abenc){
    	   var url = alt_src;
-   	   
    	   if (append_abenc && user_info_USER.length>0 ) {
    	      url += '&ab='+base64_encode_user_info_USER+':'+PHP_AUTH_PW;
    	   }
@@ -893,6 +898,25 @@ function canvas_growth() {
                  .appendTo(toolbar);
                  
                  //панель контролов
+                 
+                 var normal_size = $('<img id="normal_size_'+win_nr+'" class="normal_size" title="Вписать в ячейку" src='+imgs['normal_size'].src+' />')
+                 .height(ht-4)
+                 .click(function(e){
+                	 e.preventDefault();
+                	 e.stopPropagation();
+                	 controls_handlers.normal_size_click(e);
+                	 return false;
+                 });
+
+                 var original_size = $('<img id="original_size_'+win_nr+'" class="original_size" title="Оригинальный размер" src='+imgs['original_size'].src+' />')
+                 .height(ht-4)
+                 .click(function(e){
+                	 e.preventDefault();
+                	 e.stopPropagation();
+                	 controls_handlers.original_size_click(e);
+                	 return false;
+                 });
+                 
                  var start = $('<img id="pl_start_'+win_nr+'" class="pl_start" title="Старт" src='+imgs['pl_start'].src+' />')
                  .height(ht-4)
                  .click(function(e){
@@ -939,7 +963,7 @@ function canvas_growth() {
                 	 'left':'1px',
                 	 'padding': '3 5'
                  })
-                 .append(start, stop, minus, plus)
+                 .append(start, stop, minus, plus, normal_size, original_size)
                  .click(function(e){
                 	 e.preventDefault();
                 	 e.stopPropagation();
@@ -965,6 +989,7 @@ function canvas_growth() {
               brout(win_nr, win_div, win_geo);
            }
 
+           
            WIN_DIVS = $('div.win');
 
            $('#dialog').jqm({
@@ -994,6 +1019,20 @@ function canvas_growth() {
  */
 var controls_handlers = {   
 	timers : new Array(),
+
+	original_size_click : function(e){
+		var size = $(e.currentTarget);
+		var cell_nr = parseInt(($(size).attr('id')).replace('original_size_',''));
+		var aplayer_id = $('.aplayer', '#win'+cell_nr).attr('id');
+		$('#'+aplayer_id).parent().aplayerMediaSetSrcSizes();
+	},
+	
+	normal_size_click : function(e){
+		var size = $(e.currentTarget);
+		var cell_nr = parseInt(($(size).attr('id')).replace('normal_size_',''));
+		var aplayer_id = $('.aplayer', '#win'+cell_nr).attr('id');
+		$('#'+aplayer_id).parent().aplayerResizeToParent();
+	},
 	
 	clear_timer : function(cell_nr){
 		window.clearTimeout(this.timers[cell_nr]);

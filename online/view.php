@@ -233,7 +233,7 @@ for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
 };%s',
    $win_nr, $l_wins[0], $l_wins[1],$l_wins[2],$l_wins[3],
    $cam_nr, getCamName($GCP_cams_params[$cam_nr]['text_left']),
-   $cam_url,
+   get_cam_alt_url($cam_url,true),
    $width, $height,
    $netcam_host,
    "\n" );

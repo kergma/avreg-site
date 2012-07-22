@@ -33,7 +33,7 @@
 	margin-right: 15px;
 }
 
-.pl_plus, .pl_minus{
+.pl_plus, .pl_minus, .original_size, .normal_size{
 	cursor: pointer;
 	float: left;
 }

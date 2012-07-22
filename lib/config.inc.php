@@ -1084,7 +1084,7 @@ function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
          $onch = 'onchange="'.$onch.'"';
       else
          $onch='';
-   if (!empty($TITLE))
+   if (isset($TITLE) && !empty($TITLE))
       $_title='title="'.$TITLE.'"';
    else
       $_title='';
@@ -1102,9 +1102,6 @@ function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
    
    //Если для веб-раскладок => $cams_srcs - содержит алтернативные источники  
 	if($cams_srcs!=null){
-		
-//		print('<pre><code>');print_r($cams_srcs);print('</code></pre>');
-		
 		
 		foreach ($value_array as $_element)
 		{
@@ -1145,22 +1142,17 @@ function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
 		
 		$set_src_type = ($selected[1]!=null? $selected[1]: 0);
 		$visi_val = $set_src_type!=0? 'visible':'hidden';
-	
 		
-		// $cams_srcs
-//		print('<pre><code>');print_r($cams_srcs[$set_src_type]['avregd'] );print('</code></pre>');
-		
+		$a .='<br />';
 		//Добавление типа источника камеры для веб-раскладок
-		$a .='<br /><select class="mon_wins_type" name="mon_wins_type[]" size="'.$_size.'" '.$_title.' style="font-size:8pt; visibility:'.$visi_val.';" >'."\n";
-
-		
-		
-//		$a .='<option '.($set_src_type==0?'selected="selected"':'').' value="0"> </option>'."\n";
-	 	if($cams_srcs[$selected[0]]['avregd']=='true') $a .='<option '.($set_src_type==1?'selected="selected"':'').' value="1">avregd</option>'."\n";
-		if($cams_srcs[$selected[0]]['alt_1']=='true') $a .='<option '.($set_src_type==2?'selected="selected"':'').' value="2">alt 1</option>'."\n";
-		if($cams_srcs[$selected[0]]['alt_2']=='true') $a .='<option '.($set_src_type==3?'selected="selected"':'').' value="3">alt 2</option>'."\n";
-		$a .='</select>'."\n";
-	
+		if($cams_srcs!=false && isset($cams_srcs[$selected[0]]['avregd']) || isset($cams_srcs[$selected[0]]['alt_1']) || isset($cams_srcs[$selected[0]]['alt_2']) ){
+			$a .='<select class="mon_wins_type" name="mon_wins_type[]" size="'.$_size.'" '.$_title.' style="font-size:8pt; visibility:'.$visi_val.';" >'."\n";
+			
+		 	if(isset($cams_srcs[$selected[0]]['avregd'])&& $cams_srcs[$selected[0]]['avregd']=='true') $a .='<option '.($set_src_type==1?'selected="selected"':'').' value="1">avregd</option>'."\n";
+			if(isset($cams_srcs[$selected[0]]['alt_1']) && $cams_srcs[$selected[0]]['alt_1']=='true') $a .='<option '.($set_src_type==2?'selected="selected"':'').' value="2">alt 1</option>'."\n";
+			if(isset($cams_srcs[$selected[0]]['alt_2']) && $cams_srcs[$selected[0]]['alt_2']=='true') $a .='<option '.($set_src_type==3?'selected="selected"':'').' value="3">alt 2</option>'."\n";
+			$a .='</select>'."\n";
+		}
 	
 	}else {
 		
@@ -1399,12 +1391,15 @@ if(isset($as_guest)){
 	      $_SERVER['REMOTE_USER'] = $_SERVER['PHP_AUTH_USER'];
 	
 	   $user_info = avreg_find_user(ip2long($_SERVER['REMOTE_ADDR']), -1, $_SERVER['PHP_AUTH_USER']);
+
 	   if ($ExternalAuth === FALSE && $GuestAuth === FALSE) {
-		   if ($user_info !== FALSE)
+		   if ($user_info !== FALSE){
 		      check_passwd($_SERVER['PHP_AUTH_PW'], $user_info['PASSWD']);
-		   else
+		   }else{
 		      DENY(null,403);
+		   }
 	   }
+	   
 	   $login_user = &$_SERVER['REMOTE_USER'];
 	   $user_status = &$user_info['STATUS'];
 	   $login_user_name = &$row['LONGNAME'];

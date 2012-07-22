@@ -46,7 +46,7 @@ if (!settype($mon_nr,'int'))
 if ($mon_nr < 0 )
    die('$mon_nr < 0');
 
-echo '<h2>' . sprintf($r_mon_tune, $counter, $mon_name ) . '</h2>' ."\n";
+echo '<h2>' . sprintf($str_web_mon_tune, $counter, $mon_name ) . '</h2>' ."\n";
 
 if (isset($cmd)) {
    switch ( $cmd )	{
@@ -114,8 +114,14 @@ if (isset($cmd)) {
 
       //Создание эл-та селект ля ячеек раскладки
       for ($i=0; $i<25; $i++) {
+      	
+      	if(!isset($cams_srcs)){
+      		$cams_srcs=false;
+      	}
+      	
       	$a = getSelectHtmlByName('mon_wins[]',$wins_array, FALSE , 1, 1, $wins_cams[$i], TRUE,  'sel_change(this); show_sub_select(this);', '', NULL, $cams_srcs );
          array_push($aaa, $a );
+// 		exit();
       }
       /* Free last resultset */
       $result = NULL;

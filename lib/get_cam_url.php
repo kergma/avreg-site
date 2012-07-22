@@ -41,4 +41,17 @@ function get_cam_http_url($conf, $cam_nr, $media, $append_abenc=false)
    }
    return $url;
 }
+
+
+function get_cam_alt_url($alt_src, $append_abenc)
+{
+	$url .= $alt_src;
+	if ($append_abenc && !empty($GLOBALS['user_info']['USER'])) {
+		$url .= '&ab=' . base64_encode($GLOBALS['user_info']['USER'].':'.$_SERVER['PHP_AUTH_PW']);
+	}
+
+	return $url;
+}
+
+
 ?>
