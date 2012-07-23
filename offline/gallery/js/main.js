@@ -324,12 +324,18 @@ var gallery = {
 			getobject : function() {
 				var self = this;
 				var strcook = '';
-				if (ReadCookie(self.config.name))
+
+				if (ReadCookie(self.config.name)){
 					strcook = Base64.decode(ReadCookie(self.config.name));
+				}
 
 				var objcook = {};
 				if (strcook) {
-					objcook = $.parseJSON(strcook);
+					try{
+						objcook = $.parseJSON(strcook);
+					}catch (e) {
+						return objcook;
+					}
 				}
 				return objcook;
 			},
@@ -340,6 +346,7 @@ var gallery = {
 			},
 			set : function (name, value) {
 				var self = this;
+
 				var objcook = self.getobject();
 				objcook[name] = value;
 				self.setobject(objcook);
