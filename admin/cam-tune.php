@@ -91,15 +91,7 @@ require ('./param-grp.inc.php');
 // выводим таблицу параметров
 if ( isset($categories) )
 {
-	
-	
-	
 	$result = $adb->get_def_cam_params($cam_nr);
-/*
-	print "<pre>";
-	var_export($result);
-	print "<pre>";
-*/
 		
    $cam_params = array();
    $def_params   = array();
@@ -113,9 +105,6 @@ if ( isset($categories) )
             $def_params[$row['PARAM']] = $row['VALUE'].'~'.$row['CHANGE_HOST'].'~'.$row['CHANGE_USER'].'~'.$row['CHANGE_TIME'];
    }
    $result = NULL;
-   
-   
-   
    
       print '<br>'."\n";
       print '<table width="100%" cellspacing="0" border="1" cellpadding="5" bgcolor="#dcdcdc">'."\n";

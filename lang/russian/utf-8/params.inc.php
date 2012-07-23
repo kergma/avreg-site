@@ -1403,7 +1403,7 @@ array(
 ),
 
 array(
-   'name'    => 'cell_url_alt_2',
+   'name'    => 'fs_url_alt_2',
    'type'    => $STRING200_VAL,
    'def_val' => '',
    'desc'    => 'Альтернативный <b>URL #2</b> для камеры развёрнутой в полный экран.</b>',

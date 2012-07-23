@@ -210,6 +210,8 @@ for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
    		$active_cams_srcs[$win_nr]['fs']=$GCP_cams_params[$cam_nr]['fs_url_alt_2'];
    		break;
    }
+   $cam_url= get_cam_alt_url($cam_url,$cam_nr, true);
+    
    
    if ( $operator_user && ( $GCP_cams_params[$cam_nr]['cam_type'] == 'netcam' ) )
       $netcam_host = '"' . $GCP_cams_params[$cam_nr]['InetCam_IP'] . '"';
@@ -233,7 +235,7 @@ for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
 };%s',
    $win_nr, $l_wins[0], $l_wins[1],$l_wins[2],$l_wins[3],
    $cam_nr, getCamName($GCP_cams_params[$cam_nr]['text_left']),
-   get_cam_alt_url($cam_url,true),
+   $cam_url,
    $width, $height,
    $netcam_host,
    "\n" );

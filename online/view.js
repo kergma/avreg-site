@@ -135,7 +135,7 @@ function img_click(clicked_div) {
 	      //меняем на источник для ячейки
 	      if (active_cams_srcs[win_nr]['type']!='avregd'){
 	    	  if(active_cams_srcs[win_nr]['cell']!=null || active_cams_srcs[win_nr]['cell']!='')
-	    		  current_src = active_cams_srcs[win_nr]['cell'] ;
+	    		  current_src = get_cam_alt_url(active_cams_srcs[win_nr]['cell'], win_nr, true) ;
 	      }
 	   
 	   
@@ -199,7 +199,7 @@ function img_click(clicked_div) {
        FS_WIN_DIV = undefined;
       
    } else {
-	 //Если включем режим - просмотра камер в раскладке
+	 //Если включен режим - просмотра камер в раскладке
       // current - NO fullscreen
 	      for (i=0;i<WIN_DIVS.length;i++) {
 	          tmp_div=WIN_DIVS[i];
@@ -233,7 +233,7 @@ function img_click(clicked_div) {
       //меняем на источник для ячейки
       if (active_cams_srcs[win_nr]['type']!='avregd'){
     	  if(active_cams_srcs[win_nr]['fs']!=null || active_cams_srcs[win_nr]['fs']!='')
-    		  current_src = active_cams_srcs[win_nr]['fs'] ;
+    		  current_src = get_cam_alt_url(active_cams_srcs[win_nr]['fs'], win_nr ,true) ;
       }
 
     	if ( MSIE ){
@@ -265,6 +265,29 @@ function img_click(clicked_div) {
       FS_WIN_DIV = clicked_div;
       
    }
+   
+   //Устанавливаем текущий масштаб
+   var aplayer_id=$('.aplayer',pl_cont).attr('id');
+   
+   if( controls_handlers.original_size[aplayer_id]!=null && controls_handlers.original_size[aplayer_id] ){
+	   $('#'+aplayer_id).parent().aplayerMediaSetSrcSizes();
+   }
+   
+   var scl = $.aplayer.scale[aplayer_id];
+   $.aplayer.scale[aplayer_id]=0;
+   if(scl>0){
+	   for(i=0;i<scl;i++){
+		   $.aplayer.zoomIn(aplayer_id);
+	   }
+   }
+   else if(scl<0){
+	   scl*=-1;
+	   for(i=0;i<scl;i++){
+		   $.aplayer.zoomOut(aplayer_id);
+	   }
+   }
+
+   
 } // img_click()
 
 
@@ -546,6 +569,8 @@ function canvas_growth() {
    	//Пропорции
    	var AspectRatio;
 
+	//обнуляем массив масштабов
+   $.aplayer.scale = new Array();
    	
    	cur_layout = mon_nr;
    	
@@ -592,36 +617,17 @@ function canvas_growth() {
    	   		active_cams_srcs[i]['fs']=cam_url;
    	   		break;
    		case '2': //alt 1
-   			cam_url = get_cam_alt_url(GCP_cams_params[layout_wins[i][0]]['cell_url_alt_1'], true);
+   			cam_url = get_cam_alt_url(GCP_cams_params[layout_wins[i][0]]['cell_url_alt_1'], cam_nr, true);
    	   		active_cams_srcs[i]['type']='alt_1';
    	   		active_cams_srcs[i]['cell']=cam_url;
-   	   		active_cams_srcs[i]['fs']=get_cam_alt_url(GCP_cams_params[cam_nr]['fs_url_alt_1'], true);
+   	   		active_cams_srcs[i]['fs']=get_cam_alt_url(GCP_cams_params[cam_nr]['fs_url_alt_1'],cam_nr, true);
    			break;
    		case '3': //alt 2
-   			cam_url =get_cam_alt_url(GCP_cams_params[layout_wins[i][0]]['cell_url_alt_2'], true);
+   			cam_url =get_cam_alt_url(GCP_cams_params[layout_wins[i][0]]['cell_url_alt_2'], cam_nr, true);
    	   		active_cams_srcs[i]['type']='alt_1';
    	   		active_cams_srcs[i]['cell']=cam_url;
-   	   		active_cams_srcs[i]['fs']= get_cam_alt_url(GCP_cams_params[cam_nr]['fs_url_alt_2'], true);
+   	   		active_cams_srcs[i]['fs']= get_cam_alt_url(GCP_cams_params[cam_nr]['fs_url_alt_2'], cam_nr, true);
    			break;
-
-//   		case '1': //avregd
-//   			cam_url =  get_cam_http_url(conf, cam_nr,'mjpeg', false );
-//   	   		active_cams_srcs[i]['type']='avregd';
-//   	   		active_cams_srcs[i]['cell']=cam_url;
-//   	   		active_cams_srcs[i]['fs']=cam_url;
-//   	   		break;
-//   		case '2': //alt 1
-//   			cam_url = GCP_cams_params[layout_wins[i][0]]['cell_url_alt_1'];
-//   	   		active_cams_srcs[i]['type']='alt_1';
-//   	   		active_cams_srcs[i]['cell']=cam_url;
-//   	   		active_cams_srcs[i]['fs']=GCP_cams_params[cam_nr]['fs_url_alt_1'];
-//   			break;
-//   		case '3': //alt 2
-//   			cam_url =GCP_cams_params[layout_wins[i][0]]['cell_url_alt_2'];
-//   	   		active_cams_srcs[i]['type']='alt_1';
-//   	   		active_cams_srcs[i]['cell']=cam_url;
-//   	   		active_cams_srcs[i]['fs']=GCP_cams_params[cam_nr]['fs_url_alt_2'];
-//   			break;
    		}
    		
    		var wxh = GCP_cams_params[ layout_wins[i][0] ]['geometry'];
@@ -684,12 +690,12 @@ function canvas_growth() {
    		      CamsAspectRatio = 'fs';
    		}
    	
-   	WINS_NR = wins_nr ;
+   	WINS_NR = wins_nr;
    	ROWS_NR = l_defs[1];
    	COLS_NR = l_defs[2];
    	
    	fill_canvas();
-   	
+
    }
 
 
@@ -768,8 +774,13 @@ function canvas_growth() {
     * @param bool append_abenc аутентификация пользователя
     * @return string адрес видео с камеры
     */
-   function get_cam_alt_url(alt_src, append_abenc){
+   function get_cam_alt_url(alt_src, $cam_nr, append_abenc){
    	   var url = alt_src;
+   	   if(url==null)return null;
+   	   reg = /\?camera=\d*/;
+   	  if(!reg.test(url)){
+   		 url += "?camera="+$cam_nr;  
+   	   }
    	   if (append_abenc && user_info_USER.length>0 ) {
    	      url += '&ab='+base64_encode_user_info_USER+':'+PHP_AUTH_PW;
    	   }
@@ -1019,12 +1030,17 @@ function canvas_growth() {
  */
 var controls_handlers = {   
 	timers : new Array(),
-
+	original_size : new Array(),
+	
 	original_size_click : function(e){
 		var size = $(e.currentTarget);
 		var cell_nr = parseInt(($(size).attr('id')).replace('original_size_',''));
 		var aplayer_id = $('.aplayer', '#win'+cell_nr).attr('id');
 		$('#'+aplayer_id).parent().aplayerMediaSetSrcSizes();
+		
+		//обнуляем масштаб
+	   $.aplayer.scale[aplayer_id]=0;
+	   controls_handlers.original_size[aplayer_id]=true;
 	},
 	
 	normal_size_click : function(e){
@@ -1032,6 +1048,10 @@ var controls_handlers = {
 		var cell_nr = parseInt(($(size).attr('id')).replace('normal_size_',''));
 		var aplayer_id = $('.aplayer', '#win'+cell_nr).attr('id');
 		$('#'+aplayer_id).parent().aplayerResizeToParent();
+		
+		//обнуляем масштаб
+	   $.aplayer.scale[aplayer_id]=0;
+	   controls_handlers.original_size[aplayer_id]=false;
 	},
 	
 	clear_timer : function(cell_nr){
