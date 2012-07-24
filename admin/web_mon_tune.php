@@ -119,7 +119,7 @@ if (isset($cmd)) {
       		$cams_srcs=false;
       	}
       	
-      	$a = getSelectHtmlByName('mon_wins[]',$wins_array, FALSE , 1, 1, $wins_cams[$i], TRUE,  'sel_change(this); show_sub_select(this);', '', NULL, $cams_srcs );
+      	$a = getSelectHtmlByName('mon_wins[]',$wins_array, FALSE , 1, 1, @$wins_cams[$i], TRUE,  'sel_change(this); show_sub_select(this);', '', NULL, $cams_srcs );
          array_push($aaa, $a );
 // 		exit();
       }

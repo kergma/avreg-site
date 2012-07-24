@@ -202,8 +202,8 @@ $max_width/
    $h1 =  $w1 * 3 / 4;
    print $tbl_start;
    for ($win=0; $win<$wins_in_layout; $win++ ) {
-      $text_in_win = (empty($win_text))? $win_text_array[$win] : $win_text;
-      if (empty($text_in_win))
+      $text_in_win = (@empty($win_text))? $win_text_array[$win] : $win_text;
+      if (@empty($text_in_win))
          $text_in_win = '&nbsp;';
       list($row, $col, $rowspan, $colspan) = $wins[$win];
       if ( $col === 0 ) {

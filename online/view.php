@@ -152,7 +152,7 @@ print "var http_cam_location = '$http_cam_location' ;\n";
 //Передаем инфо о пользователе в JS
 print "var user_info_USER = ".json_encode($GLOBALS['user_info']['USER']).";\n";
 print "var base64_encode_user_info_USER = '".base64_encode($GLOBALS['user_info']['USER'])."';\n";
-print "var PHP_AUTH_PW = '".$_SERVER['PHP_AUTH_PW']."';\n";
+print "var PHP_AUTH_PW = '".@$_SERVER['PHP_AUTH_PW']."';\n";
 
 print 'var WINS_DEF = new MakeArray('.$wins_nr.')'."\n";
 
@@ -280,7 +280,7 @@ print 'var ___u="'.$user_info['USER']."\"\n";
 if (empty($user_info['PASSWD']) /* задан пароль */)
     print 'var ___p="empty"'.";\n"; // нужно чтобы AMC не запрашивал пароль при пустом пароле
 else
-    print 'var ___p="'.$_SERVER["PHP_AUTH_PW"]."\";\n";
+    print 'var ___p="'.@$_SERVER["PHP_AUTH_PW"]."\";\n";
 
 print 'var ___abenc="'.base64_encode($user_info['USER'].':'.$_SERVER["PHP_AUTH_PW"])."\";\n";
 
