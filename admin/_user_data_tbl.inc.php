@@ -64,7 +64,7 @@ print '</tr>'."\n";
 print '</tr>'."\n";
 print '<tr>'."\n";
 print '<td colspan="2">'.$strAllowedWEBLayouts.'</td>'."\n";
-print '<td><input type="text" name="u_layouts" size="40" maxlength="100" value="'.$u_layouts.'">'."\n";
+print '<td><input type="text" name="u_layouts" size="40" maxlength="100" value="'.(isset($u_layouts)?$u_layouts:'').'">'."\n";
 print '</tr>'."\n";
 
 print '<tr>'."\n";

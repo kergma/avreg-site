@@ -72,7 +72,7 @@ echo '<h1>' . sprintf($web_r_mons,$named,$sip) . '</h1>' ."\n";
 //Пользуемся только одним левым монитором
 $display ='L';
 
-$counter = $GLOBALS['counter'];
+$counter = @$GLOBALS['counter'];
 //загружается если нажато удаление раскладки
 if ( isset($cmd) )
 {

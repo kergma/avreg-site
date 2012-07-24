@@ -213,7 +213,7 @@ for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
    $cam_url= get_cam_alt_url($cam_url,$cam_nr, true);
     
    
-   if ( $operator_user && ( $GCP_cams_params[$cam_nr]['cam_type'] == 'netcam' ) )
+   if ( $operator_user &&  @$GCP_cams_params[$cam_nr]['cam_type'] == 'netcam'  )
       $netcam_host = '"' . $GCP_cams_params[$cam_nr]['InetCam_IP'] . '"';
    else
       $netcam_host = 'null';

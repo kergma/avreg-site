@@ -61,7 +61,7 @@ if ( isset($cmd) ) {
 			$wins_array = &$active_pipes;
 			
 			if ( count($wins_array) > 0 ) {
-				print '<p class="HiLiteBigWarn">' . sprintf ($fmtMonAddInfo,$mon_type, $mon_nr, $mon_name ) . '</p>' ."\n";
+				print '<p class="HiLiteBigWarn">' . sprintf ($fmtWebMonAddInfo,$mon_type, $mon_nr, $mon_name ) . '</p>' ."\n";
 				print '<p class="HiLiteBigWarn">' . $strMonAddInfo2 . '</p>' ."\n";
 
 				//формирование массива альтернативных источников видео

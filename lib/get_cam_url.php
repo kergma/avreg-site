@@ -45,7 +45,7 @@ function get_cam_http_url($conf, $cam_nr, $media, $append_abenc=false)
 
 function get_cam_alt_url($alt_src, $cam_nr, $append_abenc)
 {
-	$url .= $alt_src;
+	$url = $alt_src;
 	$test = array();
 	preg_match("/\?camera=\d*/", $alt_src, $test);
 	if(sizeof($test)==0){

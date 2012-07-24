@@ -235,12 +235,14 @@ if ( isset($categories) )
             print '<input type="text" name="fields['.$parname1.']" value="' . $a .'" size='.$str_f_len.' maxlength=' .$b .'>';
             break;
 
-         case $STRING_URL_VAL:
+            //Неопределенный тип ????
+/*         case $STRING_URL_VAL:
             $a = getBinString($val);
             //$b = $max_len?$max_len:200;
             print '<input type="text" name="fields['.$parname1.']" value="' . $a .'" size='.$str_f_len.' >';
             break;
-
+*/
+            
          case $PASSWORD_VAL:
             $a = getBinString($val);
             $b = $max_len?$max_len:60;

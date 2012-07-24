@@ -1140,12 +1140,13 @@ function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
 		$a .= '</select>'."\n";
 		
 		
-		$set_src_type = ($selected[1]!=null? $selected[1]: 0);
+		$set_src_type = (isset($selected[1])? $selected[1]: 0);
 		$visi_val = $set_src_type!=0? 'visible':'hidden';
 		
 		$a .='<br />';
 		//Добавление типа источника камеры для веб-раскладок
-		if($cams_srcs!=false && isset($cams_srcs[$selected[0]]['avregd']) || isset($cams_srcs[$selected[0]]['alt_1']) || isset($cams_srcs[$selected[0]]['alt_2']) ){
+		if($cams_srcs!=false && (isset($cams_srcs[@$selected[0]]['avregd']) || isset($cams_srcs[@$selected[0]]['alt_1']) || isset($cams_srcs[@$selected[0]]['alt_2'])) ){
+			
 			$a .='<select class="mon_wins_type" name="mon_wins_type[]" size="'.$_size.'" '.$_title.' style="font-size:8pt; visibility:'.$visi_val.';" >'."\n";
 			
 		 	if(isset($cams_srcs[$selected[0]]['avregd'])&& $cams_srcs[$selected[0]]['avregd']=='true') $a .='<option '.($set_src_type==1?'selected="selected"':'').' value="1">avregd</option>'."\n";
