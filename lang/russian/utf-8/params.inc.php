@@ -404,16 +404,6 @@ $PARAMS = array(
          'subcats' => NULL,
          'mstatus' => 1,
       ),
-		array(
-		 'name'    => 'cam_type',
-		 'type'    => $STRING_VAL,
-		 'def_val' => 'netcam',
-		 'desc'    => '<b>Тип видеокамеры - сетевой </b> По умолчанию: <b>netcam</b>.',
-		 'flags'=>$F_BASEPAR | $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
-		 'cats'    => '3.1',
-		 'subcats' => NULL,
-		 'mstatus' => 1,
-		),
 
       array(
          'name'    => 'InetCam_USER',
