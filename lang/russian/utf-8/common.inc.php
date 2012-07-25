@@ -398,6 +398,22 @@ $strMULTI_22_25 = '22 камеры';
 $strQUAD_16_16 = '16 камер';
 $strMULTI_16_25 = &$strQUAD_16_16;
 $strQUAD_25_25 = '25 камер';
+
+$strWideScreen = ' (широкий экран)';
+$strWide_2_2   =  '2 камеры'.$strWideScreen;
+$strWide_3_6   =  '3 камеры'.$strWideScreen;
+$strWide_6_6   =  '6 камер'.$strWideScreen;
+$strWide_5_15  =  '5 камер'.$strWideScreen;
+$strWide_9_15  =  '9 камер'.$strWideScreen;
+$strWide_15_15 =  '15 камер'.$strWideScreen;
+$strWide_12_24 =  '12 камер'.$strWideScreen;
+$strWide_15_24 =  '15 камер'.$strWideScreen;
+$strWide_18_24 =  '18 камер'.$strWideScreen;
+$strWide_21_24 =  '21 камера'.$strWideScreen;
+$strWide_24_24 =  '24 камеры'.$strWideScreen;
+
+$strWide_18_18 =  '18 камер'.$strWideScreen;
+
 $strCamPosition = 'Расположение камер';
 $sLeftDisplay = 'левый или единственный монитор';
 $sRightDisplay = 'правый монитор';

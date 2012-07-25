@@ -7,7 +7,13 @@
  * Содержит базовые вариатны раскладок камер и функцию для построения раскладки
  * 
  */
-
+/*
+ * array(0,1,1,1) - описывает ячейку
+ * [0] - номер строки
+ * [1] - номер колонки
+ * [2] - объединяет ячеек по вертикали
+ * [3] - объединяет ячеек по горизонтали
+ */
 $onecam_wins = array( array(0,0,1,1) );
 $quad_4_4_wins = array(
    array(0,0,1,1), array(0,1,1,1),
@@ -115,7 +121,95 @@ $poly_3x4_wins = array(
    array(1,0,1,1), array(1,1,1,1), array(1,2,1,1), array(1,3,1,1),
    array(2,0,1,1), array(2,1,1,1), array(2,2,1,1), array(2,3,1,1),
 );
+
+//-->Wide screens' layouts 
+
+$wide_2_2_wins = array(
+array(0,0,1,1), 	array(0,1,1,1), 
+);
+
+$wide_3_6_wins = array(
+array(0,0,2,2), 					array(0,2,1,1),
+									array(1,2,1,1),
+);
+
+$wide_6_6_wins = array(
+array(0,0,1,1), 	array(0,1,1,1), 	array(0,2,1,1),
+array(1,0,1,1), 	array(1,1,1,1), 	array(1,2,1,1),
+);
+
+$wide_9_15_wins = array(
+array(0,0,2,2), 				 		array(0,2,2,2), 						array(0,4,1,1),
+																				array(1,4,1,1),
+array(2,0,1,1), 	array(2,1,1,1), 	array(2,2,1,1), 	array(2,3,1,1),		array(2,4,1,1),
+);
+
+$wide_5_15_wins = array(
+array(0,0,3,2), 					 	array(0,2,3,2), 						array(0,4,1,1),
+																				array(1,4,1,1),
+																				array(2,4,1,1),
+);
+
+$wide_15_15_wins = array(
+array(0,0,1,1), 	array(0,1,1,1), 	array(0,2,1,1), 	array(0,3,1,1), 	array(0,4,1,1),
+array(1,0,1,1), 	array(1,1,1,1), 	array(1,2,1,1), 	array(1,3,1,1), 	array(1,4,1,1),
+array(2,0,1,1), 	array(2,1,1,1), 	array(2,2,1,1), 	array(2,3,1,1), 	array(2,4,1,1),
+);
+
+$wide_12_24_wins = array(
+array(0,0,1,1), 	array(0,1,2,2), 						array(0,3,2,2), 					 	array(0,5,1,1),
+array(1,0,1,1), 																					array(1,5,1,1),
+array(2,0,1,1), 	array(2,1,2,2), 					 	array(2,3,2,2), 						array(2,5,1,1),
+array(3,0,1,1), 																					array(3,5,1,1),
+);
+
+$wide_15_24_wins = array(
+array(0,0,1,1), 	array(0,1,1,1), 	array(0,2,1,1), 	array(0,3,1,1), 	array(0,4,1,1), 	array(0,5,1,1),
+array(1,0,2,2), 					 	array(1,2,2,2), 						array(1,4,2,2),		
+
+array(3,0,1,1), 	array(3,1,1,1), 	array(3,2,1,1), 	array(3,3,1,1), 	array(3,4,1,1),		array(3,5,1,1),
+);
+
+$wide_18_24_wins = array(
+array(0,0,1,1), 	array(0,1,1,1), 	array(0,2,1,1), 	array(0,3,1,1), 	array(0,4,1,1), 	array(0,5,1,1),
+array(1,0,1,1), 	array(1,1,2,2), 					 	array(1,3,2,2), 						array(1,5,1,1),
+array(2,0,1,1), 										 											array(2,5,1,1),
+array(3,0,1,1), 	array(3,1,1,1), 	array(3,2,1,1), 	array(3,3,1,1), 	array(3,4,1,1),		array(3,5,1,1),
+);
+
+$wide_21_24_wins = array(
+array(0,0,1,1), 	array(0,1,1,1), 	array(0,2,1,1), 	array(0,3,1,1), 	array(0,4,1,1), 	array(0,5,1,1),
+array(1,0,1,1), 	array(1,1,1,1), 	array(1,2,2,2),							array(1,4,1,1),		array(1,5,1,1),
+array(2,0,1,1), 	array(2,1,1,1), 										 	array(2,4,1,1),		array(2,5,1,1),
+array(3,0,1,1), 	array(3,1,1,1), 	array(3,2,1,1), 	array(3,3,1,1), 	array(3,4,1,1),		array(3,5,1,1),
+);
+
+$wide_24_24_wins = array(
+array(0,0,1,1), 	array(0,1,1,1), 	array(0,2,1,1), 	array(0,3,1,1), 	array(0,4,1,1), 	array(0,5,1,1),
+array(1,0,1,1), 	array(1,1,1,1), 	array(1,2,1,1), 	array(1,3,1,1), 	array(1,4,1,1),		array(1,5,1,1),
+array(2,0,1,1), 	array(2,1,1,1), 	array(2,2,1,1), 	array(2,3,1,1), 	array(2,4,1,1),		array(2,5,1,1),
+array(3,0,1,1), 	array(3,1,1,1), 	array(3,2,1,1), 	array(3,3,1,1), 	array(3,4,1,1),		array(3,5,1,1),
+);
+
+$wide_18_18_wins = array(
+array(0,0,1,1), 	array(0,1,1,1), 	array(0,2,1,1), 	array(0,3,1,1), 	array(0,4,1,1), 	array(0,5,1,1),
+array(1,0,1,1), 	array(1,1,1,1), 	array(1,2,1,1), 	array(1,3,1,1), 	array(1,4,1,1),		array(1,5,1,1),
+array(2,0,1,1), 	array(2,1,1,1), 	array(2,2,1,1), 	array(2,3,1,1), 	array(2,4,1,1),		array(2,5,1,1),
+);
+
+
+//-->
+
 /// Список допустимы раскладок
+/*
+ * 'layout's type name' => array()
+ * [0] - кол-во действительных ячеек в раскладке 
+ * [1] - колво ячеек в столбце матрицы раскладки
+ * [2] - колво ячеек в строке матрицы раскладки
+ * [3] - описание каждой ячейки в раскладке
+ * [4] - главная ячейка
+ * [5] - название: "кол-во камер"
+ */
 $layouts_defs = array(
    'ONECAM'       => array(  1,   1, 1,  &$onecam_wins,       1, &$strONECAM      ),
    'QUAD_4_4'     => array(  4,   2, 2,  &$quad_4_4_wins,     1, &$strQUAD_4_4    ),
@@ -132,6 +226,21 @@ $layouts_defs = array(
    'MULTI_19_25'  => array( 19,   5, 5,  &$multi_19_25_wins,  7, &$strMULTI_19_25 ),
    'MULTI_22_25'  => array( 22,   5, 5,  &$multi_22_25_wins,  7, &$strMULTI_22_25 ),
    'QUAD_25_25'   => array( 25,   5, 5,  &$quad_25_25_wins,  13, &$strQUAD_25_25  ),
+   
+   //wide layouts 
+	'WIDE_2_2'	  => array( 2,	1,	2, 	&$wide_2_2_wins, 	1, 	$strWide_2_2 ),
+	'WIDE_3_6'	  => array( 3,	2,	3, 	&$wide_3_6_wins, 	1, 	$strWide_3_6 ),
+   	'WIDE_6_6'	  => array( 6,	2,	3, 	&$wide_6_6_wins, 	2, 	$strWide_6_6 ),
+	'WIDE_9_15'	  => array( 9,	3,	5, 	&$wide_9_15_wins, 	2, 	$strWide_9_15 ),
+	'WIDE_15_15'  => array( 15,	3,	5, 	&$wide_15_15_wins, 	8, 	$strWide_15_15 ),
+	'WIDE_12_24'  => array( 12,	4,	6, 	&$wide_12_24_wins, 	2, 	$strWide_12_24 ),
+	'WIDE_15_24'  => array( 15,	4,	6, 	&$wide_15_24_wins, 	8, 	$strWide_15_24 ),
+	'WIDE_18_24'  => array( 18,	4,	6, 	&$wide_18_24_wins, 	9, 	$strWide_18_24 ),
+	'WIDE_21_24'  => array( 21,	4,	6, 	&$wide_21_24_wins, 	9, 	$strWide_21_24 ),
+	'WIDE_24_24'  => array( 24,	4,	6, 	&$wide_24_24_wins, 	9, 	$strWide_24_24 ),
+	
+	'WIDE_18_18'  => array( 18, 3,	6, 	&$wide_18_18_wins, 	9, $strWide_18_18 ),
+	
 );
 
 /**
@@ -191,8 +300,9 @@ function layout2table ( $mon_type, $max_width, $win_text_array = array(), $win_t
 
    $t_end = '&nbsp;</b></font></td>'."\n";
    
-$max_width/
-   $wins_in_layout = $l_defs[0];
+   
+   
+$max_width/$wins_in_layout = $l_defs[0];
    $rows = $l_defs[1];
    $cols = $l_defs[2];
    $wins = &$l_defs[3];
