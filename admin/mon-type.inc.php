@@ -122,7 +122,7 @@ $poly_3x4_wins = array(
    array(2,0,1,1), array(2,1,1,1), array(2,2,1,1), array(2,3,1,1),
 );
 
-//-->Wide screens' layouts 
+//-->Wide layouts 
 
 $wide_2_2_wins = array(
 array(0,0,1,1), 	array(0,1,1,1), 
@@ -191,9 +191,28 @@ array(2,0,1,1), 	array(2,1,1,1), 	array(2,2,1,1), 	array(2,3,1,1), 	array(2,4,1,
 array(3,0,1,1), 	array(3,1,1,1), 	array(3,2,1,1), 	array(3,3,1,1), 	array(3,4,1,1),		array(3,5,1,1),
 );
 
+//ultra wide layouts
 $wide_18_18_wins = array(
 array(0,0,1,1), 	array(0,1,1,1), 	array(0,2,1,1), 	array(0,3,1,1), 	array(0,4,1,1), 	array(0,5,1,1),
 array(1,0,1,1), 	array(1,1,1,1), 	array(1,2,1,1), 	array(1,3,1,1), 	array(1,4,1,1),		array(1,5,1,1),
+array(2,0,1,1), 	array(2,1,1,1), 	array(2,2,1,1), 	array(2,3,1,1), 	array(2,4,1,1),		array(2,5,1,1),
+);
+
+$wide_9_18_wins = array(
+array(0,0,2,2), 						array(0,2,2,2), 						array(0,4,2,2), 	
+
+array(2,0,1,1), 	array(2,1,1,1), 	array(2,2,1,1), 	array(2,3,1,1), 	array(2,4,1,1),		array(2,5,1,1),
+);
+
+$wide_12_18_wins = array(
+array(0,0,1,1), 	array(0,1,2,2), 						array(0,3,2,2), 						array(0,5,1,1),
+array(1,0,1,1), 										 											array(1,5,1,1),
+array(2,0,1,1), 	array(2,1,1,1), 	array(2,2,1,1), 	array(2,3,1,1), 	array(2,4,1,1),		array(2,5,1,1),
+);
+
+$wide_15_18_wins = array(
+array(0,0,1,1), 	array(0,1,1,1), 	array(0,2,2,2), 						array(0,4,1,1), 	array(0,5,1,1),
+array(1,0,1,1), 	array(1,1,1,1), 										 	array(1,4,1,1),		array(1,5,1,1),
 array(2,0,1,1), 	array(2,1,1,1), 	array(2,2,1,1), 	array(2,3,1,1), 	array(2,4,1,1),		array(2,5,1,1),
 );
 
@@ -228,7 +247,6 @@ $layouts_defs = array(
    'QUAD_25_25'   => array( 25,   5, 5,  &$quad_25_25_wins,  13, &$strQUAD_25_25  ),
    
    //wide layouts 
-	'WIDE_2_2'	  => array( 2,	1,	2, 	&$wide_2_2_wins, 	1, 	$strWide_2_2 ),
 	'WIDE_3_6'	  => array( 3,	2,	3, 	&$wide_3_6_wins, 	1, 	$strWide_3_6 ),
    	'WIDE_6_6'	  => array( 6,	2,	3, 	&$wide_6_6_wins, 	2, 	$strWide_6_6 ),
 	'WIDE_9_15'	  => array( 9,	3,	5, 	&$wide_9_15_wins, 	2, 	$strWide_9_15 ),
@@ -239,7 +257,12 @@ $layouts_defs = array(
 	'WIDE_21_24'  => array( 21,	4,	6, 	&$wide_21_24_wins, 	9, 	$strWide_21_24 ),
 	'WIDE_24_24'  => array( 24,	4,	6, 	&$wide_24_24_wins, 	9, 	$strWide_24_24 ),
 	
+	//ultra wide layouts	
+	'WIDE_2_2'	  => array( 2,	1,	2, 	&$wide_2_2_wins, 	1, 	$strWide_2_2 ),
 	'WIDE_18_18'  => array( 18, 3,	6, 	&$wide_18_18_wins, 	9, $strWide_18_18 ),
+	'WIDE_9_18'  => array( 9, 3,	6, 	&$wide_9_18_wins, 	2, $strWide_9_18 ),
+	'WIDE_12_18' => array( 12, 3,	6, 	&$wide_12_18_wins, 	2, $strWide_12_18 ),
+	'WIDE_15_18' => array( 15, 3,	6, 	&$wide_15_18_wins, 	3, $strWide_15_18 ),
 	
 );
 

@@ -413,6 +413,9 @@ $strWide_21_24 =  '21 камера'.$strWideScreen;
 $strWide_24_24 =  '24 камеры'.$strWideScreen;
 
 $strWide_18_18 =  '18 камер'.$strWideScreen;
+$strWide_9_18  =  '9 камер'.$strWideScreen;
+$strWide_12_18  =  '12 камер'.$strWideScreen;
+$strWide_15_18  =  '15 камер'.$strWideScreen;
 
 $strCamPosition = 'Расположение камер';
 $sLeftDisplay = 'левый или единственный монитор';
