@@ -38,6 +38,13 @@ var NAME_DIV_H = PrintCamNames?20:0;
 ///корректировка размеров контейнера для плеера
 var CORRECT_H = 4; var CORRECT_W = 4; 
 
+/// Статусы камер
+var CAM_STATUSES;
+///XMLHttpRequest object
+var CAM_STATUS_REQ;
+/// подписка на отслеживание статусов камер
+var SUBSCRIBE = true;
+
 var imgs = new Array();
 
 $(document).ready( function() {
@@ -69,6 +76,7 @@ $(document).ready( function() {
 	
 	//Запуск сценария	   
 	fill_canvas();
+
 });
 
 
@@ -261,7 +269,8 @@ function img_click(clicked_div) {
         .attr({
         	'src': imgs['tc'].src,
         	'title':'Свернуть'
-        });
+        });var STAT_REQ_NR = 0;
+
  
         
         
@@ -698,7 +707,7 @@ function canvas_growth() {
    	COLS_NR = l_defs[2];
    	
    	fill_canvas();
-
+   	
    }
 
 
@@ -1024,8 +1033,95 @@ function canvas_growth() {
 		$('.MediaCont').removeClass('cursorMove');
 	});
    
+	
+	
+//--> Cameras' statuses    	
+	
+	var cams_nrs = '';
+	
+   	//Устанавливаем целевую раскладку
+   	$.each(layouts_list, function(i, value){
+   		if(value['MON_NR']==cur_layout){
+   			var wins = $.parseJSON(value['WINS']);
+   			var cnt = 0;
+   		   	$.each(wins, function(ix, win){
+   		   		if(cnt>0)cams_nrs+=',';
+   		   		cams_nrs += win[0];
+   		   		cnt++;
+   		   	});
+   			return;
+   		}
+   	});
+   	
+   	
+	if(CAM_STATUS_REQ!=null){
+		CAM_STATUS_REQ.abort(); 
+	}
+	   	
+	CAM_STATUS_REQ = cam_status_request({
+				'cams': cams_nrs, 
+//				'subsytems':'capture,record,motion,client', 	
+			});
+	
+//--> Cameras' statuses
+	
+}//fill_canvas()
+
+var err_no = 0;   
+cam_status_request = function(params ){
+
+	return $.ajax({
+	    url: '../lib/status.php',
+	    dataType : "json",
+	    data : params,
+	    success: function (data, textStatus) { 
+	    	CAM_STATUSES = data;
+			console.log(CAM_STATUSES);
+			if(SUBSCRIBE){
+				params['subscribe']='multipart'; 
+				CAM_STATUS_REQ = cam_status_request(params);
+			}
+	    },
+	    error: function (XHR, textStatus, errorThrown) { 
+			window.setTimeout(function(){
+				if(err_no<5 && textStatus!='abort'){				
+					err_no++;
+					CAM_STATUS_REQ = cam_status_request(params);
+				}
+			}, 3000*err_no);
+			
+	    }    
+	
+	});
+	
+	
+};
    
-}
+   
+   
+/**
+ * Функция создает XHR-object
+ * @returns  XHR-object
+ */   
+   
+getXmlHttp = function(){
+	var xmlhttp;
+	try {
+		xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+	} catch (e) {
+	try {
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	} catch (E) {
+		xmlhttp = false;
+	}
+	}
+	if (!xmlhttp /*&& typeof XMLHttpRequest!='undefined' */) {
+		xmlhttp = new XMLHttpRequest();
+	}
+	return xmlhttp;
+};
+   
+   
 
 /**
  * Объект обработки событий котролов toolbar & controlbar
