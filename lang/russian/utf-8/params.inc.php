@@ -82,7 +82,7 @@ $PAR_GROUPS = array(
    array(
       'id'=>'3.1.1',
       'name'=>'http://',
-      'desc'=>'захват по протоколу &#171;http://&#187;',
+      'desc'=>'видео/аудио захват по протоколу &#171;http://&#187;',
       'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
       'mstatus'=> 1,
       'help_page'=> NULL
@@ -109,7 +109,7 @@ $PAR_GROUPS = array(
    array(
       'id'=>'3.1.2',
       'name'=>'rtsp://',
-      'desc'=>'захват по протоколу &#171;rtsp://&#187;',
+      'desc'=>'видео/аудио захват по протоколу &#171;rtsp://&#187;',
       'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
       'mstatus'=> 1,
       'help_page'=> NULL
@@ -119,7 +119,7 @@ $PAR_GROUPS = array(
    array(
       'id'=>'3.2',
       'name'=>'video4linux',
-      'desc'=>'с PCI-плат видеозахвата и USB-камер',
+      'desc'=>'видео с PCI-плат видеозахвата и USB-камер',
       'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
       'mstatus'=> 1,
       'help_page'=> 'http://avreg.net/howto_linux-capture-cards.html'
@@ -128,7 +128,7 @@ $PAR_GROUPS = array(
    array(
       'id'=>'3.3',
       'name'=>'alsa',
-      'desc'=>'с звуковых карт, USB-камер и PCI-плат видеозахвата с поддержкой аудио',
+      'desc'=>'аудио с звуковых карт, USB-камер и PCI-плат видеозахвата с поддержкой аудио',
       'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
       'mstatus'=> 1,
       'help_page'=> NULL
