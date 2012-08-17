@@ -272,7 +272,7 @@ if (!isset($NOBODY))
    $custom_header = preg_replace('%^'.$conf['prefix'].'(/.+)\.php$%', '\1_header.inc.php', $_SERVER['SCRIPT_NAME']);
    if ( 0 != strcmp($_SERVER['SCRIPT_NAME'], $custom_header ) ) {
       if ($conf['debug'])
-         print '<div class="legend"><span class="legend">@include "'. $conf['customize-dir'] . $custom_header . "\"</span>\n";
+         print '<div class="legend header"><span class="legend">@include "'. $conf['customize-dir'] . $custom_header . "\"</span>\n";
       #tohtml($_SERVER['SCRIPT_NAME']);
       @include($conf['customize-dir'] . $custom_header);
       if ($conf['debug'])

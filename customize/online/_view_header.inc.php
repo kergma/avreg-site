@@ -27,7 +27,6 @@ function br_spec_out() {
 </tr>
 </table>
 </div>
-
 <div class="jqmWindow" id="dialog">
 <div style="text-align: right;">
 <span class="jqmClose" style="text-align: center; border: 1px solid #000; font-weight: bold; padding: 5px;"><a href="#">X</a></span>

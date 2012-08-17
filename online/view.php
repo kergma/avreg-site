@@ -72,15 +72,13 @@ isset($PrintCamNames),
 isset($EnableReconnect),
 isset($AspectRatio) ? $AspectRatio : 'calc' );
 
-
 setcookie("avreg_$mon_type", $_cookie_value, time()+5184000, dirname($_SERVER['SCRIPT_NAME']).'/build_mon.php');
 while (@ob_end_flush());
 
 ?>
 
-
 <div id="canvas"
-     style="position:relative; background-color:#000000; width:100%; height:0px; margin:0; padding:0;
+     style="position:relative; width:100%; height:0px; margin:0; padding:0;
            -ms-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; -webkit-box-sizing: border-box;">
 </div>
 
@@ -162,7 +160,8 @@ print "var GCP_cams_params = ".json_encode($GCP_cams_params).";\n";
 //Передаем JS параметр operator_user
 print "var operator_user = ".json_encode($operator_user).";\n";
 
-
+//передаем titles для контролов toolbara
+print "var strToolbarControls = ".json_encode($strToolbarControls).";\n";
 
 //для js сопоставление камер и источников
 $active_cams_srcs = array();

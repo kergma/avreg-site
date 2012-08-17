@@ -22,7 +22,7 @@ $subscribe = isset($_GET['subscribe'])? true:false;
 //Если ждем изменения статусов камер
 if($subscribe)
 {
-	$timeout = 3;
+	$timeout = 30;
 	$start = time();
 	while((time() - $start) < $timeout) {
 		//if(IS_STATUSES_CHANGED) return status; 

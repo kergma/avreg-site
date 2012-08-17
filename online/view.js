@@ -53,9 +53,11 @@ $(document).ready( function() {
 	imgs['fs'].src =  "../img/fs.png";
 	imgs['tc'] = new Image();
 	imgs['tc'].src =  "../img/tc.png";
-	//шестерня - тулбар
-	imgs['gearwheel'] = new Image();
-	imgs['gearwheel'].src =  "../img/gearwheel.png";
+	//Кнопка включения/выключения тулбар
+	imgs['controlsOnOff_on'] = new Image();
+	imgs['controlsOnOff_on'].src =  "../img/slide1.png";
+	imgs['controlsOnOff_off'] = new Image();
+	imgs['controlsOnOff_off'].src =  "../img/slide2.png";
 	//плэй
 	imgs['pl_start'] = new Image();
 	imgs['pl_start'].src =  "../img/StepForwardNormalBlue.png";
@@ -69,10 +71,10 @@ $(document).ready( function() {
 	imgs['pl_minus'].src =  "../img/ZoomOut.png";
 
 	imgs['original_size'] = new Image();
-	imgs['original_size'].src =  "../img/misc.png";
+	imgs['original_size'].src =  "../img/1to1.png";
 	
 	imgs['normal_size'] = new Image();
-	imgs['normal_size'].src =  "../img/misc.png";
+	imgs['normal_size'].src =  "../img/expand.png";
 	
 	//Запуск сценария	   
 	fill_canvas();
@@ -203,7 +205,7 @@ function img_click(clicked_div) {
       .height($('#cell_header_'+win_nr).height()-4)
       .attr({
       	'src': imgs['fs'].src,
-      	'title':'Развернуть',
+      	'title':strToolbarControls['on'],
       });
 
       
@@ -268,7 +270,7 @@ function img_click(clicked_div) {
         .height($('#cell_header_'+win_nr).height()-4)
         .attr({
         	'src': imgs['tc'].src,
-        	'title':'Свернуть'
+        	'title':strToolbarControls['min']
         });var STAT_REQ_NR = 0;
 
  
@@ -556,7 +558,7 @@ function canvas_growth() {
    function layouts_to_list(){
 	   var html = '<div>';
    	$.each(layouts_list, function(i, value){
-   		html+='<div class="layout'+((cur_layout==value.MON_NR)? ' selectedLayout':'' )+'" ><a id="layout_'+value.MON_NR+'" onclick="change_layout('+value.MON_NR+')" href="#">';
+   		html+='<div class="layout'+((cur_layout==value.MON_NR)? ' selectedLayout':'' )+'" ><a id="layout_'+value.MON_NR+'" class="layout_link" onclick="change_layout('+value.MON_NR+')" href="#">';
    		html+= (value.SHORT_NAME==''? value.MON_TYPE :value.SHORT_NAME);
    		html+= (value.IS_DEFAULT==1? '(def)' :'');
    		html+='</a>&nbsp;&nbsp;&nbsp;&nbsp;</div>';
@@ -853,10 +855,10 @@ function canvas_growth() {
                     ' left:'+_left+'px; '+
                     ' width:'+ win_geo.win_w +'px;'+
                     ' height:'+ win_geo.win_h +'px;'+
-                    ' border-top: '+BorderTop+'px solid  #ffa500;' +
-                    ' border-left: '+BorderLeft+'px solid  #ffa500;' +
-                    ' border-bottom: '+BorderBottom+'px solid  #ffa500;' +
-                    ' border-right: '+BorderRight+'px solid  #ffa500;' + 
+                    ' border-top: '+BorderTop+'px solid	 #ffb742;' +
+                    ' border-left: '+BorderLeft+'px solid  #ffb742;' +
+                    ' border-bottom: '+BorderBottom+'px solid  #ffb742;' +
+                    ' border-right: '+BorderRight+'px solid  #ffb742;' + 
                     ' z-index: 30;' +
                     '"><\/div>');
               win_div.appendTo(CANVAS);
@@ -864,13 +866,24 @@ function canvas_growth() {
               if (PrintCamNames) {
                  var ipcamhost_link_begin = '';
                  var ipcamhost_link_end = '';
+                 
+//                 console.log(typeof(WINS_DEF[win_nr].cam.netcam_host));
+                 console.log(WINS_DEF[win_nr]);
+                 
                  if ( typeof(WINS_DEF[win_nr].cam.netcam_host) == "string" ) {
                     ipcamhost_link_begin = '<a href="http://' +
                                              WINS_DEF[win_nr].cam.netcam_host +
-                                             '" target="_blank" style="color:inherit;" title="Перейти в веб интерфейс IP-камеры">';
+                                             '" target="_blank" style="color:inherit;" title="'+strToolbarControls['to_cam_interface']+'">';
                     ipcamhost_link_end   = ' &rarr;<\/a>';
                  }
-                 var hdr = $('<div id="cell_header_'+win_nr+'" style="cursor:default; background-color:#555588;'+ // #666699
+                 else if(typeof(WINS_DEF[win_nr].cam.url) == "string"){
+                     ipcamhost_link_begin = '<a href="' + WINS_DEF[win_nr].cam.url +
+                     						'" target="_blank" style="color:inherit;" title="'+strToolbarControls['to_cam_interface']+'">';
+                     ipcamhost_link_end   = ' &rarr;<\/a>';
+                 }
+                 
+                 
+                 var hdr = $('<div id="cell_header_'+win_nr+'" class="cell_header"  style="cursor:default;'+ // #666699
                        ' padding:0px; margin:0px; overflow:hidden; border:0px; height:'+ NAME_DIV_H*win_def.rowspan +'px;">'+
                        '<span style="'+
                        'vertical-align: middle; position: absolute; top: '+(NAME_DIV_H*win_def.rowspan/2 - 14)+'px; padding-left:8px; padding-top:2px; padding-bottom:2px; padding-right:2px;'+
@@ -893,35 +906,35 @@ function canvas_growth() {
                  .appendTo(hdr);
                  
                  //свернуть/развернуть
-                 $('<img src='+imgs['fs'].src+' class="tool fs_tc" title="Развернуть">')
+                 $('<img src='+imgs['fs'].src+' class="tool fs_tc" title="'+strToolbarControls['max']+'">')
                  .height(ht-4)
                  .appendTo(toolbar);
-                 //шестерня - вывести toolbar
-                 $('<img src='+imgs['gearwheel'].src+' id="gearwheel_'+win_nr+'" class="tool gearwheel" title="Отобразить панель управления" >')
+                 //Кнопка включить/выключить toolbar
+                 $('<img src='+imgs['controlsOnOff_on'].src+' id="controlsOnOff_'+win_nr+'" class="tool controlsOnOff" title="'+strToolbarControls['on']+'" >')
                  .height(ht-4)
                  .click(function(e){
                 	 e.preventDefault();
                 	 e.stopPropagation();
-                	 controls_handlers.gearwheel_click(e);
+                	 controls_handlers.controlsOnOff_click(e);
                 	 return false;
                  })
                  .mouseover(function(e){
                 	 e.preventDefault();
                 	 e.stopPropagation();
-                	 controls_handlers.gearwheel_mouseover(e);
+                	 controls_handlers.controlsOnOff_mouseover(e);
                 	 return false;
                  })
                 .mouseout(function(e){
                 	 e.preventDefault();
                 	 e.stopPropagation();
-                	 controls_handlers.gearwheel_mouseout(e);
+                	 controls_handlers.controlsOnOff_mouseout(e);
                 	 return false;
                  })
                  .appendTo(toolbar);
                  
                  //панель контролов
                  
-                 var normal_size = $('<img id="normal_size_'+win_nr+'" class="normal_size" title="Вписать в ячейку" src='+imgs['normal_size'].src+' />')
+                 var normal_size = $('<img id="normal_size_'+win_nr+'" class="normal_size" title="'+strToolbarControls['cell_size']+'" src='+imgs['normal_size'].src+' />')
                  .height(ht-4)
                  .click(function(e){
                 	 e.preventDefault();
@@ -930,7 +943,7 @@ function canvas_growth() {
                 	 return false;
                  });
 
-                 var original_size = $('<img id="original_size_'+win_nr+'" class="original_size" title="Оригинальный размер" src='+imgs['original_size'].src+' />')
+                 var original_size = $('<img id="original_size_'+win_nr+'" class="original_size" title="'+strToolbarControls['orig_size']+'" src='+imgs['original_size'].src+' />')
                  .height(ht-4)
                  .click(function(e){
                 	 e.preventDefault();
@@ -939,7 +952,7 @@ function canvas_growth() {
                 	 return false;
                  });
                  
-                 var start = $('<img id="pl_start_'+win_nr+'" class="pl_start" title="Старт" src='+imgs['pl_start'].src+' />')
+                 var start = $('<img id="pl_start_'+win_nr+'" class="pl_start" title="'+strToolbarControls['play']+'" src='+imgs['pl_start'].src+' />')
                  .height(ht-4)
                  .click(function(e){
                 	 e.preventDefault();
@@ -949,7 +962,7 @@ function canvas_growth() {
                  })
                  .hide();
                  
-                 var stop =  $('<img id="pl_stop_'+win_nr+'" class="pl_stop" title="Стоп" src='+imgs['pl_stop'].src+' />')
+                 var stop =  $('<img id="pl_stop_'+win_nr+'" class="pl_stop" title="'+strToolbarControls['stop']+'" src='+imgs['pl_stop'].src+' />')
                  .height(ht-4)
                  .click(function(e){
                 	 e.preventDefault();
@@ -958,7 +971,7 @@ function canvas_growth() {
                 	 return false;
                  });
                  
-                 var plus = $('<img id="pl_plus_'+win_nr+'" class="pl_plus" title="Увеличить" src='+imgs['pl_plus'].src+' />')
+                 var plus = $('<img id="pl_plus_'+win_nr+'" class="pl_plus" title="'+strToolbarControls['zoom_in']+'" src='+imgs['pl_plus'].src+' />')
                  .click(function(e){
                 	 e.preventDefault();
                 	 e.stopPropagation();
@@ -967,7 +980,7 @@ function canvas_growth() {
                  })
                  .height(ht-4);
                  
-                 var minus = $('<img id="pl_minus_'+win_nr+'" class="pl_minus" title="Уменьшить" src='+imgs['pl_minus'].src+' />')
+                 var minus = $('<img id="pl_minus_'+win_nr+'" class="pl_minus" title="'+strToolbarControls['zoom_out']+'" src='+imgs['pl_minus'].src+' />')
                  .click(function(e){
                 	 e.preventDefault();
                 	 e.stopPropagation();
@@ -1017,7 +1030,9 @@ function canvas_growth() {
            $('#dialog').jqm({
    overlay: 90
    });
-           
+
+    $("#toolbar").addClass('toolbar_style');
+
    //Выводим список камер
    $("#toolbar table tr")
    .html('<td>'+layouts_to_list()+ ' <div style="float:right;"> <a href="http://'+SERVER_ADR+'/avreg/index.php" >В начало</a> </div>'+'</td>');
@@ -1126,7 +1141,7 @@ getXmlHttp = function(){
 /**
  * Объект обработки событий котролов toolbar & controlbar
  */
-var controls_handlers = {   
+var controls_handlers = {
 	timers : new Array(),
 	original_size : new Array(),
 	
@@ -1166,8 +1181,6 @@ var controls_handlers = {
 	
 	
 	controls_panel_mouseout : function(e){
-		
-		
 		var cp = $(e.currentTarget);
 		var cell_nr = parseInt(($(cp).attr('id')).replace('pl_controls_',''));
 		if($("#cell_header_"+cell_nr).hasClass('control')){}
@@ -1178,12 +1191,31 @@ var controls_handlers = {
 		}
 	},
 	
-	gearwheel_click : function(e){
+	controlsOnOff_click : function(e){
 		
 		var gw = $(e.currentTarget);
-		var cell_nr = parseInt(($(gw).attr('id')).replace('gearwheel_',''));
-
-		$("#cell_header_"+cell_nr).toggleClass('control');
+		var cell_nr = parseInt(($(gw).attr('id')).replace('controlsOnOff_',''));
+		
+		if($("#cell_header_"+cell_nr).hasClass('control')){
+			$("#cell_header_"+cell_nr).removeClass('control');
+		}
+		else{
+			$("#cell_header_"+cell_nr).addClass('control');
+		}
+		if($("#cell_header_"+cell_nr).hasClass('fixed_cntr')){
+			$("#cell_header_"+cell_nr).removeClass('fixed_cntr');
+		}
+		else{
+			$("#cell_header_"+cell_nr).addClass('fixed_cntr');
+		}
+		
+		if($("#cell_header_"+cell_nr).hasClass('fixed_cntr')){
+			$(gw).attr({'title':strToolbarControls['off']});
+		}
+		else{
+			$(gw).attr({'title':strToolbarControls['on']});
+		}
+		
 		if($("#cell_header_"+cell_nr).hasClass('control')){
 			$(gw).unbind('mouseout');
 			if(!$("span", "#cell_header_"+cell_nr).hasClass('hidden')){
@@ -1195,19 +1227,19 @@ var controls_handlers = {
 			$(gw).mouseout(function(e){
            	 e.preventDefault();
         	 e.stopPropagation();
-        	 controls_handlers.gearwheel_mouseout(e);
+        	 controls_handlers.controlsOnOff_mouseout(e);
         	 return false;
 			});
 		}
 	},
 	
-	gearwheel_mouseover : function(e){
+	controlsOnOff_mouseover : function(e){
 		this.show_cntrolpanel(e);
 	},
 	
-	gearwheel_mouseout : function(e){
+	controlsOnOff_mouseout : function(e){
 		var gw = $(e.currentTarget);
-		var cell_nr = parseInt(($(gw).attr('id')).replace('gearwheel_',''));
+		var cell_nr = parseInt(($(gw).attr('id')).replace('controlsOnOff_',''));
 		
 		if($("span", "#cell_header_"+cell_nr).hasClass('hidden')){
 				this.timers[cell_nr] = window.setTimeout(function(){
@@ -1218,26 +1250,40 @@ var controls_handlers = {
 
 	show_cntrolpanel : function(e){
 		var gw = $(e.currentTarget);
-		var cell_nr = parseInt(($(gw).attr('id')).replace('gearwheel_',''));
+		var cell_nr = parseInt(($(gw).attr('id')).replace('controlsOnOff_',''));
 
+		//переключаем кнопку тулбара
+		$(gw).attr({
+			'src':imgs['controlsOnOff_off'].src,
+		});
+		
 		$('span',"#cell_header_"+cell_nr).addClass('hidden');
 		$('span',"#cell_header_"+cell_nr).fadeOut(200, function(){
+
 			$(".pl_controls", "#win"+cell_nr).fadeIn(200);
 		});
+		
 	},
 	
 	hide_cntrolpanel : function(e){
 		var gw = $(e.currentTarget);
-		var cell_nr = parseInt(($(gw).attr('id')).replace('gearwheel_',''));
+		var cell_nr = parseInt(($(gw).attr('id')).replace('controlsOnOff_',''));
 
 		if(isNaN(cell_nr)){
 			cell_nr = parseInt(($(gw).attr('id')).replace('pl_controls_',''));
 		}
+		
+		//переключаем кнопку тулбара
+		$(gw).attr({
+			'src':imgs['controlsOnOff_on'].src,
+		});
 
 		$('span',"#cell_header_"+cell_nr).removeClass('hidden');
 		$(".pl_controls", "#win"+cell_nr).fadeOut(200, function(){
 			$('span',"#cell_header_"+cell_nr).fadeIn(200);
 		});
+		
+
 	},
 	
 	pl_start_click : function(e){

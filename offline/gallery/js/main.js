@@ -38,7 +38,6 @@ var Base64 = {
     		input = Base64._utf8_encode(input);
 
     		while (i < input.length) {
-
     			chr1 = input.charCodeAt(i++);
     			chr2 = input.charCodeAt(i++);
     			chr3 = input.charCodeAt(i++);
@@ -57,9 +56,7 @@ var Base64 = {
     			output = output +
     			this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
     			this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
-
     		}
-
     		return output;
     	},
 
@@ -91,13 +88,9 @@ var Base64 = {
     			if (enc4 != 64) {
     				output = output + String.fromCharCode(chr3);
     			}
-
     		}
-
     		output = Base64._utf8_decode(output);
-
     		return output;
-
     	},
 
     	// private method for UTF-8 encoding
@@ -134,7 +127,6 @@ var Base64 = {
     		var c = c1 = c2 = 0;
 
     		while ( i < utftext.length ) {
-
     			c = utftext.charCodeAt(i);
 
     			if (c < 128) {
@@ -152,12 +144,9 @@ var Base64 = {
     				string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
     				i += 3;
     			}
-
     		}
-
     		return string;
     	}
-
     };
 
 
@@ -189,6 +178,7 @@ $.ajaxSetup({
 
 // основной объект галереи
 var gallery = {
+		images : new Array(),
 		treeObject: null,
 		config : {
 
@@ -261,10 +251,11 @@ var gallery = {
 				} else {
 					gallery.cookie.set('resize_column', 300);
 				}
-				
-				$("body").css({"overflow-y":"hidden"})
+				$("body").css({"overflow-y":"hidden"});
 			}
 		},
+		
+		
 		reload_events : function(){
 			var count = 0;
 			var cook = '';
@@ -716,7 +707,6 @@ var gallery = {
 				$('#cameras_color .close').click(function(){
 					self.close();
 				});
-
 			}
 		},
 		// объект, показывающий сообщения хочет ли пользователь перейти на следующий временной диапазон
@@ -788,7 +778,6 @@ var gallery = {
 		},
 		// инициализация галереи
 		init : function(config) {
-
 			var self = this;
 			// обновление настроек
 			if (config && typeof(config) == 'object') {
@@ -796,9 +785,18 @@ var gallery = {
 			}
 
 			$('#matrix_load').show();
-
+			
 			self.cookie.init({path:WwwPrefix+'/offline/gallery.php'});
 
+			//Загрузка изображений контролов
+			//Кнопки свернуть/развернуть
+			gallery.images['preview'] = new Image();
+			gallery.images['preview'].src =  WwwPrefix+'/offline/gallery/img/slide1.png';
+			//Кнопки свернуть/развернуть
+			gallery.images['detail'] = new Image();
+			gallery.images['detail'].src =  WwwPrefix+'/offline/gallery/img/slide2.png';
+			
+			
 			// организация увеличение размера списка камер
 			if ($('#win_top').height() > 100) {
 				$('#more_cam').show();
@@ -864,19 +862,95 @@ var gallery = {
 			});
 			
 			//Кнопка смены режима просмотра - детальный/миниатюры
-			var btnCangeMode =	$('<div class="select_mode"> <button id="btn_PreviewMode" disabled="disabled" >Минниаюры</button> <button id="btn_DetailMode" >Просмотр</button>	</div>');
-			$(btnCangeMode).find("button").width(100).height(25);
+			var btnCangeMode =	$('<div class="select_mode"> <img src="'+gallery.images['preview'].src +'" /></div>');
 			
 			$(btnCangeMode)
-			.find('#btn_DetailMode').click(function(){
-					matrix.detail();
-				}).end()
-				.find('#btn_PreviewMode').click(function(){
-					if(matrix.mode == 'detail')
+			.find("img")
+			.width(220)
+			.height(35);
+			
+			$(btnCangeMode)
+			.click(function(e){
+				var im = $(btnCangeMode).find('img');
+					if(matrix.mode == 'detail'){
 						matrix.preview();
-				});
+					}else{
+						matrix.detail();
+					}
+			});
 
 			$("#toolbar>#toolbar_left:first-child").prepend(btnCangeMode);
+			
+			//кнопка установки оригинального размера
+			var btn_orig_size = $("<div id='btn_orig_size' class='btn_img_size' style='left:45px;' ><img style='height: 30px; width: 30px;' src='"+WwwPrefix+"/img/1to1.png' title='Оригинальный размер' /> </div>")
+					.click(function(event){
+						var nr = matrix.num;
+						var val = matrix.events[nr];
+						if (typeof(val) == 'undefined') return;
+						
+						var height = val[3];
+						var width = val[4];
+
+						if(scale2.position != 0) scale2.setposition(0);
+						
+						//Изменение положения ползунка масштаба 	
+						if(value[7]=='image') //Если картинка
+						{
+							//формирование src ресайза картинки
+							var ResizedImgSrc = matrix.getResizedImageSrc(matrix.num, height, width);
+
+							//Загрузка изображения соответствующего размера
+							$('.active .refBox')
+							.aplayerSetImgSrc(ResizedImgSrc)
+							.aplayerResizeContanerOnlyToParent()
+							.aplayerSetSizeMediaElt({'height': height, 'width': width});
+							
+							//визуализируем скролл масштаба режима просмотра
+							$('#scale2').show();
+							//показываем чекбокс пропорций
+							$('div.propotion').show();
+						}
+						else if( value[7]=='audio' ) //Если внедренный объект  аудио
+						{
+						}
+						else 
+						{
+
+							if( $('.active .refBox').aplayerIsEmbededObject() )// если ембед
+							{
+								//Скрываем елемент управления масштабом
+								$('#scale2').hide();
+								
+								//корректировка высоты с учетом панели управления ембеда
+								height = parseInt(height)+25;
+								
+							}
+							//установка размеров плеера в соответствии с размерами родительского элемента
+							$('.active .refBox').aplayerResizeContanerOnlyToParent(); 
+							//Изменение размеров медиа-элемента плеера 
+							$('.active .refBox').aplayerSetSizeMediaElt({
+								'width':  parseInt(width),
+								'height': parseInt(height)
+							} );
+						}
+					})
+					.hide();
+
+			//кнопка вписать в окно
+			var btn_cell_size = $("<div id='btn_cell_size' class='btn_img_size' style='left:0px;' ><img style='height: 30px; width: 30px;' src='"+WwwPrefix+"/img/expandnew.png' title='Вписать в окно' /> </div>")
+				.click(function(event){
+					scale2.setposition(0);
+				})
+				.hide();
+
+
+			//позиционирование этих двух кнопок
+			$("#btn_cell_size, #btn_orig_size" )
+
+
+			//установка в панель инструментов
+			$("#toolbar>#toolbar_right").prepend(btn_cell_size, btn_orig_size);				
+
 			
 			// инициализация изменения размеров столбцов
 			self.resize_column.init();
@@ -934,7 +1008,7 @@ var matrix = {
 	cur_count_item : 0, // текущее количество загруженных событий
 	send_query: false, // можно ли посылать запросы к базе
 	select_node : false, // можно ли выбирать другой диапазон
-	isResizeMode:false, //активирован режим ресайза
+	isResizeMode : false, //активирован режим ресайза
 	//объект для востановления матрицы при выходе из режима просмотра
 	recover:{
 		cell_style:null,
@@ -1093,8 +1167,9 @@ var matrix = {
 	// если включили режим детальный просмотр
 	detail : function() {
 		matrix.mode = 'detail';
-		$('#btn_DetailMode').attr("disabled","disabled");
-		$('#btn_PreviewMode').removeAttr("disabled")
+		
+		//меняем изображение кнопки смены режимов
+		$('img','.select_mode').attr('src', gallery.images['detail'].src);
 		
 		keyBoard.view = keyBoard.views.detail;
 		
@@ -1121,9 +1196,6 @@ var matrix = {
 		//если есть тултип - удаляем
 		$('.tooltip').remove();
 			
-		//скрыть инфо-блок
-//		$('.info_block').hide(); //рестартит ембед //спрятан за #toolbar
-			
 		//скрываем скролл матрицы
 		$("#scroll_v").hide();
 		//расширяем панель матрицы на освободившееся место
@@ -1133,14 +1205,19 @@ var matrix = {
 		matrix.loaddetailsrc();
 	
 		scale2.setposition(scale2.position);
-		
-//	 	scale2.updateposition(scale2.position);
+		//востанавливаем позицию изображения
+		scale2.restore_content_position();		
+
+		//Визуализируем кнопки масштабирования
+		$('#btn_cell_size, #btn_orig_size').show();
 	 	
 	},
 	
 	
 	// если включили режим миниатюр
 	preview : function() {
+		//сохраняем позицию изображения текущего елемента
+		scale2.save_content_position(); 
 		$('.propotion').show();
 		if (typeof(matrix.curent_tree_events[matrix.tree]) != 'undefined') {
 			keyBoard.beforeView = keyBoard.view;
@@ -1148,10 +1225,6 @@ var matrix = {
 
 			matrix.mode = 'preview';
 	
-			$('#btn_PreviewMode').attr("disabled","disabled");
-			$('#btn_DetailMode').removeAttr("disabled")
-
-
 			//переключаем toolbar в режим миниатюрs
 			$('#toolbar .detail').hide();
 			$('#toolbar .preview').show();
@@ -1187,6 +1260,14 @@ var matrix = {
 			//Включаем тултип
 			$(".elem").tooltip();
 
+			//Скрываем кнопки масштабирования
+			$('#btn_cell_size, #btn_orig_size').hide();
+			
+			//Скрываем кнопки масштабирования
+			$('#btn_cell_size, #btn_orig_size').hide();
+
+			//меняем изображение кнопки смены режимов
+			$('img', '.select_mode').attr('src', gallery.images['preview'].src);
 		}
 	},
 
@@ -1641,7 +1722,7 @@ var matrix = {
 		}
 	},
 
-	// обовление матрицы
+	// обновление матрицы
 	update : function(sp) {
 		$('#matrix_load').show();
 	
@@ -1681,20 +1762,25 @@ var matrix = {
 		}else if (matrix.cell_count+sp > matrix.curent_tree_events[matrix.tree].count) {
 			count_events = matrix.curent_tree_events[matrix.tree].count - sp;
 		}
-	//	var count_events = matrix.cell_count > matrix.curent_tree_events[matrix.tree].count ? matrix.curent_tree_events[matrix.tree].count : matrix.cell_count;
+	
+		//var count_events = matrix.cell_count > matrix.curent_tree_events[matrix.tree].count ? matrix.curent_tree_events[matrix.tree].count : matrix.cell_count;
 		
 		for (var i = sp; i < sp + count_events; i++) {
+			
 			if (typeof( matrix.events[i]) == 'undefined') {
+				
 				get = true;
 				break;
 			}
 		}
+		
 		if (get) {
 			// нет необходимых элементов в кеше, делаем запрос
 			matrix.get_events(sp);
 		} 
 		else 
 		{
+			
 			//Если кол-во элтов матрицы не соответствует кол-ву установленных плееров- Пересоздаем матрицу 
 			if(matrix.cell_count != $("[id^="+$.aplayer.idContainer+"]").length)	
 			{
@@ -1853,9 +1939,9 @@ var matrix = {
 				}
 			}
 		}
-		//Перезаполняем существующую матрицу
-		else
+		else //Перезаполняем существующую матрицу
 		{
+			
 			// все элементы матрицы есть в кеше, перезаполняем матрицу
 			var loadimage = {};
 			
@@ -2014,6 +2100,7 @@ var matrix = {
 			});
 			
 		}
+			
 			if (hide_over) {
 				$('#matrix_load').hide();
 			}
@@ -2071,6 +2158,7 @@ var matrix = {
 			
 			// делаем запрос
 			$.post(WwwPrefix+'/offline/gallery.php',{'method':'get_events', 'tree':matrix.tree, 'sp':get_sp, 'type': type, 'cameras': cameras}, function(data) {
+				
 				var i = get_sp;
 				// обновляем кеш
 				$.each(data.events, function(key, value) {
@@ -2114,7 +2202,7 @@ var matrix = {
 		}
 		
 		//если не режим ресайза
-		if(!matrix.isResizeMode){
+		if(!matrix.isResizeMode ){
 			//обновляем матрицу
 			matrix.update(sp);
 		}
@@ -2367,6 +2455,8 @@ var scroll = {
 					$('#cell_'+new_num).addClass('active');
 					matrix.num = new_num;
 				} else if (matrix.mode == 'detail'){
+				//сохраняем позицию изображения текущего елемента
+				scale2.save_content_position(); 
 				//востанавливаем матричные параметры активного элемента
 				$(".content_item.active").attr('style', matrix.recover.cell_style).hide()
 				.find('.refBox').attr('style', matrix.recover.refBox_style)
@@ -2383,6 +2473,8 @@ var scroll = {
 					//Установка размеров отображаемого элемента
 					matrix.loaddetailsrc();
 	 				scale2.updateposition(scale2.position);
+	 				//востанавливаем позицию изображения
+	 				scale2.restore_content_position();
 			 	}
 			} else {
 				// если вышли за пределы переходим на предыдущий если пользователь согласился
@@ -2420,6 +2512,8 @@ var scroll = {
 					$('#cell_'+new_num).addClass('active');
 					matrix.num = new_num;
 				} else if (matrix.mode == 'detail'){
+				//сохраняем позицию изображения текущего елемента
+				scale2.save_content_position(); 
 				//востанавливаем матричные параметры активного элемента
 				$(".content_item.active").attr('style', matrix.recover.cell_style).hide()
 				.find('.refBox').attr('style', matrix.recover.refBox_style)
@@ -2437,6 +2531,8 @@ var scroll = {
 					//Установка размеров отображаемого элемента
 					matrix.loaddetailsrc();
 				 	scale2.updateposition(scale2.position);
+				 	//востанавливаем позицию изображения
+	 				scale2.restore_content_position();
 				}
 			} else {
 				// если вышли за пределы переходим на предыдущий если пользователь согласился
@@ -2473,6 +2569,8 @@ var scroll = {
 					$('#cell_'+new_num).addClass('active');
 					matrix.num = new_num;
 				} else if (matrix.mode == 'detail'){
+				//сохраняем позицию изображения текущего елемента
+				scale2.save_content_position(); 
 				//востанавливаем матричные параметры активного элемента
 				$(".content_item.active").attr('style', matrix.recover.cell_style).hide()
 				.find('.refBox').attr('style', matrix.recover.refBox_style)
@@ -2490,6 +2588,8 @@ var scroll = {
 					//Установка размеров отображаемого элемента
 					matrix.loaddetailsrc();
 				 	scale2.updateposition(scale2.position);
+				 	//востанавливаем позицию изображения
+	 				scale2.restore_content_position();
 				}
 
 			}else {
@@ -2511,7 +2611,6 @@ var scroll = {
 		// смещаемся на ряд ниже
 		num_down : function() {
 			var new_num = matrix.num + scroll.row_count;
-			
 			if (new_num < scroll.cell_count*scroll.row_count && new_num < matrix.curent_tree_events[matrix.tree].count) {
 				if (matrix.mode == 'preview') {
 					if (!$('#cell_'+new_num).hasClass('show')){
@@ -2523,6 +2622,8 @@ var scroll = {
 					$('#cell_'+new_num).addClass('active');
 					matrix.num = new_num;
 				} else if (matrix.mode == 'detail'){
+				//сохраняем позицию изображения текущего елемента
+				scale2.save_content_position(); 
 				//востанавливаем матричные параметры активного элемента
 				$(".content_item.active").attr('style', matrix.recover.cell_style).hide()
 				.find('.refBox').attr('style', matrix.recover.refBox_style)
@@ -2541,6 +2642,8 @@ var scroll = {
 				//Установка размеров отображаемого элемента
 				matrix.loaddetailsrc();
 			 	scale2.updateposition(scale2.position);
+			 	//востанавливаем позицию изображения
+ 				scale2.restore_content_position();
 				}
 			}else {
 				if (matrix.curent_tree_events[matrix.tree].next) {
@@ -2569,6 +2672,10 @@ var scroll = {
 		setposition : function(sp) {
 			scroll.position = sp;
 			var t = Math.floor(sp/scroll.row_count*(scroll.height-scroll.polzh)/scroll.cell_count);
+			//проверяем, чтобы ползунок не перекрывал нижнюю стрелку скрола
+			if(t > $(scroll.id + ' .scroll_body_v').height()- $(scroll.id + ' .scroll_polz_v').height() ){
+				t=$(scroll.id + ' .scroll_body_v').height()- $(scroll.id + ' .scroll_polz_v').height();
+			}
 			$(scroll.id + ' .scroll_polz_v').css({top:t});
 		}
 };
@@ -2680,6 +2787,7 @@ var scale2 = {
 		min : 0,
 		max : 20,
 		position : 0,
+		content_position : { left:'0px', top:'0px' }, //позиция изображения в детальном режиме
 
 		click_min : function() {
 			var self = this;
@@ -2877,7 +2985,39 @@ var scale2 = {
 					self.click_max();
 				}
 			});
+		},
+		
+		//сохранить текущую позицию элемента
+		save_content_position : function(){
+			var value = matrix.events[matrix.num];
+			//реализуем только для картинок
+			if(value[7]=='image') //Если картинка
+			{
+				var aplayer_id = $('.aplayer' , '#cell_'+matrix.num).attr('id');
+				scale2.content_position = $.aplayer.getCurrentMediaEltPosition(aplayer_id);
+			}
+			else if( $('.active .refBox').aplayerIsEmbededObject() || value[7]=='audio' ) //Если внедренный объект или  аудио
+			{}
+			else // HTML5-player
+			{}
+		},
+		
+		//установить позицию элемента
+		restore_content_position : function(){
+			var value = matrix.events[matrix.num];
+			//реализуем только для картинок
+			if(value[7]=='image') //Если картинка
+			{
+				var aplayer_id = $('.aplayer' , '#cell_'+matrix.num).attr('id');
+				$.aplayer.setMediaEltPosition(aplayer_id , scale2.content_position);
+			}
+			else if( $('.active .refBox').aplayerIsEmbededObject() || value[7]=='audio' ) //Если внедренный объект или  аудио
+			{}
+			else // HTML5-player
+			{}
 		}
+		
+		
 	};
 	
 var keyBoard = {
