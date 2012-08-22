@@ -140,6 +140,7 @@ print getSelectHtml('minute2', $minute_array, FALSE, 1, 0, $min2, FALSE, FALSE);
 ?>
 </td>
 <td>
+
 <?php print getSelectByAssocAr('filter[]', $env_id_ar, TRUE, 7, 1, $filter_sel, FALSE, FALSE); ?>
 </td>
 <td>

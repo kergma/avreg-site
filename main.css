@@ -4,6 +4,7 @@ all,body,h1,h2,h3,h4,h5,table,a {
    font-size: 13px;
    text-decoration: none;
    //background-color: black;
+	outline: none;   
 }
 
 strong,b{
@@ -333,7 +334,7 @@ th.layout {
     background: linear-gradient(top, #555 0%, #999 50%, #555 100%);    
 }*/
 
-td a img {
+div.mode_item a img {
 	border: 4px solid #BABABA;
 	-moz-box-shadow: 0 0 15px rgba(0,0,0,0.8);
     -webkit-box-shadow: 0 0 15px rgba(0,0,0,0.8); 

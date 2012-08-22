@@ -2,6 +2,10 @@ span a{
 	color: #EEE;
 }
 
+a {
+	outline: none;
+}
+
 #content {
 	width: 80%;
 	float: right;

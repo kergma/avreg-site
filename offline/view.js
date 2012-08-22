@@ -92,7 +92,7 @@ function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, 
 
    var icon_48x52 ='';
    var duration_info='';
-   if (evt_id==23) {
+   if (evt_id==23 || evt_id==12) {
       icon_48x52 = WwwPrefix+'/img/mpeg4.gif';
       duration_info='<tr><td align="right">Продолжительность<\/td><td>'+fduration+'<\/td><\/tr>\n';
       g_fname += '  [ ' + s16_1 + 'x' + s16_2 + ' ] ';
@@ -104,7 +104,7 @@ function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, 
    }
 
    hint=null;
-   if ( evt_id == 23 || evt_id == 32 )
+   if ( evt_id == 23 || evt_id == 32 || evt_id == 12  )
    {
       clear_innerHTML(cdiv);
       var link_target='';
