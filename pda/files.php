@@ -98,7 +98,7 @@ foreach($pagi as $row)
       $jpeg_info = "$FILESZ_KB kB, [$U16_1 x $U16_2]";
       printf("<a href='$orig_src' title='Открыть оригинал $jpeg_info'>\n");
       
-      printf('<img src="../lib/resize_img.php?url=%s&w=%u&h=%u" alt="Ошибка загрузки">',
+      printf('<img src="'.$conf['prefix'].'/lib/resize_img.php?url=%s&w=%u&h=%u" alt="Ошибка загрузки">',
       urlencode("http://".$_SERVER["SERVER_NAME"].$orig_src),
       $tumb_sizes[$scale]['w'],
       $tumb_sizes[$scale]['h']);

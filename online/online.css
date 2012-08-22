@@ -79,9 +79,9 @@ div.cell_header span a:hover {
     height: 18px;
 }
 
-#nav div.selectedLayout a, #nav div.layout:hover a {
+#nav div.selectedLayout a, #nav div.layout:hover a,.to_main a:hover {
 	text-decoration: none;
-	//color: #196BBA;
+	color: red;
 }
 
 .layout {
@@ -91,9 +91,6 @@ div.cell_header span a:hover {
 	color: #FAFAFA;
 }
 
-.to_main a:hover {
-	color: red;
-}
 /*
 
 #nav{
