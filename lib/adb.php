@@ -154,6 +154,8 @@ class Adb {
             $line[7] = 'image';
          } else if ((int)$line[7] == 23 ) {
             $line[7] = 'video';
+         } else if ((int)$line[7] == 12 ) {
+            	$line[7] = 'video';
          } else if ((int)$line[7] == 32 ) {
             $line[7] = 'audio';
          }
@@ -171,15 +173,13 @@ class Adb {
     * 
     * @return string дата последнего события
     */
-   
-   
    public function gallery_get_last_event_date($param = array()) {
       $event = '1970-01-01 00:00:00';
 
       $query = "SELECT DT1";
       $query .= ' FROM EVENTS';
       // только изображения
-      $query .= ' WHERE EVT_ID in (15,16,17,18,19,20,21,23,32)';
+      $query .= ' WHERE EVT_ID in (15,16,17,18,19,20,21,23,32,12)';
       if (isset($param['cameras'])) {
          $query .= ' AND EVENTS.CAM_NR in ('. implode(",", $param['cameras']).')';
       }
@@ -189,7 +189,6 @@ class Adb {
       $this->_error($res);
       if ($res->fetchInto($line))
          $event = $line[0];
-
       return $event;
    }
    /**
@@ -266,7 +265,7 @@ class Adb {
    public function gallery_update_tree_events($start, $end, $cameras = false) {
       $query = "SELECT *";
       $query .= " FROM EVENTS";
-      $query .= ' WHERE EVT_ID in (15,16,17,18,19,20,21,23,32)';
+      $query .= ' WHERE EVT_ID in (15,16,17,18,19,20,21,23,32,12)';
       if ($start) {
          $tstart = date('Y-m-d H:00:00',strtotime($start));
          $query .= " AND DT1 >= '".$tstart."'";
@@ -304,10 +303,12 @@ class Adb {
          if (in_array( $line[$this->_key('EVT_ID')], array(15,16,17,18,19,20,21))) {
             $tree_events[$key]['IMAGE_COUNT']++;
             $tree_events[$key]['IMAGE_SIZE'] += $line[$this->_key('FILESZ_KB')];
-         } else if (in_array( $line[$this->_key('EVT_ID')], array(23))) {
+            
+         } else if (in_array( $line[$this->_key('EVT_ID')], array(23, 12))) {
             $tree_events[$key]['VIDEO_COUNT']++;
             $tree_events[$key]['VIDEO_SIZE'] += $line[$this->_key('FILESZ_KB')];
          } else if (in_array( $line[$this->_key('EVT_ID')], array(32))) {
+         	
             $tree_events[$key]['AUDIO_COUNT']++;
             $tree_events[$key]['AUDIO_SIZE'] += $line[$this->_key('FILESZ_KB')];
          }

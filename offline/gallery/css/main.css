@@ -660,7 +660,7 @@ a, label,h2, button,span,div
 }
 
 .selectElement {
-	outline: 1px solid #fff;
+	//outline: 1px solid #fff;
 
 }
 #cameras_color .selectColor {
@@ -891,7 +891,7 @@ a.set_camera_color:hover {
 }
 
 #btn_cell_size {
-	margin-right: -5px;
+	margin-right: -10px;
 }
 
 

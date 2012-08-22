@@ -342,11 +342,22 @@ div.mode_item a img {
 	
 }
 
-td a {
-	//color: #FAFAFA;
+#nav div.layout a {selectedLayout
+	color: #FAFAFA;
 }
 
-h2,a {
-	//color: #FAFAFA;
+a:hover {
+	color: red;
+	text-decoration: none;
+}
+
+.main_links {
+	color: #FAFAFA;
+	text-decoration: none;
+}
+
+.main_links:hover {
+	color: red;
+	text-decoration: underline;
 }
 

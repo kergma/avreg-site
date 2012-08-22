@@ -1032,7 +1032,7 @@ function canvas_growth() {
 
    //Выводим список камер
    $("#toolbar table tr")
-   .html('<td>'+layouts_to_list()+ ' <div style="float:right;"> <a href="http://'+SERVER_ADR+'/avreg/index.php" >В начало</a> </div>'+'</td>');
+   .html('<td>'+layouts_to_list()+ ' <div class="to_main" style="float:right;"> <a href="http://'+SERVER_ADR+'/avreg/index.php" >В начало</a> </div>'+'</td>');
    
     //Убрать тултип при перетаскивании
 	$('.MediaCont').mousedown(function(e){ 

@@ -1,6 +1,11 @@
 
 $(Document).ready(function(){
 	
+	$('#main_tab').parent('body').css({
+		'background' : '-moz-linear-gradient(top, #555 0%, #999 50%, #555 100%)',
+	})
+	.children().css({'color':'#FAFAFA'});
+	
 	$('.mode_item')
 	.bind('mouseover', function(e){
 		m_over.m_in(e);
@@ -8,11 +13,6 @@ $(Document).ready(function(){
 	.bind('mouseout', function(e){
 		m_over.m_out(e);
 	});
-
-		
-
-	
-	
 	
 });
 

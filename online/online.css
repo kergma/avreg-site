@@ -2,7 +2,7 @@
 
 .layout{
 	float:left; 
-	padding:5px;
+	padding:3px 5px;
 }
 
 
@@ -43,11 +43,11 @@
 
 .toolbar_style table { 
 	background: #fff;
-	background: -moz-linear-gradient(top, #555 0%, #171717 50%, #333 100%);
-    background: -webkit-linear-gradient(top, #333 0%, #070707 50%, #333 100%);
-    background: -o-linear-gradient(top, #333 0%, #070707 50%, #333 100%); 
-    background: -ms-linear-gradient(top, #333 0%, #070707 50%, #333 100%); 
-    background: linear-gradient(top, #333 0%, #070707 50%, #333 100%); 
+	background: -moz-linear-gradient(top, #222 0%, #777 50%, #222 100%);
+    background: -webkit-linear-gradient(top, #222 0%, #777 50%, #222 100%);
+    background: -o-linear-gradient(top, #222 0%, #777 50%, #222 100%); 
+    background: -ms-linear-gradient(top, #222 0%, #777 50%, #222 100%); 
+    background: linear-gradient(top, #222 0%, #777 50%, #222 100%); 
     background-position: center;
     background-size: cover;
 }
@@ -65,23 +65,35 @@ div.cell_header span a:hover {
 	text-decoration: none;
 	color: #0f7eff !important;
 }
-Одобрен
+
 #toolbar {
 	border-bottom: 2px solid #ababab;
 }
 
 .layout:hover,.selectedLayout {
-	background: -moz-linear-gradient(top, #777 0%, #aaa 50%, #777 100%);
-    background: -webkit-linear-gradient(top, #555 0%, #999 50%, #555 100%);
-    background: -o-linear-gradient(top, #555 0%, #999 50%, #555 100%); 
-    background: -ms-linear-gradient(top, #555 0%, #999 50%, #555 100%); 
-    background: linear-gradient(top, #555 0%, #999 50%, #555 100%);    	
+	border: 1px outset #111;
+    border-radius: 5px;
+   	-moz-border-radius: 4px;
+    -wtext-shadow: black 1px 1px 2pxebkit-border-radius: 4px;
+    cursor: pointer;
+    height: 18px;
 }
 
-.layout:hover > a, .selectedLayout > a {
-	color: #333;
+#nav div.selectedLayout a, #nav div.layout:hover a {
+	text-decoration: none;
+	//color: #196BBA;
 }
 
+.layout {
+	height: 20px;
+}
+.layout a,.to_main a {
+	color: #FAFAFA;
+}
+
+.to_main a:hover {
+	color: red;
+}
 /*
 
 #nav{
@@ -177,8 +189,20 @@ div.cell_header span a:hover {
 	-webkit-transform:scale(1.1);
 }
 
-.layout {
-	height: 25px;
+.to_main {
+	position: fixed;
+	top: 0; left: 88%;
+	width: 150px;
+	height: 30px;
+	text-align: center;
+	padding: 5px;
+	opacity: 0.9;
+	background: -moz-linear-gradient(top, #121212 0%, #555 50%, #121212 100%);
+    background: -webkit-linear-gradient(top, #121212 0%, #555 50%, #121212 100%);
+    background: -o-linear-gradient(top, #121212 0%, #555 50%, #121212 100%); 
+    background: -ms-linear-gradient(top, #121212 0%, #555 50%, #121212 100%); 
+    background: linear-gradient(top, #121212 0%, #555 50%, #121212 100%); 
+    border-radius: 0 5px 5px 0;
+	z-index: 999;
 }
 */
-

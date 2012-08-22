@@ -32,6 +32,7 @@ class Gallery {
     }
  	// Функция получения событий  
     public function get_events($param) {
+    	
     	$events = array();
     	// если есть список камер, то выполняем запрос
     	if (isset($param['cameras'])  && !empty($param['cameras'])) {
@@ -53,8 +54,11 @@ class Gallery {
     		if (in_array('audio', $type)) {
     			$EVT_ID = array_merge($EVT_ID, array(32));
 	    	}
+	    	// видео+audio
+	    	if (in_array('video', $type) || in_array('audio', $type) ) {
+	    		$EVT_ID = array_merge($EVT_ID, array(12));
+	    	}
 
-	    	
 	    	$p = array (
 	    		'cameras' => $param['cameras'],
 	    		'events' => $EVT_ID,
@@ -76,13 +80,18 @@ class Gallery {
     	
 	    
 	    $last_event_date = $this->db->gallery_get_last_event_date(array('cameras' => array_keys($GCP_cams_params)));
-	   
+	    
     	$key = md5($cameras.'-'.$last_event_date);
     	
     	$tree_events_result = $this->cache->get($key);
     	$tree_events_result = false;
     	if (empty($tree_events_result)) {
 	    	$last_tree_date = $this->db->gallery_get_last_tree_event_data(array('cameras' => array_keys($GCP_cams_params)));
+	    	
+// 	    	print "<pre>\n";
+// 	    	var_dump();
+// 	    	print "<pre>\n";
+// 	    	exit();
 	    	
 			if ($last_tree_date < $last_event_date) {
 				$this->db->gallery_update_tree_events($last_tree_date, $last_event_date, array());
