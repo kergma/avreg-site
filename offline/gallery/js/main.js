@@ -892,9 +892,9 @@ var gallery = {
 						var width = val[4];
 
 						if(scale2.position != 0) scale2.setposition(0);
-						
+
 						//Изменение положения ползунка масштаба 	
-						if(value[7]=='image') //Если картинка
+						if($('.active .refBox').aplayerIsImage()) //Если картинка
 						{
 							//формирование src ресайза картинки
 							var ResizedImgSrc = matrix.getResizedImageSrc(matrix.num, height, width);
@@ -915,7 +915,6 @@ var gallery = {
 						}
 						else 
 						{
-
 							if( $('.active .refBox').aplayerIsEmbededObject() )// если ембед
 							{
 								//Скрываем елемент управления масштабом
@@ -937,7 +936,7 @@ var gallery = {
 					.hide();
 
 			//кнопка вписать в окно
-			var btn_cell_size = $("<div id='btn_cell_size' class='btn_img_size' style='left:0px;' ><img style='height: 30px; width: 30px;' src='"+WwwPrefix+"/img/expandnew.png' title='Вписать в окно' /> </div>")
+			var btn_cell_size = $("<div id='btn_cell_size' class='btn_img_size' style='left:0px;' ><img style='height: 30px; width: 30px;' src='"+WwwPrefix+"/img/expand.png' title='Вписать в окно' /> </div>")
 				.click(function(event){
 					scale2.setposition(0);
 				})
@@ -945,12 +944,10 @@ var gallery = {
 
 
 			//позиционирование этих двух кнопок
-			$("#btn_cell_size, #btn_orig_size" )
-
+			$("#btn_cell_size, #btn_orig_size" );
 
 			//установка в панель инструментов
 			$("#toolbar>#toolbar_right").prepend(btn_cell_size, btn_orig_size);				
-
 			
 			// инициализация изменения размеров столбцов
 			self.resize_column.init();
@@ -1012,7 +1009,8 @@ var matrix = {
 	//объект для востановления матрицы при выходе из режима просмотра
 	recover:{
 		cell_style:null,
-		refBox_style:null
+		refBox_style:null,
+		elem_style:null
 	}, 
 	init: function(config) {
 
@@ -1118,10 +1116,8 @@ var matrix = {
 				} else {
 						pageX = 300;
 				}
-					
 				gallery.cookie.set('resize_column', pageX);
 				gallery.resize_column.resize(pageX);
-					
 			}
 			matrix.resize();clearInterval(self.res);}, 200);
 		});
@@ -1181,6 +1177,7 @@ var matrix = {
 			//сохраняем необходимые параметры активного элемента
 			else{
 				matrix.recover.cell_style = $(this).attr('style');
+				matrix.recover.elem_style = $(this).find(".elem").attr('style');
 				matrix.recover.refBox_style = $(this).find(".refBox").attr('style');
 			}
 		});
@@ -1239,10 +1236,16 @@ var matrix = {
 				if($(this).hasClass("active")){
 					//востанавливаем параметры активного элемента
 					$(this).attr('style', matrix.recover.cell_style)
+					.find('.elem').attr('style', matrix.recover.elem_style)
 					.find('.refBox').attr('style', matrix.recover.refBox_style)
 					.aplayerResizeToParent();
 				}	
    				$(this).show();
+			});
+
+			//позиционирование в ячейке матрицы
+			$('.aplayer').each(function(){
+				$.aplayer.setMediaEltPosition($(this).attr('id') , { left:'0px', top:'0px'}  );
 			});
 			
 			//Если в DETAIL был изменен режим пропорций
@@ -1430,7 +1433,7 @@ var matrix = {
 		});		
 		
 		//если размер матрицы больше, чем текущее кол-во ячеек - добавляем недостающее кол-во ячеек в конец матрицы
-		var ix = sp+$(".content_item").length 
+		var ix = sp+$(".content_item").length ;
 		if(matrix.cell_count > $(".content_item").length){
 			for( ; ix < sp+matrix.cell_count ; ix++){
 				matrix.create_cell(ix, 'append');
@@ -1482,7 +1485,7 @@ var matrix = {
 			}
 
 			html += '<div id="cell_'+el_num+'" class="content_item show'+' camera_'+value[5]+' '+camera_class+'" style="display:block;">';
-			html += '<div class="elem">';
+			html += '<div class="elem" style="padding-top:0px; padding-left :0px; padding-right:0px;" >';
 
 			html += '<div class="img_block"><a class="refBox" '+matrix.reference+'="#cell_'+el_num+'"></a></div>';
 
@@ -1623,6 +1626,7 @@ var matrix = {
 			//сохраняем необходимые параметры нового активного элемента
 			$(".content_item.active").each(function(){
 				matrix.recover.cell_style = $(this).attr('style');
+				matrix.recover.elem_style = $(this).find('.elem').attr('style');
 				matrix.recover.refBox_style = $(this).find(".refBox").attr('style');
 				
 				//если лого-плей - переключаем в режим плеера
@@ -1637,10 +1641,17 @@ var matrix = {
 					'height':matrix.height,
 					'width':(matrix.width + $("#scroll_v").width())
 					});
+
+				$(".active .elem").css({
+					'padding-top':'10px',
+					'padding-left':'5px',
+					'padding-right':'7px'
+				});
+				
 				$(".active .refBox").css({
 					"padding": 0 ,
-					'height':matrix.height-5,
-					'width':(matrix.width + $("#scroll_v").width())
+					'height':matrix.height-15,
+					'width':(matrix.width + $("#scroll_v").width()- 8)
 					});
 				});
 			
@@ -1801,8 +1812,8 @@ var matrix = {
 						}
 
 						html += '<div id="cell_'+i+'" class="content_item show'+' camera_'+value[5]+' '+camera_class+'" style="display:'+display_mode+';">';
-						html += '<div class="elem">';
-
+						html += '<div class="elem" style="padding-top:0px; padding-left :0px; padding-right:0px;">';
+						
 						html += '<div class="img_block"><a class="refBox" '+matrix.reference+'="#cell_'+i+'"></a></div>';
 					
 						if (value[7] == 'image') {
@@ -2334,7 +2345,9 @@ var scroll = {
 			$(scroll.id + ' .scroll_body_v').height(scroll.height);
 			// высчитываем высоту ползунка в зависимости от элементов в матрице и всех элементов в диапазоне
 			h = Math.floor(scroll.height/scroll.cell_count*scroll.matrix_count);
-
+			
+			if(h>scroll.height) h=scroll.height;
+			
 			scroll.polzh = 0;
 			if ( h < scroll.min_height) {
 				scroll.polzh = scroll.min_height - h;
@@ -2459,6 +2472,7 @@ var scroll = {
 				scale2.save_content_position(); 
 				//востанавливаем матричные параметры активного элемента
 				$(".content_item.active").attr('style', matrix.recover.cell_style).hide()
+				.find('.elem').attr('style', matrix.recover.elem_style)
 				.find('.refBox').attr('style', matrix.recover.refBox_style)
 				.aplayerResizeToParent();
 					if (!$('#cell_'+new_num).hasClass('show')){
@@ -2516,6 +2530,7 @@ var scroll = {
 				scale2.save_content_position(); 
 				//востанавливаем матричные параметры активного элемента
 				$(".content_item.active").attr('style', matrix.recover.cell_style).hide()
+				.find('.elem').attr('style', matrix.recover.elem_style)
 				.find('.refBox').attr('style', matrix.recover.refBox_style)
 				.aplayerResizeToParent();
 
@@ -2573,6 +2588,7 @@ var scroll = {
 				scale2.save_content_position(); 
 				//востанавливаем матричные параметры активного элемента
 				$(".content_item.active").attr('style', matrix.recover.cell_style).hide()
+				.find('.elem').attr('style', matrix.recover.elem_style)
 				.find('.refBox').attr('style', matrix.recover.refBox_style)
 				.aplayerResizeToParent();
 				
@@ -2626,6 +2642,7 @@ var scroll = {
 				scale2.save_content_position(); 
 				//востанавливаем матричные параметры активного элемента
 				$(".content_item.active").attr('style', matrix.recover.cell_style).hide()
+				.find('.elem').attr('style', matrix.recover.elem_style)
 				.find('.refBox').attr('style', matrix.recover.refBox_style)
 				.aplayerResizeToParent();
 

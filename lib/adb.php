@@ -127,7 +127,6 @@ class Adb {
    
    public function gallery_get_event($param) {
       $events = array();
-
       $query = "SELECT ".$this->_date_format('DT1').", DT1, EVT_CONT, ALT2, ALT1, CAM_NR, FILESZ_KB, EVT_ID, ".$this->_timediff('DT1', 'DT2').", DT2";
       $query .= ' FROM EVENTS';
       $query .= ' WHERE EVT_ID in ('. implode(",", $param['events']) .')';
@@ -421,6 +420,7 @@ class Adb {
  * @return array масив событий
  */
    public function events_select($cams, $timemode = false, $date, $evt_ids, $dayofweek, $page = false){
+   	
       $all_continuous_events = array(12,23,32);
       $query_continuous_events    = array_intersect($all_continuous_events,  $evt_ids);
       $query_noncontinuous_events = array_diff($evt_ids, $all_continuous_events);
@@ -472,6 +472,7 @@ class Adb {
          $query .= ' LIMIT '.$page['limit'];
          $query .= ' OFFSET '.$page['offset'];
       }
+      
       $res = $this->_db->query($query);
       $this->_error($res);
       while($res->fetchInto($line, DB_FETCHMODE_ASSOC)){

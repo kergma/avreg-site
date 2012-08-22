@@ -99,10 +99,8 @@ $_cams_csv   = implode(',', $cams);
    		'to' => array($year_array[$year2],$month2,$day2,$hour2,$minute_array[$minute2]),
    );
    
-   
       
    $result = $adb->events_select($cams, $timemode, $date, $events, isset($dayofweek) ? $dayofweek : array());
-
 
 $num_rows = 0;
 $res_array=array();

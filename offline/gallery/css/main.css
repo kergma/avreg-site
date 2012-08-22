@@ -652,7 +652,7 @@ display: none;
 
 a, label,h2, button,span,div
 {
-font-family: Arial,Verdana,Geneva,Helvetica,sans-serif !important;
+	font-family: Arial,Verdana,Geneva,Helvetica,sans-serif !important;
 }
 
 .selectElement {
@@ -857,21 +857,24 @@ a.set_camera_color:hover {
 	padding-top:1px;
 }
 
-.aplayer {
-`//	z-index: 999;
-}
 
 #toolbar .prevnext {
 	float: none;	
 }
 
-#toolbar .prevnext a img {
-	margin: 10px 5px;	
-	width: 35px;
+#toolbar .prevnext a img {		
+	width: 30px;
+	height: 30px;
+	float: right;
 }
 
-#toolbar .prevnext a.prew img, #btn_cell_size {
-	margin-left: 0;
+#toolbar .prevnext a.next img {
+	margin: 10px 0px;
+}
+
+
+#toolbar .prevnext a.prew img{
+	margin: 10px 20px;
 }
 
 #toolbar_right {
@@ -880,6 +883,12 @@ a.set_camera_color:hover {
 
 .btn_img_size {
 	float: left;
-	margin: 0 10px;
+	margin: 0 20px 0 30px;
 }
+
+#btn_cell_size {
+	margin-right: -5px;
+}
+
+
 

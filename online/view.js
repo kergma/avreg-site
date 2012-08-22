@@ -205,7 +205,7 @@ function img_click(clicked_div) {
       .height($('#cell_header_'+win_nr).height()-4)
       .attr({
       	'src': imgs['fs'].src,
-      	'title':strToolbarControls['on'],
+      	'title':strToolbarControls['max'],
       });
 
       
@@ -556,14 +556,14 @@ function canvas_growth() {
     */
 
    function layouts_to_list(){
-	   var html = '<div>';
+	   var html = '<div id="nav"><span>';
    	$.each(layouts_list, function(i, value){
    		html+='<div class="layout'+((cur_layout==value.MON_NR)? ' selectedLayout':'' )+'" ><a id="layout_'+value.MON_NR+'" class="layout_link" onclick="change_layout('+value.MON_NR+')" href="#">';
    		html+= (value.SHORT_NAME==''? value.MON_TYPE :value.SHORT_NAME);
    		html+= (value.IS_DEFAULT==1? '(def)' :'');
    		html+='</a>&nbsp;&nbsp;&nbsp;&nbsp;</div>';
    	});
-   	html+='</div>';
+   	html+='</span></div>';
    	return html;
    }
 
@@ -866,9 +866,6 @@ function canvas_growth() {
               if (PrintCamNames) {
                  var ipcamhost_link_begin = '';
                  var ipcamhost_link_end = '';
-                 
-//                 console.log(typeof(WINS_DEF[win_nr].cam.netcam_host));
-                 console.log(WINS_DEF[win_nr]);
                  
                  if ( typeof(WINS_DEF[win_nr].cam.netcam_host) == "string" ) {
                     ipcamhost_link_begin = '<a href="http://' +

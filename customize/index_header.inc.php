@@ -1,5 +1,6 @@
 <?php
 
+
 /* redirect from main page */
 $redir_page = NULL;
 if ( $user_status >= $operator_status /* config.inc.php */ ) {

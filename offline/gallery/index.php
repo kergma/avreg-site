@@ -58,7 +58,7 @@
 								}
 							?>
 							<?php foreach ($GCP_cams_params as $CAM_NR => $PARAM) :?>
-								<span style="white-space: nowrap; ">
+								<span class="new_Check" style="white-space: nowrap; ">
 								<span class="niceCheck">
 									<input type="checkbox" id="camera_<?php print $CAM_NR;?>" name="cameras" value="<?php print $CAM_NR;?>" <?php if (empty($cameras) || in_array($CAM_NR, $cameras)) :?>checked="checked" <?php endif;?>></span>
 									<?php
@@ -154,8 +154,8 @@
 						</div>
 						
 						<div class="controls prevnext">
-							<a class="prew" href="#"><img src="gallery/img/arrow_left.png" /></a>
 							<a class="next" href="#"><img src="gallery/img/arrow_right.png" /></a>
+							<a class="prew" href="#"><img src="gallery/img/arrow_left.png" /></a>
 						</div>	
 						<!--  <img id="scale_image" src="gallery/img/lupa.png" />-->
 

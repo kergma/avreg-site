@@ -8,12 +8,36 @@ $pageTitle = 'PlaylistTitle';
 $pageBgColor = '#D0DCE0';
 $body_onload='switch_timemode();';
 $lang_file = '_offline.php';
+$USE_JQUERY = true;
 require ('../head.inc.php');
 DENY($arch_status);
 ?>
 
 <script type="text/javascript" language="javascript">
 <!--
+
+$(Document).ready(function(){
+
+	reqest_audio_video();
+	$('#chk_video, #chk_audio').click(function(e){
+		reqest_audio_video();
+	});
+	
+});
+
+var reqest_audio_video = function(){
+	if($('#chk_audio').attr('checked')=='checked' || $('#chk_video').attr('checked')=='checked'){
+		if(typeof($('#id_audio_video').attr('id'))=='undefined'){
+			$('#id_content_type').append('<input type="hidden" id="id_audio_video" name="ftypes[]" value="12">');
+		}
+	}
+	else{
+		$('#id_audio_video').remove();
+	}
+		
+};
+
+
 
 var ie = document.all;
 var t = null;
@@ -69,6 +93,8 @@ function OptionHelp() {
 }
 // -->
 </script>
+
+
 
 <?php
 
@@ -203,11 +229,12 @@ if ( isset($_SESSION) && isset($_SESSION['error'])/* ошибка */ )
 <?php print getSelectByAssocAr('cams[]', $conf_cams_array, TRUE, 7, 1, $cams_sel, FALSE, FALSE); ?>
 </td>
 <td>
-<fieldset>
+<fieldset id="id_content_type">
 <legend><?php echo $strFTypeTitle; ?></legend>
-<input type="checkbox" <?php echo $ftype_video_checked; ?> name="ftypes[]" value="23"><?php echo $env_id_ar[23]; ?>
+<input id="chk_video" type="checkbox" <?php echo $ftype_video_checked; ?> name="ftypes[]" value="23"><?php echo $env_id_ar[23]; ?>
 <br>
-<input type="checkbox" <?php echo $ftype_audio_checked; ?> name="ftypes[]" value="32"><?php echo $env_id_ar[32]; ?>
+<input id="chk_audio" type="checkbox" <?php echo $ftype_audio_checked; ?> name="ftypes[]" value="32"><?php echo $env_id_ar[32]; ?>
+
 </fieldset>
 </td>
 </tr>
