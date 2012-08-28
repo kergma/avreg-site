@@ -26,14 +26,30 @@ $cam_url = "../lib/img_resize.php?camera=$camera";
 
 //масштаб изображений
 $scale=0;
+if(isset($_COOKIE['scl'])) $scale = $_COOKIE['scl'];
 if(isset($_GET['scl']))$scale = $_GET['scl'];
+
+
+if(!isset($refresh)) {
+	$show_scale_cntrl = true;
+}else{
+	$show_scl = false;
+}
+
+
 include_once ('scale.inc.php');
-//$tumb_sizes = get_scales($conf['pda_online_scale']);
-$tumb_sizes = get_resolutions($conf['pda_resolutions']);
+
+if(!isset($_COOKIE['sort_by']) || $_COOKIE['sort_by']!='heigth' ){
+	$tumb_sizes = get_resolutions($conf['pda_resolutions']);
+}else{
+	$tumb_sizes = get_resolutions($conf['pda_resolutions'], false);
+}
+
 if($tumb_sizes == null || sizeof($tumb_sizes)==0 ){
 	//если ничего в конфиге не определено
 	$tumb_sizes = array(0=>array('w' => '160', 'h' => '80',));
 }
+if($scale>=sizeof($tumb_sizes)-1) $scale=sizeof($tumb_sizes)-1;
 
 $width = $tumb_sizes[$scale]['w'];
 $heigt = $tumb_sizes[$scale]['h'];
@@ -42,6 +58,7 @@ $heigt = $tumb_sizes[$scale]['h'];
 
 <script type="text/javascript">
 	//переменные масштаба изображений 
+	var scale = <?php print $scale."\n"; ?>
 	var SELF_ADR = <?php print "\"".$_SERVER['REQUEST_URI']."\"" ; ?>;
 	var TOTAL_SCLS = <?php print sizeof($tumb_sizes); ?>; //кол-во предопределенных значений масштаба 
 
@@ -56,6 +73,9 @@ function img_evt(e_id)
 
 <?php
 if ( !isset($refresh) ) {
+	
+	
+	
    $refresh_img_a = array(
        0 => 'вручную',
        1 => '0,5 сек.',
@@ -162,6 +182,7 @@ if ( (typeof IMG_EVT_OCCURED).charAt(0) != 'u' )
 </script>
 
 <?php
+
 // tohtml($_SESSION);
 require ('../foot.inc.php');
 ?>

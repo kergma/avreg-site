@@ -98,6 +98,13 @@ die;
    		'to' => array($year_array[$year2],$month2,$day2,$hour2,$minute_array[$minute2]),
    );
    
+
+   //Если ищем видео - добавляем в поиск video+audio (EVT_ID==12)
+   $is_video = false;
+   foreach ($events as $val){
+   	 if($val==23) $is_video = true;
+   }
+   if($is_video)array_push($events, 12);
    
    $result = $adb->events_select($cams, $timemode, $date, $events, isset($dayofweek) ? $dayofweek : array(), array('limit' => $row_max, 'offset' => $row_start));
    
@@ -115,9 +122,9 @@ die;
    unset($row);
 
    
-//    print "<pre>\n";
-//    var_dump($res_array);
-//    print "</pre>\n";
+//   print "<pre>\n";
+//   var_dump($res_array);
+//   print "</pre>\n";
 //    exit();
    
    if ( $num_rows == 0 && $page == 0 ) {
@@ -169,7 +176,11 @@ die;
          $EVT_CONT = &$row['EVT_CONT'];
 
          $ftype_str = (isset($env_id_ar[$EVT_ID]))?$env_id_ar[$EVT_ID]:'unknown';
-
+         //Для случая видео+аудио EVT_ID==12
+         if($EVT_ID==12){
+         	$ftype_str = (isset($env_id_ar[23]))?$env_id_ar[23]:'unknown';
+         }
+         
          if ($CAM_NR !==0 )
          {
 
@@ -222,11 +233,15 @@ die;
          }
          print '<td nowrap="nowrap" valign="middle">'.strftime ( '%d.%m.%y %H:%M:%S', $UDT1).'</td>'."\n";
 
-         if ( $EVT_ID === 23 || $EVT_ID === 32 ) {
+         if ( $EVT_ID === 23 || $EVT_ID === 32) {
             $f_ext=substr(strrchr($EVT_CONT, '.'), 1);
             print '<td class="small_text">'.$ftype_str.'&nbsp;('.$f_ext.', '.$f_duration_str.')</td>'."\n";
-         } else if ( $EVT_ID >= 15 && $EVT_ID <= 22 /*jpeg*/ )
+         } else if ( $EVT_ID >= 15 && $EVT_ID <= 22 /*jpeg*/ ){
             print '<td class="small_text">'.$ftype_str.'</td>'."\n";
+         }elseif( $EVT_ID === 12 ){
+         	$f_ext=substr(strrchr($EVT_CONT, '.'), 1);
+         	print '<td class="small_text">'.$ftype_str.'&nbsp;('.$f_ext.', '.$f_duration_str.')</td>'."\n";
+         }
          else 
             print '<td class="small_text">'.$EVT_CONT.'</td>'."\n";
          print '</tr>'."\n";

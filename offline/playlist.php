@@ -16,6 +16,7 @@ DENY($arch_status);
 <script type="text/javascript" language="javascript">
 <!--
 
+/*
 $(Document).ready(function(){
 
 	reqest_audio_video();
@@ -36,7 +37,7 @@ var reqest_audio_video = function(){
 	}
 		
 };
-
+*/
 
 
 var ie = document.all;

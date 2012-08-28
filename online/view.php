@@ -223,6 +223,7 @@ for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
    col: %u,
    rowspan: %u,
    colspan: %u,
+   main:  %u,
    cam: {
       nr:   %s,
       name: "%s",
@@ -232,7 +233,9 @@ for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
       netcam_host: %s
    }
 };%s',
-   $win_nr, $l_wins[0], $l_wins[1],$l_wins[2],$l_wins[3],
+   $win_nr, 
+   $l_wins[0], $l_wins[1],$l_wins[2],$l_wins[3],
+   $l_defs[4]-1==$win_nr?1:0,
    $cam_nr, getCamName($GCP_cams_params[$cam_nr]['text_left']),
    $cam_url,
    $width, $height,

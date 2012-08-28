@@ -5,10 +5,6 @@
  */
 $USE_JQUERY = true;
 
-//масштаб изображений
-$scale=0; 
-if(isset($_GET['scl']))$scale = $_GET['scl'];
-
 $pageTitle = sprintf('Камера №%u - файлы сеанса №%u', $_GET['camera'], $_GET['ser_nr']);
 $lang_file = '_admin_cams.php';
 require ('head_pda.inc.php');
@@ -53,18 +49,27 @@ session_write_close();
 
 //масштаб изображений
 $scale=0;
+if(isset($_COOKIE['scl'])) $scale = $_COOKIE['scl'];
 if(isset($_GET['scl']))$scale = $_GET['scl'];
+$show_scale_cntrl = true;
 include_once ('scale.inc.php');
-//$tumb_sizes = get_scales($conf['pda_scale']);
-$tumb_sizes = get_resolutions($conf['pda_resolutions']);
+
+if(!isset($_COOKIE['sort_by']) || $_COOKIE['sort_by']!='heigth' ){
+	$tumb_sizes = get_resolutions($conf['pda_resolutions']);
+}else{
+	$tumb_sizes = get_resolutions($conf['pda_resolutions'], false);
+}
+
 if($tumb_sizes == null || sizeof($tumb_sizes)==0 ){
 	//если ничего в конфиге не определено
 	$tumb_sizes = array(0=>array('w' => '160', 'h' => '80',));
 }
+if($scale>=sizeof($tumb_sizes)-1) $scale=sizeof($tumb_sizes)-1;
 
 ?>
 
 <script type="text/javascript">
+	var scale = <?php print $scale."\n"; ?>
 	var SELF_ADR = <?php print "\"".$_SERVER['REQUEST_URI']."\"" ; ?>;
 	var TOTAL_SCLS = <?php print sizeof($tumb_sizes); ?>; //кол-во предопределенных значений масштаба 
 </script>

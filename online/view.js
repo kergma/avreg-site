@@ -33,7 +33,8 @@ var IMG_IN_DIV_H;
 var FS_WIN_DIV;
 
 ///Высота элемента в кот. выводится название камеры
-var NAME_DIV_H = PrintCamNames?20:0;
+var NAME_DIV_H = PrintCamNames?25:0;
+var CUR_WIN_HEADER_H;
 
 ///корректировка размеров контейнера для плеера
 var CORRECT_H = 4; var CORRECT_W = 4; 
@@ -153,7 +154,7 @@ function img_click(clicked_div) {
 	   
 	   
       if ( WIN_DIV_W == undefined ) {
-         //в режиме FS был ресайз CANVAS'a
+    	  //в режиме FS был ресайз CANVAS'a
          change_wins_geo();
          
 		   //если в режиме просмотра одной камеры происходил ресайз окна браузера
@@ -208,6 +209,7 @@ function img_click(clicked_div) {
       	'title':strToolbarControls['max'],
       });
 
+      set_win_header_size(clicked_div_jq, CUR_WIN_HEADER_H);
       
        FS_WIN_DIV = undefined;
       
@@ -231,9 +233,13 @@ function img_click(clicked_div) {
       IMG_IN_DIV_W=pl_cont.width();
       IMG_IN_DIV_H=pl_cont.height();
 
-      NAME_DIV_H = $('#cell_header_'+win_nr, clicked_div_jq).height();
+      //Сохраняем текущее значение высоты хидера
+      CUR_WIN_HEADER_H = $('.cell_header', clicked_div_jq).height();
+      if(CUR_WIN_HEADER_H==null)CUR_WIN_HEADER_H=0;
+
       if(NAME_DIV_H==null)NAME_DIV_H=0;
-      
+      set_win_header_size(clicked_div_jq, NAME_DIV_H);
+
       win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, 1, 1, 1);
 
       clicked_div_jq.css('top',  calc_win_top (win_geo, 0));
@@ -272,12 +278,8 @@ function img_click(clicked_div) {
         	'src': imgs['tc'].src,
         	'title':strToolbarControls['min']
         });var STAT_REQ_NR = 0;
-
- 
-        
         
       FS_WIN_DIV = clicked_div;
-      
    }
    
    //Устанавливаем текущий масштаб
@@ -303,6 +305,23 @@ function img_click(clicked_div) {
 
    
 } // img_click()
+
+/**
+ * Изменяет высоту заголовка ячейки при смене режима полноэкранный/раскладка
+ * @param clicked_div_jq
+ * @param header_height
+ */
+function set_win_header_size(clicked_div_jq, header_height){
+	
+	if (PrintCamNames && $('.cell_header', clicked_div_jq).height()!= header_height ) {
+		var header = $('.cell_header', clicked_div_jq);
+		$(header).height(header_height); //Высота заголовка
+		$('span', header).css({'top': (header_height/2 - 14)+'px'}).end(); //Название камеры
+		var ht =header_height -6;
+		$(header).find('img').height(ht); //ToolBar
+	}
+}
+
 
 
 /**
@@ -373,34 +392,36 @@ function brout(win_nr, win_div, win_geo) {
 function calc_win_geo(_canvas_w, _canvas_h, img_aspect_ratio, _rows_nr, _cols_nr, _rowspan) {
    var cam_w;
    var cam_h;
-
+   
    if (_rowspan == undefined)
       _rowspan = 1;
 
    if ( img_aspect_ratio == undefined || 
          img_aspect_ratio == 'fs' ) {
+	   
       // соотношение сторон видеоизображения нас не волнует,
       //  растягиваем окна камер и сами изображения по всему CANVAS 
       cam_w = parseInt(_canvas_w/_cols_nr) - BorderLeft - BorderRight;
       cam_h = parseInt(_canvas_h/_rows_nr) - NAME_DIV_H*_rowspan - BorderTop - BorderBottom;
    } else {
       // create wins
-      var calc_canvas_h = _canvas_h - ((NAME_DIV_H*_rowspan + BorderTop + BorderBottom) * _rows_nr);
-
-      if ( (_canvas_w/calc_canvas_h) >= 
-            (img_aspect_ratio.num*_cols_nr)/(img_aspect_ratio.den*_rows_nr) ) {
-         cam_h = parseInt(calc_canvas_h/_rows_nr);
+	   var calc_canvas_h = _canvas_h - ((NAME_DIV_H*_rowspan + BorderTop + BorderBottom) * _rows_nr);
+      
+	   if ( (_canvas_w/calc_canvas_h) >= (img_aspect_ratio.num*_cols_nr)/(img_aspect_ratio.den*_rows_nr) ) {
+        cam_h = parseInt(calc_canvas_h/_rows_nr);
          cam_h = parseInt(cam_h/img_aspect_ratio.den);
          cam_w = cam_h*img_aspect_ratio.num;
          cam_h *= img_aspect_ratio.den;
+         
       } else {
+    	  
          cam_w = parseInt(_canvas_w/_cols_nr - BorderLeft - BorderRight);
          cam_w = parseInt(cam_w/img_aspect_ratio.num);
          cam_h = cam_w*img_aspect_ratio.den;
          cam_w *= img_aspect_ratio.num;
       }
    }
-
+   
    this.win_w = cam_w + BorderLeft + BorderRight;
    this.win_h = cam_h + NAME_DIV_H*_rowspan + BorderTop + BorderBottom;
 
@@ -483,7 +504,9 @@ function change_fs_win_geo(fs_win) {
  * Вычисляет и устанавливает размеры элементов раскладки после ресайза окна
  */
 function change_wins_geo() {
+	
    var base_win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, ROWS_NR, COLS_NR, 1);
+   
    var win_geo;
    var i,tmp_div,win_def,win_nr,win_id;
    
@@ -496,19 +519,29 @@ function change_wins_geo() {
       }
       tmp_div=$(WIN_DIVS[i]);
       win_def = WINS_DEF[win_nr];
-      if ( win_def.rowspan == 1 && win_def.colspan == 1 )
+      if ( win_def.rowspan == 1 && win_def.colspan == 1 ){
          win_geo = base_win_geo;
-      else
-         win_geo = new calc_win_geo(base_win_geo.win_w*win_def.colspan,
+      }
+      else{
+    	  win_geo = new calc_win_geo(
+        	base_win_geo.win_w*win_def.colspan,
                base_win_geo.win_h*win_def.rowspan,
                CamsAspectRatio, 1, 1, win_def.rowspan);
+      }
+
       tmp_div.css('top',  calc_win_top (base_win_geo, win_def.row));
       tmp_div.css('left', calc_win_left(base_win_geo, win_def.col));
 //      tmp_div.width(win_geo.win_w);
 //      tmp_div.height(win_geo.win_h);
+
       if ( GECKO ) {
-          $(tmp_div).width(win_geo.win_w).height(win_geo.win_h);    	  
-    	  $('.pl_cont',tmp_div).width(win_geo.cam_w+CORRECT_W).height(win_geo.cam_h+CORRECT_H).aplayerResizeToParent();
+          $(tmp_div)
+          	.width(win_geo.win_w)
+          	.height(win_geo.win_h);    	  
+          $('.pl_cont',tmp_div)
+    	  	.width(win_geo.cam_w+CORRECT_W)
+    	  	.height(win_geo.cam_h+CORRECT_H)
+    	  	.aplayerResizeToParent();
       } else if (MSIE) {
          	$(tmp_div).width(win_geo.win_w+CORRECT_W).height(win_geo.win_h+CORRECT_H);
         	$('.pl_cont',tmp_div).width(win_geo.cam_w+CORRECT_W).height(win_geo.cam_h+CORRECT_H)
@@ -524,7 +557,7 @@ function change_wins_geo() {
  */
 function canvas_growth() {
    var canvas_changed = false;
-   var avail_h = (($.browser.msie)?ietruebody().clientHeight:window.innerHeight) - $('#toolbar').height();
+   var avail_h = (($.browser.msie)?ietruebody().clientHeight:window.innerHeight) - $('#toolbar').height()-5;
    var avail_w = (($.browser.msie)?ietruebody().clientWidth:window.innerWidth);
    if ( avail_h !=  CANVAS_H) {
       CANVAS_H = avail_h;
@@ -542,7 +575,7 @@ function canvas_growth() {
       return;
 
    WIN_DIV_W = undefined;
-
+   
    if ( FS_WIN_DIV ) {
       change_fs_win_geo(FS_WIN_DIV);
    } else {
@@ -582,6 +615,8 @@ function canvas_growth() {
    	var l_defs = null;
    	//Пропорции
    	var AspectRatio;
+   	//Главная ячейка раскладки
+   	var main_cell  = 0;
 
 	//обнуляем массив масштабов
    $.aplayer.scale = new Array();
@@ -600,7 +635,10 @@ function canvas_growth() {
    	$('#canvas').empty();
 
    	l_defs = layouts_defs[layout['MON_TYPE']];
-
+   	
+   	//Главная ячейка раскладки
+   	main_cell = l_defs[4];
+   	
    	//кол-во элементов для отображения камер
     wins_nr = l_defs[0];
 
@@ -668,6 +706,7 @@ function canvas_growth() {
    			    col : l_wins[1],
    			    rowspan : l_wins[2],
    			    colspan : l_wins[3],
+   			    main:  main_cell-1==i?1:0,
    			    cam: {
    			    	nr:   cam_nr,
    			        name: GCP_cams_params[layout_wins[i][0]]['text_left'] ,
@@ -849,16 +888,17 @@ function canvas_growth() {
               }
               _top  = calc_win_top(base_win_geo, win_def.row);
               _left = calc_win_left(base_win_geo, win_def.col);
-              win_div = $('<div id="win' + win_nr + '" name="win" class="win" ' + 
+              
+              win_div = $('<div id="win' + win_nr + '" name="win" class="win '+(win_def['main']==1? 'main_cell':'')+'" ' + 
                     ' style="position: absolute; '+
                     ' top:'+_top+'px;'+
                     ' left:'+_left+'px; '+
                     ' width:'+ win_geo.win_w +'px;'+
                     ' height:'+ win_geo.win_h +'px;'+
-                    ' border-top: '+BorderTop+'px solid	 #ffb742;' +
+                    /*' border-top: '+BorderTop+'px solid	 #ffb742;' +
                     ' border-left: '+BorderLeft+'px solid  #ffb742;' +
                     ' border-bottom: '+BorderBottom+'px solid  #ffb742;' +
-                    ' border-right: '+BorderRight+'px solid  #ffb742;' + 
+                    ' border-right: '+BorderRight+'px solid  #ffb742;' + */
                     ' z-index: 30;' +
                     '"><\/div>');
               win_div.appendTo(CANVAS);
@@ -918,13 +958,13 @@ function canvas_growth() {
                  .mouseover(function(e){
                 	 e.preventDefault();
                 	 e.stopPropagation();
-                	 controls_handlers.controlsOnOff_mouseover(e);
+                	 // controls_handlers.controlsOnOff_mouseover(e);
                 	 return false;
                  })
                 .mouseout(function(e){
                 	 e.preventDefault();
                 	 e.stopPropagation();
-                	 controls_handlers.controlsOnOff_mouseout(e);
+                	 // controls_handlers.controlsOnOff_mouseout(e);
                 	 return false;
                  })
                  .appendTo(toolbar);
@@ -1146,19 +1186,27 @@ var controls_handlers = {
 		var size = $(e.currentTarget);
 		var cell_nr = parseInt(($(size).attr('id')).replace('original_size_',''));
 		var aplayer_id = $('.aplayer', '#win'+cell_nr).attr('id');
-		$('#'+aplayer_id).parent().aplayerMediaSetSrcSizes();
+		//установить нулевую позицию элемента
+		$.aplayer.setMediaEltPosition(aplayer_id , { left:'0px', top:'0px' } );
 		
+		$('#'+aplayer_id).parent().aplayerMediaSetSrcSizes();
 		//обнуляем масштаб
 	   $.aplayer.scale[aplayer_id]=0;
 	   controls_handlers.original_size[aplayer_id]=true;
+	   
 	},
 	
 	normal_size_click : function(e){
 		var size = $(e.currentTarget);
 		var cell_nr = parseInt(($(size).attr('id')).replace('normal_size_',''));
 		var aplayer_id = $('.aplayer', '#win'+cell_nr).attr('id');
-		$('#'+aplayer_id).parent().aplayerResizeToParent();
 		
+		//установить нулевую позицию элемента
+		$.aplayer.setMediaEltPosition(aplayer_id , { left:'0px', top:'0px' } );
+		$.aplayer.setMediaEltPosition(aplayer_id , { left:'0px', top:'0px' } );
+		
+		$('#'+aplayer_id).parent().aplayerResizeToParent();
+
 		//обнуляем масштаб
 	   $.aplayer.scale[aplayer_id]=0;
 	   controls_handlers.original_size[aplayer_id]=false;

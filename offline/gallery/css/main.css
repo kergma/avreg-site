@@ -299,7 +299,15 @@ a {
 	width: 99%;	
 	font-size: 12px;
 	text-align: center;
-	color:#fff;
+	color: #FFFFFF;
+}
+
+.content_item .info_block a {
+	color: #FFF;
+}
+
+.content_item .info_block a:hover {
+	color: red;
 }
 
 
@@ -730,6 +738,9 @@ a, label,h2, button,span,div
 
 
 #content #win_top {
+	background-image: url('./images/BG.png');
+	background-size: cover;
+	background-position: top;
     background: -moz-linear-gradient(top, #333, #777);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#333), color-stop(100%,#777));
     background: -webkit-linear-gradient(top,  #333, #777);
@@ -739,47 +750,59 @@ a, label,h2, button,span,div
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#333', endColorstr='#777'); 
 	border: 2px outset #222;
 	min-height: 104px;	 
-	   -moz-box-shadow: 0 0 15px rgba(0,0,0,1.5); /* Для Firefox */
-    -webkit-box-shadow: 0 0 15px rgba(0,0,0,1.5); /* Для Safari и Chrome */
-    box-shadow: 0 0 15px rgba(0,0,0,1.5); /* Параметры тени */
+	-moz-box-shadow: 0 0 15px rgba(0,0,0,1.5); 
+    -webkit-box-shadow: 0 0 15px rgba(0,0,0,1.5);
+    box-shadow: 0 0 15px rgba(0,0,0,1.5);
 }	
 
 
 
 #content #win_top.selectBox {
-	background: #171717;
+	background-image: url('./images/BG_light.png');
+	background-size: cover;
+	background-position: top;
     background: -moz-linear-gradient(top,  #555, #999);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#555), color-stop(100%,#999));
     background: -webkit-linear-gradient(top,  #555, #999);
     background: -o-linear-gradient(top,  #555, #999); 
     background: -ms-linear-gradient(top,  #555, #999); 
     background: linear-gradient(top,  #555, #999); 
-    -moz-box-shadow: 0 0 25px rgba(0,0,0,1.5); /* Для Firefox */
-    -webkit-box-shadow: 0 0 25px rgba(0,0,0,1.5); /* Для Safari и Chrome */
-    box-shadow: 0 0 25px rgba(0,0,0,1.5); /* Параметры тени */
+    -moz-box-shadow: 0 0 25px rgba(0,0,0,1.5);
+    -webkit-box-shadow: 0 0 25px rgba(0,0,0,1.5); 
+    box-shadow: 0 0 25px rgba(0,0,0,1.5); 
 }	
 
 #content #win_bot #list_panel {
+	background-image: url('./images/BG.png');
+	background-size: cover;
+	background-position: top center;
  	background: -moz-linear-gradient(top, #555 0%, #999 50%, #555 100%);
     background: -webkit-linear-gradient(top, #555 0%, #999 50%, #555 100%);
     background: -o-linear-gradient(top, #555 0%, #999 50%, #555 100%); 
     background: -ms-linear-gradient(top, #555 0%, #999 50%, #555 100%); 
-    background: linear-gradient(top, #555 0%, #999 50%, #555 100%); 
+    background: linear-gradient(top, #555 0%, #999 50%, #555 100%);
  }
 
 #content #win_bot.selectBox #list_panel {
+	background-image: url('./images/BG_light.png');
+	background-size: cover;
+	background-position: top center;
  	background: -moz-linear-gradient(top, #777 0%, #AAA 50%, #777 100%);
     background: -webkit-linear-gradient(top, #777 0%, #AAA 50%, #777 100%);
     background: -o-linear-gradient(top, #777 0%, #AAA 50%, #777 100%); 
     background: -ms-linear-gradient(top, #777 0%, #AAA 50%, #777 100%); 
-    background: linear-gradient(top, #777 0%, #AAA 50%, #777 100%);    
+    background: linear-gradient(top, #777 0%, #AAA 50%, #777 100%);   
 }
 
 
 div.options span {
 	float: left;
 	margin-right: 15px;
-	}
+}
+
+div.options span.niceCheck {
+	margin-right: 2px;
+}
 
 div.options > span:hover {
 	border:0;
@@ -892,6 +915,22 @@ a.set_camera_color:hover {
 
 #btn_cell_size {
 	margin-right: -10px;
+}
+
+.to_main {	
+	text-align: center;
+	opacity: 0.7;
+	width: 100%;
+	margin:0;padding:0;
+	background: -moz-linear-gradient(top, #121212 0%, #555 50%, #121212 100%);
+    background: -webkit-linear-gradient(top, #121212 0%, #555 50%, #121212 100%);
+    background: -o-linear-gradient(top, #121212 0%, #555 50%, #121212 100%); 
+    background: -ms-linear-gradient(top, #121212 0%, #555 50%, #121212 100%); 
+    background: linear-gradient(top, #121212 0%, #555 50%, #121212 100%); 
+	z-index: 999;
+	position: absolute;
+  	bottom: 0px;
+  	height: 30px;
 }
 
 
