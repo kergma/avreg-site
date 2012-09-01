@@ -73,10 +73,7 @@ function cam_has_video($cam_detail, $print_warn, &$url)
          $url .= $cam_detail['InetCam_IP'];
       if ( !empty($cam_detail['InetCam_rtsp_port']) && $cam_detail['InetCam_rtsp_port'] != 554 )
          $url .= ':' . $cam_detail['InetCam_rtsp_port'];
-      if ( empty($cam_detail['rtsp_play']) ) {
-         $url .= _warn_emptied_param('rtsp_play', $print_warn);
-         $ret = FALSE;
-      } else
+      if ( !empty($cam_detail['rtsp_play']) )
          $url .= $cam_detail['rtsp_play'];
       break;
    default:
@@ -98,14 +95,12 @@ function cam_has_audio($cam_detail, $print_warn, &$url)
 
    switch ( $aproto ) {
    case 'alsa':
-      $url = "ALSA://????????????????????";
-      if ( empty($cam_detail['v4l_dev']) ) {
-         $url .= _warn_emptied_param('v4l_dev', $print_warn);
+      $url = "ALSA://";
+      if ( empty($cam_detail['alsa_dev_name']) ) {
+         $url .= _warn_emptied_param('alsa_dev_name', $print_warn);
          $ret = FALSE;
       } else
-         $url .= '/dev/video' . $cam_detail['v4l_dev'];
-      $input = isset($cam_detail['input']) ? $cam_detail['input'] : 0;
-      $url .= ":$input"; 
+         $url .= $cam_detail['alsa_dev_name'];
       break;
    case 'http':
       $url = 'http://';
@@ -132,10 +127,7 @@ function cam_has_audio($cam_detail, $print_warn, &$url)
          $url .= $cam_detail['InetCam_IP'];
       if ( !empty($cam_detail['InetCam_rtsp_port']) && $cam_detail['InetCam_rtsp_port'] != 554 )
          $url .= ':' . $cam_detail['InetCam_rtsp_port'];
-      if ( empty($cam_detail['rtsp_play']) ) {
-         $url .= _warn_emptied_param('rtsp_play', $print_warn);
-         $ret = FALSE;
-      } else
+      if ( ! empty($cam_detail['rtsp_play']) )
          $url .= $cam_detail['rtsp_play'];
       break;
    default:

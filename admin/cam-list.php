@@ -49,7 +49,7 @@ if ( !isset($cam_nr) )
    $GCP_query_param_list=array('work', 'video_src', 'audio_src', 'geometry', 'color',
       'v4l_dev','input',
       'InetCam_IP', 'InetCam_http_port', 'InetCam_rtsp_port',
-      'V.http_get', 'A.http_get', 'rtsp_play',
+      'V.http_get', 'A.http_get', 'rtsp_play', 'alsa_dev_name',
       'text_left');
    require ('../lib/get_cams_params.inc.php');
    if ( $install_user )
