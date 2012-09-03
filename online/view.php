@@ -295,6 +295,7 @@ print "var ROWS_NR = $l_defs[1];\n";
 print "var COLS_NR = $l_defs[2];\n";
 print "var SERVER_ADR = '{$_SERVER['SERVER_NAME']}';\n";
 
+print "var REF_MAIN = ".(($install_user || $admin_user || $arch_user )? 'true':'false').";\n";
 
 //Подключаем файл 
  readfile('view.js');

@@ -57,6 +57,10 @@ div.win.main_cell {
     background-size: cover;
 }
 
+#tb_contn td {
+	background: none;
+}
+
 #canvas {
 	background : #555;
 	background-image: url('../img/BG.png');
