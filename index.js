@@ -1,8 +1,7 @@
 
-$(Document).ready(function(){
-	
+$(document).ready(function(){
+
 	$('#main_tab').parent('body').css({
-		'background' : '-moz-linear-gradient(top, #555 0%, #999 50%, #555 100%)',
 		'background-image' : 'url("./img/BG.png")',
 		'background-repeat' : 'repeat-x',
 		'background-size' : 'cover',

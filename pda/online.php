@@ -22,7 +22,7 @@ $cam_name = $cam_conf['text_left'];
 list($w, $h) = sscanf($cam_conf['geometry'], '%ux%u');
 if ( $cam_conf['Hx2'] )
    $h *= 2;
-$cam_url = "../lib/img_resize.php?camera=$camera";
+$cam_url = "../lib/img_resize.php?camera=$camera&prop=false";
 
 //масштаб изображений
 $scale=0;
@@ -74,6 +74,10 @@ function img_evt(e_id)
 <?php
 if ( !isset($refresh) ) {
 	
+	//селект масштаба
+	print "<div>\n";
+	show_select_resolution($tumb_sizes, $scale ,$strScale['scale']);
+	print "</div>\n";
 	
 	
    $refresh_img_a = array(

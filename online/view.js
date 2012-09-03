@@ -392,7 +392,6 @@ function brout(win_nr, win_div, win_geo) {
 function calc_win_geo(_canvas_w, _canvas_h, img_aspect_ratio, _rows_nr, _cols_nr, _rowspan) {
    var cam_w;
    var cam_h;
-   
    if (_rowspan == undefined)
       _rowspan = 1;
 
@@ -406,7 +405,7 @@ function calc_win_geo(_canvas_w, _canvas_h, img_aspect_ratio, _rows_nr, _cols_nr
    } else {
       // create wins
 	   var calc_canvas_h = _canvas_h - ((NAME_DIV_H*_rowspan + BorderTop + BorderBottom) * _rows_nr);
-      
+	   
 	   if ( (_canvas_w/calc_canvas_h) >= (img_aspect_ratio.num*_cols_nr)/(img_aspect_ratio.den*_rows_nr) ) {
         cam_h = parseInt(calc_canvas_h/_rows_nr);
          cam_h = parseInt(cam_h/img_aspect_ratio.den);
@@ -479,7 +478,6 @@ function change_fs_win_geo(fs_win) {
    fs_win_div_jq.css('left', calc_win_left(win_geo, 0));
 
    if ( GECKO ) {
-	   
 	   $(fs_win_div_jq)
 	   .width(win_geo.win_w)
 	   .height(win_geo.win_h);
@@ -518,7 +516,11 @@ function change_wins_geo() {
          return;
       }
       tmp_div=$(WIN_DIVS[i]);
+
       win_def = WINS_DEF[win_nr];
+      
+      if(win_def == null)return;
+      
       if ( win_def.rowspan == 1 && win_def.colspan == 1 ){
          win_geo = base_win_geo;
       }
@@ -557,18 +559,21 @@ function change_wins_geo() {
  */
 function canvas_growth() {
    var canvas_changed = false;
+   
    var avail_h = (($.browser.msie)?ietruebody().clientHeight:window.innerHeight) - $('#toolbar').height()-5;
    var avail_w = (($.browser.msie)?ietruebody().clientWidth:window.innerWidth);
+   
    if ( avail_h !=  CANVAS_H) {
       CANVAS_H = avail_h;
       CANVAS.height(CANVAS_H);
       canvas_changed = true;
    }
    if ( avail_w != CANVAS_W) {
-      CANVAS_W = avail_w;
+	  CANVAS_W = avail_w;
       CANVAS.width(CANVAS_W);
       canvas_changed = true;
    }
+   
    if (!canvas_changed)
       return;
    if ( WIN_DIVS == undefined )
@@ -589,6 +594,9 @@ function canvas_growth() {
     */
 
    function layouts_to_list(){
+	   
+	   
+	   
 	   var html = '<div id="nav"><span>';
    	$.each(layouts_list, function(i, value){
    		html+='<div class="layout'+((cur_layout==value.MON_NR)? ' selectedLayout':'' )+'" ><a id="layout_'+value.MON_NR+'" class="layout_link" onclick="change_layout('+value.MON_NR+')" href="#">';
@@ -644,7 +652,7 @@ function canvas_growth() {
 
    	//пересоздаем объект текущей раскладки
    	WINS_DEF = new MakeArray(wins_nr);
-
+   	
    	//размеры камер
    	major_win_cam_geo = null;
    	
@@ -700,6 +708,7 @@ function canvas_growth() {
    	   else{
    		   net_cam_host = null;
    	   }
+   			
    		//устанавливаем параметры и камеру для ячейки
    		WINS_DEF[i] = {
    				row : l_wins[0],
@@ -720,8 +729,7 @@ function canvas_growth() {
    	
    	//Вывод в шапке элемента отображения камеры - названия камеры
    	PrintCamNames = (layout['PRINT_CAM_NAME']=='t' || layout['PRINT_CAM_NAME']==true)? true : false;
-   	NAME_DIV_H = PrintCamNames?20:0;
-   	
+
    	//Установка пропорций
    	AspectRatio = layout['PROPORTION'];
    	
@@ -730,6 +738,7 @@ function canvas_growth() {
    		   CamsAspectRatio = 'fs';
    	} //если сохраняем пропорции
    	else {
+   		
    		var rex = new RegExp("[0-9]+", "g");
    		if (AspectRatio=='calc'){
    		      ar = calcAspectForGeo(major_win_cam_geo[0], major_win_cam_geo[1]);
@@ -857,23 +866,28 @@ function canvas_growth() {
        
            // calc and set  CANVAS width & height
            CANVAS = $('#canvas');
+           
+           $("#toolbar").addClass('toolbar_style');
+           //Выводим список раскладок
+           $("#toolbar table tr")
+           .html('<td> <table> <tr><td><div class="to_main"> <a href="http://'+SERVER_ADR+'/avreg/index.php" >На главную</a> </div> </td><td>'+ layouts_to_list() +'</td></tr></table></td>');
+           
            canvas_growth();
-
+           
            $(window).bind('resize', function() {
               canvas_growth();
               });
 
            $(window).bind('scroll', function(){return false;});
-
+           
            var base_win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, ROWS_NR, COLS_NR, 1);
            var win_geo;
-           // alert('[ ' + CANVAS_W + 'x' + CANVAS_H + ' ] [ ' + cam_w + 'x' + cam_h + ' ]');
            var win_nr;
            var _top=0;
            var _left=0;
            var win_div;
            var win_def;
-
+                      
            for (win_nr = 0; win_nr < WINS_NR; win_nr++ ) {
               if (  WINS_DEF[win_nr] == undefined )
                  continue;
@@ -888,17 +902,13 @@ function canvas_growth() {
               }
               _top  = calc_win_top(base_win_geo, win_def.row);
               _left = calc_win_left(base_win_geo, win_def.col);
-              
+
               win_div = $('<div id="win' + win_nr + '" name="win" class="win '+(win_def['main']==1? 'main_cell':'')+'" ' + 
                     ' style="position: absolute; '+
                     ' top:'+_top+'px;'+
                     ' left:'+_left+'px; '+
                     ' width:'+ win_geo.win_w +'px;'+
                     ' height:'+ win_geo.win_h +'px;'+
-                    /*' border-top: '+BorderTop+'px solid	 #ffb742;' +
-                    ' border-left: '+BorderLeft+'px solid  #ffb742;' +
-                    ' border-bottom: '+BorderBottom+'px solid  #ffb742;' +
-                    ' border-right: '+BorderRight+'px solid  #ffb742;' + */
                     ' z-index: 30;' +
                     '"><\/div>');
               win_div.appendTo(CANVAS);
@@ -914,17 +924,21 @@ function canvas_growth() {
                     ipcamhost_link_end   = ' &rarr;<\/a>';
                  }
                  else if(typeof(WINS_DEF[win_nr].cam.url) == "string"){
-                     ipcamhost_link_begin = '<a href="' + WINS_DEF[win_nr].cam.url +
+                	 
+                	 var host = (WINS_DEF[win_nr].cam.url).replace(/\w+\:\/\//i, '');
+                	 host = host.replace(/(\/|\:).*/ig, '');
+ 
+                	 ipcamhost_link_begin = '<a href="http://' + host + /*WINS_DEF[win_nr].cam.url*/
                      						'" target="_blank" style="color:inherit;" title="'+strToolbarControls['to_cam_interface']+'">';
                      ipcamhost_link_end   = ' &rarr;<\/a>';
                  }
                  
                  
-                 var hdr = $('<div id="cell_header_'+win_nr+'" class="cell_header"  style="cursor:default;'+ // #666699
+                 var hdr = $('<div id="cell_header_'+win_nr+'" class="cell_header"  style="cursor:default;'+ 
                        ' padding:0px; margin:0px; overflow:hidden; border:0px; height:'+ NAME_DIV_H*win_def.rowspan +'px;">'+
                        '<span style="'+
                        'vertical-align: middle; position: absolute; top: '+(NAME_DIV_H*win_def.rowspan/2 - 14)+'px; padding-left:8px; padding-top:2px; padding-bottom:2px; padding-right:2px;'+
-                       ' color:#e5e5e5; font-size:'+14 /* *win_def.rowspan*/+'px; font-weight: bold; width:100%; overflow:hidden;">'+
+                       ' color:#e5e5e5; font-size:'+14+'px; font-weight: bold; width:100%; overflow:hidden;">'+
                        ipcamhost_link_begin + WINS_DEF[win_nr].cam.name + ipcamhost_link_end +
                        '<\/span><\/div>')
                        .appendTo(win_div);
@@ -1068,12 +1082,6 @@ function canvas_growth() {
    overlay: 90
    });
 
-    $("#toolbar").addClass('toolbar_style');
-
-   //Выводим список камер
-   $("#toolbar table tr")
-   .html('<td>'+layouts_to_list()+ ' <div class="to_main" style="float:right;"> <a href="http://'+SERVER_ADR+'/avreg/index.php" >В начало</a> </div>'+'</td>');
-   
     //Убрать тултип при перетаскивании
 	$('.MediaCont').mousedown(function(e){ 
 		e.preventDefault();

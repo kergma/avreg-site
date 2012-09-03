@@ -38,13 +38,15 @@ if(!count($result)) {
 //Номер камеры по умолчанию
 $def_cam = null;
 $cur_layout = 0;
+
 //Поиск раскладки по умолчанию
 foreach($result as $key=>$value){
 	if($value['IS_DEFAULT']!='0'){
 		$def_cam = $value;
-		$cur_layout = $key;
+		$cur_layout =$value["MON_NR"]*1;
 	}
 }
+
 //Если раскладка по умолчанию не найдена - используем первую
 if ($def_cam == null){
 	$def_cam = $result[0];
@@ -86,7 +88,7 @@ while (@ob_end_flush());
 
 echo "<script type='text/javascript'>\n";
 
-//устанавливаем yjvth текущtq раскладкb
+//устанавливаем номер текущей раскладки
 print "var cur_layout = $cur_layout; \n";
 
 //Передаем в JS список существующих раскладок

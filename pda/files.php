@@ -66,6 +66,8 @@ if($tumb_sizes == null || sizeof($tumb_sizes)==0 ){
 }
 if($scale>=sizeof($tumb_sizes)-1) $scale=sizeof($tumb_sizes)-1;
 
+show_select_resolution($tumb_sizes, $scale ,$strScale['scale']);
+
 ?>
 
 <script type="text/javascript">
@@ -103,7 +105,7 @@ foreach($pagi as $row)
       $jpeg_info = "$FILESZ_KB kB, [$U16_1 x $U16_2]";
       printf("<a href='$orig_src' title='Открыть оригинал $jpeg_info'>\n");
       
-      printf('<img src="'.$conf['prefix'].'/lib/resize_img.php?url=%s&w=%u&h=%u" alt="Ошибка загрузки">',
+      printf('<img src="'.$conf['prefix'].'/lib/resize_img.php?prop=false&url=%s&w=%u&h=%u" alt="Ошибка загрузки">',
       urlencode("http://".$_SERVER["SERVER_NAME"].$orig_src),
       $tumb_sizes[$scale]['w'],
       $tumb_sizes[$scale]['h']);
