@@ -742,7 +742,7 @@ array(
    'type'    => $INT_VAL,
    'def_val' => NULL,
    'desc'    => "<b>Насыщенность цвета</b>. $v4l_int_cntrl",
-   'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
+   'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
    'cats'    => '3.2',
    'subcats' => NULL,
    'mstatus' => 1,
@@ -762,7 +762,43 @@ array(
   'subcats' => NULL,
   'mstatus' => 1,
 ),
- */
+*/
+
+/* ALSA */
+array(
+   'name'    => 'alsa_dev_name',
+   'type'    => $STRING_VAL,
+   'def_val' => NULL,
+   'desc'    => '<b>ALSA-имя устройства аузиозахвата</b>.',
+   'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
+   'cats'    => '3.3',
+   'subcats' => NULL,
+   'mstatus' => 1,
+),
+
+/* 
+array(
+   'name'    => 'alsa_dev_channels',
+   'type'    => $INT_VAL,
+   'def_val' => NULL,
+   'desc'    => '<b>Формат sample</b>.',
+   'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
+   'cats'    => '3.3',
+   'subcats' => NULL,
+   'mstatus' => 1,
+),
+
+array(
+   'name'    => 'alsa_sample_rate',
+   'type'    => $INT_VAL,
+   'def_val' => NULL,
+   'desc'    => '<b>sample_rate</b>.',
+   'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
+   'cats'    => '3.3',
+   'subcats' => NULL,
+   'mstatus' => 1,
+),
+*/
 
 /* обработка */
 
@@ -771,7 +807,7 @@ array(
    'type'    => $BOOL_VAL,
    'def_val' => 1,
    'desc'    => '<b>Обнаруживать движение в кадре</b> с помощью <b>Программного Детектора Движения</b>.<br /><br />Ключевая функция для профессиональных систем. На HDD записываются только сеансы с движением. Существенно облегчает поиск в архиве видеозаписей.<br /><br />По умолчанию: <b>Вкл</b>.',
-   'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
+   'flags'   => $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
    'cats'    => '5.1',
    'subcats' => '5.1.3',
    'mstatus' => 2,
