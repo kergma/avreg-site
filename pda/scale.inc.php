@@ -10,6 +10,7 @@ function get_resolutions($strResolutions, $orderByWidth=true){
 	foreach ($sizes as $key=>$val){
 		$tmp = array();
 		$tmp = explode('x', $val);
+		$tmp[0] = mb_strtoupper($tmp[0]);
 		if($tmp[0]=='1:1' || $tmp[0]=='FS'){
 			array_push($resol, array('w'=>trim($tmp[0]), 'h'=>trim($tmp[0]) ));
 		}else{
