@@ -68,15 +68,30 @@ if($scale>=sizeof($tumb_sizes)-1) $scale=sizeof($tumb_sizes)-1;
 
 show_select_resolution($tumb_sizes, $scale ,$strScale['scale']);
 
+$width = $tumb_sizes[$scale]['w'];
+$heigt = $tumb_sizes[$scale]['h'];
+
+$reload='false';
+if($width=='FS'){
+	$width = isset($_GET['aw'])?$_GET['aw']:0;
+	$heigt = isset($_GET['ah'])?$_GET['ah']:0;
+	
+	if($width==0) $reload='true';
+}
+
 ?>
 
 <script type="text/javascript">
+	var reload = <?php print $reload."\n"; ?>;
 	var scale = <?php print $scale."\n"; ?>
 	var SELF_ADR = <?php print "\"".$_SERVER['REQUEST_URI']."\"" ; ?>;
 	var TOTAL_SCLS = <?php print sizeof($tumb_sizes); ?>; //кол-во предопределенных значений масштаба 
 </script>
 
 <?php 
+
+
+
 
 /* pagination */
 require_once('paginator.inc.php');
@@ -105,10 +120,10 @@ foreach($pagi as $row)
       $jpeg_info = "$FILESZ_KB kB, [$U16_1 x $U16_2]";
       printf("<a href='$orig_src' title='Открыть оригинал $jpeg_info'>\n");
       
-      printf('<img src="'.$conf['prefix'].'/lib/resize_img.php?prop=false&url=%s&w=%u&h=%u" alt="Ошибка загрузки">',
+      printf('<img src="'.$conf['prefix'].'/lib/resize_img.php?prop=false&url=%s&w=%s&h=%s" alt="Ошибка загрузки">',
       urlencode("http://".$_SERVER["SERVER_NAME"].$orig_src),
-      $tumb_sizes[$scale]['w'],
-      $tumb_sizes[$scale]['h']);
+      $width,
+      $heigt);
       print "</a></div>\n";
    }
 }

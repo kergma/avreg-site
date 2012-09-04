@@ -6,6 +6,13 @@
 
 $USE_JQUERY = true;
 
+$link_javascripts=array(
+						'lib/js/jquery-ui-1.8.17.custom.min.js',
+						'lib/js/jquery.mousewheel.min.js',
+						'lib/js/jquery.aplayer.js',
+);
+
+
 $pageTitle = sprintf('Камера №%u', $_GET['camera']);
 // $body_onload='body_loaded();';
 require ('head_pda.inc.php');
@@ -54,11 +61,21 @@ if($scale>=sizeof($tumb_sizes)-1) $scale=sizeof($tumb_sizes)-1;
 $width = $tumb_sizes[$scale]['w'];
 $heigt = $tumb_sizes[$scale]['h'];
 
+$reload='false';
+if($width=='FS'){
+	$width = isset($_GET['aw'])?$_GET['aw']:0;
+	$heigt = isset($_GET['ah'])?$_GET['ah']:0;
+	
+	if($width==0) $reload='true';
+}
+
+
 ?>
 
 <script type="text/javascript">
 	//переменные масштаба изображений 
-	var scale = <?php print $scale."\n"; ?>
+	var reload = <?php print $reload."\n"; ?>;
+	var scale = <?php print $scale."\n"; ?>;
 	var SELF_ADR = <?php print "\"".$_SERVER['REQUEST_URI']."\"" ; ?>;
 	var TOTAL_SCLS = <?php print sizeof($tumb_sizes); ?>; //кол-во предопределенных значений масштаба 
 
@@ -73,6 +90,9 @@ function img_evt(e_id)
 
 <?php
 if ( !isset($refresh) ) {
+	
+	if($reload=='false'){
+		
 	
 	//селект масштаба
 	print "<div>\n";
@@ -94,15 +114,46 @@ if ( !isset($refresh) ) {
    } else
       $refresh = 0;
 
-   printf('<IMG id="viewport" src="%s&width=%u&height=%u" style="border: 1px solid;" alt="%s снапшот" onerror="img_evt(1);" />',
+   printf('<IMG id="viewport" src="%s&width=%s&height=%s" style="border: 1px solid;" alt="%s снапшот" onerror="img_evt(1);"  />',
    $cam_url,
    $width,
    $heigt,
    $cam_name
    );
    
+
+   
+ /*  
+   $cam_src = sprintf('src="%s&width=%u&height=%u"',
+   $cam_url,
+   $width,
+   $heigt,
+   $cam_name
+   );
+*/   
    
 ?>
+<div id="view_cam_" ></div>
+
+<script type="text/javascript">
+/*
+$(document).ready(function(){
+	
+	$('#view_cam_')
+	.height(<?php print $heigt;?>)
+	.width(<?php print $width+5;?>)
+	.addPlayer({
+		'src':<?php print $cam_src;?> ,
+		'mediaType':'pseudo',
+		'freq':1000
+		})
+	.aplayerSetSrcSizes();
+
+});
+*/	
+</script>
+
+
 <br>
 <form action="online.php" method="GET">
 <input type="hidden" name='camera' value="<?php echo $camera; ?>">
@@ -117,6 +168,7 @@ if ( !isset($refresh) ) {
 </div>
 </form>
 <?php
+	}
 } else {
 	
 	/* смотрим детально и с обновлениями */
@@ -129,6 +181,8 @@ if ( !isset($refresh) ) {
       onclick="refresh_img();" onload="img_evt(0);" onerror="img_evt(1);" oabort="img_evt(2);">',
         $cam_url,  
    		$cam_name);
+   
+   
 }
 ?>
 

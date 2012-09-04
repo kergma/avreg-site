@@ -151,9 +151,15 @@ $im_proportion = $width_src/$height_src ;
 $w =isset($_GET['width'])? (int)$_GET['width']:0;
 $h =isset($_GET['height'])? (int)$_GET['height']:0;
 
+//если передан параметр один к одному
+if($w=='1:1' || $h=='1:1'){
+	$w =$width_src;
+	$h =$height_src;
+}
+
 if($w==0 && $h==0){
-	$w =$im_width;
-	$h =$im_height;
+	$w =$width_src;
+	$h =$height_src;
 }
 elseif($w==0){
 	$w = $h*$im_proportion;

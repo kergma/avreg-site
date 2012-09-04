@@ -10,7 +10,11 @@ function get_resolutions($strResolutions, $orderByWidth=true){
 	foreach ($sizes as $key=>$val){
 		$tmp = array();
 		$tmp = explode('x', $val);
-		array_push($resol, array('w'=>trim($tmp[0]), 'h'=>trim($tmp[1]) ));
+		if($tmp[0]=='1:1' || $tmp[0]=='FS'){
+			array_push($resol, array('w'=>trim($tmp[0]), 'h'=>trim($tmp[0]) ));
+		}else{
+			array_push($resol, array('w'=>trim($tmp[0]), 'h'=>trim($tmp[1]) ));
+		}
 	}
 	
 	if($orderByWidth) usort($resol, 'sort_by_width');
@@ -33,10 +37,16 @@ function show_select_resolution($resolutions, $select ,$strName = "Resolutions" 
 	echo "{$strName}: ";
 	echo '<select id="resolution" size="1" name="resolution">'."\n";
 	foreach ($resolutions as $key=>$val){
-		echo "<option ".($key==$select?' selected ':'' )." value='{$key}'>{$val['w']} x {$val['h']} </option>\n";
+		if($val['w']=='FS' || $val['w']=='1:1'){
+			echo "<option ".($key==$select?' selected ':'' )." value='{$key}'>{$val['w']}</option>\n";
+		}else{
+			echo "<option ".($key==$select?' selected ':'' )." value='{$key}'>{$val['w']} x {$val['h']} </option>\n";
+		}
 	}
 	echo '</select>'."\n"; 
 
+	
+	
 }
 
 ?>
@@ -62,20 +72,16 @@ var scale=0;
 			scale = SELF_ADR.match(expr)[0];
 			scale = parseInt(scale.replace('scl=', ''));
 		}
-		
-
-		if(scale>=TOTAL_SCLS-1){
-			 $('#zoomin').attr({'disabled':'disabled'});
-		}
-		if(scale<=0){
-			$('#zoomout').attr({'disabled':'disabled'});
-		}
 
 		//Выбор новогого разрешения
 		$('#resolution').change(function(e){
 			var act = SELF_ADR ;
 			var toReload = true;
 			scale = $('#resolution option:selected').val();
+
+			if($.trim($('#resolution option:selected').html()) =='FS'){
+				set_full_screen();
+			}
 			
 			if(isscl){
 				//если значение масштаба уже установлено 
@@ -90,7 +96,54 @@ var scale=0;
 			if(toReload)window.open(act,'_self');
 		});
 
+		if(typeof(reload)!='undefined' && reload){
+			set_full_screen();
+		}
+
+
+		$(window).resize(function(){
+			reload = true;
+			set_full_screen();
+
+		});
+		
 	});
+
+	//Установка полноэкранного режима
+	set_full_screen=function(){
+			var act = SELF_ADR ;
+			var avail_h = parseInt(($.browser.msie)?ietruebody().clientHeight:window.innerHeight);
+			var avail_w = parseInt(($.browser.msie)?ietruebody().clientWidth:window.innerWidth);
+
+			avail_h -=parseInt(avail_h*1/100);
+			avail_w -=parseInt(avail_w*1/100);
+			
+			var ea_h = new RegExp('ah=\\d+', 'ig');
+			var ea_w = new RegExp('aw=\\d+', 'ig');
+			var is_ea_h = ea_h.test(SELF_ADR);
+			var is_ea_w = ea_w.test(SELF_ADR);
+	
+			if(is_ea_h){
+				//если значение масштаба уже установлено 
+				act= act.replace(ea_h, "ah=" +avail_h );
+			}
+			else{
+				act +=  "&ah=" + avail_h;
+			}
+			if(is_ea_w){
+				//если значение масштаба уже установлено 
+				act= act.replace(ea_w, "aw=" +avail_w );
+			}
+			else{
+				act +=  "&aw=" + avail_w;
+			}
+
+			if(typeof(reload)!='undefined' && reload){
+				window.open(act,'_self');
+			}
+		};
+
+	
 
 	var cookie = {
 			getCookie : function(c_name)

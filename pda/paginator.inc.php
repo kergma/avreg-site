@@ -43,8 +43,13 @@ class PDA_Paginator implements Iterator
          return;
       printf("<div style='text-align: center; width:%upx;'>\n", $this->conf['pda-thumb-image-width']);
       $scale = isset($_GET['scl'])? $_GET['scl']:0;
-      $uri =  sprintf('%s&%s=%u&scl=%u', $this->uri_base,
-         $this->offset_name, ($this->elems_per_page * ($this->cur_page - 2)), $scale);
+      $FS_size ='';
+      if(isset($_GET['aw']) && isset($_GET['ah'])){
+      	$FS_size=sprintf('&aw=%s&ah=%s', $_GET['aw'], $_GET['ah']);
+      }
+      
+      $uri =  sprintf('%s&%s=%u&scl=%u%s', $this->uri_base,
+         $this->offset_name, ($this->elems_per_page * ($this->cur_page - 2)), $scale, $FS_size);
 
       print "<a href='$uri' title='пред.'>\n";
       printf("<img src='%s/img/arrow_up_48x24.png' width=48 height=24 alt='пред.'></a></div>\n",
@@ -53,10 +58,15 @@ class PDA_Paginator implements Iterator
 
    function print_below() {
    	  $scale = isset($_GET['scl'])? $_GET['scl']:0;
+   	  $FS_size ='';
+   	  if(isset($_GET['aw']) && isset($_GET['ah'])){
+   	  	$FS_size=sprintf('&aw=%s&ah=%s', $_GET['aw'], $_GET['ah']);
+   	  }
+   	  
       if ( $this->cur_page < $this->all_pages_nb ) {
          printf("<div style='text-align: center; width:%upx;'>\n", $this->conf['pda-thumb-image-width']);
-         $uri =  sprintf('%s&%s=%u&scl=%u', $this->uri_base,
-            $this->offset_name, ($this->elems_per_page * $this->cur_page), $scale );
+         $uri =  sprintf('%s&%s=%u&scl=%u%s', $this->uri_base,
+            $this->offset_name, ($this->elems_per_page * $this->cur_page), $scale, $FS_size );
 
          print "<a href='$uri' title='след.'>\n";
          printf("<img src='%s/img/arrow_down_48x24.png' width=48 height=24 alt='след.'></a></div>\n",
@@ -69,8 +79,8 @@ class PDA_Paginator implements Iterator
             if ($p === $this->cur_page)
                print "<span style='font-size: 140%';>$p</span>&nbsp;";
             else {
-               $uri =  sprintf('%s&%s=%u&scl=%u', $this->uri_base,
-                  $this->offset_name, ($this->elems_per_page * ($p - 1)), $scale);
+               $uri =  sprintf('%s&%s=%u&scl=%u%s', $this->uri_base,
+                  $this->offset_name, ($this->elems_per_page * ($p - 1)), $scale, $FS_size);
                print "<a href='$uri' title='след.'>$p</a>&nbsp\n";
             }
          }
