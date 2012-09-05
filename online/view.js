@@ -1338,7 +1338,6 @@ var controls_handlers = {
 		$(".pl_controls", "#win"+cell_nr).fadeOut(200, function(){
 			$('span',"#cell_header_"+cell_nr).fadeIn(200);
 		});
-		
 
 	},
 	
@@ -1346,7 +1345,7 @@ var controls_handlers = {
 		var start = $(e.currentTarget);
 		var cell_nr = parseInt(($(start).attr('id')).replace('pl_start_',''));
 		var aplayer_id = $('.aplayer', '#win'+cell_nr).attr('id');
-		
+
 		$('#pl_stop_'+cell_nr).show();
 		$(start).hide();
 		$.aplayer.startPlay(aplayer_id);
@@ -1356,7 +1355,7 @@ var controls_handlers = {
 		var stop = $(e.currentTarget);
 		var cell_nr = parseInt(($(stop).attr('id')).replace('pl_stop_',''));
 		var aplayer_id = $('.aplayer', '#win'+cell_nr).attr('id');
-
+		
 		$('#pl_start_'+cell_nr).show();
 		$(stop).hide();
 		$.aplayer.stopPlay(aplayer_id);
