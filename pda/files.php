@@ -120,7 +120,7 @@ foreach($pagi as $row)
       $jpeg_info = "$FILESZ_KB kB, [$U16_1 x $U16_2]";
       printf("<a href='$orig_src' title='Открыть оригинал $jpeg_info'>\n");
       
-      printf('<img src="'.$conf['prefix'].'/lib/resize_img.php?prop=false&url=%s&w=%s&h=%s" alt="Ошибка загрузки">',
+      printf('<img class="cam_snapshot" src="'.$conf['prefix'].'/lib/resize_img.php?prop=false&url=%s&w=%s&h=%s" alt="Ошибка загрузки">',
       urlencode("http://".$_SERVER["SERVER_NAME"].$orig_src),
       $width,
       $heigt);

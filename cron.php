@@ -2,7 +2,7 @@
 
 /**
 * @file cron.php
-* @brief Загрузка конфигурации отправки уведомлений
+* @brief Обновление данных в таблице TREE_EVENTS
 *
 */
 
@@ -11,7 +11,7 @@ $methods = array(
 	'update_tree_events',
 	'cron_update_tree_events',
 );
-if (in_array('-m',$argv) && isset($argv[array_search('-m', $argv)+1]) && in_array($argv[array_search('-m', $argv)+1],$methods)) {
+if (in_array('-m',$argv) && isset($argv[array_search('-m', $argv)+1]) && in_array($argv[array_search('-m', $argv)+1], $methods)) {
 	$method = $argv[array_search('-m', $argv)+1];
 	$params = array (); 
 	if (in_array('-s',$argv) && isset($argv[array_search('-s', $argv)+1])) {
@@ -37,7 +37,7 @@ if (in_array('-m',$argv) && isset($argv[array_search('-m', $argv)+1]) && in_arra
 	} else
 	   $conf = array_merge($conf, $res);
 	
-	if (!empty($profile) && $res = confparse($conf, 'avreg-site', $conf['profiles-dir'].'/'.$profile);)   
+	if (!empty($profile) && $res = confparse($conf, 'avreg-site', $conf['profiles-dir'].'/'.$profile))   
 		$conf = array_merge($conf, $res);   
 	   
 	$link=NULL;

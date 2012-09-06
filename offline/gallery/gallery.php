@@ -88,10 +88,6 @@ class Gallery {
     	if (empty($tree_events_result)) {
 	    	$last_tree_date = $this->db->gallery_get_last_tree_event_data(array('cameras' => array_keys($GCP_cams_params)));
 	    	
-// 	    	print "<pre>\n";
-// 	    	var_dump();
-// 	    	print "<pre>\n";
-// 	    	exit();
 	    	
 			if ($last_tree_date < $last_event_date) {
 				$this->db->gallery_update_tree_events($last_tree_date, $last_event_date, array());

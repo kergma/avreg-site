@@ -7,9 +7,10 @@
 $USE_JQUERY = true;
 
 $link_javascripts=array(
-						'lib/js/jquery-ui-1.8.17.custom.min.js',
-						'lib/js/jquery.mousewheel.min.js',
-						'lib/js/jquery.aplayer.js',
+////установка плеера
+// 						'lib/js/jquery-ui-1.8.17.custom.min.js',
+// 						'lib/js/jquery.mousewheel.min.js',
+// 						'lib/js/jquery.aplayer.js',
 );
 
 
@@ -61,12 +62,13 @@ if($scale>=sizeof($tumb_sizes)-1) $scale=sizeof($tumb_sizes)-1;
 $width = $tumb_sizes[$scale]['w'];
 $heigt = $tumb_sizes[$scale]['h'];
 
+$isFs = 'false';
 $reload='false';
 if($width=='FS'){
 	$width = isset($_GET['aw'])?$_GET['aw']:0;
 	$heigt = isset($_GET['ah'])?$_GET['ah']:0;
-	
 	if($width==0) $reload='true';
+	$isFs = 'true';
 }
 
 
@@ -74,6 +76,7 @@ if($width=='FS'){
 
 <script type="text/javascript">
 	//переменные масштаба изображений 
+	var isFs = <?php print  $isFs."\n"; ?>
 	var reload = <?php print $reload."\n"; ?>;
 	var scale = <?php print $scale."\n"; ?>;
 	var SELF_ADR = <?php print "\"".$_SERVER['REQUEST_URI']."\"" ; ?>;
@@ -91,11 +94,11 @@ function img_evt(e_id)
 <?php
 if ( !isset($refresh) ) {
 	
-	if($reload=='false'){
+	
 		
 	
 	//селект масштаба
-	print "<div>\n";
+	print "<div id='div_scl'>\n";
 	show_select_resolution($tumb_sizes, $scale ,$strScale['scale']);
 	print "</div>\n";
 	
@@ -114,48 +117,62 @@ if ( !isset($refresh) ) {
    } else
       $refresh = 0;
 
-   printf('<IMG id="viewport" src="%s&width=%s&height=%s" style="border: 1px solid;" alt="%s снапшот" onerror="img_evt(1);"  />',
+   printf('<IMG id="viewport" class="cam_snapshot" src="%s&width=%s&height=%s" style="border: 1px solid; %s" alt="%s снапшот" onerror="img_evt(1);"  />',
    $cam_url,
    $width,
    $heigt,
+   ($reload!='false')?'display:none;':'',
    $cam_name
    );
-   
 
    
- /*  
-   $cam_src = sprintf('src="%s&width=%u&height=%u"',
-   $cam_url,
-   $width,
-   $heigt,
-   $cam_name
-   );
-*/   
+//		//установка плеера  
+//    $cam_src = sprintf('src="%s&width=%u&height=%u"',
+//    $cam_url,
+//    $width,
+//    $heigt,
+//    $cam_name
+//    );
+   
    
 ?>
 <div id="view_cam_" ></div>
 
 <script type="text/javascript">
-/*
-$(document).ready(function(){
+
+
+
+$(function(){
+	$('body').css({'overflow':'hidden'});
+
+	corr_h=$('#div_scl').height()+$('#rf_frm').height();
+	set_full_screen();
 	
+});
+
+$(document).ready(function(){
+/*
+	//Установка плеера 
 	$('#view_cam_')
 	.height(<?php print $heigt;?>)
 	.width(<?php print $width+5;?>)
 	.addPlayer({
 		'src':<?php print $cam_src;?> ,
 		'mediaType':'pseudo',
-		'freq':1000
+		'controls':'off',
+		'freq': 1000000
 		})
 	.aplayerSetSrcSizes();
-
+	$('.ElMedia').css({'border':'1px solid black'});
+*/
 });
-*/	
+
 </script>
 
 
+
+<form id="rf_frm" action="online.php" method="GET">
 <br>
-<form action="online.php" method="GET">
 <input type="hidden" name='camera' value="<?php echo $camera; ?>">
 <input type="hidden" name='scl' value="<?php echo $scale; ?>">
 <div>
@@ -168,21 +185,30 @@ $(document).ready(function(){
 </div>
 </form>
 <?php
-	}
+
 } else {
 	
 	/* смотрим детально и с обновлениями */
    $_SESSION['refresh'] = $refresh;
    $scale = $_GET['scale'];
    $cam_url.="&width=$width&height=$heigt&scl=&$scale";
-   printf('<IMG id="viewport" src="%s"
+   printf('<IMG class="cam_snapshot" id="viewport" src="%s"
       alt="Загружается изображение с %s ..."
-      border="1px"
+      border="1px" 
       onclick="refresh_img();" onload="img_evt(0);" onerror="img_evt(1);" oabort="img_evt(2);">',
         $cam_url,  
    		$cam_name);
+?>
    
+<script type="text/javascript">
+	$(function(){
+		$('body').css({'overflow':'hidden'});
+		CAM_INFO['url'] = $(IMG).attr('src');
+	});
    
+</script>
+   
+<?php
 }
 ?>
 
@@ -206,12 +232,16 @@ function refresh_img()
    var now = new Date();
    var update_url = CAM_INFO['url'] + '&_=' + now.getTime(); // prevent local browser caching
    IMG.setAttribute('src', update_url);
+   
+	
 };
 
 function img_evt2(e_id)
 {
    var ms;
 
+   if(typeof(tmr)!='undefined')clearTimeout(tmr);
+   
    switch(e_id)
    {
    case 0: // onload
@@ -234,8 +264,7 @@ function img_evt2(e_id)
 };
 
 /* если img_evt() успел сработать до загрузки страницы FIXME правильней исп. ready или хотя бы body_onload */
-if ( (typeof IMG_EVT_OCCURED).charAt(0) != 'u' )
-   img_evt2(IMG_EVT_OCCURED);
+if ( (typeof IMG_EVT_OCCURED).charAt(0) != 'u' ) img_evt2(IMG_EVT_OCCURED);
 
 </script>
 

@@ -11,15 +11,18 @@ function get_resolutions($strResolutions, $orderByWidth=true){
 		$tmp = array();
 		$tmp = explode('x', $val);
 		$tmp[0] = mb_strtoupper($tmp[0]);
-		if($tmp[0]=='1:1' || $tmp[0]=='FS'){
+		if(trim($tmp[0])=='1:1' || trim($tmp[0])=='FS'){
 			array_push($resol, array('w'=>trim($tmp[0]), 'h'=>trim($tmp[0]) ));
 		}else{
 			array_push($resol, array('w'=>trim($tmp[0]), 'h'=>trim($tmp[1]) ));
 		}
 	}
-	
-	if($orderByWidth) usort($resol, 'sort_by_width');
-	else usort($resol, 'sort_by_height');
+
+	array_reverse($resol);
+
+	//сортировка 
+//	if($orderByWidth) usort($resol, 'sort_by_width');
+//	else usort($resol, 'sort_by_height');
 
  	return  $resol;
 }
@@ -45,8 +48,6 @@ function show_select_resolution($resolutions, $select ,$strName = "Resolutions" 
 		}
 	}
 	echo '</select>'."\n"; 
-
-	
 	
 }
 
@@ -64,6 +65,9 @@ function show_select_resolution($resolutions, $select ,$strName = "Resolutions" 
 
 <script type="text/javascript" >
 var scale=0;
+var corr_h=0;
+var isFs = false;
+
 	$(function(){
 		var expr = new RegExp('scl=\\d+', 'ig');
 		var isscl = expr.test(SELF_ADR);
@@ -74,6 +78,14 @@ var scale=0;
 			scale = parseInt(scale.replace('scl=', ''));
 		}
 
+		if($.trim($('#resolution option:selected').html()) =='FS'){
+			isFs = true;
+		}
+		
+		if(typeof(reload)!='undefined' && reload){
+			set_full_screen();
+		}
+		
 		//Выбор новогого разрешения
 		$('#resolution').change(function(e){
 			var act = SELF_ADR ;
@@ -81,6 +93,7 @@ var scale=0;
 			scale = $('#resolution option:selected').val();
 
 			if($.trim($('#resolution option:selected').html()) =='FS'){
+				isFs = true;
 				set_full_screen();
 			}
 			
@@ -97,27 +110,26 @@ var scale=0;
 			if(toReload)window.open(act,'_self');
 		});
 
-		if(typeof(reload)!='undefined' && reload){
-			set_full_screen();
-		}
-
-
 		$(window).resize(function(){
 			reload = true;
 			set_full_screen();
 
 		});
-		
+
 	});
 
 	//Установка полноэкранного режима
 	set_full_screen=function(){
+		if(!isFs){
+			return;
+		}
+
 			var act = SELF_ADR ;
-			var avail_h = parseInt(($.browser.msie)?ietruebody().clientHeight:window.innerHeight);
+			var avail_h = parseInt(($.browser.msie)?ietruebody().clientHeight:window.innerHeight)-corr_h;
 			var avail_w = parseInt(($.browser.msie)?ietruebody().clientWidth:window.innerWidth);
 
-			avail_h -=parseInt(avail_h*1/100);
-			avail_w -=parseInt(avail_w*1/100);
+			avail_h -=parseInt(avail_h*1.1/100);
+			avail_w -=parseInt(avail_w*1.1/100);
 			
 			var ea_h = new RegExp('ah=\\d+', 'ig');
 			var ea_w = new RegExp('aw=\\d+', 'ig');
@@ -140,7 +152,25 @@ var scale=0;
 			}
 
 			if(typeof(reload)!='undefined' && reload){
-				window.open(act,'_self');
+//				window.open(act,'_self');
+				
+				var rht = new RegExp('height\\=(\\d+|1\\:1|FS)','ig');
+				var rh = new RegExp('h\\=(\\d+|1\\:1|FS)','ig');
+				var rwt = new RegExp('width\\=(\\d+|1\\:1|FS)','ig');
+				var rw = new RegExp('w\\=(\\d+|1\\:1|FS)','ig');
+					
+				$('.cam_snapshot').each(function(){
+					var src = $(this).attr('src');
+					$(this).height(avail_h).width(avail_w);
+					
+					src = src.replace(rht, "height="+avail_h );
+					src = src.replace(rh, "h="+avail_h );
+					src = src.replace(rwt, "width="+avail_w );
+					src = src.replace(rw, "w="+avail_w );
+					
+					$(this).attr('src', src).show();
+					
+				});
 			}
 		};
 
