@@ -23,7 +23,7 @@ Enum.prototype.set = function (element) {
 	if(element>=0 && element<this.allValues.length)
 		this.currentValue = element;
 	return this.currentValue;
-}
+};
 var Base64 = {
 
     	// private property
@@ -1503,8 +1503,11 @@ var matrix = {
 					 	
 			html += '>'+matrix.cameras[value[5]].text_left+'<br /> '+value[7]+': '+extension;
 							
-			if (value[7] == 'image') html +=' ('+ value[6]+') <br /> </div></a>';
-			else html +=' ('+ value[8]+') <br /> </div></a>';
+			if (value[7] == 'image') html +=' ('+ value[6]+') <br />';
+			else html +=' ('+ value[8]+') <br />'; 
+
+			html+= value[9];
+			html += '<br /> </div></a>';
 						
 			html += '</div>';
 			html += '</div>';
@@ -1840,9 +1843,10 @@ var matrix = {
 					 	
 						html += '>'+matrix.cameras[value[5]].text_left+'<br />'+value[7]+': '+extension;
 							
-						if (value[7] == 'image') html +=' ('+ value[6]+') <br /> </div></a>';
-						else html +=' ('+ value[8]+') <br /> </div></a>';
-						
+						if (value[7] == 'image') html +=' ('+ value[6]+') <br />';
+						else html +=' ('+ value[8]+') <br />';
+						html+=value[9];
+						html+='<br /></div></a>';
 						html += '</div>';
 						html += '</div>';
 						
@@ -2099,8 +2103,10 @@ var matrix = {
 					.find('.info_block').html(function(){
 						//формирование информационной строки
 						var info_html = matrix.cameras[value[5]].text_left+'<br />'+value[7]+': '+extension;
-						if (value[7] == 'image') info_html +=	 ' ('+ value[6]+') <br /> </div></a>';
-						else info_html +=	 ' ('+ value[8]+') <br /> </div></a>';
+						if (value[7] == 'image') info_html +=	 ' ('+ value[6]+') <br />';
+						else info_html +=	 ' ('+ value[8]+') <br />';
+						info_html +=value[9];
+						info_html +='<br /></div></a>';
 						return info_html;
 					});
 				}
