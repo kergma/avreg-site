@@ -17,7 +17,10 @@
 
 
 require_once('/usr/share/php/DB.php');
-require_once('config.inc.php');
+
+if (empty($non_config)) {
+	require_once('config.inc.php');
+}
 
 /// Инициализируем класс по работе с БД
 $adb = new Adb($conf);
