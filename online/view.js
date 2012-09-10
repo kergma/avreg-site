@@ -929,9 +929,9 @@ function canvas_growth() {
                  else if(typeof(WINS_DEF[win_nr].cam.url) == "string"){
                 	 
                 	 var host = (WINS_DEF[win_nr].cam.url).replace(/\w+\:\/\//i, '');
-                	 host = host.replace(/(\/|\:).*/ig, '');
- 
-                	 ipcamhost_link_begin = '<a href="http://' + host + /*WINS_DEF[win_nr].cam.url*/
+                	 host = host.replace(/(\/).*/ig, '');
+
+                	 ipcamhost_link_begin = '<a href="'+'http://' + host + /* WINS_DEF[win_nr].cam.url+ */
                      						'" target="_blank" style="color:inherit;" title="'+strToolbarControls['to_cam_interface']+'">';
                      ipcamhost_link_end   = ' &rarr;<\/a>';
                  }
