@@ -702,12 +702,12 @@ function canvas_growth() {
    		      major_win_cam_geo = new Array(cam_width, cam_height);
    		
    		var net_cam_host=null;
-   		if (operator_user && ( GCP_cams_params[layout_wins[i][0]]['cam_type'] == 'netcam' ) ){
+//   		if (operator_user && ( GCP_cams_params[layout_wins[i][0]]['cam_type'] == 'netcam' ) ){
    			      net_cam_host = GCP_cams_params[layout_wins[i][0]]['InetCam_IP'];
-   		}
-   	   else{
-   		   net_cam_host = null;
-   	   }
+   		
+//   		}else{
+//   		   net_cam_host = null;
+//   	   }
    			
    		//устанавливаем параметры и камеру для ячейки
    		WINS_DEF[i] = {
@@ -915,7 +915,7 @@ function canvas_growth() {
                     ' z-index: 30;' +
                     '"><\/div>');
               win_div.appendTo(CANVAS);
-
+console.log(WINS_DEF[win_nr].cam.netcam_host);
               if (PrintCamNames) {
                  var ipcamhost_link_begin = '';
                  var ipcamhost_link_end = '';
