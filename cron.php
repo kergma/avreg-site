@@ -7,7 +7,7 @@
 * @param '-m' - имя вызываемого метода
 * значения: 
 * 1) -m cron_update_tree_events 
-*	полностью обновляет таблицу TREE_EVENTS, без параметров
+*	обновляет таблицу TREE_EVENTS c момента последнего необновленного события в дереве событий, без параметров
 * 	пример:	sudo php ~/workspace/avreg-site/cron.php -m cron_update_tree_events
 * 2) -m update_tree_events 
 *	частичное обновление таблицы TREE_EVENTS, используется совместно со следующими параметрами:
