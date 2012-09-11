@@ -631,16 +631,38 @@ var gallery = {
 				var self = this;
 				self.holder = holder;
 				// получаем данные о постройке дерева события
-				$.post(WwwPrefix+'/offline/gallery.php', {'method': 'get_tree_events'}, function(data) {
-					if (data.status == 'success'){
-						matrix.tree_events = data.tree_events;
-						matrix.cameras = data.cameras;
-						gallery.tree_event.reload();
-					} else if (data.status == 'error') {
-						alert(lang.empty_tree);
-						//$('#matrix_load').hide();
-					}
-				});
+				$.ajax({
+					  type: "POST",
+					  timeout: update_tree_timeout*1000,
+					  url: WwwPrefix+'/offline/gallery.php',
+					  data:{'method': 'get_tree_events'},
+					  success: function(data) {
+							if (data.status == 'success'){
+								matrix.tree_events = data.tree_events;
+								matrix.cameras = data.cameras;
+								gallery.tree_event.reload();
+							} else if (data.status == 'error') {
+								alert(lang.empty_tree);
+								//$('#matrix_load').hide();
+							}
+						},
+						
+					  
+					});
+				
+				
+//				$.post(WwwPrefix+'/offline/gallery.php', {'method': 'get_tree_events'}, 
+//					function(data) {
+//						if (data.status == 'success'){
+//							matrix.tree_events = data.tree_events;
+//							matrix.cameras = data.cameras;
+//							gallery.tree_event.reload();
+//						} else if (data.status == 'error') {
+//							alert(lang.empty_tree);
+//							//$('#matrix_load').hide();
+//						}
+//					}
+//				);
 			}
 		},
 		// объект управлением цветом камер
