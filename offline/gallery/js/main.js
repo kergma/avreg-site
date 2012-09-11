@@ -159,7 +159,7 @@ $.ajaxSetup({
 	dataType: 'json',
 //	async: false,
 	cache: false,
-	timeout: ajax_timeout, // 5000,
+	timeout: ajax_timeout*1000, // 5000,
 	complete: function (XMLHttpRequest, textStatus) {
 
 		//this; // the options for this ajax request
