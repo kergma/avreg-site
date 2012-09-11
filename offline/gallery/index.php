@@ -224,8 +224,8 @@
 <script type="text/javascript">
 var MediaUrlPref = WwwPrefix + MediaAlias + '\/';
 
-var ajax_timeout = <?php print $conf['ajax_timeout']; ?>;
-var update_tree_timeout = <?php print $conf['gallery-update_tree_timeout']; ?>;
+var ajax_timeout = <?php print isset($conf['ajax_timeout'])? $conf['ajax_timeout']:5 ; ?>;
+var update_tree_timeout = <?php print isset($conf['gallery-update_tree_timeout'])? $conf['gallery-update_tree_timeout']: $conf['ajax_timeout']; ?>;
 
 // формирование глобального объекта перевода
 var lang = {
