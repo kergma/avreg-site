@@ -149,7 +149,7 @@ var Base64 = {
     	}
     };
 
-
+$(function(){
 // глобальные настройки аякс запроса
 /**
  * Global AJAX setup
@@ -159,7 +159,7 @@ $.ajaxSetup({
 	dataType: 'json',
 //	async: false,
 	cache: false,
-	timeout: 5000,
+	timeout: ajax_timeout, // 5000,
 	complete: function (XMLHttpRequest, textStatus) {
 
 		//this; // the options for this ajax request
@@ -173,6 +173,7 @@ $.ajaxSetup({
 		}
 	}
 
+});
 });
 
 // основной объект галереи

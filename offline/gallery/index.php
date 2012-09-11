@@ -224,6 +224,9 @@
 <script type="text/javascript">
 var MediaUrlPref = WwwPrefix + MediaAlias + '\/';
 
+var ajax_timeout = <?php print $conf['ajax_timeout']; ?>;
+
+
 // формирование глобального объекта перевода
 var lang = {
 		

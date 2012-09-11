@@ -702,7 +702,7 @@ function canvas_growth() {
    		      major_win_cam_geo = new Array(cam_width, cam_height);
    		
    		var net_cam_host=null;
-   		if (operator_user && ( GCP_cams_params[layout_wins[i][0]]['cam_type'] == 'netcam' ) ){
+   		if (operator_user && ( GCP_cams_params[layout_wins[i][0]].video_src == "rtsp" || GCP_cams_params[layout_wins[i][0]].video_src == "http" ) ){
    			      net_cam_host = GCP_cams_params[layout_wins[i][0]]['InetCam_IP'];
    		}else{
    		   net_cam_host = null;
