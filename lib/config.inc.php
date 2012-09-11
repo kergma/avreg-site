@@ -40,8 +40,6 @@ $STRING_VAL = 5;
 $STRING200_VAL = 6;
 ///  7
 $PASSWORD_VAL = 7;
-/// 8
-$CONSTANT_VAL = 8;
 
 /** 
  * @brief Форматирование и вывод дампа переменной

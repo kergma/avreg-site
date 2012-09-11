@@ -392,42 +392,7 @@ $PARAMS = array(
          'mstatus' => 1,
       ),
 
-      
-      
-array(
-         'name'    => 'cam_type',
-         'type'    => $CONSTANT_VAL,
-         'def_val' => 'video4linux',
-         'desc'    => '<b>video4linux</b> ',
-         'flags'   => $F_BASEPAR | $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
-         'cats'    => '3.2',
-         'subcats' => NULL,
-         'mstatus' => 1,
-),
-
-array(
-         'name'    => 'cam_type',
-         'type'    => $CONSTANT_VAL,
-         'def_val' => 'alsa',
-         'desc'    => '<b>alsa</b> ',
-         'flags'   => $F_BASEPAR | $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
-         'cats'    => '3.3',
-         'subcats' => NULL,
-         'mstatus' => 1,
-),
-      
-
       /* настройки сетевых камер */
-      array(
-         'name'    => 'cam_type',
-         'type'    => $CONSTANT_VAL,
-         'def_val' => 'netcam',
-         'desc'    => '<b>сетевая камера</b> ',
-         'flags'   => $F_BASEPAR | $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
-         'cats'    => '3.1',
-         'subcats' => NULL,
-         'mstatus' => 1,
-      ),
 
 		array(
          'name'    => 'InetCam_IP',

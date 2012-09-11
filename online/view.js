@@ -918,25 +918,13 @@ function canvas_growth() {
 			if (PrintCamNames) {
                  var ipcamhost_link_begin = '';
                  var ipcamhost_link_end = '';
-
                  
-                 if ( GCP_cams_params[WINS_DEF[win_nr].cam.nr].cam_type == "netcam" ) {
+                 if ( GCP_cams_params[WINS_DEF[win_nr].cam.nr].video_src == "rtsp" || GCP_cams_params[WINS_DEF[win_nr].cam.nr].video_src == "http"  ) {
                     ipcamhost_link_begin = '<a href="http://' +
                                              WINS_DEF[win_nr].cam.netcam_host +
                                              '" target="_blank" style="color:inherit;" title="'+strToolbarControls['to_cam_interface']+'">';
                     ipcamhost_link_end   = ' &rarr;<\/a>';
                  }
-//                 
-//                 else if(typeof(WINS_DEF[win_nr].cam.url) == "string"){
-//                	 
-//                	 var host = (WINS_DEF[win_nr].cam.url).replace(/\w+\:\/\//i, '');
-//                	 host = host.replace(/(\/).*/ig, '');
-//
-//                	 ipcamhost_link_begin = '<a href="'+'http://' + host + /* WINS_DEF[win_nr].cam.url+ */
-//                     						'" target="_blank" style="color:inherit;" title="'+strToolbarControls['to_cam_interface']+'">';
-//                     ipcamhost_link_end   = ' &rarr;<\/a>';
-//                 }
-                 
                  
                  var hdr = $('<div id="cell_header_'+win_nr+'" class="cell_header"  style="cursor:default;'+ 
                        ' padding:0px; margin:0px; overflow:hidden; border:0px; height:'+ NAME_DIV_H*win_def.rowspan +'px;">'+
