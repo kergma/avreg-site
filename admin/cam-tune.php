@@ -251,6 +251,14 @@ if ( isset($categories) )
          case $CHECK_VAL:
             print checkParam($parname1, $val);
             break;
+            
+            case $CONSTANT_VAL:
+            	$a = getBinString($DEF_VAL_IN_SOFT);
+            	$b = $max_len;//?$max_len:60;
+            	//if ( !empty($a) && !empty($VALID_PREG) && !preg_match($VALID_PREG, $a) )printf('<p style="color: '.$GLOBALS['error_color'].';">'.$fmtEINVAL.'</p>',$a);
+            	print '<input type="hidden" name="fields['.$parname1.']" value="' . $a .'"'/*. size='.$str_f_len.' maxlength=' .$b */.' >';
+            	break;
+            
          default: /* BOOL*/
             if ($val === '' || is_null($val))
                print getSelectHtml('fields['.$parname1.']',$flags, FALSE , 1, 0, NULL, TRUE, FALSE);

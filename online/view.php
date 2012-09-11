@@ -130,8 +130,8 @@ $major_win_nr = $l_defs[4] - 1;
 $msie_addons_scripts=array();
 
 $GCP_query_param_list=array('work', 'allow_networks', 'text_left', 'geometry', 'Hx2', 'fs_url_alt_1', 'cell_url_alt_1', 'fs_url_alt_2', 'cell_url_alt_2');
-if ( $operator_user )
-   array_push($GCP_query_param_list, 'cam_type', 'InetCam_IP');
+if ( $operator_user ) array_push($GCP_query_param_list, 'cam_type', 'InetCam_IP');
+if ( $operator_user ) array_push($GCP_query_param_list, 'video_src', 'InetCam_IP');
 require('../lib/get_cams_params.inc.php');
 
 
@@ -211,10 +211,10 @@ for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
    }
    $cam_url= get_cam_alt_url($cam_url,$cam_nr, true);
     
-//   if ( $operator_user &&  @$GCP_cams_params[$cam_nr]['cam_type'] == 'netcam'  )
+   if ( $operator_user &&  @$GCP_cams_params[$cam_nr]['cam_type'] == 'netcam'  )
       $netcam_host = '"' . $GCP_cams_params[$cam_nr]['InetCam_IP'] . '"';
-//   else
-//      $netcam_host = 'null';
+   else
+      $netcam_host = 'null';
    
    printf(
 'WINS_DEF[%d]={

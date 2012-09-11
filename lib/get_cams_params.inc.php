@@ -58,6 +58,14 @@ foreach ( $result as $row )
 $result=NULL;
 
 
+// echo "</script> <pre style='text-align: left;'>\n";
+// var_dump($GCP_sql_in_par);
+//var_dump($GCP_def_pars);
+//var_dump($GCP_cams_params);
+//echo "</pre>\n";
+// exit();
+
+
 /// Список камер с параметрами
 $GCP_cams_list=array_keys($GCP_cams_params);
 $GCP_cams_nr=count($GCP_cams_list);

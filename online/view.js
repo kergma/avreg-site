@@ -687,7 +687,7 @@ function canvas_growth() {
    	   		active_cams_srcs[i]['type']='alt_1';
    	   		active_cams_srcs[i]['cell']=cam_url;
    	   		active_cams_srcs[i]['fs']= get_cam_alt_url(GCP_cams_params[cam_nr]['fs_url_alt_2'], cam_nr, true);
-   			break;
+   	   		break;
    		}
    		
    		var wxh = GCP_cams_params[ layout_wins[i][0] ]['geometry'];
@@ -702,12 +702,11 @@ function canvas_growth() {
    		      major_win_cam_geo = new Array(cam_width, cam_height);
    		
    		var net_cam_host=null;
-//   		if (operator_user && ( GCP_cams_params[layout_wins[i][0]]['cam_type'] == 'netcam' ) ){
+   		if (operator_user && ( GCP_cams_params[layout_wins[i][0]]['cam_type'] == 'netcam' ) ){
    			      net_cam_host = GCP_cams_params[layout_wins[i][0]]['InetCam_IP'];
-   		
-//   		}else{
-//   		   net_cam_host = null;
-//   	   }
+   		}else{
+   		   net_cam_host = null;
+   	    }
    			
    		//устанавливаем параметры и камеру для ячейки
    		WINS_DEF[i] = {
@@ -915,26 +914,28 @@ function canvas_growth() {
                     ' z-index: 30;' +
                     '"><\/div>');
               win_div.appendTo(CANVAS);
-console.log(WINS_DEF[win_nr].cam.netcam_host);
-              if (PrintCamNames) {
+
+			if (PrintCamNames) {
                  var ipcamhost_link_begin = '';
                  var ipcamhost_link_end = '';
+
                  
-                 if ( typeof(WINS_DEF[win_nr].cam.netcam_host) == "string" ) {
+                 if ( GCP_cams_params[WINS_DEF[win_nr].cam.nr].cam_type == "netcam" ) {
                     ipcamhost_link_begin = '<a href="http://' +
                                              WINS_DEF[win_nr].cam.netcam_host +
                                              '" target="_blank" style="color:inherit;" title="'+strToolbarControls['to_cam_interface']+'">';
                     ipcamhost_link_end   = ' &rarr;<\/a>';
                  }
-                 else if(typeof(WINS_DEF[win_nr].cam.url) == "string"){
-                	 
-                	 var host = (WINS_DEF[win_nr].cam.url).replace(/\w+\:\/\//i, '');
-                	 host = host.replace(/(\/).*/ig, '');
-
-                	 ipcamhost_link_begin = '<a href="'+'http://' + host + /* WINS_DEF[win_nr].cam.url+ */
-                     						'" target="_blank" style="color:inherit;" title="'+strToolbarControls['to_cam_interface']+'">';
-                     ipcamhost_link_end   = ' &rarr;<\/a>';
-                 }
+//                 
+//                 else if(typeof(WINS_DEF[win_nr].cam.url) == "string"){
+//                	 
+//                	 var host = (WINS_DEF[win_nr].cam.url).replace(/\w+\:\/\//i, '');
+//                	 host = host.replace(/(\/).*/ig, '');
+//
+//                	 ipcamhost_link_begin = '<a href="'+'http://' + host + /* WINS_DEF[win_nr].cam.url+ */
+//                     						'" target="_blank" style="color:inherit;" title="'+strToolbarControls['to_cam_interface']+'">';
+//                     ipcamhost_link_end   = ' &rarr;<\/a>';
+//                 }
                  
                  
                  var hdr = $('<div id="cell_header_'+win_nr+'" class="cell_header"  style="cursor:default;'+ 
