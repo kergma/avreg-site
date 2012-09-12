@@ -197,6 +197,14 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
 } /* confparse() */
 
 
+function get_avreg_profiles($_conf)
+{
+   $ret = @glob($_conf['profiles-dir'].'/[A-Za-z0-9][A-Za-z0-9_-:]*', GLOB_NOSORT);
+   if ( $ret === FALSE || count($ret) === 0 )
+      return array('');
+   else
+      return $ret;
+}
 
 /// переменная содержащая настройки avreg-site
 $res=confparse($conf, 'avreg-site');
@@ -210,7 +218,7 @@ unset($EXISTS_PROFILES);
 unset($AVREG_PROFILE);
 if ( !empty($conf['prefix']) && preg_match('@^/([^/]+).*@', $_SERVER['REQUEST_URI'], $matches) ) {
    if ( strcasecmp($matches[1],'avreg') === 0 ) {
-      $EXISTS_PROFILES = glob($conf['profiles-dir'].'/[A-Za-z0-9][A-Za-z0-9_-:]*', GLOB_NOSORT);
+      $EXISTS_PROFILES = get_avreg_profiles($conf);
    } else {
       $res = confparse($conf, 'avreg-site', $conf['profiles-dir'].'/'.$matches[1]);
       if (!$res)
@@ -224,7 +232,7 @@ if ( !empty($conf['prefix']) && preg_match('@^/([^/]+).*@', $_SERVER['REQUEST_UR
       }
    }
 } else {
-   $EXISTS_PROFILES = glob($conf['profiles-dir'].'/[A-Za-z0-9][A-Za-z0-9_-:]*', GLOB_NOSORT);
+   $EXISTS_PROFILES = get_avreg_profiles($conf);
 }
 if ($conf['debug']) {
    ini_set ('display_errors', '1' );
@@ -243,7 +251,7 @@ if ($conf['debug']) {
  */
 function load_profiles_cams_confs($application='avreg-site')
 {
-   if ( !empty($AVREG_PROFILE) || empty($GLOBALS['EXISTS_PROFILES']) )
+   if ( !empty($AVREG_PROFILE) || count($GLOBALS['EXISTS_PROFILES']) === 0 )
       return FALSE;
 
    $cams_profiles = Array();
@@ -1072,8 +1080,6 @@ function getSelectHtml($_name, $value_array, $_multiple=FALSE , $_size = 1, $sta
  * @param string $TITLE заголовок
  * @return string
  */
-
-
 function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
    $_size = 1, $start_val=0, $selected='',
    $first_empty=TRUE, $onch=FALSE, $text_prefix = '',$TITLE=NULL, $cams_srcs=null)
