@@ -28,12 +28,13 @@ unset($AVREG_CAMS_NR);
 $AVREG_CAMS_NR=array(); /* Массив номеров камер, найденных по InetCam_IP
                            Массив, потому что для ip-видеосервера
                            мы можем найти несколько камер с одним InetCam_IP */
-$GCP_query_param_list = array(/*'work',*/'cam_type','text_left','InetCam_IP');
+$GCP_query_param_list = array('video_src','text_left','InetCam_IP');
 require ('lib/get_cams_params.inc.php');
 if ( isset($GCP_cams_params) && is_array($GCP_cams_params) ) {
   reset($GCP_cams_params);
   while (list($_cam_nr, $CAM_PARAMS) = each($GCP_cams_params)) {
-    if ( 0 === strcmp($CAM_PARAMS['InetCam_IP'], $_SERVER["REMOTE_ADDR"]) ) {
+     if ( ( $CAM_PARAMS['video_src'] === 'rtsp' || $CAM_PARAMS['video_src'] === 'http' ) &&
+          $CAM_PARAMS['InetCam_IP'] === $_SERVER["REMOTE_ADDR"]) ) {
        /* define CAM_NR var */
       $AVREG_CAMS_NR[]  = (int)$_cam_nr;
       break;
