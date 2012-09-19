@@ -3,18 +3,18 @@ $(document).ready(function(){
 
 	$('#main_tab').parent('body').css({
 		'background-image' : 'url("./img/BG.png")',
-		'background-repeat' : 'repeat-x',
+		'background-repeat' : 'repeat',
 		'background-size' : 'cover',
-		'background-position' : '50%',
+		'background-position' : '50%'
 	});
 	
 	$('.header,.footer').css({
-		'color' :'#FAFAFA',
+		'color' :'#FAFAFA'
 	});
 	
 	$('.main_links').css({
 		'color' : '#FAFAFA',
-		'text-decoration' : 'none',
+		'text-decoration' : 'none'
 	});
 	
 	
@@ -32,14 +32,16 @@ $(document).ready(function(){
 			});		
 		}
 	);
-	
+
 	$('.mode_item')
-	.bind('mouseover', function(e){
+	.bind('mouseenter', function(e){
 		m_over.m_in(e);
 	})
-	.bind('mouseout', function(e){
+	.bind('mouseleave', function(e){
 		m_over.m_out(e);
 	});
+	
+
 	
 });
 
@@ -59,13 +61,13 @@ var m_over = {
 				'width': w*m_over.factor+'px',
 				'height': h*m_over.factor+'px',
 				'left': (w-w*m_over.factor)/2,
-				'top': (h-h*m_over.factor)/2,
+				'top': (h-h*m_over.factor)/2
 			})
 			.attr({'h':h, 'w':w , 'him':him, 'wim':wim })
 			.find('img')
 			.css({
 				'width': wim*m_over.factor,
-				'height': him*m_over.factor,
+				'height': him*m_over.factor
 			});
 		},
 		
@@ -82,14 +84,14 @@ var m_over = {
 				'width': w+'px',
 				'height': h+'px',
 				'left': 0,
-				'top': 0,
+				'top': 0
 			})
 			.find('img')
 			.css({
 				'width': wim,
-				'height': him,
+				'height': him
 			});
-		},
+		}
 		
 };
 

@@ -3,7 +3,6 @@ all,body,h1,h2,h3,h4,h5,table,a {
    font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;
    font-size: 13px;
    text-decoration: none;
-   //background-color: black;
 	outline: none;   
 }
 

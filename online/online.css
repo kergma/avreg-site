@@ -1,12 +1,9 @@
 @CHARSET "UTF-8";
 
-
 .layout{
 	float:left; 
 	margin: 2px;
 }
-
-
 
 .cursorMove{
 	cursor:move;
@@ -35,7 +32,6 @@
 
 .cell_header {
 	background: #303030;
-	
 }
 
 .win {

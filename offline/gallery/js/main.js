@@ -332,7 +332,35 @@ var gallery = {
 			},
 			setobject : function (objcook) {
 				var self = this;
-				var strcook = Base64.encode(JSON.stringify(objcook));
+				//->
+				var stringify;
+				if($.browser.msie){
+					stringify = function (obj) {
+						var t = typeof (obj);
+						if (t != "object" || obj === null) {
+						// simple data type
+						if (t == "string") obj = '"'+obj+'"';
+							return String(obj);
+						}
+						else {
+						// recurse array or object
+						var n, v, json = [], arr = (obj && obj.constructor == Array);
+						for (n in obj) {
+							v = obj[n]; t = typeof(v);
+							if (t == "string") v = '"'+v+'"';
+							else if (t == "object" && v !== null) 
+								v = JSON.stringify(v);
+							json.push((arr ? "" : '"' + n + '":') + String(v));
+						}
+							return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
+						}
+					};
+				
+				}else{
+					stringify = JSON.stringify;
+				}
+				//->
+				var strcook = Base64.encode(stringify(objcook));
 				SetCookie(self.config.name, strcook, self.config.days, self.config.path);
 			},
 			set : function (name, value) {
@@ -570,9 +598,11 @@ var gallery = {
 					})
 					// событие возникает, если пользователь выбрал новый диапазон событий
 					.bind("select_node.jstree", function (event, data) {
-						tree = data.rslt.obj.attr("id").replace('tree_', '');
+						
+						
+					var	tree = data.rslt.obj.attr("id").replace('tree_', '');
 
-						if(matrix.keyBoardTree != tree) {
+					if(matrix.keyBoardTree != tree) {
 							matrix.keyBoardTree = tree;
 						}
 
@@ -645,9 +675,7 @@ var gallery = {
 								alert(lang.empty_tree);
 								//$('#matrix_load').hide();
 							}
-						},
-						
-					  
+						}
 					});
 				
 				
@@ -818,7 +846,6 @@ var gallery = {
 			gallery.images['detail'] = new Image();
 			gallery.images['detail'].src =  WwwPrefix+'/offline/gallery/img/slide2.png';
 			
-			
 			// организация увеличение размера списка камер
 			if ($('#win_top').height() > 100) {
 				$('#more_cam').show();
@@ -837,7 +864,7 @@ var gallery = {
 						}
 				);
 			}
-
+			
 			// обработка выбора чекбокса камеры
 			$('input[name="cameras"]').change(function(){
 				var rez = gallery.reload_cams();
@@ -964,7 +991,6 @@ var gallery = {
 				})
 				.hide();
 
-
 			//позиционирование этих двух кнопок
 			$("#btn_cell_size, #btn_orig_size" );
 
@@ -987,7 +1013,9 @@ var gallery = {
 
 			// инициализация событий клавиатуры
 			keyBoard.init();
+			
 		}
+		
 };
 
 
@@ -1035,7 +1063,6 @@ var matrix = {
 		elem_style:null
 	}, 
 	init: function(config) {
-
 		// отменяет действие по клику
 		$('#scroll_content').click(function(event) {
 			event.preventDefault();

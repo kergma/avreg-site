@@ -18,7 +18,9 @@ function br_spec_out() {
 			--></a>
 		</td>
 		<td width="90%" style="color: #E0E0E0; text-align: right; height: 25px; overflow: hidden;">
-			<script type="text/javascript">br_spec_out();</script>
+			<script type="text/javascript">
+			//br_spec_out();
+			</script>
 			 &nbsp;&nbsp;Нет изображений с камер?
 		</td>
 		<td style="color: #E0E0E0; text-align: right;" nowrap="true">

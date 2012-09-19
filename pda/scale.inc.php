@@ -201,6 +201,13 @@ var isFs = false;
 			},
 
 	};
-	
 
+
+	function ietruebody(){
+		   return (document.compatMode &&
+		      document.compatMode!='BackCompat')? document.documentElement : document.body;
+		}
+			
+
+	
 </script>

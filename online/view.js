@@ -49,6 +49,9 @@ var SUBSCRIBE = true;
 var imgs = new Array();
 
 $(document).ready( function() {
+	if(MSIE){
+		CORRECT_H = CORRECT_W = 0;
+	}
 	//Кнопки свернуть/развернуть
 	imgs['fs'] = new Image();
 	imgs['fs'].src =  "../img/fs.png";
@@ -79,7 +82,14 @@ $(document).ready( function() {
 	
 	//Запуск сценария	   
 	fill_canvas();
-
+	
+	if(MSIE){
+		$('body').css({
+			'background-image': "url('../img/BG.png')",
+			'background-repeat': 'repeat',
+			'background-size': 'cover'
+			});
+	};
 });
 
 
@@ -206,7 +216,7 @@ function img_click(clicked_div) {
       .height($('#cell_header_'+win_nr).height()-4)
       .attr({
       	'src': imgs['fs'].src,
-      	'title':strToolbarControls['max'],
+      	'title':strToolbarControls['max']
       });
 
       set_win_header_size(clicked_div_jq, CUR_WIN_HEADER_H);
@@ -340,12 +350,11 @@ function brout(win_nr, win_div, win_geo) {
 //   var orig_h = WINS_DEF[win_nr].cam.orig_h;
    var url = WINS_DEF[win_nr].cam.url;
 
-   
    //Установка плеера в элемент  // win_geo.cam_h 
    var cont = $('<div class="pl_cont" />').width(win_geo.cam_w+CORRECT_W).height(win_geo.cam_h+CORRECT_H);
    
 	$(win_div).append(cont);
-	$(cont).addPlayer({
+    $(cont).addPlayer({
 		'src': url , 
 		'controls': false, 
 		'scale':'on', 
@@ -394,7 +403,47 @@ function calc_win_geo(_canvas_w, _canvas_h, img_aspect_ratio, _rows_nr, _cols_nr
    var cam_h;
    if (_rowspan == undefined)
       _rowspan = 1;
+   
+   
+   if ( MSIE ){
+	   
+	   if ( img_aspect_ratio == undefined || img_aspect_ratio == 'fs' ) {
+			   
+		      // соотношение сторон видеоизображения нас не волнует,
+		      //  растягиваем окна камер и сами изображения по всему CANVAS 
+		      cam_w = parseInt(_canvas_w/_cols_nr) ;
+		      cam_h = parseInt(_canvas_h/_rows_nr) - NAME_DIV_H*_rowspan ;
+		   } else {
+		      // create wins
+			   var calc_canvas_h = _canvas_h - ((NAME_DIV_H*_rowspan ) * _rows_nr);
+			   
+			   if ( (_canvas_w/calc_canvas_h) >= (img_aspect_ratio.num*_cols_nr)/(img_aspect_ratio.den*_rows_nr) ) {
+		        cam_h = parseInt(calc_canvas_h/_rows_nr);
+		         cam_h = parseInt(cam_h/img_aspect_ratio.den);
+		         cam_w = cam_h*img_aspect_ratio.num;
+		         cam_h *= img_aspect_ratio.den;
+		         
+		      } else {
+		    	  
+		         cam_w = parseInt(_canvas_w/_cols_nr);
+		         cam_w = parseInt(cam_w/img_aspect_ratio.num);
+		         cam_h = cam_w*img_aspect_ratio.den;
+		         cam_w *= img_aspect_ratio.num;
+		      }
+		   }
+	   
+	   this.win_w = cam_w ;
+	   this.win_h = cam_h + NAME_DIV_H*_rowspan ;
 
+	   this.offsetX = parseInt((_canvas_w - this.win_w * _cols_nr)/2);  
+	   this.offsetY = parseInt((_canvas_h - this.win_h* _rows_nr)/2);  
+
+	   this.cam_w = cam_w; 
+	   this.cam_h = cam_h;
+	   
+   }else{
+   
+   
    if ( img_aspect_ratio == undefined || 
          img_aspect_ratio == 'fs' ) {
 	   
@@ -429,6 +478,7 @@ function calc_win_geo(_canvas_w, _canvas_h, img_aspect_ratio, _rows_nr, _cols_nr
 
    this.cam_w = cam_w; 
    this.cam_h = cam_h;
+   }
 } // calc_win_geo()
 
 
@@ -821,7 +871,7 @@ function canvas_growth() {
    	   }
    	   
    	   if (append_abenc && user_info_USER.length>0 ) {
-   	      url += '&ab='+base64_encode_user_info_USER+':'+PHP_AUTH_PW;
+   		url += '&ab='+___abenc;
    	   }
    	   return url;
    }
@@ -842,7 +892,7 @@ function canvas_growth() {
    		 url += "?camera="+$cam_nr;  
    	   }
    	   if (append_abenc && user_info_USER.length>0 ) {
-   	      url += '&ab='+base64_encode_user_info_USER+':'+PHP_AUTH_PW;
+   		url += '&ab='+___abenc;
    	   }
    	   return url;
    }
@@ -952,7 +1002,9 @@ function canvas_growth() {
                  $('<img src='+imgs['fs'].src+' class="tool fs_tc" title="'+strToolbarControls['max']+'">')
                  .height(ht-4)
                  .appendTo(toolbar);
-                 //Кнопка включить/выключить toolbar
+                 
+         if(!MSIE){ //отключаем для IE
+        	 	 //Кнопка включить/выключить toolbar
                  $('<img src='+imgs['controlsOnOff_on'].src+' id="controlsOnOff_'+win_nr+'" class="tool controlsOnOff" title="'+strToolbarControls['on']+'" >')
                  .height(ht-4)
                  .click(function(e){
@@ -974,7 +1026,7 @@ function canvas_growth() {
                 	 return false;
                  })
                  .appendTo(toolbar);
-                 
+         
                  //панель контролов
                  
                  var normal_size = $('<img id="normal_size_'+win_nr+'" class="normal_size" title="'+strToolbarControls['cell_size']+'" src='+imgs['normal_size'].src+' />')
@@ -1061,7 +1113,7 @@ function canvas_growth() {
                  })
                  .hide()
                  .prependTo(hdr);
-                 
+         }// off for MSIE     
               }
               //Установка плеера
               brout(win_nr, win_div, win_geo);
@@ -1071,8 +1123,8 @@ function canvas_growth() {
            WIN_DIVS = $('div.win');
 
            $('#dialog').jqm({
-   overlay: 90
-   });
+        	   overlay: 90
+           });
 
     //Убрать тултип при перетаскивании
 	$('.MediaCont').mousedown(function(e){ 
@@ -1109,12 +1161,11 @@ function canvas_growth() {
 	if(CAM_STATUS_REQ!=null){
 		CAM_STATUS_REQ.abort(); 
 	}
-	   	
+	//запуск запросов статуса камер
 	CAM_STATUS_REQ = cam_status_request({
-				'cams': cams_nrs, 
+				'cams': cams_nrs
 //				'subsytems':'capture,record,motion,client', 	
 			});
-	
 //--> Cameras' statuses
 	
 }//fill_canvas()
@@ -1128,8 +1179,10 @@ cam_status_request = function(params ){
 	    data : params,
 	    success: function (data, textStatus) { 
 	    	CAM_STATUSES = data;
-			console.log(CAM_STATUSES);
-			if(SUBSCRIBE){
+	    	if ( !MSIE ){ 
+	    		console.log(CAM_STATUSES);
+	    	}
+	    	if(SUBSCRIBE){
 				params['subscribe']='multipart'; 
 				CAM_STATUS_REQ = cam_status_request(params);
 			}
@@ -1299,7 +1352,7 @@ var controls_handlers = {
 
 		//переключаем кнопку тулбара
 		$(gw).attr({
-			'src':imgs['controlsOnOff_off'].src,
+			'src':imgs['controlsOnOff_off'].src
 		});
 		
 		$('span',"#cell_header_"+cell_nr).addClass('hidden');
@@ -1320,7 +1373,7 @@ var controls_handlers = {
 		
 		//переключаем кнопку тулбара
 		$(gw).attr({
-			'src':imgs['controlsOnOff_on'].src,
+			'src':imgs['controlsOnOff_on'].src
 		});
 
 		$('span',"#cell_header_"+cell_nr).removeClass('hidden');
@@ -1362,7 +1415,7 @@ var controls_handlers = {
 		var cell_nr = parseInt(($(minus).attr('id')).replace('pl_minus_',''));
 		var aplayer_id = $('.aplayer', '#win'+cell_nr).attr('id');
 		$.aplayer.zoomOut(aplayer_id);
-	},
+	}
 	
    
 };
