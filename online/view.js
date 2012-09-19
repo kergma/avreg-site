@@ -287,7 +287,7 @@ function img_click(clicked_div) {
         .attr({
         	'src': imgs['tc'].src,
         	'title':strToolbarControls['min']
-        });var STAT_REQ_NR = 0;
+        });
         
       FS_WIN_DIV = clicked_div;
    }
@@ -583,8 +583,6 @@ function change_wins_geo() {
 
       tmp_div.css('top',  calc_win_top (base_win_geo, win_def.row));
       tmp_div.css('left', calc_win_left(base_win_geo, win_def.col));
-//      tmp_div.width(win_geo.win_w);
-//      tmp_div.height(win_geo.win_h);
 
       if ( GECKO ) {
           $(tmp_div)
@@ -644,9 +642,6 @@ function canvas_growth() {
     */
 
    function layouts_to_list(){
-	   
-	   
-	   
 	   var html = '<div id="nav"><span>';
    	$.each(layouts_list, function(i, value){
    		html+='<div class="layout'+((cur_layout==value.MON_NR)? ' selectedLayout':'' )+'" ><a id="layout_'+value.MON_NR+'" class="layout_link" onclick="change_layout('+value.MON_NR+')" href="#">';
@@ -842,9 +837,6 @@ function canvas_growth() {
    	   return ar;
    	}
 
-
-
-
    /**
     * 
     * Функция, которая возвращает ссылку на просмотр видео с камеры
@@ -985,8 +977,6 @@ function canvas_growth() {
                        '<\/span><\/div>')
                        .appendTo(win_div);
                  
-                 
-                 
                  //ToolBar
                  var ht = $(hdr).height()-4;
                  var toolbar = $('<div class="tool_bar"></div>')
@@ -1002,9 +992,8 @@ function canvas_growth() {
                  $('<img src='+imgs['fs'].src+' class="tool fs_tc" title="'+strToolbarControls['max']+'">')
                  .height(ht-4)
                  .appendTo(toolbar);
-                 
-         if(!MSIE){ //отключаем для IE
-        	 	 //Кнопка включить/выключить toolbar
+
+                 //Кнопка включить/выключить toolbar
                  $('<img src='+imgs['controlsOnOff_on'].src+' id="controlsOnOff_'+win_nr+'" class="tool controlsOnOff" title="'+strToolbarControls['on']+'" >')
                  .height(ht-4)
                  .click(function(e){
@@ -1113,7 +1102,21 @@ function canvas_growth() {
                  })
                  .hide()
                  .prependTo(hdr);
-         }// off for MSIE     
+                 
+                 if(MSIE){
+                	 var offset_x = 2; 
+                	 $('#pl_stop_'+win_nr+', #pl_start_'+win_nr).css({'position':'absolute', 'top':'0', 'left':offset_x+'px'});
+                	 offset_x += ht;
+                	 
+                	 $('#original_size_'+win_nr).remove(); //не работает установка оригинального размера для MSIE
+                	 $('#normal_size_'+win_nr).css({'position':'absolute', 'top':'0', 'left':offset_x+'px'});
+                	 offset_x += ht;
+                	 $('#pl_minus_'+win_nr).css({'position':'absolute', 'top':'0', 'left':offset_x+'px'});
+                	 offset_x += ht;
+                	 $('#pl_plus_'+win_nr).css({'position':'absolute', 'top':'0', 'left':offset_x+'px'});
+                	 offset_x += ht;
+                 }
+                 
               }
               //Установка плеера
               brout(win_nr, win_div, win_geo);
