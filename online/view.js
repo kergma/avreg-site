@@ -102,7 +102,7 @@ $(document).ready( function() {
  */
 function img_mouseover(cell, win_nr) {
 
-	if(!conf.debug)return;
+	if(!conf_debug)return;
    if ( WINS_DEF[win_nr] == undefined ) return;
 
    var img_jq = $('.pl_cont',cell);
@@ -713,25 +713,27 @@ function canvas_growth() {
    		//установка url камеры
    		active_cams_srcs[i] = new Array();
    		var cam_url = '';
+   		
    		switch(layout_wins[i][1]){
    		case '0':
    		case '1': //avregd
-   			cam_url =  get_cam_http_url(conf, cam_nr,'mjpeg', true);
+
+   			cam_url = CAMS_URLS[cam_nr]['avregd'] ;// get_cam_http_url(conf, cam_nr,'mjpeg', true);
    	   		active_cams_srcs[i]['type']='avregd';
    	   		active_cams_srcs[i]['cell']=cam_url;
    	   		active_cams_srcs[i]['fs']=cam_url;
    	   		break;
    		case '2': //alt 1
-   			cam_url = get_cam_alt_url(GCP_cams_params[layout_wins[i][0]]['cell_url_alt_1'], cam_nr, true);
+   			cam_url = CAMS_URLS[cam_nr]['cell_url_alt_1']; //get_cam_alt_url(GCP_cams_params[layout_wins[i][0]]['cell_url_alt_1'], cam_nr, true);
    	   		active_cams_srcs[i]['type']='alt_1';
    	   		active_cams_srcs[i]['cell']=cam_url;
-   	   		active_cams_srcs[i]['fs']=get_cam_alt_url(GCP_cams_params[cam_nr]['fs_url_alt_1'],cam_nr, true);
+   	   		active_cams_srcs[i]['fs']= CAMS_URLS[cam_nr]['fs_url_alt_1']; //get_cam_alt_url(GCP_cams_params[cam_nr]['fs_url_alt_1'],cam_nr, true);
    			break;
    		case '3': //alt 2
-   			cam_url =get_cam_alt_url(GCP_cams_params[layout_wins[i][0]]['cell_url_alt_2'], cam_nr, true);
+   			cam_url = CAMS_URLS[cam_nr]['cell_url_alt_2']; //get_cam_alt_url(GCP_cams_params[layout_wins[i][0]]['cell_url_alt_2'], cam_nr, true);
    	   		active_cams_srcs[i]['type']='alt_1';
    	   		active_cams_srcs[i]['cell']=cam_url;
-   	   		active_cams_srcs[i]['fs']= get_cam_alt_url(GCP_cams_params[cam_nr]['fs_url_alt_2'], cam_nr, true);
+   	   		active_cams_srcs[i]['fs']= CAMS_URLS[cam_nr]['fs_url_alt_2']; //get_cam_alt_url(GCP_cams_params[cam_nr]['fs_url_alt_2'], cam_nr, true);
    	   		break;
    		}
    		
@@ -837,56 +839,56 @@ function canvas_growth() {
    	   return ar;
    	}
 
-   /**
-    * 
-    * Функция, которая возвращает ссылку на просмотр видео с камеры
-    * аналог php-функции из lib/get_cam_url.php
-    * @param array $conf масив настроек
-    * @param int $cam_nr номер камеры
-    * @param string $media тип медиа
-    * @param bool $append_abenc аутентификация пользователя
-    * @return string адрес видео с камеры
-    */
-   function get_cam_http_url(conf, cam_nr, media, append_abenc){
-   	var url = '';
-      var re  = /(\d+)$/;
-      var found =  '';
-      if (cams_subconf && cams_subconf[cam_nr]!=null && (cams_subconf[cam_nr]['avregd-httpd']).length!=0) {
-         // FIXME грязный прегрязный хак
-         found =  cams_subconf[cam_nr]['avregd-httpd'].match(re);
-         url = location.protocol + '//' + location.hostname + ':' + found[1];
-      } else
-         url = http_cam_location;
-
-      var path_var = 'avregd-'+media+'-path';
-
-      if( conf[path_var]!=null )
-         url += conf[path_var]+"?camera="+cam_nr;
-      if (append_abenc && user_info_USER.length>0 )
-         url += '&ab='+___abenc;
-      return url;
-   }
-
-   /**
-    * 
-    * Функция, которая возвращает ссылку на просмотр видео с альтернативных камер камеры 
-    * аналог php-функции из lib/get_cam_url.php
-    * @param alt_src альтернативный источник
-    * @param bool append_abenc аутентификация пользователя
-    * @return string адрес видео с камеры
-    */
-   function get_cam_alt_url(alt_src, $cam_nr, append_abenc){
-   	   var url = alt_src;
-   	   if(url==null)return null;
-   	   reg = /\?camera=\d*/;
-   	  if(!reg.test(url)){
-   		 url += "?camera="+$cam_nr;  
-   	   }
-   	   if (append_abenc && user_info_USER.length>0 ) {
-   		url += '&ab='+___abenc;
-   	   }
-   	   return url;
-   }
+//   /**
+//    * 
+//    * Функция, которая возвращает ссылку на просмотр видео с камеры
+//    * аналог php-функции из lib/get_cam_url.php
+//    * @param array $conf масив настроек
+//    * @param int $cam_nr номер камеры
+//    * @param string $media тип медиа
+//    * @param bool $append_abenc аутентификация пользователя
+//    * @return string адрес видео с камеры
+//    */
+//   function get_cam_http_url(conf, cam_nr, media, append_abenc){
+//   	var url = '';
+//      var re  = /(\d+)$/;
+//      var found =  '';
+//      if (cams_subconf && cams_subconf[cam_nr]!=null && (cams_subconf[cam_nr]['avregd-httpd']).length!=0) {
+//         // FIXME грязный прегрязный хак
+//         found =  cams_subconf[cam_nr]['avregd-httpd'].match(re);
+//         url = location.protocol + '//' + location.hostname + ':' + found[1];
+//      } else
+//         url = http_cam_location;
+//
+//      var path_var = 'avregd-'+media+'-path';
+//
+//      if( conf[path_var]!=null )
+//         url += conf[path_var]+"?camera="+cam_nr;
+//      if (append_abenc && user_info_USER.length>0 )
+//         url += '&ab='+___abenc;
+//      return url;
+//   }
+//
+//   /**
+//    * 
+//    * Функция, которая возвращает ссылку на просмотр видео с альтернативных камер камеры 
+//    * аналог php-функции из lib/get_cam_url.php
+//    * @param alt_src альтернативный источник
+//    * @param bool append_abenc аутентификация пользователя
+//    * @return string адрес видео с камеры
+//    */
+//   function get_cam_alt_url(alt_src, $cam_nr, append_abenc){
+//   	   var url = alt_src;
+//   	   if(url==null)return null;
+//   	   reg = /\?camera=\d*/;
+//   	  if(!reg.test(url)){
+//   		 url += "?camera="+$cam_nr;  
+//   	   }
+//   	   if (append_abenc && user_info_USER.length>0 ) {
+//   		url += '&ab='+___abenc;
+//   	   }
+//   	   return url;
+//   }
    
    
    

@@ -144,7 +144,10 @@ require_once('../lib/get_cam_url.php');
 
 print 'var cams_subconf = '.json_encode($cams_subconf).";\n";
 //Передаем JS параметры конфигурации
-print 'var conf = '.json_encode($conf).";\n";
+//print 'var conf = '.json_encode($conf).";\n";
+
+print 'var conf_debug = '.json_encode($conf['debug']).";\n";
+
 
 //передаем базовую часть адреса в JS
 print "var http_cam_location = '$http_cam_location' ;\n";
@@ -164,6 +167,23 @@ print "var operator_user = ".json_encode($operator_user).";\n";
 
 //передаем titles для контролов toolbara
 print "var strToolbarControls = ".json_encode($strToolbarControls).";\n";
+
+
+//передаем url-ы камер
+$cams_urls = array();
+foreach ($GCP_cams_params as $key=>$value){
+	$cu = array(
+	"avregd"=>get_cam_http_url($conf, $key, 'mjpeg', true),
+	 "cell_url_alt_1"=> get_cam_alt_url($GCP_cams_params[$key]['cell_url_alt_1'], $key, true),
+	 "fs_url_alt_1"=> get_cam_alt_url($GCP_cams_params[$key]['fs_url_alt_1'], $key, true),
+	 "cell_url_alt_2"=> get_cam_alt_url( $GCP_cams_params[$key]['cell_url_alt_2'], $key, true),
+	 "fs_url_alt_2"=>get_cam_alt_url( $GCP_cams_params[$key]['fs_url_alt_2'], $key, true)
+	);
+	$cams_urls[$key]=$cu;
+}
+print "var CAMS_URLS = ".json_encode($cams_urls).";\n";
+
+
 
 //для js сопоставление камер и источников
 $active_cams_srcs = array();
