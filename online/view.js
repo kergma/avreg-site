@@ -849,23 +849,22 @@ function canvas_growth() {
     */
    function get_cam_http_url(conf, cam_nr, media, append_abenc){
    	var url = '';
-   	   if (cams_subconf && cams_subconf[cam_nr]!=null && (cams_subconf[cam_nr]['avregd-httpd']).length!=0) {
-   		   url = cams_subconf[$cam_nr]['avregd-httpd'];
-   	   } 
-   	   else{
-   		   url = http_cam_location; 
-   	   }
+      var re  = /(\d+)$/;
+      var found =  '';
+      if (cams_subconf && cams_subconf[cam_nr]!=null && (cams_subconf[cam_nr]['avregd-httpd']).length!=0) {
+         // FIXME грязный прегрязный хак
+         found =  cams_subconf[cam_nr]['avregd-httpd'].match(re);
+         url = location.protocol + '//' + location.hostname + ':' + found[1];
+      } else
+         url = http_cam_location;
 
-   	   var path_var = 'avregd-'+media+'-path';
-   	   
-   	   if( conf[path_var]!=null ){
-   		   url += conf[path_var]+"?camera="+cam_nr;
-   	   }
-   	   
-   	   if (append_abenc && user_info_USER.length>0 ) {
-   		url += '&ab='+___abenc;
-   	   }
-   	   return url;
+      var path_var = 'avregd-'+media+'-path';
+
+      if( conf[path_var]!=null )
+         url += conf[path_var]+"?camera="+cam_nr;
+      if (append_abenc && user_info_USER.length>0 )
+         url += '&ab='+___abenc;
+      return url;
    }
 
    /**
