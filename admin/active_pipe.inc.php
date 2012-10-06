@@ -75,7 +75,7 @@ if (isset($_POST) && is_array($_POST))
 }
 print '</form>'."\n";
 
-$GCP_query_param_list=array('work', 'video_src', 'audio_src', 'geometry', 'color',
+$GCP_query_param_list=array('work', 'video_src', 'audio_src', 'geometry', 
       'v4l_dev','input',
       'InetCam_IP', 'InetCam_http_port', 'InetCam_rtsp_port',
       'V.http_get', 'A.http_get', 'rtsp_play', 'alsa_dev_name',

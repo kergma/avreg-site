@@ -46,7 +46,7 @@ if ( !isset($cam_nr) )
    else if ( $admin_user )
       echo '<div class="warn">' . $r_cam_tips_admins . '</div>' ."\n";
 
-   $GCP_query_param_list=array('work', 'video_src', 'audio_src', 'geometry', 'color',
+   $GCP_query_param_list=array('work', 'video_src', 'audio_src', 'geometry',
       'v4l_dev','input',
       'InetCam_IP', 'InetCam_http_port', 'InetCam_rtsp_port',
       'V.http_get', 'A.http_get', 'rtsp_play', 'alsa_dev_name',

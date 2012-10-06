@@ -226,10 +226,7 @@ function print_cam_detail_row($conf, $cam_nr, $cam_detail, $columns = null)
    /* print cameras short capabilities <td> */
    if ( isset($_cols['CAPS']) && $_cols['CAPS']) {
       if ( !is_null($cam_has_video) || $cam_nr == 0 )
-         print '<td align="center" valign="center">'.$cam_detail['geometry'].
-         ' ('.
-         ((!isset($cam_detail['color']) || $cam_detail['color']>0)?'color':'grey').
-         ')</td>' . "\n";
+         print '<td align="center" valign="center">'.$cam_detail['geometry']."</td>\n";
       else
          print '<td>&nbsp;</td>' . "\n";
    }
