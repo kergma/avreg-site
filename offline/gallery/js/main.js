@@ -180,9 +180,7 @@ $.ajaxSetup({
 var gallery = {
 		images : new Array(),
 		treeObject: null,
-		config : {
-
-		},
+		config : {},
 		hcameras : 100,
 		// объект изменения ширины столбцов
 		resize_column : {
@@ -195,34 +193,66 @@ var gallery = {
 				$('#sidebar').width(pageX + 2);
 				
 				$('#sidebar .block').width(pageX-26);
-				$('#sidebar #statistics').width(pageX-66);
+				
+				if(MSIE){
+//					$('#sidebar #statistics').width(pageX-58);	
+				}else{
+					$('#sidebar #statistics').width(pageX-66);
+				}
+				
 				// fix content width on resize
 				//	$('#content').css("left",pageX);
 
 				$('#content').width(self.myWidth - $('#sidebar').width() ).css('margin-left', pageX + 2);
 				$('#list_panel').width($('#content').width()-38);
+				
+//				var hc = $('#content').height() - 100 - $('#toolbar').height()-28;
+				var hc = $('#content').height() - $('#win_top').height() - $('#toolbar').height();
+				
+				if(MSIE){
+					hc -=30 ;
+					
+				}else{
+					hc-=23;
+				}
 
-				var hc = $('#content').height() - 100 - $('#toolbar').height()-28;
+				
 				$('#win_bot').height(hc);
-				$('#page').width($('#sidebar').width()+$('#content').width());
+
+				if(MSIE){
+					
+				}else{
+					$('#page').width($('#sidebar').width()+$('#content').width());
+				}
+				
 			},
 			// функция инициализации
-			init: function() {
+			init: function(){
+				
 				var self = this;
 				if( typeof( window.innerWidth ) == 'number' ) {
 					//Non-IE
 					self.myWidth = window.innerWidth;
 					self.myHeight = window.innerHeight;
-				} else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
+//				} else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
+				}else{
 					//IE 6+ in 'standards compliant mode'
-					self.myWidth = document.documentElement.clientWidth;
-					self.myHeight = document.documentElement.clientHeight;
+					self.myHeight = ietruebody().clientHeight;
+					self.myWidth = ietruebody().clientWidth;
 				}
 
 				$('.block','#sidebar').width($('#sidebar').width()-9);
 				$('#statistics','#sidebar').width($('.block','#sidebar').width()-20);
+				
+				
 				// обработка изменение ширины используя вертикальный разделитель
-				$('#handler_vertical').mousedown(function(e){
+
+/*				var hh = ietruebody().clientHeight+'px';
+				document.getElementById('handler_vertical').style.height = '400px';
+				alert($('#handler_vertical').css('height'));
+*/				
+				$('#handler_vertical')
+				.mousedown(function(e){
 					self.res = true;
 					e.preventDefault();
 					$(document).mousemove(function(e){
@@ -245,13 +275,13 @@ var gallery = {
 				}catch (e) {
 					pageX = false;
 				}
-				
+			
 				if (pageX) {
 					self.resize(pageX);
 				} else {
 					gallery.cookie.set('resize_column', 300);
 				}
-				$("body").css({"overflow-y":"hidden"});
+//				$("body").css({"overflow-y":"hidden"});
 			}
 		},
 		
@@ -394,6 +424,7 @@ var gallery = {
 				var self = this;
 				// получения настроек формирование дерева
 				var variable = {};
+				
 				$('input[name="type_event"]').each(function(){
 					if ($(this).attr('checked')) {
 						// по типу (изображения, видео, аудио)
@@ -407,7 +438,6 @@ var gallery = {
 						});
 					}
 				});
-				
 				// js кеш нового дерева
 				matrix.curent_tree_events = {
 						all : {
@@ -422,7 +452,7 @@ var gallery = {
 				// предыдущий год, месяц, день
 				var o0 = false, o1 = false, o2 = false;
 				var ii = 0;
-				
+
 				$.each(matrix.tree_events, function( i,value) {
 					// временной диапазон
 					var key = value.date;
@@ -447,37 +477,44 @@ var gallery = {
 						var e = key.split('_');
 						
 						var year = e[0];
-						var month = e[1];
+						var month = (e[1]>9)?e[1]:e[1].replace('0','');
 						var day = e[2];
-
+					
+						
+						
 						// определяем самый первый диапазон для всего дерева
 						if (ii == 0) {
-							matrix.curent_tree_events['all'].from = e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0];
+							matrix.curent_tree_events['all'].from = e[3]+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0];
 							ii++;
 						}
+						
 						// обновляем самы последний диапазон для всего дерева
-						matrix.curent_tree_events['all'].to = e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0];
+						matrix.curent_tree_events['all'].to = e[3]+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0];
+
 						// если есть предыдущее событие
 						if (old_value != false) {
 							var o = old_value.split('_');
+
+							var o_manth = (o[1]>9)?o[1]:o[1].replace('0','');
+							
 							// и оно не относиться к дню текущего события, то закрываем день
 							if (e[0]+'_'+e[1]+'_'+e[2] != o[0]+'_'+o[1]+'_'+o[2]) {
 								html += '</ul>';
-								matrix.curent_tree_events[o[0]+'_'+o[1]+'_'+o[2]].to = o[3]+':00 ' + o[2] + ' ' + monthNames[parseInt(o[1])]+ ' ' + o[0];
+								matrix.curent_tree_events[o[0]+'_'+o[1]+'_'+o[2]].to = o[3]+':00 ' + o[2] + ' ' + monthNames[parseInt(o_manth)]+ ' ' + o[0];
 								matrix.curent_tree_events[o[0]+'_'+o[1]+'_'+o[2]].next = e[0]+'_'+e[1]+'_'+e[2];
 								o2 = o[0]+'_'+o[1]+'_'+o[2];
 							}
 							// и оно не относиться к месяцу текущего события, то закрываем месяц
 							if (e[0]+'_'+e[1] != o[0]+'_'+o[1]) {
 								html += '</ul>';
-								matrix.curent_tree_events[o[0]+'_'+o[1]].to = o[3]+':00 ' + o[2] + ' ' + monthNames[parseInt(o[1])]+ ' ' + o[0];
+								matrix.curent_tree_events[o[0]+'_'+o[1]].to = o[3]+':00 ' + o[2] + ' ' + monthNames[parseInt(o_manth)]+ ' ' + o[0];
 								matrix.curent_tree_events[o[0]+'_'+o[1]].next = e[0]+'_'+e[1];
 								o1 = o[0]+'_'+o[1];
 							}
 							// и оно не относиться к году текущего события, то закрываем год
 							if (e[0] != o[0]) {
 								html += '</ul>';
-								matrix.curent_tree_events[o[0]]['to'] = o[3]+':00 ' + o[2] + ' ' + monthNames[parseInt(o[1])]+ ' ' + o[0];
+								matrix.curent_tree_events[o[0]]['to'] = o[3]+':00 ' + o[2] + ' ' + monthNames[parseInt(o_manth)]+ ' ' + o[0];
 								matrix.curent_tree_events[o[0]].next = e[0];
 								o0 = o[0];
 							}
@@ -493,8 +530,8 @@ var gallery = {
 							matrix.curent_tree_events[e[0]] = {
 									size : size,
 									count : count,
-									from : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
-									to : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
+									from : e[3]+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0],
+									to : e[3]+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0],
 									prev : o0,
 									top: 'all',
 									under: e[0]+'_'+e[1]
@@ -513,14 +550,14 @@ var gallery = {
 							matrix.curent_tree_events[e[0]+'_'+e[1]] = {
 									size : size,
 									count : count,
-									from : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
-									to : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
+									from : e[3]+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0],
+									to : e[3]+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0],
 									prev: o1,
 									top: e[0],
 									under: e[0]+'_'+e[1]+'_'+e[2]
 							};
 							// строим дерево
-							html += '<li id="tree_'+e[0]+'_'+e[1]+'"><a href="#">'+e[1]+' ('+monthNames[e[1].replace('0','')]+')</a><ul>';
+							html += '<li id="tree_'+e[0]+'_'+e[1]+'"><a href="#">'+e[1]+' ('+monthNames[month]+')</a><ul>';
 						} else {
 							//если есть то обновляем размер и количество
 							matrix.curent_tree_events[e[0]+'_'+e[1]].size += size;
@@ -533,8 +570,8 @@ var gallery = {
 							matrix.curent_tree_events[e[0]+'_'+e[1]+'_'+e[2]] = {
 									size : size,
 									count : count,
-									from : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
-									to : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
+									from : e[3]+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0],
+									to : e[3]+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0],
 									prev : o2,
 									top: e[0]+'_'+e[1],
 									under: e[0]+'_'+e[1]+'_'+e[2]+'_'+e[3]
@@ -551,8 +588,8 @@ var gallery = {
 						matrix.curent_tree_events[key] = {
 								size : size,
 								count : count,
-								from : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
-								to : e[3]+':00 ' + e[2] + ' ' + monthNames[e[1].replace('0','')]+ ' ' + e[0],
+								from : e[3]+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0],
+								to : e[3]+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0],
 								next : false,
 								prev : old_value,
 								top: e[0]+'_'+e[1]+'_'+e[2]
@@ -598,7 +635,11 @@ var gallery = {
 					})
 					// событие возникает, если пользователь выбрал новый диапазон событий
 					.bind("select_node.jstree", function (event, data) {
-						
+						// если режим детального просмотра, переходим в превью
+						if (matrix.mode == 'detail') {
+							matrix.preview();
+						}
+
 						
 					var	tree = data.rslt.obj.attr("id").replace('tree_', '');
 
@@ -615,7 +656,6 @@ var gallery = {
 							s += found[i];
 							$('#tree_'+s+' > a').addClass('jstree-clicked');
 						}
-
 						if(keyBoard.boxesEnum.current()!=keyBoard.boxesEnum.TREE || typeof(data.args[2])!=='undefined') {
 							// если новый диапазон, перестраиваем матрицу
 							if (matrix.tree != tree) {
@@ -629,6 +669,7 @@ var gallery = {
 							}
 						}
 
+						
 						$.jstree._focused().set_focus("#tree_"+tree);
 						$("#tree_"+tree).jstree("set_focus");
 
@@ -654,6 +695,7 @@ var gallery = {
 				.delegate("a", "click", function (event, data) {event.preventDefault();}).show();
 
 				gallery.treeObject = $(self.holder);
+
 				matrix.build();
 			},
 			// инициалзация дерева
@@ -828,13 +870,14 @@ var gallery = {
 		},
 		// инициализация галереи
 		init : function(config) {
+			
 			var self = this;
 			// обновление настроек
 			if (config && typeof(config) == 'object') {
 			    $.extend(self.config, config);
 			}
-
-			$('#matrix_load').show();
+//TODO//uncomment	
+//			$('#matrix_load').show();
 			
 			self.cookie.init({path:WwwPrefix+'/offline/gallery.php'});
 
@@ -845,6 +888,7 @@ var gallery = {
 			//Кнопки свернуть/развернуть
 			gallery.images['detail'] = new Image();
 			gallery.images['detail'].src =  WwwPrefix+'/offline/gallery/img/slide2.png';
+			
 			
 			// организация увеличение размера списка камер
 			if ($('#win_top').height() > 100) {
@@ -864,7 +908,7 @@ var gallery = {
 						}
 				);
 			}
-			
+		
 			// обработка выбора чекбокса камеры
 			$('input[name="cameras"]').change(function(){
 				var rez = gallery.reload_cams();
@@ -968,10 +1012,8 @@ var gallery = {
 							{
 								//Скрываем елемент управления масштабом
 								$('#scale2').hide();
-								
 								//корректировка высоты с учетом панели управления ембеда
 								height = parseInt(height)+25;
-								
 							}
 							//установка размеров плеера в соответствии с размерами родительского элемента
 							$('.active .refBox').aplayerResizeContanerOnlyToParent(); 
@@ -996,18 +1038,19 @@ var gallery = {
 
 			//установка в панель инструментов
 			$("#toolbar>#toolbar_right").prepend(btn_cell_size, btn_orig_size);				
-			
+		
 			// инициализация изменения размеров столбцов
 			self.resize_column.init();
 
 			// инициализация матрицы
 			matrix.init(self.config.matrix);
-
+			
 			// инициализация дерева событий
 			self.tree_event.init('#tree_new');
+	
 			// инициализация выбора цвета камеры
 			self.cameras_color.init();
-
+			
 			// инициализация перехода на следующий временной диапазон
 			self.nextwindow.init();
 
@@ -1063,6 +1106,7 @@ var matrix = {
 		elem_style:null
 	}, 
 	init: function(config) {
+		
 		// отменяет действие по клику
 		$('#scroll_content').click(function(event) {
 			event.preventDefault();
@@ -1126,12 +1170,9 @@ var matrix = {
 			}
 		});
 
-
 		$('.event_info .niceCheck').click(function(){
 			matrix.doShowInfo();
 		});
-
-		
 		// обновление матрицы
 		matrix.resize();
 		//инициализации элемента масштаба режима миниатюр
@@ -1168,7 +1209,9 @@ var matrix = {
 				gallery.cookie.set('resize_column', pageX);
 				gallery.resize_column.resize(pageX);
 			}
-			matrix.resize();clearInterval(self.res);}, 200);
+			matrix.resize();
+			clearInterval(self.res);
+			}, 200);
 		});
 	},
 
@@ -1230,6 +1273,9 @@ var matrix = {
 				matrix.recover.refBox_style = $(this).find(".refBox").attr('style');
 			}
 		});
+		
+		//прячем info_block-и
+		$('.info_block').addClass('not_visible');
 
 		//фиксируем высоту tool bar		
 		$('#toolbar').height($('#toolbar').height());
@@ -1256,7 +1302,6 @@ var matrix = {
 
 		//Визуализируем кнопки масштабирования
 		$('#btn_cell_size, #btn_orig_size').show();
-	 	
 	},
 	
 	
@@ -1279,19 +1324,32 @@ var matrix = {
 			$("#list_panel").width($("#list_panel").width() - $("#scroll_v").width());
 			//отображаем скролл матрицы
 			$("#scroll_v").show();
-
+			
 			//отображаем все ячейки матрицы 
 			$(".content_item").each(function(){
 				if($(this).hasClass("active")){
+						//востанавливаем параметры активного элемента
+						$(this).attr('style', matrix.recover.cell_style).hide()
+						.find('.elem').attr('style', matrix.recover.elem_style)
+						.find('.refBox').attr('style', matrix.recover.refBox_style)
+						.aplayerResizeToParent();
+/*					}else{
 					//востанавливаем параметры активного элемента
-					$(this).attr('style', matrix.recover.cell_style)
-					.find('.elem').attr('style', matrix.recover.elem_style)
-					.find('.refBox').attr('style', matrix.recover.refBox_style)
-					.aplayerResizeToParent();
-				}	
+						$(this).attr('style', matrix.recover.cell_style)
+						.find('.elem').attr('style', matrix.recover.elem_style)
+						.find('.refBox').attr('style', matrix.recover.refBox_style)
+						.aplayerResizeToParent();
+					}
+*/				}	
    				$(this).show();
 			});
 
+			
+			
+			
+			//отображаем info_block-и
+			$('.info_block').removeClass('not_visible');
+			
 			//позиционирование в ячейке матрицы
 			$('.aplayer').each(function(){
 				$.aplayer.setMediaEltPosition($(this).attr('id') , { left:'0px', top:'0px'}  );
@@ -1329,6 +1387,7 @@ var matrix = {
 
 		// обновляем ширину колонок
 		gallery.resize_column.resize($('#sidebar').width()-2);
+	
 		$('#tree').height($('#sidebar').height() - $('#type_event').height() - $('#favorite').height() - $('#statistics').height()-90);
 
 		// высчитываем размеры табнейлов
@@ -1345,12 +1404,20 @@ var matrix = {
 		// определяем новые размеры матрицы
 
 		// обновляем размеры детального просмотра
-		var hc = $('#content').height() - 100 - $('#toolbar').height()-28;
-
+		var hc = $('#content').height() - $('#win_top').height() - $('#toolbar').height();
+		
+		if(MSIE){
+			hc -=30 ;
+			
+		}else{
+			hc-=23;
+		}
+		
 		$('#win_bot').height(hc);
 		
 		$('#scroll_v').height(hc);
-		// исправление бага с высотой!!! придумать что то лучше
+		
+		// исправление бага с высотой!!! придумать что то лучше 
 		//if($('#list_panel').height()!==0) matrix.height = $('#list_panel').height();
 		matrix.height = hc;
 		
@@ -1377,7 +1444,8 @@ var matrix = {
 			matrix.cell_height = matrix.config.max_cell_height;
 			matrix.cell_width = matrix.config.max_cell_width;
 		}
-
+		
+		
 		// обновляем элемент масштаба
 		if (old_width != matrix.config.max_cell_width) {
 			scale.reload(old_width);
@@ -1723,7 +1791,8 @@ var matrix = {
 		
 		if (matrix.count_src > matrix.load_src) {
 			// если количество загруженных изображений меньше количество всего изображений, показываем ромашку
-			$('#matrix_load').show();
+//TODO//uncomment	
+//			$('#matrix_load').show();
 		}
 		// создаем объект изображения
 		var img = new Image();
@@ -1787,7 +1856,8 @@ var matrix = {
 
 	// обновление матрицы
 	update : function(sp) {
-		$('#matrix_load').show();
+//TODO//uncomment	
+//		$('#matrix_load').show();
 	
 		var height, width; //размер ячейки
 		var img_height, img_width;//размер изображения
@@ -2289,8 +2359,9 @@ var matrix = {
 	},
 	// постройка матрицы временного диапазона
 	build: function(){
-		
-		$('#matrix_load').show();
+//TODO//uncomment	
+//		$('#matrix_load').show();	
+
 		matrix.cur_count_item = 0;
 
 		if (typeof( matrix.curent_tree_events[matrix.tree]) != 'undefined') {
@@ -2303,7 +2374,6 @@ var matrix = {
 			// записываем количество событий в данном временном диапазоне
 			matrix.count_item = matrix.curent_tree_events[matrix.tree].count;
 		}
-
 		// критерии просмотра: тип, камеры
 		var variable = [];
 		var type = [];
@@ -2363,8 +2433,14 @@ var matrix = {
 			// если есть элементы, то обновляем матрицу
 			matrix.update(sp);
 		}
+		
 		//инициализируем элемент скрола
-		scroll.init({height:matrix.height-82, cell_count:Math.ceil(matrix.count_item/matrix.count_column), row_count: matrix.count_column, matrix_count: Math.ceil(matrix.cell_count/matrix.count_column)});
+		scroll.init({
+			height:matrix.height-82, 
+			cell_count:Math.ceil(matrix.count_item/matrix.count_column), 
+			row_count: matrix.count_column, 
+			matrix_count: Math.ceil(matrix.cell_count/matrix.count_column)
+		});
 		matrix.scroll = true;
 	},
 	
@@ -2392,10 +2468,50 @@ var scroll = {
 		matrix_count: 10, // размер матрицы
 		position : 0, // текущая позиция в скроле
 		min_height : 36, // минимальная высота ползунка
+		
 		init : function(config) {
 			if (config && typeof(config) == 'object') {
 			    $.extend(scroll, config);
 			}
+			if(MSIE){
+				
+//				scroll.height = ietruebody().clientHeight-$('#win_top').height()-$('#toolbar').height();
+				
+				scroll.height = $('#list_panel').css('height');
+				
+//				$('#list_panel').css({'border':"1px solid red"});
+//				alert(  $('#win_top').css('position')  );
+				
+				// задаем высоту скрола
+				$(scroll.id + ' .scroll_body_v').height(scroll.height);
+				// высчитываем высоту ползунка в зависимости от элементов в матрице и всех элементов в диапазоне
+				h = Math.floor(scroll.height/scroll.cell_count*scroll.matrix_count);
+				
+				if(h>scroll.height) h=scroll.height;
+				
+				scroll.polzh = 0;
+				if ( h < scroll.min_height) {
+					scroll.polzh = scroll.min_height - h;
+					h = scroll.min_height;
+
+				}
+				// задаем параметры ползунка
+				$(scroll.id + ' .scroll_polz_v').height(h);
+				$(scroll.id + ' .scroll_polz_v_Middle').height(h-20);
+				
+				$(scroll.id + ' .scroll_polz_v').css('top',0);
+
+				
+				$(scroll.id).css({
+					"position":'absolute',
+					'top': 0 // $('#win_top').height()+'px'
+					
+				});
+
+			}else{
+			
+			
+			
 			// задаем высоту скрола
 			$(scroll.id + ' .scroll_body_v').height(scroll.height);
 			// высчитываем высоту ползунка в зависимости от элементов в матрице и всех элементов в диапазоне
@@ -2412,9 +2528,17 @@ var scroll = {
 			// задаем параметры ползунка
 			$(scroll.id + ' .scroll_polz_v').height(h);
 			$(scroll.id + ' .scroll_polz_v_Middle').height(h-20);
-
-
+			
 			$(scroll.id + ' .scroll_polz_v').css('top',0);
+			
+			
+			
+			}
+			
+			
+			
+			
+			
 			// обработка нажатия стрелки вверх на скроле
 			$(scroll.id + ' .scroll_top_v').unbind('click');
 			$(scroll.id + ' .scroll_top_v').click(function() {
@@ -2470,7 +2594,6 @@ var scroll = {
 
 			$("#win_bot").unbind('mousewheel');
 			$("#win_bot").mousewheel(function(event, delta) {
-
 		
 				if (delta > 0) {
 					scroll.num_up();
@@ -2504,6 +2627,8 @@ var scroll = {
 					$('#cell_'+matrix.num).addClass('active');
 			});
 
+			
+			
 			scroll.position = 0;
 			$(scroll.id).show();
 		},
@@ -3175,6 +3300,14 @@ var keyBoard = {
 		return $(keyBoard.currentSelector[keyBoard.currentSelectorChild]);
 	},
 	checkSelecBox: function () {
+	
+//TODO//временная блокировка для MSIE
+		if(MSIE){
+			$('#win_top').addClass('selectBox');
+			
+			return;
+		}
+		
 		if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.INSIDE) {
 			//keyBoard.selectBox($('#scroll_content'));
 			keyBoard.selectBox($('#win_bot'));

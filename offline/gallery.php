@@ -26,23 +26,33 @@ if (!isset($_POST['method']) && !isset($_GET['method'])) {
 	$pageTitle='gallery_title';
 	//$USE_JQUERY = true;
 	$ie6_quirks_mode = true;
+
 	/// Подключение стилей
-	$css_links = array( 'offline/gallery/css/main.css',
+	if(stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')){
+		//для MSIE
+		$main_css = 'offline/gallery/css/ie_main.css';
+	}else{
+		$main_css = 'offline/gallery/css/main.css';
+	}
+
+	$css_links = array( 
 				'offline/gallery/css/html5reset-1.6.1.css',
+				$main_css,
 				'offline/gallery/css/jquery-ui-1.8.17.custom.css',
 				'offline/gallery/css/tooltip.css'
 	);
 	$USE_JQUERY = true;
+	
 	/// Подключение js скриптов
 	$link_javascripts = array(
 								'lib/js/jquery-ui-1.8.17.custom.min.js',
 								'lib/js/jquery.mousewheel.min.js',
 								'lib/js/jquery.aplayer.js',
 								'offline/gallery/js/jquery.jstree.js',
-								'offline/gallery/js/main.js',
 								'offline/gallery/js/jquery.scrollTo-min.js',
 								'offline/gallery/js/jquery.checkbox.js',
-								'offline/gallery/js/jquery.tooltip.js'
+								'offline/gallery/js/jquery.tooltip.js',
+								'offline/gallery/js/main.js'
 						);
 	require_once('../head.inc.php');
 	$GCP_query_param_list=array('text_left', 'Hx2');

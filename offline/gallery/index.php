@@ -221,6 +221,7 @@
 </div>
 
 
+
 <script type="text/javascript">
 var MediaUrlPref = WwwPrefix + MediaAlias + '\/';
 
@@ -272,6 +273,9 @@ $(function(){
 			},
 			show_timeout : <?php print isset($conf['gallery-show_timeout']) ? $conf['gallery-show_timeout'] : 1 ;?>
 	};
+
+
+	$('body').css( 'overflow', 'hidden');
 
 	// инициализация галереи	
 	gallery.init(conf);

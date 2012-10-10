@@ -1117,7 +1117,6 @@ function canvas_growth() {
                 	 $('#pl_plus_'+win_nr).css({'position':'absolute', 'top':'0', 'left':offset_x+'px'});
                 	 offset_x += ht;
                  }
-                 
               }
               //Установка плеера
               brout(win_nr, win_div, win_geo);
