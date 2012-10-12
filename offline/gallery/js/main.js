@@ -186,23 +186,29 @@ var gallery = {
 			// функция изменения ширины столбцов
 			resize : function(pageX) {
 				var self = this;
-				$('#sidebar').width(pageX + 2);
 				
+				if( typeof( window.innerWidth ) == 'number' ) {
+					//Non-IE
+					self.myWidth = window.innerWidth;
+					self.myHeight = window.innerHeight;
+				}else{
+					//IE 6+ in 'standards compliant mode'
+					self.myHeight = ietruebody().clientHeight;
+					self.myWidth = ietruebody().clientWidth;
+				}
+				
+				$('#sidebar').width(pageX + 2);
+
 				$('#sidebar .block').width(pageX-26);
 				
-				if(MSIE){
-//					$('#sidebar #statistics').width(pageX-58);	
-				}else{
-					$('#sidebar #statistics').width(pageX-66);
-				}
+				$('#sidebar #statistics').width(pageX-66);
 				
 				// fix content width on resize
 				//	$('#content').css("left",pageX);
 
 				$('#content').width(self.myWidth - $('#sidebar').width() ).css('margin-left', pageX + 2);
 				$('#list_panel').width($('#content').width()-38);
-				
-//				var hc = $('#content').height() - 100 - $('#toolbar').height()-28;
+
 				var hc = $('#content').height() - $('#win_top').height() - $('#toolbar').height();
 				
 				if(MSIE){
@@ -211,12 +217,11 @@ var gallery = {
 				}else{
 					hc-=23;
 				}
-
 				
 				$('#win_bot').height(hc);
 
 				if(MSIE){
-					
+
 				}else{
 					$('#page').width($('#sidebar').width()+$('#content').width());
 				}
@@ -230,7 +235,6 @@ var gallery = {
 					//Non-IE
 					self.myWidth = window.innerWidth;
 					self.myHeight = window.innerHeight;
-//				} else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
 				}else{
 					//IE 6+ in 'standards compliant mode'
 					self.myHeight = ietruebody().clientHeight;
@@ -242,11 +246,6 @@ var gallery = {
 				
 				
 				// обработка изменение ширины используя вертикальный разделитель
-
-/*				var hh = ietruebody().clientHeight+'px';
-				document.getElementById('handler_vertical').style.height = '400px';
-				alert($('#handler_vertical').css('height'));
-*/				
 				$('#handler_vertical')
 				.mousedown(function(e){
 					self.res = true;
@@ -1403,8 +1402,6 @@ var matrix = {
 		var pan_height = $('#list_panel').css('height');
 		var pan_width = parseInt($('#list_panel').css('width').replace('px',''));
 
-
-
 		matrix.width = pan_width; //$('#list_panel').width();
 		$('#matrix_load img').css('margin-top', $('#content').height()/2);
 
@@ -2457,7 +2454,7 @@ var scroll = {
 			if(MSIE){
 				
 				scroll.height = ietruebody().clientHeight-$('#win_top').height()-$('#toolbar').height()-
-				$('.scroll_bot_v').height() - $('.scroll_top_v').height() - $('.scroll_polz_v_Top').height()-22;
+				$('.scroll_bot_v').height() - $('.scroll_top_v').height() - $('.scroll_polz_v_Top').height()-25;
 				
 				
 				//Установка изображений через img
