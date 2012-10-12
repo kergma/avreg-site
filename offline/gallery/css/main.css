@@ -287,9 +287,14 @@ a {
 #scroll_content .active .elem{
 	background-color: #1b1b1d;
 	outline: 1px solid #fff;
-	margin: -5px;
-   	padding: 5px;
+  	padding: 1px !important;
 }
+
+#scroll_content .elem{
+	background-color: none;
+	padding: 3px !important;
+}
+
 
 .content_item .img_block { 
 	font-size:12px;

@@ -479,8 +479,6 @@ var gallery = {
 						var year = e[0];
 						var month = (e[1]>9)?e[1]:e[1].replace('0','');
 						var day = e[2];
-					
-						
 						
 						// определяем самый первый диапазон для всего дерева
 						if (ii == 0) {
@@ -661,12 +659,15 @@ var gallery = {
 							if (matrix.tree != tree) {
 								matrix.tree = tree;
 								matrix.keyBoardTree = tree;
+//TODO//remove								
+//								alert(scroll.position +"         ln No.663");
 								matrix.build();
 							}
 							// если режим детального просмотра, обновляем картинку
 							if (matrix.mode == 'detail') {
 								matrix.preview();
 							}
+							
 						}
 
 						
@@ -1333,14 +1334,7 @@ var matrix = {
 						.find('.elem').attr('style', matrix.recover.elem_style)
 						.find('.refBox').attr('style', matrix.recover.refBox_style)
 						.aplayerResizeToParent();
-/*					}else{
-					//востанавливаем параметры активного элемента
-						$(this).attr('style', matrix.recover.cell_style)
-						.find('.elem').attr('style', matrix.recover.elem_style)
-						.find('.refBox').attr('style', matrix.recover.refBox_style)
-						.aplayerResizeToParent();
-					}
-*/				}	
+				}	
    				$(this).show();
 			});
 
@@ -1895,8 +1889,6 @@ var matrix = {
 		}else if (matrix.cell_count+sp > matrix.curent_tree_events[matrix.tree].count) {
 			count_events = matrix.curent_tree_events[matrix.tree].count - sp;
 		}
-	
-		//var count_events = matrix.cell_count > matrix.curent_tree_events[matrix.tree].count ? matrix.curent_tree_events[matrix.tree].count : matrix.cell_count;
 		
 		for (var i = sp; i < sp + count_events; i++) {
 			
@@ -2219,7 +2211,9 @@ var matrix = {
 				 	//Заполнение инфо-блока
 				 	$(this)
 				 	.find(".elem").attr({"tooltip":ttl}).end()		
-					.find('.info_block').html(function(){
+					.find('.info_block')
+					.empty()
+					.html(function(){
 						//формирование информационной строки
 						var info_html = matrix.cameras[value[5]].text_left+'<br />'+value[7]+': '+extension;
 						if (value[7] == 'image') info_html +=	 ' ('+ value[6]+') <br />';
@@ -2228,6 +2222,7 @@ var matrix = {
 						info_html +='<br /></div></a>';
 						return info_html;
 					});
+//					.css({'height': 'auto'});
 				}
 				else
 				{
@@ -2467,7 +2462,7 @@ var scroll = {
 		row_count : 10, // количество рядов
 		matrix_count: 10, // размер матрицы
 		position : 0, // текущая позиция в скроле
-		min_height : 36, // минимальная высота ползунка
+		min_height : 10, // минимальная высота ползунка
 		
 		init : function(config) {
 			if (config && typeof(config) == 'object') {
@@ -2475,13 +2470,26 @@ var scroll = {
 			}
 			if(MSIE){
 				
-//				scroll.height = ietruebody().clientHeight-$('#win_top').height()-$('#toolbar').height();
+				scroll.height = ietruebody().clientHeight-$('#win_top').height()-$('#toolbar').height()-
+				$('.scroll_bot_v').height() - $('.scroll_top_v').height() - $('.scroll_polz_v_Top').height()-22;
 				
-				scroll.height = $('#list_panel').css('height');
 				
-//				$('#list_panel').css({'border':"1px solid red"});
-//				alert(  $('#win_top').css('position')  );
+				$('#scroll_v .scroll_polz_v_Top')
+				.html('<img src="./gallery/img/topScrolll.png" >');
+//				$('#scroll_v .scroll_polz_v_Middle').html('<img src="./gallery/img/middleScrolll.png" >');
+				$('#scroll_v .scroll_polz_v_Bottom')
+				.html('<img src="./gallery/img/bottomScrolll.png" >');
 				
+				
+/*				
+				#scroll_v 
+					.scroll_polz_v_Top 
+					.scroll_polz_v_Middle 
+					.scroll_polz_v_Bottom 
+*/
+				
+				
+			
 				// задаем высоту скрола
 				$(scroll.id + ' .scroll_body_v').height(scroll.height);
 				// высчитываем высоту ползунка в зависимости от элементов в матрице и всех элементов в диапазоне
@@ -2497,16 +2505,9 @@ var scroll = {
 				}
 				// задаем параметры ползунка
 				$(scroll.id + ' .scroll_polz_v').height(h);
-				$(scroll.id + ' .scroll_polz_v_Middle').height(h-20);
+//				$(scroll.id + ' .scroll_polz_v_Middle').height(h-20);
 				
-				$(scroll.id + ' .scroll_polz_v').css('top',0);
 
-				
-				$(scroll.id).css({
-					"position":'absolute',
-					'top': 0 // $('#win_top').height()+'px'
-					
-				});
 
 			}else{
 			
@@ -2566,6 +2567,12 @@ var scroll = {
 			});
 
 			// обработка перемещения ползунка
+			
+			$('.scroll_polz_v_Top, .scroll_polz_v_Middle, .scroll_polz_v_Bottom', scroll.id)
+			.mousedown(function(e){
+				e.preventDefault();
+			});
+			
 			scroll.mousemove = false;
 			$(scroll.id + ' .scroll_polz_v').unbind('mousedown');
 			$(scroll.id + ' .scroll_polz_v').mousedown(function(e){

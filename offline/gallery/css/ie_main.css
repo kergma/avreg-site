@@ -231,33 +231,31 @@ a {
 	display:none;
 	background-color: grey;
 	padding: 0;
+	position:absolute;
+	top: 0;
+	cursor:default;
 }
+
 #scroll_v .scroll_top_v {
-	width:38px; height:42px; 
+	width:38px; 
+	height:42px; 
 	background:url(../img/scroll_top.png) no-repeat;
 	margin-left: -2px;
 }
 #scroll_v .scroll_body_v {
 	width:38px; 
-	height:200px; 
-	background:#eaeaea;
-	/*border-left:1px solid #cccccc; border-right:1px solid #cccccc; */ 
-	background:url(../img/scrollR.png); 
 	position:relative;
-	margin-left: -1px;
 	}
-	 
+
+
 #scroll_v .scroll_polz_v {
 	width:38px; 
-	margin:auto;
 	min-height:14px; 
-	height:36px; 
-	/*background:url(../img/scrolll.png) repeat-x; */	
-	height:auto !important;
-	height:14px;
-	position:relative;
-	left:-1px; 
+	position:absolute;
+	left:0px; 
 	top:0px;
+	background-color: red;
+	cursor:pointer;
 }
 #scroll_v .scroll_bot_v {
 	width:38px; 
@@ -268,25 +266,33 @@ a {
 
 
 #scroll_v .scroll_polz_v_Top {
-	width:38px; 
-	margin:auto; 
-	height:9px;
-	background:url(../img/topScrolll.png) no-repeat;
-	}
+	width:100%; 
+	margin:0px; 
+	height:4px;
+	position:absolute;
+	top:0;
+}
 	 
 #scroll_v .scroll_polz_v_Middle {
 	width:38px; 
-	margin:auto; 
+	margin:0px; 
 	background:url(../img/middleScrolll.png) repeat-y;
-	height: 100%;
+	height:100%;
 	}
 	
 #scroll_v .scroll_polz_v_Bottom {
 	width:38px; 
-	margin:auto; 
-	height:11px; 
-	background:url(../img/bottomScrolll.png) no-repeat;
-	}
+	margin:0px; 
+	height:4px; 
+	position:absolute;
+	bottom:0;
+}
+
+
+#scroll_v .scroll_polz_v img{
+	height: 100%;
+	width:100%;
+}
 
 
 #scale { width:auto; height:30px; margin-bottom:2px;width: 300px;float:right !important;}
@@ -372,12 +378,11 @@ a {
 	font-size:12px;
 	line-height:96px;
 	text-align:center;
-/*	color:#003366;*/
 }
 
 
 .content_item .info_block {
-	/*width: 99%;
+	width: 98%;
 	/*width:200px;
 	margin: 0 auto;	*/
 	font-size: 12px;
@@ -387,10 +392,6 @@ a {
 
 .content_item .info_block a {
 	color: #FFF;
-}
-
-.content_item .info_block a:hover {
-	color: red;
 }
 
 
@@ -872,11 +873,11 @@ div.options span.niceCheck {
 	margin-right: 2px;
 }
 
+/*
 div.options > span:hover {
-/*	border:0;
-*/
+	border:0;
 }
-
+*/
 
 a.set_camera_color:hover {
 	/*float: left;*/
@@ -950,8 +951,7 @@ a.set_camera_color:hover {
 }
 
 .content_item .img_block {
-	padding-left: 1px;
-	padding-top:1px;
+	padding: 1px;
 }
 
 
@@ -989,9 +989,8 @@ a.set_camera_color:hover {
 	text-align: center;
 	opacity: 0.7;
 	width: 100%;
-	margin:0;padding:0;
-	background: -moz-linear-gradient(top, #121212 0%, #555 50%, #121212 100%);
-    background: -webkit-linear-gradient(top, #121212 0%, #555 50%, #121212 100%);
+	margin:0;
+	padding:0;
     background: -o-linear-gradient(top, #121212 0%, #555 50%, #121212 100%); 
     background: -ms-linear-gradient(top, #121212 0%, #555 50%, #121212 100%); 
     background: linear-gradient(top, #121212 0%, #555 50%, #121212 100%); 
