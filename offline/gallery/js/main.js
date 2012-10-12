@@ -157,13 +157,9 @@ $(function(){
 $.ajaxSetup({
 	type: 'POST',
 	dataType: 'json',
-//	async: false,
 	cache: false,
 	timeout: ajax_timeout*1000, // 5000,
 	complete: function (XMLHttpRequest, textStatus) {
-
-		//this; // the options for this ajax request
-	//	console.info('ajax has finished, status: ' + textStatus);
 		if (textStatus == 'timeout') {
 			alert(lang.ajax_timeout);
 			if (typeof( matrix.send_query ) != 'undefined' ) {
@@ -654,20 +650,20 @@ var gallery = {
 							s += found[i];
 							$('#tree_'+s+' > a').addClass('jstree-clicked');
 						}
+						
 						if(keyBoard.boxesEnum.current()!=keyBoard.boxesEnum.TREE || typeof(data.args[2])!=='undefined') {
 							// если новый диапазон, перестраиваем матрицу
 							if (matrix.tree != tree) {
 								matrix.tree = tree;
 								matrix.keyBoardTree = tree;
-//TODO//remove								
-//								alert(scroll.position +"         ln No.663");
+
 								matrix.build();
+								
+								if(MSIE){
+									scroll.setposition(scroll.position);
+								}
 							}
-							// если режим детального просмотра, обновляем картинку
-							if (matrix.mode == 'detail') {
-								matrix.preview();
-							}
-							
+
 						}
 
 						
@@ -721,19 +717,6 @@ var gallery = {
 						}
 					});
 				
-				
-//				$.post(WwwPrefix+'/offline/gallery.php', {'method': 'get_tree_events'}, 
-//					function(data) {
-//						if (data.status == 'success'){
-//							matrix.tree_events = data.tree_events;
-//							matrix.cameras = data.cameras;
-//							gallery.tree_event.reload();
-//						} else if (data.status == 'error') {
-//							alert(lang.empty_tree);
-//							//$('#matrix_load').hide();
-//						}
-//					}
-//				);
 			}
 		},
 		// объект управлением цветом камер
@@ -1484,10 +1467,8 @@ var matrix = {
 			}
 			
 			//проверка допустимости значения
-			if(sp<0)
-			{
+			if(sp<0){
 				sp=0;
-			console.log("sp < 0");	
 			}
 			//устанавливаем новую позицию скролла
 			scroll.position = sp;
@@ -2353,7 +2334,7 @@ var matrix = {
 		}
 	},
 	// постройка матрицы временного диапазона
-	build: function(){
+	build : function(){
 //TODO//uncomment	
 //		$('#matrix_load').show();	
 
@@ -2416,11 +2397,16 @@ var matrix = {
 
 		// если идет переход вверх по дереву, то показываем самый последние элементы в матрице нового диапазона
 		if (matrix.select_node == 'left') {
-			sp = scroll.position;
+			//отменяем показ последних - переходим в начало диапазона		
+			sp=0;
+			matrix.num = 0;
+//			sp = scroll.position;
 		} else {
 			sp = 0;
 		}
 
+		
+		
 		if(count_events < matrix.cell_count && count_events < matrix.curent_tree_events[matrix.tree].count) {
 			// если нет элементов, то выполняем запрос на сервер
 			matrix.get_events(sp);
@@ -2474,22 +2460,10 @@ var scroll = {
 				$('.scroll_bot_v').height() - $('.scroll_top_v').height() - $('.scroll_polz_v_Top').height()-22;
 				
 				
-				$('#scroll_v .scroll_polz_v_Top')
-				.html('<img src="./gallery/img/topScrolll.png" >');
-//				$('#scroll_v .scroll_polz_v_Middle').html('<img src="./gallery/img/middleScrolll.png" >');
-				$('#scroll_v .scroll_polz_v_Bottom')
-				.html('<img src="./gallery/img/bottomScrolll.png" >');
+				//Установка изображений через img
+				$('#scroll_v .scroll_polz_v_Top').html('<img src="./gallery/img/topScrolll.png" >');
+				$('#scroll_v .scroll_polz_v_Bottom').html('<img src="./gallery/img/bottomScrolll.png" >');
 				
-				
-/*				
-				#scroll_v 
-					.scroll_polz_v_Top 
-					.scroll_polz_v_Middle 
-					.scroll_polz_v_Bottom 
-*/
-				
-				
-			
 				// задаем высоту скрола
 				$(scroll.id + ' .scroll_body_v').height(scroll.height);
 				// высчитываем высоту ползунка в зависимости от элементов в матрице и всех элементов в диапазоне
@@ -2505,13 +2479,8 @@ var scroll = {
 				}
 				// задаем параметры ползунка
 				$(scroll.id + ' .scroll_polz_v').height(h);
-//				$(scroll.id + ' .scroll_polz_v_Middle').height(h-20);
-				
-
 
 			}else{
-			
-			
 			
 			// задаем высоту скрола
 			$(scroll.id + ' .scroll_body_v').height(scroll.height);
@@ -2532,13 +2501,7 @@ var scroll = {
 			
 			$(scroll.id + ' .scroll_polz_v').css('top',0);
 			
-			
-			
 			}
-			
-			
-			
-			
 			
 			// обработка нажатия стрелки вверх на скроле
 			$(scroll.id + ' .scroll_top_v').unbind('click');

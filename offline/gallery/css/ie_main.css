@@ -255,7 +255,7 @@ a {
 	left:0px; 
 	top:0px;
 	background-color: red;
-	cursor:pointer;
+	cursor:default;
 }
 #scroll_v .scroll_bot_v {
 	width:38px; 
