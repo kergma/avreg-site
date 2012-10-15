@@ -149,7 +149,9 @@ class Adb {
 
       // сортировать по дате, от текущей позиции с лимитом заданный в конфиге
       $query .= ' ORDER BY DT1 ASC LIMIT '.$param['limit']. ' OFFSET '.$param['offset'];
+      
       $res = $this->_db->query($query);
+      
       $this->_error($res);
       while ($res->fetchInto($line)) {
          $line[6] = filesizeHuman($line[6]);
@@ -165,6 +167,7 @@ class Adb {
          // формирование уникального индекса, для работы кеша в браузере пользователя
          $events[str_replace(array('/', '.'),'_',$line[5].'_'.$line[2])] = $line;
       }
+      
       return $events;
    }
 

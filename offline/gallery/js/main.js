@@ -645,13 +645,19 @@ var gallery = {
 						if (matrix.mode == 'detail') {
 							matrix.preview();
 						}
-
 						
 					var	tree = data.rslt.obj.attr("id").replace('tree_', '');
 
-					if(matrix.keyBoardTree != tree) {
-							matrix.keyBoardTree = tree;
-						}
+//					if(matrix.keyBoardTree != tree) {
+//					matrix.keyBoardTree = tree;
+//				    }
+
+					//если диапазон не изменился - нисего не делаем
+					if(matrix.keyBoardTree == tree) return;
+						
+					matrix.keyBoardTree = tree;
+					
+					
 
 						var found = tree.split('_');
 
@@ -1877,15 +1883,17 @@ var matrix = {
 		}
 		
 		for (var i = sp; i < sp + count_events; i++) {
-			
+
 			if (typeof( matrix.events[i]) == 'undefined') {
+
+//console.log('i = '+i+" :: sp+count_events = "+(sp + count_events)+ "        matrix.events[i] = "+ matrix.events[i] );
 				
 				get = true;
 				break;
 			}
 		}
 		
-		if (get) {
+		if (get && !matrix.get_events_call) {
 			// нет необходимых элементов в кеше, делаем запрос
 			matrix.get_events(sp);
 		} 
@@ -1895,6 +1903,9 @@ var matrix = {
 			//Если кол-во элтов матрицы не соответствует кол-ву установленных плееров- Пересоздаем матрицу 
 			if(matrix.cell_count != $("[id^="+$.aplayer.idContainer+"]").length)	
 			{
+				
+				
+				
 				$('#scroll_content').empty();
 				var html = '';
 			
@@ -2240,6 +2251,9 @@ var matrix = {
 		}
 	},
 
+	//если вызов matrix.update(sp) произошел из get_events
+	get_events_call:false,
+	
 	// выполнения запроса новых событий
 	get_events : function (sp) {
 		// определяем тип событий и список камер
@@ -2274,8 +2288,14 @@ var matrix = {
 			}
 			
 			// делаем запрос
-			$.post(WwwPrefix+'/offline/gallery.php',{'method':'get_events', 'tree':matrix.tree, 'sp':get_sp, 'type': type, 'cameras': cameras}, function(data) {
-				
+			$.post(WwwPrefix+'/offline/gallery.php',
+				{'method':'get_events', 
+				'tree':matrix.tree, 
+				'sp':get_sp, 
+				'type': type, 
+				'cameras': cameras}, 
+				function(data) {
+//console.log(data);			
 				var i = get_sp;
 				// обновляем кеш
 				$.each(data.events, function(key, value) {
@@ -2320,6 +2340,7 @@ var matrix = {
 		
 		//если не режим ресайза
 		if(!matrix.isResizeMode ){
+			matrix.get_events_call = true;
 			//обновляем матрицу
 			matrix.update(sp);
 		}
@@ -2356,7 +2377,7 @@ var matrix = {
 //		$('#matrix_load').show();	
 
 		matrix.cur_count_item = 0;
-
+		
 		if (typeof( matrix.curent_tree_events[matrix.tree]) != 'undefined') {
 
 			// обновляем статистику
