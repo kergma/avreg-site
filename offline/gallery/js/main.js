@@ -280,7 +280,6 @@ var gallery = {
 			}
 		},
 		
-		
 		reload_events : function(){
 			var count = 0;
 			var cook = '';
@@ -433,7 +432,7 @@ var gallery = {
 						});
 					}
 				});
-				// js кеш нового дерева
+				// js нового дерева
 				matrix.curent_tree_events = {
 						all : {
 							size : 0,
@@ -447,7 +446,7 @@ var gallery = {
 				// предыдущий год, месяц, день
 				var o0 = false, o1 = false, o2 = false;
 				var ii = 0;
-
+				
 				$.each(matrix.tree_events, function( i,value) {
 					// временной диапазон
 					var key = value.date;
@@ -465,15 +464,17 @@ var gallery = {
 							count += parseInt(value[k+'_count']);
 						}
 					});
-					
+										
 					// если не пусто, то строим дерево
 					if (count > 0 && size > 0) {
 						// разбиваем дату на год месяц день
 						var e = key.split('_');
-						
+
 						var year = e[0];
 						var month = (e[1]>9)?e[1]:e[1].replace('0','');
 						var day = e[2];
+						//час истечения диапазона
+						var hour_to = parseInt((e[3]>9)?e[3]:e[3].replace('0',''))+1; 
 						
 						// определяем самый первый диапазон для всего дерева
 						if (ii == 0) {
@@ -481,35 +482,40 @@ var gallery = {
 							ii++;
 						}
 						
-						// обновляем самы последний диапазон для всего дерева
-						matrix.curent_tree_events['all'].to = e[3]+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0];
+						// обновляем самый последний диапазон для всего дерева
+						matrix.curent_tree_events['all'].to = hour_to+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0];
 
 						// если есть предыдущее событие
 						if (old_value != false) {
+
 							var o = old_value.split('_');
 
 							var o_manth = (o[1]>9)?o[1]:o[1].replace('0','');
 							
+							//предыдущий час истечения диапазона
+							var o_hour_to = parseInt((o[3]>9)?o[3]:o[3].replace('0',''))+1; 
+
 							// и оно не относиться к дню текущего события, то закрываем день
 							if (e[0]+'_'+e[1]+'_'+e[2] != o[0]+'_'+o[1]+'_'+o[2]) {
 								html += '</ul>';
-								matrix.curent_tree_events[o[0]+'_'+o[1]+'_'+o[2]].to = o[3]+':00 ' + o[2] + ' ' + monthNames[parseInt(o_manth)]+ ' ' + o[0];
+								matrix.curent_tree_events[o[0]+'_'+o[1]+'_'+o[2]].to = o_hour_to+':00 ' + o[2] + ' ' + monthNames[parseInt(o_manth)]+ ' ' + o[0];
 								matrix.curent_tree_events[o[0]+'_'+o[1]+'_'+o[2]].next = e[0]+'_'+e[1]+'_'+e[2];
 								o2 = o[0]+'_'+o[1]+'_'+o[2];
 							}
 							// и оно не относиться к месяцу текущего события, то закрываем месяц
 							if (e[0]+'_'+e[1] != o[0]+'_'+o[1]) {
 								html += '</ul>';
-								matrix.curent_tree_events[o[0]+'_'+o[1]].to = o[3]+':00 ' + o[2] + ' ' + monthNames[parseInt(o_manth)]+ ' ' + o[0];
+								matrix.curent_tree_events[o[0]+'_'+o[1]].to = o_hour_to+':00 ' + o[2] + ' ' + monthNames[parseInt(o_manth)]+ ' ' + o[0];
 								matrix.curent_tree_events[o[0]+'_'+o[1]].next = e[0]+'_'+e[1];
 								o1 = o[0]+'_'+o[1];
 							}
 							// и оно не относиться к году текущего события, то закрываем год
 							if (e[0] != o[0]) {
 								html += '</ul>';
-								matrix.curent_tree_events[o[0]]['to'] = o[3]+':00 ' + o[2] + ' ' + monthNames[parseInt(o_manth)]+ ' ' + o[0];
+								matrix.curent_tree_events[o[0]]['to'] = o_hour_to+':00 ' + o[2] + ' ' + monthNames[parseInt(o_manth)]+ ' ' + o[0];
 								matrix.curent_tree_events[o[0]].next = e[0];
 								o0 = o[0];
+								
 							}
 						}
 						// обновляем размер и количество файлов всего дерева
@@ -524,17 +530,19 @@ var gallery = {
 									size : size,
 									count : count,
 									from : e[3]+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0],
-									to : e[3]+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0],
+									to : hour_to+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0],
 									prev : o0,
 									top: 'all',
 									under: e[0]+'_'+e[1]
 							};
+							
 							// строим дерево
 							html += '<li id="tree_'+e[0]+'"><a href="#">'+e[0]+'</a><ul>';
 						} else {
-							//если есть то обновляем размер и количество
+							//если есть то обновляем размер и количество и конек диапазона
 							matrix.curent_tree_events[e[0]].size += size;
 							matrix.curent_tree_events[e[0]].count += count;
+							matrix.curent_tree_events[e[0]].to = hour_to+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0];
 						}
 
 						// если в кеше нет месяца текущего события, то..
@@ -544,7 +552,7 @@ var gallery = {
 									size : size,
 									count : count,
 									from : e[3]+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0],
-									to : e[3]+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0],
+									to : hour_to+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0],
 									prev: o1,
 									top: e[0],
 									under: e[0]+'_'+e[1]+'_'+e[2]
@@ -555,34 +563,39 @@ var gallery = {
 							//если есть то обновляем размер и количество
 							matrix.curent_tree_events[e[0]+'_'+e[1]].size += size;
 							matrix.curent_tree_events[e[0]+'_'+e[1]].count += count;
+							matrix.curent_tree_events[e[0]+'_'+e[1]].to = hour_to+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0];
 						}
 
-						// если в кеше нет дня текущего события, то..
+						// если нет дня текущего события, то..
 						if (typeof(matrix.curent_tree_events[e[0]+'_'+e[1]+'_'+e[2]]) == 'undefined' ) {
+							
 							//записываем новые данные в кеш
 							matrix.curent_tree_events[e[0]+'_'+e[1]+'_'+e[2]] = {
 									size : size,
 									count : count,
 									from : e[3]+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0],
-									to : e[3]+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0],
+									to :   hour_to+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0],
 									prev : o2,
 									top: e[0]+'_'+e[1],
 									under: e[0]+'_'+e[1]+'_'+e[2]+'_'+e[3]
 							};
+						
 							// строим дерево
 							html += '<li id="tree_'+e[0]+'_'+e[1]+'_'+e[2]+'"><a href="#">'+e[2]+'</a><ul>';
 						}else {
 							//если есть то обновляем размер и количество
 							matrix.curent_tree_events[e[0]+'_'+e[1]+'_'+e[2]].size += size;
 							matrix.curent_tree_events[e[0]+'_'+e[1]+'_'+e[2]].count += count;
+							matrix.curent_tree_events[e[0]+'_'+e[1]+'_'+e[2]].to = hour_to+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0];
 						}
 
-						//записываем новые данные о события в кеш
+						
+						//записываем новые данные о события
 						matrix.curent_tree_events[key] = {
 								size : size,
 								count : count,
 								from : e[3]+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0],
-								to : e[3]+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0],
+								to : hour_to+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0],
 								next : false,
 								prev : old_value,
 								top: e[0]+'_'+e[1]+'_'+e[2]
@@ -688,7 +701,7 @@ var gallery = {
 								function(){}
 								);
 					})
-				.delegate("a", "click", function (event, data) {event.preventDefault();}).show();
+				.delegate("a", "click", function (event, data) { event.preventDefault();}).show();
 
 				gallery.treeObject = $(self.holder);
 
@@ -1336,12 +1349,11 @@ var matrix = {
 				matrix.proportionDetail=false;
 				scale.updateposition(scale.position);
 			}
-			// обновлаем статистику
-			var stat = '<span><strong>'+lang.count_files+'</strong>'+matrix.curent_tree_events[matrix.tree].count+'</span><br />\
-			<span><strong>'+lang.size_files+'</strong>'+readableFileSize(matrix.curent_tree_events[matrix.tree].size)+'</span><br />\
-			<span><strong>'+lang.date_from+'</strong>'+matrix.curent_tree_events[matrix.tree].from+'</span><br />\
-			<span><strong>'+lang.date_to+'</strong>'+matrix.curent_tree_events[matrix.tree].to+'</span><br />';
-			$('#statistics').html(stat);
+
+
+
+			//обновляем статистику
+			matrix.update_statistic();
 			
 			//Включаем тултип
 			$(".elem").tooltip();
@@ -1748,11 +1760,7 @@ var matrix = {
 				});
 			
 			// обновляем статистику события
-			var stat = '<span><strong>'+lang.camera+'</strong>'+matrix.cameras[value[5]].text_left+'</span><br />\
-				<span><strong>'+lang.size+'</strong>'+value[6]+'</span><br />\
-				<span><strong>'+lang.WH+'</strong>'+value[4]+'x'+value[3]+'</span><br />\
-				<span><strong>'+lang.date+'</strong>'+value[1]+'</span><br />';
-			$('#statistics').html(stat);
+			matrix.update_statistic();
 		}
 	},
 	
@@ -2330,6 +2338,18 @@ var matrix = {
 			});
 		}
 	},
+	
+	//устанавливает статистику для текущего временого диапазона
+	update_statistic : function(){
+		var stat = '<span><strong>'+lang.count_files+'</strong>'+matrix.curent_tree_events[matrix.tree].count+'</span><br />\
+		<span><strong>'+lang.size_files+'</strong>'+readableFileSize(matrix.curent_tree_events[matrix.tree].size)+'</span><br />\
+		<span><strong>'+lang.date_from+'</strong>'+matrix.curent_tree_events[matrix.tree].from+'</span><br />\
+		<span><strong>'+lang.date_to+'</strong>'+matrix.curent_tree_events[matrix.tree].to+'</span><br />';
+		$('#statistics').html(stat);
+	},
+	
+	
+	
 	// постройка матрицы временного диапазона
 	build : function(){
 //TODO//uncomment	
@@ -2338,12 +2358,10 @@ var matrix = {
 		matrix.cur_count_item = 0;
 
 		if (typeof( matrix.curent_tree_events[matrix.tree]) != 'undefined') {
+
 			// обновляем статистику
-			var stat = '<span><strong>'+lang.count_files+'</strong>'+matrix.curent_tree_events[matrix.tree].count+'</span><br />\
-			<span><strong>'+lang.size_files+'</strong>'+readableFileSize(matrix.curent_tree_events[matrix.tree].size)+'</span><br />\
-			<span><strong>'+lang.date_from+'</strong>'+matrix.curent_tree_events[matrix.tree].from+'</span><br />\
-			<span><strong>'+lang.date_to+'</strong>'+matrix.curent_tree_events[matrix.tree].to+'</span><br />';
-			$('#statistics').html(stat);
+			matrix.update_statistic();
+			
 			// записываем количество событий в данном временном диапазоне
 			matrix.count_item = matrix.curent_tree_events[matrix.tree].count;
 		}
