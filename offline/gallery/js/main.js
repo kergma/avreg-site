@@ -1107,6 +1107,8 @@ var matrix = {
 		refBox_style:null,
 		elem_style:null
 	}, 
+	
+	
 	init: function(config) {
 		
 		// отменяет действие по клику
@@ -1885,15 +1887,11 @@ var matrix = {
 		for (var i = sp; i < sp + count_events; i++) {
 
 			if (typeof( matrix.events[i]) == 'undefined') {
-
-//console.log('i = '+i+" :: sp+count_events = "+(sp + count_events)+ "        matrix.events[i] = "+ matrix.events[i] );
-				
 				get = true;
 				break;
 			}
 		}
-		
-		if (get && !matrix.get_events_call) {
+		if (get) {
 			// нет необходимых элементов в кеше, делаем запрос
 			matrix.get_events(sp);
 		} 
@@ -2250,9 +2248,6 @@ var matrix = {
 			$('#scroll_content .content_item').hide();
 		}
 	},
-
-	//если вызов matrix.update(sp) произошел из get_events
-	get_events_call:false,
 	
 	// выполнения запроса новых событий
 	get_events : function (sp) {
@@ -2295,8 +2290,8 @@ var matrix = {
 				'type': type, 
 				'cameras': cameras}, 
 				function(data) {
-//console.log(data);			
-				var i = get_sp;
+
+					var i = get_sp;
 				// обновляем кеш
 				$.each(data.events, function(key, value) {
 					matrix.all_events[key] = value;
@@ -2316,7 +2311,6 @@ var matrix = {
 
 						} else {
 							loadimage[i] = false;
-
 						}
 					} 
 					// ad hoc
@@ -2340,7 +2334,6 @@ var matrix = {
 		
 		//если не режим ресайза
 		if(!matrix.isResizeMode ){
-			matrix.get_events_call = true;
 			//обновляем матрицу
 			matrix.update(sp);
 		}
@@ -2350,7 +2343,6 @@ var matrix = {
 					matrix.loaddetailsrc();
 				 	scale2.updateposition(scale2.position);
 			}
-			
 				// устанавливаем флаг, что запрос выполнился
 				matrix.send_query = false;
 				if (hide_over ) {
