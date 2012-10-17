@@ -127,7 +127,13 @@ class Gallery {
 	    	
 	    	
 			if ($last_tree_date < $last_event_date) {
-				$this->db->gallery_update_tree_events($last_tree_date, $last_event_date, array());
+
+				$evt_updt_rst = $this->db->gallery_update_tree_events($last_tree_date, $last_event_date, array(), $param["on_dbld_evt"]);
+				//проверка дублей событий
+				if($evt_updt_rst['status']=='error'){
+					$this->result = $evt_updt_rst;  
+					return;
+				}
 			}
 			
 			$tree_events_result = $this->db->gallery_get_tree_events(array('cameras' => array_keys($GCP_cams_params)));
@@ -140,7 +146,7 @@ class Gallery {
     	if (!empty($tree_events_result)) {
     		$this->result = array('tree_events'=>$tree_events_result, 'cameras' => $GCP_cams_params, 'status' => 'success');
     	} else {
-    		$this->result = array('status' => 'error');
+    		$this->result = array('status' => 'error', 'code'=>'0','description'=>'No events.', 'qtty'=>0 ) ;
     	}
     }
     

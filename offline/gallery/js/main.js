@@ -714,24 +714,55 @@ var gallery = {
 				matrix.build();
 			},
 			// инициалзация дерева
-			init: function(holder) {
+			init: function(holder, ajax_params) {
 				var self = this;
 				self.holder = holder;
+				
+				if(ajax_params==null)ajax_params={'method': 'get_tree_events', 'on_dbld_evt':'inform_user'};
+				
 				// получаем данные о постройке дерева события
 				$.ajax({
 					  type: "POST",
 					  timeout: update_tree_timeout*1000,
 					  url: WwwPrefix+'/offline/gallery.php',
-					  data:{'method': 'get_tree_events'},
+					  data: ajax_params,
 					  success: function(data) {
 							if (data.status == 'success'){
 								matrix.tree_events = data.tree_events;
 								matrix.cameras = data.cameras;
 								gallery.tree_event.reload();
-							} else if (data.status == 'error') {
+							} else if (data.status == 'error' && data.code=='0') {
 								alert(lang.empty_tree);
 								//$('#matrix_load').hide();
 							}
+					  		else if (data.status == 'error' && data.code=='1') {
+					  			//Запрашиваем действия пользователя относительно дублированных событий
+					  			var optn = confirm("Обнаружены дублирующие записи событий в колическве "+data.qtty+"шт.\n\n"
+					  					+"'OK' - удаление дублирующих записей,\n\n"
+					  					+"'Отмена' - игнорировать дублирующие записи.\n\n");
+					  			
+					  			if(optn){
+					  				gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt':'clear'});
+					  			}else{
+					  				gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt':'ignore'});
+					  			}
+					  			
+							//$('#matrix_load').hide();
+					  		}
+					  		else if (data.status == 'error' && data.code=='2') {
+					  			//Запрашиваем действия пользователя относительно дублированных событий
+					  			var optn = confirm("Произошла ошибка при удалении дублирующих записей. \nКоличество обработанных записей: "+data.qtty+"шт.\n\n"
+					  					+"'OK' - повторная попытка удаления дублирующих записей,\n\n"
+					  					+"'Отмена' - игнорировать дублирующие записи.\n\n");
+					  			
+					  			if(optn){
+					  				gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt':'clear'});
+					  			}else{
+					  				gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt':'ignore'});
+					  			}
+					  			
+							//$('#matrix_load').hide();
+					  		}
 						}
 					});
 				

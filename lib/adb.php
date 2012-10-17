@@ -272,8 +272,13 @@ class Adb {
  * @param string $start Дата начала обновления дерева
  * @param string $end Дата окончания обновления дерева
  * @param string $cameras Список камер
+ * @param string $on_dbld_evnts действие при обнаружении дублированных событий 
+ * values: 
+ * 'inform_user' - информировать пользователя, 
+ * 'ignore' - корректно заполнть TREE_EVENTS без удаления дублей из EVENTS, 
+ * 'clear' - удалить дублирующие записи из EVENTS и, после этого, заполнить TREE_EVENTS
  */
-   public function gallery_update_tree_events($start, $end, $cameras = false) {
+   public function gallery_update_tree_events($start, $end, $cameras = false, $on_dbld_evnts='ignore' ) {
       $query = "SELECT *";
       $query .= " FROM EVENTS";
       $query .= ' WHERE EVT_ID in (15,16,17,18,19,20,21,23,32,12)';
@@ -292,9 +297,37 @@ class Adb {
       $res = $this->_db->query($query);
       $this->_error($res);
 
-
+	
+      $evt_key = '';
+      $tmp = array();
+      $dbl_events = array();
+	  
       $tree_events = array();
       while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
+      	
+      	
+      	//проверка на наличие дублирующих записей
+      	$evt_key = 'DT1='.$line[$this->_key('DT1')]."&"
+      			.'DT2='.$line[$this->_key('DT2')]."&"
+      			.'CAM_NR='.$line[$this->_key('CAM_NR')].'&'
+      			.'EVT_ID='.$line[$this->_key('EVT_ID')].'&'
+      			.'SESS_NR='.$line[$this->_key('SESS_NR')].'&'
+     			.'FILESZ_KB='.$line[$this->_key('FILESZ_KB')]."&"
+     			.'FRAMES='.$line[$this->_key('FRAMES')]."&"
+     			.'ALT1='.$line[$this->_key('ALT1')]."&"
+     			.'ALT2='.$line[$this->_key('ALT2')]."&"
+      			.'EVT_CONT='.$line[$this->_key('EVT_CONT')];
+      	//проверяем уникальность ключей
+      	if(isset($tmp[$evt_key])){
+      		//сохраняем дублированое значение
+      		array_push($dbl_events, $line);
+      		continue;
+      	}
+      	//записываем ключи в массив
+      	$tmp[$evt_key] = 1;
+
+      	
+      	
          $date = date('Y_m_d_H',strtotime($line[$this->_key('DT1')]));
          $key = $date.'_'.$line[$this->_key('CAM_NR')];
          if (!isset($tree_events[$key])) {
@@ -325,6 +358,25 @@ class Adb {
          }
          $tree_events[$key]['LAST_UPDATE']=$line[$this->_key('DT1')];
       }
+
+      //если обнаружены дублированые события
+      if(sizeof($dbl_events)>0){
+      	if($on_dbld_evnts=='inform_user'){
+      		//Собщаем пользователю
+      		return  array('status' => 'error', 'code'=>'1','description'=>'Doubled events detected', 'qtty'=>sizeof($dbl_events) ) ;
+      	}elseif ($on_dbld_evnts=='clear'){
+      		//устраиваем чистку таблицы EVENTS от дублирующих записей
+      		$cor_nr = $this->clear_dubled_evnts($dbl_events);
+      		
+      		if($cor_nr<sizeof($dbl_events)){
+      			return  array('status' => 'error', 'code'=>'2','description'=>'Error during cleaning', 'qtty'=>$cor_nr ) ;
+      		}
+      	}elseif($on_dbld_evnts=='ignore'){
+      		//Игнорируем
+      		//при проверке ключей дубли будут игнорироваться при заполнении TREE_EVENTS
+      	}
+      }
+      
       $query = 'DELETE FROM TREE_EVENTS';
       $query .= ' WHERE 1=1';
 
@@ -346,8 +398,71 @@ class Adb {
          $res = $this->_db->query($query);
          $this->_error($res);
       }
+      return array('status' => 'success');
    }
 
+
+   /**
+    * 
+    * Метод для удаления дублированных записей из EVENTS
+    * @param array $dbl_evts параметры для удаления и востановления записей
+    * @return кол-во исправленных записей
+    */
+   private function clear_dubled_evnts($dbl_evts){
+   	
+	$cntr = 0;
+   	
+   	foreach($dbl_evts as $key=>$val){
+		//Удаляем дубли
+		$query = "DELETE FROM EVENTS WHERE"
+		   			." DT1='".$val['DT1']
+					."' AND DT2='".$val['DT2']
+		   			."' AND CAM_NR=".$val['CAM_NR']
+					." AND EVT_ID=".$val['EVT_ID']
+		   			." AND SESS_NR=".$val['SESS_NR']
+		   			." AND FILESZ_KB=".$val['FILESZ_KB']
+		   			." AND FRAMES=".$val['FRAMES']
+		   			." AND ALT1=".$val['ALT1']
+		   			." AND ALT2=".$val['ALT2']
+		   			." AND EVT_CONT='".$val['EVT_CONT']."'; ";
+	
+		try {
+			$res = $this->_db->query($query);
+			$this->_error($res);
+		}catch(Exception $err){
+			return $cntr;
+		}
+		//востанавливаем запись
+		$query = "INSERT INTO EVENTS (DT1, DT2, CAM_NR, EVT_ID, SESS_NR, FILESZ_KB, FRAMES, ALT1, ALT2, EVT_CONT) "
+					." VALUES("  		
+					."'".$val['DT1']
+					."', '".$val['DT2']
+					."', ".$val['CAM_NR']
+					.", ".$val['EVT_ID']
+					.", ".$val['SESS_NR']
+					.", ".$val['FILESZ_KB']
+					.", ".$val['FRAMES']
+					.", ".$val['ALT1']
+					.", ".$val['ALT2']
+					.", '".$val['EVT_CONT']."'); ";
+		
+		try {
+			$res = $this->_db->query($query);
+			$this->_error($res);
+		}catch(Exception $err){
+			return $cntr;
+		}
+	
+		$cntr++;
+	   	}
+   	
+   	return $cntr;
+   }
+   
+   
+   
+   
+   
 /**
  *  Метод получения событий
 
