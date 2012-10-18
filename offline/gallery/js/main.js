@@ -297,6 +297,13 @@ var gallery = {
 				gallery.cookie.set('type_event', cook);
 				// обновляем дерево
 				gallery.tree_event.reload();
+				
+				if(MSIE){
+					//Устанавливаем матрицу на начало диапазона
+					matrix.num = 0;
+					scroll.setposition(0);
+				}
+				
 			} else {
 				// не дадим пользователю снять последний чекбокс
 				//$(this).attr('checked', 'checked');
@@ -308,7 +315,6 @@ var gallery = {
 		reload_cams : function () {
 			var count = 0;
 			var cook = '';
-			
 			//если включен режим детального просмотра - включаем режим превью
 			if(matrix.mode == 'detail')	matrix.preview();
 
@@ -322,6 +328,13 @@ var gallery = {
 				gallery.cookie.set('cameras',cook);
 				// обновляем дерево
 				gallery.tree_event.reload();
+
+				if(MSIE){
+					//устанавливаем на начало диапазона
+					matrix.num = 0;
+					scroll.setposition(0);
+				}
+				
 			} else {
 				// не дадим пользователю снять последний чекбокс
 				//$(this).attr('checked', 'checked');
@@ -1579,7 +1592,7 @@ var matrix = {
 				matrix.create_cell(ix, 'append');
 			}
 		}
-		
+
 		// обновляем размеры и позиционирование ячеек в матрице  
 		$('#scroll_content .content_item').height(matrix.cell_height);
 		$('#scroll_content .content_item').width(matrix.cell_width);
