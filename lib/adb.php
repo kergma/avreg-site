@@ -363,13 +363,26 @@ class Adb {
       if(sizeof($dbl_events)>0){
       	if($on_dbld_evnts=='inform_user'){
       		//Собщаем пользователю
-      		return  array('status' => 'error', 'code'=>'1','description'=>'Doubled events detected', 'qtty'=>sizeof($dbl_events) ) ;
+      		return  array(
+      			'status' => 'error', 
+      			'code'=>'1',
+      			'description'=>'Doubled events detected', 
+      			'qtty'=>sizeof($dbl_events),
+      			'dbl_rows'=> $dbl_events
+      		) ;
       	}elseif ($on_dbld_evnts=='clear'){
       		//устраиваем чистку таблицы EVENTS от дублирующих записей
       		$cor_nr = $this->clear_dubled_evnts($dbl_events);
       		
       		if($cor_nr<sizeof($dbl_events)){
-      			return  array('status' => 'error', 'code'=>'2','description'=>'Error during cleaning', 'qtty'=>$cor_nr ) ;
+      			$rst_dbl_events = array_slice($dbl_events, $cor_nr);
+      			return  array(
+      				'status' => 'error', 
+      				'code'=>'2',
+      				'description'=>'Error during cleaning', 
+      				'qtty'=>$cor_nr,
+      				'dbl_rows'=>$rst_dbl_events
+      			) ;
       		}
       	}elseif($on_dbld_evnts=='ignore'){
       		//Игнорируем
