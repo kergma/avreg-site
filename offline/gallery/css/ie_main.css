@@ -254,7 +254,7 @@ a {
 	position:absolute;
 	left:0px; 
 	top:0px;
-	background-color: red;
+	background-color: Gray;
 	cursor:default;
 }
 #scroll_v .scroll_bot_v {
@@ -375,6 +375,7 @@ a {
 }
 
 .content_item .img_block { 
+	border: 2px solid #aaa;
 	font-size:12px;
 	line-height:96px;
 	text-align:center;
@@ -575,7 +576,7 @@ a {
 
 
 .camera_16_color .img_block {
-	border: 2px inset #ffc0cb;
+	border: 2px solid #ffc0cb;
 	/*background-color:Pink; */
 }
 .window_body .camera_16_color {

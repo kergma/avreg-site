@@ -1654,8 +1654,15 @@ var matrix = {
 
 		// высчитываем размеры табнейлов
 		matrix.thumb_width = matrix.cell_width-matrix.config.cell_padding;
-		matrix.thumb_height = matrix.cell_height-matrix.config.cell_padding*2;
+		matrix.thumb_height = matrix.cell_height-matrix.config.cell_padding*2 -3;
 
+		if(MSIE){
+			// высчитываем размеры табнейлов
+			matrix.thumb_width = matrix.cell_width-matrix.config.cell_padding - 6 ;
+			matrix.thumb_height = matrix.cell_height-matrix.config.cell_padding*2 - 8 ;
+		}
+		
+		
 		// показываем или скрываем информацию о событии
 		if ($('#info').attr('checked')) {
 			matrix.thumb_height -= 24;
