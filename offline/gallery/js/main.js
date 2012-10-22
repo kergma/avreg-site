@@ -265,8 +265,9 @@ var gallery = {
 					$(document).unbind('mousemove');
 				});
 				// востанавливаем расположения из куков
-				try{				
+				try{
 					pageX = parseInt(gallery.cookie.get('resize_column'));
+					
 				}catch (e) {
 					pageX = false;
 				}
@@ -751,48 +752,43 @@ var gallery = {
 							//если вовремя заполнения EVENTS_TREE были обнаружены дублированные события
 					  		else if (data.status == 'error' && data.code=='1') {
 					  		
-					  			if(MSIE){
-						  			//Запрашиваем действия пользователя относительно дублированных событий
-						  			var optn = confirm("Обнаружены дублирующие записи событий в колическве "+data.qtty+"шт.\n\n"
-						  					+"'OK' - удаление дублирующих записей,\n\n"
-						  					+"'Отмена' - игнорировать дублирующие записи.\n\n");
-						  			if(optn){
-						  				gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt':'clear'});
-						  			}else{
-						  				gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt':'ignore'});
-						  			}
-					  			}else{
-						  			var header = "Обнаружены ошибочные данные";
+//					  			if(MSIE){
+//						  			//Запрашиваем действия пользователя относительно дублированных событий
+//						  			var optn = confirm("Обнаружены дублирующие записи событий в колическве "+data.qtty+"шт.\n\n"
+//						  					+"'OK' - удаление дублирующих записей,\n\n"
+//						  					+"'Отмена' - игнорировать дублирующие записи.\n\n");
+//						  			if(optn){
+//						  				gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt':'clear'});
+//						  			}else{
+//						  				gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt':'ignore'});
+//						  			}
+//					  			}else{
+						  			var header = "Ошибка";
 						  			
-						  			var message = "<h2 style='color: #000;'>Обнаружены дублирующие записи событий в колическве "+data.qtty+"шт.<br /><br />"
-				  					+"'OK' - удаление дублирующих записей,<br /><br />"
-				  					+"'Отмена' - игнорировать дублирующие записи.</h2><br /><br />Найдены дублирующие записи:<br />";
-						  			
-						  			message += '<table style="border-collapse:collapse;" >';
-						  			
-						  			$.each(data.dbl_rows, function(i, row){
-						  				if(i==0){
-						  					message += "<tr>";
-						  					$.each(row, function(fld, content){
-						  						message += "<th style='border:2px solid black; color: #000;'>";
-						  						message += fld;
-						  						message += "</th>";
-						  					});
-						  					message += "</tr>";
-						  				}
-						  				
-						  				message += "<tr>";
-						  				$.each(row, function(fld, content){
-						  					message += "<td style='border:2px solid black; color: #000;'>";
-					  						message += content;
-					  						message += "</td>";
-						  				});
-				  						message += "</tr>";
-						  				
-						  			});
-						  			message += "</table>";
-						  			
-						  			
+						  			var message = "<h2 style='color: #000;'>" +"В диапазоне ["+data.range_start+" : "+data.range_end
+						  			+"] в базе данных обнаружено "+data.qtty
+						  			+" записей о ссылках на файлы с одинаковым временем создания и номером камеры (дубли).<br /><br />"
+				  					+"<table>"
+				  					+"<tr >"
+						  			+"<td style='padding-left:10px; padding-right:10px; color:black; font-weight:bold;'>'Удалить'- </td>" 
+						  			+"<td style='color:black;'>удаление дублирующих записей. <br />"
+				  					+"В случае выбора этой опции, будут удалены из базы данных только записи-дубли, " 
+				  					+"при этом сами записи об этих событиях будут сохранены в единственном варианте " 
+				  					+"и будут доступны для дальнейшего использования.<br />"
+				  					+"Для дальнейшего анализа ситуации вам будут предоставлен список удаденных записей-дублей в виде текстового файла."
+				  					+"</tr>"
+				  					+"<tr><td>&nbsp;</td><td>&nbsp;</td></tr>"
+				  					+"<tr>"
+				  					+"<td style='padding-left:10px; padding-right:10px; color:black; font-weight:bold;'>'Игнорировать'- </td>" 
+				  					+"<td style='color:black;'>игнорировать дублирующие записи.</h2><br />"
+						  			+"В случае выбора этой опции, дублирующие записи остануться в базе данных, " 
+				  					+"но это никак не повлияет на дальнейшую работу, поскольку их наличие будет " 
+				  					+"учитываться. Однако, в случае обновления данных за период, который содержит " 
+				  					+"дублирующие записи, снова появится это уведомление." 
+						  			+"</td>"
+						  			+"</tr>";
+						  			//+"</table>";
+						  		
 						  			message_box.yes_delegate = function(event){
 						  				gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt':'clear'});
 						  			};
@@ -801,55 +797,77 @@ var gallery = {
 						  				gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt':'ignore'});
 						  			};
 						  			
-						  			message_box.show(message, header, message_box.message_type.error, message_box.buttont_type.YesNo);
-						  		}					  			
+						  			message_box.buttons_name.No = "Игнорировать";
+						  			message_box.buttons_name.Yes = "Удалить";
+						  			
+						  			message_box.show(message, header, message_box.message_type.error, message_box.button_type.YesNo);
+						  		//}					  			
 								//$('#matrix_load').hide();
 					  		}
 							//если вовремя очистки не были удалены все дубли
 					  		else if (data.status == 'error' && data.code=='2') {
 					  			
-					  			if(MSIE){
-						  			//Запрашиваем действия пользователя относительно дублированных событий
-						  			var optn = confirm("Произошла ошибка при удалении дублирующих записей. \nКоличество обработанных записей: "+data.qtty+"шт.\n\n"
-						  					+"'OK' - повторная попытка удаления дублирующих записей,\n\n"
-						  					+"'Отмена' - игнорировать дублирующие записи.\n\n");
-						  			
-						  			if(optn){
-						  				gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt':'clear'});
-						  			}else{
-						  				gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt':'ignore'});
-						  			}
-					  			}else{
+//					  			if(MSIE){
+//						  			//Запрашиваем действия пользователя относительно дублированных событий
+//						  			var optn = confirm("Произошла ошибка при удалении дублирующих записей. \nКоличество обработанных записей: "+data.qtty+"шт.\n\n"
+//						  					+"'OK' - повторная попытка удаления дублирующих записей,\n\n"
+//						  					+"'Отмена' - игнорировать дублирующие записи.\n\n");
+//						  			
+//						  			if(optn){
+//						  				gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt':'clear'});
+//						  			}else{
+//						  				gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt':'ignore'});
+//						  			}
+//					  			}else{
 					  				
-						  			var header = "Произошла ошибка при удалении дублирующих записей.";
+						  			var header = "Ошибка.";
 						  			
-						  			var message = "<h2 style='color: #000;'>Очищено дублирующих записей "+data.qtty+"шт.<br /><br />"
-				  					+"'OK' -  повторная попытка удаления дублирующих записей,<br /><br />"
-				  					+"'Отмена' - игнорировать дублирующие записи.</h2><br /><br />Оставшиеся дублированные записи:<br />";
+						  			var message = "<h2 style='color: #000;'>" +"Не удалось удалить все дублирующие записи.<br />" 
+						  			+"Было удалено "+ data.qtty+ "записей-дублей. <br />"
+						  			+" В диапазоне ["+data.range_start+" : "+data.range_end
+						  			+"]  "
+						  			+"остались записи о ссылках на файлы с одинаковым временем создания и номером камеры (дубли).<br /><br />"
+				  					+"<table>"
+				  					+"<tr >"
+						  			+"<td style='padding-left:10px; padding-right:10px; color:black; font-weight:bold;'>'Удалить'- </td>" 
+						  			+"<td style='color:black;'>удаление дублирующих записей. <br />"
+				  					+"В случае выбора этой опции, будут удалены из базы данных только записи-дубли, " 
+				  					+"при этом сами записи об этих событиях будут сохранены в единственном варианте " 
+				  					+"и будут доступны для дальнейшего использования.<br />"
+				  					+"Для дальнейшего анализа ситуации вам будут предоставлен список удаденных записей-дублей в виде текстового файла."
+				  					+"</tr>"
+				  					+"<tr><td>&nbsp;</td><td>&nbsp;</td></tr>"
+				  					+"<tr>"
+				  					+"<td style='padding-left:10px; padding-right:10px; color:black; font-weight:bold;'>'Игнорировать'- </td>" 
+				  					+"<td style='color:black;'>игнорировать дублирующие записи.</h2><br />"
+						  			+"В случае выбора этой опции, дублирующие записи остануться в базе данных, " 
+				  					+"но это никак не повлияет на дальнейшую работу, поскольку их наличие будет " 
+				  					+"учитываться. Однако, в случае обновления данных за период, который содержит " 
+				  					+"дублирующие записи, снова появится это уведомление." 
+						  			+"</td>"
+						  			+"</tr>";
+						  			//+"</table>";
 						  			
-						  			message += '<table style="border-collapse:collapse;" >';
-						  			
-						  			$.each(data.dbl_rows, function(i, row){
-						  				if(i==0){
-						  					message += "<tr>";
-						  					$.each(row, function(fld, content){
-						  						message += "<th style='border:2px solid black; color: #000;'>";
-						  						message += fld;
-						  						message += "</th>";
-						  					});
-						  					message += "</tr>";
-						  				}
-						  				
-						  				message += "<tr>";
-						  				$.each(row, function(fld, content){
-						  					message += "<td style='border:2px solid black; color: #000;'>";
-					  						message += content;
-					  						message += "</td>";
-						  				});
-				  						message += "</tr>";
-						  				
-						  			});
-						  			message += "</table>";
+//						  			message += '<br />Оставшиеся дублированные записи:<br /><table style="border-collapse:collapse;" >';
+//						  			$.each(data.dbl_rows, function(i, row){
+//						  				if(i==0){
+//						  					message += "<tr>";
+//						  					$.each(row, function(fld, content){
+//						  						message += "<th style='border:2px solid black; color: #000;'>";
+//						  						message += fld;
+//						  						message += "</th>";
+//						  					});
+//						  					message += "</tr>";
+//						  				}
+//						  				message += "<tr>";
+//						  				$.each(row, function(fld, content){
+//						  					message += "<td style='border:2px solid black; color: #000;'>";
+//					  						message += content;
+//					  						message += "</td>";
+//						  				});
+//				  						message += "</tr>";
+//						  			});
+//						  			message += "</table>";
 						  			
 						  			
 						  			message_box.yes_delegate = function(event){
@@ -860,10 +878,13 @@ var gallery = {
 						  				gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt':'ignore'});
 						  			};
 						  			
-						  			message_box.show(message, header, message_box.message_type.error, message_box.buttont_type.YesNo);
+						  			message_box.buttons_name.No = "Игнорировать";
+						  			message_box.buttons_name.Yes = "Удалить";
+						  			
+						  			message_box.show(message, header, message_box.message_type.error, message_box.button_type.YesNo);
 					  				
 					  				
-					  			}
+					  			//}
 					  			
 					  			
 							//$('#matrix_load').hide();
@@ -1221,11 +1242,16 @@ var message_box = {
 		},
 		
 		//отображение кнопок
-		buttont_type : {
+		button_type : {
 			OK:'OK',
 			YesNo:'YesNo'
 		},
 		
+		buttons_name : {
+			OK:'OK',
+			Yes:'Да',
+			No:'Нет'
+		},
 		
 		//Заголовок
 		header : 'message box HEADER',
@@ -1245,6 +1271,8 @@ var message_box = {
 			message_box.ok_delegate=function(event){};
 			message_box.no_delegate=function(event){};
 			message_box.yes_delegate=function(event){};
+			//названия кнопок востанавливаем
+			message_box.buttons_name = { OK:'OK', Yes:'Да', No:'Нет' };
 		},
 		
 
@@ -1278,9 +1306,9 @@ var message_box = {
 		},
 		
 		//показать собщение
-		show : function(message, header, message_type, buttont_type){
+		show : function(message, header, message_type, button_type){
 			
-			buttont_type = buttont_type || message_box.buttont_type.OK;
+			button_type = button_type || message_box.button_type.OK;
 			message_type = message_type || message_box.message_type.info;
 			header = header || "Информационное собщение";
 			
@@ -1289,24 +1317,22 @@ var message_box = {
 			var mbHeader = $('<div id="mb_header" class="mb_header" ></div>')
 				.append('<img src="'+message_box.images[message_type].src+'" alt="'+message_type+'" id="type_imgage" />')
 				.append('<h3>'+header+'</h3>');
-
-			
 			
 			var mbBody = $('<div id="mb_body" class="mb_body" >'+message+'</div>');
 
 			var mbControlsBar = $('<div id="mb_controls_bar" class="mb_controls_bar" ></div>');
 
-			var btnOK = $('<button id="mb_btn_ok" class="mb_button" value="ok" >OK</button>');
-			var btnYes = $('<button id="mb_btn_no" class="mb_button" value="yes" >Нет</button>');
-			var btnNo = $('<button id="mb_btn_yes" class="mb_button" value="no" >Да</button>');
+			var btnOK = $('<button id="mb_btn_ok" class="mb_button" value="ok" >'+message_box.buttons_name.OK+'</button>');
+			var btnYes = $('<button id="mb_btn_no" class="mb_button" value="yes" >'+message_box.buttons_name.No+'</button>');
+			var btnNo = $('<button id="mb_btn_yes" class="mb_button" value="no" >'+message_box.buttons_name.Yes+'</button>');
 			
-			switch (buttont_type) {
-			case this.buttont_type.YesNo:
+			switch (button_type) {
+			case this.button_type.YesNo:
 				$(mbControlsBar)
 				.append(btnYes)
 				.append(btnNo);
 				break;
-			case this.buttont_type.OK:	
+			case this.button_type.OK:	
 			default:
 				$(mbControlsBar).append(btnOK);
 				break;

@@ -368,7 +368,9 @@ class Adb {
       			'code'=>'1',
       			'description'=>'Doubled events detected', 
       			'qtty'=>sizeof($dbl_events),
-      			'dbl_rows'=> $dbl_events
+      			//'dbl_rows'=> $dbl_events
+      			'range_start'=>$dbl_events[0][$this->_key('DT1')],
+      			'range_end'=>$dbl_events[sizeof($dbl_events)-1][$this->_key('DT1')]
       		) ;
       	}elseif ($on_dbld_evnts=='clear'){
       		//устраиваем чистку таблицы EVENTS от дублирующих записей
@@ -381,7 +383,9 @@ class Adb {
       				'code'=>'2',
       				'description'=>'Error during cleaning', 
       				'qtty'=>$cor_nr,
-      				'dbl_rows'=>$rst_dbl_events
+      				//'dbl_rows'=>$rst_dbl_events
+      				'range_start'=>$rst_dbl_events[0][$this->_key('DT1')]  ,
+      			    'range_end'=>$rst_dbl_events[sizeof($rst_dbl_events)-1][$this->_key('DT1')]
       			) ;
       		}
       	}elseif($on_dbld_evnts=='ignore'){
@@ -422,9 +426,7 @@ class Adb {
     * @return кол-во исправленных записей
     */
    private function clear_dubled_evnts($dbl_evts){
-   	
 	$cntr = 0;
-   	
    	foreach($dbl_evts as $key=>$val){
 		//Удаляем дубли
 		$query = "DELETE FROM EVENTS WHERE"
@@ -465,10 +467,8 @@ class Adb {
 		}catch(Exception $err){
 			return $cntr;
 		}
-	
 		$cntr++;
 	   	}
-   	
    	return $cntr;
    }
    

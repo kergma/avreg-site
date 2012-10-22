@@ -20,10 +20,6 @@
 
 }
 
-
-
-
-
 #message_box #mb_header{
 		height:7%;
 		text-align: center;
@@ -60,7 +56,7 @@
 #message_box #mb_controls_bar .mb_button{
 	/*height: 24px;*/
 	height: 93%;
-	width: 100px;
+	width: 130px;
 	
 	font-size: 12pt;
 	
