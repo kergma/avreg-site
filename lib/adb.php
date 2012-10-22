@@ -166,7 +166,7 @@ class Adb {
          }
          
          // формирование уникального индекса, для работы кэша в браузере пользователя
-         $events[str_replace(array('/', '.'),'_',$line[5].'_'.$line[2])] = $line;
+         $events[str_replace(array('/', '.'),'_',$line[5].'_'.$line[2].'_'.$line[0] )] = $line;
       }
       
       return $events;
@@ -281,7 +281,7 @@ class Adb {
    public function gallery_update_tree_events($start, $end, $cameras = false, $on_dbld_evnts='ignore' ) {
       $query = "SELECT *";
       $query .= " FROM EVENTS";
-      $query .= ' WHERE EVT_ID in (15,16,17,18,19,20,21,23,32,12)';
+      $query .= ' WHERE EVT_ID in (12,15,16,17,18,19,20,21,23,32)';
       if ($start) {
          $tstart = date('Y-m-d H:00:00',strtotime($start));
          $query .= " AND DT1 >= '".$tstart."'";
@@ -312,8 +312,8 @@ class Adb {
       			.'CAM_NR='.$line[$this->_key('CAM_NR')].'&'
       			.'EVT_ID='.$line[$this->_key('EVT_ID')].'&'
       			.'SESS_NR='.$line[$this->_key('SESS_NR')].'&'
-     			.'FILESZ_KB='.$line[$this->_key('FILESZ_KB')]."&"
-     			.'FRAMES='.$line[$this->_key('FRAMES')]."&"
+	   			.'FILESZ_KB='.$line[$this->_key('FILESZ_KB')]."&"
+    			.'FRAMES='.$line[$this->_key('FRAMES')]."&"
      			.'ALT1='.$line[$this->_key('ALT1')]."&"
      			.'ALT2='.$line[$this->_key('ALT2')]."&"
       			.'EVT_CONT='.$line[$this->_key('EVT_CONT')];
@@ -368,7 +368,7 @@ class Adb {
       			'code'=>'1',
       			'description'=>'Doubled events detected', 
       			'qtty'=>sizeof($dbl_events),
-      			//'dbl_rows'=> $dbl_events
+//      			'dbl_rows'=> $dbl_events,
       			'range_start'=>$dbl_events[0][$this->_key('DT1')],
       			'range_end'=>$dbl_events[sizeof($dbl_events)-1][$this->_key('DT1')]
       		) ;
@@ -387,18 +387,17 @@ class Adb {
       				'range_start'=>$rst_dbl_events[0][$this->_key('DT1')]  ,
       			    'range_end'=>$rst_dbl_events[sizeof($rst_dbl_events)-1][$this->_key('DT1')]
       			) ;
-      		}else{
-      			//передаем список исправленных записей
-      			
-      			return  array(
-					'status' => 'dbl_events_removed', 
-      			    'code'=>'3',
-      			    'description'=>'List of the removed double-events', 
-      			    'qtty'=>$cor_nr,
-      				'dbl_rows'=>$dbl_events,
-      			    'range_start'=>$dbl_events[0][$this->_key('DT1')]  ,
-      			    'range_end'=>$dbl_events[sizeof($dbl_events)-1][$this->_key('DT1')]
-      			) ;
+//       		}else{
+//       			//передаем список исправленных записей
+//       			return  array(
+// 					'status' => 'dbl_events_removed', 
+//       			    'code'=>'3',
+//       			    'description'=>'List of the removed double-events', 
+//       			    'qtty'=>$cor_nr,
+//       				'dbl_rows'=>$dbl_events,
+//       			    'range_start'=>$dbl_events[0][$this->_key('DT1')]  ,
+//       			    'range_end'=>$dbl_events[sizeof($dbl_events)-1][$this->_key('DT1')]
+//       			) ;
       			
       			
       		}

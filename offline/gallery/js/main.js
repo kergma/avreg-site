@@ -788,6 +788,31 @@ var gallery = {
 						  			+"</td>"
 						  			+"</tr>";
 						  			//+"</table>";
+						  			
+						  			//+"</table>";
+						  			
+//						  			message += '<br />Оставшиеся дублированные записи:<br /><table style="border-collapse:collapse;" >';
+//						  			$.each(data.dbl_rows, function(i, row){
+//						  				if(i==0){
+//						  					message += "<tr>";
+//						  					$.each(row, function(fld, content){
+//						  						message += "<th style='border:2px solid black; color: #000;'>";
+//						  						message += fld;
+//						  						message += "</th>";
+//						  					});
+//						  					message += "</tr>";
+//						  				}
+//						  				message += "<tr>";
+//						  				$.each(row, function(fld, content){
+//						  					message += "<td style='border:2px solid black; color: #000;'>";
+//					  						message += content;
+//					  						message += "</td>";
+//						  				});
+//				  						message += "</tr>";
+//						  			});
+//						  			message += "</table>";
+						  			
+						  			
 						  		
 						  			message_box.yes_delegate = function(event){
 						  				gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt':'clear'});
