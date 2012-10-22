@@ -311,11 +311,11 @@ class Adb {
       			.'DT2='.$line[$this->_key('DT2')]."&"
       			.'CAM_NR='.$line[$this->_key('CAM_NR')].'&'
       			.'EVT_ID='.$line[$this->_key('EVT_ID')].'&'
-//     			.'SESS_NR='.$line[$this->_key('SESS_NR')].'&'
-//     			.'FILESZ_KB='.$line[$this->_key('FILESZ_KB')]."&"
-//     			.'FRAMES='.$line[$this->_key('FRAMES')]."&"
-//     			.'ALT1='.$line[$this->_key('ALT1')]."&"
-//     			.'ALT2='.$line[$this->_key('ALT2')]."&"
+      			.'SESS_NR='.$line[$this->_key('SESS_NR')].'&'
+     			.'FILESZ_KB='.$line[$this->_key('FILESZ_KB')]."&"
+     			.'FRAMES='.$line[$this->_key('FRAMES')]."&"
+     			.'ALT1='.$line[$this->_key('ALT1')]."&"
+     			.'ALT2='.$line[$this->_key('ALT2')]."&"
       			.'EVT_CONT='.$line[$this->_key('EVT_CONT')];
       	//проверяем уникальность ключей
       	if(isset($tmp[$evt_key])){
