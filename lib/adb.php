@@ -311,11 +311,11 @@ class Adb {
       			.'DT2='.$line[$this->_key('DT2')]."&"
       			.'CAM_NR='.$line[$this->_key('CAM_NR')].'&'
       			.'EVT_ID='.$line[$this->_key('EVT_ID')].'&'
-      			.'SESS_NR='.$line[$this->_key('SESS_NR')].'&'
-     			.'FILESZ_KB='.$line[$this->_key('FILESZ_KB')]."&"
-     			.'FRAMES='.$line[$this->_key('FRAMES')]."&"
-     			.'ALT1='.$line[$this->_key('ALT1')]."&"
-     			.'ALT2='.$line[$this->_key('ALT2')]."&"
+//     			.'SESS_NR='.$line[$this->_key('SESS_NR')].'&'
+//     			.'FILESZ_KB='.$line[$this->_key('FILESZ_KB')]."&"
+//     			.'FRAMES='.$line[$this->_key('FRAMES')]."&"
+//     			.'ALT1='.$line[$this->_key('ALT1')]."&"
+//     			.'ALT2='.$line[$this->_key('ALT2')]."&"
       			.'EVT_CONT='.$line[$this->_key('EVT_CONT')];
       	//проверяем уникальность ключей
       	if(isset($tmp[$evt_key])){
@@ -387,7 +387,24 @@ class Adb {
       				'range_start'=>$rst_dbl_events[0][$this->_key('DT1')]  ,
       			    'range_end'=>$rst_dbl_events[sizeof($rst_dbl_events)-1][$this->_key('DT1')]
       			) ;
+      		}else{
+      			//передаем список исправленных записей
+      			
+      			return  array(
+					'status' => 'dbl_events_removed', 
+      			    'code'=>'3',
+      			    'description'=>'List of the removed double-events', 
+      			    'qtty'=>$cor_nr,
+      				'dbl_rows'=>$dbl_events,
+      			    'range_start'=>$dbl_events[0][$this->_key('DT1')]  ,
+      			    'range_end'=>$dbl_events[sizeof($dbl_events)-1][$this->_key('DT1')]
+      			) ;
+      			
+      			
       		}
+      		
+      		
+      		
       	}elseif($on_dbld_evnts=='ignore'){
       		//Игнорируем
       		//при проверке ключей дубли будут игнорироваться при заполнении TREE_EVENTS
