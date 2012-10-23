@@ -1704,7 +1704,7 @@ var matrix = {
 		$('#tree').height($('#sidebar').height() - $('#type_event').height() - $('#favorite').height() - $('#statistics').height()-90);
 
 		// высчитываем размеры табнейлов
-		matrix.thumb_width = matrix.cell_width-matrix.config.cell_padding;
+		matrix.thumb_width = matrix.cell_width-matrix.config.cell_padding-4;
 		matrix.thumb_height = matrix.cell_height-matrix.config.cell_padding*2 -3;
 
 		if(MSIE){
@@ -2614,7 +2614,7 @@ var matrix = {
 				'type': type, 
 				'cameras': cameras}, 
 				function(data) {
-
+					
 					var i = get_sp;
 				// обновляем кеш
 				$.each(data.events, function(key, value) {
