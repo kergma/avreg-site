@@ -1518,6 +1518,9 @@ var matrix = {
 			matrix.thumb_height += 24;
 			$('.content_item .info_block').hide();
 		}
+		//корректировка размеров тамбнейлов
+		matrix.doProportion();
+
 		$('#scroll_content .show').each(function() {
 			matrix.setimagesize($('#info').attr('id').replace('cell_',''));
 		});
