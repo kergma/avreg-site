@@ -399,6 +399,7 @@ var gallery = {
 				}
 				//->
 				var strcook = Base64.encode(stringify(objcook));
+				
 				SetCookie(self.config.name, strcook, self.config.days, self.config.path);
 			},
 			set : function (name, value) {
@@ -752,17 +753,6 @@ var gallery = {
 							//если вовремя заполнения EVENTS_TREE были обнаружены дублированные события
 					  		else if (data.status == 'error' && data.code=='1') {
 					  		
-//					  			if(MSIE){
-//						  			//Запрашиваем действия пользователя относительно дублированных событий
-//						  			var optn = confirm("Обнаружены дублирующие записи событий в колическве "+data.qtty+"шт.\n\n"
-//						  					+"'OK' - удаление дублирующих записей,\n\n"
-//						  					+"'Отмена' - игнорировать дублирующие записи.\n\n");
-//						  			if(optn){
-//						  				gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt':'clear'});
-//						  			}else{
-//						  				gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt':'ignore'});
-//						  			}
-//					  			}else{
 						  			var header = "Ошибка";
 						  			
 						  			var message = "<h2 style='color: #000;'>" +"В диапазоне ["+data.range_start+" : "+data.range_end
@@ -775,7 +765,7 @@ var gallery = {
 				  					+"В случае выбора этой опции, будут удалены из базы данных только записи-дубли, " 
 				  					+"при этом сами записи об этих событиях будут сохранены в единственном варианте " 
 				  					+"и будут доступны для дальнейшего использования.<br />"
-				  					+"Для дальнейшего анализа ситуации вам будут предоставлен список удаденных записей-дублей в виде текстового файла."
+				  					//+"Для дальнейшего анализа ситуации вам будут предоставлен список удаденных записей-дублей в виде текстового файла."
 				  					+"</tr>"
 				  					+"<tr><td>&nbsp;</td><td>&nbsp;</td></tr>"
 				  					+"<tr>"
@@ -826,25 +816,12 @@ var gallery = {
 						  			message_box.buttons_name.Yes = "Удалить";
 						  			
 						  			message_box.show(message, header, message_box.message_type.error, message_box.button_type.YesNo);
-						  		//}					  			
+				  			
 								//$('#matrix_load').hide();
 					  		}
 							//если вовремя очистки не были удалены все дубли
 					  		else if (data.status == 'error' && data.code=='2') {
 					  			
-//					  			if(MSIE){
-//						  			//Запрашиваем действия пользователя относительно дублированных событий
-//						  			var optn = confirm("Произошла ошибка при удалении дублирующих записей. \nКоличество обработанных записей: "+data.qtty+"шт.\n\n"
-//						  					+"'OK' - повторная попытка удаления дублирующих записей,\n\n"
-//						  					+"'Отмена' - игнорировать дублирующие записи.\n\n");
-//						  			
-//						  			if(optn){
-//						  				gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt':'clear'});
-//						  			}else{
-//						  				gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt':'ignore'});
-//						  			}
-//					  			}else{
-					  				
 						  			var header = "Ошибка.";
 						  			
 						  			var message = "<h2 style='color: #000;'>" +"Не удалось удалить все дублирующие записи.<br />" 
@@ -873,28 +850,6 @@ var gallery = {
 						  			+"</tr>";
 						  			//+"</table>";
 						  			
-//						  			message += '<br />Оставшиеся дублированные записи:<br /><table style="border-collapse:collapse;" >';
-//						  			$.each(data.dbl_rows, function(i, row){
-//						  				if(i==0){
-//						  					message += "<tr>";
-//						  					$.each(row, function(fld, content){
-//						  						message += "<th style='border:2px solid black; color: #000;'>";
-//						  						message += fld;
-//						  						message += "</th>";
-//						  					});
-//						  					message += "</tr>";
-//						  				}
-//						  				message += "<tr>";
-//						  				$.each(row, function(fld, content){
-//						  					message += "<td style='border:2px solid black; color: #000;'>";
-//					  						message += content;
-//					  						message += "</td>";
-//						  				});
-//				  						message += "</tr>";
-//						  			});
-//						  			message += "</table>";
-						  			
-						  			
 						  			message_box.yes_delegate = function(event){
 						  				gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt':'clear'});
 						  			};
@@ -907,10 +862,6 @@ var gallery = {
 						  			message_box.buttons_name.Yes = "Удалить";
 						  			
 						  			message_box.show(message, header, message_box.message_type.error, message_box.button_type.YesNo);
-					  				
-					  				
-					  			//}
-					  			
 					  			
 							//$('#matrix_load').hide();
 					  		}
@@ -1709,10 +1660,9 @@ var matrix = {
 
 		if(MSIE){
 			// высчитываем размеры табнейлов
-			matrix.thumb_width = matrix.cell_width-matrix.config.cell_padding - 6 ;
+			matrix.thumb_width = matrix.cell_width-matrix.config.cell_padding - 8 ;
 			matrix.thumb_height = matrix.cell_height-matrix.config.cell_padding*2 - 8 ;
 		}
-		
 		
 		// показываем или скрываем информацию о событии
 		if ($('#info').attr('checked')) {
@@ -1990,8 +1940,8 @@ var matrix = {
 				elem_proportion = width/height;
 				
 				if(origin_proportion > elem_proportion ){
-									img_height = parseInt(width/origin_proportion);
-									img_width = width;
+					img_height = parseInt(width/origin_proportion);
+					img_width = width;
 				}
 				else {
 					img_width = parseInt( height*origin_proportion);

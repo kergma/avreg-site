@@ -205,8 +205,12 @@ function SetCookie(cookieName,cookieValue,nDays, Path)
    if (nDays==null || nDays==0) nDays=1;
    expire.setTime(today.getTime() + 3600000*24*nDays);
 	var dpath = (Path != null && Path != '') ? ';path='+Path  : '';
-   document.cookie = cookieName + '=' + escape(cookieValue)
-      + ";expires="+expire.toGMTString()+dpath;
+   document.cookie = cookieName + '=' + escape(cookieValue) + ";expires="+expire.toGMTString()+dpath;
+
+	if(MSIE){
+	   	document.cookie=cookieName + '=' + escape(cookieValue) + ";expires="+expire.toGMTString();
+	}
+	
 }
 
 function ReadCookie(cookieName)

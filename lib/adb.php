@@ -388,22 +388,7 @@ class Adb {
       				'range_start'=>$rst_dbl_events[0][$this->_key('DT1')]  ,
       			    'range_end'=>$rst_dbl_events[sizeof($rst_dbl_events)-1][$this->_key('DT1')]
       			) ;
-//       		}else{
-//       			//передаем список исправленных записей
-//       			return  array(
-// 					'status' => 'dbl_events_removed', 
-//       			    'code'=>'3',
-//       			    'description'=>'List of the removed double-events', 
-//       			    'qtty'=>$cor_nr,
-//       				'dbl_rows'=>$dbl_events,
-//       			    'range_start'=>$dbl_events[0][$this->_key('DT1')]  ,
-//       			    'range_end'=>$dbl_events[sizeof($dbl_events)-1][$this->_key('DT1')]
-//       			) ;
-      			
-      			
       		}
-      		
-      		
       		
       	}elseif($on_dbld_evnts=='ignore'){
       		//Игнорируем
