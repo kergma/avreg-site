@@ -160,10 +160,16 @@ a {
 	//border-radius: 0 0 0 4px;
 	
 }
+
+#select_all_cam{
+	bottom: 5px;
+    position: absolute;
+    left: 10px;
+}
+
 #more_cam {
 	display: none;
 	font-size: 28px;
-	
 	bottom: 5px;
     position: absolute;
     right: 10px;
