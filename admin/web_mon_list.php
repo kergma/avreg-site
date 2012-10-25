@@ -176,7 +176,7 @@ if ( !isset($mon_nr) || $mon_nr =='')
    //Создать новую раскладку
    print "<div style='clear:left;'><br>\n";
    if ( $admin_user)
-      print '<a href="'.$conf['prefix'].'/admin/web_mon_addnew?display=L&mon_nr='.$mon_nr.'&counter='.$counter.'">'.$l_mon_addnew.'</a>'."\n";
+      print '<a href="'.$conf['prefix'].'/admin/web_mon_addnew.php?display=L&mon_nr='.$mon_nr.'&counter='.$counter.'">'.$l_mon_addnew.'</a>'."\n";
    else
       print '&nbsp;'. $l_mon_admin_only ."\n";
    print "</div>\n";
