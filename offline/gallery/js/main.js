@@ -325,7 +325,8 @@ var gallery = {
 					cook += $(this).val()+',';
 				}
 			});
-			if (count >0 ){
+//TODO отключаем это "не дадим пользователю снять последний чекбокс" ???????????????????????????			if (count >0 ){
+			if (count >=0 ){
 				gallery.cookie.set('cameras',cook);
 				// обновляем дерево
 				gallery.tree_event.reload();
@@ -667,7 +668,7 @@ var gallery = {
 //					matrix.keyBoardTree = tree;
 //				    }
 
-					//если диапазон не изменился - нисего не делаем
+					//если диапазон не изменился - ничего не делаем
 					if(matrix.keyBoardTree == tree) return;
 						
 					matrix.keyBoardTree = tree;
@@ -1203,6 +1204,50 @@ var gallery = {
 			// инициализация событий клавиатуры
 			keyBoard.init();
 			
+			
+			//Установка начального состояния чекбокса "выбрать/отменить все камеры"
+			$('#cam_selector').attr('checked', true).parent().attr('style','background-position: 0px -14px');
+			$('#cameras_selector .niceCheck').each(function(i,val){
+				if($('input:checkbox', this).attr('checked')!='checked' ){
+					$('#cam_selector').attr('checked', false).parent().attr('style','background-position: 0px 0px');
+					return;
+				}
+			});
+			
+			//установка обработчика чекбокса "Выбрать/отменить все камеры"
+			$('#select_all_cam').bind('click', function(e){
+				e.stopPropagation();
+				e.preventDefault();
+
+				$('#cameras_selector .niceCheck').each(function(i,val){
+					if($('#cam_selector').attr('checked')=='checked' ){
+						$(this).attr('style','background-position: 0px -14px');
+						$(this).children().attr('checked', true);
+					}else{
+						$(this).attr('style','background-position: 0px 0px');
+						$(this).children().attr('checked', false);
+						//Устанавливаем матрицу на начало диапазона
+						matrix.num = 0;
+						scroll.setposition(0);
+					}
+				});
+
+				gallery.reload_cams();
+				return false;
+			})
+			.find('label').bind('click', function(e){
+				if($('#cam_selector').attr('checked')=='checked' ){
+					$('#cam_selector')
+					.attr('checked', false)
+					.parent().attr('style','background-position: 0px 0px');
+					
+				}else{
+					$('#cam_selector')
+					.attr('checked', true)
+					.parent().attr('style','background-position: 0px -14px');
+				}
+			});
+			
 		}
 };
 
@@ -1628,8 +1673,6 @@ var matrix = {
 				matrix.proportionDetail=false;
 				scale.updateposition(scale.position);
 			}
-
-
 
 			//обновляем статистику
 			matrix.update_statistic();
@@ -2644,7 +2687,7 @@ var matrix = {
 	build : function(){
 //TODO//uncomment	
 //		$('#matrix_load').show();	
-
+		
 		matrix.cur_count_item = 0;
 		
 		if (typeof( matrix.curent_tree_events[matrix.tree]) != 'undefined') {
@@ -2772,7 +2815,7 @@ var scroll = {
 				// задаем высоту скрола
 				$(scroll.id + ' .scroll_body_v').height(scroll.height);
 				// высчитываем высоту ползунка в зависимости от элементов в матрице и всех элементов в диапазоне
-				h = Math.floor(scroll.height/scroll.cell_count*scroll.matrix_count);
+				h = Math.floor((scroll.height/(scroll.cell_count>0?scroll.cell_count:1))*scroll.matrix_count);
 				
 				if(h>scroll.height) h=scroll.height;
 				
@@ -2787,24 +2830,25 @@ var scroll = {
 
 			}else{
 			
+				
 			// задаем высоту скрола
 			$(scroll.id + ' .scroll_body_v').height(scroll.height);
 			// высчитываем высоту ползунка в зависимости от элементов в матрице и всех элементов в диапазоне
-			h = Math.floor(scroll.height/scroll.cell_count*scroll.matrix_count);
-			
-			if(h>scroll.height) h=scroll.height;
+			h = Math.floor((scroll.height/(scroll.cell_count>0?scroll.cell_count:1))*scroll.matrix_count);
+		
+			if(h>scroll.height) h=scroll.height-15;
 			
 			scroll.polzh = 0;
 			if ( h < scroll.min_height) {
 				scroll.polzh = scroll.min_height - h;
 				h = scroll.min_height;
-
 			}
+
+			
 			// задаем параметры ползунка
 			$(scroll.id + ' .scroll_polz_v').height(h);
-			$(scroll.id + ' .scroll_polz_v_Middle').height(h-20);
-			
-			$(scroll.id + ' .scroll_polz_v').css('top',0);
+//			$(scroll.id + ' .scroll_polz_v_Middle').height(h-20);
+//			$(scroll.id + ' .scroll_polz_v').css('top',0);
 			
 			}
 			

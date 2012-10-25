@@ -89,9 +89,24 @@
 							<?php endforeach;*/ ?>
 					
 							</div>
-							
 						</div>
 					<div id="more_cam">...</div>															
+					
+					
+					
+					<div id="select_all_cam">
+					<span class="new_Check" style="white-space: nowrap; ">
+						<span class="niceCheck">
+							<input type="checkbox" id="cam_selector" name="Выбрать/отменить все камеры" value="select_all">
+						</span>
+						<label style="float: none !important;" for="selector">
+							<a href="#" class="" title=""> Выбрать/отменить все камеры </a>
+						</label>
+					</span>
+					</div>
+					
+					
+					
 					</div>
 					<div id="win_bot" class="matrix_mode selectBox">
 						<div id="list_panel">
