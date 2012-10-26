@@ -209,12 +209,14 @@ var gallery = {
 				$('#content').width(self.myWidth - $('#sidebar').width() ).css('margin-left', pageX + 2);
 				$('#list_panel').width($('#content').width()-38);
 
-				var hc = $('#content').height() - $('#win_top').height() - $('#toolbar').height();
+				var hc; 
 				
 				if(MSIE){
+					hc = $('#content').height() - $('#win_top').height() - $('#toolbar').height();
 					hc -=30 ;
 					
 				}else{
+					hc = $('#content').height() - gallery.hcameras - $('#toolbar').height();
 					hc-=23;
 				}
 				
@@ -326,22 +328,41 @@ var gallery = {
 				}
 			});
 //TODO отключаем это "не дадим пользователю снять последний чекбокс" ???????????????????????????			if (count >0 ){
-			if (count >=0 ){
-				gallery.cookie.set('cameras',cook);
-				// обновляем дерево
-				gallery.tree_event.reload();
+			gallery.cookie.set('cameras',cook);
+			// обновляем дерево
+			gallery.tree_event.reload();
 
-				if(MSIE){
-					//устанавливаем на начало диапазона
-					matrix.num = 0;
-					scroll.setposition(0);
-				}
+			if(MSIE){
+				//устанавливаем на начало диапазона
+				matrix.num = 0;
+				scroll.setposition(0);
+			}
+			
+			if (count >0 ){
+//				gallery.cookie.set('cameras',cook);
+//				// обновляем дерево
+//				gallery.tree_event.reload();
+//
+//				if(MSIE){
+//					//устанавливаем на начало диапазона
+//					matrix.num = 0;
+//					scroll.setposition(0);
+//				}
+				
+				//переключаем чекбокс всех камер в 'Отменить выбор всех камер'
+				$('#cam_selector').attr('checked', true).parent().attr('style','background-position: 0px -14px');
+				$('#lbl_cam_selector').html('Отменить выбор всех камер');
 				
 			} else {
-				// не дадим пользователю снять последний чекбокс
+				//переключаем чекбокс всех камер в 'Выбрать все камеры'
+				$('#cam_selector').attr('checked', false).parent().attr('style','background-position: 0px 0px');
+				$('#lbl_cam_selector').html('Выбрать все камеры');
+
+				// уже даем
+				// не дадим пользователю снять последний чекбокс 
 				//$(this).attr('checked', 'checked');
-				alert(lang.empty_cameras);
-				return false;
+//				alert(lang.empty_cameras);
+//				return false;
 			}
 			return true;
 		},
@@ -781,29 +802,6 @@ var gallery = {
 						  			//+"</table>";
 						  			
 						  			//+"</table>";
-						  			
-//						  			message += '<br />Оставшиеся дублированные записи:<br /><table style="border-collapse:collapse;" >';
-//						  			$.each(data.dbl_rows, function(i, row){
-//						  				if(i==0){
-//						  					message += "<tr>";
-//						  					$.each(row, function(fld, content){
-//						  						message += "<th style='border:2px solid black; color: #000;'>";
-//						  						message += fld;
-//						  						message += "</th>";
-//						  					});
-//						  					message += "</tr>";
-//						  				}
-//						  				message += "<tr>";
-//						  				$.each(row, function(fld, content){
-//						  					message += "<td style='border:2px solid black; color: #000;'>";
-//					  						message += content;
-//					  						message += "</td>";
-//						  				});
-//				  						message += "</tr>";
-//						  			});
-//						  			message += "</table>";
-						  			
-						  			
 						  		
 						  			message_box.yes_delegate = function(event){
 						  				gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt':'clear'});
@@ -1028,7 +1026,7 @@ var gallery = {
 			message_box.init();
 			
 			self.cookie.init({path:WwwPrefix+'/offline/gallery.php'});
-
+			
 			//Загрузка изображений контролов
 			//Кнопки свернуть/развернуть
 			gallery.images['preview'] = new Image();
@@ -1036,6 +1034,16 @@ var gallery = {
 			//Кнопки свернуть/развернуть
 			gallery.images['detail'] = new Image();
 			gallery.images['detail'].src =  WwwPrefix+'/offline/gallery/img/slide2.png';
+			
+			var wcheck = 0;
+			var cams_chek = $('#cameras_selector .new_Check').each(function(i,val){
+				if($(val).width()>wcheck){
+					wcheck = $(val).width();
+				}
+			});
+			$(cams_chek).width(wcheck);
+			
+			
 			
 			// организация увеличение размера списка камер
 			if ($('#win_top').height() > 100) {
@@ -1205,27 +1213,39 @@ var gallery = {
 			keyBoard.init();
 			
 			
+			if(MSIE){
+				var wt = $('#win_top');
+				//установка высоты списка камер
+				gallery.hcameras = $(wt).height()+parseInt($(wt).css('border-top-width'))+parseInt($(wt).css('border-bottom-width')) ;
+			}
+			
 			//Установка начального состояния чекбокса "выбрать/отменить все камеры"
-			$('#cam_selector').attr('checked', true).parent().attr('style','background-position: 0px -14px');
-			$('#cameras_selector .niceCheck').each(function(i,val){
+			var cntr=0;
+			var col_cams = $('#cameras_selector .niceCheck').each(function(i,val){
 				if($('input:checkbox', this).attr('checked')!='checked' ){
-					$('#cam_selector').attr('checked', false).parent().attr('style','background-position: 0px 0px');
-					return;
+					cntr++;
 				}
 			});
 			
+			if(cntr==col_cams.length){
+				$('#cam_selector').attr('checked', false).parent().attr('style','background-position: 0px 0px');
+				$('#lbl_cam_selector').html('Выбрать все камеры');
+			}else{
+				$('#cam_selector').attr('checked', true).parent().attr('style','background-position: 0px -14px');
+				$('#lbl_cam_selector').html('Отменить выбор всех камер');
+			}
+			
 			//установка обработчика чекбокса "Выбрать/отменить все камеры"
 			$('#select_all_cam').bind('click', function(e){
-				e.stopPropagation();
-				e.preventDefault();
-
 				$('#cameras_selector .niceCheck').each(function(i,val){
 					if($('#cam_selector').attr('checked')=='checked' ){
 						$(this).attr('style','background-position: 0px -14px');
 						$(this).children().attr('checked', true);
+						$('#lbl_cam_selector').html('Отменить выбор всех камер');
 					}else{
 						$(this).attr('style','background-position: 0px 0px');
 						$(this).children().attr('checked', false);
+						$('#lbl_cam_selector').html('Выбрать все камеры');
 						//Устанавливаем матрицу на начало диапазона
 						matrix.num = 0;
 						scroll.setposition(0);
@@ -1233,7 +1253,6 @@ var gallery = {
 				});
 
 				gallery.reload_cams();
-				return false;
 			})
 			.find('label').bind('click', function(e){
 				if($('#cam_selector').attr('checked')=='checked' ){
@@ -1718,14 +1737,14 @@ var matrix = {
 			$('.content_item .info_block').hide();
 		}
 		// определяем новые размеры матрицы
-
+		var hc;
 		// обновляем размеры детального просмотра
-		var hc = $('#content').height() - $('#win_top').height() - $('#toolbar').height();
-		
 		if(MSIE){
+			hc = $('#content').height() - $('#win_top').height() - $('#toolbar').height();
 			hc -=30 ;
 			
 		}else{
+			hc = $('#content').height() - gallery.hcameras - $('#toolbar').height();
 			hc-=23;
 		}
 		
@@ -3621,8 +3640,38 @@ var keyBoard = {
 	checkSelecBox: function () {
 	
 //TODO//временная блокировка для MSIE
+		
 		if(MSIE){
-			$('#win_top').addClass('selectBox');
+//			$('#win_top').addClass('selectBox');
+			
+			if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.INSIDE) {
+				//keyBoard.selectBox($('#scroll_content'));
+				keyBoard.selectBox($('#win_bot'));
+				$('#win_top').height(gallery.hcameras);
+				if ($('#win_top').height() > 100) {
+					$('#more_cam').show();
+				}
+			}
+			else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.TREE) {
+				keyBoard.selectBox($('#tree'));
+
+				$('#win_top').height(gallery.hcameras);
+				if ($('#win_top').height() > 100) {
+					$('#more_cam').show();
+				}
+			} 
+			else if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.CAMS) {
+				//keyBoard.selectBox($('#cameras_selector'));
+				keyBoard.selectBox($('#win_top'));
+				keyBoard.selectElem(0);
+
+				$('#more_cam').hide();
+				$('#win_top').height('auto');
+			}
+			
+			
+			
+			
 			
 			return;
 		}

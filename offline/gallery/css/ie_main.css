@@ -144,10 +144,11 @@ a {
 }
 
 #select_all_cam{
-	bottom: 5px;
-    position: absolute;
+    position: relative;
     left: 10px;
+    top:2px;
 }
+
 
 
 #more_cam {

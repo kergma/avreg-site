@@ -24,10 +24,6 @@
 						
 					</div>
 				
-				<!--	<div id="favorite">
-						<input type="checkbox" id="input_favorite" name="favorite" value="favorite">
-						<label for="input_favorite">Отмеченные</label>
-		 			</div>-->
 					<div id="tree">
 						<div id="tree_new">
 						</div>
@@ -48,7 +44,19 @@
 			<div id="content">
 				<div class="window">
 					<div id="win_top" >
-						
+					
+					<div id="select_all_cam">
+						<span class="new_Check" style="white-space: nowrap; ">
+							<span class="niceCheck">
+								<input type="checkbox" id="cam_selector" name="Выбрать/отменить все камеры" value="select_all">
+							</span>
+							<label style="float: none !important;" for="selector">
+								<a id="lbl_cam_selector" href="#" class="" title=""> Выбрать/отменить все камеры </a>
+							</label>
+						</span>
+					</div>
+					
+					
 						<div id="cameras_selector" class="field checkboxes">
 							<div class="options">
 							
@@ -76,36 +84,10 @@
 								</span>
 								
 							<?php endforeach;?>
-						
-							
-											
-							
-							<?php /* foreach ($GCP_cams_params as $CAM_NR => $PARAM) :?>
-							
-								<span style="width:250px !important;  ">
-									<label style="width:225px !important; overflow: hidden; text-overflow: ellipsis;white-space: nowrap;text-align: center;" for="camera_<?php print $CAM_NR;?>"><a href="#<?php print $CAM_NR;?>" class="set_camera_color<?php if (isset($cookies['camera_'.$CAM_NR.'_color']) && !empty($cookies['camera_'.$CAM_NR.'_color']) ): print ' '.$cookies['camera_'.$CAM_NR.'_color'] . '_font'; endif;?>"><?php print $PARAM['text_left'].$PARAM['text_left']; ?></a></label>
-									<input type="checkbox" id="camera_<?php print $CAM_NR;?>" name="cameras" value="<?php print $CAM_NR;?>" <?php if (empty($cameras) || in_array($CAM_NR, $cameras)) :?>checked="checked" <?php endif;?>>
-								</span>
-							<?php endforeach;*/ ?>
 					
 							</div>
 						</div>
 					<div id="more_cam">...</div>															
-					
-					
-					
-					<div id="select_all_cam">
-					<span class="new_Check" style="white-space: nowrap; ">
-						<span class="niceCheck">
-							<input type="checkbox" id="cam_selector" name="Выбрать/отменить все камеры" value="select_all">
-						</span>
-						<label style="float: none !important;" for="selector">
-							<a href="#" class="" title=""> Выбрать/отменить все камеры </a>
-						</label>
-					</span>
-					</div>
-					
-					
 					
 					</div>
 					<div id="win_bot" class="matrix_mode selectBox">
