@@ -203,9 +203,6 @@ var gallery = {
 				
 				$('#sidebar #statistics').width(pageX-66);
 				
-				// fix content width on resize
-				//	$('#content').css("left",pageX);
-
 				$('#content').width(self.myWidth - $('#sidebar').width() ).css('margin-left', pageX + 2);
 				$('#list_panel').width($('#content').width()-38);
 
@@ -279,7 +276,6 @@ var gallery = {
 				} else {
 					gallery.cookie.set('resize_column', 300);
 				}
-//				$("body").css({"overflow-y":"hidden"});
 			}
 		},
 		
@@ -327,7 +323,6 @@ var gallery = {
 					cook += $(this).val()+',';
 				}
 			});
-//TODO отключаем это "не дадим пользователю снять последний чекбокс" ???????????????????????????			if (count >0 ){
 			gallery.cookie.set('cameras',cook);
 			// обновляем дерево
 			gallery.tree_event.reload();
@@ -339,16 +334,6 @@ var gallery = {
 			}
 			
 			if (count >0 ){
-//				gallery.cookie.set('cameras',cook);
-//				// обновляем дерево
-//				gallery.tree_event.reload();
-//
-//				if(MSIE){
-//					//устанавливаем на начало диапазона
-//					matrix.num = 0;
-//					scroll.setposition(0);
-//				}
-				
 				//переключаем чекбокс всех камер в 'Отменить выбор всех камер'
 				$('#cam_selector').attr('checked', true).parent().attr('style','background-position: 0px -14px');
 				$('#lbl_cam_selector').html('Отменить выбор всех камер');
@@ -357,12 +342,6 @@ var gallery = {
 				//переключаем чекбокс всех камер в 'Выбрать все камеры'
 				$('#cam_selector').attr('checked', false).parent().attr('style','background-position: 0px 0px');
 				$('#lbl_cam_selector').html('Выбрать все камеры');
-
-				// уже даем
-				// не дадим пользователю снять последний чекбокс 
-				//$(this).attr('checked', 'checked');
-//				alert(lang.empty_cameras);
-//				return false;
 			}
 			return true;
 		},
@@ -1019,8 +998,8 @@ var gallery = {
 			if (config && typeof(config) == 'object') {
 			    $.extend(self.config, config);
 			}
-//TODO//uncomment	
-//			$('#matrix_load').show();
+
+			$('#matrix_load').show();
 			
 			//инициализация месседж-бокса
 			message_box.init();
@@ -2118,7 +2097,6 @@ var matrix = {
 		
 		if (matrix.count_src > matrix.load_src) {
 			// если количество загруженных изображений меньше количество всего изображений, показываем ромашку
-//TODO//uncomment	
 //			$('#matrix_load').show();
 		}
 		// создаем объект изображения
@@ -2183,8 +2161,8 @@ var matrix = {
 
 	// обновление матрицы
 	update : function(sp) {
-//TODO//uncomment	
-//		$('#matrix_load').show();
+
+		$('#matrix_load').show();
 	
 		var height, width; //размер ячейки
 		var img_height, img_width;//размер изображения
@@ -2704,8 +2682,8 @@ var matrix = {
 	
 	// постройка матрицы временного диапазона
 	build : function(){
-//TODO//uncomment	
-//		$('#matrix_load').show();	
+	
+		$('#matrix_load').show();	
 		
 		matrix.cur_count_item = 0;
 		
@@ -3639,7 +3617,7 @@ var keyBoard = {
 	},
 	checkSelecBox: function () {
 	
-//TODO//временная блокировка для MSIE
+
 		
 		if(MSIE){
 //			$('#win_top').addClass('selectBox');
@@ -3668,11 +3646,6 @@ var keyBoard = {
 				$('#more_cam').hide();
 				$('#win_top').height('auto');
 			}
-			
-			
-			
-			
-			
 			return;
 		}
 		
