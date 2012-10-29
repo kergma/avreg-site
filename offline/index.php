@@ -52,6 +52,9 @@ DENY($arch_status);
 <title><?php echo($conf['server-name'] . '['.$named.']::Архив'); ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $GLOBALS['charset']; ?>" />
 <meta name="author" content="Andrey Nikitin &lt;nik-a at mail dot ru&gt;">
+<!-- inc. jquery -->
+<script type="text/javascript" src="<?php print $conf['prefix']; ?>/lib/js/jquery-1.7.1.js"></script>
+
 <style type="text/css">
 <!--
 body  {font-family: <?php echo $right_font_family; ?>; font-size: <?php echo $font_size; ?>}

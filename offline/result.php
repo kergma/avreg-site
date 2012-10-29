@@ -22,7 +22,6 @@ if (isset($_POST)) {
    else
       setcookie('avreg_embed_video','0',$expire,$_pg);
 }
-
 $include_javascripts = array('offline/result.js');
 $pageBgColor='#cccccc';
 $body_onload='on_body_load();';
@@ -30,6 +29,7 @@ $body_style='margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; ';
 $lang_file = '_offline.php';
 require ('../head.inc.php');
 DENY($arch_status);
+
 ?>
 
 <script type="text/javascript" language="javascript">

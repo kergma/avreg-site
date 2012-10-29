@@ -54,9 +54,10 @@ if (isset($_COOKIE))
 
   if (isset($_COOKIE['avreg_filter']))
      $filter_sel = str_replace('-' ,',', $_COOKIE['avreg_filter'][0]);
-  else
-     $filter_sel = implode(',', array_keys($env_id_ar));
-
+  else{
+//     $filter_sel = implode(',', array_keys($env_id_ar));
+     $filter_sel = '';
+  }
   if (isset($_COOKIE['avreg_scale'])) {
      $_i = $_COOKIE['avreg_scale'];
      settype($_i,'int');
@@ -141,7 +142,18 @@ print getSelectHtml('minute2', $minute_array, FALSE, 1, 0, $min2, FALSE, FALSE);
 </td>
 <td>
 
-<?php print getSelectByAssocAr('filter[]', $env_id_ar, TRUE, 7, 1, $filter_sel, FALSE, FALSE); ?>
+<?php 
+//формируем список чекбоксов
+if(stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')){
+	print  getChkbxByAssocAr('filter', $env_id_ar, 6, $filter_sel, true, FALSE);
+}else{
+	print  getChkbxByAssocAr('filter', $env_id_ar, 7, $filter_sel, true, FALSE);
+}
+//старый способ - формирование селекта
+//print getSelectByAssocAr('filter[]', $env_id_ar, TRUE, 7, 1, $filter_sel, FALSE, FALSE); 
+
+?>
+
 </td>
 <td>
 <?php

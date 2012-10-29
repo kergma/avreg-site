@@ -753,7 +753,9 @@ var gallery = {
 							}
 							//если вовремя заполнения EVENTS_TREE были обнаружены дублированные события
 					  		else if (data.status == 'error' && data.code=='1') {
-					  		
+					  			
+					  			$('#matrix_load').hide();
+					  			
 						  			var header = "Ошибка";
 						  			
 						  			var message = "<h2 style='color: #000;'>" +"В диапазоне ["+data.range_start+" : "+data.range_end
@@ -795,10 +797,10 @@ var gallery = {
 						  			
 						  			message_box.show(message, header, message_box.message_type.error, message_box.button_type.YesNo);
 				  			
-								//$('#matrix_load').hide();
 					  		}
 							//если вовремя очистки не были удалены все дубли
 					  		else if (data.status == 'error' && data.code=='2') {
+					  			$('#matrix_load').hide();
 					  			
 						  			var header = "Ошибка.";
 						  			
@@ -840,8 +842,7 @@ var gallery = {
 						  			message_box.buttons_name.Yes = "Удалить";
 						  			
 						  			message_box.show(message, header, message_box.message_type.error, message_box.button_type.YesNo);
-					  			
-							//$('#matrix_load').hide();
+
 					  		}
 						}
 					});

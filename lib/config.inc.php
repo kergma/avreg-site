@@ -1292,6 +1292,131 @@ function getSelectByAssocAr($_name, $assoc_array, $_multiple=FALSE ,
    return $a;
 }
 
+//набор чекбоксов 
+function getChkbxByAssocAr(
+$_name, 
+$assoc_array, 
+$_size = NULL, //кол-во отображаемых чекбоксов
+$selected=NULL, //выбранные значения
+//$onch=FALSE,
+$show_select_all=true, //Выбор всех значений
+$text_prefix = NULL,
+$TITLE=NULL,
+$reverse=FALSE //менеяет местами ключи со значениями в рез-й разметке
+){
+	$array_cnt = count($assoc_array);
+	if ( $array_cnt == 0 ) return '';
+	
+// 	if ($onch===TRUE)
+// 		$onch = 'onchange="this.form.submit()"';
+// 	else if (!empty($onch))
+// 		$onch = 'onchange="'.$onch.'"';
+// 	else
+// 		$onch='';
+	
+	
+	if (!empty($TITLE))
+		$_title='title="'.$TITLE.'"';
+	else
+		$_title='';
+	
+	if (!isset($_size)){
+		$overfl=' overflow-y:scroll; ';
+	}else{
+		$overfl=' overflow-y:auto; ';
+	}
+	
+	$a ='<div id="id_'.$_name.'" style="text-align:left;'.$overfl.'">'."\n";
+	
+	$is_chck_select_all=false;
+	if($show_select_all){
+		$a .='<input type="checkbox" id="id_'.$_name.'_select_all" name="'.$_name.'_select_all" value="select_all" onclick="chbox_select_all(\''.$_name.'\')" /> '."\n";
+		$a .= '<label for="id_'.$_name.'_select_all" class="chbox_head" style="font-weight:bold;color:#196BBA;">'."Выбрать все".'</label><br />'."\n";
+	}
+	
+	foreach ($assoc_array as $k => $v)	{
+		
+		settype($key,'string');
+		
+		if ( $reverse ) {
+			$key = &$v;
+			$value = &$k;
+		} else {
+			$key = &$k;
+			$value = &$v;
+		}
+
+		
+		if ( $selected != '' )
+		{
+			$_y = FALSE;
+			$ar = explode(',', $selected);
+
+			foreach ($ar as $sss)
+			{
+				if ($key == $sss)
+				{
+					$_y = TRUE;
+						break;
+				}
+			}
+			if ($_y){
+				$a .= '<label class="chbox_itm"><input type="checkbox" name="'.$_name.'[]" value="'.$key.'" checked /> '.$text_prefix.$value.'</label>'."\n";
+				$is_chck_select_all=true;
+			}else{
+				$a .= '<label class="chbox_itm"><input type="checkbox" name="'.$_name.'[]" value="'.$key.'" />'.$text_prefix.$value.'</label>'."\n";
+			}
+		} else {  // not selected
+			$a .= '<label class="chbox_itm"><input type="checkbox" name="'.$_name.'[]" value="'.$key.'" />'.$text_prefix.$value.'</label>'."\n";
+		}
+		$a.='<br />';
+	}
+
+	$a .= '</div>'."\n";
+	
+	$a .= '<script type="text/javascript">'."\n";
+	
+	$a .= 'chbox_select_all = function(name){ 
+		var head = $("#id_"+name+"_select_all");
+		if(typeof($(head).attr("checked"))=="undefined" ){
+			$("#id_"+name+" .chbox_itm input").attr({"checked":false});
+			$("#id_"+name+" .chbox_head").text("Выбрать все");
+		}
+		else{
+			$("#id_"+name+" .chbox_itm input").attr({"checked":true});
+			$("#id_"+name+" .chbox_head").text("Отменить все");
+		}
+	};';
+
+	
+	$a .='$(function(){'."\n";
+	
+	if($show_select_all && $is_chck_select_all){
+		$a .='$("#id_'.$_name.'_select_all")'."\n";
+		$a .='.attr({"checked":true});'."\n";
+		$a .='$("#id_'.$_name.' .chbox_head").text("Отменить все");'."\n";
+	}
+	if (isset($_size)){
+		$a .='var ht_cbx = 0;'."\n";
+		$a .='$("#id_'.$_name.' .chbox_itm").each(function(){ '."\n";
+		$a .='if($(this).height()>ht_cbx ) ht_cbx = $(this).height();'."\n";
+		$a .= ' });'."\n";
+		$a .='ht_cbx*= '.$_size.' ;'."\n";
+		$a .='$("#id_'.$_name.'")'."\n";
+		$a .='.height(ht_cbx)'."\n";
+		$a .='.width($("#id_'.$_name.'").width() +20);'."\n";
+	}
+	
+	$a .='});'."\n";
+	
+	$a .= '</script>'."\n";
+	
+	
+	return $a;
+}
+
+
+
 /**
  * 
  * Функция 
