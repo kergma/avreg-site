@@ -1341,7 +1341,7 @@ $reverse=FALSE //менеяет местами ключи со значения�
 	}
 	
 	//контейнер набора чекбоксов
-	$a .='<div id="id_'.$_name.'" style="text-align:left;'.$overfl.'">'."\n";
+	$a .='<div id="id_'.$_name.'" style="text-align:left;'.$overfl.' position:relative;">'."\n";
 	
 	foreach ($assoc_array as $k => $v)	{
 		settype($key,'string');

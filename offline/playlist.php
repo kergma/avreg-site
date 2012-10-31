@@ -16,52 +16,44 @@ DENY($arch_status);
 <script type="text/javascript" language="javascript">
 <!--
 
-/*
-$(Document).ready(function(){
-
-	reqest_audio_video();
-	$('#chk_video, #chk_audio').click(function(e){
-		reqest_audio_video();
-	});
-	
-});
-
-var reqest_audio_video = function(){
-	if($('#chk_audio').attr('checked')=='checked' || $('#chk_video').attr('checked')=='checked'){
-		if(typeof($('#id_audio_video').attr('id'))=='undefined'){
-			$('#id_content_type').append('<input type="hidden" id="id_audio_video" name="ftypes[]" value="12">');
-		}
-	}
-	else{
-		$('#id_audio_video').remove();
-	}
-		
-};
-*/
-
-
 var ie = document.all;
 var t = null;
 var do_wait = false;
 
+
 function switch_timemode() {
-     var tm_radio = ie?
-                 document.all['timemode']:
-                 document.getElementById('timemode');
-    var weekday_sel = ie?
-                 document.all['dayofweek[]']:
-                 document.getElementById('dayofweek[]');
-    if (tm_radio.checked) {
-      if (!weekday_sel.disabled) 
-         weekday_sel.disabled=true;
-    } else {
-       if (weekday_sel.disabled)
-         weekday_sel.disabled=false; 
-    }
+	if( typeof($('#timemode').attr('checked'))!='undefined' ){
+		$("#id_main_dayofweek input[type=checkbox]").attr('disabled',true);
+	}else{
+		$("#id_main_dayofweek input[type=checkbox]").attr('disabled',false);		
+	}
 }
 
-function on_submit()
+function on_submit(e)
 {
+	//валидация данных формы 
+	$(".warn").remove();
+	var warn = 	"<div class='warn' style='position:relative;'>" + "<h3> <?php echo $PlaylistFormValidation['title']; ?> ";
+	var frmIsValide = true;
+	if($('#id_cams input.chbox_itm:checked').length == 0){
+		frmIsValide = false;
+		warn+="<br> <?php echo $PlaylistFormValidation['no_cam']; ?> ";
+	}
+	if($('#id_content_type input:checked').length == 0){
+		frmIsValide = false;
+		warn+="<br> <?php echo $PlaylistFormValidation['no_media_type']; ?> ";
+	}
+
+	if( $("input[name=timemode]:checked").attr('value')==2 && $('#id_dayofweek input.chbox_itm:checked').length == 0){
+		frmIsValide = false;
+		warn+="<br> <?php echo $PlaylistFormValidation['no_dayofweek']; ?> ";
+	}
+	warn+="</h3></div>";
+	if(!frmIsValide){
+		$('form:first').before(warn); 
+		return false;
+	}
+	
    if ( do_wait )
 		return false;
    var btsubmit = ie? document.all['btSubmit']: document.getElementById('btSubmit');
@@ -116,7 +108,7 @@ if ( $num_rows > 0 ) {
 	}
 } else {
 	print '<p><b>' . $strNotCamsDef2 . '</b></p>' . "\n";
-
+	
 	require ('../foot.inc.php');
 
 	exit;
@@ -185,9 +177,7 @@ if (isset($_SESSION))
          $GLOBALS[$value] -= 1;
 } /* session */
 
-if (empty($day_of_week_preset))
-  $day_of_week_preset = '0,1,2,3,4,5,6';
-
+if (empty($day_of_week_preset))  $day_of_week_preset = '0,1,2,3,4,5,6';
 
 if ( !isset($year1) || !isset($year2)) {
   $tm2 = localtime(time(), true);
@@ -227,7 +217,15 @@ if ( isset($_SESSION) && isset($_SESSION['error'])/* ошибка */ )
 <table cellspacing="0" border="0" cellpadding="5">
 <tr valign="top">
 <td>
-<?php print getSelectByAssocAr('cams[]', $conf_cams_array, TRUE, 7, 1, $cams_sel, FALSE, FALSE); ?>
+<?php 
+
+	//формируем список чекбоксов выбора камер
+	print getChkbxByAssocAr('cams', $conf_cams_array, 6, $cams_sel, true, FALSE);
+
+//старый код
+//print getSelectByAssocAr('cams[]', $conf_cams_array, TRUE, 7, 1, $cams_sel, FALSE, FALSE); 
+
+?>
 </td>
 <td>
 <fieldset id="id_content_type">
@@ -273,7 +271,12 @@ print getSelectHtml('day2', $day_array, FALSE, 1, 1, $day_array[$day2], FALSE, F
 ?>
 </td>
 <td align="center">
-<?php print getSelectHtml('dayofweek[]', $day_of_week, TRUE, 7, 0, $day_of_week_preset, FALSE, FALSE); ?>
+<?php 
+	print getChkbxByAssocAr('dayofweek', $day_of_week, 0,'0,1,2,3,4,5,6', true, FALSE);
+	
+	//   print getSelectHtml('dayofweek[]', $day_of_week, TRUE, 7, 0, $day_of_week_preset, FALSE, FALSE); 
+
+?>
 </td>
 <td align="left" nowrap>
 <?php
