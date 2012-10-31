@@ -1140,6 +1140,13 @@ function canvas_growth() {
 		$('.MediaCont').removeClass('cursorMove');
 	});
    
+	//прячем кнопки масштабирования для плагинного содержимого
+	$(".win").each(function(i, val){
+		if($('.pl_cont', this).aplayerIsEmbedOrObject()){
+			$('.pl_minus, .pl_plus, .normal_size, .original_size',this).remove();
+		}
+	});
+	
 	
 	
 //--> Cameras' statuses    	

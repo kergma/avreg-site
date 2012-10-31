@@ -1634,8 +1634,11 @@ var matrix = {
 		//востанавливаем позицию изображения
 		scale2.restore_content_position();		
 
-		//Визуализируем кнопки масштабирования
-		$('#btn_cell_size, #btn_orig_size').show();
+		//если не внедренный объект
+		if( !$('.content_item.active .refBox').aplayerIsEmbedOrObject() ){
+			//Визуализируем кнопки масштабирования
+			$('#btn_cell_size, #btn_orig_size').show();
+		}
 	},
 	
 	
