@@ -397,7 +397,7 @@ function brout(win_nr, win_div, win_geo) {
  * @param _cols_nr - номер столбца текущего элемента
  * @param _rowspan - сколько позиций элемент занимает в раскладке
  */
-// XXX need ie box model 
+
 function calc_win_geo(_canvas_w, _canvas_h, img_aspect_ratio, _rows_nr, _cols_nr, _rowspan) {
    var cam_w;
    var cam_h;

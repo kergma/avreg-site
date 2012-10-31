@@ -1292,52 +1292,61 @@ function getSelectByAssocAr($_name, $assoc_array, $_multiple=FALSE ,
    return $a;
 }
 
-//набор чекбоксов 
+/**
+ * 
+ * Функция формирует разметку с набором чекбоксов для выбора значений
+ * @param unknown_type $_name базовое имя для идентификации эл-тов
+ * @param unknown_type $assoc_array ассоциативный массив с названиями и значениями чекбоксов
+ * @param unknown_type $_size кол-во одновременно отображаемых чекбоксов
+ * @param unknown_type $selected строка с номерами п/п чекнутых эл-тов
+ * @param unknown_type $show_select_all выводить чекбокс выбора/сброса всех чекбоксов
+ * @param unknown_type $text_prefix строка, добавляемая вначало к названию всех чекбоксов 
+ * @param unknown_type $reverse поменять местами использование ключей и значеий ассоц. массива при генерации разметки чекбоксов
+ * @return string результирующая разметка
+ */
 function getChkbxByAssocAr(
 $_name, 
 $assoc_array, 
 $_size = NULL, //кол-во отображаемых чекбоксов
 $selected=NULL, //выбранные значения
-//$onch=FALSE,
 $show_select_all=true, //Выбор всех значений
 $text_prefix = NULL,
-$TITLE=NULL,
 $reverse=FALSE //менеяет местами ключи со значениями в рез-й разметке
 ){
+
+	$dict=array(
+		select_all=>"Выбрать все",
+		deselect_all=>"Снять выбор"
+	);
+	
 	$array_cnt = count($assoc_array);
 	if ( $array_cnt == 0 ) return '';
 	
-// 	if ($onch===TRUE)
-// 		$onch = 'onchange="this.form.submit()"';
-// 	else if (!empty($onch))
-// 		$onch = 'onchange="'.$onch.'"';
-// 	else
-// 		$onch='';
-	
-	
-	if (!empty($TITLE))
-		$_title='title="'.$TITLE.'"';
-	else
-		$_title='';
-	
-	if (!isset($_size)){
+	$_size=(int)$_size;
+	if ($_size!=0){
 		$overfl=' overflow-y:scroll; ';
 	}else{
 		$overfl=' overflow-y:auto; ';
 	}
+
+	$a = '<div id="id_main_'.$_name.'" >'."\n";
 	
-	$a ='<div id="id_'.$_name.'" style="text-align:left;'.$overfl.'">'."\n";
-	
-	$is_chck_select_all=false;
+	$cnt_selected_itms=0; //счетчик чекнутых чекбоксов
+	//заголовок с чекбоксом "Выбрать все"
 	if($show_select_all){
+		$a .= '<div id="id_head_'.$_name.'" style="text-align:left; border-bottom:1px solid #999;">'."\n";
 		$a .='<input type="checkbox" id="id_'.$_name.'_select_all" name="'.$_name.'_select_all" value="select_all" onclick="chbox_select_all(\''.$_name.'\')" /> '."\n";
-		$a .= '<label for="id_'.$_name.'_select_all" class="chbox_head" style="font-weight:bold;color:#196BBA;">'."Выбрать все".'</label><br />'."\n";
+		$a .= '<label for="id_'.$_name.'_select_all" class="chbox_head" style="font-weight:bold;color:#196BBA; position:relative; top:-3px;">'.$dict['select_all'].'</label><br />'."\n";
+		$a .= '</div>'."\n";
 	}
 	
+	//контейнер набора чекбоксов
+	$a .='<div id="id_'.$_name.'" style="text-align:left;'.$overfl.'">'."\n";
+	
 	foreach ($assoc_array as $k => $v)	{
-		
 		settype($key,'string');
 		
+		//реверс - меняем местами ключ-значение
 		if ( $reverse ) {
 			$key = &$v;
 			$value = &$k;
@@ -1345,8 +1354,8 @@ $reverse=FALSE //менеяет местами ключи со значения�
 			$key = &$k;
 			$value = &$v;
 		}
-
 		
+		//определяем чекнутые эл-ты
 		if ( $selected != '' )
 		{
 			$_y = FALSE;
@@ -1360,57 +1369,104 @@ $reverse=FALSE //менеяет местами ключи со значения�
 						break;
 				}
 			}
+			//генерируем разметку чекбоксов
 			if ($_y){
-				$a .= '<label class="chbox_itm"><input type="checkbox" name="'.$_name.'[]" value="'.$key.'" checked /> '.$text_prefix.$value.'</label>'."\n";
-				$is_chck_select_all=true;
+				$a .= '<input type="checkbox" class="chbox_itm" id="id_'.$_name.$key.'"  name="'.$_name.'[]" onclick="chbox_itm_clk(\''.$_name.'\')" value="'.$key.'" checked />'."\n"; 
+				$cnt_selected_itms++;
 			}else{
-				$a .= '<label class="chbox_itm"><input type="checkbox" name="'.$_name.'[]" value="'.$key.'" />'.$text_prefix.$value.'</label>'."\n";
+				$a .= '<input type="checkbox" class="chbox_itm" id="id_'.$_name.$key.'" name="'.$_name.'[]" onclick="chbox_itm_clk(\''.$_name.'\')" value="'.$key.'" />'."\n";
 			}
 		} else {  // not selected
-			$a .= '<label class="chbox_itm"><input type="checkbox" name="'.$_name.'[]" value="'.$key.'" />'.$text_prefix.$value.'</label>'."\n";
+			$a .= '<input type="checkbox" class="chbox_itm" id="id_'.$_name.$key.'" name="'.$_name.'[]" onclick="chbox_itm_clk(\''.$_name.'\')" value="'.$key.'" />'."\n";
 		}
+		//генерируем разметку подписей чекбоксов
+		$a .= '<label for="id_'.$_name.$key.'" class="class_'.$_name.'" style="position:relative; top:-3px;"> '.$text_prefix.$value.'</label>'."\n";
 		$a.='<br />';
 	}
-
+	
+	$a .= '</div>'."\n";
 	$a .= '</div>'."\n";
 	
+	//клиентские скрипты поведения и начального состояния
 	$a .= '<script type="text/javascript">'."\n";
 	
+	//поведение при клике на чекбоксе
+	$a .= 'chbox_itm_clk = function(name){
+		var itms = $("#id_"+name+" .chbox_itm");
+		var cntr=0;
+		$(itms).each(function(){
+			if(typeof($(this).attr("checked"))!="undefined"){
+				cntr++;
+			}
+		});
+		
+		if(cntr==0){
+			$("#id_head_"+name).css("opacity", 1);
+			$("#id_head_"+name+" .chbox_head").text("'.$dict['select_all'].'");
+			$("#id_"+name+"_select_all").attr("checked", false);
+		}
+		else if(cntr==$(itms).size()){
+			$("#id_head_"+name).css("opacity", 1);
+			$("#id_head_"+name+" .chbox_head").text("'.$dict['deselect_all'].'");
+			$("#id_"+name+"_select_all").attr("checked", true);
+		}else{
+			$("#id_head_"+name).css("opacity", 0.7);
+			$("#id_head_"+name+" .chbox_head").text("'.$dict['deselect_all'].'");
+			$("#id_"+name+"_select_all").attr("checked", true);
+		}
+	};'."\n";
+	//поведение при клике на "Выбрать все"
 	$a .= 'chbox_select_all = function(name){ 
 		var head = $("#id_"+name+"_select_all");
 		if(typeof($(head).attr("checked"))=="undefined" ){
-			$("#id_"+name+" .chbox_itm input").attr({"checked":false});
-			$("#id_"+name+" .chbox_head").text("Выбрать все");
+			$("#id_"+name+" input.chbox_itm").attr({"checked":false});
+			$("#id_head_"+name+" .chbox_head").text("'.$dict['select_all'].'");
 		}
 		else{
-			$("#id_"+name+" .chbox_itm input").attr({"checked":true});
-			$("#id_"+name+" .chbox_head").text("Отменить все");
+			$("#id_"+name+" input.chbox_itm").attr({"checked":true});
+			$("#id_head_"+name+" .chbox_head").text("'.$dict['deselect_all'].'");
 		}
+		chbox_itm_clk(name);
 	};';
-
-	
+	//Установка начального состояния
 	$a .='$(function(){'."\n";
-	
-	if($show_select_all && $is_chck_select_all){
-		$a .='$("#id_'.$_name.'_select_all")'."\n";
-		$a .='.attr({"checked":true});'."\n";
-		$a .='$("#id_'.$_name.' .chbox_head").text("Отменить все");'."\n";
+	//для "Выбрать все"
+	if($show_select_all){
+		if($cnt_selected_itms==0){
+			$a .='$("#id_'.$_name.'_select_all")'."\n";
+			$a .='.attr({"checked":false});'."\n";
+			$a .='$("#id_head_'.$_name.' .chbox_head").text("'.$dict['select_all'].'");'."\n";
+		}else if($cnt_selected_itms== sizeof($assoc_array)){
+			$a .='$("#id_'.$_name.'_select_all")'."\n";
+			$a .='.attr({"checked":true});'."\n";
+			$a .='$("#id_head_'.$_name.' .chbox_head").text("'.$dict['deselect_all'].'");'."\n";
+		}else{
+			$a .='$("#id_'.$_name.'_select_all")'."\n";
+			$a .='.attr({"checked":true});'."\n";
+			$a .='$("#id_head_'.$_name.' .chbox_head").text("'.$dict['deselect_all'].'");'."\n";
+			$a .= '$("#id_head_"+"'.$_name.'").css("opacity", 0.7);'."\n";
+		}
 	}
-	if (isset($_size)){
+	//определение и установка высоты элемента управления
+	if ($_size!=0){
 		$a .='var ht_cbx = 0;'."\n";
 		$a .='$("#id_'.$_name.' .chbox_itm").each(function(){ '."\n";
-		$a .='if($(this).height()>ht_cbx ) ht_cbx = $(this).height();'."\n";
+		/// Подключение стилей
+		if(stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')){
+			//для MSIE
+			$a .='if($(this).height()>ht_cbx ) ht_cbx = $(this).height();'."\n";
+		}else{
+			$a .='if($(this).height()>ht_cbx ) ht_cbx = $(this).height()+6 ;'."\n";
+		}
 		$a .= ' });'."\n";
 		$a .='ht_cbx*= '.$_size.' ;'."\n";
 		$a .='$("#id_'.$_name.'")'."\n";
 		$a .='.height(ht_cbx)'."\n";
 		$a .='.width($("#id_'.$_name.'").width() +20);'."\n";
 	}
-	
 	$a .='});'."\n";
 	
 	$a .= '</script>'."\n";
-	
 	
 	return $a;
 }

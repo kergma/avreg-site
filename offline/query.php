@@ -49,9 +49,9 @@ if (isset($_COOKIE))
 {
   if (isset($_COOKIE['avreg_cams']))
      $cams_sel = str_replace('-' ,',', $_COOKIE['avreg_cams'][0]);
-  else
+  else{
      $cams_sel = '0,1,2,3';
-
+  }
   if (isset($_COOKIE['avreg_filter']))
      $filter_sel = str_replace('-' ,',', $_COOKIE['avreg_filter'][0]);
   else{
@@ -108,7 +108,14 @@ if (isset($_COOKIE))
 <tbody>
 <tr align="center" valign="top">
 <td>
-<?php print getSelectByAssocAr('cams[]', $conf_cams_array, TRUE, 7, 1, $cams_sel, FALSE, FALSE); ?>
+<?php
+	//формируем список чекбоксов
+	if(stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')){
+		print  getChkbxByAssocAr('cams', $conf_cams_array, 6, $cams_sel, TRUE, FALSE);
+	}else{
+		print  getChkbxByAssocAr('cams', $conf_cams_array, 6, $cams_sel, TRUE, FALSE);
+	}
+ ?>
 </td>
 <td align="left">
 <input type="radio" checked name="timemode" id="timemode" value="1" onclick="switch_timemode();"><?php echo $strUnBreak; ?>
@@ -128,7 +135,14 @@ print getSelectHtml('day2', $day_array, FALSE, 1, 1, $tm2[3], FALSE, FALSE);
 ?>
 </td>
 <td align="center">
-<?php print getSelectHtml('dayofweek[]', $day_of_week, TRUE, 7, 0, '0,1,2,3,4,5,6', FALSE, FALSE); ?>
+<?php 
+//формируем список чекбоксов
+if(stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')){
+	print  getChkbxByAssocAr('dayofweek', $day_of_week, '6', '0,1,2,3,4,5,6', true, FALSE);
+}else{
+	print  getChkbxByAssocAr('dayofweek', $day_of_week, '6', '0,1,2,3,4,5,6', true, FALSE);
+}
+?>
 </td>
 <td align="left" nowrap>
 <?php
@@ -147,11 +161,8 @@ print getSelectHtml('minute2', $minute_array, FALSE, 1, 0, $min2, FALSE, FALSE);
 if(stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')){
 	print  getChkbxByAssocAr('filter', $env_id_ar, 6, $filter_sel, true, FALSE);
 }else{
-	print  getChkbxByAssocAr('filter', $env_id_ar, 7, $filter_sel, true, FALSE);
+	print  getChkbxByAssocAr('filter', $env_id_ar, 6, $filter_sel, true, FALSE);
 }
-//старый способ - формирование селекта
-//print getSelectByAssocAr('filter[]', $env_id_ar, TRUE, 7, 1, $filter_sel, FALSE, FALSE); 
-
 ?>
 
 </td>
@@ -195,20 +206,13 @@ var CAM_NAMES = [];
 var PlayTimer = null;
 var play_direction=0;
 
+
 function switch_timemode() {
-     var tm_radio = ie?
-                 document.all['timemode']:
-                 document.getElementById('timemode');
-    var weekday_sel = ie?
-                 document.all['dayofweek[]']:
-                 document.getElementById('dayofweek[]');
-    if (tm_radio.checked) {
-      if (!weekday_sel.disabled) 
-         weekday_sel.disabled=true;
-    } else {
-       if (weekday_sel.disabled)
-         weekday_sel.disabled=false; 
-    }
+	if( typeof($('#timemode').attr('checked'))!='undefined' ){
+		$("#id_main_dayofweek input[type=checkbox]").attr('disabled',true);
+	}else{
+		$("#id_main_dayofweek input[type=checkbox]").attr('disabled',false);		
+	}
 }
 
 function TimeModeHelp(){
@@ -232,7 +236,7 @@ function OptionHelp(){
 
 function get_links_array()
 {
-   var img_link_array = window.parent.frames['result'].document.links; //getElementsByName('jpeg');
+   var img_link_array = window.parent.frames['result'].document.links; 
    links_count = img_link_array.length;
 
    if ( links_count == 0  )
@@ -310,7 +314,6 @@ function jump_to_pos(step)
 function do_play(direction)
 {
     _direction = parseInt(direction);
-    // alert('do_play('+_direction+')');
     if (_direction == 0)
        return;
 
@@ -341,12 +344,10 @@ $(document).ready(function() {
    /* do stuff when DOM is ready */
    switch_timemode();
 
-   var cams_sel = ie? document.all['cams[]']: document.getElementById('cams[]');
-
-   var i;
-   for(i=0; i < cams_sel.options.length; i++) {
-      CAM_NAMES[cams_sel.options[i].value] = cams_sel.options[i].text;
-   }
+    $('label.class_cams').each(function(i, val){
+    	CAM_NAMES[$("#"+$(this).attr('for')).attr('value')]= $(this).text();
+    }); 
+  
    $('#btOk').removeAttr('disabled');
 });
 // -->

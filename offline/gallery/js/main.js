@@ -313,11 +313,13 @@ var gallery = {
 		},
 		reload_cams : function () {
 			var count = 0;
+			var cam_cnt = 0;
 			var cook = '';
 			//если включен режим детального просмотра - включаем режим превью
 			if(matrix.mode == 'detail')	matrix.preview();
 
 			$('input[name="cameras"]').each(function(){
+				cam_cnt++;
 				if ($(this).attr('checked')) {
 					count++;
 					cook += $(this).val()+',';
@@ -337,11 +339,18 @@ var gallery = {
 				//переключаем чекбокс всех камер в 'Отменить выбор всех камер'
 				$('#cam_selector').attr('checked', true).parent().attr('style','background-position: 0px -14px');
 				$('#lbl_cam_selector').html('Отменить выбор всех камер');
-				
+
+				if(count==cam_cnt){
+					$('#select_all_cam>.new_Check').css('opacity', 1);
+				}
+				else{
+					$('#select_all_cam>.new_Check').css('opacity', 0.5);
+				}
 			} else {
 				//переключаем чекбокс всех камер в 'Выбрать все камеры'
 				$('#cam_selector').attr('checked', false).parent().attr('style','background-position: 0px 0px');
 				$('#lbl_cam_selector').html('Выбрать все камеры');
+				$('#select_all_cam>.new_Check').css('opacity', '1');
 			}
 			return true;
 		},
@@ -1210,9 +1219,15 @@ var gallery = {
 			if(cntr==col_cams.length){
 				$('#cam_selector').attr('checked', false).parent().attr('style','background-position: 0px 0px');
 				$('#lbl_cam_selector').html('Выбрать все камеры');
+				$('#select_all_cam>.new_Check').css('opacity', 1);
 			}else{
 				$('#cam_selector').attr('checked', true).parent().attr('style','background-position: 0px -14px');
 				$('#lbl_cam_selector').html('Отменить выбор всех камер');
+				if(cntr!=0){
+					$('#select_all_cam>.new_Check').css('opacity', 0.5);
+				}else{
+					$('#select_all_cam>.new_Check').css('opacity', 1);
+				}
 			}
 			
 			//установка обработчика чекбокса "Выбрать/отменить все камеры"

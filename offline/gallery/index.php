@@ -50,7 +50,7 @@
 							<span class="niceCheck">
 								<input type="checkbox" id="cam_selector" name="Выбрать/отменить все камеры" value="select_all">
 							</span>
-							<label style="float: none !important;" for="selector">
+							<label style="float: none !important;" for="cam_selector">
 								<a id="lbl_cam_selector" href="#" class="" title=""> Выбрать/отменить все камеры </a>
 							</label>
 						</span>
