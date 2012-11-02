@@ -66,8 +66,11 @@ class Adb {
       
       $dsn = "{$this->_dbtype}://{$this->_user }:{$this->_password}@{$this->_host}/{$this->_database}";
 
+      $db = new DB();
+      $this->_db = $db->connect($dsn,true);
       
-      $this->_db = DB::connect($dsn,true);
+      
+//      $this->_db = @DB::connect($dsn,true);
       
       $this->_error($this->_db);
 
@@ -78,6 +81,33 @@ class Adb {
       $this->_error($res);
       return true;
    }
+   
+//    public function __construct($param) {
+//    	$this->_database = $param['db-name'];
+//    	$this->_user = $param['db-user'];
+//    	$this->_password = $param['db-passwd'];
+//    	if (isset($param['db-type']) && !empty($param['db-type']))
+//    	$this->_dbtype = $param['db-type'];
+//    	if (isset($param['db-host']) && !empty($param['db-host']))
+//    	$this->_host = $param['db-host'];
+   
+//    	//      $this->_host ='localhost';
+   
+//    	$dsn = "{$this->_dbtype}://{$this->_user }:{$this->_password}@{$this->_host}/{$this->_database}";
+   
+   
+//    	$this->_db = DB::connect($dsn,true);
+   
+//    	$this->_error($this->_db);
+   
+//    	if ($this->_dbtype == 'mysql')
+//    	$res = $this->_db->query("SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
+//    	else
+//    	$res = $this->_db->query("SET NAMES 'utf8'");
+//    	$this->_error($res);
+//    	return true;
+//    }
+   
 	/**
 	 *  Деструктор по умолчанию
 	 * Закрывает соединение с БД
