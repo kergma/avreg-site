@@ -59,6 +59,10 @@ if (isset($cmd)) {
             array_push( $fWINS, 'WIN'.($i+1) );
             array_push( $vWINS, $mon_wins[$i] );
          }
+         else {
+         	array_push( $fWINS, 'WIN'.($i+1) );
+         	array_push( $vWINS, NULL );
+         }
          $i++;
       }
       if ( count( $fWINS ) > 0 )	{
