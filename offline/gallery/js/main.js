@@ -1972,11 +1972,11 @@ var matrix = {
 			var ttl = '<tr><td>Камера</td> <td>'+matrix.cameras[value[5]].text_left+'</td> </tr>';
 			if (value[7] == 'image'){
 				ttl +='<tr><td>Файл</td>   <td>'+value[2].slice((value[2].lastIndexOf('/')+1))+'</td> </tr>';
-				ttl +='<tr><td>Размер</td> <td>'+ value[6]+' ['+value[3]+'x'+value[4]+']</td> </tr>';
+				ttl +='<tr><td>Размер</td> <td>'+ value[6]+' ['+value[4]+'x'+value[3]+']</td> </tr>';
 				ttl +='<tr><td>Создан</td> <td>'+value[1]+'</td> </tr>';
 			}
 			else{
-				ttl += '<tr><td>Файл</td>   <td>'+value[2].slice((value[2].lastIndexOf('/')+1))+' ['+value[3]+'x'+value[4]+']</td> </tr>';
+				ttl += '<tr><td>Файл</td>   <td>'+value[2].slice((value[2].lastIndexOf('/')+1))+' ['+value[4]+'x'+value[3]+']</td> </tr>';
 				ttl +='<tr><td>Размер</td> <td>'+value[6]+', '+ value[8]+'</td> </tr>';
 				ttl +='<tr><td>Начало</td> <td>'+value[9]+'</td> </tr>';
 				ttl +='<tr><td>Конец</td> <td>'+value[1]+'</td> </tr>';
@@ -2337,12 +2337,12 @@ var matrix = {
 						if (value[7] == 'image')
 						{
 							ttl +='<tr><td>Файл</td>   <td>'+value[2].slice((value[2].lastIndexOf('/')+1))+'</td> </tr>';
-							ttl +='<tr><td>Размер</td> <td>'+ value[6]+' ['+value[3]+'x'+value[4]+']</td> </tr>';
+							ttl +='<tr><td>Размер</td> <td>'+ value[6]+' ['+value[4]+'x'+value[3]+']</td> </tr>';
 							ttl +='<tr><td>Создан</td> <td>'+value[1]+'</td> </tr>';
 						}
 						else 
 						{
-							ttl += '<tr><td>Файл</td>   <td>'+value[2].slice((value[2].lastIndexOf('/')+1))+' ['+value[3]+'x'+value[4]+']</td> </tr>';
+							ttl += '<tr><td>Файл</td>   <td>'+value[2].slice((value[2].lastIndexOf('/')+1))+' ['+value[4]+'x'+value[3]+']</td> </tr>';
 							ttl +='<tr><td>Размер</td> <td>'+value[6]+', '+ value[8]+'</td> </tr>';
 							ttl +='<tr><td>Начало</td> <td>'+value[9]+'</td> </tr>';
 							ttl +='<tr><td>Конец</td> <td>'+value[1]+'</td> </tr>';
@@ -2528,12 +2528,12 @@ var matrix = {
 					if (value[7] == 'image')
 					{
 						ttl +='<tr><td>Файл</td>   <td>'+value[2].slice((value[2].lastIndexOf('/')+1))+'</td> </tr>';
-						ttl +='<tr><td>Размер</td> <td>'+ value[6]+' ['+value[3]+'x'+value[4]+']</td> </tr>';
+						ttl +='<tr><td>Размер</td> <td>'+ value[6]+' ['+value[4]+'x'+value[3]+']</td> </tr>';
 						ttl +='<tr><td>Создан</td> <td>'+value[1]+'</td> </tr>';
 					}
 					else 
 					{
-						ttl += '<tr><td>Файл</td>   <td>'+value[2].slice((value[2].lastIndexOf('/')+1))+' ['+value[3]+'x'+value[4]+']</td> </tr>';
+						ttl += '<tr><td>Файл</td>   <td>'+value[2].slice((value[2].lastIndexOf('/')+1))+' ['+value[4]+'x'+value[3]+']</td> </tr>';
 						ttl +='<tr><td>Размер</td> <td>'+value[6]+', '+ value[8]+'</td> </tr>';
 						ttl +='<tr><td>Начало</td> <td>'+value[9]+'</td> </tr>';
 						ttl +='<tr><td>Конец</td> <td>'+value[1]+'</td> </tr>';
