@@ -45,8 +45,11 @@ class Adb {
       /// Хост БД
       $_host = 'localhost',
       /// Объект для работы с БД
-      $_db = false;
-
+      $_db = false,
+   	  ///Объект PEAR
+   	  $_pear = false;
+		
+   
 	/**
 	 *  Конструктор по умолчанию
 	 * Устанавливает соединение с БД
@@ -64,13 +67,17 @@ class Adb {
 
 //      $this->_host ='localhost';
       
+      $this->_pear= new PEAR();
+      
       $dsn = "{$this->_dbtype}://{$this->_user }:{$this->_password}@{$this->_host}/{$this->_database}";
 
+      $this->_pear= new PEAR();
+      
       $db = new DB();
       $this->_db = $db->connect($dsn,true);
       
       
-//      $this->_db = @DB::connect($dsn,true);
+//      $this->_db = DB::connect($dsn,true);
       
       $this->_error($this->_db);
 
@@ -82,40 +89,16 @@ class Adb {
       return true;
    }
    
-//    public function __construct($param) {
-//    	$this->_database = $param['db-name'];
-//    	$this->_user = $param['db-user'];
-//    	$this->_password = $param['db-passwd'];
-//    	if (isset($param['db-type']) && !empty($param['db-type']))
-//    	$this->_dbtype = $param['db-type'];
-//    	if (isset($param['db-host']) && !empty($param['db-host']))
-//    	$this->_host = $param['db-host'];
-   
-//    	//      $this->_host ='localhost';
-   
-//    	$dsn = "{$this->_dbtype}://{$this->_user }:{$this->_password}@{$this->_host}/{$this->_database}";
-   
-   
-//    	$this->_db = DB::connect($dsn,true);
-   
-//    	$this->_error($this->_db);
-   
-//    	if ($this->_dbtype == 'mysql')
-//    	$res = $this->_db->query("SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
-//    	else
-//    	$res = $this->_db->query("SET NAMES 'utf8'");
-//    	$this->_error($res);
-//    	return true;
-//    }
-   
 	/**
 	 *  Деструктор по умолчанию
 	 * Закрывает соединение с БД
 	 */
    public function __destruct() {
-      if (!PEAR::isError($this->_db))
+//       if (!PEAR::isError($this->_db))
+      if (!$this->_pear->isError($this->_db))
          $this->_db->disconnect();
    }
+
    /**
     *  Проверка на ошибку в запросе к БД.
     * 
@@ -124,8 +107,9 @@ class Adb {
     * 
     * @return true - если ошибка, false - если нет ошибок
     */
-   public function _error($r, $die = true) {
-      if (PEAR::isError($r)) {
+      public function _error($r, $die = true) {
+//       if (PEAR::isError($r)) {
+      	if ($this->_pear->isError($r)) {
          @header('Content-Type: text/html; charset=' . $GLOBALS['chset']);
 
          echo 'Standard Message: ' . $r->getMessage() . "<br>";
