@@ -270,13 +270,9 @@ function load_profiles_cams_confs($application='avreg-site')
    return $cams_profiles;
 } /* get_profiles_cams_confs() */
 
-$sip = $_SERVER['SERVER_ADDR'];
+$sip   = &$_SERVER['SERVER_ADDR'];
+$named = &$_SERVER['SERVER_NAME'];
 
-if ( $_SERVER['SERVER_ADDR'] === $_SERVER['SERVER_NAME'] )
-   $named = $_SERVER['SERVER_ADDR'];
-else
-///  имя сервера
-   $named = $_SERVER['SERVER_NAME'];
 ///  ip сервера
 $localip = ip2long($sip);
 ///  user agent пользователя
