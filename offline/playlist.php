@@ -72,18 +72,6 @@ function TimeModeHelp() {
 function TimeModeHelp2() {
 	alert("<?php echo $strTimeModeHelp2; ?>");
 }
-function CamChoiseHelp() {
-	alert("<?php echo $strCamChoiseHelp; ?>");
-}
-function FilterHelp() {
-	alert("<?php echo $strFilterHelp; ?>");
-}
-function ActionHelp() {
-	alert("<?php echo $strActionHelp; ?>");
-}
-function OptionHelp() {
-	alert("<?php echo $strOptionHelp; ?>");
-}
 // -->
 </script>
 
@@ -213,7 +201,7 @@ if ( isset($_SESSION) && isset($_SESSION['error'])/* ошибка */ )
 
 <form action="<?php echo $conf['prefix']; ?>/offline/_playlist.php" method="POST" onsubmit="return(on_submit())">
 <fieldset>
-<legend><?php echo $left_tune; ?>&nbsp;<a href="javascript:void(0);" onclick="CamChoiseHelp();"><sup>help</sup></a></legend>
+<legend><?php echo $left_tune; ?></legend>
 <table cellspacing="0" border="0" cellpadding="5">
 <tr valign="top">
 <td>

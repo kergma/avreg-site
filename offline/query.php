@@ -6,6 +6,7 @@
  */
 $pageTitle = 'strRunQuery';
 $pageBgColor = '#D0DCE0';
+$body_style='margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; ';
 $lang_file = '_offline.php';
 $USE_JQUERY = true;
 require ('../head.inc.php');
@@ -89,10 +90,11 @@ if (isset($_COOKIE))
 ?>
 
 <form action="<?php echo $conf['prefix']; ?>/offline/result.php" method="POST" target="result" onsubmit="playlist(0);">
-<table cellspacing="0" border="1" cellpadding="3">
+<input type="hidden" name="page" value="0">
+<table cellspacing="0" border="1" cellpadding="3" width="100%" height="100%" style="margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;">
 <thead>
 <?php print '<tr bgcolor="'.$header_color.'">'."\n"; ?>
-	<th class="query" valign="bottom"><?php echo $left_tune; ?>&nbsp;<a href="javascript:void(0);" onclick="CamChoiseHelp();"><sup>help</sup></a></th>
+	<th class="query" valign="bottom"><?php echo $left_tune; ?></th>
 	<?php
 	print '<th class="query" valign="bottom">'.$strTimeMode.'&nbsp;<a href="javascript:void(0);" onclick="TimeModeHelp();"><sup>help</sup></a></th>'."\n";
 	?>
@@ -196,7 +198,6 @@ print $strEmbdedVideo.'<br><input type="checkbox" '.$embed_video_sel.' name="emb
 </tr>
 </tbody>
 </table>
-<input type="hidden" name="page" value="0">
 </form>
 
 <script type="text/javascript" language="javascript">
