@@ -1632,7 +1632,7 @@ var matrix = {
 	
 		scale2.setposition(scale2.position);
 		//востанавливаем позицию изображения
-		scale2.restore_content_position();		
+		scale2.restore_content_position();
 
 		//если не внедренный объект
 		if( !$('.content_item.active .refBox').aplayerIsEmbedOrObject() ){
@@ -1666,11 +1666,12 @@ var matrix = {
 			$(".content_item").each(function(){
 				if($(this).hasClass("active")){
 						//востанавливаем параметры активного элемента
-						$(this).attr('style', matrix.recover.cell_style).hide()
+						$(this).attr('style', matrix.recover.cell_style)
 						.find('.elem').attr('style', matrix.recover.elem_style)
 						.find('.refBox').attr('style', matrix.recover.refBox_style)
 						.aplayerResizeToParent();
-				}	
+				}
+				
    				$(this).show();
 			});
 
@@ -1710,7 +1711,7 @@ var matrix = {
 
 	
 	// перестраиваем матрицу при изменении размеров
-	resize: function() {
+	resize : function() {
 
 		// обновляем ширину колонок
 		gallery.resize_column.resize($('#sidebar').width()-2);
