@@ -27,29 +27,13 @@ select,textarea,input {
    font-family: Arial, sans-serif;
    font-size: 13px;
    text-decoration: none;
-   min-width:50px;
+/*   min-width:50px;*/
 }
 
 .chkbx_lsl{
 	min-width: 150px;
 	text-align:left; 
 	width:100%;
-}
-
-.chrome_chkbx_lsl{
-	min-width: 180px;
-	text-align:left; 
-	width:100%;
-}
-
-.chrome_chkbx{
-	position:relative;
-	left:-15px;
-}
-
-.chrome_chkbx_lbl{
-	position:relative;
-	left:-30px;
 }
 
 .chkbx_lsl_head{
