@@ -62,7 +62,7 @@ body  {font-family: <?php echo $right_font_family; ?>; font-size: <?php echo $fo
 </style>
 </head>
 
-<frameset border="1" framespacing="1" rows="80%,*">
+<frameset border="1" framespacing="1" rows="78%,*">
 	<frameset border="1" framespacing="1" cols="67%,*">
 		<frame align="right" name="view" src="<?php echo $conf['prefix']; ?>/offline/view-image.php" frameborder="yes" marginwidth="0" marginheight="0" noresize scrolling="no">
 		<frame name="result" src="<?php echo $conf['prefix']; ?>/offline/result.php" frameborder="yes" marginwidth="2" marginheight="3" scrolling="auto">

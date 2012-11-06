@@ -270,13 +270,9 @@ function load_profiles_cams_confs($application='avreg-site')
    return $cams_profiles;
 } /* get_profiles_cams_confs() */
 
-$sip = $_SERVER['SERVER_ADDR'];
+$sip   = &$_SERVER['SERVER_ADDR'];
+$named = &$_SERVER['SERVER_NAME'];
 
-if ( $_SERVER['SERVER_ADDR'] === $_SERVER['SERVER_NAME'] )
-   $named = $_SERVER['SERVER_ADDR'];
-else
-///  имя сервера
-   $named = $_SERVER['SERVER_NAME'];
 ///  ip сервера
 $localip = ip2long($sip);
 ///  user agent пользователя
@@ -1302,7 +1298,6 @@ function getSelectByAssocAr($_name, $assoc_array, $_multiple=FALSE ,
  * @param unknown_type $show_select_all выводить чекбокс выбора/сброса всех чекбоксов
  * @param unknown_type $text_prefix строка, добавляемая вначало к названию всех чекбоксов 
  * @param unknown_type $reverse поменять местами использование ключей и значеий ассоц. массива при генерации разметки чекбоксов
- * @param unknown_type $width задает ширину этементов в px
   * @return string результирующая разметка
  */
 function getChkbxByAssocAr(
@@ -1312,8 +1307,7 @@ $_size = NULL, //кол-во отображаемых чекбоксов
 $selected=NULL, //выбранные значения
 $show_select_all=true, //Выбор всех значений
 $text_prefix = NULL,
-$reverse=FALSE, //менеяет местами ключи со значениями в рез-й разметке
-$width = 150
+$reverse=FALSE //менеяет местами ключи со значениями в рез-й разметке
 ){
 
 	$dict=array(
@@ -1331,7 +1325,7 @@ $width = 150
 		$overfl=' overflow-y:auto; ';
 	}
 
-	$a = '<div id="id_main_'.$_name.'" >'."\n";
+	$a = '<div id="id_main_'.$_name.'" style="text-align:left; width:100%;" >'."\n";
 
 	//Позиция подписи для хрома
 	$lbl_left = '';
@@ -1343,24 +1337,20 @@ $width = 150
 	$cnt_selected_itms=0; //счетчик чекнутых чекбоксов
 	//заголовок с чекбоксом "Выбрать все"
 	if($show_select_all){
-		$a .= '<div id="id_head_'.$_name.'" style="text-align:left; border-bottom:1px solid #999; width:'.($width+20).'px;">'."\n";
-		
+		$a .= '<div id="id_head_'.$_name.'" style="text-align:left; border-bottom:1px solid #999; width:100%;">'."\n";
 		$a .= '<div style="text-align:left; clear:both;">'."\n";
 		$a .='<div style="float:left; position:relative; top:-3px;">';
-		
 		$a .='<input type="checkbox" id="id_'.$_name.'_select_all" name="'.$_name.'_select_all" value="select_all" onclick="chbox_select_all(\''.$_name.'\')" /> '."\n";
 		$a .= '</div>'."\n";
-		
 		$a .='<div>';
 		$a .= '<label for="id_'.$_name.'_select_all" class="chbox_head" style="font-weight:bold;color:#196BBA; position:relative; top:-1px; '.$lbl_left.'">'.$dict['select_all'].'</label><br />'."\n";
 		$a .= '</div>'."\n";
 		$a .= '</div>'."\n";
-		
 		$a .= '</div>'."\n";
 	}
 	
 	//контейнер набора чекбоксов
-	$a .='<div id="id_'.$_name.'" style="text-align:left;'.$overfl.' position:relative; width:'.$width.'px;">'."\n";
+	$a .='<div id="id_'.$_name.'" style="text-align:left;'.$overfl.' position:relative; width:100%;">'."\n";
 	
 	foreach ($assoc_array as $k => $v)	{
 		settype($key,'string');
@@ -1406,11 +1396,7 @@ $width = 150
 		//генерируем разметку подписей чекбоксов
 		$a .= '<div><label for="id_'.$_name.$key.'" class="class_'.$_name.'" style="position:relative; '.$lbl_left.'">'.$text_prefix.$value.'</label>'."\n";
 		$a.='</div>';
-		
-		//$a.='<br />';
-		
 		$a.='</div>';
-		
 	}
 	
 	$a .= '</div>'."\n";
@@ -1491,7 +1477,6 @@ $width = 150
 		$a .='ht_cbx*= '.$_size.' ;'."\n";
 		$a .='$("#id_'.$_name.'")'."\n";
 		$a .='.height(ht_cbx)'."\n";
-		$a .='.width($("#id_'.$_name.'").width() +20);'."\n";
 	}
 	$a .='});'."\n";
 	

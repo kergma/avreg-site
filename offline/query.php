@@ -6,6 +6,7 @@
  */
 $pageTitle = 'strRunQuery';
 $pageBgColor = '#D0DCE0';
+$body_style='margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; ';
 $lang_file = '_offline.php';
 $USE_JQUERY = true;
 require ('../head.inc.php');
@@ -89,10 +90,16 @@ if (isset($_COOKIE))
 ?>
 
 <form action="<?php echo $conf['prefix']; ?>/offline/result.php" method="POST" target="result" onsubmit="playlist(0);">
-<table cellspacing="0" border="1" cellpadding="3">
+
+<?php if(stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')){ ?>
+<table cellspacing="0" border="1" cellpadding="3" width="100%" height="100%" style="margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;" >
+<?php }else{ ?>
+<table cellspacing="0" border="1" cellpadding="3" width="100%" height="90%" style="margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;" >
+<?php } ?>
 <thead id="tab_head">
+ 
 <?php print '<tr bgcolor="'.$header_color.'">'."\n"; ?>
-	<th class="query" valign="bottom"><?php echo $left_tune; ?>&nbsp;<a href="javascript:void(0);" onclick="CamChoiseHelp();"><sup>help</sup></a></th>
+	<th class="query" valign="bottom"><?php echo $left_tune; ?></th>
 	<?php
 	print '<th class="query" valign="bottom">'.$strTimeMode.'&nbsp;<a href="javascript:void(0);" onclick="TimeModeHelp();"><sup>help</sup></a></th>'."\n";
 	?>
@@ -111,9 +118,9 @@ if (isset($_COOKIE))
 <?php
 	//формируем список чекбоксов
 	if(stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')){
-		print  getChkbxByAssocAr('cams', $conf_cams_array, 6, $cams_sel, TRUE, FALSE,false, 200);
+		print  getChkbxByAssocAr('cams', $conf_cams_array, 6, $cams_sel, TRUE, FALSE);
 	}else{
-		print  getChkbxByAssocAr('cams', $conf_cams_array, 6, $cams_sel, TRUE, FALSE,false, 200);
+		print  getChkbxByAssocAr('cams', $conf_cams_array, 6, $cams_sel, TRUE, FALSE);
 	}
  ?>
 </td>
@@ -138,9 +145,9 @@ print getSelectHtml('day2', $day_array, FALSE, 1, 1, $tm2[3], FALSE, FALSE);
 <?php 
 //формируем список чекбоксов
 if(stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')){
-	print  getChkbxByAssocAr('dayofweek', $day_of_week, '6', '0,1,2,3,4,5,6', true, FALSE,false, 130);
+	print  getChkbxByAssocAr('dayofweek', $day_of_week, 6, '0,1,2,3,4,5,6', true, FALSE);
 }else{
-	print  getChkbxByAssocAr('dayofweek', $day_of_week, '6', '0,1,2,3,4,5,6', true, FALSE,false, 130);
+	print  getChkbxByAssocAr('dayofweek', $day_of_week, 6, '0,1,2,3,4,5,6', true, FALSE);
 }
 ?>
 </td>
@@ -159,9 +166,9 @@ print getSelectHtml('minute2', $minute_array, FALSE, 1, 0, $min2, FALSE, FALSE);
 <?php 
 //формируем список чекбоксов
 if(stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')){
-	print  getChkbxByAssocAr('filter', $env_id_ar, 6, $filter_sel, true, FALSE,false, 200);
+	print  getChkbxByAssocAr('filter', $env_id_ar, 6, $filter_sel, true, FALSE);
 }else{
-	print  getChkbxByAssocAr('filter', $env_id_ar, 6, $filter_sel, true, FALSE,false, 200);
+	print  getChkbxByAssocAr('filter', $env_id_ar, 6, $filter_sel, true, FALSE);
 }
 ?>
 
@@ -196,7 +203,6 @@ print $strEmbdedVideo.'<br><input type="checkbox" '.$embed_video_sel.' name="emb
 </tr>
 </tbody>
 </table>
-<input type="hidden" name="page" value="0">
 </form>
 
 <script type="text/javascript" language="javascript">
@@ -370,7 +376,9 @@ function query_resize(){
 	     	frameHeight = ietruebody().clientHeight;
 	     }
 	  	
-	$('#id_filter, #id_cams, #id_dayofweek').height( frameHeight - $('#tab_head').height() - $('#id_head_filter').height()-30 );
+	$('#id_filter').height( frameHeight - $('#tab_head').height() - $('#id_head_filter').height()-30 );
+	$('#id_cams').height( frameHeight - $('#tab_head').height() - $('#id_head_cams').height()-30 );
+	$('#id_dayofweek').height( frameHeight - $('#tab_head').height() - $('#id_head_dayofweek').height()-30 );
 };
 
 
