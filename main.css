@@ -30,6 +30,41 @@ select,textarea,input {
    min-width:50px;
 }
 
+.chkbx_lsl{
+	min-width: 150px;
+	text-align:left; 
+	width:100%;
+}
+
+.chrome_chkbx_lsl{
+	min-width: 180px;
+	text-align:left; 
+	width:100%;
+}
+
+.chrome_chkbx{
+	position:relative;
+	left:-15px;
+}
+
+.chrome_chkbx_lbl{
+	position:relative;
+	left:-30px;
+}
+
+.chkbx_lsl_head{
+	text-align:left; 
+	border-bottom:1px solid #999; 
+	width:100%;
+}
+
+.chbox_head{
+	font-weight:bold;
+	color:#196BBA; 
+	position:relative; 
+	top:-1px;
+}
+
 select[disabled], textarea[disabled], input[disabled] {
    background-color: #C3C3C3;
 }

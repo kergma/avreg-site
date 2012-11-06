@@ -1319,38 +1319,38 @@ $reverse=FALSE //менеяет местами ключи со значения�
 	if ( $array_cnt == 0 ) return '';
 	
 	$_size=(int)$_size;
-	if ($_size!=0){
-		$overfl=' overflow-y:scroll; ';
-	}else{
-		$overfl=' overflow-y:auto; ';
-	}
-
-	$a = '<div id="id_main_'.$_name.'" style="text-align:left; width:100%;" >'."\n";
 
 	//Позиция подписи для хрома
-	$lbl_left = '';
+	$chkbx_lsl = ' chkbx_lsl ';
+	$chrome_chkbx = '';
+	$chrome_chkbx_lbl='';
 	if(stristr($_SERVER['HTTP_USER_AGENT'], "Chrome")){
-		$lbl_left = ' left:-20px; ';
+		$chkbx_lsl = ' chrome_chkbx_lsl ';
+		$chrome_chkbx = ' chrome_chkbx ';
+		$chrome_chkbx_lbl = ' chrome_chkbx_lbl ';
 	}
 	else{}
+
+	$a = '<div id="id_main_'.$_name.'" class="'.$chkbx_lsl.'" >'."\n";
+	
 	
 	$cnt_selected_itms=0; //счетчик чекнутых чекбоксов
 	//заголовок с чекбоксом "Выбрать все"
 	if($show_select_all){
-		$a .= '<div id="id_head_'.$_name.'" style="text-align:left; border-bottom:1px solid #999; width:100%;">'."\n";
+		$a .= '<div id="id_head_'.$_name.'" class="chkbx_lsl_head" >'."\n";
 		$a .= '<div style="text-align:left; clear:both;">'."\n";
 		$a .='<div style="float:left; position:relative; top:-3px;">';
-		$a .='<input type="checkbox" id="id_'.$_name.'_select_all" name="'.$_name.'_select_all" value="select_all" onclick="chbox_select_all(\''.$_name.'\')" /> '."\n";
+		$a .='<input type="checkbox" id="id_'.$_name.'_select_all" class="'.$chrome_chkbx.'" name="'.$_name.'_select_all" value="select_all" onclick="chbox_select_all(\''.$_name.'\')" /> '."\n";
 		$a .= '</div>'."\n";
 		$a .='<div>';
-		$a .= '<label for="id_'.$_name.'_select_all" class="chbox_head" style="font-weight:bold;color:#196BBA; position:relative; top:-1px; '.$lbl_left.'">'.$dict['select_all'].'</label><br />'."\n";
+		$a .= '<label for="id_'.$_name.'_select_all" class="chbox_head '.$chrome_chkbx_lbl.'" >'.$dict['select_all'].'</label><br />'."\n";
 		$a .= '</div>'."\n";
 		$a .= '</div>'."\n";
 		$a .= '</div>'."\n";
 	}
 	
 	//контейнер набора чекбоксов
-	$a .='<div id="id_'.$_name.'" style="text-align:left;'.$overfl.' position:relative; width:100%;">'."\n";
+	$a .='<div id="id_'.$_name.'" style="text-align:left; overflow-y:auto; position:relative; width:100%;">'."\n";
 	
 	foreach ($assoc_array as $k => $v)	{
 		settype($key,'string');
@@ -1384,17 +1384,17 @@ $reverse=FALSE //менеяет местами ключи со значения�
 			
 			//генерируем разметку чекбоксов
 			if ($_y){
-				$a .= '<input type="checkbox" class="chbox_itm" id="id_'.$_name.$key.'"  name="'.$_name.'[]" onclick="chbox_itm_clk(\''.$_name.'\')" value="'.$key.'" checked />'."\n"; 
+				$a .= '<input type="checkbox" class="chbox_itm '.$chrome_chkbx.'" id="id_'.$_name.$key.'"  name="'.$_name.'[]" onclick="chbox_itm_clk(\''.$_name.'\')" value="'.$key.'" checked />'."\n"; 
 				$cnt_selected_itms++;
 			}else{
-				$a .= '<input type="checkbox" class="chbox_itm" id="id_'.$_name.$key.'" name="'.$_name.'[]" onclick="chbox_itm_clk(\''.$_name.'\')" value="'.$key.'" />'."\n";
+				$a .= '<input type="checkbox" class="chbox_itm '.$chrome_chkbx.'" id="id_'.$_name.$key.'" name="'.$_name.'[]" onclick="chbox_itm_clk(\''.$_name.'\')" value="'.$key.'" />'."\n";
 			}
 		} else {  // not selected
-			$a .= '<input type="checkbox" class="chbox_itm" id="id_'.$_name.$key.'" name="'.$_name.'[]" onclick="chbox_itm_clk(\''.$_name.'\')" value="'.$key.'" />'."\n";
+			$a .= '<input type="checkbox" class="chbox_itm '.$chrome_chkbx.'" id="id_'.$_name.$key.'" name="'.$_name.'[]" onclick="chbox_itm_clk(\''.$_name.'\')" value="'.$key.'" />'."\n";
 		}
 		$a.='</div>';
 		//генерируем разметку подписей чекбоксов
-		$a .= '<div><label for="id_'.$_name.$key.'" class="class_'.$_name.'" style="position:relative; '.$lbl_left.'">'.$text_prefix.$value.'</label>'."\n";
+		$a .= '<div><label for="id_'.$_name.$key.'" class="class_'.$_name.' '.$chrome_chkbx_lbl.'">'.$text_prefix.$value.'</label>'."\n";
 		$a.='</div>';
 		$a.='</div>';
 	}
