@@ -1297,12 +1297,13 @@ function getSelectByAssocAr($_name, $assoc_array, $_multiple=FALSE ,
  * Функция формирует разметку с набором чекбоксов для выбора значений
  * @param unknown_type $_name базовое имя для идентификации эл-тов
  * @param unknown_type $assoc_array ассоциативный массив с названиями и значениями чекбоксов
- * @param unknown_type $_size кол-во одновременно отображаемых чекбоксов
+ * @param unknown_type $_size кол-во одновременно отображаемых чекбоксов(без учета "Выбрать все")
  * @param unknown_type $selected строка с номерами п/п чекнутых эл-тов
  * @param unknown_type $show_select_all выводить чекбокс выбора/сброса всех чекбоксов
  * @param unknown_type $text_prefix строка, добавляемая вначало к названию всех чекбоксов 
  * @param unknown_type $reverse поменять местами использование ключей и значеий ассоц. массива при генерации разметки чекбоксов
- * @return string результирующая разметка
+ * @param unknown_type $width задает ширину этементов в px
+  * @return string результирующая разметка
  */
 function getChkbxByAssocAr(
 $_name, 
@@ -1311,7 +1312,8 @@ $_size = NULL, //кол-во отображаемых чекбоксов
 $selected=NULL, //выбранные значения
 $show_select_all=true, //Выбор всех значений
 $text_prefix = NULL,
-$reverse=FALSE //менеяет местами ключи со значениями в рез-й разметке
+$reverse=FALSE, //менеяет местами ключи со значениями в рез-й разметке
+$width = 150
 ){
 
 	$dict=array(
@@ -1330,18 +1332,35 @@ $reverse=FALSE //менеяет местами ключи со значения�
 	}
 
 	$a = '<div id="id_main_'.$_name.'" >'."\n";
+
+	//Позиция подписи для хрома
+	$lbl_left = '';
+	if(stristr($_SERVER['HTTP_USER_AGENT'], "Chrome")){
+		$lbl_left = ' left:-20px; ';
+	}
+	else{}
 	
 	$cnt_selected_itms=0; //счетчик чекнутых чекбоксов
 	//заголовок с чекбоксом "Выбрать все"
 	if($show_select_all){
-		$a .= '<div id="id_head_'.$_name.'" style="text-align:left; border-bottom:1px solid #999;">'."\n";
+		$a .= '<div id="id_head_'.$_name.'" style="text-align:left; border-bottom:1px solid #999; width:'.($width+20).'px;">'."\n";
+		
+		$a .= '<div style="text-align:left; clear:both;">'."\n";
+		$a .='<div style="float:left; position:relative; top:-3px;">';
+		
 		$a .='<input type="checkbox" id="id_'.$_name.'_select_all" name="'.$_name.'_select_all" value="select_all" onclick="chbox_select_all(\''.$_name.'\')" /> '."\n";
-		$a .= '<label for="id_'.$_name.'_select_all" class="chbox_head" style="font-weight:bold;color:#196BBA; position:relative; top:-3px;">'.$dict['select_all'].'</label><br />'."\n";
+		$a .= '</div>'."\n";
+		
+		$a .='<div>';
+		$a .= '<label for="id_'.$_name.'_select_all" class="chbox_head" style="font-weight:bold;color:#196BBA; position:relative; top:-1px; '.$lbl_left.'">'.$dict['select_all'].'</label><br />'."\n";
+		$a .= '</div>'."\n";
+		$a .= '</div>'."\n";
+		
 		$a .= '</div>'."\n";
 	}
 	
 	//контейнер набора чекбоксов
-	$a .='<div id="id_'.$_name.'" style="text-align:left;'.$overfl.' position:relative;">'."\n";
+	$a .='<div id="id_'.$_name.'" style="text-align:left;'.$overfl.' position:relative; width:'.$width.'px;">'."\n";
 	
 	foreach ($assoc_array as $k => $v)	{
 		settype($key,'string');
@@ -1354,6 +1373,9 @@ $reverse=FALSE //менеяет местами ключи со значения�
 			$key = &$k;
 			$value = &$v;
 		}
+
+		$a .= '<div style="text-align:left; clear:both;">'."\n";
+		$a .='<div style="float:left;">';
 		
 		//определяем чекнутые эл-ты
 		if ( $selected != '' )
@@ -1369,6 +1391,7 @@ $reverse=FALSE //менеяет местами ключи со значения�
 						break;
 				}
 			}
+			
 			//генерируем разметку чекбоксов
 			if ($_y){
 				$a .= '<input type="checkbox" class="chbox_itm" id="id_'.$_name.$key.'"  name="'.$_name.'[]" onclick="chbox_itm_clk(\''.$_name.'\')" value="'.$key.'" checked />'."\n"; 
@@ -1379,9 +1402,15 @@ $reverse=FALSE //менеяет местами ключи со значения�
 		} else {  // not selected
 			$a .= '<input type="checkbox" class="chbox_itm" id="id_'.$_name.$key.'" name="'.$_name.'[]" onclick="chbox_itm_clk(\''.$_name.'\')" value="'.$key.'" />'."\n";
 		}
+		$a.='</div>';
 		//генерируем разметку подписей чекбоксов
-		$a .= '<label for="id_'.$_name.$key.'" class="class_'.$_name.'" style="position:relative; top:-3px;"> '.$text_prefix.$value.'</label>'."\n";
-		$a.='<br />';
+		$a .= '<div><label for="id_'.$_name.$key.'" class="class_'.$_name.'" style="position:relative; '.$lbl_left.'">'.$text_prefix.$value.'</label>'."\n";
+		$a.='</div>';
+		
+		//$a.='<br />';
+		
+		$a.='</div>';
+		
 	}
 	
 	$a .= '</div>'."\n";

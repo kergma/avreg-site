@@ -90,7 +90,7 @@ if (isset($_COOKIE))
 
 <form action="<?php echo $conf['prefix']; ?>/offline/result.php" method="POST" target="result" onsubmit="playlist(0);">
 <table cellspacing="0" border="1" cellpadding="3">
-<thead>
+<thead id="tab_head">
 <?php print '<tr bgcolor="'.$header_color.'">'."\n"; ?>
 	<th class="query" valign="bottom"><?php echo $left_tune; ?>&nbsp;<a href="javascript:void(0);" onclick="CamChoiseHelp();"><sup>help</sup></a></th>
 	<?php
@@ -111,9 +111,9 @@ if (isset($_COOKIE))
 <?php
 	//формируем список чекбоксов
 	if(stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')){
-		print  getChkbxByAssocAr('cams', $conf_cams_array, 6, $cams_sel, TRUE, FALSE);
+		print  getChkbxByAssocAr('cams', $conf_cams_array, 6, $cams_sel, TRUE, FALSE,false, 200);
 	}else{
-		print  getChkbxByAssocAr('cams', $conf_cams_array, 6, $cams_sel, TRUE, FALSE);
+		print  getChkbxByAssocAr('cams', $conf_cams_array, 6, $cams_sel, TRUE, FALSE,false, 200);
 	}
  ?>
 </td>
@@ -138,9 +138,9 @@ print getSelectHtml('day2', $day_array, FALSE, 1, 1, $tm2[3], FALSE, FALSE);
 <?php 
 //формируем список чекбоксов
 if(stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')){
-	print  getChkbxByAssocAr('dayofweek', $day_of_week, '6', '0,1,2,3,4,5,6', true, FALSE);
+	print  getChkbxByAssocAr('dayofweek', $day_of_week, '6', '0,1,2,3,4,5,6', true, FALSE,false, 130);
 }else{
-	print  getChkbxByAssocAr('dayofweek', $day_of_week, '6', '0,1,2,3,4,5,6', true, FALSE);
+	print  getChkbxByAssocAr('dayofweek', $day_of_week, '6', '0,1,2,3,4,5,6', true, FALSE,false, 130);
 }
 ?>
 </td>
@@ -159,9 +159,9 @@ print getSelectHtml('minute2', $minute_array, FALSE, 1, 0, $min2, FALSE, FALSE);
 <?php 
 //формируем список чекбоксов
 if(stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')){
-	print  getChkbxByAssocAr('filter', $env_id_ar, 6, $filter_sel, true, FALSE);
+	print  getChkbxByAssocAr('filter', $env_id_ar, 6, $filter_sel, true, FALSE,false, 200);
 }else{
-	print  getChkbxByAssocAr('filter', $env_id_ar, 6, $filter_sel, true, FALSE);
+	print  getChkbxByAssocAr('filter', $env_id_ar, 6, $filter_sel, true, FALSE,false, 200);
 }
 ?>
 
@@ -347,9 +347,41 @@ $(document).ready(function() {
     $('label.class_cams').each(function(i, val){
     	CAM_NAMES[$("#"+$(this).attr('for')).attr('value')]= $(this).text();
     }); 
-  
+
+
+ 	$(window).resize(function(){
+ 		query_resize();
+	});
+
+ 	query_resize();
+    
    $('#btOk').removeAttr('disabled');
+   
 });
+
+function query_resize(){
+	   var frameHeight;
+	   //Получить размер клиентского окна
+	     if( typeof( window.innerWidth ) == 'number' ) {
+	     	//Non-IE
+	   	   	frameHeight = window.innerHeight;
+	     	}else{
+	     	//IE 6+ in 'standards compliant mode'
+	     	frameHeight = ietruebody().clientHeight;
+	     }
+	  	
+	$('#id_filter, #id_cams, #id_dayofweek').height( frameHeight - $('#tab_head').height() - $('#id_head_filter').height()-30 );
+};
+
+
+
+
+
+function ietruebody(){
+   return (document.compatMode && document.compatMode!='BackCompat')? document.documentElement : document.body;
+};
+
+
 // -->
 </script>
 
