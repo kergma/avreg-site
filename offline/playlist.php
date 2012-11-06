@@ -202,16 +202,13 @@ if ( isset($_SESSION) && isset($_SESSION['error'])/* ошибка */ )
 <form action="<?php echo $conf['prefix']; ?>/offline/_playlist.php" method="POST" onsubmit="return(on_submit())">
 <fieldset>
 <legend><?php echo $left_tune; ?></legend>
-<table cellspacing="0" border="0" cellpadding="5">
+<table cellspacing="0" border="0" cellpadding="5" >
 <tr valign="top">
-<td>
+<td style="width:300px;" >
 <?php 
 
 	//формируем список чекбоксов выбора камер
 	print getChkbxByAssocAr('cams', $conf_cams_array, 6, $cams_sel, true, FALSE);
-
-//старый код
-//print getSelectByAssocAr('cams[]', $conf_cams_array, TRUE, 7, 1, $cams_sel, FALSE, FALSE); 
 
 ?>
 </td>
@@ -258,12 +255,9 @@ print getSelectHtml('month2', $month_array, FALSE, 1, 1, $month_array[$month2], 
 print getSelectHtml('day2', $day_array, FALSE, 1, 1, $day_array[$day2], FALSE, FALSE);
 ?>
 </td>
-<td align="center">
+<td align="center" style="width:150px;">
 <?php 
 	print getChkbxByAssocAr('dayofweek', $day_of_week, 0,'0,1,2,3,4,5,6', true, FALSE);
-	
-	//   print getSelectHtml('dayofweek[]', $day_of_week, TRUE, 7, 0, $day_of_week_preset, FALSE, FALSE); 
-
 ?>
 </td>
 <td align="left" nowrap>
