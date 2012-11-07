@@ -375,7 +375,9 @@ function query_resize(){
 	     	//IE 6+ in 'standards compliant mode'
 	     	frameHeight = ietruebody().clientHeight;
 	     }
-	  	
+
+	   console.log( $('#tab_head').height() );
+		  	
 	$('#id_filter').height( frameHeight - $('#tab_head').height() - $('#id_head_filter').height()-30 );
 	$('#id_cams').height( frameHeight - $('#tab_head').height() - $('#id_head_cams').height()-30 );
 	$('#id_dayofweek').height( frameHeight - $('#tab_head').height() - $('#id_head_dayofweek').height()-30 );
