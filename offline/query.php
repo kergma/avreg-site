@@ -6,7 +6,7 @@
  */
 $pageTitle = 'strRunQuery';
 $pageBgColor = '#D0DCE0';
-$body_style='margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; ';
+$body_style='margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; height:100%;';
 $lang_file = '_offline.php';
 $USE_JQUERY = true;
 require ('../head.inc.php');
@@ -94,7 +94,7 @@ if (isset($_COOKIE))
 <?php if(stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')){ ?>
 <table cellspacing="0" border="1" cellpadding="3" width="100%" height="100%" style="margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;" >
 <?php }else{ ?>
-<table cellspacing="0" border="1" cellpadding="3" width="100%" height="90%" style="margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;" >
+<table cellspacing="0" border="1" cellpadding="3" width="100%" height="172px" style="margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;" >
 <?php } ?>
 <thead id="tab_head">
  
@@ -366,21 +366,20 @@ $(document).ready(function() {
 });
 
 function query_resize(){
-	   var frameHeight;
+	   var frameHeight = 173;
 	   //Получить размер клиентского окна
-	     if( typeof( window.innerWidth ) == 'number' ) {
+/*	     if( typeof( window.innerWidth ) == 'number' ) {
 	     	//Non-IE
 	   	   	frameHeight = window.innerHeight;
 	     	}else{
 	     	//IE 6+ in 'standards compliant mode'
 	     	frameHeight = ietruebody().clientHeight;
 	     }
-
-	   console.log( $('#tab_head').height() );
+*/
 		  	
-	$('#id_filter').height( frameHeight - $('#tab_head').height() - $('#id_head_filter').height()-30 );
-	$('#id_cams').height( frameHeight - $('#tab_head').height() - $('#id_head_cams').height()-30 );
-	$('#id_dayofweek').height( frameHeight - $('#tab_head').height() - $('#id_head_dayofweek').height()-30 );
+	$('#id_filter').height( frameHeight - $('#tab_head').height() - $('#id_head_filter').height()*2-2);
+	$('#id_cams').height( frameHeight - $('#tab_head').height() - $('#id_head_cams').height()*2-2);
+	$('#id_dayofweek').height( frameHeight - $('#tab_head').height() - $('#id_head_dayofweek').height()*2-2);
 };
 
 
