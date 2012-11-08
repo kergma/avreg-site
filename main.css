@@ -27,7 +27,10 @@ select,textarea,input {
    font-family: Arial, sans-serif;
    font-size: 13px;
    text-decoration: none;
-/*   min-width:50px;*/
+}
+
+select[disabled], textarea[disabled], input[disabled] {
+   background-color: #C3C3C3;
 }
 
 .chkbx_lsl{
@@ -49,9 +52,6 @@ select,textarea,input {
 	top:-1px;
 }
 
-select[disabled], textarea[disabled], input[disabled] {
-   background-color: #C3C3C3;
-}
 
 h1 {
    font-size:16px;
