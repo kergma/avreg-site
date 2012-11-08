@@ -368,15 +368,14 @@ $(document).ready(function() {
 function query_resize(){
 	   var frameHeight = 173;
 	   //Получить размер клиентского окна
-/*	     if( typeof( window.innerWidth ) == 'number' ) {
+	     if( typeof( window.innerWidth ) == 'number' ) {
 	     	//Non-IE
-	   	   	frameHeight = window.innerHeight;
 	     	}else{
 	     	//IE 6+ in 'standards compliant mode'
-	     	frameHeight = ietruebody().clientHeight;
+	     	frameWidth = $('body').width()-15; 
+	     	$('table').width(frameWidth+14);
 	     }
-*/
-		  	
+
 	$('#id_filter').height( frameHeight - $('#tab_head').height() - $('#id_head_filter').height()*2-2);
 	$('#id_cams').height( frameHeight - $('#tab_head').height() - $('#id_head_cams').height()*2-2);
 	$('#id_dayofweek').height( frameHeight - $('#tab_head').height() - $('#id_head_dayofweek').height()*2-2);
