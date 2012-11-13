@@ -49,15 +49,13 @@ if ( isset($cmd) )
                else
                   $_val =  html_entity_decode($value);
                $adb->replace_camera('local', $cam_nr, $param, $_val, $remote_addr, $login_user);
-               
-               if ($cam_nr===0)
-                  print_syslog(LOG_NOTICE,
-                     sprintf('for cam[ALL] on [%s] set param `%s\' to %s, old value `%s\'',
-                     $sip, $param, $_val, $olds[$param] ));
-               else
-                  print_syslog(LOG_NOTICE,
-                     sprintf('for cam[%d] on [%s] set param `%s\' to %s, old value `%s\'',
-                     $cam_nr, $sip, $param, $_val, $olds[$param] ));
+
+               print_syslog(LOG_NOTICE,
+                     sprintf('cam[%s]: update param "%s", set new value "%s", old value "%s"',
+                     $cam_nr === 0 ? 'default' : (string)$cam_nr,
+                     $param,
+                     empty($_val) ? "<empty>" : $_val,
+                     empty($olds[$param]) ? "<empty>" : $olds[$param] ));
             }
          }
       }
