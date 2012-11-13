@@ -1,4 +1,31 @@
 		<div id="page"> 
+		
+		
+		
+		
+		
+		
+		<?php 
+			
+		
+		
+// 			$res_conf = aplayer_configurate($conf['aplayerConfig']);
+			
+// 			print '<pre>';
+// 			var_dump($res_conf);
+// 			print '</pre>';
+			
+// 			exit();
+			
+//			print json_encode($res_conf);
+		?>
+		
+		
+		
+		
+		
+		
+		
 		<div id="matrix_load" style="display: none;"><img src="gallery/img/loading.gif"></div>
 		
 			<div id="sidebar">
@@ -218,7 +245,6 @@
 </div>
 
 
-
 <script type="text/javascript">
 var MediaUrlPref = WwwPrefix + MediaAlias + '\/';
 
@@ -257,7 +283,12 @@ function readableFileSize(size) {
 $(function(){
 
 <?php if (isset($conf['aplayerConfig']) && !empty($conf['aplayerConfig']) && is_array($conf['aplayerConfig'])) :?>	
-	$.aplayerConfiguration(<?php print json_encode($conf['aplayerConfig']);?>);
+	//$.aplayerConfiguration(< ?php print json_encode($conf['aplayerConfig']);?>);
+	$.aplayerConfiguration(
+		<?php 
+			$res_conf = aplayer_configurate($conf['aplayerConfig']);
+			print json_encode($res_conf);
+		?>);
 <?php endif; ?>
 
 	// переопределение настроек

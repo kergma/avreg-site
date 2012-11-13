@@ -1626,7 +1626,7 @@ var matrix = {
 		$("#scroll_v").hide();
 		//расширяем панель матрицы на освободившееся место
 		$("#list_panel").width($("#list_panel").width() + $("#scroll_v").width());
-			
+		
 		//Установка размеров отображаемого элемента
 		matrix.loaddetailsrc();
 	
@@ -1665,18 +1665,22 @@ var matrix = {
 			//отображаем все ячейки матрицы 
 			$(".content_item").each(function(){
 				if($(this).hasClass("active")){
-						//востанавливаем параметры активного элемента
+					//востанавливаем параметры активного элемента
+					if(MSIE){
+						$(this).attr('style', matrix.recover.cell_style)
+						.hide()
+						.find('.elem').attr('style', matrix.recover.elem_style)
+						.find('.refBox').attr('style', matrix.recover.refBox_style)
+						.aplayerResizeToParent();
+					}else{
 						$(this).attr('style', matrix.recover.cell_style)
 						.find('.elem').attr('style', matrix.recover.elem_style)
 						.find('.refBox').attr('style', matrix.recover.refBox_style)
 						.aplayerResizeToParent();
+					}
 				}
-				
    				$(this).show();
 			});
-
-			
-			
 			
 			//отображаем info_block-и
 			$('.info_block').removeClass('not_visible');
@@ -1706,6 +1710,7 @@ var matrix = {
 
 			//меняем изображение кнопки смены режимов
 			$('img', '.select_mode').attr('src', gallery.images['preview'].src);
+			
 		}
 	},
 
@@ -2068,11 +2073,14 @@ var matrix = {
 	
 	//Устанавливает размеры элементов в режиме делального просмотра
 	loaddetailsrc : function() {
+		
+
+
 		if (typeof(matrix.events[matrix.num]) != 'undefined') {
+			
 			var value = matrix.events[matrix.num];
 
 			//Визуализируем активную ячейку в режиме детального просмотра
-			
 			//сохраняем необходимые параметры нового активного элемента
 			$(".content_item.active").each(function(){
 				matrix.recover.cell_style = $(this).attr('style');
@@ -2083,13 +2091,13 @@ var matrix = {
 				$(this).find(".refBox .aplayer").each(function(){
 						$(this).parent().addPlayer({'src': $(this).attr('s'), 'type':'"'+$(this).attr('t')+'"' ,'controls':'mini' }).click()
 						.end().removeAttr('t').removeAttr('s').unbind('click');
-					});
+				});
 
 				//Устанавливает для элементов текущей ячейки размеры просмотра
 				$(this).css({
 					"padding": 0 ,
-					'height':matrix.height,
-					'width':(matrix.width + $("#scroll_v").width())
+					'height':matrix.height+'px',
+					'width':(matrix.width + $("#scroll_v").width())+'px'
 					});
 
 				$(".active .elem").css({
@@ -2100,8 +2108,8 @@ var matrix = {
 				
 				$(".active .refBox").css({
 					"padding": 0 ,
-					'height':matrix.height-15,
-					'width':(matrix.width + $("#scroll_v").width()- 8)
+					'height':(matrix.height-15)+'px',
+					'width':(matrix.width + $("#scroll_v").width()- 8)+'px'
 					});
 				});
 			
@@ -2864,8 +2872,6 @@ var scroll = {
 			
 			// задаем параметры ползунка
 			$(scroll.id + ' .scroll_polz_v').height(h);
-//			$(scroll.id + ' .scroll_polz_v_Middle').height(h-20);
-//			$(scroll.id + ' .scroll_polz_v').css('top',0);
 			
 			}
 			

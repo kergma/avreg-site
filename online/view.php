@@ -88,6 +88,12 @@ while (@ob_end_flush());
 
 echo "<script type='text/javascript'>\n";
 
+if (isset($conf['aplayerConfig']) && !empty($conf['aplayerConfig']) && is_array($conf['aplayerConfig'])) {
+	$res_conf = aplayer_configurate($conf['aplayerConfig']);
+	print '$.aplayerConfiguration('.json_encode($res_conf).	');'."\n";
+}
+
+
 //устанавливаем номер текущей раскладки
 print "var cur_layout = $cur_layout; \n";
 

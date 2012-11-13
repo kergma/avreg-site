@@ -52,6 +52,54 @@ function tohtml($var)
    var_dump($var);
    print '</pre></div>'."\n";
 }
+
+
+/**
+ * возвращает объект для конфигурации плеера для клиентской ОС
+ * @param array $aplayer_config - массив $conf['aplayerConfig']
+ */
+function aplayer_configurate($aplayer_config){
+	if(substr_count($_SERVER["HTTP_USER_AGENT"], 'Linux')>0){
+		config_merging_part($aplayer_config['*'], $aplayer_config['linux']);
+		return $aplayer_config['linux'];
+	}
+	else if(substr_count($_SERVER["HTTP_USER_AGENT"], 'Windows')>0){
+		config_merging_part($aplayer_config['*'], $aplayer_config['windows']);
+		return $aplayer_config['windows'];
+	}
+	else {
+		return	$aplayer_config['*'];
+	}
+	
+}
+
+/**
+ *рекурсивно комбинирует конфигурационные общие(для всех ОС) настройки плеера с настройками для ОС пользователя 
+ * @param unknown_type $star_marked - общие настройки для всех ОС (с индексом ['*'] - $conf['aplayerConfig']['*'])
+ * @param unknown_type $res_out - ссылка на результирующий массив с параметрами для клиентской ОС
+ */
+function config_merging_part($star_marked, &$res_out ){
+
+	if(gettype($star_marked)!='array'){
+		return;
+	}
+	else{
+		foreach($star_marked as $key=>$val){
+			if( isset($res_out[$key]) ){
+				config_merging_part($val, $res_out[$key] );
+			}
+			else {
+				$res_out[$key] = $val;
+			}
+		}
+	}
+}
+
+
+
+
+
+
 /**
  * 
  * Фуцнкция парсит строки в csv формате в масив
