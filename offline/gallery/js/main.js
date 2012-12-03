@@ -3418,7 +3418,7 @@ var scale2 = {
 				//скрываем чекбокс пропорций
 				$('div.propotion').hide();
 			}
-			else // HTML5-player
+			else // HTML5-player + flowplayer
 			{
 				// размер матрицы
 				var width = matrix.width;
