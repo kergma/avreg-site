@@ -398,6 +398,8 @@ var checking_connection = {
 
 	//инициализировать проверку соединений
 	init_check : function(){
+		if(reconnect_timeout<100) return;
+		
 		var self = this;
 		clearInterval(self.timer);
 		if(self.me_list != null){
@@ -512,7 +514,7 @@ var checking_connection = {
 		}
 		
 		$(me).bind('error', function(){
-			console.log("On error");
+			//console.log("On error");
 			$(me)
 			.unbind('load')
 			.attr('src', imgs['connection_fail'].src);
