@@ -148,6 +148,9 @@ if ( $GCP_cams_nr == 0 )
 
 require_once('../lib/get_cam_url.php');
 
+//проверки соединения с камерами и попытки реконнекта
+print 'var reconnect_timeout = Number('.(isset($conf['reconnect-timeout'])? $conf['reconnect-timeout']:1).")*1000;\n";
+
 print 'var cams_subconf = '.json_encode($cams_subconf).";\n";
 //Передаем JS параметры конфигурации
 //print 'var conf = '.json_encode($conf).";\n";
@@ -324,9 +327,6 @@ print "var REF_MAIN = ".(($install_user || $admin_user || $arch_user )? 'true':'
  readfile('view.js');
 
 echo "</script>\n";
-
-
-
 
 
 if ( !empty($msie_addons_scripts) || is_array($msie_addons_scripts) )  {

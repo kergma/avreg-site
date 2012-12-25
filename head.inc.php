@@ -77,6 +77,11 @@ printf("var MediaAlias = '%s';\n", addcslashes($conf['media-alias'], '\'"/\\'));
 
 var MSIE=false; // FIXME double calc with php
 var GECKO=false;
+var WEBKIT = false;
+
+<?php if($USE_JQUERY){ ?>
+WEBKIT= $.browser.webkit!=undefined && $.browser.webkit;
+<?php } ?>
 
 var UA = navigator.userAgent.toLowerCase();
 if (UA.indexOf('msie') >=0 )

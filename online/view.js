@@ -80,6 +80,11 @@ $(document).ready( function() {
 	imgs['normal_size'] = new Image();
 	imgs['normal_size'].src =  "../img/expand.png";
 	
+	//Соединение с сервером потеряно
+	imgs['connection_fail'] = new Image();
+	imgs['connection_fail'].src =  "../img/ConnectionFail.png";
+	
+	
 	//Запуск сценария	   
 	fill_canvas();
 	
@@ -385,6 +390,170 @@ function brout(win_nr, win_div, win_geo) {
       $(win_div).bind('mouseover', function() { img_mouseover(this, win_nr);} );
       win_div.mouseout( function() { hideddrivetip(); } ); 
    
+}
+
+var checking_connection = {
+	timer : null,
+	me_list : null,
+
+	//инициализировать проверку соединений
+	init_check : function(){
+		var self = this;
+		clearInterval(self.timer);
+		if(self.me_list != null){
+			$.each(self.me_list, function(i, val){
+				$(val.me)
+				.unbind('load')
+				.unbind('error');
+			});
+		}
+		self.me_list = null;
+		$.each(WIN_DIVS, function(i, val){
+			self.add_element(val);
+		});
+		
+		if(!WEBKIT && GECKO){			
+			self.timer = setInterval(self.check_cams_connection, reconnect_timeout);
+		}
+	},
+
+	//добавить проверяемый элемент
+	add_element : function (win){
+		var self = this;
+		
+		var me = $('img.ElMedia', win); 
+		var me_id = $(me).attr('id');
+		var me_src = $(me).attr('src');
+		
+		if(self.me_list==undefined){
+			self.me_list = new Array();
+		}
+
+		var obj = { 
+			'me' : me,
+			'me_id':me_id,
+			'src' : me_src,
+			'loads' : 0,
+			'stoped' : false
+		};
+		
+		self.me_list.push(obj);
+	
+		if(WEBKIT || GECKO){
+			self.set_handlers(me);
+		}
+	},
+
+	//возобновить проверку элемента
+	start_check_me : function(element){
+		var self = this;
+		
+		var me = $(element).hasClass('ElMedia')? element: $('img.ElMedia', element); 
+		
+		var me_id = $(me).attr('id');
+	
+		for(var i in self.me_list){
+			if(self.me_list[i].me_id == me_id){
+				self.me_list[i].stoped = false;
+				self.set_handlers(me);
+			}
+		}
+	},
+	
+	//не проверять элемент
+	stop_check_me : function(element){
+		var self = this;
+		var me = $('img.ElMedia', element); 
+		var me_id = $(me).attr('id');
+		
+		for(var i in self.me_list){
+			if(self.me_list[i].me_id == me_id){
+				self.me_list[i].stoped = true;
+				$(self.me_list[i].me)
+				.unbind('load')
+				.unbind('error');
+			}
+		}
+	},
+	
+	
+	//коллбэк таймера - проверяет соединения
+	check_cams_connection : function (){
+		var self = checking_connection;
+		for(index = 0; index<self.me_list.length; index++){
+
+			if(self.me_list[index].stoped) continue;
+			
+				if( self.me_list[index].loads == 0 ){
+//					console.log("ERROR");
+					$(self.me_list[index].me)
+					.unbind('load')
+					.attr('src', imgs['connection_fail'].src);
+					self.me_list[index].stoped = true;
+					self.reconnect(index);
+				}
+				else{
+//					console.log("OK");
+				}
+				self.me_list[index].loads = 0;
+		}
+			
+	},
+	
+	//установка обработчиков на элемент
+	set_handlers : function(me){
+		var self = this;
+		var me_id = $(me).attr('id');
+		var index = 0;
+		for(index in self.me_list){
+			if(self.me_list[index].me_id == me_id){
+				break;
+			}
+		}
+		
+		$(me).bind('error', function(){
+			console.log("On error");
+			$(me)
+			.unbind('load')
+			.attr('src', imgs['connection_fail'].src);
+			self.me_list[index].stoped = true;
+			
+			self.reconnect(index);
+		});
+
+		$(me).bind('load',function(){
+			self.me_list[index].loads++;
+		});
+	},
+	
+	//попытка реконнекта
+	reconnect : function(index){
+		var self = this;
+		var me = self.me_list[index].me;
+		var im = new Image();
+		
+		setTimeout(function(){
+			$(im).bind('error', function(){
+				self.reconnect(index);
+				$(im)
+				.unbind('load')
+				.unbind('error');
+				delete im;
+			});
+
+			$(im).bind('load', function(){
+				$(me).attr('src', im.src);	
+				self.start_check_me(me);
+				$(im)
+				.unbind('load')
+				.unbind('error');
+				delete im;
+			});
+			im.src = self.me_list[index].src+"&dummy="+Math.random();
+		} , reconnect_timeout);
+		
+	}
+
 }
 
 
@@ -838,59 +1007,6 @@ function canvas_growth() {
    	}
    	   return ar;
    	}
-
-//   /**
-//    * 
-//    * Функция, которая возвращает ссылку на просмотр видео с камеры
-//    * аналог php-функции из lib/get_cam_url.php
-//    * @param array $conf масив настроек
-//    * @param int $cam_nr номер камеры
-//    * @param string $media тип медиа
-//    * @param bool $append_abenc аутентификация пользователя
-//    * @return string адрес видео с камеры
-//    */
-//   function get_cam_http_url(conf, cam_nr, media, append_abenc){
-//   	var url = '';
-//      var re  = /(\d+)$/;
-//      var found =  '';
-//      if (cams_subconf && cams_subconf[cam_nr]!=null && (cams_subconf[cam_nr]['avregd-httpd']).length!=0) {
-//         // FIXME грязный прегрязный хак
-//         found =  cams_subconf[cam_nr]['avregd-httpd'].match(re);
-//         url = location.protocol + '//' + location.hostname + ':' + found[1];
-//      } else
-//         url = http_cam_location;
-//
-//      var path_var = 'avregd-'+media+'-path';
-//
-//      if( conf[path_var]!=null )
-//         url += conf[path_var]+"?camera="+cam_nr;
-//      if (append_abenc && user_info_USER.length>0 )
-//         url += '&ab='+___abenc;
-//      return url;
-//   }
-//
-//   /**
-//    * 
-//    * Функция, которая возвращает ссылку на просмотр видео с альтернативных камер камеры 
-//    * аналог php-функции из lib/get_cam_url.php
-//    * @param alt_src альтернативный источник
-//    * @param bool append_abenc аутентификация пользователя
-//    * @return string адрес видео с камеры
-//    */
-//   function get_cam_alt_url(alt_src, $cam_nr, append_abenc){
-//   	   var url = alt_src;
-//   	   if(url==null)return null;
-//   	   reg = /\?camera=\d*/;
-//   	  if(!reg.test(url)){
-//   		 url += "?camera="+$cam_nr;  
-//   	   }
-//   	   if (append_abenc && user_info_USER.length>0 ) {
-//   		url += '&ab='+___abenc;
-//   	   }
-//   	   return url;
-//   }
-   
-   
    
 
    /**
@@ -904,8 +1020,10 @@ function canvas_growth() {
            document.getElementById? document.getElementById('tooltip') : '';
            if (GECKO)
            document.onmousemove=positiontip;
-           }
+		}
        
+		
+		
            // calc and set  CANVAS width & height
            CANVAS = $('#canvas');
            
@@ -1147,7 +1265,8 @@ function canvas_growth() {
 		}
 	});
 	
-	
+	//проверка связи с камерами
+	checking_connection.init_check();
 	
 //--> Cameras' statuses    	
 	
@@ -1397,16 +1516,20 @@ var controls_handlers = {
 		var start = $(e.currentTarget);
 		var cell_nr = parseInt(($(start).attr('id')).replace('pl_start_',''));
 		var aplayer_id = $('.aplayer', '#win'+cell_nr).attr('id');
-
+		
 		$('#pl_stop_'+cell_nr).show();
 		$(start).hide();
 		$.aplayer.startPlay(aplayer_id);
+		
+		checking_connection.start_check_me($("#"+aplayer_id));
 	},
 
 	pl_stop_click : function(e){
 		var stop = $(e.currentTarget);
 		var cell_nr = parseInt(($(stop).attr('id')).replace('pl_stop_',''));
 		var aplayer_id = $('.aplayer', '#win'+cell_nr).attr('id');
+		
+		checking_connection.stop_check_me($("#"+aplayer_id));
 		
 		$('#pl_start_'+cell_nr).show();
 		$(stop).hide();
