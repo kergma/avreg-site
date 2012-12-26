@@ -414,12 +414,17 @@ var checking_connection = {
 			self.add_element(val);
 		});
 		
-		if(!WEBKIT && GECKO){			
-			self.timer = setInterval(self.check_cams_connection, reconnect_timeout);
+		if(!WEBKIT && GECKO){
+			self.timer = setInterval(self.check_cams_connection_gecko, reconnect_timeout);
 		}
+        else if(WEBKIT && GECKO){
+            self.timer = setInterval(self.check_cams_connection_webkit, reconnect_timeout);
+        }
+
+
 	},
 
-	//добавить проверяемый элемент
+	//добавить элемент для проверки
 	add_element : function (win){
 		var self = this;
 		
@@ -436,7 +441,8 @@ var checking_connection = {
 			'me_id':me_id,
 			'src' : me_src,
 			'loads' : 0,
-			'stoped' : false
+			'stoped' : false,
+			'connection_fail' : false
 		};
 		
 		self.me_list.push(obj);
@@ -444,6 +450,7 @@ var checking_connection = {
 		if(WEBKIT || GECKO){
 			self.set_handlers(me);
 		}
+
 	},
 
 	//возобновить проверку элемента
@@ -457,6 +464,7 @@ var checking_connection = {
 		for(var i in self.me_list){
 			if(self.me_list[i].me_id == me_id){
 				self.me_list[i].stoped = false;
+				self.me_list[i].connection_fail = false;
 				self.set_handlers(me);
 			}
 		}
@@ -477,29 +485,44 @@ var checking_connection = {
 			}
 		}
 	},
+
+    //коллбэк таймера - проверяет соединения для WEBKIT
+	//проверяет только на ошибку при загрузке, при обрыве связи не срабатывает
+    check_cams_connection_webkit : function(){
+        var self = checking_connection;
+        for(index = 0; index<self.me_list.length; index++){
+
+            if(self.me_list[index].stoped) continue;
+
+            if(self.me_list[index].connection_fail){
+                self.reconnect(index);
+            }
+
+        }
+
+    },
 	
-	
-	//коллбэк таймера - проверяет соединения
-	check_cams_connection : function (){
+	//коллбэк таймера - проверяет соединения для GECKO
+	check_cams_connection_gecko : function (){
 		var self = checking_connection;
 		for(index = 0; index<self.me_list.length; index++){
 
-			if(self.me_list[index].stoped) continue;
+            if(self.me_list[index].stoped) continue;
+
+                if(self.me_list[index].connection_fail){
+                    self.reconnect(index);
+                }
 			
-				if( self.me_list[index].loads == 0 ){
-//					console.log("ERROR");
-					$(self.me_list[index].me)
+				else if( self.me_list[index].loads == 0 ){
+                    $(self.me_list[index].me)
 					.unbind('load')
 					.attr('src', imgs['connection_fail'].src);
-					self.me_list[index].stoped = true;
-					self.reconnect(index);
+                    self.me_list[index].connection_fail = true;
 				}
 				else{
-//					console.log("OK");
 				}
 				self.me_list[index].loads = 0;
 		}
-			
 	},
 	
 	//установка обработчиков на элемент
@@ -518,9 +541,7 @@ var checking_connection = {
 			$(me)
 			.unbind('load')
 			.attr('src', imgs['connection_fail'].src);
-			self.me_list[index].stoped = true;
-			
-			self.reconnect(index);
+            self.me_list[index].connection_fail = true;
 		});
 
 		$(me).bind('load',function(){
@@ -532,28 +553,28 @@ var checking_connection = {
 	reconnect : function(index){
 		var self = this;
 		var me = self.me_list[index].me;
-		var im = new Image();
-		
-		setTimeout(function(){
-			$(im).bind('error', function(){
-				self.reconnect(index);
-				$(im)
-				.unbind('load')
-				.unbind('error');
-				delete im;
-			});
+		var im =null;
+		if(self.me_list[index].tset_img==undefined){
+			self.me_list[index].tset_img = new Image();	
+		}
+		self.me_list[index].tset_img.src = '';
+		im = self.me_list[index].tset_img;
 
-			$(im).bind('load', function(){
-				$(me).attr('src', im.src);	
-				self.start_check_me(me);
-				$(im)
-				.unbind('load')
-				.unbind('error');
-				delete im;
-			});
-			im.src = self.me_list[index].src+"&dummy="+Math.random();
-		} , reconnect_timeout);
-		
+		$(im).bind('error', function(){
+			$(im)
+			.unbind('load')
+			.unbind('error');
+		});
+
+		$(im).bind('load', function(){
+			$(me).attr('src', im.src);
+			self.start_check_me(me);
+			$(im)
+			.unbind('load')
+			.unbind('error');
+            self.me_list[index].connection_fail = false;
+		});
+		im.src = self.me_list[index].src+"&dummy="+Math.random();
 	}
 
 }
