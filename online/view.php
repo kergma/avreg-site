@@ -39,11 +39,14 @@ if(!count($result)) {
 $def_cam = null;
 $cur_layout = 0;
 
-//Поиск раскладки по умолчанию
-foreach($result as $key=>$value){
+//Поиск раскладки по умолчанию и определение реконнект таймаута
+foreach($result as $key=>&$value){
 	if($value['IS_DEFAULT']!='0'){
 		$def_cam = $value;
 		$cur_layout =$value["MON_NR"]*1;
+	}
+	if( empty($value['RECONNECT_TOUT']) ){
+		$value['RECONNECT_TOUT'] = isset($conf['reconnect-timeout'])? $conf['reconnect-timeout'] : 0 ;
 	}
 }
 
@@ -147,9 +150,6 @@ if ( $GCP_cams_nr == 0 )
    die('There are no available cameras!'); 
 
 require_once('../lib/get_cam_url.php');
-
-//проверки соединения с камерами и попытки реконнекта
-print 'var reconnect_timeout = Number('.(isset($conf['reconnect-timeout'])? $conf['reconnect-timeout']:1).")*1000;\n";
 
 print 'var cams_subconf = '.json_encode($cams_subconf).";\n";
 //Передаем JS параметры конфигурации

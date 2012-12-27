@@ -395,12 +395,21 @@ function brout(win_nr, win_div, win_geo) {
 var checking_connection = {
 	timer : null,
 	me_list : null,
-
+	reconnect_timeout : 0,
+	
 	//инициализировать проверку соединений
 	init_check : function(){
-		if(reconnect_timeout<100) return;
-		
 		var self = this;
+		
+		for(var i in layouts_list){
+			if(layouts_list[i]['MON_NR']==cur_layout){
+				self.reconnect_timeout = layouts_list[i].RECONNECT_TOUT * 1000;
+				break;
+			}
+		}
+		
+		if(self.reconnect_timeout<100) return;
+		
 		clearInterval(self.timer);
 		if(self.me_list != null){
 			$.each(self.me_list, function(i, val){
@@ -415,10 +424,10 @@ var checking_connection = {
 		});
 		
 		if(!WEBKIT && GECKO){
-			self.timer = setInterval(self.check_cams_connection_gecko, reconnect_timeout);
+			self.timer = setInterval(self.check_cams_connection_gecko, self.reconnect_timeout);
 		}
-        else if(WEBKIT && GECKO){
-            self.timer = setInterval(self.check_cams_connection_webkit, reconnect_timeout);
+        else if(WEBKIT){
+            self.timer = setInterval(self.check_cams_connection_webkit, self.reconnect_timeout);
         }
 
 
@@ -431,6 +440,8 @@ var checking_connection = {
 		var me = $('img.ElMedia', win); 
 		var me_id = $(me).attr('id');
 		var me_src = $(me).attr('src');
+		
+		$(me).attr('lowsrc', imgs['connection_fail'].src );
 		
 		if(self.me_list==undefined){
 			self.me_list = new Array();
@@ -490,15 +501,22 @@ var checking_connection = {
 	//проверяет только на ошибку при загрузке, при обрыве связи не срабатывает
     check_cams_connection_webkit : function(){
         var self = checking_connection;
+        
+        
         for(index = 0; index<self.me_list.length; index++){
-
-            if(self.me_list[index].stoped) continue;
-
-            if(self.me_list[index].connection_fail){
-                self.reconnect(index);
-            }
-
-        }
+            if(self.me_list[index].stoped || self.me_list[index].connection_fail) continue;
+				
+				else if( self.me_list[index].loads == 0 ){
+                    $(self.me_list[index].me)
+					.unbind('load')
+					.attr('src', imgs['connection_fail'].src);
+                    self.me_list[index].connection_fail = true;
+                    self.reconnect(index);
+				}
+				else{
+				}
+//				self.me_list[index].loads = 0;
+		}
 
     },
 	
@@ -506,18 +524,13 @@ var checking_connection = {
 	check_cams_connection_gecko : function (){
 		var self = checking_connection;
 		for(index = 0; index<self.me_list.length; index++){
-
-            if(self.me_list[index].stoped) continue;
-
-                if(self.me_list[index].connection_fail){
-                    self.reconnect(index);
-                }
-			
+            if(self.me_list[index].stoped || self.me_list[index].connection_fail) continue;
 				else if( self.me_list[index].loads == 0 ){
                     $(self.me_list[index].me)
 					.unbind('load')
 					.attr('src', imgs['connection_fail'].src);
                     self.me_list[index].connection_fail = true;
+                    self.reconnect(index);
 				}
 				else{
 				}
@@ -542,6 +555,7 @@ var checking_connection = {
 			.unbind('load')
 			.attr('src', imgs['connection_fail'].src);
             self.me_list[index].connection_fail = true;
+            self.reconnect(index);
 		});
 
 		$(me).bind('load',function(){
@@ -559,11 +573,15 @@ var checking_connection = {
 		}
 		self.me_list[index].tset_img.src = '';
 		im = self.me_list[index].tset_img;
-
+		
 		$(im).bind('error', function(){
 			$(im)
 			.unbind('load')
 			.unbind('error');
+			self.me_list[index].connection_fail = false;
+			
+			//костыль для WEBKIT
+			if(WEBKIT)self.me_list[index].loads == 0;
 		});
 
 		$(im).bind('load', function(){
@@ -573,8 +591,13 @@ var checking_connection = {
 			.unbind('load')
 			.unbind('error');
             self.me_list[index].connection_fail = false;
+            
+   			//костыль для WEBKIT
+			if(WEBKIT)self.me_list[index].loads == 1;
 		});
-		im.src = self.me_list[index].src+"&dummy="+Math.random();
+		
+		var par = (self.me_list[index].src.indexOf('?')!=-1)? "&dummy=" : "?&dummy=";
+		im.src = self.me_list[index].src+par+Math.random();
 	}
 
 }
@@ -1314,10 +1337,10 @@ function canvas_growth() {
 		CAM_STATUS_REQ.abort(); 
 	}
 	//запуск запросов статуса камер
-	CAM_STATUS_REQ = cam_status_request({
-				'cams': cams_nrs
-//				'subsytems':'capture,record,motion,client', 	
-			});
+//	CAM_STATUS_REQ = cam_status_request({
+//				'cams': cams_nrs
+////				'subsytems':'capture,record,motion,client', 	
+//			});
 //--> Cameras' statuses
 	
 }//fill_canvas()

@@ -28,7 +28,7 @@ require ('./mon-type.inc.php');
 <!--
 function reset_to_list()
 {
-		window.open('<?php echo $conf['prefix']; ?>/admin/web_mon_list.php', target='_self');
+	window.open('<?php echo $conf['prefix']; ?>/admin/web_mon_list.php', target='_self');
 }
 // -->
 </script>
@@ -98,7 +98,11 @@ if ( isset($cmd) ) {
 				$PrintCamNames =  "checked";
 				print '<br /><div><div style="float:left;" >'.$strPrintCamNames.":&nbsp;&nbsp;</div>\n";
 				print '<div><input type="checkbox" name="PrintCamNames" '.$PrintCamNames.' />'."</div></div>\n";
-								
+
+				//Установить интервал попыток переподключения к камере при отсутствии соединения
+				$ReconnectTimeout  = 5; //по умолчанию
+				print '<br /><div><div style="float:left;" >'.$strReconnectTimeout.":&nbsp;&nbsp;</div> \n";
+				print '<div >'.getSelectByAssocAr('ReconnectTimeout', $ReconnectTimeoutArray, false , 1, 1, $ReconnectTimeout, false)."</div></div>\n";
 				
 				//Кнопки сохранить раскладку и отменить
 				print '<br><input type="submit" name="btn" value="'.$strSave.'">'."\n";
@@ -132,7 +136,7 @@ if ( isset($cmd) ) {
 			if ( $allWINS!='') {
                 $PrintCamNames = ($PrintCamNames!=null)? 1 : 0;
                 
-				$adb->web_add_monitors($mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $allWINS);
+				$adb->web_add_monitors($mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS);
 
 				print "Ok!\n'";
 				print '<script type="text/javascript" language="javascript">reset_to_list();</script>'."\n";

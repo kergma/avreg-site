@@ -73,8 +73,8 @@ if (isset($cmd)) {
    	
       if ( $allWINS!='' )	{
       	$PrintCamNames = ($PrintCamNames!=null)? 1 : 0;
-
-      	$adb->web_replace_monitors($mon_nr, $mon_type, $mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $allWINS );
+      	 
+      	$adb->web_replace_monitors($mon_nr, $mon_type, $mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS );
          
          print '<p class="HiLiteBigWarn">' . sprintf($web_r_mon_changed, $counter, empty($mon_name)?$mon_type:$mon_name ) . '</p>'."\n";
          print '<center><a href="'.$conf['prefix'].'/admin/web_mon_list.php" target="_self">'.$r_mon_goto_list.'</a></center>'."\n";
@@ -112,7 +112,7 @@ if (isset($cmd)) {
       print 'var cams_alt ='.json_encode($cams_srcs).";\n";
       print '</script>'."\n";
 
-      //Создание эл-та селект ля ячеек раскладки
+      //Создание эл-та селект для ячеек раскладки
       for ($i=0; $i<25; $i++) {
       	
       	if(!isset($cams_srcs)){
@@ -121,7 +121,6 @@ if (isset($cmd)) {
       	
       	$a = getSelectHtmlByName('mon_wins[]',$wins_array, FALSE , 1, 1, @$wins_cams[$i], TRUE,  'sel_change(this); show_sub_select(this);', '', NULL, $cams_srcs );
          array_push($aaa, $a );
-// 		exit();
       }
       /* Free last resultset */
       $result = NULL;
@@ -145,6 +144,11 @@ if (isset($cmd)) {
       $PrintCamNames = ($row[8]==1)? 'checked':'unchecked' ;
       print '<br /><div><div style="float:left;" >'.$strPrintCamNames.":&nbsp;&nbsp;</div>\n";
       print '<div><input type="checkbox" name="PrintCamNames" '.$PrintCamNames.' />'."</div></div>\n";
+      
+	  //Установить интервал попыток переподключения к камере при отсутствии соединения      
+	  $ReconnectTimeout = trim($row[10]);
+      print '<br /><div><div style="float:left;" >'.$strReconnectTimeout.":&nbsp;&nbsp;</div> \n";
+      print '<div >'.getSelectByAssocAr('ReconnectTimeout', $ReconnectTimeoutArray, false , 1, 1, $ReconnectTimeout, false)."</div></div>\n";
 
       //Кнопки формы 
       print '<br><input type="submit" name="btn" value="'.$strSave.'">'."\n";
