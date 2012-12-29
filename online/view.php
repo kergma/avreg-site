@@ -45,7 +45,7 @@ foreach($result as $key=>&$value){
 		$def_cam = $value;
 		$cur_layout =$value["MON_NR"]*1;
 	}
-	if( empty($value['RECONNECT_TOUT']) ){
+	if( !isset($value['RECONNECT_TOUT']) ){
 		$value['RECONNECT_TOUT'] = isset($conf['reconnect-timeout'])? $conf['reconnect-timeout'] : 0 ;
 	}
 }
