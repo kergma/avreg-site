@@ -1113,7 +1113,7 @@ array(
    <li><b>br.avg</b> - среднее значение яркости (при вкл. &#171;<span class="param">brightness_control</span>&#187;).</li>
    </ul>
    По умолчанию: <b>Выкл</b>.',
-   'flags'=>$F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
+   'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
    'cats'    => '5.1.1',
    'subcats' => NULL,
    'mstatus' => 1,
@@ -1123,20 +1123,20 @@ array(
    'name'    => 'rec_mode',
    'type'    => $CHECK_VAL,
    'def_val' => 1,
-   'desc'    => '<b>Режимы записи на жесткий диск</b>:
+   'desc'    => '<b>Режим записи на жесткий диск</b>:
    <ul>
    <li>&#171;<b>Без записи</b>&#187; - запись на диски заблокирована;</li>
    <li>&#171;<b>Выборочный</b>&#187; (по-умолчанию) режим, при котором запись управляется событиями <i>любых</i> из следующих подсистем:</p>
    <ol>
    <li><i>детектор движения</i> (если включен и настроен);</li>
    <li><i>детектор звука</i> (пока не реализовано);</li>
-   <li><i>внешние команды</i> (avregd HTTP CGI-интерфейс).</li>
+   <li><i>внешние команды</i> (<a href="http://avreg.net/manual_applications_avregd-cgi-api.html" target="_blank">avregd HTTP CGI-интерфейс</a>).</li>
    </li></ol>
    </li>
    <li>&#171;<b>Всё подряд</b>&#187; - &#171;сплошной&#187; (непрерывный, безусловный) режим записи, при котором <i>всегда и абсолютно все</i> захваченные с устройств видео-кадры и аудио-фреймы записываются на диск.</li>
    </ul>
    <p>По умолчанию: &#171;<b>Выборочный&#187.</p>',
-   'flags'   => $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
+   'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
    'cats'    => '11',
    'subcats' => NULL,
    'mstatus' => 1,
