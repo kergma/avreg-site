@@ -368,7 +368,7 @@ function brout(win_nr, win_div, win_geo) {
 		'aplayer_rtsp_php':'http://'+SERVER_ADR+'/avreg/lib/js/aplayer_rtsp.php',
 		'crossorigin' : (WEBKIT)? true:false
 	}); 
-	
+			
 	if ( MSIE ){
 		$(win_div).width(win_geo.win_w+CORRECT_W).height(win_geo.win_h+CORRECT_H);
 		$('.pl_cont',cont).aplayerSetSize({'height':win_geo.cam_h+CORRECT_H+2 , 'width': win_geo.cam_w+CORRECT_W+2});
@@ -551,6 +551,13 @@ var checking_connection = {
 				.attr('src', imgs['connection_fail'].src);
                 self.me_list[index].connection_fail = true;
                 self.reconnect(index);
+                
+	            //активируем кнопку play
+	            var me_id = $(self.me_list[index].me).attr('id');
+				var win_nr = parseInt($("div.[name=win]:has(#"+me_id+")").attr('id').replace('win', '') );
+	            if(!isNaN(parseInt(win_nr))){
+	            	controls_handlers.activate_btn_play(win_nr);
+	            }
 			}
 		}
     },
@@ -591,7 +598,7 @@ var checking_connection = {
 		var self = this;
 		var res = false;
 		var cur_bmp = self.get_bitmap(index);
-		
+
 		//Если получили ноль(код ошибки) - возвращаем 'сбой связи'
 		if(cur_bmp==0){
 			return true;
@@ -630,11 +637,18 @@ var checking_connection = {
 		
 		//Элемент для проверки связи
 		var test_con = new Image();
-		
+
 		$(test_con).bind('error', function(){
 			$(me).attr('src', imgs['connection_fail'].src);
             self.me_list[index].connection_fail = false;
             delete test_con;
+
+            //активируем кнопку play
+			var win_nr = parseInt($("div.[name=win]:has(#"+me_id+")").attr('id').replace('win', '') );
+            if(!isNaN(parseInt(win_nr))){
+            	controls_handlers.activate_btn_play(win_nr);
+            }
+            
 		});
 
 		$(test_con).bind('load',function(){
@@ -644,12 +658,27 @@ var checking_connection = {
 		var par = (me.get(0).src.indexOf('?')!=-1)? "&dummy=" : "?&dummy=";
 		par += Math.random();
 		test_con.src = me.get(0).src+par;
+		
+//		$(me).bind('abort', function(){
+//			$(me)
+//			.unbind('load')
+//			.attr('src', imgs['connection_fail'].src);
+//            self.me_list[index].connection_fail = true;
+//            // self.reconnect(index);
+//            //активируем кнопку play
+//			var win_nr = parseInt($("div.[name=win]:has(#"+me_id+")").attr('id').replace('win', '') );
+//            if(!isNaN(parseInt(win_nr))){
+//            	controls_handlers.activate_btn_play(win_nr);
+//            }
+//		});
+
 	},
 	
 	//попытка реконнекта
 	reconnect_webkit : function(index){
 		var self = this;
 		var me = self.me_list[index].me;
+		var me_id = $(me).attr('id');
 		var im =null;
 		if(self.me_list[index].tset_img==undefined){
 			self.me_list[index].tset_img = new Image();	
@@ -675,6 +704,12 @@ var checking_connection = {
 			.unbind('error');
 			$(im).attr('src', '');
             self.me_list[index].connection_fail = false;
+            
+            //деактивируем кнопку play, активируем кнопку stop 
+			var win_nr = parseInt($("div.[name=win]:has(#"+me_id+")").attr('id').replace('win', '') );
+	        if(!isNaN(parseInt(win_nr))){
+	           	controls_handlers.activate_btn_stop(win_nr);
+	        }
 		});
 		
 		var par = (self.me_list[index].src.indexOf('?')!=-1)? "&dummy=" : "?&dummy=";
@@ -689,15 +724,22 @@ var checking_connection = {
 		var self = checking_connection;
 		for(index = 0; index<self.me_list.length; index++){
             if(self.me_list[index].stoped || self.me_list[index].connection_fail) continue;
-				else if( self.me_list[index].check_val == 0 ){
-                    $(self.me_list[index].me)
+			else if( self.me_list[index].check_val == 0 ){
+            	$(self.me_list[index].me)
 					.unbind('load')
 					.attr('src', imgs['connection_fail'].src);
-                    self.me_list[index].connection_fail = true;
-                    self.reconnect(index);
+                self.me_list[index].connection_fail = true;
+                self.reconnect(index);
+                    
+                //активируем кнопку play
+                var me_id = $(self.me_list[index].me).attr('id');
+				var win_nr = parseInt($("div.[name=win]:has(#"+me_id+")").attr('id').replace('win', '') );
+		        if(!isNaN(parseInt(win_nr))){
+		        	controls_handlers.activate_btn_play(win_nr);
 				}
-				else{
-				}
+
+			}
+			else{}
 				self.me_list[index].check_val = 0;
 		}
 	},
@@ -712,23 +754,48 @@ var checking_connection = {
 				break;
 			}
 		}
+		
 		$(me).bind('error', function(){
 			$(me)
 			.unbind('load')
 			.attr('src', imgs['connection_fail'].src);
             self.me_list[index].connection_fail = true;
             self.reconnect(index);
+
+            //активируем кнопку play
+			var win_nr = parseInt($("div.[name=win]:has(#"+me_id+")").attr('id').replace('win', '') );
+            if(!isNaN(parseInt(win_nr))){
+            	controls_handlers.activate_btn_play(win_nr);
+            }
+
 		});
 
 		$(me).bind('load',function(){
 			self.me_list[index].check_val++;
 		});
+		
+		
+//		$(me).bind('abort', function(){
+//			$(me)
+//			.unbind('load')
+//			.attr('src', imgs['connection_fail'].src);
+//            self.me_list[index].connection_fail = true;
+//            // self.reconnect(index);
+//            //активируем кнопку play
+//			var win_nr = parseInt($("div.[name=win]:has(#"+me_id+")").attr('id').replace('win', '') );
+//            if(!isNaN(parseInt(win_nr))){
+//            	controls_handlers.activate_btn_play(win_nr);
+//            }
+//		});
+
+		
 	},
 	
 	//попытка реконнекта
 	reconnect_gecko : function(index){
 		var self = this;
 		var me = self.me_list[index].me;
+		var me_id = $(me).attr('id');
 		var im =null;
 		if(self.me_list[index].tset_img==undefined){
 			self.me_list[index].tset_img = new Image();	
@@ -750,6 +817,14 @@ var checking_connection = {
 			.unbind('load')
 			.unbind('error');
             self.me_list[index].connection_fail = false;
+            
+        //деактивируем кнопку play, активируем кнопку stop 
+		var win_nr = parseInt($("div.[name=win]:has(#"+me_id+")").attr('id').replace('win', '') );
+        if(!isNaN(parseInt(win_nr))){
+           	controls_handlers.activate_btn_stop(win_nr);
+        }
+
+            
 		});
 		
 		var par = (self.me_list[index].src.indexOf('?')!=-1)? "&dummy=" : "?&dummy=";
@@ -1372,14 +1447,18 @@ function canvas_growth() {
                  })
                  .hide();
                  
-                 var stop =  $('<img id="pl_stop_'+win_nr+'" class="pl_stop" title="'+strToolbarControls['stop']+'" src='+imgs['pl_stop'].src+' />')
-                 .height(ht-4)
-                 .click(function(e){
-                	 e.preventDefault();
-                	 e.stopPropagation();
-                	 controls_handlers.pl_stop_click(e);
-                	 return false;
-                 });
+                 var stop = '';
+                 if(!WEBKIT){
+	                 stop =  $('<img id="pl_stop_'+win_nr+'" class="pl_stop" title="'+strToolbarControls['stop']+'" src='+imgs['pl_stop'].src+' />')
+	                 .height(ht-4)
+	                 .click(function(e){
+	                	 e.preventDefault();
+	                	 e.stopPropagation();
+	                	 controls_handlers.pl_stop_click(e);
+	                	 return false;
+	                 });
+                 }
+                 
                  
                  var plus = $('<img id="pl_plus_'+win_nr+'" class="pl_plus" title="'+strToolbarControls['zoom_in']+'" src='+imgs['pl_plus'].src+' />')
                  .click(function(e){
@@ -1399,7 +1478,7 @@ function canvas_growth() {
                  })
                  .height(ht-4);
                  
-                 $('<div id="pl_controls_'+win_nr+'" class="pl_controls"></div>')
+                 var plc = $('<div id="pl_controls_'+win_nr+'" class="pl_controls"></div>')
                  .height(ht)
                  .width($(hdr).width()-$(toolbar).width())
                  .css({
@@ -1446,7 +1525,6 @@ function canvas_growth() {
               //Установка плеера
               brout(win_nr, win_div, win_geo);
            }
-
            
            WIN_DIVS = $('div.win');
 
@@ -1570,6 +1648,17 @@ getXmlHttp = function(){
 var controls_handlers = {
 	timers : new Array(),
 	original_size : new Array(),
+	
+	//устанавливает активной кнопку play
+	activate_btn_play : function(win_nr){
+		$('#pl_stop_'+win_nr).hide();
+		$('#pl_start_'+win_nr).show();		
+	},
+	//устанавливает активной кнопку stop
+	activate_btn_stop : function(win_nr){
+		$('#pl_stop_'+win_nr).show();
+		$('#pl_start_'+win_nr).hide();		
+	},
 	
 	original_size_click : function(e){
 		var size = $(e.currentTarget);
