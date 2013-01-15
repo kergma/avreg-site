@@ -39,18 +39,31 @@ if(!count($result)) {
 $def_cam = null;
 $cur_layout = 0;
 
-//Поиск раскладки по умолчанию и определение реконнект таймаута
-foreach($result as $key=>&$value){
-	if($value['IS_DEFAULT']!='0'){
-		$def_cam = $value;
-		$cur_layout =$value["MON_NR"]*1;
+if(isset($_GET['layout_nr']) ){
+	//устанавливаем запрошенную раскладку
+	foreach($result as $key=>&$value){
+		if($value["MON_NR"]==$_GET['layout_nr']){
+			$def_cam = $value;
+			$cur_layout = (int)$value["MON_NR"];
+		}
+		if( !isset($value['RECONNECT_TOUT']) ){
+			$value['RECONNECT_TOUT'] = isset($conf['reconnect-timeout'])? $conf['reconnect-timeout'] : 0 ;
+		}
 	}
-	if( !isset($value['RECONNECT_TOUT']) ){
-		$value['RECONNECT_TOUT'] = isset($conf['reconnect-timeout'])? $conf['reconnect-timeout'] : 0 ;
+}else{
+	//Поиск раскладки по умолчанию и определение реконнект таймаута
+	foreach($result as $key=>&$value){
+		if($value['IS_DEFAULT']!='0'){
+			$def_cam = $value;
+			$cur_layout = (int) $value["MON_NR"];
+		}
+		if( !isset($value['RECONNECT_TOUT']) ){
+			$value['RECONNECT_TOUT'] = isset($conf['reconnect-timeout'])? $conf['reconnect-timeout'] : 0 ;
+		}
 	}
 }
 
-//Если раскладка по умолчанию не найдена - используем первую
+//Если раскладка не определена - используем первую
 if ($def_cam == null){
 	$def_cam = $result[0];
 }
@@ -152,11 +165,8 @@ if ( $GCP_cams_nr == 0 )
 require_once('../lib/get_cam_url.php');
 
 print 'var cams_subconf = '.json_encode($cams_subconf).";\n";
-//Передаем JS параметры конфигурации
-//print 'var conf = '.json_encode($conf).";\n";
 
 print 'var conf_debug = '.json_encode($conf['debug']).";\n";
-
 
 //передаем базовую часть адреса в JS
 print "var http_cam_location = '$http_cam_location' ;\n";
@@ -176,7 +186,6 @@ print "var operator_user = ".json_encode($operator_user).";\n";
 
 //передаем titles для контролов toolbara
 print "var strToolbarControls = ".json_encode($strToolbarControls).";\n";
-
 
 //передаем url-ы камер
 $cams_urls = array();

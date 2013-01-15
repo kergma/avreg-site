@@ -393,6 +393,28 @@ function brout(win_nr, win_div, win_geo) {
    
 }
 
+   /**
+    * 
+    * Функция, которая возвращает ссылку на просмотр видео с альтернативных камер камеры 
+    * аналог php-функции из lib/get_cam_url.php
+    * @param alt_src альтернативный источник
+    * @param bool append_abenc аутентификация пользователя
+    * @return string адрес видео с камеры
+    */
+   function get_cam_alt_url(alt_src, $cam_nr, append_abenc){
+   	   var url = alt_src;
+   	   if(url==null)return null;
+   	   reg = /\?camera=\d*/;
+   	  if(!reg.test(url)){
+   		 url += "?camera="+$cam_nr;  
+   	   }
+   	   if (append_abenc && user_info_USER.length>0 ) {
+   		url += '&ab='+___abenc;
+   	   }
+   	   return url;
+   }
+
+
 var checking_connection = {
 	timer : null,
 	me_list : null,
@@ -559,9 +581,10 @@ var checking_connection = {
 		
 		var imageData = context.getImageData(0, 0, img_w, img_h);
 		var data = imageData.data;
-				
+
 		return data;
 	},
+	
 
 	//проверяет произшел ли сбой (для WEBKIT)
 	is_fail_connection_webkit : function(index){
@@ -992,7 +1015,12 @@ function canvas_growth() {
    function layouts_to_list(){
 	   var html = '<div id="nav"><span>';
    	$.each(layouts_list, function(i, value){
-   		html+='<div class="layout'+((cur_layout==value.MON_NR)? ' selectedLayout':'' )+'" ><a id="layout_'+value.MON_NR+'" class="layout_link" onclick="change_layout('+value.MON_NR+')" href="#">';
+   		html+='<div class="layout'+((cur_layout==value.MON_NR)? ' selectedLayout':'' )+'" >';
+   		html+='<a id="layout_'+value.MON_NR+'" class="layout_link"';
+   		//html+=' onclick="change_layout('+value.MON_NR+')"  href="#">'; //динамическая смена раскладки - отключена
+   		//нединаимическая смена раскладки
+   		html+=' href="?layout_nr='+value.MON_NR+'">';
+   		
    		html+= (value.SHORT_NAME==''? value.MON_TYPE :value.SHORT_NAME);
    		html+= (value.IS_DEFAULT==1? '(def)' :'');
    		html+='</a>&nbsp;&nbsp;&nbsp;&nbsp;</div>';
