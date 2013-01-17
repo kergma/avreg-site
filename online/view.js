@@ -856,13 +856,11 @@ var checking_connection = {
 			.unbind('error');
             self.me_list[index].connection_fail = false;
             
-        //деактивируем кнопку play, активируем кнопку stop 
-		var win_nr = parseInt($("div.[name=win]:has(#"+me_id+")").attr('id').replace('win', '') );
-        if(!isNaN(parseInt(win_nr))){
-           	controls_handlers.activate_btn_stop(win_nr);
-        }
-
-            
+	        //деактивируем кнопку play, активируем кнопку stop 
+			var win_nr = parseInt($("div.[name=win]:has(#"+me_id+")").attr('id').replace('win', '') );
+	        if(!isNaN(parseInt(win_nr))){
+	           	controls_handlers.activate_btn_stop(win_nr);
+	        }
 		});
 		
 		var par = (self.me_list[index].src.indexOf('?')!=-1)? "&dummy=" : "?&dummy=";
@@ -1011,7 +1009,7 @@ function change_fs_win_geo(fs_win) {
    fs_win_div_jq.css('top',  calc_win_top (win_geo, 0));
    fs_win_div_jq.css('left', calc_win_left(win_geo, 0));
 
-   if ( GECKO ) {
+   if ( GECKO || WEBKIT) {
 	   $(fs_win_div_jq)
 	   .width(win_geo.win_w)
 	   .height(win_geo.win_h);
@@ -1068,7 +1066,7 @@ function change_wins_geo() {
       tmp_div.css('top',  calc_win_top (base_win_geo, win_def.row));
       tmp_div.css('left', calc_win_left(base_win_geo, win_def.col));
 
-      if ( GECKO ) {
+      if ( GECKO || WEBKIT) {
           $(tmp_div)
           	.width(win_geo.win_w)
           	.height(win_geo.win_h);    	  
@@ -1105,12 +1103,12 @@ function canvas_growth() {
       CANVAS.width(CANVAS_W);
       canvas_changed = true;
    }
-   
+
    if (!canvas_changed)
       return;
    if ( WIN_DIVS == undefined )
       return;
-
+      
    WIN_DIV_W = undefined;
    
    if ( FS_WIN_DIV ) {
