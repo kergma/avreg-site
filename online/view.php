@@ -109,6 +109,8 @@ if (isset($conf['aplayerConfig']) && !empty($conf['aplayerConfig']) && is_array(
 	print '$.aplayerConfiguration('.json_encode($res_conf).	');'."\n";
 }
 
+//период проверки состояния соединения (работает при отключенном реконнекте)
+print "var online_check_period = {$conf['online-check-period']};\n";
 
 //устанавливаем номер текущей раскладки
 print "var cur_layout = $cur_layout; \n";
