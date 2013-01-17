@@ -82,7 +82,7 @@ $(document).ready( function() {
 	
 	//Соединение с сервером потеряно
 	imgs['connection_fail'] = new Image();
-	imgs['connection_fail'].src =  "../img/ConnectionFail.png";
+	imgs['connection_fail'].src =  "../img/ConnectionFail.jpg";
 	
 	
 	//Запуск сценария	   
@@ -595,6 +595,7 @@ var checking_connection = {
 	
     //коллбэк таймера - проверяет соединения для WEBKIT
     check_cams_connection_webkit : function(){
+    	console.log(imgs['connection_fail'].src);
     	var self = checking_connection;
         for(index = 0; index<self.me_list.length; index++){
         	if(self.me_list[index].stoped || self.me_list[index].connection_fail) continue;
