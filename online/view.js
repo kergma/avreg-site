@@ -1588,7 +1588,7 @@ function canvas_growth() {
 	});
 	
 	//проверка связи с камерами
-	checking_connection.init_check();
+	if(GECKO || WEBKIT)	checking_connection.init_check();
 	
 //--> Cameras' statuses    	
 	
