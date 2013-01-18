@@ -306,6 +306,7 @@ function load_profiles_cams_confs($application='avreg-site')
    $profiles_conf = Array();
    $i=0;
    foreach( $GLOBALS['EXISTS_PROFILES'] as &$profile) {
+   	  if(empty($profile))continue;
       $a = confparse($GLOBALS['conf'], $application, $profile);
       if ( empty($a) || !array_key_exists('devlist', $a) )
          continue;
