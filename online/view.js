@@ -1867,10 +1867,13 @@ var controls_handlers = {
 		
 		$('#pl_start_'+cell_nr).show();
 		$(stop).hide();
-
-		var par = (stop_baner_url.indexOf('?')!=-1)? "&dummy=" : "?&dummy=";
-		par += Math.random();
-		stop_baner_url+=par;
+		
+		if(stop_baner_url){
+			var par = (stop_baner_url.indexOf('?')!=-1)? "&dummy=" : "?&dummy=";
+			par += Math.random();
+			stop_baner_url+=par;
+		}
+		
 		$.aplayer.pausePlay(aplayer_id, stop_baner_url);
 	},
 	
