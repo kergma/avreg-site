@@ -235,18 +235,21 @@ for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
    		$active_cams_srcs[$win_nr]['type']='avregd';
    		$active_cams_srcs[$win_nr]['cell']=$cam_url;
    		$active_cams_srcs[$win_nr]['fs']=$cam_url;
+   		$stop_url = get_cam_http_url($conf, $cam_nr, 'jpeg', true);
    		break;
    	case 2: //используем источник "alt 1"
    		$cam_url = $GCP_cams_params[$cam_nr]['cell_url_alt_1'];
    		$active_cams_srcs[$win_nr]['type']='alt_1';
    		$active_cams_srcs[$win_nr]['cell']=$cam_url;
    		$active_cams_srcs[$win_nr]['fs']=$GCP_cams_params[$cam_nr]['fs_url_alt_1'];
+   		$stop_url = false;
    		break;
     case 3: //используем камеру "alt 2"
    		$cam_url = $GCP_cams_params[$cam_nr]['cell_url_alt_2'];
    		$active_cams_srcs[$win_nr]['type']='alt_2';
    		$active_cams_srcs[$win_nr]['cell']=$cam_url;
    		$active_cams_srcs[$win_nr]['fs']=$GCP_cams_params[$cam_nr]['fs_url_alt_2'];
+   		$stop_url = false;
    		break;
    }
    $cam_url= get_cam_alt_url($cam_url,$cam_nr, true);
@@ -269,7 +272,8 @@ for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
       url:  "%s",
       orig_w: %u,
       orig_h: %u,
-      netcam_host: %s
+      netcam_host: %s,
+   	  stop_url: "%s"
    }
 };%s',
    $win_nr, 
@@ -279,6 +283,7 @@ for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
    $cam_url,
    $width, $height,
    $netcam_host,
+   $stop_url,
    "\n" );
 
 if ( $MSIE )

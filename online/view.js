@@ -1861,12 +1861,17 @@ var controls_handlers = {
 		var stop = $(e.currentTarget);
 		var cell_nr = parseInt(($(stop).attr('id')).replace('pl_stop_',''));
 		var aplayer_id = $('.aplayer', '#win'+cell_nr).attr('id');
+		var stop_baner_url = WINS_DEF[cell_nr].cam.stop_url;
 		
 		checking_connection.stop_check_me($("#"+aplayer_id));
 		
 		$('#pl_start_'+cell_nr).show();
 		$(stop).hide();
-		$.aplayer.stopPlay(aplayer_id);
+
+		var par = (stop_baner_url.indexOf('?')!=-1)? "&dummy=" : "?&dummy=";
+		par += Math.random();
+		stop_baner_url+=par;
+		$.aplayer.pausePlay(aplayer_id, stop_baner_url);
 	},
 	
 	pl_plus_click : function(e){
