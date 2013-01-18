@@ -249,7 +249,7 @@ function get_avreg_profiles($_conf)
 {
    $ret = @glob($_conf['profiles-dir'].'/[A-Za-z0-9][A-Za-z0-9_-:]*', GLOB_NOSORT);
    if ( $ret === FALSE || count($ret) === 0 )
-      return array('');
+      return array();
    else
       return $ret;
 }
@@ -282,6 +282,7 @@ if ( !empty($conf['prefix']) && preg_match('@^/([^/]+).*@', $_SERVER['REQUEST_UR
 } else {
    $EXISTS_PROFILES = get_avreg_profiles($conf);
 }
+
 if ($conf['debug']) {
    ini_set ('display_errors', '1' );
    ini_set ('log_errors', '1');
@@ -306,7 +307,6 @@ function load_profiles_cams_confs($application='avreg-site')
    $profiles_conf = Array();
    $i=0;
    foreach( $GLOBALS['EXISTS_PROFILES'] as &$profile) {
-   	  if(empty($profile))continue;
       $a = confparse($GLOBALS['conf'], $application, $profile);
       if ( empty($a) || !array_key_exists('devlist', $a) )
          continue;
