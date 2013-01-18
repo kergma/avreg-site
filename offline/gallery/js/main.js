@@ -1759,7 +1759,11 @@ var matrix = {
 		// исправление бага с высотой!!! придумать что то лучше 
 		//if($('#list_panel').height()!==0) matrix.height = $('#list_panel').height();
 		matrix.height = hc;
-		
+
+		//проверяем высоту
+		if(hc<=matrix.thumb_height ) {
+			return;
+		}
 		
 		// 	исправяем баг с длинной не видимого элемента
 		var pan_height = $('#list_panel').css('height');
@@ -1801,7 +1805,6 @@ var matrix = {
 		
 		// если элемента скрола нет, то создаем его
 		if (matrix.scroll == true) {
-			
 			var prev_sp =  scroll.position;
 			var sp = scroll.position;
 			
@@ -1814,6 +1817,7 @@ var matrix = {
 			
 			//начальное определение позиции скролла
 			sp = Math.floor(prev_sp/matrix.count_column)*matrix.count_column;
+		
 			//пытаемся избежать запроса ивентов
 			if(prev_sp > sp) sp += scroll.row_count;
 			//проверка условия попадания выбранной ячейки в диапазон матрицы
