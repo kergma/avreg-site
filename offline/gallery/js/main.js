@@ -2077,8 +2077,6 @@ var matrix = {
 	
 	//Устанавливает размеры элементов в режиме делального просмотра
 	loaddetailsrc : function() {
-		
-
 
 		if (typeof(matrix.events[matrix.num]) != 'undefined') {
 			
@@ -3360,6 +3358,7 @@ var scale2 = {
 			var self = this;
 			self.position = sp;
 			var value = matrix.events[matrix.num];
+			var ref_box = $('.active .refBox');
 			
 			gallery.cookie.set('scale2', sp);
 
@@ -3424,15 +3423,25 @@ var scale2 = {
 			}
 			else // HTML5-player + flowplayer
 			{
+				var is_fp = $(ref_box).aplayerIsFlowPlayer();
 				// размер матрицы
 				var width = matrix.width;
 				var height = matrix.height;
+				
+				//поправка высоты на панель контролов и флоуплейер
+				var _dh = $("div[id^=controlPanel_]", ref_box).height() || 0;
+				if(is_fp){
+					_dh +=10;
+				}
+				//расчет поправки по ширине
+				var _dw = parseInt( _dh/(value[3]/value[4]));
+				
 				// максимальный размер увеличения
 				var wm = width*2;
 				var hm = height*2;
 				if ($('#proportion').attr('checked') || value[7]=='video') {
 					// если выбран режим сохранять пропорции
-					if (value[3] < matrix.height && value[4] < matrix.width) {
+					if (value[3] < matrix.height-_dh && value[4] < matrix.width) {
 						// если изображение влазит в окно просмотра, то используем оригинальные размеры
 						width = value[4];
 						height = value[3];
@@ -3440,31 +3449,31 @@ var scale2 = {
 						hm = height*2;
 					} else {
 						// если не влазит то используем ширину матрицы а высоту в впропорциях изменяем
-						var w = matrix.width;
+						var w = matrix.width+_dw;
 						var h = Math.floor(value[3]*w/value[4]);
-						wm = value[4];
-						hm = Math.floor(h*value[4]/w);
-	
+
 						// если высота не влазит, то используем высоту матрицы, а ширину подгоняем в пропорциях
-						if (h > matrix.height) {
-							h = matrix.height;
+						if (h > matrix.height-_dh) {
+							h = matrix.height-_dh;
 							w = Math.floor(value[4]*h/value[3]);
-							hm = value[3];
-							wm = Math.floor(w*value[4]/h);
 						}
 						width = w;
 						height = h;
+						wm = w*2;
+						hm = h*2;
 					}
 				}
 
-				sp+=3; //Несколько увеличиваем размер медиаэлемента 
-				//установка размеров плеера в соответствии с размерами родительского элемента
-				$('.active .refBox').aplayerResizeContanerOnlyToParent(); //.aplayerResizeToParent(); 
+				if(!is_fp){
+					sp+=3; //Несколько увеличиваем размер медиаэлемента 
+				}
 				//Изменение размеров медиа-элемента плеера 
-				$('.active .refBox').aplayerSetSizeMediaElt({
+				$(ref_box).aplayerSetSizeMediaElt({
 					'width':  parseInt(width) + Math.floor((wm - width)*sp/self.max),
 					'height': parseInt(height) + Math.floor((hm - height)*sp/self.max)
 				} );
+				//установка размеров плеера в соответствии с размерами родительского элемента
+				$(ref_box).aplayerResizeContanerOnlyToParent(); 
 				
 				//визуализируем скролл масштаба режима просмотра
 				$('#scale2').show();
