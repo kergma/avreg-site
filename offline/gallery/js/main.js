@@ -1629,11 +1629,16 @@ var matrix = {
 		
 		//Установка размеров отображаемого элемента
 		matrix.loaddetailsrc();
-	
 		scale2.setposition(scale2.position);
 		//востанавливаем позицию изображения
 		scale2.restore_content_position();
-
+		//если флоуплеер
+		$.aplayer.fplayer_ready_delegate = function(){
+			scale2.setposition(scale2.position);
+			//востанавливаем позицию изображения
+			scale2.restore_content_position();
+		};
+		
 		//если не внедренный объект
 		if( !$('.content_item.active .refBox').aplayerIsEmbedOrObject() ){
 			//Визуализируем кнопки масштабирования
@@ -3013,6 +3018,14 @@ var scroll = {
 	 				scale2.updateposition(scale2.position);
 	 				//востанавливаем позицию изображения
 	 				scale2.restore_content_position();
+	 				
+	 				//если флоуплеер
+					$.aplayer.fplayer_ready_delegate = function(){
+						scale2.setposition(scale2.position);
+						//востанавливаем позицию изображения
+						scale2.restore_content_position();
+					};
+	 				
 			 	}
 			} else {
 				// если вышли за пределы переходим на предыдущий если пользователь согласился
@@ -3072,6 +3085,13 @@ var scroll = {
 				 	scale2.updateposition(scale2.position);
 				 	//востанавливаем позицию изображения
 	 				scale2.restore_content_position();
+	 				//если флоуплеер
+					$.aplayer.fplayer_ready_delegate = function(){
+						scale2.setposition(scale2.position);
+						//востанавливаем позицию изображения
+						scale2.restore_content_position();
+					};
+				 				
 				}
 			} else {
 				// если вышли за пределы переходим на предыдущий если пользователь согласился
@@ -3130,6 +3150,13 @@ var scroll = {
 				 	scale2.updateposition(scale2.position);
 				 	//востанавливаем позицию изображения
 	 				scale2.restore_content_position();
+					//если флоуплеер
+					$.aplayer.fplayer_ready_delegate = function(){
+					 	scale2.updateposition(scale2.position);
+					 	//востанавливаем позицию изображения
+		 				scale2.restore_content_position();
+					};
+
 				}
 
 			}else {
@@ -3185,6 +3212,12 @@ var scroll = {
 			 	scale2.updateposition(scale2.position);
 			 	//востанавливаем позицию изображения
  				scale2.restore_content_position();
+ 				//если флоуплеер
+				$.aplayer.fplayer_ready_delegate = function(){
+					scale2.setposition(scale2.position);
+					//востанавливаем позицию изображения
+					scale2.restore_content_position();
+				};
 				}
 			}else {
 				if (matrix.curent_tree_events[matrix.tree].next) {
@@ -3329,7 +3362,7 @@ var scale2 = {
 		max : 20,
 		position : 0,
 		content_position : { left:'0px', top:'0px' }, //позиция изображения в детальном режиме
-
+		
 		click_min : function() {
 			var self = this;
 			var sp = self.position - 1;
