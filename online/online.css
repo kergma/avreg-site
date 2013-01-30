@@ -99,7 +99,7 @@ div.cell_header span a:hover {
 	color: red;	
 }
 
-.to_main a{
+.to_main a, .user_layouts a{
 	display: block;
 	text-align: center;
 	margin: 0;
@@ -115,10 +115,13 @@ div.cell_header span a:hover {
    	width: 100px;height: 20px;
 }
 
-.to_main a:focus {
+.to_main a:focus, .user_layouts a:focus {
 	box-shadow: inset 1px 1px 1px rgba(0,0,0,0.7);
 	-moz-box-shadow: inset 1px 1px 1px rgba(0,0,0,0.7);
 	-webkit-box-shadow: inset 1px 1px 1px rgba(0,0,0,0.7);
 }
 
+.user_layouts a{
+	width: auto;
+}
 
