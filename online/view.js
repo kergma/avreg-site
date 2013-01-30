@@ -496,17 +496,18 @@ var checking_connection = {
 			//канвас и контекст для webkit
 			'wk_canvas' : null
 		};
-
+		
+		if(WEBKIT){
+			//создаем канвас для элемента и устанавливаем cors для img
+       		obj.wk_canvas = document.createElement('canvas');
+		}
+		
 		self.me_list.push(obj);
 		
 		if(WEBKIT || GECKO){
 			self.set_handlers(me);
 		}
 		
-		if(WEBKIT){
-			//создаем канвас для элемента и устанавливаем cors для img
-       		obj.wk_canvas = document.createElement('canvas');
-		}
 	},
 
 	//возобновить проверку элемента
@@ -769,14 +770,13 @@ var checking_connection = {
 					.attr('src', imgs['connection_fail'].src);
                 self.me_list[index].connection_fail = true;
                 if(self.is_reconnect_active)self.reconnect(index);
-                    
+
                 //активируем кнопку play
                 var me_id = $(self.me_list[index].me).attr('id');
 				var win_nr = parseInt($("div.[name=win]:has(#"+me_id+")").attr('id').replace('win', '') );
 		        if(!isNaN(parseInt(win_nr))){
 		        	controls_handlers.activate_btn_play(win_nr);
 				}
-
 			}
 			else{}
 				self.me_list[index].check_val = 0;
