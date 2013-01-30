@@ -496,6 +496,8 @@ var checking_connection = {
 			//канвас и контекст для webkit
 			'wk_canvas' : null
 		};
+
+		self.me_list.push(obj);
 		
 		if(WEBKIT || GECKO){
 			self.set_handlers(me);
@@ -505,8 +507,6 @@ var checking_connection = {
 			//создаем канвас для элемента и устанавливаем cors для img
        		obj.wk_canvas = document.createElement('canvas');
 		}
-		
-		self.me_list.push(obj);
 	},
 
 	//возобновить проверку элемента
@@ -595,7 +595,6 @@ var checking_connection = {
 	
     //коллбэк таймера - проверяет соединения для WEBKIT
     check_cams_connection_webkit : function(){
-    	console.log(imgs['connection_fail'].src);
     	var self = checking_connection;
         for(index = 0; index<self.me_list.length; index++){
         	if(self.me_list[index].stoped || self.me_list[index].connection_fail) continue;
@@ -764,7 +763,8 @@ var checking_connection = {
 		var self = checking_connection;
 		for(var index = 0; index<self.me_list.length; index++){
             if(self.me_list[index].stoped || self.me_list[index].connection_fail) continue;
-			else if( self.me_list[index].check_val == 0 ){
+			else if( self.me_list[index].check_val == 0 ){ //нет событий onLoad -  ошибка
+				alert( "Nr = "+ index + "      self.me_list[index].check_val = "+self.me_list[index].check_val  );
             	$(self.me_list[index].me)
 					.unbind('load')
 					.attr('src', imgs['connection_fail'].src);
@@ -1327,6 +1327,32 @@ function canvas_growth() {
    	   return ar;
    	}
    
+   	//переход на страницу просмотра и управления пользовательскими раскладками 
+   	function clients_layouts_list(){
+	// http://'+SERVER_ADR+'/avreg/online/users_layout_list.php	
+		
+   		if(isLocalStorageAvailable()){
+   			var layouts = localStorage.getItem('clients_layouts');
+			layouts = (layouts!=null)? layouts : '';
+   			var param='layouts='+layouts; 
+
+   			window.open('http://'+SERVER_ADR+'/avreg/online/users_layout_list.php', '_self', param);
+   		}
+   		else{
+   			alert("Данная функция недоступна:\nлокальное хранилище данных недоступно");
+   		}
+	}   	
+
+	//проверка доступности LocalStorage
+	function isLocalStorageAvailable() {
+	    try {
+	        return 'localStorage' in window && window['localStorage'] !== null;
+	    } catch (e) {
+	        return false;
+	    }
+	}
+	
+	
 
    /**
     * Выводит раскладку с он-лайн камерами в канвас
@@ -1353,6 +1379,7 @@ function canvas_growth() {
            if(REF_MAIN){
         	   $('#tb_contn').prepend('<td><div class="to_main"> <a href="http://'+SERVER_ADR+'/avreg/index.php" >На главную </a> </div> </td>');
            }
+           $('#tb_contn').append('<td><div id="user_layouts" class="user_layouts" onclick="clients_layouts_list();" > <a href="#" >Раскладки</a> </div> </td>');
            
            canvas_growth();
            
@@ -1631,7 +1658,7 @@ cam_status_request = function(params ){
 	    success: function (data, textStatus) { 
 	    	CAM_STATUSES = data;
 	    	if ( !MSIE ){ 
-	    		console.log(CAM_STATUSES);
+//	    		console.log(CAM_STATUSES);
 	    	}
 	    	if(SUBSCRIBE){
 				params['subscribe']='multipart'; 
