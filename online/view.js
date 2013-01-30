@@ -764,7 +764,6 @@ var checking_connection = {
 		for(var index = 0; index<self.me_list.length; index++){
             if(self.me_list[index].stoped || self.me_list[index].connection_fail) continue;
 			else if( self.me_list[index].check_val == 0 ){ //нет событий onLoad -  ошибка
-				alert( "Nr = "+ index + "      self.me_list[index].check_val = "+self.me_list[index].check_val  );
             	$(self.me_list[index].me)
 					.unbind('load')
 					.attr('src', imgs['connection_fail'].src);
