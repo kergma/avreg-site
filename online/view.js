@@ -277,6 +277,7 @@ function img_click(clicked_div) {
     		if(current_src!=null) {
     			$('.pl_cont',clicked_div_jq).aplayerSetMjpegSrc( current_src );
     		}
+    		
         }else{
         	$(clicked_div_jq).width(win_geo.win_w).height(win_geo.win_h);
         	$('.pl_cont',clicked_div_jq)
