@@ -1378,7 +1378,8 @@ function canvas_growth() {
            if(REF_MAIN){
         	   $('#tb_contn').prepend('<td><div class="to_main"> <a href="http://'+SERVER_ADR+'/avreg/index.php" >На главную </a> </div> </td>');
            }
-           $('#tb_contn').append('<td><div id="user_layouts" class="user_layouts" onclick="clients_layouts_list();" > <a href="#" >Раскладки</a> </div> </td>');
+// TODO Кнопка раскладки
+//           $('#tb_contn').append('<td><div id="user_layouts" class="user_layouts" onclick="clients_layouts_list();" > <a href="#" >Раскладки</a> </div> </td>');
            
            canvas_growth();
            
