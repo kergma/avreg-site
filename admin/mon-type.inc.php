@@ -271,7 +271,7 @@ $layouts_defs = array(
  */
 function layout2table ( $mon_type, $max_width, $win_text_array = array(), $win_text = '' )
 {
-	// print "<pre>".var_dump($win_text_array)."</pre>";
+//	 print "<pre>".var_dump($win_text_array)."</pre>";
 
    if ( !array_key_exists($mon_type, $GLOBALS['layouts_defs']) ) {
          print '<p style="color:' . $GLOBALS['error_color'] . ';">Not Defined Monitors Type. Asc to developers.</p>' ."\n";
@@ -354,9 +354,9 @@ $max_width/$wins_in_layout = $l_defs[0];
       $sz = sprintf('width=%d height=%d', $w1*$colspan, $h1*$rowspan);
       $e = ( $win == $major_win )?'th':'td';
       if ($colspan > 1 || $rowspan > 1 ) {
-         print "<$e $sz class=\"layout\" colspan=\"$colspan\" rowspan=\"$rowspan\"   align=\"center\" valign=\"middle\">$text_in_win</$e>\n";
+         print "<$e $sz id=\"win_$win\" class=\"layout\" colspan=\"$colspan\" rowspan=\"$rowspan\"   align=\"center\" valign=\"middle\">$text_in_win</$e>\n";
       } else
-         print "<$e $sz class=\"layout\" align=\"center\" valign=\"middle\">$text_in_win</$e>\n";
+         print "<$e $sz id=\"win_$win\" class=\"layout\" align=\"center\" valign=\"middle\">$text_in_win</$e>\n";
 
       if ( ($col + $colspan) >= $cols ) {
          /* закрываем строку */

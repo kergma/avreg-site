@@ -19,6 +19,7 @@ $link_javascripts=array(
 						'lib/js/jquery-ui-1.8.17.custom.min.js',
 						'lib/js/jquery.mousewheel.min.js',
 						'lib/js/jquery.aplayer.js',
+						'lib/js/user_layouts.js'
 );
 
 $body_addons='scroll="no"';
@@ -26,8 +27,41 @@ $ie6_quirks_mode = true;
 $lang_file='_online.php';
 require ('../head.inc.php');
 
+
+//получение пользовательских раскладок
+$clients_layouts = array();
+$tmp = json_decode($_GET['layouts'], true);
+foreach ($tmp as $client_mon_nr=>$l_val){
+	$_data = array();
+	foreach ($l_val as $par_name=>$par_data){
+		$_data[$par_name]=$par_data;
+	}
+	$tmp_data = json_decode($_data['wins']);
+	$_data['wins'] = array();
+	foreach ($tmp_data as $cell_nr=>$cell_data){
+		$_data['wins'][$cell_nr]=$cell_data;
+	}
+	
+	$clients_layouts[(int)$client_mon_nr] = array(
+// 			"BIND_MAC"=> "local",
+// 			"CHANGE_HOST"=> "anyhost",
+			"CHANGE_USER"=>$_data['u'],
+			"CHANGE_TIME"=>$_data['dd'],
+			"MON_NR"=>$client_mon_nr,
+			'MON_TYPE' => $_data['t'],
+			'SHORT_NAME' => $_data['n'],
+			'PRINT_CAM_NAME' => $_data['cn'],
+			'PROPORTION' => $_data['p'],
+			'RECONNECT_TOUT'=>$_data['rt'],
+			'IS_DEFAULT' => $_data['d'],
+			'WINS' => $_data['w']
+			);
+}
+
 //Загрузка установленных раскладок
 $result = $adb->web_get_monitors($login_user);
+
+$result = $clients_layouts + $result;
 
 //Если нет установленных раскладок
 if(!count($result)) {

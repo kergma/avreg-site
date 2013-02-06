@@ -15,9 +15,26 @@ if ( isset($pipes_show) ) {
 }
 $USE_JQUERY = true;
 
+//определяем режим сохранения раскладки client(на клиенте)/server(на сервере)
+$storage='server';
+if(isset($_GET['storage'])){
+	$storage=$_GET['storage'];
+}elseif(isset($_POST['storage'])){
+	$storage= $_POST['storage'];
+}
+
+if($storage=='client'){
+	$link_javascripts=array('lib/js/user_layouts.js');
+}
+
 require ('../head.inc.php');
 
-DENY($admin_status);
+//DENY($admin_status);
+if($storage!='client'){
+	DENY($admin_status);
+}
+
+
 
 require ('./mon-type.inc.php');
 
@@ -87,6 +104,9 @@ if (isset($cmd)) {
       break;
    } // switch
 } else {
+	
+	
+	
    // cmd not set
    require('web_active_pipe.inc.php');
    $wins_array = &$active_pipes;
@@ -96,9 +116,48 @@ if (isset($cmd)) {
       require ('../foot.inc.php');
       exit;
    } else {
-      $aaa = array();
+   	
+   	$aaa = array();
+   	
+   	if($storage=='client'){ //если создаем клиентскую раскладку
+   		$clients_layouts = array();
+   		$tmp = json_decode($_GET['layouts'], true);
+   		foreach ($tmp as $client_mon_nr=>$l_val){
+   			$_data = array();
+   			foreach ($l_val as $par_name=>$par_data){
+   				$_data[$par_name]=$par_data;
+   			}
+   			$tmp_data = json_decode($_data['wins']);
+   			$_data['wins'] = array();
+   			foreach ($tmp_data as $cell_nr=>$cell_data){
+   				$_data['wins'][$cell_nr]=$cell_data;
+   			}
+   			
+   			$clients_layouts[(int)$client_mon_nr] = array(
+   				0=>(int)$client_mon_nr, //номер клиентской раскладки
+   				1=>$_data['t'], //тип
+   				2=>$_data['n'], //название
+   				3=>($_data['d'])?'1':'0', // по умолчанию
+   				4=>$_data['w'], //ячейки раскладки
+   				5=>'user_host', //CHANGE_HOST
+   				6=>$_data['u'], // имя пользователя
+   				7=>$_data['dd'], // дата создания
+   				8=>($_data['cn'])?'1':'0',//выводить названия камер
+   				9=>$_data['p'], // сохранять пропорции
+   				10=>$_data['rt'] // таймаут реконнекта
+   			);
+   		}
+
+   		$row = $clients_layouts[$mon_nr];
+   		$wins_cams = json_decode($row[4], true);
+   		$mon_type = $row[1];
+   		$mon_name = $row[2];
+   	}else{
       $row = $adb->web_get_monitor($mon_nr);
       $wins_cams = json_decode($row[4], true);
+   	}
+      
+
       
       //формирование массива альтернативных источников видео
       $cams_srcs = array();
@@ -111,7 +170,7 @@ if (isset($cmd)) {
       print '<script type="text/javascript">'."\n";
       print 'var cams_alt ='.json_encode($cams_srcs).";\n";
       print '</script>'."\n";
-
+      
       //Создание эл-та селект для ячеек раскладки
       for ($i=0; $i<25; $i++) {
       	
@@ -125,7 +184,14 @@ if (isset($cmd)) {
       /* Free last resultset */
       $result = NULL;
 
-      print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST"  onSubmit="return validate();">'."\n";
+      if($storage=='client'){ //Если раскладка создается на клиенте
+      	$redirect_url = $conf['prefix'].'/admin/web_mon_list.php';
+      	print '<form action="'.$conf['prefix'].'/online/'.'" onSubmit="user_layouts.tune_save('.$mon_nr.', \''.$redirect_url.'\');" method="POST">'."\n";
+      }else{ //Если раскладка создается на сервере
+      	print '<form action="'.$_SERVER['PHP_SELF'].'"  onSubmit="return validate();" method="POST">'."\n";
+      }
+      
+      // print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST"  onSubmit="return validate();">'."\n";
       print '<p class="HiLiteBigWarn">' . $strMonAddInfo2 . '</p>' ."\n";
       print '&nbsp;&nbsp;&nbsp;'.$strName.': <input type="text" name="mon_name" size=16 maxlength=16 value="'.$mon_name.'">'."\n";
       layout2table ( $mon_type, ($mon_type == 'QUAD_25_25')? 400:300, $aaa);
@@ -152,7 +218,12 @@ if (isset($cmd)) {
 
       //Кнопки формы 
       print '<br><input type="submit" name="btn" value="'.$strSave.'">'."\n";
-      print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="reset_to_list();">'."\n";
+      if($storage=='client'){//сохраняем изменения клиентской раскладки
+      	print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="user_layouts.redirect(\''.$redirect_url.'\', true);">'."\n";
+      }else{
+	      print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="reset_to_list();">'."\n";
+      }
+      
       print '</form>'."\n";
    }
 }

@@ -2198,7 +2198,8 @@ var matrix = {
 	update : function(sp) {
 
 		$('#matrix_load').show();
-	
+		var hide_over = true;
+		
 		var height, width; //размер ячейки
 		var img_height, img_width;//размер изображения
 		
@@ -2314,7 +2315,7 @@ var matrix = {
 			
 			// проверяем какие изображения есть в кеше браузера, а какаие надо загрузить
 			var ci = i + matrix.count_column;
-			var hide_over = true;
+			hide_over = true;
 			for(i; i<=ci; i++) {
 				if (typeof( matrix.events[i]) != 'undefined' && matrix.events[i][7] == 'image') {
 					if (typeof( matrix.events[i].image_chache) != 'undefined' && matrix.events[i].image_chache) {
@@ -2438,7 +2439,7 @@ var matrix = {
 			
 			// проверяем какие изображения есть в кеше браузера, а какаие надо загрузить
 			var ci = i + matrix.count_column;
-			var hide_over = true;
+			hide_over = true;
 			for(i; i<=ci; i++) {
 				if (typeof( matrix.events[i]) != 'undefined' && matrix.events[i][7] == 'image') {
 					if (typeof( matrix.events[i].image_chache) != 'undefined' && matrix.events[i].image_chache) {
@@ -2569,7 +2570,6 @@ var matrix = {
 						info_html +='<br /></div></a>';
 						return info_html;
 					});
-//					.css({'height': 'auto'});
 				}
 				else
 				{
@@ -2578,7 +2578,6 @@ var matrix = {
 			});
 			
 		}
-			
 			if (hide_over) {
 				$('#matrix_load').hide();
 			}
