@@ -124,7 +124,7 @@ foreach ($tmp as $client_mon_nr=>$l_val){
 	foreach ($l_val as $par_name=>$par_data){
 		$_data[$par_name]=$par_data;
 	}
-	$tmp_data = json_decode($_data['wins']);
+	$tmp_data = json_decode($_data['w']);
 	$_data['wins'] = array();
 	foreach ($tmp_data as $cell_nr=>$cell_data){
 		$_data['wins'][$cell_nr]=$cell_data;
