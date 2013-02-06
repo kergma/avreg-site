@@ -313,7 +313,7 @@ $PARAMS = array(
    array(
       'name'    => 'text_left',
       'type'    => $STRING_VAL,
-      'max_len' => 30,
+      'max_len' => $conf['max_count_camers'],
       'def_val' => NULL,
       'desc'    => 'Название камеры или зоны наблюдения.',
       'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_CAM,

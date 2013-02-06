@@ -1071,7 +1071,12 @@ class Adb {
  */
    public function get_monitor($display, $mon_nr, $bind_mac = 'local') {
       $query = 'SELECT MON_NR, MON_TYPE, MON_NAME, IS_DEFAULT, ' .
-         'WIN1, WIN2, WIN3, WIN4, WIN5, WIN6, WIN7, WIN8, WIN9, WIN10, WIN11, WIN12, WIN13, WIN14, WIN15, WIN16, WIN17, WIN18, WIN19, WIN20, WIN21, WIN22, WIN23, WIN24, WIN25, '.
+         'WIN1, WIN2, WIN3, WIN4, WIN5, WIN6, WIN7, WIN8, WIN9, 
+         WIN10, WIN11, WIN12, WIN13, WIN14, WIN15, WIN16, 
+         WIN17, WIN18, WIN19, WIN20, WIN21, WIN22, WIN23, 
+         WIN24, WIN25, WIN26, WIN27, WIN28, WIN29, WIN30,
+         WIN31, WIN32, WIN33, WIN34, WIN35, WIN36, WIN37,
+         WIN38, WIN39, WIN40 '.
          'CHANGE_HOST, CHANGE_USER, CHANGE_TIME '.
          'FROM MONITORS '.
          'WHERE BIND_MAC=\''.$bind_mac.'\' AND DISPLAY=\''.$display.'\' AND MON_NR='.$mon_nr;

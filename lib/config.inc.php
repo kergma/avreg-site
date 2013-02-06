@@ -1164,7 +1164,7 @@ function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
    if ($first_empty) $a .= '<option> </option>'."\n";
    $_cnt = $start_val;
    
-   //Если для веб-раскладок => $cams_srcs - содержит алтернативные источники  
+   //Если для веб-раскладок => $cams_srcs - содержит алтернативные источники    
 	if($cams_srcs!=null){
 		
 		foreach ($value_array as $_element)

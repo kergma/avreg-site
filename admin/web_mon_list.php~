@@ -118,10 +118,7 @@ echo '<h2>'.$client_mon_list.'</h2>' ."\n";
 ////->
 
 $clients_layouts = array();
-if (isset($_GET['layouts']))
-	$tmp = json_decode($_GET['layouts'], true);
-else
-	$tmp = array();
+$tmp = json_decode($_GET['layouts'], true);
 foreach ($tmp as $client_mon_nr=>$l_val){
 	$_data = array();
 	foreach ($l_val as $par_name=>$par_data){
@@ -129,6 +126,7 @@ foreach ($tmp as $client_mon_nr=>$l_val){
 	}
 	$tmp_data = json_decode($_data['w']);
 	$_data['wins'] = array();
+	echo "tmp_data = " . $data['wins'] . "<br/>";
 	foreach ($tmp_data as $cell_nr=>$cell_data){
 		$_data['wins'][$cell_nr]=$cell_data;
 	}
