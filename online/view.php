@@ -115,7 +115,7 @@ require('../admin/mon-type.inc.php');
 if (!isset($mon_type) || empty($mon_type) || !array_key_exists($mon_type, $layouts_defs) ) 
    MYDIE("not set ot invalid \$mon_type=\"$mon_type\"",__FILE__,__LINE__);
 $l_defs = &$layouts_defs[$mon_type];
-$wins_nr = $l_defs[0]; //определяет количество камер в раскладке
+$wins_nr = count($l_defs[3]);//определяет количество камер в раскладке
 
 $_cookie_value = sprintf('%s-%u-%u-%u-%s',
 $def_cam['WINS'], // implode('.', $cams_in_wins),

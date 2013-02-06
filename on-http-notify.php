@@ -34,7 +34,7 @@ if ( isset($GCP_cams_params) && is_array($GCP_cams_params) ) {
   reset($GCP_cams_params);
   while (list($_cam_nr, $CAM_PARAMS) = each($GCP_cams_params)) {
      if ( ( $CAM_PARAMS['video_src'] === 'rtsp' || $CAM_PARAMS['video_src'] === 'http' ) &&
-          $CAM_PARAMS['InetCam_IP'] === $_SERVER["REMOTE_ADDR"]) ) {
+          $CAM_PARAMS['InetCam_IP'] === $_SERVER["REMOTE_ADDR"]) {
        /* define CAM_NR var */
       $AVREG_CAMS_NR[]  = (int)$_cam_nr;
       break;

@@ -180,7 +180,7 @@ if ( isset($cmd) ) {
 
 	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
 	print $strNamed.': <input type="text" name="mon_name" size=16 maxlength=16 value="">'."\n";
-   $wins = range(1, 25);
+   $wins = range(1, $conf['max_count_camers']);
    $lm = count($layouts_defs);
    $mc = 5; // 5 столбцов
    $mr = $lm / $mc;
