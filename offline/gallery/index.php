@@ -181,14 +181,8 @@
 							<a class="next" href="#"><img src="gallery/img/arrow_right.png" /></a>
 							<a class="prew" href="#"><img src="gallery/img/arrow_left.png" /></a>
 						</div>	
-						<!--  <img id="scale_image" src="gallery/img/lupa.png" />-->
 
 						</div>
-						
-						<!-- <div class="to_main" style="float:right;"> 
-							<a href="http://'+SERVER_ADR+'/avreg/index.php" >В начало</a> 
-						</div>-->
-						
 					</div>		
 				</div>
 			</div> 
