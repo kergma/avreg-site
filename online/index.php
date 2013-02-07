@@ -19,8 +19,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<script src="/avreg/lib/js/jquery-1.7.1.min.js" type="text/javascript"></script>
-	<script src="/avreg/lib/js/user_layouts.js" type="text/javascript"></script>
+	<script src="../lib/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+	<script src="../lib/js/user_layouts.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(function(){
 			//переадресуем на онлайн просмотр 
