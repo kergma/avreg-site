@@ -12,7 +12,7 @@ session_start();
 
 function input_data_invalid($err_code)
 {
-   $backurl = 'http://' . $GLOBALS['_SERVER']['HTTP_HOST'] . $GLOBALS['conf']['prefix'] . '/offline/playlist.php';
+   $backurl = (!empty($_SERVER['HTTPS'])?'https://':'http://') . $GLOBALS['_SERVER']['SERVER_NAME'] . ':' . $GLOBALS['_SERVER']['SERVER_PORT'] . $GLOBALS['conf']['prefix'] . '/offline/playlist.php';
    header("Location: $backurl");
    $_SESSION['error'] = $err_code;
    ob_end_flush();
@@ -167,8 +167,12 @@ foreach ( $_ipacl_list as &$_ipacl_str ) {
      break;
   }
 }
-if ( !isset($MediaUrlPref) /* не нашли совпадения по ACL */ )
-   $MediaUrlPref = (!empty($_SERVER['HTTPS'])?'https://':'http://') . $_SERVER['HTTP_HOST'] . $conf['prefix'] . $conf['media-alias'];
+if ( !isset($MediaUrlPref) /* не нашли совпадения по ACL */ ) {
+   $MediaUrlPref = (!empty($_SERVER['HTTPS'])?'https://':'http://') . $_SERVER['SERVER_NAME'];
+   if ( $_SERVER['SERVER_PORT'] != '80' )
+      $MediaUrlPref .= ':' . $_SERVER['SERVER_PORT'];
+   $MediaUrlPref .= $conf['prefix'] . $conf['media-alias'];
+}
 
 $fname="avreg_cams-$_cams_csv";
 if ( $pl_fmt === 'XSPF' ) {
