@@ -78,7 +78,7 @@ $strDisplayed = 'показывать';
 $strDocu = 'документация';
 $strDoYouReally = 'вы действительно желаете ';
 $strDynamic = 'динамический';
-
+$strBackOnline = "Вернуться к просмотру";
 $strEdit = 'правка';
 $strEditPrivileges = 'редактирование привилегий';
 $strEffective = 'эффективность';
@@ -385,7 +385,8 @@ $web_mon_addnew = 'Создание новой раскладки #%d .';
 
 $r_mon_tune = 'Изменить раскладку #%d [%s] для %s монитора.';
 $str_web_mon_tune = 'Изменить раскладку #%d [%s].';
-$r_mon_list = 'Список определённых раскладок.';
+$r_mon_list = 'Список раскладок, определенных администратором.';
+$client_mon_list = 'Список раскладок, определенных польльзователем.';
 $r_mon_goto_list = 'назад к списку раскладок';
 $r_mon_changed = 'Раскладка #%d [%s] для %s монитора успешно изменена.<br />Перезапустите программу локального просмотра &#171;'.$local_player_name.'&#187; (сервер &#171;'.$videoserv.'&#187; перезапускать не нужно).';
 $web_r_mon_changed = 'Раскладка #%d [%s] успешно изменена.<br />Обновите в браузере страницу просмотра (сервер &#171;'.$videoserv.'&#187; перезапускать не нужно).';
@@ -421,6 +422,9 @@ $strWide_15_24 =  '15 камер'.$strWideScreen;
 $strWide_18_24 =  '18 камер'.$strWideScreen;
 $strWide_21_24 =  '21 камера'.$strWideScreen;
 $strWide_24_24 =  '24 камеры'.$strWideScreen;
+$strWide_34_40 =  '34 камеры'.$strWideScreen;
+$strWide_28_28 =  '28 камер'.$strWideScreen;
+$strWide_40_40 =  '40 камер'.$strWideScreen;
 
 $strWide_18_18 =  '18 камер'.$strWideScreen;
 $strWide_9_18  =  '9 камер'.$strWideScreen;

@@ -19,8 +19,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<script src="../lib/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+	<script src="../lib/js/user_layouts.js" type="text/javascript"></script>
 	<script type="text/javascript">
-		top.document.location.href = 'view.php';
+		$(function(){
+			//переадресуем на онлайн просмотр 
+	 		user_layouts.redirect('view.php', true);
+		});
+		
 	</script>
 </head>
 <body></body>

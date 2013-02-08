@@ -16,9 +16,25 @@ if ( isset ($pipes_show) ) {
 
 $USE_JQUERY = true;
 
+//определяем режим сохранения раскладки client(на клиенте)/server(на сервере)
+$storage='server';
+if(isset($_GET['storage'])){
+	$storage=$_GET['storage'];
+}elseif(isset($_POST['storage'])){
+	$storage= $_POST['storage'];
+}
+
+if($storage=='client'){
+	$link_javascripts=array('lib/js/user_layouts.js');
+}
+
 require ('../head.inc.php');
 
-DENY($admin_status);
+//DENY($admin_status);
+if($storage!='client'){
+	DENY($admin_status);
+}
+
 
 require ('./mon-type.inc.php');
 
@@ -26,8 +42,9 @@ require ('./mon-type.inc.php');
 
 <script type="text/javascript" language="javascript">
 <!--
-function reset_to_list()
-{
+var user_login = "<?php echo $login_user; ?>";
+
+function reset_to_list(){
 	window.open('<?php echo $conf['prefix']; ?>/admin/web_mon_list.php', target='_self');
 }
 // -->
@@ -54,7 +71,7 @@ if ( isset($cmd) ) {
 		exit;		
 	}
 	switch ( $cmd ) {
-		
+			
 		case '_ADD_NEW_MON_':
 			require('web_active_pipe.inc.php');
 			
@@ -78,8 +95,12 @@ if ( isset($cmd) ) {
 				
 				//Создание эл-та селект ля ячеек раскладки
 				$a = getSelectHtmlByName('mon_wins[]',	$wins_array, FALSE , 1, 1, '', TRUE, 'sel_change(this); show_sub_select(this);', '', NULL, $cams_srcs);
-				
-				print '<form action="'.$_SERVER['PHP_SELF'].'"  onSubmit="return validate();" method="POST">'."\n";
+
+				if($storage=='client'){ //Если раскладка создается на клиенте
+					print '<form action="'.$conf['prefix'].'/online/'.'" onSubmit="return user_layouts.add_new();" method="POST">'."\n";
+				}else{ //Если раскладка создается на сервере
+					print '<form action="'.$_SERVER['PHP_SELF'].'"  onSubmit="return validate();" method="POST">'."\n";
+				}
 				
 				layout2table ( $mon_type, ($mon_type == 'QUAD_25_25')? 500:400, NULL,  $a);
 				
@@ -106,7 +127,13 @@ if ( isset($cmd) ) {
 				
 				//Кнопки сохранить раскладку и отменить
 				print '<br><input type="submit" name="btn" value="'.$strSave.'">'."\n";
-				print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="reset_to_list();">'."\n";
+				if($storage=='client'){
+					print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="user_layouts.redirect(\''.$conf['prefix'].'/admin/web_mon_list.php\', true);">'."\n";
+				}else{
+					print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="reset_to_list();">'."\n";
+				}
+				
+				
 				
 				print '</form>'."\n";
 			}
@@ -119,8 +146,7 @@ if ( isset($cmd) ) {
 			
 			$mwt = $_POST['mon_wins_type'];
 			$allWINS = array();
-			
-			
+
 			while ( $i < count($mon_wins) ) {
 				if ( !empty( $mon_wins[$i] ) ) {
 					//формирование единого объекта для всех ячеек раскладки					
@@ -154,7 +180,7 @@ if ( isset($cmd) ) {
 
 	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
 	print $strNamed.': <input type="text" name="mon_name" size=16 maxlength=16 value="">'."\n";
-   $wins = range(1, 25);
+   $wins = range(1, $conf['max_count_camers']);
    $lm = count($layouts_defs);
    $mc = 5; // 5 столбцов
    $mr = $lm / $mc;
@@ -178,12 +204,23 @@ if ( isset($cmd) ) {
       print '</tr>'."\n";
    }
    print '</table>'."\n";
-	print '<input type="hidden" name="cmd" value="_ADD_NEW_MON_">'."\n";
-	print '<input type="hidden" name="mon_nr" value="'.$mon_nr.'">'."\n";
-	print '<input type="submit" name="btn" value="'.$l_mon_addnew.'">'."\n";
-	print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="reset_to_list();">'."\n";
-	print '</form>'."\n";
+   
+   print '<input type="hidden" name="cmd" value="_ADD_NEW_MON_">'."\n";
+   print '<input type="hidden" name="storage" value="'.$storage.'">'."\n";
+   print '<input type="hidden" name="mon_nr" value="'.$mon_nr.'">'."\n";
+
+   
+   //Кнопки формы 
+   print '<input type="submit" name="btn" value="'.$l_mon_addnew.'">'."\n";
+   if($storage=='client'){
+   		print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="user_layouts.redirect(\''.$conf['prefix'].'/admin/web_mon_list.php\', true);">'."\n";
+   }else{
+   		print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="reset_to_list();">'."\n";
+   }
+      	
+   
+   print '</form>'."\n";
 }
-// phpinfo ();
+
 require ('../foot.inc.php');
 ?>

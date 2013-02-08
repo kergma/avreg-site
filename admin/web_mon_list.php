@@ -32,42 +32,52 @@ function prt_l ($display, $l_nr, $l_def, $is_admin, $layout_word, $counter, $Asp
 	print '<br /><div style="float:left;" ><span style="font-weight:bold;">'.$strAspectRatio.":</span>&nbsp;".$AspectRatioArray[$AspectRatio]."</div>\n";
 	//Выводить имена камер ?
 	print '<br /><div style="float:left;" ><span style="font-weight:bold;">'.$strPrintCamNames.":</span>&nbsp;".($PCN?$strCamName_Yes:$strCamName_No)."</div>\n";
-	
 	//реконнект таймаут
 	print '<br /><div style="float:left;" ><span style="font-weight:bold;">'.$strReconnectTimeout.":</span>&nbsp;".$ReconnectTimeoutArray[$ReconnectTimeout]."</div>\n";
-	
 	//Установить по умолчанию
 	$strSetByDefault = "Установить по умолчанию";
+	//$radio_disable = ($admin_user)? '':'disabled'; //доступно толко администратору
 	print '<br /><div style="float:left;" ><span style="font-weight:bold;">'.$strSetByDefault.":</span>";
-	print "<input type=\"radio\" name=\"ByDefault\" ".($isDefault?'checked="checked"':'')."\" onchange=\"SetByDefault($l_nr)\" /></div>\n";
-	
+    if ($admin_user)
+        $onchange = "SetByDefault($l_nr);";
+    else
+        $onchange = "user_layouts.setUserLayoutsDefault($l_nr);";
+	print "<input type=\"radio\" name=\"ByDefault\" ".($isDefault?'checked="checked"':'')."\" onchange=\"$onchange\" /></div>\n";
 	print '</div> <br /><br />' . "\n";
 }
+$layouts_cookie = $_COOKIE['layouts'];
 
 //Генерация страницы
 
 $USE_JQUERY=true;
+
+$link_javascripts=array('lib/js/user_layouts.js');
+
 require ('../head.inc.php');
-require ('./mon-type.inc.php');
+require ('../admin/mon-type.inc.php');
+echo "<a href = '" . $conf['prefix'] . "/online/'>$strBackOnline</a>";
 
+if($admin_user){
+?>
+<script type="text/javascript">
 //JS-для установки раскладки по умолчанию
-print '<script type="text/javascript">';
-
-print 'function SetByDefault(layoutNum){';
-
-print '$.ajax({"url":"web_set_def.php?layout="+layoutNum+" "})';
-print '.done(function(data){ ';
-print 'if(data!=\'NULL\'){ ';
-print '$("<div style=\"position:absolute; top:300px; left:300px; z-index:100; color:Yellow; background-color:DarkRed; border:3px solid black; cursor:default; \">';
-print '<div style=\"font-weight:bold; color:Yellow; border:2px solid black; padding:2px; float:right;\">X</div>';
-print '<span style=\" font-size:14pt;  \">ERROR</span><br />';
-print '"+data+"</div>")';
-print '.appendTo("body").click(function(){ $(this).remove(); }) ;  } ';
-
-print '});';
-print '}';
-
-print '</script>';
+function SetByDefault(layoutNum){
+	$.ajax({"url":"web_set_def.php?layout="+layoutNum+" "})
+	.done(function(data){
+	if(data!=null){ 
+		$("<div style=\"position:absolute; top:300px; left:300px; z-index:100; color:Yellow; background-color:DarkRed; border:3px solid black; cursor:default; \">\
+		<div style=\"font-weight:bold; color:Yellow; border:2px solid black; padding:2px; float:right;\">X</div>\
+		<span style=\" font-size:14pt;  \">ERROR</span><br /> "+data+"</div>")
+			.appendTo("body")
+			.click(function(){ 
+				$(this).remove(); 
+				}) ;  
+			} 
+	});
+}
+</script>
+<?php 
+}
 
 //Заголовок окна ($named,$sip - название и IP сервера; $r_mons - в lang/russian/utf-8/common.inc.php)
 echo '<h1>' . sprintf($web_r_mons,$named,$sip) . '</h1>' ."\n";
@@ -79,7 +89,6 @@ $counter = @$GLOBALS['counter'];
 //загружается если нажато удаление раскладки
 if ( isset($cmd) )
 {
-	
    DENY($admin_status);
    switch ( $cmd )	{
    case 'DEL':
@@ -99,19 +108,129 @@ if ( isset($cmd) )
    case 'DEL_OK': //Удаление раскладки
       if ( ($mult_btn == $strYes) && isset($mon_nr) )
       {
-      	
       	$adb->web_delete_monitors($display, $mon_nr);
- 
-         echo '<p><font color="' . $warn_color . '">' . sprintf ($fmtLayoutDeleted, $counter, $mon_name) . '</font></p>' ."\n";
+         echo '<p><font color="'.$warn_color.'">' . sprintf ($fmtLayoutDeleted, $counter, $mon_name) . '</font></p>' ."\n";
       }
       unset($mon_nr);
       break;
    }
 }
+
 //готовые раскладки
+//раскладки определенные клиентом
+echo '<h2>'.$client_mon_list.'</h2>' ."\n";
+
+////->
+
+$clients_layouts = array();
+if (isset($layouts_cookie))
+{
+    $tmp = json_decode($layouts_cookie, true);
+    // Провераю корректность кодировки
+    if (!$tmp)
+    {
+        $tmp = json_decode(iconv("CP1251", "UTF8", $layouts_cookie), true);
+    }
+}
+else
+{
+    $tmp = array();
+}
+foreach ($tmp as $client_mon_nr=>$l_val){
+	$_data = array();
+	foreach ($l_val as $par_name=>$par_data){
+		$_data[$par_name]=$par_data;
+	}
+	$tmp_data = json_decode($_data['w']);
+	$_data['wins'] = array();
+	foreach ($tmp_data as $cell_nr=>$cell_data){
+		$_data['wins'][$cell_nr]=$cell_data;
+	}
+	
+	$clients_layouts[(int)$client_mon_nr] = array(
+			'layout_type' => $_data['t'],
+			'layout_name' => $_data['n'],
+ 			'CHANGE_TIME' => $_data['dd'],
+ 			'CHANGE_USER' => $_data['u'],
+// 			'CHANGE_HOST' => $_data['CHANGE_HOST'],
+			'PrintCamNames' => $_data['cn'],
+			'AspectRatio' => $_data['p'],
+			'ReconnectTimeout'=>$_data['rt'],
+			'isDefault' => $_data['d'],
+			'wins' => json_decode($_data['w'], true)
+			);
+}
+
+////->
+//Создание перечня готовых раскладок
+$client_mon_nr=0;
+$client_counter = 1;
+print "<div id='client_layouts'>";
+	 
+//Если нет ни одной готовой раскладки
+if(!count($clients_layouts)){
+	$client_mon_nr=-1;
+	print '<div> &nbsp;'.$no_any_layout."</div>\n";
+}
+
+	//Вывод готовых раскладок
+	foreach ($clients_layouts as $client_mon_nr=>$res_val){
+		print "<div style=\"border: 1px solid black; padding: 5px; height:310px; width: 290px; text-align:center; float:left; margin:10px; \">\n";
+		if ( array_key_exists ( $client_mon_nr, $clients_layouts ) ) {
+			//левый монитор (правый вообще не используем)
+			prt_l('L', $client_mon_nr, $clients_layouts[$client_mon_nr], $admin_user, $layout_word, $client_counter, $clients_layouts[$client_mon_nr]['AspectRatio'], $clients_layouts[$client_mon_nr]['ReconnectTimeout'] , $clients_layouts[$client_mon_nr]['PrintCamNames'], $clients_layouts[$client_mon_nr]['isDefault']);
+			print '<div class=\'camlayout\' >';
+	
+			//преобразование массива камер
+			$cams_array = array();
+			foreach ($clients_layouts[$client_mon_nr]['wins'] as $key=>$val){
+				$cams_array[$key] = $val[0];
+			}
+	
+			layout2table ( $clients_layouts[$client_mon_nr]['layout_type'], 160 , $cams_array);
+	
+			print '</div>'. "\n";
+			//if ( $admin_user )
+            {
+				
+				//print '<br><a onclick="user_layouts.remove('.$client_mon_nr.')" href="#">'. $GLOBALS['strDelete'] . '</a>&nbsp;/&nbsp;';
+				$url = $GLOBALS['conf']['prefix'].'/admin/web_mon_list.php';
+				print '<br><a onclick="user_layouts.remove('.$client_mon_nr.', \''.$url.'\')" href="#">'. $GLOBALS['strDelete'] . '</a>&nbsp;/&nbsp;';
+				
+				$url = $GLOBALS['conf']['prefix'].'/admin/web_mon_tune.php?display='.$display
+				.'&storage=client'
+				.'&mon_nr='.$client_mon_nr
+				.'&mon_name='.$clients_layouts[$client_mon_nr]['layout_name']
+				.'&mon_type='.$clients_layouts[$client_mon_nr]['layout_type']
+				.'&counter='.$client_counter;
+				print '<a onclick="return user_layouts.to_tune_mode('.$client_mon_nr.', \''.$url.'\')" href="#">'. $GLOBALS['strEdit'] . '</a>' . "\n";
+				
+			}
+		}
+		print "</div>\n";
+		$client_counter++;
+	}
+	print "</div>\n";
+	//Выравниваем таблицы раскладок по центру элемента
+	print '<script type="text/javascript"> $(".camlayout table").attr("align", "center");  </script>';
+	 
+	$client_mon_nr++;
+	//Создать новую раскладку
+	print "<div style='clear:left;'><br>\n";
+
+	print '<a href="'.$conf['prefix'].'/admin/web_mon_addnew.php?storage=client&mon_nr='.$client_mon_nr.'&counter='.$client_counter.'">'.$l_mon_addnew.'</a>'."\n";
+
+	print "</div>\n";
+	
+///////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+if ($admin_user)
+{
+//раскладки определенные администратором
 echo '<h2>' . $r_mon_list . '</h2>' ."\n";
-
-
 if ( !isset($mon_nr) || $mon_nr =='')
 {
    /* Performing new SQL query */
@@ -138,14 +257,13 @@ if ( !isset($mon_nr) || $mon_nr =='')
    //Создание перечня готовых раскладок
    $mon_nr=0;
    $counter = 1;
-   print "<div>";
+   print "<div id='admin_layouts'>";
    
    //Если нет ни одной готовой раскладки
    if(!count($LD)){
    	$mon_nr=-1;
    	print '<div> &nbsp;'.$no_any_layout."</div>\n";
    }
-   
    
    //Вывод готовых раскладок
    foreach ($LD as $mon_nr=>$res_val){
@@ -180,11 +298,11 @@ if ( !isset($mon_nr) || $mon_nr =='')
    //Создать новую раскладку
    print "<div style='clear:left;'><br>\n";
    if ( $admin_user)
-      print '<a href="'.$conf['prefix'].'/admin/web_mon_addnew.php?display=L&mon_nr='.$mon_nr.'&counter='.$counter.'">'.$l_mon_addnew.'</a>'."\n";
+      print '<a href="'.$conf['prefix'].'/admin/web_mon_addnew.php?storage=server&mon_nr='.$mon_nr.'&counter='.$counter.'">'.$l_mon_addnew.'</a>'."\n";
    else
       print '&nbsp;'. $l_mon_admin_only ."\n";
    print "</div>\n";
 }
-
+}
 require ('../foot.inc.php');
 ?>

@@ -45,6 +45,11 @@ $(document).ready(function(){
 	
 });
 
+//пререход на онлайн
+var online =  function(url){
+	//переадресуем на онлайн просмотр
+	user_layouts.redirect(url, true);
+};
 
 var m_over = {
 		factor : 1.15,

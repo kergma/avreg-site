@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="6ff1b14b-4d45-4dda-892b-b93da51e7899" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/avreg.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/sass_stdlib.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/admin/cam-tune.php" afterPath="$PROJECT_DIR$/admin/cam-tune.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/admin/mon-addnew.php" afterPath="$PROJECT_DIR$/admin/mon-addnew.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/admin/mon-list.php" afterPath="$PROJECT_DIR$/admin/mon-list.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/admin/mon-tune.php" afterPath="$PROJECT_DIR$/admin/mon-tune.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/admin/web_mon_addnew.php" afterPath="$PROJECT_DIR$/admin/web_mon_addnew.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/admin/web_mon_list.php" afterPath="$PROJECT_DIR$/admin/web_mon_list.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.js" afterPath="$PROJECT_DIR$/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.php" afterPath="$PROJECT_DIR$/index.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lang/russian/utf-8/common.inc.php" afterPath="$PROJECT_DIR$/lang/russian/utf-8/common.inc.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lang/russian/utf-8/params.inc.php" afterPath="$PROJECT_DIR$/lang/russian/utf-8/params.inc.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/adb.php" afterPath="$PROJECT_DIR$/lib/adb.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/js/jquery.aplayer.js" afterPath="$PROJECT_DIR$/lib/js/jquery.aplayer.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/offline/_playlist.php" afterPath="$PROJECT_DIR$/offline/_playlist.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/offline/gallery/index.php" afterPath="$PROJECT_DIR$/offline/gallery/index.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/offline/gallery/js/main.js" afterPath="$PROJECT_DIR$/offline/gallery/js/main.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/on-http-notify.php" afterPath="$PROJECT_DIR$/on-http-notify.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/online/index.php" afterPath="$PROJECT_DIR$/online/index.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/online/view.js" afterPath="$PROJECT_DIR$/online/view.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pda/scale.inc.php" afterPath="$PROJECT_DIR$/pda/scale.inc.php" />
+    </list>
+    <ignored path="avreg.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="DatabaseView">
+    <flatten value="false" />
+    <groupTables value="false" />
+    <sortChildren value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="view.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/online/view.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1349" column="59" selection-start="43373" selection-end="43373" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="user_layouts.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib/js/user_layouts.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="261" column="47" selection-start="8265" selection-end="8265" vertical-scroll-proportion="0.5271454">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="web_mon_list.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin/web_mon_list.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="297" column="19" selection-start="11116" selection-end="11116" vertical-scroll-proportion="-185.625">
+              <folding>
+                <element signature="e#6#93#0" expanded="true" />
+                <marker date="1360336625000" expanded="false" signature="2697:2832" placeholder="..." />
+                <marker date="1360336625000" expanded="true" signature="2834:3000" placeholder="..." />
+                <marker date="1360336625000" expanded="false" signature="2852:2933" placeholder="..." />
+                <marker date="1360336625000" expanded="false" signature="2852:2933" placeholder="..." />
+                <marker date="1360336625000" expanded="false" signature="2961:2979" placeholder="..." />
+                <marker date="1360336625000" expanded="false" signature="6115:6226" placeholder="..." />
+                <marker date="1360336625000" expanded="true" signature="6228:6356" placeholder="..." />
+                <marker date="1360336625000" expanded="false" signature="8102:8113" placeholder="..." />
+                <marker date="1360336625000" expanded="false" signature="9583:9694" placeholder="..." />
+                <marker date="1360336625000" expanded="false" signature="11148:11159" placeholder="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="common.inc.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lang/russian/utf-8/common.inc.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="80" column="14" selection-start="3073" selection-end="3087" vertical-scroll-proportion="-6.25">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="web_mon_tune.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin/web_mon_tune.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="187" column="45" selection-start="5417" selection-end="5417" vertical-scroll-proportion="-6.625">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="view.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/online/view.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="32" column="38" selection-start="857" selection-end="857" vertical-scroll-proportion="-11.875">
+              <folding>
+                <marker date="1360337818000" expanded="true" signature="10275:10372" placeholder="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="false" />
+    </FindUsagesManager>
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Serhey Doniy" />
+      </list>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/admin/user-list.php" />
+        <option value="$PROJECT_DIR$/lang/russian/utf-8/common.inc.php" />
+        <option value="$PROJECT_DIR$/online/view.js" />
+        <option value="$PROJECT_DIR$/pda/scale.inc.php" />
+        <option value="$PROJECT_DIR$/admin/web_mon_list.php" />
+        <option value="$PROJECT_DIR$/admin/mon-type.inc.php" />
+        <option value="$PROJECT_DIR$/lib/config.inc.php" />
+        <option value="$PROJECT_DIR$/admin/web_mon_tune.php" />
+        <option value="$PROJECT_DIR$/online/view.php" />
+        <option value="$PROJECT_DIR$/lib/js/user_layouts.js" />
+      </list>
+    </option>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-2" />
+    <option name="width" value="1370" />
+    <option name="height" value="744" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents ProjectPane="true" />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="avreg" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="avreg" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="avreg" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="avreg" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="avreg" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="online" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="avreg" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="avreg" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lang" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="avreg" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="avreg" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lang" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="russian" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="utf-8" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="ChangesBrowser.SHOW_FLATTEN" value="true" />
+    <property name="last_opened_file_path" value="$USER_HOME$" />
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+      <TestRunner />
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpLocalRunConfigurationType" factoryName="PHP Console">
+      <method />
+    </configuration>
+    <list size="0" />
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6ff1b14b-4d45-4dda-892b-b93da51e7899" name="Default" comment="" />
+      <created>1360322175659</created>
+      <updated>1360322175659</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-2" y="0" width="1370" height="744" extended-state="6" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22613065" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32998326" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25757575" sideWeight="0.67001677" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="CHECK_NEW_TODO" value="true" />
+    <option name="myTodoPanelSettings">
+      <value>
+        <are-packages-shown value="false" />
+        <are-modules-shown value="false" />
+        <flatten-packages value="false" />
+        <is-autoscroll-to-source value="false" />
+      </value>
+    </option>
+    <option name="PERFORM_UPDATE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_COMMIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="false" />
+    <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="false" />
+    <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
+    <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
+    <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
+    <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
+    <option name="SHORT_DIFF_HORISONTALLY" value="true" />
+    <option name="SHORT_DIFF_EXTRA_LINES" value="2" />
+    <option name="SOFT_WRAPS_IN_SHORT_DIFF" value="true" />
+    <option name="INCLUDE_TEXT_INTO_PATCH" value="false" />
+    <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
+    <option name="SHOW_FILE_HISTORY_DETAILS" value="true" />
+    <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
+    <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
+    <option name="LAST_COMMIT_MESSAGE" value="Clients Layout and bags IE9" />
+    <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
+    <option name="FILE_HISTORY_DIALOG_COMMENTS_SPLITTER_PROPORTION" value="0.8" />
+    <option name="FILE_HISTORY_DIALOG_SPLITTER_PROPORTION" value="0.5" />
+    <option name="ACTIVE_VCS_NAME" />
+    <option name="UPDATE_GROUP_BY_PACKAGES" value="false" />
+    <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
+    <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
+    <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
+    <MESSAGE value="Clients Layout and bags IE9" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/admin/user-list.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="19" selection-start="1380" selection-end="1384" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin/web_mon_tune.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="125" column="0" selection-start="3149" selection-end="3238" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/online/view.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="72" column="0" selection-start="1886" selection-end="1886" vertical-scroll-proportion="0.0">
+          <folding>
+            <marker date="1360337818000" expanded="true" signature="10275:10372" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin/cam-list.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="50" selection-start="423" selection-end="423" vertical-scroll-proportion="-0.88721806">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavascriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/DHTML.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1314" column="0" selection-start="20114" selection-end="20122" vertical-scroll-proportion="0.3325301">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/head.inc.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="205" column="9" selection-start="6584" selection-end="6584" vertical-scroll-proportion="0.23544973">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin/user-list.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="19" selection-start="1380" selection-end="1384" vertical-scroll-proportion="0.028089888">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pda/scale.inc.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="199" column="55" selection-start="4699" selection-end="4700" vertical-scroll-proportion="0.6796116">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lang/russian/utf-8/common.inc.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="80" column="14" selection-start="3073" selection-end="3087" vertical-scroll-proportion="-6.25">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin/web_mon_list.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="297" column="19" selection-start="11116" selection-end="11116" vertical-scroll-proportion="-185.625">
+          <folding>
+            <element signature="e#6#93#0" expanded="true" />
+            <marker date="1360336625000" expanded="false" signature="2697:2832" placeholder="..." />
+            <marker date="1360336625000" expanded="true" signature="2834:3000" placeholder="..." />
+            <marker date="1360336625000" expanded="false" signature="2852:2933" placeholder="..." />
+            <marker date="1360336625000" expanded="false" signature="2852:2933" placeholder="..." />
+            <marker date="1360336625000" expanded="false" signature="2961:2979" placeholder="..." />
+            <marker date="1360336625000" expanded="false" signature="6115:6226" placeholder="..." />
+            <marker date="1360336625000" expanded="true" signature="6228:6356" placeholder="..." />
+            <marker date="1360336625000" expanded="false" signature="8102:8113" placeholder="..." />
+            <marker date="1360336625000" expanded="false" signature="9583:9694" placeholder="..." />
+            <marker date="1360336625000" expanded="false" signature="11148:11159" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin/mon-type.inc.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="315" column="8" selection-start="14925" selection-end="14925" vertical-scroll-proportion="0.8915344">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/config.inc.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1304" column="52" selection-start="37371" selection-end="37371" vertical-scroll-proportion="0.68421054">
+          <folding>
+            <marker date="1360337710000" expanded="false" signature="40132:40172" placeholder="..." />
+            <marker date="1360337710000" expanded="false" signature="40998:41009" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin/web_mon_tune.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="187" column="45" selection-start="5417" selection-end="5417" vertical-scroll-proportion="-6.625">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/online/view.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="38" selection-start="857" selection-end="857" vertical-scroll-proportion="-11.875">
+          <folding>
+            <marker date="1360337818000" expanded="true" signature="10275:10372" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/online/view.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1349" column="59" selection-start="43373" selection-end="43373" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/js/user_layouts.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="261" column="47" selection-start="8265" selection-end="8265" vertical-scroll-proportion="0.5271454">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
+

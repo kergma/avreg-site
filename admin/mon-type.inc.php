@@ -216,6 +216,30 @@ array(1,0,1,1), 	array(1,1,1,1), 										 	array(1,4,1,1),		array(1,5,1,1),
 array(2,0,1,1), 	array(2,1,1,1), 	array(2,2,1,1), 	array(2,3,1,1), 	array(2,4,1,1),		array(2,5,1,1),
 );
 
+$wide_34_40_wins = array(
+		array(0,0,1,1), array(0,1,1,1), array(0,2,1,1), array(0,3,1,1), array(0,4,1,1), array(0,5,1,1), array(0,6,1,1), array(0,7,1,1),
+		array(1,0,1,1), array(1,1,1,1), array(1,2,2,2), 				array(1,4,2,2),					array(1,6,1,1), array(1,7,1,1),
+		array(2,0,1,1), array(2,1,1,1), 																array(2,6,1,1), array(2,7,1,1),
+		array(3,0,1,1), array(3,1,1,1), array(3,2,1,1), array(3,3,1,1), array(3,4,1,1), array(3,5,1,1), array(3,6,1,1), array(3,7,1,1),
+		array(4,0,1,1), array(4,1,1,1), array(4,2,1,1), array(4,3,1,1), array(4,4,1,1), array(4,5,1,1), array(4,6,1,1), array(4,7,1,1)
+);
+
+$wide_28_28_wins = array(
+		array(0,0,1,1), array(0,1,1,1), array(0,2,1,1), array(0,3,1,1), array(0,4,1,1), array(0,5,1,1), array(0,6,1,1),
+		array(1,0,1,1), array(1,1,1,1), array(1,2,1,1), array(1,3,1,1),	array(1,4,1,1),	array(1,5,1,1),	array(1,6,1,1),
+		array(2,0,1,1), array(2,1,1,1), array(2,2,1,1), array(2,3,1,1), array(1,4,1,1), array(2,5,1,1),	array(2,6,1,1),
+		array(3,0,1,1), array(3,1,1,1), array(3,2,1,1), array(3,3,1,1), array(3,4,1,1), array(3,5,1,1), array(3,6,1,1),
+		array(4,0,1,1), array(4,1,1,1), array(4,2,1,1), array(4,3,1,1), array(4,4,1,1), array(4,5,1,1), array(4,6,1,1)
+);
+
+$wide_40_40_wins = array(
+		array(0,0,1,1), array(0,1,1,1), array(0,2,1,1), array(0,3,1,1), array(0,4,1,1), array(0,5,1,1), array(0,6,1,1), array(0,7,1,1),
+		array(1,0,1,1), array(1,1,1,1), array(1,2,1,1), array(1,3,1,1),	array(1,4,1,1),	array(1,5,1,1),	array(1,6,1,1), array(1,7,1,1),
+		array(2,0,1,1), array(2,1,1,1), array(2,2,1,1), array(2,3,1,1), array(1,4,1,1),	array(1,5,1,1),	array(2,6,1,1), array(2,7,1,1),
+		array(3,0,1,1), array(3,1,1,1), array(3,2,1,1), array(3,3,1,1), array(3,4,1,1), array(3,5,1,1), array(3,6,1,1), array(3,7,1,1),
+		array(4,0,1,1), array(4,1,1,1), array(4,2,1,1), array(4,3,1,1), array(4,4,1,1), array(4,5,1,1), array(4,6,1,1), array(4,7,1,1)
+);
+
 
 //-->
 
@@ -259,6 +283,9 @@ $layouts_defs = array(
    	'MULTI_22_25'  	=> array( 22,  	5, 	5,  &$multi_22_25_wins, 7, 	&$strMULTI_22_25),
 	'WIDE_24_24'  	=> array( 24,	4,	6, 	&$wide_24_24_wins, 	9, 	&$strWide_24_24 ),
    	'QUAD_25_25'   	=> array( 25,  	5, 	5,  &$quad_25_25_wins,  13, &$strQUAD_25_25 ),
+	'WIDE_34_40'	=> array( 26,	5,	8,	&$wide_34_40_wins,  	11, &$strWide_34_40),
+	'WIDE_28_28'	=> array( 27,	4,	7,	&$wide_28_28_wins,	18, 	&$strWide_28_28),
+	'WIDE_40_40'	=> array( 28,	5,	8,	&$wide_40_40_wins,	20, 	&$strWide_40_40)
 );
 
 /**
@@ -271,7 +298,7 @@ $layouts_defs = array(
  */
 function layout2table ( $mon_type, $max_width, $win_text_array = array(), $win_text = '' )
 {
-	// print "<pre>".var_dump($win_text_array)."</pre>";
+//	 print "<pre>".var_dump($win_text_array)."</pre>";
 
    if ( !array_key_exists($mon_type, $GLOBALS['layouts_defs']) ) {
          print '<p style="color:' . $GLOBALS['error_color'] . ';">Not Defined Monitors Type. Asc to developers.</p>' ."\n";
@@ -335,8 +362,9 @@ $max_width/$wins_in_layout = $l_defs[0];
 
    $w1 = $max_width/$cols - 4 /* 2xborder */;
    $h1 =  $w1 * 3 / 4;
+   $count_camers_in_layout = count($l_defs[3]);
    print $tbl_start;
-   for ($win=0; $win<$wins_in_layout; $win++ ) {
+   for ($win=0; $win<$count_camers_in_layout; $win++ ) {
       $text_in_win = (!isset($win_text) || @empty($win_text))? @$win_text_array[$win] : $win_text;
       if (!isset($win_text) || @empty($text_in_win))
          $text_in_win = '&nbsp;';
@@ -354,9 +382,9 @@ $max_width/$wins_in_layout = $l_defs[0];
       $sz = sprintf('width=%d height=%d', $w1*$colspan, $h1*$rowspan);
       $e = ( $win == $major_win )?'th':'td';
       if ($colspan > 1 || $rowspan > 1 ) {
-         print "<$e $sz class=\"layout\" colspan=\"$colspan\" rowspan=\"$rowspan\"   align=\"center\" valign=\"middle\">$text_in_win</$e>\n";
+         print "<$e $sz id=\"win_$win\" class=\"layout\" colspan=\"$colspan\" rowspan=\"$rowspan\"   align=\"center\" valign=\"middle\">$text_in_win</$e>\n";
       } else
-         print "<$e $sz class=\"layout\" align=\"center\" valign=\"middle\">$text_in_win</$e>\n";
+         print "<$e $sz id=\"win_$win\" class=\"layout\" align=\"center\" valign=\"middle\">$text_in_win</$e>\n";
 
       if ( ($col + $colspan) >= $cols ) {
          /* закрываем строку */

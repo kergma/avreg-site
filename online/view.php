@@ -19,6 +19,7 @@ $link_javascripts=array(
 						'lib/js/jquery-ui-1.8.17.custom.min.js',
 						'lib/js/jquery.mousewheel.min.js',
 						'lib/js/jquery.aplayer.js',
+						'lib/js/user_layouts.js'
 );
 
 $body_addons='scroll="no"';
@@ -26,8 +27,53 @@ $ie6_quirks_mode = true;
 $lang_file='_online.php';
 require ('../head.inc.php');
 
+
+//получение пользовательских раскладок
+$clients_layouts = array();
+$layouts_cookie = $_COOKIE['layouts'];
+unset($_COOKIE['layouts']);
+if (isset($layouts_cookie))
+{
+    $tmp = json_decode($layouts_cookie, true);
+    // Провераю корректность кодировки
+    if (!$tmp)
+    {
+        $tmp = json_decode(iconv("CP1251", "UTF8", $layouts_cookie), true);
+    }
+}
+else
+    $tmp = array();
+foreach ($tmp as $client_mon_nr=>$l_val){
+	$_data = array();
+	foreach ($l_val as $par_name=>$par_data){
+		$_data[$par_name]=$par_data;
+	}
+	$tmp_data = json_decode($_data['w']);
+	$_data['wins'] = array();
+	foreach ($tmp_data as $cell_nr=>$cell_data){
+		$_data['wins'][$cell_nr]=$cell_data;
+	}
+	
+	$clients_layouts[(int)$client_mon_nr] = array(
+// 			"BIND_MAC"=> "local",
+// 			"CHANGE_HOST"=> "anyhost",
+			"CHANGE_USER"=>$_data['u'],
+			"CHANGE_TIME"=>$_data['dd'],
+			"MON_NR"=>$client_mon_nr,
+			'MON_TYPE' => $_data['t'],
+			'SHORT_NAME' => $_data['n'],
+			'PRINT_CAM_NAME' => $_data['cn'],
+			'PROPORTION' => $_data['p'],
+			'RECONNECT_TOUT'=>$_data['rt'],
+			'IS_DEFAULT' => $_data['d'],
+			'WINS' => $_data['w']
+			);
+}
+
 //Загрузка установленных раскладок
 $result = $adb->web_get_monitors($login_user);
+
+$result = $clients_layouts + $result;
 
 //Если нет установленных раскладок
 if(!count($result)) {
@@ -81,7 +127,7 @@ require('../admin/mon-type.inc.php');
 if (!isset($mon_type) || empty($mon_type) || !array_key_exists($mon_type, $layouts_defs) ) 
    MYDIE("not set ot invalid \$mon_type=\"$mon_type\"",__FILE__,__LINE__);
 $l_defs = &$layouts_defs[$mon_type];
-$wins_nr = $l_defs[0]; //определяет количество камер в раскладке
+$wins_nr = count($l_defs[3]);//определяет количество камер в раскладке
 
 $_cookie_value = sprintf('%s-%u-%u-%u-%s',
 $def_cam['WINS'], // implode('.', $cams_in_wins),

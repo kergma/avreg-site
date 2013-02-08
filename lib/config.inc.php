@@ -1140,9 +1140,21 @@ function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
       $_title='title="'.$TITLE.'"';
    else
       $_title='';
-   $a = sprintf('<select name="%s" id="%s" %s size="%d" %s %s>'."\n",
+
+   $posn = strpos($_name, '[]');
+   if($posn!==false ){
+   	$_id = substr_replace($_name, '', $posn);
+   	$_class = $_id;
+   }else{
+   	$_id = $_name;
+   }
+   $_class = $_id;
+   
+   
+   $a = sprintf('<select name="%s" id="%s" class="%s" %s size="%d" %s %s>'."\n",
       $_name,
-      $_name,
+      $_id,
+   	  $_class,
       $m,
       $_size,
       $_title,
@@ -1152,7 +1164,7 @@ function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
    if ($first_empty) $a .= '<option> </option>'."\n";
    $_cnt = $start_val;
    
-   //Если для веб-раскладок => $cams_srcs - содержит алтернативные источники  
+   //Если для веб-раскладок => $cams_srcs - содержит алтернативные источники    
 	if($cams_srcs!=null){
 		
 		foreach ($value_array as $_element)
@@ -1291,7 +1303,6 @@ function getSelectByAssocAr($_name, $assoc_array, $_multiple=FALSE ,
       $onch);
 
    if ($first_empty) $a .= '<option></option>'."\n";
-
    foreach ($assoc_array as $k => $v)
    {
       settype($key,'string');

@@ -1126,20 +1126,32 @@ function canvas_growth() {
 
    function layouts_to_list(){
 	   var html = '<div id="nav"><span>';
-   	$.each(layouts_list, function(i, value){
+   	$.each(layouts_list, function(i, value){ console.log(value);
    		html+='<div class="layout'+((cur_layout==value.MON_NR)? ' selectedLayout':'' )+'" >';
    		html+='<a id="layout_'+value.MON_NR+'" class="layout_link"';
    		//html+=' onclick="change_layout('+value.MON_NR+')"  href="#">'; //динамическая смена раскладки - отключена
-   		//нединаимическая смена раскладки
-   		html+=' href="?layout_nr='+value.MON_NR+'">';
+   		// html+=' href="?layout_nr='+value.MON_NR+'">';  //нединаимическая смена раскладки без использованиz пользовательских раскладок
+		
+   		//нединаимическая смена раскладки c использованием пользовательских раскладок
+   		html+=' onclick="user_layouts.redirect(\''+location.protocol+'//'+location.hostname+WwwPrefix+'/online/view.php?layout_nr='+value.MON_NR+'\', true);"  href="#">'; 
+   		
+   		//переадресуем на онлайн просмотр
+// 		self.redirect(location.protocol+'//'+location.hostname+WwwPrefix+'/online/view.php', true);
+//   		html+=' href="?layout_nr='+value.MON_NR+'">';
+   		
+		
    		
    		html+= (value.SHORT_NAME==''? value.MON_TYPE :value.SHORT_NAME);
    		html+= (value.IS_DEFAULT==1? '(def)' :'');
    		html+='</a>&nbsp;&nbsp;&nbsp;&nbsp;</div>';
    	});
    	html+='</span></div>';
+   	
    	return html;
    }
+   
+   
+   
 
    /**
     * Смена раскладки
@@ -1329,14 +1341,14 @@ function canvas_growth() {
    
    	//переход на страницу просмотра и управления пользовательскими раскладками 
    	function clients_layouts_list(){
-	// http://'+SERVER_ADR+'/avreg/online/users_layout_list.php	
-		
-   		if(isLocalStorageAvailable()){
-   			var layouts = localStorage.getItem('clients_layouts');
-			layouts = (layouts!=null)? layouts : '';
-   			var param='layouts='+layouts; 
-
-   			window.open('http://'+SERVER_ADR+'/avreg/online/users_layout_list.php', '_self', param);
+		//Передаем параметры пользовательских раскладок
+   		var url = 'http://'+SERVER_ADR+'/avreg/admin/web_mon_list.php';
+	   	if(user_layouts.isLocalStorageAvailable()){
+   			if(user_layouts.client_layouts_json){
+                var lay_user = JSON.stringify(user_layouts.client_layouts);
+                user_layouts.setCookie('layouts', JSON.stringify(user_layouts.client_layouts), '', '/', window.location.hostname, '');
+   			}
+   			window.open(url, '_self');
    		}
    		else{
    			alert("Данная функция недоступна:\nлокальное хранилище данных недоступно");
@@ -1379,8 +1391,8 @@ function canvas_growth() {
            if(REF_MAIN){
         	   $('#tb_contn').prepend('<td><div class="to_main"> <a href="http://'+SERVER_ADR+'/avreg/index.php" >На главную </a> </div> </td>');
            }
-// TODO Кнопка раскладки
-//           $('#tb_contn').append('<td><div id="user_layouts" class="user_layouts" onclick="clients_layouts_list();" > <a href="#" >Раскладки</a> </div> </td>');
+// TODO Кнопка пользовательских раскладок
+           $('#tb_contn').append('<td><div id="user_layouts" class="user_layouts" onclick="clients_layouts_list();" > <a href="#" >Раскладки</a> </div> </td>');
            
            canvas_growth();
            
