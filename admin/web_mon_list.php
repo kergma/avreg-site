@@ -224,7 +224,33 @@ if(!count($clients_layouts)){
 	
 ///////////////////////////////////////////////////////////////////////////////////////
 
+function Print_Arr($arr)
+{
+    echo "<pre>";
+    print_r($arr);
+    echo "</pre>";
+}
 
+function SortArrayCamers($arr_cam)
+{
+    $new_arr = array();
+    for ($i = 0; $i < count($arr_cam); $i++)
+    {
+        for ($j = ($i+1); $j < intval(count($arr_cam) - 1); $j++)
+        {
+            $tmp = array();
+            if (count($arr_cam[$i]['wins']) > count($arr_cam[$j]['wins']))
+            {
+                echo "is<br/>";
+                $tmp = $arr_cam[$i];
+                $arr_cam[$i] = $arr_cam[$j];
+                $arr_cam[$j] = $tmp;
+            }
+            unset($tmp);
+        }
+    }
+    return $arr_cam;
+}
 
 
 if ($admin_user)
@@ -238,6 +264,7 @@ if ( !isset($mon_nr) || $mon_nr =='')
     $result = $adb->web_get_monitors(); 
     
    $LD = array();
+   // Print_Arr($layouts_defs);
    foreach ( $result as $row)	{
       $LD[(int)$row['MON_NR']] = 	array(
          'layout_type' => $row['MON_TYPE'],
@@ -250,10 +277,19 @@ if ( !isset($mon_nr) || $mon_nr =='')
       	 'ReconnectTimeout'=>$row['RECONNECT_TOUT'],
       	 'isDefault' => $row['IS_DEFAULT'],
          'wins' => json_decode($row['WINS'], true) ,
+         'count_cells' => count($layouts_defs[$row['MON_TYPE']][3])
       );
+       //print_r
 
    }
-   
+    //Print_Arr($LD);
+    function cmp($val1, $val2)
+    {
+        if ($val1[count_cells] == $val2[count_cells])
+            return 0;
+        return ($val1[count_cells] < $val2[count_cells]) ? -1 : 1;
+    }
+    $sort = usort($LD, 'cmp');
    //Создание перечня готовых раскладок
    $mon_nr=0;
    $counter = 1;
