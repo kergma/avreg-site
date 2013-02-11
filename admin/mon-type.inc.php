@@ -14,6 +14,7 @@
  * [2] - объединяет ячеек по вертикали
  * [3] - объединяет ячеек по горизонтали
  */
+const MAX_CAMS_INTO_LAYOUT = 40;
 $onecam_wins = array( array(0,0,1,1) );
 $quad_4_4_wins = array(
    array(0,0,1,1), array(0,1,1,1),

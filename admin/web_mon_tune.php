@@ -185,7 +185,7 @@ if (isset($cmd)) {
       print '</script>'."\n";
       
       //Создание эл-та селект для ячеек раскладки
-      for ($i=0; $i<$conf['max_count_camers']; $i++) {
+      for ($i=0; $i<MAX_CAMS_INTO_LAYOUT; $i++) {
       	
       	if(!isset($cams_srcs)){
       		$cams_srcs=false;

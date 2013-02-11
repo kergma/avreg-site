@@ -1126,7 +1126,7 @@ function canvas_growth() {
 
    function layouts_to_list(){
 	   var html = '<div id="nav"><span>';
-   	$.each(layouts_list, function(i, value){ console.log(value);
+   	$.each(layouts_list, function(i, value){ //console.log(value);
    		html+='<div class="layout'+((cur_layout==value.MON_NR)? ' selectedLayout':'' )+'" >';
    		html+='<a id="layout_'+value.MON_NR+'" class="layout_link"';
    		//html+=' onclick="change_layout('+value.MON_NR+')"  href="#">'; //динамическая смена раскладки - отключена

@@ -35,10 +35,12 @@ unset($_COOKIE['layouts']);
 if (isset($layouts_cookie))
 {
     $tmp = json_decode($layouts_cookie, true);
+    $l_cook = $tmp;
     // Провераю корректность кодировки
     if (!$tmp)
     {
         $tmp = json_decode(iconv("CP1251", "UTF8", $layouts_cookie), true);
+        $l_cook = $tmp;
     }
 }
 else
@@ -80,7 +82,6 @@ if(!count($result)) {
 	print "NO AVAILABLE LAYOUTS";
 	exit();
 }
-
 //Номер камеры по умолчанию
 $def_cam = null;
 $cur_layout = 0;
@@ -98,15 +99,28 @@ if(isset($_GET['layout_nr']) ){
 	}
 }else{
 	//Поиск раскладки по умолчанию и определение реконнект таймаута
-	foreach($result as $key=>&$value){
-		if($value['IS_DEFAULT']!='0'){
-			$def_cam = $value;
-			$cur_layout = (int) $value["MON_NR"];
-		}
-		if( !isset($value['RECONNECT_TOUT']) ){
-			$value['RECONNECT_TOUT'] = isset($conf['reconnect-timeout'])? $conf['reconnect-timeout'] : 0 ;
-		}
-	}
+    foreach ($l_cook as $key=>$value)
+    {
+        if ($l_cook[$key]['d'] == 'true')
+        {
+            $is_clients_layout_default = true;
+            $cur_layout = (int)$key;
+            $def_cam = $value;
+        }
+        if( !isset($value['RECONNECT_TOUT']) ){
+            $value['RECONNECT_TOUT'] = isset($conf['reconnect-timeout'])? $conf['reconnect-timeout'] : 0 ;
+        }
+    }
+    if (!$is_clients_layout_default)
+        foreach($result as $key=>&$value){
+            if($value['IS_DEFAULT']!='0'){
+                $def_cam = $value;
+                $cur_layout = (int) $value["MON_NR"];
+            }
+            if( !isset($value['RECONNECT_TOUT']) ){
+                $value['RECONNECT_TOUT'] = isset($conf['reconnect-timeout'])? $conf['reconnect-timeout'] : 0 ;
+            }
+        }
 }
 
 //Если раскладка не определена - используем первую
@@ -115,11 +129,23 @@ if ($def_cam == null){
 }
 
 //Определяем соответствующие параметры
-$PrintCamNames =  $def_cam['PRINT_CAM_NAME'];
-$AspectRatio =  $def_cam['PROPORTION'];
-$mon_type = $def_cam['MON_TYPE'];
+// Если не установлена клиентская раскладка по умолчанию
+if (!$is_clients_layout_default)
+{
+    $PrintCamNames =  $def_cam['PRINT_CAM_NAME'];
+    $AspectRatio =  $def_cam['PROPORTION'];
+    $mon_type = $def_cam['MON_TYPE'];
 
-$win_cams =json_decode($def_cam['WINS'], true);
+    $win_cams = json_decode($def_cam['WINS'], true);
+}
+else
+    // Устанавливаем по умолчанию клиентскую раскладку
+{
+    $PrintCamNames =  $def_cam['n'];
+    $AspectRatio =  $def_cam['p'];
+    $mon_type = $def_cam['t'];
+    $win_cams = json_decode($def_cam['w'], true);
+}
 if ( !isset($win_cams) || empty($win_cams))
 die('should use "$win_cams" cgi param');
 
