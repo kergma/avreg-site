@@ -46,6 +46,7 @@ if (isset($layouts_cookie))
 }
 else
     $tmp = array();
+
 foreach ($tmp as $client_mon_nr=>$l_val){
 	$_data = array();
 	foreach ($l_val as $par_name=>$par_data){

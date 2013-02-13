@@ -32,11 +32,11 @@ if($storage=='client'){
 
 require ('../head.inc.php');
 
+
 //DENY($admin_status);
 if($storage!='client'){
 	DENY($admin_status);
 }
-
 
 require ('./mon-type.inc.php');
 
@@ -134,9 +134,6 @@ if ( isset($cmd) ) {
 				}else{
 					print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="reset_to_list();">'."\n";
 				}
-				
-				
-				
 				print '</form>'."\n";
 			}
 			require ('../foot.inc.php');
@@ -219,8 +216,6 @@ if ( isset($cmd) ) {
    }else{
    		print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="reset_to_list();">'."\n";
    }
-      	
-   
    print '</form>'."\n";
 }
 

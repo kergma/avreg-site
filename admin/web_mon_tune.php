@@ -28,7 +28,6 @@ if($storage=='client'){
 						'lib/js/user_layouts.js',
 						'lib/js/json2.js');
 }
-
 require ('../head.inc.php');
 
 //DENY($admin_status);
@@ -36,10 +35,7 @@ if($storage!='client'){
 	DENY($admin_status);
 }
 
-
-
 require ('./mon-type.inc.php');
-
 ?>
 
 <script type="text/javascript" language="javascript">
@@ -86,10 +82,7 @@ if (isset($cmd)) {
    		$i++;
    	}
    		
-   	
    	$allWINS = json_encode($allWINS);
-   	
-   	
       if ( $allWINS!='' )	{
       	$PrintCamNames = ($PrintCamNames!=null)? 1 : 0;
       	 
@@ -106,8 +99,6 @@ if (isset($cmd)) {
       break;
    } // switch
 } else {
-	
-	
 	
    // cmd not set
    require('web_active_pipe.inc.php');

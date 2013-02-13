@@ -127,7 +127,6 @@ if ( isset($cmd) )
 echo '<h2>'.$client_mon_list.'</h2>' ."\n";
 
 ////->
-
 $clients_layouts = array();
 if (isset($layouts_cookie))
 {
@@ -256,7 +255,6 @@ function SortArrayCamers($arr_cam)
     }
     return $arr_cam;
 }
-
 
 if ($admin_user)
 {
