@@ -78,7 +78,7 @@ $strDisplayed = 'показывать';
 $strDocu = 'документация';
 $strDoYouReally = 'вы действительно желаете ';
 $strDynamic = 'динамический';
-
+$strBackOnline = "Вернуться к просмотру";
 $strEdit = 'правка';
 $strEditPrivileges = 'редактирование привилегий';
 $strEffective = 'эффективность';

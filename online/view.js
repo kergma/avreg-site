@@ -1345,7 +1345,8 @@ function canvas_growth() {
    		var url = 'http://'+SERVER_ADR+'/avreg/admin/web_mon_list.php';
 	   	if(user_layouts.isLocalStorageAvailable()){
    			if(user_layouts.client_layouts_json){
-   				url+='?layouts='+user_layouts.client_layouts_json; 
+                var lay_user = JSON.stringify(user_layouts.client_layouts);
+                user_layouts.setCookie('layouts', JSON.stringify(user_layouts.client_layouts), '', '/', window.location.hostname, '');
    			}
    			window.open(url, '_self');
    		}

@@ -655,7 +655,6 @@ var gallery = {
 
 				var open = '#tree_'+matrix.tree;
 				var parent = $(self.holder).parent().hide();
-
 				$("#tree_new").remove();
 				parent.append('<div id="tree_new"></div>');
 				// построение дерева
@@ -681,7 +680,6 @@ var gallery = {
 					if(matrix.keyBoardTree == tree) return;
 						
 					matrix.keyBoardTree = tree;
-					
 					
 
 						var found = tree.split('_');
@@ -762,7 +760,6 @@ var gallery = {
 							}
 							//если вовремя заполнения EVENTS_TREE были обнаружены дублированные события
 					  		else if (data.status == 'error' && data.code=='1') {
-					  			
 					  			$('#matrix_load').hide();
 					  			
 						  			var header = "Ошибка";

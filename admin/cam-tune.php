@@ -206,7 +206,7 @@ if ( isset($categories) )
                }
       print '</span><br /><br /><div>'."\n";
       $max_len = (isset($PARAMS[$i]['max_len'])) ? $PARAMS[$i]['max_len'] : 0;
-      $str_f_len = ($max_len > $conf['max_count_camers'])?$conf['max_count_camers']:$max_len;
+      $str_f_len = ($max_len > 40)?40:$max_len;
       
       switch ( $VAL_TYPE )
       {

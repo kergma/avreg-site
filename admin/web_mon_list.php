@@ -36,21 +36,40 @@ function prt_l ($display, $l_nr, $l_def, $is_admin, $layout_word, $counter, $Asp
 	print '<br /><div style="float:left;" ><span style="font-weight:bold;">'.$strReconnectTimeout.":</span>&nbsp;".$ReconnectTimeoutArray[$ReconnectTimeout]."</div>\n";
 	//Установить по умолчанию
 	$strSetByDefault = "Установить по умолчанию";
-	$radio_disable = ($admin_user)? '':'disabled'; //доступно толко администратору
+	//$radio_disable = ($admin_user)? '':'disabled'; //доступно толко администратору
 	print '<br /><div style="float:left;" ><span style="font-weight:bold;">'.$strSetByDefault.":</span>";
-	print "<input ".$radio_disable." type=\"radio\" name=\"ByDefault\" ".($isDefault?'checked="checked"':'')."\" onchange=\"SetByDefault($l_nr)\" /></div>\n";
+    if ($admin_user)
+        $onchange = "SetByDefault($l_nr);";
+    else
+        $onchange = "user_layouts.setUserLayoutsDefault($l_nr);";
+    if (is_string($isDefault))
+    {
+		$isDefault = ($isDefault=='true')?true:false;
+	}
+	print "<input type=\"radio\" name=\"ByDefault\" ".($isDefault?'checked="checked"':'')."\" onchange=\"$onchange\" /></div>\n";
 	print '</div> <br /><br />' . "\n";
 }
+$layouts_cookie = $_COOKIE['layouts'];
 
 //Генерация страницы
 
 $USE_JQUERY=true;
 
+<<<<<<< HEAD
 $link_javascripts=array('lib/js/user_layouts.js');
 
 require ('../head.inc.php');
 require ('../admin/mon-type.inc.php');
 
+=======
+$link_javascripts=array(
+				'lib/js/user_layouts.js',
+				'lib/js/json2.js');
+
+require ('../head.inc.php');
+require ('../admin/mon-type.inc.php');
+echo "<a href = '" . $conf['prefix'] . "/online/'>$strBackOnline</a>";
+>>>>>>> 14e6ee9e3b9d49139478afd29c368c25aff04097
 
 if($admin_user){
 ?>
@@ -116,6 +135,7 @@ if ( isset($cmd) )
 echo '<h2>'.$client_mon_list.'</h2>' ."\n";
 
 ////->
+<<<<<<< HEAD
 
 $clients_layouts = array();
 if (isset($_GET['layouts']))
@@ -149,6 +169,49 @@ foreach ($tmp as $client_mon_nr=>$l_val){
 
 ////->
 
+=======
+
+$clients_layouts = array();
+if (isset($layouts_cookie))
+{
+    $tmp = json_decode($layouts_cookie, true);
+    // Провераю корректность кодировки
+    if (!$tmp)
+    {
+        $tmp = json_decode(iconv("CP1251", "UTF8", $layouts_cookie), true);
+    }
+}
+else
+{
+    $tmp = array();
+}
+foreach ($tmp as $client_mon_nr=>$l_val){
+	$_data = array();
+	foreach ($l_val as $par_name=>$par_data){
+		$_data[$par_name]=$par_data;
+	}
+	$tmp_data = json_decode($_data['w']);
+	$_data['wins'] = array();
+	foreach ($tmp_data as $cell_nr=>$cell_data){
+		$_data['wins'][$cell_nr]=$cell_data;
+	}
+	
+	$clients_layouts[(int)$client_mon_nr] = array(
+			'layout_type' => $_data['t'],
+			'layout_name' => $_data['n'],
+ 			'CHANGE_TIME' => $_data['dd'],
+ 			'CHANGE_USER' => $_data['u'],
+// 			'CHANGE_HOST' => $_data['CHANGE_HOST'],
+			'PrintCamNames' => $_data['cn'],
+			'AspectRatio' => $_data['p'],
+			'ReconnectTimeout'=>$_data['rt'],
+			'isDefault' => $_data['d'],
+			'wins' => json_decode($_data['w'], true)
+			);
+}
+
+////->
+>>>>>>> 14e6ee9e3b9d49139478afd29c368c25aff04097
 //Создание перечня готовых раскладок
 $client_mon_nr=0;
 $client_counter = 1;
@@ -159,7 +222,10 @@ if(!count($clients_layouts)){
 	$client_mon_nr=-1;
 	print '<div> &nbsp;'.$no_any_layout."</div>\n";
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 14e6ee9e3b9d49139478afd29c368c25aff04097
 	//Вывод готовых раскладок
 	foreach ($clients_layouts as $client_mon_nr=>$res_val){
 		print "<div style=\"border: 1px solid black; padding: 5px; height:310px; width: 290px; text-align:center; float:left; margin:10px; \">\n";
@@ -177,7 +243,12 @@ if(!count($clients_layouts)){
 			layout2table ( $clients_layouts[$client_mon_nr]['layout_type'], 160 , $cams_array);
 	
 			print '</div>'. "\n";
+<<<<<<< HEAD
 			if ( $admin_user ) {
+=======
+			//if ( $admin_user )
+            {
+>>>>>>> 14e6ee9e3b9d49139478afd29c368c25aff04097
 				
 				//print '<br><a onclick="user_layouts.remove('.$client_mon_nr.')" href="#">'. $GLOBALS['strDelete'] . '</a>&nbsp;/&nbsp;';
 				$url = $GLOBALS['conf']['prefix'].'/admin/web_mon_list.php';
@@ -210,10 +281,44 @@ if(!count($clients_layouts)){
 	
 ///////////////////////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD
 
 
 
 
+=======
+function Print_Arr($arr)
+{
+    echo "<pre>";
+    print_r($arr);
+    echo "</pre>";
+}
+
+function SortArrayCamers($arr_cam)
+{
+    $new_arr = array();
+    for ($i = 0; $i < count($arr_cam); $i++)
+    {
+        for ($j = ($i+1); $j < intval(count($arr_cam) - 1); $j++)
+        {
+            $tmp = array();
+            if (count($arr_cam[$i]['wins']) > count($arr_cam[$j]['wins']))
+            {
+                echo "is<br/>";
+                $tmp = $arr_cam[$i];
+                $arr_cam[$i] = $arr_cam[$j];
+                $arr_cam[$j] = $tmp;
+            }
+            unset($tmp);
+        }
+    }
+    return $arr_cam;
+}
+
+
+if ($admin_user)
+{
+>>>>>>> 14e6ee9e3b9d49139478afd29c368c25aff04097
 //раскладки определенные администратором
 echo '<h2>' . $r_mon_list . '</h2>' ."\n";
 if ( !isset($mon_nr) || $mon_nr =='')
@@ -223,6 +328,7 @@ if ( !isset($mon_nr) || $mon_nr =='')
     $result = $adb->web_get_monitors(); 
     
    $LD = array();
+   // Print_Arr($layouts_defs);
    foreach ( $result as $row)	{
       $LD[(int)$row['MON_NR']] = 	array(
          'layout_type' => $row['MON_TYPE'],
@@ -235,10 +341,19 @@ if ( !isset($mon_nr) || $mon_nr =='')
       	 'ReconnectTimeout'=>$row['RECONNECT_TOUT'],
       	 'isDefault' => $row['IS_DEFAULT'],
          'wins' => json_decode($row['WINS'], true) ,
+         'count_cells' => count($layouts_defs[$row['MON_TYPE']][3])
       );
+       //print_r
 
    }
-   
+    //Print_Arr($LD);
+    function cmp($val1, $val2)
+    {
+        if ($val1[count_cells] == $val2[count_cells])
+            return 0;
+        return ($val1[count_cells] < $val2[count_cells]) ? -1 : 1;
+    }
+    $sort = usort($LD, 'cmp');
    //Создание перечня готовых раскладок
    $mon_nr=0;
    $counter = 1;
@@ -288,6 +403,6 @@ if ( !isset($mon_nr) || $mon_nr =='')
       print '&nbsp;'. $l_mon_admin_only ."\n";
    print "</div>\n";
 }
-
+}
 require ('../foot.inc.php');
 ?>

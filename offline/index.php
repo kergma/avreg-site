@@ -67,6 +67,6 @@ body  {font-family: <?php echo $right_font_family; ?>; font-size: <?php echo $fo
 		<frame align="right" name="view" src="<?php echo $conf['prefix']; ?>/offline/view-image.php" frameborder="yes" marginwidth="0" marginheight="0" noresize scrolling="no">
 		<frame name="result" src="<?php echo $conf['prefix']; ?>/offline/result.php" frameborder="yes" marginwidth="2" marginheight="3" scrolling="auto">
 	</frameset>
-	<frame name="query" src="<?php echo $conf['prefix']; ?>/offline/query.php" frameborder="yes" marginwidth="0" marginheight="0" scrolling="auto" style="overflow-y:hidden; display:block; padding:0;" >
+	<frame name="query" src="<?php echo $conf['prefix']; ?>/offline/query.php" frameborder="yes" marginwidth="0" marginheight="0" scrolling="auto" style="overflow-y:hidden; display:block; padding:0;">
 </frameset>
 </html>

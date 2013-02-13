@@ -1303,7 +1303,6 @@ function getSelectByAssocAr($_name, $assoc_array, $_multiple=FALSE ,
       $onch);
 
    if ($first_empty) $a .= '<option></option>'."\n";
-
    foreach ($assoc_array as $k => $v)
    {
       settype($key,'string');

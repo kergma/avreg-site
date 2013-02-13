@@ -25,7 +25,8 @@ $USE_JQUERY = true;
 
 $link_javascripts=array(
  		'index.js',
-		'lib/js/user_layouts.js'
+		'lib/js/user_layouts.js',
+		'lib/js/json2.js'
 );
 
 
