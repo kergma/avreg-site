@@ -19,7 +19,8 @@ $link_javascripts=array(
 						'lib/js/jquery-ui-1.8.17.custom.min.js',
 						'lib/js/jquery.mousewheel.min.js',
 						'lib/js/jquery.aplayer.js',
-						'lib/js/user_layouts.js'
+						'lib/js/user_layouts.js',
+						'lib/js/json2.js'
 );
 
 $body_addons='scroll="no"';
@@ -99,6 +100,8 @@ if(isset($_GET['layout_nr']) ){
 	}
 }else{
 	//Поиск раскладки по умолчанию и определение реконнект таймаута
+	if (!is_array($l_cook))
+	   $l_cook = array();
     foreach ($l_cook as $key=>$value)
     {
         if ($l_cook[$key]['d'] == 'true')

@@ -51,7 +51,8 @@ if (!isset($_POST['method']) && !isset($_GET['method'])) {
 								'offline/gallery/js/jquery.scrollTo-min.js',
 								'offline/gallery/js/jquery.checkbox.js',
 								'offline/gallery/js/jquery.tooltip.js',
-								'offline/gallery/js/main.js'
+								'offline/gallery/js/main.js',
+								'lib/js/json2.js'
 						);
 	require_once('../head.inc.php');
 	$GCP_query_param_list=array('text_left', 'Hx2');

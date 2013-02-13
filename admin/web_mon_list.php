@@ -42,6 +42,10 @@ function prt_l ($display, $l_nr, $l_def, $is_admin, $layout_word, $counter, $Asp
         $onchange = "SetByDefault($l_nr);";
     else
         $onchange = "user_layouts.setUserLayoutsDefault($l_nr);";
+    if (is_string($isDefault))
+    {
+		$isDefault = ($isDefault=='true')?true:false;
+	}
 	print "<input type=\"radio\" name=\"ByDefault\" ".($isDefault?'checked="checked"':'')."\" onchange=\"$onchange\" /></div>\n";
 	print '</div> <br /><br />' . "\n";
 }
@@ -51,7 +55,9 @@ $layouts_cookie = $_COOKIE['layouts'];
 
 $USE_JQUERY=true;
 
-$link_javascripts=array('lib/js/user_layouts.js');
+$link_javascripts=array(
+				'lib/js/user_layouts.js',
+				'lib/js/json2.js');
 
 require ('../head.inc.php');
 require ('../admin/mon-type.inc.php');
@@ -172,7 +178,6 @@ if(!count($clients_layouts)){
 	$client_mon_nr=-1;
 	print '<div> &nbsp;'.$no_any_layout."</div>\n";
 }
-
 	//Вывод готовых раскладок
 	foreach ($clients_layouts as $client_mon_nr=>$res_val){
 		print "<div style=\"border: 1px solid black; padding: 5px; height:310px; width: 290px; text-align:center; float:left; margin:10px; \">\n";
