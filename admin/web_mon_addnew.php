@@ -129,20 +129,11 @@ if ( isset($cmd) ) {
 				
 				//Кнопки сохранить раскладку и отменить
 				print '<br><input type="submit" name="btn" value="'.$strSave.'">'."\n";
-<<<<<<< HEAD
 				if($storage=='client'){
 					print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="user_layouts.redirect(\''.$conf['prefix'].'/admin/web_mon_list.php\', true);">'."\n";
 				}else{
-=======
-				if($storage=='client'){
-					print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="user_layouts.redirect(\''.$conf['prefix'].'/admin/web_mon_list.php\', true);">'."\n";
-				}else{
->>>>>>> 14e6ee9e3b9d49139478afd29c368c25aff04097
 					print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="reset_to_list();">'."\n";
 				}
-				
-				
-				
 				print '</form>'."\n";
 			}
 			require ('../foot.inc.php');
@@ -188,11 +179,7 @@ if ( isset($cmd) ) {
 
 	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
 	print $strNamed.': <input type="text" name="mon_name" size=16 maxlength=16 value="">'."\n";
-<<<<<<< HEAD
-   $wins = range(1, $conf['max_count_camers']);
-=======
    $wins = range(1, MAX_CAMS_INTO_LAYOUT);
->>>>>>> 14e6ee9e3b9d49139478afd29c368c25aff04097
    $lm = count($layouts_defs);
    $mc = 5; // 5 столбцов
    $mr = $lm / $mc;
@@ -217,32 +204,18 @@ if ( isset($cmd) ) {
    }
    print '</table>'."\n";
    
-<<<<<<< HEAD
    print '<input type="hidden" name="cmd" value="_ADD_NEW_MON_">'."\n";
-=======
-   print '<input type="hidden" name="cmd" value="_ADD_NEW_MON_">'."\n";
->>>>>>> 14e6ee9e3b9d49139478afd29c368c25aff04097
    print '<input type="hidden" name="storage" value="'.$storage.'">'."\n";
    print '<input type="hidden" name="mon_nr" value="'.$mon_nr.'">'."\n";
 
    
    //Кнопки формы 
-<<<<<<< HEAD
    print '<input type="submit" name="btn" value="'.$l_mon_addnew.'">'."\n";
    if($storage=='client'){
    		print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="user_layouts.redirect(\''.$conf['prefix'].'/admin/web_mon_list.php\', true);">'."\n";
    }else{
    		print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="reset_to_list();">'."\n";
-=======
-   print '<input type="submit" name="btn" value="'.$l_mon_addnew.'">'."\n";
-   if($storage=='client'){
-   		print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="user_layouts.redirect(\''.$conf['prefix'].'/admin/web_mon_list.php\', true);">'."\n";
-   }else{
-   		print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="reset_to_list();">'."\n";
->>>>>>> 14e6ee9e3b9d49139478afd29c368c25aff04097
    }
-      	
-   
    print '</form>'."\n";
 }
 

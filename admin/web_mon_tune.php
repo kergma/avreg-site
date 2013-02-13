@@ -35,10 +35,7 @@ if($storage!='client'){
 	DENY($admin_status);
 }
 
-
-
 require ('./mon-type.inc.php');
-
 ?>
 
 <script type="text/javascript" language="javascript">
@@ -85,10 +82,7 @@ if (isset($cmd)) {
    		$i++;
    	}
    		
-   	
    	$allWINS = json_encode($allWINS);
-   	
-   	
       if ( $allWINS!='' )	{
       	$PrintCamNames = ($PrintCamNames!=null)? 1 : 0;
       	 
@@ -106,8 +100,6 @@ if (isset($cmd)) {
    } // switch
 } else {
 	
-	
-	
    // cmd not set
    require('web_active_pipe.inc.php');
    $wins_array = &$active_pipes;
@@ -118,40 +110,6 @@ if (isset($cmd)) {
       exit;
    } else {
    	
-<<<<<<< HEAD
-   	$aaa = array();
-   	
-   	if($storage=='client'){ //если создаем клиентскую раскладку
-   		$clients_layouts = array();
-   		$tmp = json_decode($_GET['layouts'], true);
-   		foreach ($tmp as $client_mon_nr=>$l_val){
-   			$_data = array();
-   			foreach ($l_val as $par_name=>$par_data){
-   				$_data[$par_name]=$par_data;
-   			}
-   			$tmp_data = json_decode($_data['wins']);
-   			$_data['wins'] = array();
-   			foreach ($tmp_data as $cell_nr=>$cell_data){
-   				$_data['wins'][$cell_nr]=$cell_data;
-   			}
-   			
-   			$clients_layouts[(int)$client_mon_nr] = array(
-   				0=>(int)$client_mon_nr, //номер клиентской раскладки
-   				1=>$_data['t'], //тип
-   				2=>$_data['n'], //название
-   				3=>($_data['d'])?'1':'0', // по умолчанию
-   				4=>$_data['w'], //ячейки раскладки
-   				5=>'user_host', //CHANGE_HOST
-   				6=>$_data['u'], // имя пользователя
-   				7=>$_data['dd'], // дата создания
-   				8=>($_data['cn'])?'1':'0',//выводить названия камер
-   				9=>$_data['p'], // сохранять пропорции
-   				10=>$_data['rt'] // таймаут реконнекта
-   			);
-   		}
-
-   		$row = $clients_layouts[$mon_nr];
-=======
    	$aaa = array();
    	
    	if($storage=='client'){ //если создаем клиентскую раскладку
@@ -197,7 +155,6 @@ if (isset($cmd)) {
    		}
 
    		$row = $clients_layouts[$mon_nr];
->>>>>>> 14e6ee9e3b9d49139478afd29c368c25aff04097
    		$wins_cams = json_decode($row[4], true);
    		$mon_type = $row[1];
    		$mon_name = $row[2];
@@ -234,15 +191,9 @@ if (isset($cmd)) {
       $result = NULL;
 
       if($storage=='client'){ //Если раскладка создается на клиенте
-<<<<<<< HEAD
       	$redirect_url = $conf['prefix'].'/admin/web_mon_list.php';
       	print '<form action="'.$conf['prefix'].'/online/'.'" onSubmit="user_layouts.tune_save('.$mon_nr.', \''.$redirect_url.'\');" method="POST">'."\n";
       }else{ //Если раскладка создается на сервере
-=======
-      	$redirect_url = $conf['prefix'].'/admin/web_mon_list.php';
-      	print '<form action="'.$conf['prefix'].'/online/'.'" onSubmit="user_layouts.tune_save('.$mon_nr.', \''.$redirect_url.'\');" method="POST">'."\n";
-      }else{ //Если раскладка создается на сервере
->>>>>>> 14e6ee9e3b9d49139478afd29c368c25aff04097
       	print '<form action="'.$_SERVER['PHP_SELF'].'"  onSubmit="return validate();" method="POST">'."\n";
       }
       
@@ -274,11 +225,7 @@ if (isset($cmd)) {
       //Кнопки формы 
       print '<br><input type="submit" name="btn" value="'.$strSave.'">'."\n";
       if($storage=='client'){//сохраняем изменения клиентской раскладки
-<<<<<<< HEAD
       	print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="user_layouts.redirect(\''.$redirect_url.'\', true);">'."\n";
-=======
-      	print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="user_layouts.redirect(\''.$redirect_url.'\', true);">'."\n";
->>>>>>> 14e6ee9e3b9d49139478afd29c368c25aff04097
       }else{
 	      print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="reset_to_list();">'."\n";
       }

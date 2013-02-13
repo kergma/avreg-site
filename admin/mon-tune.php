@@ -92,11 +92,7 @@ if (isset($cmd)) {
       $aaa = array();
       
       $row = $adb->get_monitor($display, $mon_nr);
-<<<<<<< HEAD
-      for ($i=4; $i<intval($conf['max_count_camers'] + 6); $i++) {
-=======
       for ($i=4; $i<intval(MAX_CAMS_INTO_LAYOUT + 6); $i++) {
->>>>>>> 14e6ee9e3b9d49139478afd29c368c25aff04097
          $a = getSelectHtmlByName('mon_wins[]',$wins_array, FALSE , 1, 1, $row[$i], TRUE, 'sel_change(this);');
          array_push($aaa, $a );
       }

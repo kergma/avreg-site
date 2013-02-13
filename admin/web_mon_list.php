@@ -55,13 +55,6 @@ $layouts_cookie = $_COOKIE['layouts'];
 
 $USE_JQUERY=true;
 
-<<<<<<< HEAD
-$link_javascripts=array('lib/js/user_layouts.js');
-
-require ('../head.inc.php');
-require ('../admin/mon-type.inc.php');
-
-=======
 $link_javascripts=array(
 				'lib/js/user_layouts.js',
 				'lib/js/json2.js');
@@ -69,7 +62,6 @@ $link_javascripts=array(
 require ('../head.inc.php');
 require ('../admin/mon-type.inc.php');
 echo "<a href = '" . $conf['prefix'] . "/online/'>$strBackOnline</a>";
->>>>>>> 14e6ee9e3b9d49139478afd29c368c25aff04097
 
 if($admin_user){
 ?>
@@ -135,42 +127,6 @@ if ( isset($cmd) )
 echo '<h2>'.$client_mon_list.'</h2>' ."\n";
 
 ////->
-<<<<<<< HEAD
-
-$clients_layouts = array();
-if (isset($_GET['layouts']))
-	$tmp = json_decode($_GET['layouts'], true);
-else
-	$tmp = array();
-foreach ($tmp as $client_mon_nr=>$l_val){
-	$_data = array();
-	foreach ($l_val as $par_name=>$par_data){
-		$_data[$par_name]=$par_data;
-	}
-	$tmp_data = json_decode($_data['w']);
-	$_data['wins'] = array();
-	foreach ($tmp_data as $cell_nr=>$cell_data){
-		$_data['wins'][$cell_nr]=$cell_data;
-	}
-	
-	$clients_layouts[(int)$client_mon_nr] = array(
-			'layout_type' => $_data['t'],
-			'layout_name' => $_data['n'],
- 			'CHANGE_TIME' => $_data['dd'],
- 			'CHANGE_USER' => $_data['u'],
-// 			'CHANGE_HOST' => $_data['CHANGE_HOST'],
-			'PrintCamNames' => $_data['cn'],
-			'AspectRatio' => $_data['p'],
-			'ReconnectTimeout'=>$_data['rt'],
-			'isDefault' => $_data['d'],
-			'wins' => json_decode($_data['w'], true)
-			);
-}
-
-////->
-
-=======
-
 $clients_layouts = array();
 if (isset($layouts_cookie))
 {
@@ -211,7 +167,6 @@ foreach ($tmp as $client_mon_nr=>$l_val){
 }
 
 ////->
->>>>>>> 14e6ee9e3b9d49139478afd29c368c25aff04097
 //Создание перечня готовых раскладок
 $client_mon_nr=0;
 $client_counter = 1;
@@ -222,10 +177,6 @@ if(!count($clients_layouts)){
 	$client_mon_nr=-1;
 	print '<div> &nbsp;'.$no_any_layout."</div>\n";
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 14e6ee9e3b9d49139478afd29c368c25aff04097
 	//Вывод готовых раскладок
 	foreach ($clients_layouts as $client_mon_nr=>$res_val){
 		print "<div style=\"border: 1px solid black; padding: 5px; height:310px; width: 290px; text-align:center; float:left; margin:10px; \">\n";
@@ -243,12 +194,8 @@ if(!count($clients_layouts)){
 			layout2table ( $clients_layouts[$client_mon_nr]['layout_type'], 160 , $cams_array);
 	
 			print '</div>'. "\n";
-<<<<<<< HEAD
-			if ( $admin_user ) {
-=======
 			//if ( $admin_user )
             {
->>>>>>> 14e6ee9e3b9d49139478afd29c368c25aff04097
 				
 				//print '<br><a onclick="user_layouts.remove('.$client_mon_nr.')" href="#">'. $GLOBALS['strDelete'] . '</a>&nbsp;/&nbsp;';
 				$url = $GLOBALS['conf']['prefix'].'/admin/web_mon_list.php';
@@ -281,12 +228,6 @@ if(!count($clients_layouts)){
 	
 ///////////////////////////////////////////////////////////////////////////////////////
 
-<<<<<<< HEAD
-
-
-
-
-=======
 function Print_Arr($arr)
 {
     echo "<pre>";
@@ -315,10 +256,8 @@ function SortArrayCamers($arr_cam)
     return $arr_cam;
 }
 
-
 if ($admin_user)
 {
->>>>>>> 14e6ee9e3b9d49139478afd29c368c25aff04097
 //раскладки определенные администратором
 echo '<h2>' . $r_mon_list . '</h2>' ."\n";
 if ( !isset($mon_nr) || $mon_nr =='')
