@@ -33,11 +33,7 @@ header('Pragma: no-cache'); // HTTP/1.0
 header('Content-Type: text/html; charset=' . $chset);
 if ( isset($ie6_quirks_mode) && $ie6_quirks_mode && preg_match('/MSIE\s*6/',$_SERVER['HTTP_USER_AGENT']) )
    print '<?xml version="1.0" encoding="'.$chset.'"?>'."\n";
-$script_server = $_SERVER['SCRIPT_NAME'];
-if (strstr($script_server, "gallery.php"))
-    print '<!DOCTYPE HTML>';
-else
-    print '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'."\n";
+print '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'."\n";
 print '<html><head>'."\n";
 print '<link rel="SHORTCUT ICON" href="'.$conf['prefix'].'/favicon.ico">'."\n";
 print '<title>';
@@ -294,7 +290,7 @@ if (!isset($NOBODY))
 }
 
 ?>
-<noscript>$localip = ip2long($sip);
+<noscript>
 <center><div class="help" style="width:50%;text-align:left;">
 Ваш браузер не использует JavaScript.<br>
 Включите поддержку JavaScript и перегрузите/обновите эту страницу.</div></center>
