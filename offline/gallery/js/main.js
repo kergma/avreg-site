@@ -228,6 +228,10 @@ var gallery = {
 			// функция инициализации
 			init: function(){
 
+                if (MSIE)
+                {
+                    $("#content #win_bot, #content #win_bot_detail").css("top", $("#content #win_top").height() - 10);
+                }
 				var self = this;
 				if( typeof( window.innerWidth ) == 'number' ) {
 					//Non-IE
@@ -278,7 +282,11 @@ var gallery = {
 
                 // Устанавливаю отступ блока просмотра контента от блока выбора камер
                 //$("#win_bot").css("position", "absolute");
-                //$("#win_bot").css("top", $("win_top").height + 5);
+                //alert();
+                if (MSIE)
+                {
+                    //alert(#scroll_v .scroll_body_v);
+                }
 			}
 		},
 
@@ -1814,7 +1822,7 @@ var matrix = {
 			var sp = scroll.position;
 			
 			scroll.init({
-				height:matrix.height-82, 
+				height:matrix.height-82,
 				cell_count:Math.ceil(matrix.count_item/matrix.count_column), 
 				row_count: matrix.count_column, 
 				matrix_count: Math.ceil(matrix.cell_count/matrix.count_column)
