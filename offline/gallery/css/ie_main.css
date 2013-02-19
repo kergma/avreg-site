@@ -245,7 +245,7 @@ a {
   	border-radius: 10px 10px 10px 10px;
  	margin: 10px;
 	padding-right: 0 !important;
-	width: 100% !important;
+	/*width: 100% !important;*/
 }
 #sidebar #favorite {
 	/*background: url(../img/shadow.gif) repeat-x 0 0;*/
@@ -255,7 +255,7 @@ a {
 	margin: 10px;
 	background: none repeat scroll 0 0 #A29DB3;
     border-radius: 10px 10px 0 0;
-    width: 100% !important;
+    /*width: 100% !important;*/
 /*	min-width: 240px;	
 	width:auto !important;
 	width:240px;
@@ -289,7 +289,7 @@ a {
 	color: #000 !important;
 }
 #handler_vertical {
-	position:absolute;
+	/*position:absolute;*/
 	height: 100%;
 	float: right;
 	width: 26px;
@@ -314,11 +314,11 @@ a {
 #scroll_v {
 	width:36px; 
 	height:auto; 
-	float:right; 
+	float:right;
 	display:none;
 	background-color: grey;
 	padding: 0;
-	position:absolute;
+	/*position:absolute;*/
 	top: 0;
 	cursor:default;
 }
@@ -776,7 +776,7 @@ div.block {
 	font-weight: 100;	
 }
 #tree {	
-	position:relative;	
+	position:relative;
 }
 .borderBot {
 	width:100%;
