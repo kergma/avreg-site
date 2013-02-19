@@ -191,6 +191,9 @@ print "var online_check_period = {$conf['online-check-period']};\n";
 //устанавливаем номер текущей раскладки
 print "var cur_layout = $cur_layout; \n";
 
+// Устанавливаю путь
+print "var url_domen = '" . $conf['protocol'].$conf['url_domen'] . "';\n";
+
 //Передаем в JS список существующих раскладок
 print "var layouts_list = ".json_encode($result).";\n";
 //Передаем в JS возможные варианты раскладок

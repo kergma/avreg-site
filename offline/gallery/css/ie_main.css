@@ -96,7 +96,7 @@ a {
 	height: 100%;
 	background-color: black;
 	min-width: 535px;
-	width:auto !important;
+	/*width:auto !important;*/
 	width:535px;
 }
 #content .window {

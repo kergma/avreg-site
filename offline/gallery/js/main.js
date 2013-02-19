@@ -1,5 +1,4 @@
-﻿
-function Enum() {
+﻿function Enum() {
 	this.allValues = [];
 	this.currentValue = 0;
 	for (var i=0, ilen=arguments.length; i<ilen; i++) {
@@ -175,7 +174,9 @@ $.ajaxSetup({
 // основной объект галереи
 var gallery = {
 		images : new Array(),
+        // Объект дерева
 		treeObject: null,
+        // Конфигурация
 		config : {},
 		hcameras : 100,
 		// объект изменения ширины столбцов
@@ -198,11 +199,9 @@ var gallery = {
 				}
 
 				$('#sidebar').width(pageX + 2);
-
 				$('#sidebar .block').width(pageX-26);
 
 				$('#sidebar #statistics').width(pageX-66);
-
 				$('#content').width(self.myWidth - $('#sidebar').width() ).css('margin-left', pageX + 2);
 				$('#list_panel').width($('#content').width()-38);
 
@@ -357,7 +356,7 @@ var gallery = {
 		cookie : {
 			config: {
 				"days": "30",
-				"path": "/avreg/offline/gallery.php",
+				"path": WwwPrefix + "offline/gallery.php",
 				"name" : "gallery"
 			},
 			getobject : function() {
@@ -2147,7 +2146,7 @@ var matrix = {
 		img.onerror = function() {
 			//изображение не загрузилось
 			// показываем картинку ошибки в ячейке
-			var errorImgSrc = 'http://'+document.location.host+'/avreg/offline/gallery/img/error.jpg';
+			var errorImgSrc = Protocol+Hostname+WwwPrefix+'/offline/gallery/img/error.jpg';
 			//Установка плеера 
 			$('#cell_'+el+' .img_block a').css({ 'display':'block', 'width':'100%', 'height':'100%', 'type':'audio'}
 					).addPlayer({'src': errorImgSrc });
@@ -2793,7 +2792,7 @@ var matrix = {
 		
 		//инициализируем элемент скрола
 		scroll.init({
-			height:matrix.height-82, 
+			height:matrix.height-82,
 			cell_count:Math.ceil(matrix.count_item/matrix.count_column), 
 			row_count: matrix.count_column, 
 			matrix_count: Math.ceil(matrix.cell_count/matrix.count_column)
@@ -2804,7 +2803,7 @@ var matrix = {
 	//возвращает src ресайзенного изображения
 	getResizedImageSrc : function(cell_num, height, width){
 		//формируем строку src
-		var ResizedImgSrc = '/avreg/lib/resize_img.php?url=http://'+document.location.host+MediaUrlPref+ matrix.events[cell_num][2];
+		var ResizedImgSrc = '/lib/resize_img.php?url='+Protocol+WwwPrefix+MediaUrlPref+ matrix.events[cell_num][2];
 
 		ResizedImgSrc += '&h='+height;
 		ResizedImgSrc += '&w='+width;						

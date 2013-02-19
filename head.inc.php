@@ -33,7 +33,10 @@ header('Pragma: no-cache'); // HTTP/1.0
 header('Content-Type: text/html; charset=' . $chset);
 if ( isset($ie6_quirks_mode) && $ie6_quirks_mode && preg_match('/MSIE\s*6/',$_SERVER['HTTP_USER_AGENT']) )
    print '<?xml version="1.0" encoding="'.$chset.'"?>'."\n";
-print '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'."\n";
+if (strstr($_SERVER['SCRIPT_NAME'], "gallery.php"))
+    print "<!DOCTYPE HTML>\n";
+else
+    print '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'."\n";
 print '<html><head>'."\n";
 print '<link rel="SHORTCUT ICON" href="'.$conf['prefix'].'/favicon.ico">'."\n";
 print '<title>';
@@ -61,6 +64,17 @@ if ( isset($USE_JQUERY) ) {
       print '<script type="text/javascript" src="'.$conf['prefix'].'/lib/js/jquery-1.7.1.min.js"></script>'."\n";
    }
 }
+?>
+
+<script type=text/javascript >
+    <?php
+    printf("var WwwPrefix  = '%s';\n", addcslashes($conf['prefix'], '\'"/\\'));
+    printf("var Protocol = '%s';\n",   addcslashes($conf['protocol'], '\'"/\\' ));
+    printf("var HostName = '%s';\n",   addcslashes($conf['url_domen'], '\'"/\\'));
+    ?>
+</script>
+
+<?php
 if ( isset($link_javascripts) && is_array($link_javascripts))
    foreach ($link_javascripts as &$__js_link)
       print '<script type="text/javascript" src="'.$conf['prefix'].'/'.$__js_link.'"></script>'."\n";
@@ -71,7 +85,6 @@ if ( isset($link_javascripts) && is_array($link_javascripts))
 <!--
 <?php 
 printf("var StorageDir = '%s';\n", addcslashes($conf['storage-dir'], '\'"/\\'));
-printf("var WwwPrefix  = '%s';\n", addcslashes($conf['prefix'], '\'"/\\'));
 printf("var MediaAlias = '%s';\n", addcslashes($conf['media-alias'], '\'"/\\'));
 ?>
 
@@ -91,14 +104,14 @@ else if (UA.indexOf('gecko') >=0 ){
 
 var tipobj=null;
 var offsetxpoint=-60; //Customize x offset of tooltip
-var offsetypoint=20; //Customize y offset of tooltip
+var offsetypoint= 20; //Customize y offset of tooltip
 var ie=document.all;
 var ns6=document.getElementById && !document.all;
 var enabletip=false;
 
 var hint=null;
 
-///очистка html-контента элемента 
+//очистка html-контента элемента
 function clear_innerHTML(obj) {
    var child;
    while (child = obj.firstChild)
@@ -201,7 +214,6 @@ dayNames[3] = "Срд";
 dayNames[4] = "Чтв";
 dayNames[5] = "Птн";
 dayNames[6] = "Сбт";
-
 
 function SetCookie(cookieName,cookieValue,nDays, Path)
 {

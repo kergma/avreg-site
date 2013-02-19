@@ -1,4 +1,4 @@
-		<div id="page"> 
+		<div id="page">
 		
 		
 		
@@ -114,7 +114,7 @@
 					
 							</div>
 						</div>
-					<div id="more_cam">...</div>															
+					<div id="more_cam">...</div>
 					
 					</div>
 					<div id="win_bot" class="matrix_mode selectBox">

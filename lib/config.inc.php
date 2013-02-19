@@ -32,7 +32,6 @@ $domen = $_SERVER['HTTP_HOST'];
 
 $conf['protocol'] = $protocol.'://';
 $conf['url_domen'] = $domen;
-//  $url_site = $_SERVER[]
 
 
 /// Путь к директории сайта

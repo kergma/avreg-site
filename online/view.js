@@ -1133,7 +1133,7 @@ function canvas_growth() {
    		// html+=' href="?layout_nr='+value.MON_NR+'">';  //нединаимическая смена раскладки без использованиz пользовательских раскладок
 		
    		//нединаимическая смена раскладки c использованием пользовательских раскладок
-   		html+=' onclick="user_layouts.redirect(\''+location.protocol+'//'+location.hostname+WwwPrefix+'/online/view.php?layout_nr='+value.MON_NR+'\', true);"  href="#">'; 
+   		html+=' onclick="user_layouts.redirect(\''+url_domen+WwwPrefix+'/online/view.php?layout_nr='+value.MON_NR+'\', true);"  href="#">';
    		
    		//переадресуем на онлайн просмотр
 // 		self.redirect(location.protocol+'//'+location.hostname+WwwPrefix+'/online/view.php', true);
