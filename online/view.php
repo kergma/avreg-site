@@ -8,7 +8,7 @@
  */
 $NO_OB_END_FLUSH = true; // for setcookie()
 $pageTitle = 'WebCam';
-$body_style='overflow: hidden;  overflow-y: hidden !important; padding: 0; margin: 0; width: 100%; height: 100%;';
+//$body_style='overflow: hidden;  overflow-y: hidden !important; padding: 0; margin: 0; width: 100%; height: 100%;';
 $css_links=array(
 						'lib/js/jqModal.css',
 						'online/online.css'
@@ -82,7 +82,7 @@ $result = $adb->web_get_monitors($login_user);
 //$result_ = $clients_layouts + $result;
 $result_tmp = array_merge($clients_layouts, $result);
 $result = $result_tmp;
-unset($result_tmp);
+
 //Если нет установленных раскладок
 if(!count($result)) {
 	print "NO AVAILABLE LAYOUTS";
@@ -124,13 +124,9 @@ if(isset($_GET['layout_nr']) ){
                 $def_cam = $value;
                 $cur_layout = (int) $value["MON_NR"];
             }
-        }
-    }
-
-    foreach ($result as $key=>$value)
-    {
-        if (!isset($value['RECONNECT_TOUT'])){
-            $value['RECONNECT_TOUT'] = isset($conf['reconnect-timeout'])?$conf['reconnect-timeout']:5;
+            if (!isset($value['RECONNECT_TOUT'])){
+                $value['RECONNECT_TOUT'] = isset($conf['reconnect-timeout'])?$conf['reconnect-timeout']:5;
+            }
         }
     }
 }
