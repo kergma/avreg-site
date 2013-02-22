@@ -2172,7 +2172,7 @@ var matrix = {
 		img.onerror = function() {
 			//изображение не загрузилось
 			// показываем картинку ошибки в ячейке
-			var errorImgSrc = Protocol+Hostname+WwwPrefix+'/offline/gallery/img/error.jpg';
+			var errorImgSrc = Protocol+HostName+WwwPrefix+'/offline/gallery/img/error.jpg';
 			//Установка плеера 
 			$('#cell_'+el+' .img_block a').css({ 'display':'block', 'width':'100%', 'height':'100%', 'type':'audio'}
 					).addPlayer({'src': errorImgSrc });
