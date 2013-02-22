@@ -2828,14 +2828,10 @@ var matrix = {
 	//возвращает src ресайзенного изображения
 	getResizedImageSrc : function(cell_num, height, width){
 		//формируем строку src
-
-		var ResizedImgSrc = '/lib/resize_img.php?url='+Protocol+HostName+MediaUrlPref+matrix.events[cell_num][2];
-        //alert(ResizedImgSrc);
-        //console.log(ResizedImgSrc);
+		var ResizedImgSrc = WwwPrefix+'/lib/resize_img.php?url='+Protocol+HostName+MediaUrlPref+matrix.events[cell_num][2];
 		ResizedImgSrc += '&h='+height;
 		ResizedImgSrc += '&w='+width;						
 		ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
-
 		return ResizedImgSrc;
 		}
 	
