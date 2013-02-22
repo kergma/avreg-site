@@ -1049,7 +1049,7 @@ var gallery = {
 
 
 			// организация увеличение размера списка камер
-			if ($('#win_top').height() > 100) { alert('asd');
+			if ($('#win_top').height() > 100) {
 				$('#more_cam').show();
 				$('#win_top').hover(
 						function(){
