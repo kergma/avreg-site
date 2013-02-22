@@ -67,6 +67,16 @@ if ( isset($USE_JQUERY) ) {
 ?>
 
 <script type=text/javascript >
+    if (typeof(console) == 'undefined') {
+        var console = {
+            log: function(message) {},
+            info: function(message) {},
+            warn: function(message) {},
+            error: function(message) {
+                alert(message);
+            }
+        }
+    }
     <?php
     printf("var WwwPrefix  = '%s';\n", addcslashes($conf['prefix'], '\'"/\\'));
     printf("var Protocol = '%s';\n",   addcslashes($conf['protocol'], '\'"/\\' ));

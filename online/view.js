@@ -160,7 +160,6 @@ function img_click(clicked_div) {
    
    if ( FS_WIN_DIV ) {
       // current - fullscreen
-
 	      //меняем на источник для ячейки
 	      if (active_cams_srcs[win_nr]['type']!='avregd'){
 	    	  if(active_cams_srcs[win_nr]['cell']!=null || active_cams_srcs[win_nr]['cell']!='')

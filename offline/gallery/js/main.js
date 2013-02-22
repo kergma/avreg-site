@@ -1219,7 +1219,7 @@ var gallery = {
 			if(MSIE){
 				var wt = $('#win_top');
 				//установка высоты списка камер
-				gallery.hcameras = $(wt).height()+parseInt($(wt).css('border-top-width'))+parseInt($(wt).css('border-bottom-width')) ;
+				gallery.hcameras = 100;
 			}
 
 			//Установка начального состояния чекбокса "выбрать/отменить все камеры"
@@ -2050,7 +2050,6 @@ var matrix = {
 			}
 			//формирование src ресайза картинки
 			var ResizedImgSrc = matrix.getResizedImageSrc(el_num, img_height, img_width);
-							
 			$('#cell_'+el_num).find(".elem").attr('tooltip',ttl).end()
 			.find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'useImageSize':'true' })
 			.aplayerResizeToParent();
@@ -2172,7 +2171,7 @@ var matrix = {
 		img.onerror = function() {
 			//изображение не загрузилось
 			// показываем картинку ошибки в ячейке
-			var errorImgSrc = Protocol+Hostname+WwwPrefix+'/offline/gallery/img/error.jpg';
+			var errorImgSrc = Protocol+HostName+WwwPrefix+'/offline/gallery/img/error.jpg';
 			//Установка плеера 
 			$('#cell_'+el+' .img_block a').css({ 'display':'block', 'width':'100%', 'height':'100%', 'type':'audio'}
 					).addPlayer({'src': errorImgSrc });
@@ -2829,12 +2828,10 @@ var matrix = {
 	//возвращает src ресайзенного изображения
 	getResizedImageSrc : function(cell_num, height, width){
 		//формируем строку src
-		var ResizedImgSrc = '/lib/resize_img.php?url='+Protocol+WwwPrefix+MediaUrlPref+ matrix.events[cell_num][2];
-
+		var ResizedImgSrc = WwwPrefix+'/lib/resize_img.php?url='+Protocol+HostName+MediaUrlPref+matrix.events[cell_num][2];
 		ResizedImgSrc += '&h='+height;
 		ResizedImgSrc += '&w='+width;						
 		ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
-
 		return ResizedImgSrc;
 		}
 	
