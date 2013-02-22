@@ -65,7 +65,7 @@ if (!isset ($cams) || !isset ($filter))
    {
       print '<div class="help" style="font-size:125%">'.$strNotCamsChoice.'</div>'."\n";
       require ('../foot.inc.php');
-die;
+      die;
    }
    $commentSQL = '';
    $events = array();
