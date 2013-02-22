@@ -1049,7 +1049,7 @@ var gallery = {
 
 
 			// организация увеличение размера списка камер
-			if ($('#win_top').height() > 100) {
+			if ($('#win_top').height() > 100) { alert('asd');
 				$('#more_cam').show();
 				$('#win_top').hover(
 						function(){
@@ -1219,7 +1219,7 @@ var gallery = {
 			if(MSIE){
 				var wt = $('#win_top');
 				//установка высоты списка камер
-				gallery.hcameras = $(wt).height()+parseInt($(wt).css('border-top-width'))+parseInt($(wt).css('border-bottom-width')) ;
+				gallery.hcameras = 100;
 			}
 
 			//Установка начального состояния чекбокса "выбрать/отменить все камеры"
