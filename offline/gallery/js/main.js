@@ -2829,9 +2829,9 @@ var matrix = {
 	getResizedImageSrc : function(cell_num, height, width){
 		//формируем строку src
 
-		var ResizedImgSrc = '/lib/resize_img.php?url='+Protocol+HostName+WwwPrefix+MediaUrlPref+matrix.events[cell_num][2];
+		var ResizedImgSrc = '/lib/resize_img.php?url='+Protocol+HostName+MediaUrlPref+matrix.events[cell_num][2];
         //alert(ResizedImgSrc);
-        console.log(ResizedImgSrc);
+        //console.log(ResizedImgSrc);
 		ResizedImgSrc += '&h='+height;
 		ResizedImgSrc += '&w='+width;						
 		ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
