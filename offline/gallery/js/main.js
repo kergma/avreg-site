@@ -2050,7 +2050,6 @@ var matrix = {
 			}
 			//формирование src ресайза картинки
 			var ResizedImgSrc = matrix.getResizedImageSrc(el_num, img_height, img_width);
-							
 			$('#cell_'+el_num).find(".elem").attr('tooltip',ttl).end()
 			.find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'useImageSize':'true' })
 			.aplayerResizeToParent();
@@ -2829,8 +2828,10 @@ var matrix = {
 	//возвращает src ресайзенного изображения
 	getResizedImageSrc : function(cell_num, height, width){
 		//формируем строку src
-		var ResizedImgSrc = '/lib/resize_img.php?url='+Protocol+WwwPrefix+MediaUrlPref+ matrix.events[cell_num][2];
 
+		var ResizedImgSrc = '/lib/resize_img.php?url='+Protocol+HostName+MediaUrlPref+ matrix.events[cell_num][2];
+        //alert(ResizedImgSrc);
+        console.log(ResizedImgSrc);
 		ResizedImgSrc += '&h='+height;
 		ResizedImgSrc += '&w='+width;						
 		ResizedImgSrc += ($('#proportion').attr('checked')=='checked')? '&prop=true' : '&prop=false';
