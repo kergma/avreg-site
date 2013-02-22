@@ -2829,7 +2829,7 @@ var matrix = {
 	getResizedImageSrc : function(cell_num, height, width){
 		//формируем строку src
 
-		var ResizedImgSrc = '/lib/resize_img.php?url='+Protocol+HostName+WwwwPrefix+MediaUrlPref+ matrix.events[cell_num][2];
+		var ResizedImgSrc = '/lib/resize_img.php?url='+Protocol+HostName+WwwPrefix+MediaUrlPref+matrix.events[cell_num][2];
         //alert(ResizedImgSrc);
         console.log(ResizedImgSrc);
 		ResizedImgSrc += '&h='+height;
