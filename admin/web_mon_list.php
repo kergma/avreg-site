@@ -13,7 +13,6 @@ session_start();
 * @param array $l_def Настройки монитора
 * @param bool $is_admin Админ
 */
-
 function prt_l ($display, $l_nr, $l_def, $is_admin, $layout_word, $counter, $AspectRatio, $ReconnectTimeout , $PrintCamNames, $isDefault)
 {
 	if($PrintCamNames==1 || $PrintCamNames=="t") $PCN = true;
@@ -66,7 +65,7 @@ $user_l_cook = "user_layouts.setCookie('layouts',
                                        ''
                                       );";
 $user_redirect = "user_layouts.redirect('" . $conf['prefix'] . "/online/');";
-if (isset($_SESSION['is_admin_mode']))
+if (!isset($_SESSION['is_admin_mode']))
     echo '<a href="#" onclick="' . $user_l_cook . ' ' . $user_redirect . ';">' . $strBackOnline . '</a>';
 if($admin_user){
 ?>
@@ -128,7 +127,7 @@ if ( isset($cmd) )
    }
 }
 
-if (isset($_SESSION['is_admin_mode']))
+if (!isset($_SESSION['is_admin_mode']))
 {
     //готовые раскладки
     //раскладки определенные клиентом

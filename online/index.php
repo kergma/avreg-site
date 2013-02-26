@@ -13,8 +13,6 @@
 * - online/view.js
 * 
 */
-session_start();
-$_SESSION['is_admin_mode'] = true;
 
 ?>
 <!DOCTYPE html>

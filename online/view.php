@@ -6,9 +6,6 @@
  * Формирует страницу с раскладкой камер для наблюдения в режиме online
  * 
  */
-session_start();
-if (isset($_SESSION['is_admin_mode']))
-    unset($_SESSION['is_admin_mode']);
 $NO_OB_END_FLUSH = true; // for setcookie()
 $pageTitle = 'WebCam';
 $body_style='overflow: hidden;  overflow-y: hidden !important; padding: 0; margin: 0; width: 100%; height: 100%;';
