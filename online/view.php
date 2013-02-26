@@ -132,7 +132,7 @@ if(isset($_GET['layout_nr']) ){
         foreach($result as $key=>&$value){
             if($value['IS_DEFAULT']!='0'){
                 $def_cam = $value;
-                $cur_layout = (int) $value["MON_NR"] + count($layouts_cookie);
+                $cur_layout = (int) $value["MON_NR"];
             }
             if (!isset($value['RECONNECT_TOUT'])){
                 $value['RECONNECT_TOUT'] = isset($conf['reconnect-timeout'])?$conf['reconnect-timeout']:5;
@@ -211,6 +211,7 @@ print "var online_check_period = {$conf['online-check-period']};\n";
 print "var cur_layout = $cur_layout; \n";
 
 // Устанавливаю путь
+print "var url_domen = '" . $conf['protocol'].$conf['url_domen'] . "';\n";
 print "var pref_domen = '" . $conf['prefix'] . "';\n";
 
 //Передаем в JS список существующих раскладок
