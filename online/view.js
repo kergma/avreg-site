@@ -361,7 +361,7 @@ function brout(win_nr, win_div, win_geo) {
 		'scale':'on', 
 		'mediaType' : 'mjpeg', 
 		'autostart':'on', 
-		'aplayer_rtsp_php':'http://'+SERVER_ADR+WwwPrefix+'/lib/js/aplayer_rtsp.php',
+		'aplayer_rtsp_php': url_domen+WwwPrefix+'/lib/js/aplayer_rtsp.php',
 		'crossorigin' : (WEBKIT)? true:false
 	}); 
 			
