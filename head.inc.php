@@ -81,7 +81,8 @@ if ( isset($USE_JQUERY) ) {
     printf("var WwwPrefix  = '%s';\n", addcslashes($conf['prefix'], '\'"/\\'));
     printf("var Protocol = '%s';\n",   addcslashes($conf['protocol'], '\'"/\\' ));
     printf("var HostName = '%s';\n",   addcslashes($conf['url_domen'], '\'"/\\'));
-    printf("var url_domen = '%s'\n" . addslashes($conf['protocol'].$conf['url_domen'], '\'"/\\'));
+    $url_domen = $conf['protocol'] . $conf['url_domen'];
+    printf("var url_domen = '%s';\n",  addcslashes($url_domen, '\'"/\\'));
     ?>
 </script>
 

@@ -69,7 +69,7 @@ if($admin_user){
 ?>
 <script type="text/javascript">
 //JS-для установки раскладки по умолчанию
-function SetByDefault(layoutNum){alert(layoutNum);
+function SetByDefault(layoutNum){
 	$.ajax({"url":"web_set_def.php?layout="+layoutNum+" "})
 	.done(function(data){
 	if(data!='NULL'){

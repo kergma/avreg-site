@@ -132,7 +132,7 @@ if(isset($_GET['layout_nr']) ){
         foreach($result as $key=>&$value){
             if($value['IS_DEFAULT']!='0'){
                 $def_cam = $value;
-                $cur_layout = (int) $value["MON_NR"];
+                $cur_layout = (int) $value["MON_NR"] + count($layouts_cookie);
             }
             if (!isset($value['RECONNECT_TOUT'])){
                 $value['RECONNECT_TOUT'] = isset($conf['reconnect-timeout'])?$conf['reconnect-timeout']:5;

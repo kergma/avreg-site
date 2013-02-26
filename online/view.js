@@ -1121,8 +1121,8 @@ function canvas_growth() {
 
    function layouts_to_list(){
 	   var html = '<div id="nav"><span>';
-       console.log(layouts_list);
-   	$.each(layouts_list, function(i, value){
+       //console.log(layouts_list);
+   	    $.each(layouts_list, function(i, value){
    		html+='<div class="layout'+((cur_layout==value.MON_NR_ACTUALLY)? ' selectedLayout':'' )+'" >';
    		html+='<a id="layout_'+value.MON_NR+'" class="layout_link"';
    		//html+=' onclick="change_layout('+value.MON_NR+')"  href="#">'; //динамическая смена раскладки - отключена
@@ -1388,7 +1388,6 @@ function canvas_growth() {
            if(REF_MAIN){
         	   $('#tb_contn').prepend('<td><div class="to_main"> <a href="'+PROTOCOL+SERVER_ADR+'/index.php" >На главную </a> </div> </td>');
            }
-// TODO Кнопка пользовательских раскладок
            $('#tb_contn').append('<td><div id="user_layouts" class="user_layouts" onclick="clients_layouts_list();" > <a href="#" >Раскладки</a> </div> </td>');
            
            canvas_growth();
