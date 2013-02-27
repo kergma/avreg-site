@@ -52,8 +52,9 @@ print '</td>'."\n";
 //online
 print '<td align="center" valign="top" class="main_td_ref" >'."\n";
 print  '<div style="position:relative;" ><div class="mode_item" style="position:absolute; " >'."\n";
-print '<a class="main_links" onclick="online(\''.$conf['protocol'].$conf['url_domen'].$conf['prefix'].'/online/index.php\');" href="#" title="'.$a_webcam.'"><img   src="'.$conf['prefix'].'/img/online.jpg" width="251" height="165" border="0"></a>'."\n";
-print '<p><a class="main_links" onclick="online(\''.$conf['protocol'].$conf['url_domen'].$conf['prefix'].'/online/index.php\');" href="#">'.$a_webcam.'</a></p>'."\n";
+print '<a class="main_links" onclick="online(\''.'/online/index.php\');" href="#" title="'.$a_webcam.'"><img
+src="'.$conf['prefix'].'/img/online.jpg" width="251" height="165" border="0"></a>'."\n";
+print '<p><a class="main_links" onclick="online(\''.'/online/index.php\');" href="#">'.$a_webcam.'</a></p>'."\n";
 print  '</div ></div >'."\n";
 print '</td>'."\n";
 //админка
