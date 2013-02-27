@@ -16,7 +16,7 @@
 
 
 
-require_once('/usr/share/php/DB.php');
+require_once('DB.php');
 
 if (empty($non_config)) {
 	require_once('config.inc.php');
