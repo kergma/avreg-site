@@ -1225,7 +1225,7 @@ class Adb {
  * @param unknown_type $pda - доступ к PDA версии
  * @param string $u_devacl Доступные камеры
  * @param string $u_forced_saving_limit Максимальная длительность принудительной записи (по команде) в минутах
- * @param string $sessions_per_cam Ограничение количества одновременных просмотров каждой конкретной камеры
+ * @param string $sessions_per_user Ограничение количества одновременных просмотров (камер) пользователем
  * @param string $limit_fps limit_fps, кадров в секунду, [1-25] или sec/frames
  * @param string $nonmotion_fps nonmotion_fps, примеры допустимых значений: "1" - 1 кадр в 1 сек.; "2/1" - 1 кадр каждые 2 секунды.
  * @param string $limit_kbps limit_kbps, Kбит/сек
@@ -1236,11 +1236,11 @@ class Adb {
  * @param string $login_user пользователь, который добавляет
  * @return bool результат добавления
  */
-   public function add_user($u_host, $u_name, $passwd, $groups, $guest, $pda, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_cam,$limit_fps,$nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user) {
+   public function add_user($u_host, $u_name, $passwd, $groups, $guest, $pda, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_user,$limit_fps,$nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user) {
    	$query = sprintf('INSERT INTO USERS 
-         ( ALLOW_FROM, USER_LOGIN, PASSWD, STATUS, GUEST, PDA, ALLOW_CAMS, ALLOW_LAYOUTS, FORCED_SAVING_LIMIT, SESSIONS_PER_CAM,
-         LIMIT_FPS, NONMOTION_FPS, LIMIT_KBPS,
-         SESSION_TIME, SESSION_VOLUME,
+         ( ALLOW_FROM, USER_LOGIN, PASSWD, STATUS, GUEST, PDA, ALLOW_CAMS, ALLOW_LAYOUTS, MAX_FORCED_REC_MINUTES, MAX_MEDIA_SESSIONS_NB,
+         MAX_VIDEO_FPS, MAX_VIDEO_NONMOTION_FPS, MAX_MEDIA_SESSION_RATE_KB,
+         MAX_MEDIA_SESSION_MINUTES, MAX_MEDIA_SESSION_VOLUME_MB,
          LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME) 
          VALUES ( %s, %s, %s, %u, %b, %b, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())',
             sql_format_str_val($u_host),
@@ -1252,7 +1252,7 @@ class Adb {
             sql_format_str_val($u_devacl),
             sql_format_str_val($u_layouts),
             sql_format_int_val($u_forced_saving_limit),
-            sql_format_int_val($sessions_per_cam),
+            sql_format_int_val($sessions_per_user),
             sql_format_str_val($limit_fps),
             sql_format_str_val($nonmotion_fps),
             sql_format_int_val($limit_kbps),
@@ -1276,7 +1276,7 @@ class Adb {
  * @param unknown_type $pda - доступ к PDA версии
  * @param string $u_devacl Доступные камеры
  * @param string $u_forced_saving_limit Максимальная длительность принудительной записи (по команде) в минутах
- * @param string $sessions_per_cam Ограничение количества одновременных просмотров каждой конкретной камеры
+ * @param string $sessions_per_user Ограничение количества одновременных просмотров камер пользователем
  * @param string $limit_fps limit_fps, кадров в секунду, [1-25] или sec/frames
  * @param string $nonmotion_fps nonmotion_fps, примеры допустимых значений: "1" - 1 кадр в 1 сек.; "2/1" - 1 кадр каждые 2 секунды.
  * @param string $limit_kbps limit_kbps, Kбит/сек
@@ -1290,9 +1290,9 @@ class Adb {
  * @return bool результат обновления
  */
     
-   public function update_user($u_host,$u_name,$passwd, $groups, $guest, $pda, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_cam, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name){
+   public function update_user($u_host,$u_name,$passwd, $groups, $guest, $pda, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_user, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name){
       $query = sprintf(
-         'UPDATE USERS SET ALLOW_FROM=%s, USER_LOGIN=%s, PASSWD=%s, STATUS=%d, GUEST=%b, PDA=%b, ALLOW_CAMS=%s, ALLOW_LAYOUTS=%s ,FORCED_SAVING_LIMIT=%s, SESSIONS_PER_CAM=%s, LIMIT_FPS=%s, NONMOTION_FPS=%s, LIMIT_KBPS=%s, SESSION_TIME=%s, SESSION_VOLUME=%s, LONGNAME=%s, CHANGE_HOST=%s, CHANGE_USER=%s, CHANGE_TIME=NOW() WHERE ALLOW_FROM=%s AND USER_LOGIN=%s',
+         'UPDATE USERS SET ALLOW_FROM=%s, USER_LOGIN=%s, PASSWD=%s, STATUS=%d, GUEST=%b, PDA=%b, ALLOW_CAMS=%s, ALLOW_LAYOUTS=%s ,MAX_FORCED_REC_MINUTES=%s, MAX_MEDIA_SESSIONS_NB=%s, MAX_VIDEO_FPS=%s, MAX_VIDEO_NONMOTION_FPS=%s, MAX_MEDIA_SESSION_RATE_KB=%s, MAX_MEDIA_SESSION_MINUTES=%s, MAX_MEDIA_SESSION_VOLUME_MB=%s, LONGNAME=%s, CHANGE_HOST=%s, CHANGE_USER=%s, CHANGE_TIME=NOW() WHERE ALLOW_FROM=%s AND USER_LOGIN=%s',
          sql_format_str_val($u_host),
          sql_format_str_val($u_name),
          $this->_crypt($passwd),
@@ -1302,7 +1302,7 @@ class Adb {
          sql_format_str_val($u_devacl),
          sql_format_str_val($u_layouts),
          sql_format_int_val($u_forced_saving_limit),
-         sql_format_int_val($sessions_per_cam),
+         sql_format_int_val($sessions_per_user),
          sql_format_str_val($limit_fps),
          sql_format_str_val($nonmotion_fps),
          sql_format_int_val($limit_kbps),
@@ -1372,7 +1372,7 @@ class Adb {
  */
    public function get_users($status = false) {
       $users = array();
-      $query = 'SELECT ALLOW_FROM, USER_LOGIN, GUEST, PDA, PASSWD, STATUS, ALLOW_CAMS, ALLOW_LAYOUTS, FORCED_SAVING_LIMIT,  SESSIONS_PER_CAM, LIMIT_FPS, NONMOTION_FPS, LIMIT_KBPS, SESSION_TIME, SESSION_VOLUME,LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME '.
+      $query = 'SELECT ALLOW_FROM, USER_LOGIN, GUEST, PDA, PASSWD, STATUS, ALLOW_CAMS, ALLOW_LAYOUTS, MAX_FORCED_REC_MINUTES,  MAX_MEDIA_SESSIONS_NB, MAX_VIDEO_FPS, MAX_VIDEO_NONMOTION_FPS, MAX_MEDIA_SESSION_RATE_KB, MAX_MEDIA_SESSION_MINUTES, MAX_MEDIA_SESSION_VOLUME_MB,LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME '.
          'FROM USERS ';
       if ($status)
          $query .= "WHERE STATUS = $status ";
@@ -1390,13 +1390,13 @@ class Adb {
             'STATUS' => trim($line[$this->_key('STATUS')]),
             'ALLOW_CAMS' => trim($line[$this->_key('ALLOW_CAMS')]),
             'ALLOW_LAYOUTS' => trim($line[$this->_key('ALLOW_LAYOUTS')]),
-            'FORCED_SAVING_LIMIT' => trim($line[$this->_key('FORCED_SAVING_LIMIT')]),
-            'SESSIONS_PER_CAM' => trim($line[$this->_key('SESSIONS_PER_CAM')]),
-            'LIMIT_FPS' => trim($line[$this->_key('LIMIT_FPS')]),
-            'NONMOTION_FPS' => trim($line[$this->_key('NONMOTION_FPS')]),
-            'LIMIT_KBPS' => trim($line[$this->_key('LIMIT_KBPS')]),
-            'SESSION_TIME' => trim($line[$this->_key('SESSION_TIME')]),
-            'SESSION_VOLUME' => trim($line[$this->_key('SESSION_VOLUME')]),
+            'MAX_FORCED_REC_MINUTES' => trim($line[$this->_key('MAX_FORCED_REC_MINUTES')]),
+            'MAX_MEDIA_SESSIONS_NB' => trim($line[$this->_key('MAX_MEDIA_SESSIONS_NB')]),
+            'MAX_VIDEO_FPS' => trim($line[$this->_key('MAX_VIDEO_FPS')]),
+            'MAX_VIDEO_NONMOTION_FPS' => trim($line[$this->_key('MAX_VIDEO_NONMOTION_FPS')]),
+            'MAX_MEDIA_SESSION_RATE_KB' => trim($line[$this->_key('MAX_MEDIA_SESSION_RATE_KB')]),
+            'MAX_MEDIA_SESSION_MINUTES' => trim($line[$this->_key('MAX_MEDIA_SESSION_MINUTES')]),
+            'MAX_MEDIA_SESSION_VOLUME_MB' => trim($line[$this->_key('MAX_MEDIA_SESSION_VOLUME_MB')]),
             'LONGNAME' => trim($line[$this->_key('LONGNAME')]),
             'CHANGE_HOST' => trim($line[$this->_key('CHANGE_HOST')]),
             'CHANGE_USER' => trim($line[$this->_key('CHANGE_USER')]),
