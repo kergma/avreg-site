@@ -1384,8 +1384,9 @@ function canvas_growth() {
            $("#toolbar").addClass('toolbar_style');
            //Выводим список раскладок
             $("#toolbar table tr").html('<td> <table><tr id="tb_contn"><td>'+ layouts_to_list()+'</td></tr></table></td>');
-           //добавляем кнопку на главную
+           //добавляем кнопку на главнуюa
            if(REF_MAIN){
+
         	   $('#tb_contn').prepend('<td><div class="to_main"> <a href="../index.php" >На главную </a> </div> </td>');
            }
 // TODO Кнопка пользовательских раскладок
