@@ -283,9 +283,9 @@ $layouts_defs = array(
    'MULTI_22_25'  => array( 22,  	5, 	5,  &$multi_22_25_wins, 7, 	&$strMULTI_22_25),
    'WIDE_24_24'  	=> array( 24,	4,	6, 	&$wide_24_24_wins, 	9, 	&$strWide_24_24 ),
    'QUAD_25_25'   => array( 25,  	5, 	5,  &$quad_25_25_wins,  13, &$strQUAD_25_25 ),
-   'WIDE_28_28'	=> array( 27,	4,	7,	&$wide_28_28_wins,	18, 	&$strWide_28_28),
-   'WIDE_34_40'	=> array( 26,	5,	8,	&$wide_34_40_wins,  	11, &$strWide_34_40),
-   'WIDE_40_40'	=> array( 28,	5,	8,	&$wide_40_40_wins,	20, 	&$strWide_40_40)
+   'WIDE_28_28'	=> array( 28,	4,	7,	&$wide_28_28_wins,	18, 	&$strWide_28_28),
+   'WIDE_34_40'	=> array( 34,	5,	8,	&$wide_34_40_wins,  	11, &$strWide_34_40),
+   'WIDE_40_40'	=> array( 40,	5,	8,	&$wide_40_40_wins,	20, 	&$strWide_40_40)
 );
 
 /**
