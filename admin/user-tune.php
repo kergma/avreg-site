@@ -32,7 +32,7 @@ if ( isset($cmd) && isset($u_host) && isset($u_name) && isset($groups) )
    case 'UPDATE_USER':
    		$guest = isset($guest);
    		$pda = isset($pda);
-        $result =  $adb->update_user($u_host,$u_name,$u_pass, $groups, $guest, $pda, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_cam, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name);
+        $result =  $adb->update_user($u_host,$u_name,$u_pass, $groups, $guest, $pda, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_user, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name);
       break;
    default:
       die('crack?');
@@ -75,14 +75,14 @@ if ( isset($u_name) && !empty($u_name) )
 	//Инициализация доступных раскладок //--->   
    $u_layouts = stripslashes (htmlspecialchars($ui['ALLOW_LAYOUTS'], ENT_QUOTES, $chset));
 
-   $u_forced_saving_limit = $ui['FORCED_SAVING_LIMIT'];
+   $u_forced_saving_limit = $ui['MAX_FORCED_REC_MINUTES'];
    $u_status = $ui['STATUS'];
-   $sessions_per_cam = $ui['SESSIONS_PER_CAM'];
-   $limit_fps = $ui['LIMIT_FPS'];
-   $nonmotion_fps = $ui['NONMOTION_FPS'];
-   $limit_kbps = $ui['LIMIT_KBPS'];
-   $session_time = $ui['SESSION_TIME'];
-   $session_volume = $ui['SESSION_VOLUME'];
+   $sessions_per_user = $ui['MAX_MEDIA_SESSIONS_NB'];
+   $limit_fps = $ui['MAX_VIDEO_FPS'];
+   $nonmotion_fps = $ui['MAX_VIDEO_NONMOTION_FPS'];
+   $limit_kbps = $ui['MAX_MEDIA_SESSIONS_RATE_KB'];
+   $session_time = $ui['MAX_MEDIA_SESSIONS_MINUTES'];
+   $session_volume = $ui['MAX_MEDIA_SESSION_VOLUME_MB'];
    
    echo '<h2>' . sprintf ($fmtUserTune,$ui['USER'],$ui['HOST']) . '</h2>' ."\n";
    print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
