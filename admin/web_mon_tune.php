@@ -86,7 +86,7 @@ if (isset($cmd)) {
       if ( $allWINS!='' )	{
       	$PrintCamNames = ($PrintCamNames!=null)? 1 : 0;
       	 
-      	$adb->web_replace_monitors($mon_nr, $mon_type, $mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS );
+      	$adb->web_replace_layouts($mon_nr, $mon_type, $mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS );
          
          print '<p class="HiLiteBigWarn">' . sprintf($web_r_mon_changed, $counter, empty($mon_name)?$mon_type:$mon_name ) . '</p>'."\n";
          print '<center><a href="'.$conf['prefix'].'/admin/web_mon_list.php" target="_self">'.$r_mon_goto_list.'</a></center>'."\n";

@@ -29,7 +29,7 @@ if ( isset($cmd) )
       if ( ($mult_btn == $strYes) && isset($mon_nr) )
       {
       	
-      	$adb->delete_monitors($display, $mon_nr);
+      	$adb->delete_layouts($display, $mon_nr);
  
          echo '<p><font color="' . $warn_color . '">' . sprintf ($strDeleteMon, $mon_nr, $mon_name, $display=='R'?$sRightDisplay1:$sLeftDisplay1) . '</font></p>' ."\n";
       }
@@ -67,7 +67,7 @@ if ( !isset($mon_nr) || $mon_nr =='')
    /* Performing new SQL query */
 
    
-   $result = $adb->get_monitors();
+   $result = $adb->get_layouts();
    
    $LD = array();
    $RD = array();

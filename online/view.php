@@ -80,7 +80,7 @@ if (isset($tmp))
     }
 
 //Загрузка установленных раскладок
-$result = $adb->web_get_monitors($login_user);
+$result = $adb->web_get_layouts($login_user);
 
 //$result_ = $clients_layouts + $result;
 $result_tmp = array_merge($clients_layouts, $result);

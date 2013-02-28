@@ -837,8 +837,8 @@ class Adb {
  * @param array $vWINS
  * @param string $bind_mac
  */
-   public function add_monitors($display,$mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $fWINS, $vWINS,$bind_mac = 'local') {
-      $query = sprintf('INSERT INTO MONITORS (BIND_MAC, DISPLAY, MON_NR, MON_TYPE, MON_NAME, %s, CHANGE_HOST, CHANGE_USER) VALUES (\'local\', \'%s\', %d, \'%s\', \'%s\', %s, \'%s\', \'%s\')',
+   public function add_layouts($display,$mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $fWINS, $vWINS,$bind_mac = 'local') {
+      $query = sprintf('INSERT INTO LAYOUTS (BIND_MAC, DISPLAY, MON_NR, MON_TYPE, MON_NAME, %s, CHANGE_HOST, CHANGE_USER) VALUES (\'local\', \'%s\', %d, \'%s\', \'%s\', %s, \'%s\', \'%s\')',
          implode (', ',$fWINS), $display, $mon_nr, $mon_type, $mon_name, implode (', ',$vWINS), $remote_addr, $login_user);
       $res = $this->_db->query($query);
       $this->_error($res);
@@ -856,7 +856,7 @@ class Adb {
    * @param array $vWINS
    * @param string $bind_mac
    */
-   public function web_add_monitors($mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $ReconnectTimeout , $allWINS, $bind_mac = 'local') {
+   public function web_add_layouts($mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $ReconnectTimeout , $allWINS, $bind_mac = 'local') {
    	$mon_type =trim($mon_type);
    	$mon_name = trim($mon_name);
    	$remote_addr = trim($remote_addr);
@@ -879,8 +879,8 @@ class Adb {
  * @param int $mon_nr
  * @param string $bind_mac
  */
-   public function delete_monitors($display, $mon_nr, $bind_mac = 'local') {
-      $query = 'DELETE FROM MONITORS';
+   public function delete_layouts($display, $mon_nr, $bind_mac = 'local') {
+      $query = 'DELETE FROM LAYOUTS';
       $query .= " WHERE BIND_MAC ='$bind_mac'";
       $query .= " AND DISPLAY ='$display'";
       $query .= " AND MON_NR = $mon_nr";		
@@ -895,7 +895,7 @@ class Adb {
  * @param int $mon_nr
  * @param string $bind_mac
  */
-   public function web_delete_monitors($display, $mon_nr, $bind_mac = 'local') {
+   public function web_delete_layouts($display, $mon_nr, $bind_mac = 'local') {
       $query = 'DELETE FROM WEB_LAYOUTS';
       $query .= " WHERE BIND_MAC ='$bind_mac'";
 //      $query .= " AND DISPLAY ='$display'";
@@ -918,8 +918,8 @@ class Adb {
  * @param array $vWINS
  * @param string $bind_mac
  */
-   public function update_monitors ($display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS,$bind_mac = 'local') {
-      $query = 'UPDATE MONITORS SET ';
+   public function update_layouts ($display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS,$bind_mac = 'local') {
+      $query = 'UPDATE LAYOUTS SET ';
       $query .= "MON_TYPE = '$mon_type'";
       $query .= ", MON_NAME = '$mon_name'";
       $query .= ", CHANGE_HOST = '$host'";
@@ -953,7 +953,7 @@ class Adb {
  * @param array $vWINS
  * @param string $bind_mac
  */
-   public function web_update_monitors($mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS,  $bind_mac = 'local') {
+   public function web_update_layouts($mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS,  $bind_mac = 'local') {
    	  $query = 'UPDATE WEB_LAYOUTS SET ';
       $query .= "MON_TYPE = '$mon_type'";
       $query .= ", SHORT_NAME = '$mon_name'";
@@ -1009,8 +1009,8 @@ class Adb {
  * @param array $vWINS
  * @param string $bind_mac
  */
-   public function replace_monitors ($display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS, $bind_mac = 'local') {
-      $query = 'SELECT * FROM MONITORS ';
+   public function replace_layouts ($display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS, $bind_mac = 'local') {
+      $query = 'SELECT * FROM LAYOUTS ';
       $query .= " WHERE BIND_MAC = '$bind_mac'";
       $query .= " AND MON_NR = $mon_nr";
       $query .= " AND DISPLAY = '$display'";
@@ -1018,9 +1018,9 @@ class Adb {
       $this->_error($res);
       $res->fetchInto($line);
       if (empty($line))
-         $this->add_monitors($display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS);
+         $this->add_layouts($display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS);
       else
-         $this->update_monitors($display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS);
+         $this->update_layouts($display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS);
    }	
    
    
@@ -1037,7 +1037,7 @@ class Adb {
    * @param array $vWINS
    * @param string $bind_mac
    */
-   public function web_replace_monitors ($mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS, $bind_mac = 'local') {
+   public function web_replace_layouts ($mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS, $bind_mac = 'local') {
    	$mon_type = trim($mon_type);
    	$mon_name = trim($mon_name);
    	$host = trim($host);
@@ -1054,9 +1054,9 @@ class Adb {
    	$this->_error($res);
    	$res->fetchInto($line);
    	if (empty($line))
-   	$this->web_add_monitors($mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS);
+   	$this->web_add_layouts($mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS);
    	else
-   	$this->web_update_monitors( $mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS);
+   	$this->web_update_layouts( $mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS);
    }
    
    
@@ -1078,7 +1078,7 @@ class Adb {
          WIN31, WIN32, WIN33, WIN34, WIN35, WIN36, WIN37,
          WIN38, WIN39, WIN40 '.
          'CHANGE_HOST, CHANGE_USER, CHANGE_TIME '.
-         'FROM MONITORS '.
+         'FROM LAYOUTS '.
          'WHERE BIND_MAC=\''.$bind_mac.'\' AND DISPLAY=\''.$display.'\' AND MON_NR='.$mon_nr;
       $res = $this->_db->query($query);
       $this->_error($res);
@@ -1113,9 +1113,9 @@ class Adb {
  * @param string $bind_mac
  * @return array раскладки
  */
-   public function get_monitors($bind_mac = 'local'){
+   public function get_layouts($bind_mac = 'local'){
       $mon = array();
-      $query = 'SELECT * FROM MONITORS';
+      $query = 'SELECT * FROM LAYOUTS';
       $query .= " WHERE BIND_MAC='$bind_mac'";
       $query .= ' ORDER BY MON_NR';
 
@@ -1139,7 +1139,7 @@ class Adb {
  * @param string $bind_mac
  * @return array раскладки
  */
-   public function web_get_monitors($user=NULL, $bind_mac = 'local'){
+   public function web_get_layouts($user=NULL, $bind_mac = 'local'){
    	
       $mon = array();
       $query = 'SELECT * FROM WEB_LAYOUTS';
