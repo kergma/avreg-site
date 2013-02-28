@@ -1340,7 +1340,10 @@ function canvas_growth() {
 		//Передаем параметры пользовательских раскладок
    		var url = '../admin/web_mon_list.php';
 	   	if(user_layouts.isLocalStorageAvailable()){
-   			if(user_layouts.client_layouts_json){
+           if(user_layouts.client_layouts_json==undefined){
+                   this.setCookie('layouts', '', -1, '/', window.location.hostname, '');
+           }
+   			else if(user_layouts.client_layouts_json){
                 var lay_user = JSON.stringify(user_layouts.client_layouts);
                 user_layouts.setCookie('layouts', JSON.stringify(user_layouts.client_layouts), 86400, '/', document.location.hostname, '');
 
