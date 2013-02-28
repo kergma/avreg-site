@@ -1293,7 +1293,7 @@ class Adb {
     
    public function update_user($u_host,$u_name,$passwd, $groups, $guest, $pda, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_user, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name){
       $query = sprintf(
-         'UPDATE USERS SET ALLOW_FROM=%s, USER_LOGIN=%s, PASSWD=%s, STATUS=%d, GUEST=%b, PDA=%b, ALLOW_CAMS=%s, ALLOW_LAYOUTS=%s ,MAX_FORCED_REC_MINUTES=%s, MAX_MEDIA_SESSIONS_NB=%s, MAX_VIDEO_FPS=%s, MAX_VIDEO_NONMOTION_FPS=%s, MAX_MEDIA_SESSIONS_RATE_KB=%s, MAX_MEDIA_SESSIONS_MINUTES=%s, MAX_MEDIA_SESSION_VOLUME_MB=%s, LONGNAME=%s, CHANGE_HOST=%s, CHANGE_USER=%s, CHANGE_TIME=NOW() WHERE ALLOW_FROM=%s AND USER_LOGIN=%s',
+         'UPDATE USERS SET ALLOW_FROM=%s, USER_LOGIN=%s, PASSWD=%s, STATUS=%d, GUEST=%b, PDA=%b, ALLOW_CAMS=%s, ALLOW_LAYOUTS=%s ,MAX_FORCED_REC_MINUTES=%s, MAX_MEDIA_SESSIONS_NB=%s, MAX_VIDEO_FPS=%s, MAX_VIDEO_NONMOTION_FPS=%s, MAX_MEDIA_SESSION_RATE_KB=%s, MAX_MEDIA_SESSION_MINUTES=%s, MAX_MEDIA_SESSION_VOLUME_MB=%s, LONGNAME=%s, CHANGE_HOST=%s, CHANGE_USER=%s, CHANGE_TIME=NOW() WHERE ALLOW_FROM=%s AND USER_LOGIN=%s',
          sql_format_str_val($u_host),
          sql_format_str_val($u_name),
          $this->_crypt($passwd),
