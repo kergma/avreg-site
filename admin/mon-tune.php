@@ -67,7 +67,7 @@ if (isset($cmd)) {
       }
       if ( count( $fWINS ) > 0 )	{
          
-         $adb->replace_monitors( $display, $mon_nr, $mon_type, $mon_name, $remote_addr, $login_user, $fWINS, $vWINS);
+         $adb->replace_layouts( $display, $mon_nr, $mon_type, $mon_name, $remote_addr, $login_user, $fWINS, $vWINS);
          
          print '<p class="HiLiteBigWarn">' . sprintf($r_mon_changed, $mon_nr, empty($mon_name)?$mon_type:$mon_name, $display=='R'?$sRightDisplay1:$sLeftDisplay1) . '</p>'."\n";
          print '<center><a href="'.$conf['prefix'].'/admin/mon-list.php" target="_self">'.$r_mon_goto_list.'</a></center>'."\n";

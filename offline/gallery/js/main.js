@@ -1632,9 +1632,9 @@ var matrix = {
 		$('#toolbar .detail').show();
 			
 		//отключаем tooltip
-		$(".elem").tooltipOff();
+		$(".elem .info_block").tooltipOff();
 		//если есть тултип - удаляем
-		$('.tooltip').remove();
+		$('.tooltip .info_block').remove();
 			
 		//скрываем скролл матрицы
 		$("#scroll_v").hide();
@@ -1719,7 +1719,7 @@ var matrix = {
 			matrix.update_statistic();
 			
 			//Включаем тултип
-			$(".elem").tooltip();
+			$(".elem .info_block").tooltip();
 
 			//Скрываем кнопки масштабирования
 			$('#btn_cell_size, #btn_orig_size').hide();
@@ -1934,8 +1934,8 @@ var matrix = {
 		});
 		
 		//Включаем тултип
-		$(".elem").tooltip();
-		
+		$(".elem .info_block").tooltip();
+
 		//установка активного элемента 
 		$('.active').removeAttr('active');
 		$('#cell_'+matrix.num).addClass('active');
@@ -2049,12 +2049,12 @@ var matrix = {
 			}
 			//формирование src ресайза картинки
 			var ResizedImgSrc = matrix.getResizedImageSrc(el_num, img_height, img_width);
-			$('#cell_'+el_num).find(".elem").attr('tooltip',ttl).end()
+			$('#cell_'+el_num).find(".elem .info_block").attr('tooltip',ttl).end()
 			.find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'useImageSize':'true' })
 			.aplayerResizeToParent();
 			}
 			else {
-				$('#cell_'+el_num).find(".elem").attr('tooltip',ttl).end()
+				$('#cell_'+el_num).find(".elem .info_block").attr('tooltip',ttl).end()
 				.find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'logoPlay':'true' })
 				.aplayerResizeToParent();
 			}
@@ -2420,13 +2420,13 @@ var matrix = {
 							//формирование src ресайза картинки
 							var ResizedImgSrc = matrix.getResizedImageSrc(i, img_height, img_width);
 							
-							$('#cell_'+i).find(".elem").attr('tooltip',ttl).end()
+							$('#cell_'+i).find(".elem .info_block").attr('tooltip',ttl).end()
 							.find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'useImageSize':'true' })
 							.aplayerResizeToParent();
 						}
 						else 
 						{
-							$('#cell_'+i).find(".elem").attr('tooltip',ttl).end()
+							$('#cell_'+i).find(".elem .info_block").attr('tooltip',ttl).end()
 							.find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'logoPlay':'true' })
 							.aplayerResizeToParent();
 						}
@@ -2544,7 +2544,7 @@ var matrix = {
 						else
 						{
 							 matrix.setimagesize(i);
-							$(cont).empty().addPlayer({'src': NewSRC, 'useImageSize':'true' }).aplayerResizeContanerOnlyToParent();	
+							$(cont).empty().addPlayer({'src': NewSRC, 'useImageSize':'true' }).aplayerResizeContanerOnlyToParent();
 						}
 					}
 					else
@@ -2553,7 +2553,7 @@ var matrix = {
 						matrix.setimagesize(i);
 						
 						//пересоздаем плеер
-						$(this).find('a.refBox').empty().addPlayer({'src': NewSRC, 'logoPlay':'true' }).aplayerResizeContanerOnlyToParent();	
+						$(this).find('a.refBox').empty().addPlayer({'src': NewSRC, 'logoPlay':'true' }).aplayerResizeContanerOnlyToParent();
 					}
 
 					//Получить расширение файла 
@@ -2578,7 +2578,7 @@ var matrix = {
 					
 				 	//Заполнение инфо-блока
 				 	$(this)
-				 	.find(".elem").attr({"tooltip":ttl}).end()		
+				 	.find(".elem .info_block").attr({"tooltip":ttl}).end()
 					.find('.info_block')
 					.empty()
 					.html(function(){
@@ -2609,13 +2609,13 @@ var matrix = {
 		});
 		
 		//Включаем тултип
-		$(".elem").tooltip();
+		$(".elem .info_block").tooltip();
 		if(matrix.num > sp+matrix.cell_count) matrix.num = sp;
 		$('#cell_'+matrix.num).addClass('active');
 		
 		//Если включен режим детального просмотра - хайдим ячейки и выключаем тултип
 		if(matrix.mode=="detail") {
-			$(".elem").tooltipOff();
+			$(".elem .info_block").tooltipOff();
 			$('#scroll_content .content_item').hide();
 		}
 	},

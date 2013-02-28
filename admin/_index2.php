@@ -36,7 +36,7 @@ print '<td>'.$left_tune_desc.'</td>'."\n";
 print '</tr>'."\n";
 print '<tr>'."\n";
 print '<td>'. $left_layouts.'</td>'."\n";
-print '<td>'.$left_monitors_desc.'</td>'."\n";
+print '<td>'.$left_layouts_desc.'</td>'."\n";
 print '</tr>'."\n";
 print '</table>'."\n";
 

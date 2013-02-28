@@ -162,7 +162,7 @@ if ( isset($cmd) ) {
 			if ( $allWINS!='') {
                 $PrintCamNames = ($PrintCamNames!=null)? 1 : 0;
                 
-				$adb->web_add_monitors($mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS);
+				$adb->web_add_layouts($mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS);
 
 				print "Ok!\n'";
 				print '<script type="text/javascript" language="javascript">reset_to_list();</script>'."\n";

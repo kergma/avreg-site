@@ -837,8 +837,8 @@ class Adb {
  * @param array $vWINS
  * @param string $bind_mac
  */
-   public function add_monitors($display,$mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $fWINS, $vWINS,$bind_mac = 'local') {
-      $query = sprintf('INSERT INTO MONITORS (BIND_MAC, DISPLAY, MON_NR, MON_TYPE, MON_NAME, %s, CHANGE_HOST, CHANGE_USER) VALUES (\'local\', \'%s\', %d, \'%s\', \'%s\', %s, \'%s\', \'%s\')',
+   public function add_layouts($display,$mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $fWINS, $vWINS,$bind_mac = 'local') {
+      $query = sprintf('INSERT INTO LAYOUTS (BIND_MAC, DISPLAY, MON_NR, MON_TYPE, MON_NAME, %s, CHANGE_HOST, CHANGE_USER) VALUES (\'local\', \'%s\', %d, \'%s\', \'%s\', %s, \'%s\', \'%s\')',
          implode (', ',$fWINS), $display, $mon_nr, $mon_type, $mon_name, implode (', ',$vWINS), $remote_addr, $login_user);
       $res = $this->_db->query($query);
       $this->_error($res);
@@ -856,7 +856,7 @@ class Adb {
    * @param array $vWINS
    * @param string $bind_mac
    */
-   public function web_add_monitors($mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $ReconnectTimeout , $allWINS, $bind_mac = 'local') {
+   public function web_add_layouts($mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $ReconnectTimeout , $allWINS, $bind_mac = 'local') {
    	$mon_type =trim($mon_type);
    	$mon_name = trim($mon_name);
    	$remote_addr = trim($remote_addr);
@@ -879,8 +879,8 @@ class Adb {
  * @param int $mon_nr
  * @param string $bind_mac
  */
-   public function delete_monitors($display, $mon_nr, $bind_mac = 'local') {
-      $query = 'DELETE FROM MONITORS';
+   public function delete_layouts($display, $mon_nr, $bind_mac = 'local') {
+      $query = 'DELETE FROM LAYOUTS';
       $query .= " WHERE BIND_MAC ='$bind_mac'";
       $query .= " AND DISPLAY ='$display'";
       $query .= " AND MON_NR = $mon_nr";		
@@ -895,7 +895,7 @@ class Adb {
  * @param int $mon_nr
  * @param string $bind_mac
  */
-   public function web_delete_monitors($display, $mon_nr, $bind_mac = 'local') {
+   public function web_delete_layouts($display, $mon_nr, $bind_mac = 'local') {
       $query = 'DELETE FROM WEB_LAYOUTS';
       $query .= " WHERE BIND_MAC ='$bind_mac'";
 //      $query .= " AND DISPLAY ='$display'";
@@ -918,8 +918,8 @@ class Adb {
  * @param array $vWINS
  * @param string $bind_mac
  */
-   public function update_monitors ($display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS,$bind_mac = 'local') {
-      $query = 'UPDATE MONITORS SET ';
+   public function update_layouts ($display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS,$bind_mac = 'local') {
+      $query = 'UPDATE LAYOUTS SET ';
       $query .= "MON_TYPE = '$mon_type'";
       $query .= ", MON_NAME = '$mon_name'";
       $query .= ", CHANGE_HOST = '$host'";
@@ -953,7 +953,7 @@ class Adb {
  * @param array $vWINS
  * @param string $bind_mac
  */
-   public function web_update_monitors($mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS,  $bind_mac = 'local') {
+   public function web_update_layouts($mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS,  $bind_mac = 'local') {
    	  $query = 'UPDATE WEB_LAYOUTS SET ';
       $query .= "MON_TYPE = '$mon_type'";
       $query .= ", SHORT_NAME = '$mon_name'";
@@ -1009,8 +1009,8 @@ class Adb {
  * @param array $vWINS
  * @param string $bind_mac
  */
-   public function replace_monitors ($display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS, $bind_mac = 'local') {
-      $query = 'SELECT * FROM MONITORS ';
+   public function replace_layouts ($display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS, $bind_mac = 'local') {
+      $query = 'SELECT * FROM LAYOUTS ';
       $query .= " WHERE BIND_MAC = '$bind_mac'";
       $query .= " AND MON_NR = $mon_nr";
       $query .= " AND DISPLAY = '$display'";
@@ -1018,9 +1018,9 @@ class Adb {
       $this->_error($res);
       $res->fetchInto($line);
       if (empty($line))
-         $this->add_monitors($display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS);
+         $this->add_layouts($display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS);
       else
-         $this->update_monitors($display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS);
+         $this->update_layouts($display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS);
    }	
    
    
@@ -1037,7 +1037,7 @@ class Adb {
    * @param array $vWINS
    * @param string $bind_mac
    */
-   public function web_replace_monitors ($mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS, $bind_mac = 'local') {
+   public function web_replace_layouts ($mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS, $bind_mac = 'local') {
    	$mon_type = trim($mon_type);
    	$mon_name = trim($mon_name);
    	$host = trim($host);
@@ -1054,9 +1054,9 @@ class Adb {
    	$this->_error($res);
    	$res->fetchInto($line);
    	if (empty($line))
-   	$this->web_add_monitors($mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS);
+   	$this->web_add_layouts($mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS);
    	else
-   	$this->web_update_monitors( $mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS);
+   	$this->web_update_layouts( $mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS);
    }
    
    
@@ -1078,7 +1078,7 @@ class Adb {
          WIN31, WIN32, WIN33, WIN34, WIN35, WIN36, WIN37,
          WIN38, WIN39, WIN40 '.
          'CHANGE_HOST, CHANGE_USER, CHANGE_TIME '.
-         'FROM MONITORS '.
+         'FROM LAYOUTS '.
          'WHERE BIND_MAC=\''.$bind_mac.'\' AND DISPLAY=\''.$display.'\' AND MON_NR='.$mon_nr;
       $res = $this->_db->query($query);
       $this->_error($res);
@@ -1113,9 +1113,9 @@ class Adb {
  * @param string $bind_mac
  * @return array раскладки
  */
-   public function get_monitors($bind_mac = 'local'){
+   public function get_layouts($bind_mac = 'local'){
       $mon = array();
-      $query = 'SELECT * FROM MONITORS';
+      $query = 'SELECT * FROM LAYOUTS';
       $query .= " WHERE BIND_MAC='$bind_mac'";
       $query .= ' ORDER BY MON_NR';
 
@@ -1139,7 +1139,7 @@ class Adb {
  * @param string $bind_mac
  * @return array раскладки
  */
-   public function web_get_monitors($user=NULL, $bind_mac = 'local'){
+   public function web_get_layouts($user=NULL, $bind_mac = 'local'){
    	
       $mon = array();
       $query = 'SELECT * FROM WEB_LAYOUTS';
@@ -1225,7 +1225,7 @@ class Adb {
  * @param unknown_type $pda - доступ к PDA версии
  * @param string $u_devacl Доступные камеры
  * @param string $u_forced_saving_limit Максимальная длительность принудительной записи (по команде) в минутах
- * @param string $sessions_per_cam Ограничение количества одновременных просмотров каждой конкретной камеры
+ * @param string $sessions_per_user Ограничение количества одновременных просмотров (камер) пользователем
  * @param string $limit_fps limit_fps, кадров в секунду, [1-25] или sec/frames
  * @param string $nonmotion_fps nonmotion_fps, примеры допустимых значений: "1" - 1 кадр в 1 сек.; "2/1" - 1 кадр каждые 2 секунды.
  * @param string $limit_kbps limit_kbps, Kбит/сек
@@ -1236,11 +1236,12 @@ class Adb {
  * @param string $login_user пользователь, который добавляет
  * @return bool результат добавления
  */
-   public function add_user($u_host, $u_name, $passwd, $groups, $guest, $pda, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_cam,$limit_fps,$nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user) {
+   public function add_user($u_host, $u_name, $passwd, $groups, $guest, $pda, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_user,$limit_fps,$nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user) {
    	$query = sprintf('INSERT INTO USERS 
-         ( ALLOW_FROM, USER_LOGIN, PASSWD, STATUS, GUEST, PDA, ALLOW_CAMS, ALLOW_LAYOUTS, FORCED_SAVING_LIMIT, SESSIONS_PER_CAM,
-         LIMIT_FPS, NONMOTION_FPS, LIMIT_KBPS,
-         SESSION_TIME, SESSION_VOLUME,
+         ( ALLOW_FROM, USER_LOGIN, PASSWD, STATUS, GUEST, PDA, ALLOW_CAMS, ALLOW_LAYOUTS, MAX_FORCED_REC_MINUTES, MAX_MEDIA_SESSIONS_NB,
+         MAX_VIDEO_FPS, MAX_VIDEO_NONMOTION_FPS, MAX_MEDIA_SESSION_RATE_KB,
+         MAX_MEDIA_SESSION_MINUTES, MAX_MEDIA_SESSION_VOLUME_MB,
+
          LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME) 
          VALUES ( %s, %s, %s, %u, %b, %b, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())',
             sql_format_str_val($u_host),
@@ -1252,7 +1253,7 @@ class Adb {
             sql_format_str_val($u_devacl),
             sql_format_str_val($u_layouts),
             sql_format_int_val($u_forced_saving_limit),
-            sql_format_int_val($sessions_per_cam),
+            sql_format_int_val($sessions_per_user),
             sql_format_str_val($limit_fps),
             sql_format_str_val($nonmotion_fps),
             sql_format_int_val($limit_kbps),
@@ -1276,7 +1277,7 @@ class Adb {
  * @param unknown_type $pda - доступ к PDA версии
  * @param string $u_devacl Доступные камеры
  * @param string $u_forced_saving_limit Максимальная длительность принудительной записи (по команде) в минутах
- * @param string $sessions_per_cam Ограничение количества одновременных просмотров каждой конкретной камеры
+ * @param string $sessions_per_user Ограничение количества одновременных просмотров камер пользователем
  * @param string $limit_fps limit_fps, кадров в секунду, [1-25] или sec/frames
  * @param string $nonmotion_fps nonmotion_fps, примеры допустимых значений: "1" - 1 кадр в 1 сек.; "2/1" - 1 кадр каждые 2 секунды.
  * @param string $limit_kbps limit_kbps, Kбит/сек
@@ -1290,9 +1291,9 @@ class Adb {
  * @return bool результат обновления
  */
     
-   public function update_user($u_host,$u_name,$passwd, $groups, $guest, $pda, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_cam, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name){
+   public function update_user($u_host,$u_name,$passwd, $groups, $guest, $pda, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_user, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name){
       $query = sprintf(
-         'UPDATE USERS SET ALLOW_FROM=%s, USER_LOGIN=%s, PASSWD=%s, STATUS=%d, GUEST=%b, PDA=%b, ALLOW_CAMS=%s, ALLOW_LAYOUTS=%s ,FORCED_SAVING_LIMIT=%s, SESSIONS_PER_CAM=%s, LIMIT_FPS=%s, NONMOTION_FPS=%s, LIMIT_KBPS=%s, SESSION_TIME=%s, SESSION_VOLUME=%s, LONGNAME=%s, CHANGE_HOST=%s, CHANGE_USER=%s, CHANGE_TIME=NOW() WHERE ALLOW_FROM=%s AND USER_LOGIN=%s',
+         'UPDATE USERS SET ALLOW_FROM=%s, USER_LOGIN=%s, PASSWD=%s, STATUS=%d, GUEST=%b, PDA=%b, ALLOW_CAMS=%s, ALLOW_LAYOUTS=%s ,MAX_FORCED_REC_MINUTES=%s, MAX_MEDIA_SESSIONS_NB=%s, MAX_VIDEO_FPS=%s, MAX_VIDEO_NONMOTION_FPS=%s, MAX_MEDIA_SESSION_RATE_KB=%s, MAX_MEDIA_SESSION_MINUTES=%s, MAX_MEDIA_SESSION_VOLUME_MB=%s, LONGNAME=%s, CHANGE_HOST=%s, CHANGE_USER=%s, CHANGE_TIME=NOW() WHERE ALLOW_FROM=%s AND USER_LOGIN=%s',
          sql_format_str_val($u_host),
          sql_format_str_val($u_name),
          $this->_crypt($passwd),
@@ -1302,7 +1303,7 @@ class Adb {
          sql_format_str_val($u_devacl),
          sql_format_str_val($u_layouts),
          sql_format_int_val($u_forced_saving_limit),
-         sql_format_int_val($sessions_per_cam),
+         sql_format_int_val($sessions_per_user),
          sql_format_str_val($limit_fps),
          sql_format_str_val($nonmotion_fps),
          sql_format_int_val($limit_kbps),
@@ -1372,7 +1373,7 @@ class Adb {
  */
    public function get_users($status = false) {
       $users = array();
-      $query = 'SELECT ALLOW_FROM, USER_LOGIN, GUEST, PDA, PASSWD, STATUS, ALLOW_CAMS, ALLOW_LAYOUTS, FORCED_SAVING_LIMIT,  SESSIONS_PER_CAM, LIMIT_FPS, NONMOTION_FPS, LIMIT_KBPS, SESSION_TIME, SESSION_VOLUME,LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME '.
+      $query = 'SELECT ALLOW_FROM, USER_LOGIN, GUEST, PDA, PASSWD, STATUS, ALLOW_CAMS, ALLOW_LAYOUTS, MAX_FORCED_REC_MINUTES,  MAX_MEDIA_SESSIONS_NB, MAX_VIDEO_FPS, MAX_VIDEO_NONMOTION_FPS, MAX_MEDIA_SESSION_RATE_KB, MAX_MEDIA_SESSION_MINUTES, MAX_MEDIA_SESSION_VOLUME_MB,LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME '.
          'FROM USERS ';
       if ($status)
          $query .= "WHERE STATUS = $status ";
@@ -1390,13 +1391,13 @@ class Adb {
             'STATUS' => trim($line[$this->_key('STATUS')]),
             'ALLOW_CAMS' => trim($line[$this->_key('ALLOW_CAMS')]),
             'ALLOW_LAYOUTS' => trim($line[$this->_key('ALLOW_LAYOUTS')]),
-            'FORCED_SAVING_LIMIT' => trim($line[$this->_key('FORCED_SAVING_LIMIT')]),
-            'SESSIONS_PER_CAM' => trim($line[$this->_key('SESSIONS_PER_CAM')]),
-            'LIMIT_FPS' => trim($line[$this->_key('LIMIT_FPS')]),
-            'NONMOTION_FPS' => trim($line[$this->_key('NONMOTION_FPS')]),
-            'LIMIT_KBPS' => trim($line[$this->_key('LIMIT_KBPS')]),
-            'SESSION_TIME' => trim($line[$this->_key('SESSION_TIME')]),
-            'SESSION_VOLUME' => trim($line[$this->_key('SESSION_VOLUME')]),
+            'MAX_FORCED_REC_MINUTES' => trim($line[$this->_key('MAX_FORCED_REC_MINUTES')]),
+            'MAX_MEDIA_SESSIONS_NB' => trim($line[$this->_key('MAX_MEDIA_SESSIONS_NB')]),
+            'MAX_VIDEO_FPS' => trim($line[$this->_key('MAX_VIDEO_FPS')]),
+            'MAX_VIDEO_NONMOTION_FPS' => trim($line[$this->_key('MAX_VIDEO_NONMOTION_FPS')]),
+            'MAX_MEDIA_SESSION_RATE_KB' => trim($line[$this->_key('MAX_MEDIA_SESSION_RATE_KB')]),
+            'MAX_MEDIA_SESSION_MINUTES' => trim($line[$this->_key('MAX_MEDIA_SESSION_MINUTES')]),
+            'MAX_MEDIA_SESSION_VOLUME_MB' => trim($line[$this->_key('MAX_MEDIA_SESSION_VOLUME_MB')]),
             'LONGNAME' => trim($line[$this->_key('LONGNAME')]),
             'CHANGE_HOST' => trim($line[$this->_key('CHANGE_HOST')]),
             'CHANGE_USER' => trim($line[$this->_key('CHANGE_USER')]),
