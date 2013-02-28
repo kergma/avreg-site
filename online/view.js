@@ -1342,7 +1342,7 @@ function canvas_growth() {
 	   	if(user_layouts.isLocalStorageAvailable()){
    			if(user_layouts.client_layouts_json){
                 var lay_user = JSON.stringify(user_layouts.client_layouts);
-                user_layouts.setCookie('layouts', JSON.stringify(user_layouts.client_layouts), '', '/', document.location.hostname, '');
+                user_layouts.setCookie('layouts', JSON.stringify(user_layouts.client_layouts), 86400, '/', document.location.hostname, '');
 
    			}
    			window.open(url, '_self');
