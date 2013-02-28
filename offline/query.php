@@ -227,9 +227,6 @@ function TimeModeHelp(){
 function TimeModeHelp2(){
 	alert("<?php echo $strTimeModeHelp2; ?>");
 }
-function CamChoiseHelp(){
-	alert("<?php echo $strCamChoiseHelp; ?>");
-}
 function FilterHelp(){
 	alert("<?php echo $strFilterHelp; ?>");
 }
