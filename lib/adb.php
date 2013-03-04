@@ -838,7 +838,7 @@ class Adb {
  * @param string $bind_mac
  */
    public function add_layouts($display,$mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $fWINS, $vWINS,$bind_mac = 'local') {
-      $query = sprintf('INSERT INTO LAYOUTS (BIND_MAC, DISPLAY, MON_NR, MON_TYPE, MON_NAME, %s, CHANGE_HOST, CHANGE_USER) VALUES (\'local\', \'%s\', %d, \'%s\', \'%s\', %s, \'%s\', \'%s\')',
+      $query = sprintf('INSERT INTO LOCAL_LAYOUTS (BIND_MAC, DISPLAY, MON_NR, MON_TYPE, MON_NAME, %s, CHANGE_HOST, CHANGE_USER) VALUES (\'local\', \'%s\', %d, \'%s\', \'%s\', %s, \'%s\', \'%s\')',
          implode (', ',$fWINS), $display, $mon_nr, $mon_type, $mon_name, implode (', ',$vWINS), $remote_addr, $login_user);
       $res = $this->_db->query($query);
       $this->_error($res);
@@ -880,7 +880,7 @@ class Adb {
  * @param string $bind_mac
  */
    public function delete_layouts($display, $mon_nr, $bind_mac = 'local') {
-      $query = 'DELETE FROM LAYOUTS';
+      $query = 'DELETE FROM LOCAL_LAYOUTS';
       $query .= " WHERE BIND_MAC ='$bind_mac'";
       $query .= " AND DISPLAY ='$display'";
       $query .= " AND MON_NR = $mon_nr";		
@@ -919,7 +919,7 @@ class Adb {
  * @param string $bind_mac
  */
    public function update_layouts ($display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS,$bind_mac = 'local') {
-      $query = 'UPDATE LAYOUTS SET ';
+      $query = 'UPDATE LOCAL_LAYOUTS SET ';
       $query .= "MON_TYPE = '$mon_type'";
       $query .= ", MON_NAME = '$mon_name'";
       $query .= ", CHANGE_HOST = '$host'";
@@ -1010,7 +1010,7 @@ class Adb {
  * @param string $bind_mac
  */
    public function replace_layouts ($display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS, $bind_mac = 'local') {
-      $query = 'SELECT * FROM LAYOUTS ';
+      $query = 'SELECT * FROM LOCAL_LAYOUTS ';
       $query .= " WHERE BIND_MAC = '$bind_mac'";
       $query .= " AND MON_NR = $mon_nr";
       $query .= " AND DISPLAY = '$display'";
@@ -1078,7 +1078,7 @@ class Adb {
          WIN31, WIN32, WIN33, WIN34, WIN35, WIN36, WIN37,
          WIN38, WIN39, WIN40 '.
          'CHANGE_HOST, CHANGE_USER, CHANGE_TIME '.
-         'FROM LAYOUTS '.
+         'FROM LOCAL_LAYOUTS '.
          'WHERE BIND_MAC=\''.$bind_mac.'\' AND DISPLAY=\''.$display.'\' AND MON_NR='.$mon_nr;
       $res = $this->_db->query($query);
       $this->_error($res);
@@ -1115,7 +1115,7 @@ class Adb {
  */
    public function get_layouts($bind_mac = 'local'){
       $mon = array();
-      $query = 'SELECT * FROM LAYOUTS';
+      $query = 'SELECT * FROM LOCAL_LAYOUTS';
       $query .= " WHERE BIND_MAC='$bind_mac'";
       $query .= ' ORDER BY MON_NR';
 

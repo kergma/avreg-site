@@ -1131,17 +1131,11 @@ function canvas_growth() {
 
         html+='<a id="layout_'+value.MON_NR+'" class="layout_link"';
    		//html+=' onclick="change_layout('+value.MON_NR+')"  href="#">'; //динамическая смена раскладки - отключена
-   		// html+=' href="?layout_nr='+value.MON_NR+'">';  //нединаимическая смена раскладки без использованиz пользовательских раскладок
+   		// html+=' href="?layout_id='+value.MON_NR+'">';  //нединаимическая смена раскладки без использованиz пользовательских раскладок
 		
    		//нединаимическая смена раскладки c использованием пользовательских раскладок
-   		html+=' onclick="user_layouts.redirect(\''+'../online/view.php?layout_nr='+value.MON_NR+'\', true);"  href="#">';
+   		html+=' onclick="user_layouts.this.setCookie(\'layouts\', JSON.stringify(user_layouts.client_layouts), 86400, \'/\', window.location.hostname, \'\');"  href="../online/view.php?layout_id=' + value.MON_NR + '" >';
 
-   		//переадресуем на онлайн просмотр
-// 		self.redirect(location.protocol+'//'+location.hostname+WwwPrefix+'/online/view.php', true);
-//   		html+=' href="?layout_nr='+value.MON_NR+'">';
-   		
-		
-   		
    		html+= (value.SHORT_NAME==''? value.MON_TYPE :value.SHORT_NAME);
    		html+= (value.IS_DEFAULT==1? '(def)' :'');
    		html+='</a>&nbsp;&nbsp;&nbsp;&nbsp;</div>';
