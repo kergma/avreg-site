@@ -104,10 +104,10 @@ if(!count($result)) {
 $def_cam = null;
 $cur_layout = 0;
 $is_clients_layout_default = false;
-if(isset($_GET['layout_nr']) ){
+if(isset($_GET['layout_id']) ){
 	//устанавливаем запрошенную раскладку
 	foreach($result as $key=>&$value){
-		if($value["MON_NR"]==$_GET['layout_nr']){
+		if($value["MON_NR"]==$_GET['layout_id']){
 			$def_cam = $value;
 			$cur_layout = $value["MON_NR"];
 		}
