@@ -421,9 +421,10 @@ if (file_exists('/etc/linuxdvr-release')) {
    $LDVR_VER=@file('/etc/linuxdvr-release');
 } 
 
-
 /* set timezone "You are *required* to use the date.timezone setting or the date_default_timezone_set() function." */
-date_default_timezone_set(rtrim(file_get_contents('/etc/timezone')));
+$tzname = @file_get_contents('/etc/timezone'); // debian-style
+if ( !empty($tzname) )
+   date_default_timezone_set(rtrim($tzname));
 
 ///  шрифт текста
 $font_family = 'sans-serif';
