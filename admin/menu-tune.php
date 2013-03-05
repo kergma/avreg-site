@@ -21,15 +21,6 @@ print '<hr noshade>'."\n";
 //$the_a = sprintf (''.$conf['prefix'].'/admin/index.php?sip=%s&named=%s', urlencode($sip), urlencode ($named));
 print '<div class="menu0"><a href="'.$conf['prefix'].'/admin/index.php" target="_parent">&lt;&lt;&nbsp;&nbsp;'.$strBackIn.' ' .$left_logo.'</a></div>'."\n";
 
-if ($LDVR_VER !== false) {
-   if ( $admin_user ) {
-      if ( isset($tab) && ($tab == 'sys'))
-         print '<div class="menu0active">-&nbsp;<a  href="'.$conf['prefix'].'/admin/menu-tune.php?tab=sys&#038;load='.$conf['prefix'].'/admin/systems-conf.php" target="menu">'.$left_system.'</a></div>'."\n";
-      else
-         print '<div class="menu0">+&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php?tab=sys&#038;load='.$conf['prefix'].'/admin/systems-conf.php" target="menu">'.$left_system.'</a></div>'."\n";
-   }
-}
-
 if ( isset($tab) && ($tab == 'users')){
    // $the_a = sprintf (''.$conf['prefix'].'/admin/menu-tune.php?sip=%s&named=%s', urlencode($sip), urlencode ($named));
    print '<div class="menu0active">-&nbsp;<a href="'.$conf['prefix'].'/admin/menu-tune.php" target="menu">'.$left_users.'</a>'."\n";

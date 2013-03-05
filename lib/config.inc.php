@@ -415,12 +415,6 @@ if ( $_SERVER['REMOTE_ADDR'] === '127.0.0.1' )
 else
    $remote_addr = &$_SERVER['REMOTE_ADDR'];
 
-///  linuxdvr-release
-$LDVR_VER=FALSE;
-if (file_exists('/etc/linuxdvr-release')) {
-   $LDVR_VER=@file('/etc/linuxdvr-release');
-} 
-
 /* set timezone "You are *required* to use the date.timezone setting or the date_default_timezone_set() function." */
 $tzname = @file_get_contents('/etc/timezone'); // debian-style
 if ( !empty($tzname) )

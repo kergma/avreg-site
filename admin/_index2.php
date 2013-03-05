@@ -16,16 +16,6 @@ print '<tr>'."\n";
 print '<td>'. $left_logo.'</td>'."\n";
 print '<td>'.$left_logo_desc.'</td>'."\n";
 print '</tr>'."\n";
-if ($LDVR_VER) {
-print '<tr>'."\n";
-print '<td>'. $left_system.'</td>'."\n";
-print '<td>'.$left_system_desc.'</td>'."\n";
-print '</tr>'."\n";
-print '<tr>'."\n";
-print '<td>'. $left_archive.'</td>'."\n";
-print '<td>'.$left_archive_desc.'</td>'."\n";
-print '</tr>'."\n";
-}
 print '<tr>'."\n";
 print '<td>'. $left_users.'</td>'."\n";
 print '<td>'.$left_users_desc.'</td>'."\n";

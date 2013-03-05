@@ -34,15 +34,6 @@ print '<tr>'."\n";
 print '<td>'. $left_key.'</td>'."\n";
 print '<td>'.$left_key_desc.'</td>'."\n";
 print '</tr>'."\n";
-if ($LDVR_VER) {
-print '<tr>'."\n";
-print '<td>'. $left_update.'</td>'."\n";
-print '<td>'.$left_update_desc.'</td>'."\n";
-print '<tr>'."\n";
-print '<td>'. $left_bug.'</td>'."\n";
-print '<td>'.$left_bug_desc.'</td>'."\n";
-print '</tr>'."\n";
-}
 print '</table>'."\n";
 
 

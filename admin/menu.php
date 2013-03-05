@@ -28,10 +28,6 @@ print '<h3 class="menu0">&nbsp;&nbsp;<a href="'.$conf['prefix'].'/admin/tune.php
 
 print '<br>'."\n";
 print '<div class="menu0">-&nbsp;<a href="'.$conf['prefix'].'/admin/key.php"  target="content" title="'.$license.'">'.$license.'</a></div>'."\n";
-if ($LDVR_VER !== false) {
-print '<div class="menu0">-&nbsp;<a href="'.$conf['prefix'].'/admin/update.php"  target="content">'.$left_update.'</a></div>'."\n";
-print '<div class="menu0">-&nbsp;<a href="'.$conf['prefix'].'/admin/bug.php"  target="content">'.$left_bug.'</a></div>'."\n";
-}
 print '<br><br><br><br><hr noshade>'."\n";
 require('menu-bottom.inc.php');
 require('../foot.inc.php');
