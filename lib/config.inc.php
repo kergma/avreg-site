@@ -71,7 +71,6 @@ function aplayer_configurate($aplayer_config){
 	else {
 		return	$aplayer_config['*'];
 	}
-	
 }
 
 /**
@@ -95,11 +94,6 @@ function config_merging_part($star_marked, &$res_out ){
 		}
 	}
 }
-
-
-
-
-
 
 /**
  * 
