@@ -89,16 +89,15 @@ if ( isset($link_javascripts) && is_array($link_javascripts))
 ?>
 
 <script type="text/javascript" >
-
 <!--
 <?php 
 printf("var StorageDir = '%s';\n", addcslashes($conf['storage-dir'], '\'"/\\'));
 printf("var MediaAlias = '%s';\n", addcslashes($conf['media-alias'], '\'"/\\'));
 //echo "alert('$flowplayer_config');";
-printf("var flowplayer_conf = '%s';\n", addcslashes($conf['flowplayer_path'] . $conf['flowplayer_js'], '\'"/\\'));
-printf("var flowplayer_swf = '%s';\n", addcslashes($conf['flowplayer_path'] . $conf['flowplayer-swf'], '\'"/\\'));
-printf("var flowplayer_pseaudio = '%s';\n", addcslashes($conf['flowplayer_path'] . $conf['flowplayer-pseaudiostreaming'], '\'"/\\'));
-    ?>
+printf("var flowplayer_conf = '%s';\n", addcslashes($conf['flowplayer-path'] . '/' . $conf['flowplayer-js'], '\'"/\\'));
+printf("var flowplayer_swf = '%s';\n", addcslashes($conf['flowplayer-path'] . '/' . $conf['flowplayer-swf'], '\'"/\\'));
+printf("var flowplayer_pseaudio = '%s';\n", addcslashes($conf['flowplayer-path'] . '/' . $conf['flowplayer-pseaudiostreaming'], '\'"/\\'));
+?>
 
 var MSIE=false; // FIXME double calc with php
 var GECKO=false;
