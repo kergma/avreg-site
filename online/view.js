@@ -1417,7 +1417,10 @@ function canvas_growth() {
            var _left=0;
            var win_div;
            var win_def;
-                      
+
+
+
+            // Установка в канвас выбранной раскладки
            for (win_nr = 0; win_nr < WINS_NR; win_nr++ ) {
               if (  WINS_DEF[win_nr] == undefined )
                  continue;
@@ -1441,7 +1444,7 @@ function canvas_growth() {
                     ' height:'+ win_geo.win_h +'px;'+
                     ' z-index: 30;' +
                     '"><\/div>');
-              win_div.appendTo(CANVAS);
+                win_div.appendTo(CANVAS);
 
 			if (PrintCamNames) {
                  var ipcamhost_link_begin = '';
