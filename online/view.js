@@ -162,11 +162,11 @@ function img_click(clicked_div) {
       // current - fullscreen
 	      //меняем на источник для ячейки
 	      if (active_cams_srcs[win_nr]['type']!='avregd'){
-	    	  if(active_cams_srcs[win_nr]['cell']!=null || active_cams_srcs[win_nr]['cell']!='')
-	    		  current_src = get_cam_alt_url(active_cams_srcs[win_nr]['cell'], win_nr, true) ;
+	    	  if(active_cams_srcs[win_nr]['cell']!=null && active_cams_srcs[win_nr]['cell']!='')
+	    		  current_src = active_cams_srcs[win_nr]['cell']; // get_cam_alt_url(active_cams_srcs[win_nr]['cell'], win_nr, true) ;
 	      }
 	   
-	   
+
       if ( WIN_DIV_W == undefined ) {
     	  //в режиме FS был ресайз CANVAS'a
          change_wins_geo();
@@ -261,8 +261,8 @@ function img_click(clicked_div) {
 	      .height(win_geo.cam_h+CORRECT_H);
       //меняем на источник для ячейки
       if (active_cams_srcs[win_nr]['type']!='avregd'){
-    	  if(active_cams_srcs[win_nr]['fs']!=null || active_cams_srcs[win_nr]['fs']!='')
-    		  current_src = get_cam_alt_url(active_cams_srcs[win_nr]['fs'], win_nr ,true) ;
+    	  if(active_cams_srcs[win_nr]['fs']!=null && active_cams_srcs[win_nr]['fs']!='')
+    		  current_src = active_cams_srcs[win_nr]['fs']; //get_cam_alt_url(active_cams_srcs[win_nr]['fs'], win_nr ,true) ;
       }
 
     	if ( MSIE ){
@@ -501,7 +501,6 @@ var checking_connection = {
             self.me_list.push(obj);
             return;
         }
-
 
         if(WEBKIT){
 			//создаем канвас для элемента и устанавливаем cors для img
