@@ -483,8 +483,8 @@ var checking_connection = {
 		if(self.me_list==undefined){
 			self.me_list = new Array();
 		}
-		
-		var obj = { 
+
+        var obj = {
 			'me' : me,
 			'me_id':me_id,
 			'src' : me_src,
@@ -494,19 +494,27 @@ var checking_connection = {
 			//канвас и контекст для webkit
 			'wk_canvas' : null
 		};
-		
-		if(WEBKIT){
+
+        //Если не mjpeg останавливаем проверку
+        if(!$('.pl_cont',win).aplayerIsImage()){
+            obj.stoped = true;
+            self.me_list.push(obj);
+            return;
+        }
+
+
+        if(WEBKIT){
 			//создаем канвас для элемента и устанавливаем cors для img
        		obj.wk_canvas = document.createElement('canvas');
 		}
 		
 		self.me_list.push(obj);
-		
-		if(WEBKIT || GECKO){
+
+        if(WEBKIT || GECKO){
 			self.set_handlers(me);
 		}
-		
-	},
+
+    },
 
 	//возобновить проверку элемента
 	start_check_me : function(element){
@@ -1616,7 +1624,7 @@ function canvas_growth() {
 		 $(e.currentTarget).addClass('cursorMove');
 		 return false;
 	});
-	$('#canvas').mouseup(function(e){ 
+	$('#canvas').mouseup(function(e){
 		$('.MediaCont').removeClass('cursorMove');
 	});
    
@@ -1720,7 +1728,7 @@ getXmlHttp = function(){
    
 
 /**
- * Объект обработки событий котролов toolbar & controlbar
+ * Объект обработки событий контролов toolbar & controlbar
  */
 var controls_handlers = {
 	timers : new Array(),
