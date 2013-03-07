@@ -78,21 +78,16 @@ function aplayer_configurate($aplayer_config){
  * @param unknown_type $star_marked - общие настройки для всех ОС (с индексом ['*'] - $conf['aplayerConfig']['*'])
  * @param unknown_type $res_out - ссылка на результирующий массив с параметрами для клиентской ОС
  */
-function config_merging_part($star_marked, &$res_out ){
+function config_merging_part($star_marked, &$res_out ) {
+   if(gettype($star_marked)!='array')
+      return;
 
-	if(gettype($star_marked)!='array'){
-		return;
-	}
-	else{
-		foreach($star_marked as $key=>$val){
-			if( isset($res_out[$key]) ){
-				config_merging_part($val, $res_out[$key] );
-			}
-			else {
-				$res_out[$key] = $val;
-			}
-		}
-	}
+   foreach($star_marked as $key=>$val) {
+      if( isset($res_out[$key]) )
+         config_merging_part($val, $res_out[$key] );
+      else
+         $res_out[$key] = $val;
+   }
 }
 
 /**
@@ -242,9 +237,9 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
 
 function get_avreg_profiles($_conf)
 {
-   $ret = @glob($_conf['profiles-dir'].'/[A-Za-z0-9][A-Za-z0-9_-:]*', GLOB_NOSORT);
+   $ret = @glob($_conf['profiles-dir'].'/[A-Za-z0-9][A-Za-z0-9_-:]*');
    if ( $ret === FALSE || count($ret) === 0 )
-      return array();
+      return array('');
    else
       return $ret;
 }
