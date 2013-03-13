@@ -297,7 +297,7 @@ $(function(){
 
 	$('body').css( 'overflow', 'hidden');
 
-	// инициализация галереи	
+	// инициализация галереи
 	gallery.init(conf);
     document.ready = function(e){
     }
