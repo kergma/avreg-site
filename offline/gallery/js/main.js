@@ -700,7 +700,9 @@ var gallery = {
 
 
                     var found = tree.split('_');
-
+                    scroll.position = 1;
+                    scroll.updateposition(1);
+                    scroll.setposition(1);
                     var s = '';
                     for(var i=0,ilen=found.length; i<ilen; i++) {
                         if(s!='')
@@ -2221,7 +2223,7 @@ var matrix = {
         var hide_over = true;
 
         var height, width; //размер ячейки
-        var img_height, img_width;//размер изображения
+        var img_height, img_width; //размер изображения
 
         var reg = new RegExp('\\.\\w{3,4}\\s*', 'i'); //для получения расширения файла
         //определение параметров в зависимости от режима отображения
@@ -2939,10 +2941,19 @@ var scroll = {
             $(document).mousemove(function(e){
                 scroll.mousemove = true;
                 var top = e.pageY - start_top - start;
-                if (top >= 0 && top <= $(scroll.id + ' .scroll_body_v').height()- $(scroll.id + ' .scroll_polz_v').height()) {
-                    $(scroll.id + ' .scroll_polz_v').css('top', top);
-                    var sp = Math.floor(top/((scroll.height-scroll.polzh)/scroll.cell_count)) * scroll.row_count;
-                    scroll.position = sp;
+                var top_gr = $(scroll.id + ' .scroll_body_v').height()- $(scroll.id + ' .scroll_polz_v').height() - 11;
+                if (top >= 0 && top <= top_gr) {
+                    if ((top + 10) >= top_gr){
+                        $(scroll.id + ' .scroll_polz_v').css('top', top);
+                        sp = scroll.cell_count * scroll.row_count - 10;
+                        console.log(top + ' ___ ' + sp);
+                        scroll.position = sp;
+                    } else{
+                        $(scroll.id + ' .scroll_polz_v').css('top', top);
+                        var sp = Math.floor(top/((scroll.height-scroll.polzh)/scroll.cell_count)) * scroll.row_count;
+                        scroll.position = sp;
+                        //console.log(scroll.position + ' ____ ' + top + ' ____ ' + sp + ' ____ ' + scroll.polzh + ' ____ ' + scroll.height + ' _____ ' + scroll.cell_count + ' ____ ' + scroll.row_count);
+                    }
                 }
             });
         });
