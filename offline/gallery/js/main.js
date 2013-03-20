@@ -2963,6 +2963,16 @@ var scroll = {
                 matrix.num = scroll.position;
                 $('#cell_'+matrix.num).addClass('active');
                 scroll.hidePopup();
+                /*var object_focus = Array("#tree", "#wintop", "#winbot");
+                for (var i = 0; i < 2; i++){
+                    if ($(object_focus[i]).hasClass('selectBox')){
+                        $(object_focus[i]).removeClass('selectBox');
+                    }
+                }
+
+                $(object_focus[2]).addClass('selectBox');
+                $("#scroll_content").focusin();*/
+                keyBoard.setFocusListPanel();
             }
         });
 
@@ -3337,6 +3347,7 @@ var scroll = {
         $(scroll.id + ' .scroll_polz_v').css({top:t});
     }
 };
+
 // элемент масштаба предварительного просмотра
 var scale = {
     id : '#scale', // ид элемента
@@ -3828,6 +3839,11 @@ var keyBoard = {
             $('#win_top').height('auto');
         }
     },
+    setFocusListPanel : function(){
+        keyBoard.boxesEnum.set(keyBoard.boxesEnum.INSIDE);
+        keyBoard.checkSelecBox();
+    },
+
     init : function() {
         keyBoard.currentSelector = $('#cameras_selector .options').children();
         keyBoard.colorSelector = $('#cameras_color ul').children('li');
