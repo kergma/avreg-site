@@ -2847,7 +2847,7 @@ var scroll = {
     position : 0, // текущая позиция в скроле
     min_height : 14, // минимальная высота ползунка
     lastTopPositionScroll : 0, // Текущий отступ сверху ползунка
-
+    polzh : 0,
 
     init : function(config) {
         if (config && typeof(config) == 'object') {
@@ -2877,7 +2877,6 @@ var scroll = {
             if ( h < scroll.min_height) {
                 scroll.polzh = scroll.min_height - h;
                 h = scroll.min_height;
-
             }
             // задаем параметры ползунка
             $(scroll.id + ' .scroll_polz_v').height(h);
@@ -2940,6 +2939,7 @@ var scroll = {
         scroll.mousemove = false;
         $(scroll.id + ' .scroll_polz_v').unbind('mousedown');
         $(scroll.id + ' .scroll_polz_v').mousedown(function(e){
+            scrollPopUp.hidePopUpAfterTimeout = false;
             var start = e.pageY - $(this).offset().top;
             var start_top = $(this).offset().top - $(this).position().top;
             $(document).mousemove(function(e){
@@ -2951,15 +2951,14 @@ var scroll = {
                 top = (top > top_gr)?top_gr:top;
                 top = (top < 0)?0:top;
                 // Устанавливается отсуп сверху для ползунка
-                console.log(top);
                 $(scroll.id + ' .scroll_polz_v').css('top', top);
                 // Какой элемент нужно установить
                 var sp = Math.floor(top/((scroll.height - scroll.polzh)/scroll.cell_count) * scroll.row_count);
                 // Если в матрице мало элементов, то устанавливаю самый первый активным
-                sp = (sp <= matrix.count_row * matrix.cell_count) ? 0 : sp;
                 // Проверяю, не вышли ли при подсчете за домустимый диапазон
                 sp = (sp > matrix.count_item)?(Math.floor(matrix.count_item / matrix.cell_count) * matrix.cell_count):sp;
                 scroll.position = sp;
+                console.log(sp + ' ___ ' + top + ' ___ ' + matrix.count_item + ' ____ ' + matrix.cell_count + ' ____ ' + scroll.row_count + ' ___ ' + scroll.height + ' ____ ' + scroll.polzh);
                 var topScroll = parseInt($(scroll.id + ' .scroll_polz_v').css('top'));
                 // Обновляю PopUp окно
                 scrollPopUp.updatePopup(topScroll, sp);
@@ -3306,7 +3305,7 @@ var scroll = {
         if(t > $(scroll.id + ' .scroll_body_v').height()- $(scroll.id + ' .scroll_polz_v').height() ){
             t=$(scroll.id + ' .scroll_body_v').height()- $(scroll.id + ' .scroll_polz_v').height();
         }
-        $(scroll.id + ' .scroll_polz_v').css({top:scroll.lastTopPositionScroll});
+        $(scroll.id + ' .scroll_polz_v').css({top:t});//scroll.lastTopPositionScroll});
     }
 };
 
