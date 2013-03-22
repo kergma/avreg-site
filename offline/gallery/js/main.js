@@ -2954,7 +2954,6 @@ var scroll = {
                 $(scroll.id + ' .scroll_polz_v').css('top', top);
                 // Какой элемент нужно установить
                 var sp = Math.floor(top/((scroll.height - scroll.polzh)/scroll.cell_count) * scroll.row_count);
-                // Если в матрице мало элементов, то устанавливаю самый первый активным
                 // Проверяю, не вышли ли при подсчете за домустимый диапазон
                 sp = (sp > matrix.count_item)?(Math.floor(matrix.count_item / matrix.cell_count) * matrix.cell_count):sp;
                 scroll.position = sp;
