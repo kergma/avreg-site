@@ -700,9 +700,9 @@ var gallery = {
 
 
                     var found = tree.split('_');
-                    scroll.position = 1;
-                    scroll.updateposition(1);
-                    scroll.setposition(1);
+                    scroll.position = 0;
+                    scroll.updateposition(0);
+                    scroll.setposition(0);
                     var s = '';
                     for(var i=0,ilen=found.length; i<ilen; i++) {
                         if(s!='')
@@ -1935,7 +1935,7 @@ var matrix = {
         $(".elem .info_block").tooltip();
 
         //установка активного элемента 
-        $('.active').removeAttr('active');
+        $('.active').removeClass('active');
         $('#cell_'+matrix.num).addClass('active');
 
     },
@@ -2939,29 +2939,26 @@ var scroll = {
         $(scroll.id + ' .scroll_polz_v').unbind('mousedown');
         $(scroll.id + ' .scroll_polz_v').mousedown(function(e){
             e.preventDefault();
-            var topoffset = $(this).offset().top;
             var start = e.pageY - $(this).offset().top;
             var start_top = $(this).offset().top - $(this).position().top;
             $(document).mousemove(function(e){
                 scroll.mousemove = true;
                 var top = e.pageY - start_top - start;
                 var top_gr = $(scroll.id + ' .scroll_body_v').height() - $(scroll.id + ' .scroll_polz_v').height();
-                if (top < 0 || top_gr <= top){
-                    top = (top_gr <= top)?top_gr:0;
-                    top = (matrix.count_item <= (matrix.count_row * matrix.cell_count)) ? 0 : top;
-                }
-                if (top >= top_gr){
-                    $(scroll.id + ' .scroll_polz_v').css('top', top);
-                    sp = matrix.count_item - (matrix.count_item%matrix.cell_count);
-                    sp = (sp <= (matrix.count_row * matrix.cell_count)) ? 0 : sp;
-                    scroll.position = sp;
-                } else{
-                    $(scroll.id + ' .scroll_polz_v').css('top', top);
-                    var sp = Math.floor(top/((scroll.height-scroll.polzh)/scroll.cell_count)) * scroll.row_count;
-                    sp = (sp <= (matrix.count_row * matrix.cell_count)) ? 0 : sp;
-                    scroll.position = sp;
-                }
+                // Учитываю, что скролл не может наезжать на соседние обыекты, а должен двигаться только по в допустимом диапазоне
+                top = (top > top_gr)?top_gr:top;
+                top = (top < 0)?0:top;
+                // Устанавливается отсуп сверху для ползунка
+                $(scroll.id + ' .scroll_polz_v').css('top', top);
+                // Какой элемент нужно установить
+                var sp = Math.floor(top/((scroll.height - scroll.polzh)/scroll.cell_count) * scroll.row_count);
+                // Если в матрице мало элементов, то устанавливаю самый первый активным
+                sp = (sp <= matrix.count_row * matrix.cell_count) ? 0 : sp;
+                // Проверяю, не вышли ли при подсчете за домустимый диапазон
+                sp = (sp > matrix.count_item)?(Math.floor(matrix.count_item / matrix.cell_count) * matrix.cell_count):sp;
+                scroll.position = sp;
                 var topScroll = parseInt($(scroll.id + ' .scroll_polz_v').css('top'));
+                // Обновляю PopUp окно
                 scrollPopUp.updatePopup(topScroll, sp);
             });
         });
@@ -2977,6 +2974,7 @@ var scroll = {
                 keyBoard.setFocusListPanel();
                 scrollPopUp.hidePopup();
             }
+            scroll.mousemove = false;
         });
 
         $("#win_bot").unbind('mousewheel');
@@ -3016,6 +3014,11 @@ var scroll = {
 
         scroll.position = 0;
         $(scroll.id).show();
+    },
+
+    moveScroll : function (event){
+        event.preventDefault();
+
     },
 
     // сдвиг влево
@@ -4202,7 +4205,7 @@ var scrollPopUp = {
             }
             scrollPopUp.idInterval = setTimeout(function(){
                 scrollPopUp.sendRequestUpdateCache(sp);
-            }, 200);
+            }, 100);
 
             self.htmlPopup = self.cachePopUp[self.scrollPosition];
         }
