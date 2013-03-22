@@ -2846,12 +2846,16 @@ var scroll = {
     matrix_count: 10, // размер матрицы
     position : 0, // текущая позиция в скроле
     min_height : 14, // минимальная высота ползунка
-    popUp : {}, // PopUp Окно возле скролла во время перемещения с текущим значением диапазона
+    lastTopPositionScroll : 0, // Текущий отступ сверху ползунка
+
 
     init : function(config) {
         if (config && typeof(config) == 'object') {
             $.extend(scroll, config);
         }
+
+        // Обнуляю отступ сверху ползунка
+        scroll.lastTopPositionScroll = 0;
 
         if(MSIE){
             var wheight=(window.innerHeight)?window.innerHeight:((document.all)?document.body.offsetHeight:null);
@@ -2933,15 +2937,13 @@ var scroll = {
                 e.preventDefault();
             });
 
-        //$(scroll.id + ' .scroll_polz_v_Bottom').height($(scroll.id + ' .scroll_polz_v').height());
-
         scroll.mousemove = false;
         $(scroll.id + ' .scroll_polz_v').unbind('mousedown');
         $(scroll.id + ' .scroll_polz_v').mousedown(function(e){
-            e.preventDefault();
             var start = e.pageY - $(this).offset().top;
             var start_top = $(this).offset().top - $(this).position().top;
             $(document).mousemove(function(e){
+                e.preventDefault();
                 scroll.mousemove = true;
                 var top = e.pageY - start_top - start;
                 var top_gr = $(scroll.id + ' .scroll_body_v').height() - $(scroll.id + ' .scroll_polz_v').height();
@@ -2949,6 +2951,7 @@ var scroll = {
                 top = (top > top_gr)?top_gr:top;
                 top = (top < 0)?0:top;
                 // Устанавливается отсуп сверху для ползунка
+                console.log(top);
                 $(scroll.id + ' .scroll_polz_v').css('top', top);
                 // Какой элемент нужно установить
                 var sp = Math.floor(top/((scroll.height - scroll.polzh)/scroll.cell_count) * scroll.row_count);
@@ -2968,13 +2971,23 @@ var scroll = {
                 $(document).unbind('mousemove');
                 scroll.updateposition(scroll.position, true);
                 scroll.mousemove = false;
+
+                scroll.lastTopPositionScroll = top;
+
+                // Делаю неактивной предыдущую выделенную ячейку
+                if ($('#cell_'+matrix.num).hasClass('active')){
+                    $('#cell_'+matrix.num).removeClass('active');
+                }
+
                 matrix.num = scroll.position;
+                // Выбранная ячейка становится активной
                 $('#cell_'+matrix.num).addClass('active');
-                scrollPopUp.hidePopup(false);
                 keyBoard.setFocusListPanel();
+                scrollPopUp.hidePopUpAfterTimeout = true;
+                console.log('end ');
                 scrollPopUp.hidePopup();
             }
-            scroll.mousemove = false;
+            //scroll.mousemove = false;
         });
 
         $("#win_bot").unbind('mousewheel');
@@ -3293,7 +3306,7 @@ var scroll = {
         if(t > $(scroll.id + ' .scroll_body_v').height()- $(scroll.id + ' .scroll_polz_v').height() ){
             t=$(scroll.id + ' .scroll_body_v').height()- $(scroll.id + ' .scroll_polz_v').height();
         }
-        $(scroll.id + ' .scroll_polz_v').css({top:t});
+        $(scroll.id + ' .scroll_polz_v').css({top:scroll.lastTopPositionScroll});
     }
 };
 
@@ -4167,7 +4180,7 @@ var keyBoard = {
 var scrollPopUp = {
     idScrollPopUp : '#scrollPopup',
     htmlPopup : '', // Текущий текст в Popup окне
-    lastScrollPosition : 0,
+    hidePopUpAfterTimeout : false,
     cachePopUp : {},
     idInterval : undefined,
     scrollPosition : 0,
@@ -4251,9 +4264,14 @@ var scrollPopUp = {
                 'cameras': cameras
             },
             function(data, res) {
+                console.log(scrollPopUp.hidePopUpAfterTimeout);
                 scrollPopUp.cachePopUp[sp] = data;
                 scrollPopUp.setHtmlPopUp(data);
                 scrollPopUp.showPopUp();
+                if (scrollPopUp.hidePopUpAfterTimeout === true){
+                    console.log('123');
+                    scrollPopUp.hidePopup();
+                }
             }, 'text');
     },
 
