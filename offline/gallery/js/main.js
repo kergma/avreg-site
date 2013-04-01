@@ -3538,6 +3538,7 @@ var scale2 = {
             var wm = width*2;
             var hm = height*2;
             if ($('#proportion').attr('checked') || value[7]=='video') {
+
                 // если выбран режим сохранять пропорции
                 if (value[3] < matrix.height-_dh && value[4] < matrix.width) {
                     // если изображение влазит в окно просмотра, то используем оригинальные размеры
