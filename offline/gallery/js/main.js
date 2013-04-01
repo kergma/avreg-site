@@ -3538,6 +3538,7 @@ var scale2 = {
             var wm = width*2;
             var hm = height*2;
             if ($('#proportion').attr('checked') || value[7]=='video') {
+
                 // если выбран режим сохранять пропорции
                 if (value[3] < matrix.height-_dh && value[4] < matrix.width) {
                     // если изображение влазит в окно просмотра, то используем оригинальные размеры
@@ -3672,6 +3673,7 @@ var scale2 = {
 
 var keyBoard = {
     boxesEnum : {},
+    idInterval : undefined,
     keys : {
         i : 73,
         a : 65,
@@ -3969,60 +3971,27 @@ var keyBoard = {
                         //PREVIEW: стрелка вниз
                         scroll.num_down();
                     } else if (e.which == keyBoard.keys.pageUp) {
+
                         var sp = scroll.position;
-                        sp = sp - scroll.matrix_count*scroll.row_count;
-                        if (sp < 0) {
-                            sp = 0;
+                        if (keyBoard.idInterval !== undefined){
+                            clearTimeout(keyBoard.idInterval);
                         }
-                        matrix.num = matrix.num - scroll.matrix_count*scroll.row_count;
-                        if (matrix.num < 0) {
-                            // если вышли за пределы переходим на предыдущий если пользователь согласился
-                            if (matrix.curent_tree_events[matrix.tree].prev) {
-                                var checknextwindow = gallery.cookie.get('checknextwindow');
-                                if (checknextwindow == 'yes') {
-                                    prev = matrix.curent_tree_events[matrix.tree].prev;
-                                    new_num = matrix.curent_tree_events[prev].count - 1;
-                                    sp = Math.floor(new_num / scroll.row_count) * scroll.row_count;
-                                    matrix.num = new_num;
-                                    scroll.position = sp;
-                                    matrix.select_node = 'left';
-                                    $.jstree._focused().deselect_node("#tree_"+matrix.tree);
-                                    $("#tree_"+prev).jstree("set_focus");
-                                    $.jstree._focused().select_node("#tree_"+prev);
-                                    scroll.setposition(sp);
-                                } else if (checknextwindow != 'no'){
-                                    gallery.nextwindow.open('left');
-                                }
-                            }
-                        } else {
-                            scroll.updateposition(sp);
-                            scroll.setposition(sp);
-                        }
+
+                        keyBoard.idInterval = setTimeout(function SetTimeoutPressPgUp(){
+                            keyBoard.keyPgUpPress(sp);
+                        }, 35);
+
                     } else if (e.which == keyBoard.keys.pageDown) {
+
                         var sp = scroll.position;
-                        if (sp + scroll.matrix_count*scroll.row_count*2 >  scroll.cell_count*scroll.row_count) {
-                            if (matrix.curent_tree_events[matrix.tree].next) {
-                                var checknextwindow = gallery.cookie.get('checknextwindow');
-                                if (checknextwindow == 'yes') {
-                                    next = matrix.curent_tree_events[matrix.tree].next;
-                                    matrix.num = 0;
-                                    matrix.select_node = 'right';
-                                    $.jstree._focused().deselect_node("#tree_"+matrix.tree);
-                                    $("#tree_"+next).jstree("set_focus");
-                                    $.jstree._focused().select_node("#tree_"+next);
-                                } else if (checknextwindow != 'no'){
-                                    gallery.nextwindow.open('right');
-                                }
-                                return false;
-                            }
-                            sp = scroll.cell_count*scroll.row_count - scroll.matrix_count*scroll.row_count;
-                            matrix.num =scroll.cell_count*scroll.row_count - scroll.matrix_count*scroll.row_count;
-                        } else {
-                            sp =  sp + scroll.matrix_count*scroll.row_count;
-                            matrix.num = matrix.num + scroll.matrix_count*scroll.row_count;
+                        if (keyBoard.idInterval !== undefined){
+                            clearTimeout(keyBoard.idInterval);
                         }
-                        scroll.updateposition(sp);
-                        scroll.setposition(sp);
+
+                        keyBoard.idInterval = setTimeout(function SetTimeoutPressPgDown(){
+                            keyBoard.keyPgDownPress(sp);
+                        }, 35);
+
                     } else if(e.which == keyBoard.keys.enter) {
                         matrix.detail();
                     }
@@ -4181,7 +4150,66 @@ var keyBoard = {
             }
 
         });
+    },
+
+    keyPgUpPress : function (sp){
+        sp = sp - scroll.matrix_count*scroll.row_count;
+        if (sp < 0) {
+            sp = 0;
+        }
+        matrix.num = matrix.num - scroll.matrix_count*scroll.row_count;
+        if (matrix.num < 0) {
+            // если вышли за пределы переходим на предыдущий если пользователь согласился
+            if (matrix.curent_tree_events[matrix.tree].prev) {
+                var checknextwindow = gallery.cookie.get('checknextwindow');
+                if (checknextwindow == 'yes') {
+                    prev = matrix.curent_tree_events[matrix.tree].prev;
+                    new_num = matrix.curent_tree_events[prev].count - 1;
+                    sp = Math.floor(new_num / scroll.row_count) * scroll.row_count;
+                    matrix.num = new_num;
+                    scroll.position = sp;
+                    matrix.select_node = 'left';
+                    $.jstree._focused().deselect_node("#tree_"+matrix.tree);
+                    $("#tree_"+prev).jstree("set_focus");
+                    $.jstree._focused().select_node("#tree_"+prev);
+                    scroll.setposition(sp);
+                } else if (checknextwindow != 'no'){
+                    gallery.nextwindow.open('left');
+                }
+            }
+        } else {
+            scroll.updateposition(sp);
+            scroll.setposition(sp);
+        }
+    },
+
+    keyPgDownPress : function (sp){
+        var sp = scroll.position;
+        if (sp + scroll.matrix_count*scroll.row_count*2 >  scroll.cell_count*scroll.row_count) {
+            if (matrix.curent_tree_events[matrix.tree].next) {
+                var checknextwindow = gallery.cookie.get('checknextwindow');
+                if (checknextwindow == 'yes') {
+                    next = matrix.curent_tree_events[matrix.tree].next;
+                    matrix.num = 0;
+                    matrix.select_node = 'right';
+                    $.jstree._focused().deselect_node("#tree_"+matrix.tree);
+                    $("#tree_"+next).jstree("set_focus");
+                    $.jstree._focused().select_node("#tree_"+next);
+                } else if (checknextwindow != 'no'){
+                    gallery.nextwindow.open('right');
+                }
+                return false;
+            }
+            sp = scroll.cell_count*scroll.row_count - scroll.matrix_count*scroll.row_count;
+            matrix.num =scroll.cell_count*scroll.row_count - scroll.matrix_count*scroll.row_count;
+        } else {
+            sp =  sp + scroll.matrix_count*scroll.row_count;
+            matrix.num = matrix.num + scroll.matrix_count*scroll.row_count;
+        }
+        scroll.updateposition(sp);
+        scroll.setposition(sp);
     }
+
 };
 
 // Объект PopUp окна
