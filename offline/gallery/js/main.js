@@ -2667,7 +2667,7 @@ var matrix = {
                         i++;
                     });
                     var loadimage = {};
-                    for (var i = sp; i < sp+ matrix.cell_count; i++) {
+                    for (var i = sp; i < sp + matrix.cell_count; i++) {
                         if (typeof( matrix.events[i]) != 'undefined')
                         {
                             value = matrix.events[i];
