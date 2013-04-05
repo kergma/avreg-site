@@ -3979,7 +3979,7 @@ var keyBoard = {
 
                         keyBoard.idInterval = setTimeout(function SetTimeoutPressPgUp(){
                             keyBoard.keyPgUpPress(sp);
-                        }, 35);
+                        }, 50);
 
                     } else if (e.which == keyBoard.keys.pageDown) {
 
@@ -3990,7 +3990,7 @@ var keyBoard = {
 
                         keyBoard.idInterval = setTimeout(function SetTimeoutPressPgDown(){
                             keyBoard.keyPgDownPress(sp);
-                        }, 35);
+                        }, 50);
 
                     } else if(e.which == keyBoard.keys.enter) {
                         matrix.detail();
@@ -4206,6 +4206,7 @@ var keyBoard = {
             sp =  sp + scroll.matrix_count*scroll.row_count;
             matrix.num = matrix.num + scroll.matrix_count*scroll.row_count;
         }
+        console.log(sp + '  ___  ' + matrix.num);
         scroll.updateposition(sp);
         scroll.setposition(sp);
     }
