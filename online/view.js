@@ -546,7 +546,7 @@ var checking_connection = {
 		};
 
         //Если не mjpeg останавливаем проверку
-        if(!$('.pl_cont',win).aplayerIsImage()){
+        if(!$('.pl_cont',win).aplayerIsMjpegImage()){
             obj.stoped = true;
             self.me_list.push(obj);
             return;
@@ -597,7 +597,7 @@ var checking_connection = {
 	},
 	
     //хеширование
-	crc32_table : false, 
+	crc32_table : false,
     crc32 : function(str, crc) { 
     	var table ='';
     	if(!this.crc32_table){
@@ -653,9 +653,15 @@ var checking_connection = {
     check_cams_connection_webkit : function(){
     	var self = checking_connection;
         for(index = 0; index<self.me_list.length; index++){
+
+
+
         	if(self.me_list[index].stoped || self.me_list[index].connection_fail) continue;
-            //проверяем изменилось ли изображение 
+
+            //проверяем изменилось ли изображение
+
             var isFail = self.is_fail_connection_webkit(index);
+
  			if( isFail ){
             	$(self.me_list[index].me)
 				.unbind('load')
@@ -672,6 +678,8 @@ var checking_connection = {
 	            }
 			}
 		}
+
+
     },
     
  	//Возвращает битмап изображения (для WEBKIT)
@@ -769,6 +777,7 @@ var checking_connection = {
 	
 	//попытка реконнекта
 	reconnect_webkit : function(index){
+        console.log('reconnect ', this);
 		var self = this;
 		var me = self.me_list[index].me;
 		var me_id = $(me).attr('id');
@@ -886,6 +895,7 @@ var checking_connection = {
 	
 	//попытка реконнекта
 	reconnect_gecko : function(index){
+        console.log('reconnect ', this);
 		var self = this;
 		var me = self.me_list[index].me;
 		var me_id = $(me).attr('id');
