@@ -1250,25 +1250,6 @@ array(
    'mstatus' => 1,
 ),
 
-/*
-array(
-   'name'    => 'save_only_motion',
-   'type'    => $BOOL_VAL,
-   'def_val' => true,
-   'desc'    => 'Какие видеокадры записывать <b>внутри каждой сессии движения</b>:
-   <ul>
-   <li>&laquo;Выкл.&raquo; - записывать любые кадры (все подряд, со скоростью захвата). Включение этого режима существенно увеличивает объём сохраняемого видео на диск.</li>
-   <li>&laquo;Вкл.&raquo; (по-умолчанию) - записывать только кадры &quot;с движением&quot;.</li>
-   </ul>
-   <p>'.$strOnlySelDet.'</p>
-   По умолчанию: &laquo;<b>Вкл.</b>&raquo;',
-   'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
-   'cats'    => '11.1',
-   'subcats' => NULL,
-   'mstatus' => 1,
-),
- */
-
 array(
    'name'    => 'paranoid_snap',
    'type'    => $INT_VAL,
