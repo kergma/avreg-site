@@ -221,6 +221,7 @@ function checkParam ( $parname, $parval )
       $ret = getSelectHtmlByName('fields['.$parname.']', $GLOBALS['rec_acodec'], FALSE, 1, 0, $parval, TRUE, FALSE);
       break;
 
+/*
    case 'rotate':
       if ( $parval == '' || is_null($parval) || $parval == '0' )
          $sel = '';
@@ -228,6 +229,7 @@ function checkParam ( $parname, $parval )
          $sel = $GLOBALS['flip_type'][$parval-1];
       $ret = getSelectHtml('fields['.$parname.']', $GLOBALS['flip_type'], FALSE, 1, 1, $sel, TRUE, FALSE);
       break;
+*/
    case 'v4l_hack':
       if ( $parval == '' || is_null($parval) || $parval == '0' )
          $sel = '';
@@ -235,6 +237,11 @@ function checkParam ( $parname, $parval )
          $sel = $GLOBALS['v4l_hacks'][$parval-1];
       $ret = getSelectHtml('fields['.$parname.']', $GLOBALS['v4l_hacks'], FALSE, 1, 1, $sel, TRUE, FALSE);
       break;
+
+   case 'db_events':
+      $ret = getChkbxByAssocAr($parname, $GLOBALS['events_list'], 7, '1,3,4', TRUE, FALSE);
+      break;
+
    default:
       $ret = '<p style="color: '.$GLOBALS['error_color'].'">'. sprintf($GLOBALS['unknownCheckParams'], $parname) .'</p>'."\n";
    } // switch
