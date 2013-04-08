@@ -150,6 +150,11 @@ input.disabled {
    font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;
 }
 
+.warntext {
+   color: #FF0000;
+   font-family: Verdana, Geneva, Helvetica, Arial, sans-serif;
+}
+
 .HiLiteErr {
    color: #FF0000;
    font-weight: bold;
