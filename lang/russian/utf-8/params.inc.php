@@ -61,6 +61,8 @@ $rec_avcodec_fmt = '<b>Кодек (тип/стандарт) сжатия %sпо�
 
 $file_limits_and_detector = 'При включенном детекторе движения, событие &#171;окончание сессии движения&#187; (см. {motion_session_end} в настройках детектора) закроет файл независимо от любых установленных пределов на размер и продолжительность.';
 
+$ROOT_RES_DEF='По умолчанию: <b>&quot;/&quot;</b> - корневой ресурс.';
+
 // $PAR_CATEGORY, $COMMENT, $VIEW_ON_DEF, $VIEW_ON_CAM, $MASTER_STATUS, $HELP_PAGE
 $PAR_GROUPS = array(
    array(
@@ -91,6 +93,15 @@ $PAR_GROUPS = array(
    ),
 
    array(
+      'id'=>'3.1.2',
+      'name'=>'rtsp://',
+      'desc'=>'видео/аудио захват по протоколу &#171;rtsp://&#187;',
+      'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
+      'mstatus'=> 1,
+      'help_page'=> NULL
+   ),
+
+   array(
       'id'=>'3.1.1',
       'name'=>'http://',
       'desc'=>'видео/аудио захват по протоколу &#171;http://&#187;',
@@ -116,16 +127,6 @@ $PAR_GROUPS = array(
       'mstatus'=> 1,
       'help_page'=> NULL
    ),
-
-   array(
-      'id'=>'3.1.2',
-      'name'=>'rtsp://',
-      'desc'=>'видео/аудио захват по протоколу &#171;rtsp://&#187;',
-      'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
-      'mstatus'=> 1,
-      'help_page'=> NULL
-   ),
-
 
    array(
       'id'=>'3.2',
@@ -502,8 +503,8 @@ $PARAMS = array(
       array(
          'name'    => 'V.http_get',
          'type'    => $STRING200_VAL,
-         'def_val' => NULL,
-         'desc'    => '<b>Строка запроса GET</b> протокола HTTP на получение потокового видео MJPEG (live) или одиночного кадра JPEG (snapshot).<br><br>Например для Axis:<br />
+         'def_val' => '/',
+         'desc'    => '<b>Строка HTTP-запроса &quot;GET&quot;</b> (завершающая часть http URL-a) на получение потокового видео MJPEG (live) или одиночного кадра JPEG (snapshot).<br><br>Например для Axis:<br />
          mjpg: <b>/axis-cgi/mjpg/video.cgi?resolution=640x480&amp;color=1&amp;fps=5</b>
          <br />
          jpeg: <b>/axis-cgi/jpg/image.cgi?resolution=320x240&amp;camera=1&amp;compression=25</b>
@@ -511,9 +512,9 @@ $PARAMS = array(
          mjpg: <b>/avreg-cgi/mjpg/video.cgi?camera=5&fps=5</b>
          <br />
          jpeg: <b>/avreg-cgi/jpg/image.cgi?camera=1</b>
-         <br /><br />Не знаете запрос для вашей камеры - читайте <a href="'.$conf['docs-prefix'].'apps-ipcam-capture.html" target="_blank">здесь &gt;&gt;</a>
-         <br /><br />По умолчанию: <b>&quot;не установлено&quot; - не захватывать видео</b>',
-         'flags'=>$F_BASEPAR | $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
+         <br /><br />Не знаете запрос для вашей камеры - читайте <a href="'.$conf['docs-prefix'].'apps-ipcam-capture.html" target="_blank">здесь &gt;&gt;</a> или обратитесь к нам.
+         <br /><br />' . $ROOT_RES_DEF,
+         'flags'   => $F_BASEPAR | $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
          'cats'    => '3.1.1.1',
          'subcats' => NULL,
          'mstatus' => 1,
@@ -546,7 +547,7 @@ $PARAMS = array(
          'type'    => $INT_VAL,
          'def_val' => NULL,
          'desc'    => '<b>Только для шлюзов Aviosys 9100 (B/RK/A) в режиме roundrobin</b>.<br><br><b>Номер камеры/канала [0,1,2,3]</b> на шлюзе при захвате в режиме roundrobin.<br><br>По умолчанию: <b>не установлено</b> - не Aviosys 9100 в roundrobin.',
-         'flags'=> $F_IN_CAM,
+         'flags'   => $F_IN_CAM,
          'cats'    => '3.1.1.1',
          'subcats' => NULL,
          'mstatus' => 1,
@@ -557,7 +558,7 @@ $PARAMS = array(
          'type'    => $INT_VAL,
          'def_val' => 5,
          'desc'    => '<b>Количество логических ошибок в протоколе приводящее к принудительному разрыву соединения</b>. В некоторых случаях, например: на оч. медленных каналах или проблемных камерах, увеличения значения этого параметра позволяет всё же обеспечить непрерывный видеозахват.<br />Диапазон: [2..10], по умолчанию: &quot;<b>5</b>&quot;.',
-         'flags'=>$F_RELOADED | $F_IN_DEF | $F_IN_CAM,
+         'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
          'cats'    => '3.1.1',
          'subcats' => NULL,
          'mstatus' => 1,
@@ -566,12 +567,11 @@ $PARAMS = array(
       array(
          'name'    => 'A.http_get',
          'type'    => $STRING200_VAL,
-         'def_val' => NULL,
-         'desc'    => '<b>Строка запроса GET</b> протокола HTTP на получение аудио-потока в форматах pcm G.711 64kbit/s, adpcm G.726 32kbit/s и G.723 24kbit/s или AAC (rtp over http, Axis).<br><br>
+         'def_val' => '/',
+         'desc'    => '<b>Строка HTTP-запроса &quot;GET&quot;</b>  (завершающая часть http URL-a) на получение аудио-потока в форматах pcm G.711 64kbit/s, adpcm G.726 32kbit/s и G.723 24kbit/s или AAC (rtp over http, Axis).<br><br>
          Например для Axis: &quot;<b>/axis-cgi/audio/receive.cgi</b>&quot;
-<br /><br />Не знаете запрос для вашей камеры - читайте <a href="'.$conf['docs-prefix'].'apps-ipcam-capture.html" target="_blank">здесь &gt;&gt;</a>'.
-   '<br /><br />По умолчанию: <b>&quot;не установлено&quot; - не захватывать аудио</b>',
-   'flags'=>$F_BASEPAR | $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
+<br /><br />Не знаете запрос для вашей камеры - читайте <a href="'.$conf['docs-prefix'].'apps-ipcam-capture.html" target="_blank">здесь &gt;&gt;</a><br /><br />' . $ROOT_RES_DEF,
+   'flags'   => $F_BASEPAR | $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
    'cats'    => '3.1.1.2',
    'subcats' => NULL,
    'mstatus' => 1,
@@ -610,17 +610,14 @@ array(
   'mstatus' => 1,
 ),
  */
-
 array(
    'name'    => 'rtsp_play',
    'type'    => $STRING200_VAL,
-   'def_val' => NULL,
-   'desc'    => '<b>Строка запроса PLAY</b> протокола RTSP на получение информации о медиа-потоках:<br /><br />
-   <br />
+   'def_val' => '/',
+   'desc'    => '<b>Строка RTSP-запроса &quot;PLAY&quot;</b> (завершающая часть rtsp URL-а), адресующая конкретный медиа-поток камеры:<br /><br />
    Например, для камер Axis с прошивками версий от 5.00 и выше:
    <br /><b>/axis-media/media.amp?resolution=640x480&amp;videocodec=h264&amp;audio=0</b>
-   <br /><br />Не знаете запрос для вашей камеры - читайте <a href="http://www.soleratec.com/rtsp/" target="_blank">здесь &gt;&gt;</a>
-   <br /><br />По умолчанию: <b>&quot;не установлено&quot;</b>',
+   <br /><br />Не знаете запрос для вашей камеры - читайте <a href="http://www.soleratec.com/rtsp/" target="_blank">здесь &gt;&gt;</a>  или обратитесь к нам.<br /><br />' . $ROOT_RES_DEF,
    'flags'   => $F_BASEPAR | $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
    'cats'    => '3.1.2',
    'subcats' => NULL,
