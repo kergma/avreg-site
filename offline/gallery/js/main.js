@@ -2206,11 +2206,12 @@ var matrix = {
         {
             img.src = MediaUrlPref + matrix.events[el][2];
         }
+        matrix.num = sp;
     },
 
     // обновление матрицы
     update : function(sp) {
-
+        matrix.num = sp;
         $('#matrix_load').show();
         var hide_over = true;
 
