@@ -651,7 +651,6 @@ var gallery = {
                     old_value = key;
                 }
             });
-
             html += '</ul></ul>';
             // высчитываем новый выбранный диапазон событий если старого в новом дереве нет
             if (matrix.tree != 'all' && typeof(matrix.curent_tree_events[matrix.tree]) == 'undefined') {
@@ -668,11 +667,11 @@ var gallery = {
             if (typeof(matrix.curent_tree_events[matrix.tree]) == 'undefined') {
                 matrix.tree = 'all';
             }
-
             var open = '#tree_'+matrix.tree;
             var parent = $(self.holder).parent().hide();
             $("#tree_new").remove();
             parent.append('<div id="tree_new"></div>');
+
             // построение дерева
             $(self.holder).html(html)
                 .jstree({
@@ -745,7 +744,6 @@ var gallery = {
                     );
                 })
                 .delegate("a", "click", function (event, data) { event.preventDefault();}).show();
-
             gallery.treeObject = $(self.holder);
 
             matrix.build();
@@ -2660,46 +2658,49 @@ var matrix = {
                 function(data) {
 
                     var i = get_sp;
-                    // обновляем кеш
-                    $.each(data.events, function(key, value) {
-                        matrix.all_events[key] = value;
-                        matrix.events[i] = value;
-                        i++;
-                    });
-                    var loadimage = {};
-                    for (var i = sp; i < sp + matrix.cell_count; i++) {
-                        if (typeof( matrix.events[i]) != 'undefined')
-                        {
-                            value = matrix.events[i];
 
-                            if (value[7] == 'image') {
+                    if (matrix.count_item > 0)
+                    {
+                        // обновляем кеш
+                        $.each(data.events, function(key, value) {
+                            matrix.all_events[key] = value;
+                            matrix.events[i] = value;
+                            i++;
+                        });
+                        var loadimage = {};
+                        for (var i = sp; i < sp + matrix.cell_count; i++) {
+                            if (typeof( matrix.events[i]) != 'undefined')
+                            {
+                                value = matrix.events[i];
 
-                                if (typeof( value.image_chache) != 'undefined' && value.image_chache) {
-                                    loadimage[i] = true;
+                                if (value[7] == 'image') {
 
-                                } else {
-                                    loadimage[i] = false;
+                                    if (typeof( value.image_chache) != 'undefined' && value.image_chache) {
+                                        loadimage[i] = true;
+
+                                    } else {
+                                        loadimage[i] = false;
+                                    }
                                 }
-                            }
-                            // ad hoc
-                            else loadimage[i] = true;
-                        };
+                                // ad hoc
+                                else loadimage[i] = true;
+                            };
 
-                        // проверяем какие изображения есть в кеше браузера, а какаие надо загрузить
-                        var ci = i + matrix.count_column;
-                        var hide_over = true;
-                        for(i; i<=ci; i++) {
-                            if (typeof( matrix.events[i]) != 'undefined' && matrix.events[i][7] == 'image') {
-                                if (typeof( matrix.events[i].image_chache) != 'undefined' && matrix.events[i].image_chache) {
-                                    loadimage[i] = true;
-                                } else {
-                                    loadimage[i] = false;
-                                    hide_over = false;
+                            // проверяем какие изображения есть в кеше браузера, а какаие надо загрузить
+                            var ci = i + matrix.count_column;
+                            var hide_over = true;
+                            for(i; i<=ci; i++) {
+                                if (typeof( matrix.events[i]) != 'undefined' && matrix.events[i][7] == 'image') {
+                                    if (typeof( matrix.events[i].image_chache) != 'undefined' && matrix.events[i].image_chache) {
+                                        loadimage[i] = true;
+                                    } else {
+                                        loadimage[i] = false;
+                                        hide_over = false;
+                                    }
                                 }
                             }
                         }
                     }
-
                     //если не режим ресайза
                     if(!matrix.isResizeMode ){
                         //обновляем матрицу
@@ -2802,8 +2803,6 @@ var matrix = {
             sp = 0;
             matrix.get_events(sp);
         }
-
-
 
         if(count_events < matrix.cell_count && count_events < matrix.curent_tree_events[matrix.tree].count) {
             // если нет элементов, то выполняем запрос на сервер

@@ -1,3 +1,6 @@
+<?php
+
+?>
 		<div id="page">
 		
 		
@@ -81,7 +84,8 @@
 									$cameras = explode(',', trim($cookies['cameras'], ','));
 								}
 							?>
-							<?php foreach ($GCP_cams_params as $CAM_NR => $PARAM) :?>
+							<?php
+                                foreach ($GCP_cams_params as $CAM_NR => $PARAM) :?>
 								<span class="new_Check" style="white-space: nowrap; ">
 								<span class="niceCheck">
 									<input type="checkbox" id="camera_<?php print $CAM_NR;?>" name="cameras" value="<?php print $CAM_NR;?>" <?php if (empty($cameras) || in_array($CAM_NR, $cameras)) :?>checked="checked" <?php endif;?>></span>
