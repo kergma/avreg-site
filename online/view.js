@@ -777,7 +777,6 @@ var checking_connection = {
 	
 	//попытка реконнекта
 	reconnect_webkit : function(index){
-        console.log('reconnect ', this);
 		var self = this;
 		var me = self.me_list[index].me;
 		var me_id = $(me).attr('id');
@@ -895,7 +894,6 @@ var checking_connection = {
 	
 	//попытка реконнекта
 	reconnect_gecko : function(index){
-        console.log('reconnect ', this);
 		var self = this;
 		var me = self.me_list[index].me;
 		var me_id = $(me).attr('id');
