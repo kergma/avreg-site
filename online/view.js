@@ -718,8 +718,6 @@ var checking_connection = {
 		var res = false;
 		var cur_bmp = self.get_bitmap(index);
 
-        console.log('cur_bmp', cur_bmp);
-
 		//Если получили ноль(код ошибки) - возвращаем 'сбой связи'
 		if(cur_bmp==0){
 			return true;
@@ -763,7 +761,6 @@ var checking_connection = {
 
 		//Элемент для проверки связи
 		var test_con = me;
-		
 		$(test_con).bind('error', function(){
 			$(me).attr('src', imgs['connection_fail'].src);
             self.me_list[index].connection_fail = false;
