@@ -61,13 +61,13 @@ $rec_avcodec_fmt = '<b>Кодек (тип/стандарт) сжатия %sпо�
 
 $file_limits_and_detector = 'При включенном детекторе движения, событие &#171;окончание сессии движения&#187; (см. {motion_session_end} в настройках детектора) закроет файл независимо от любых установленных пределов на размер и продолжительность.';
 
-$events_list = array( 1 => 'capture',
-                      2 => 'client',
-                      3 => 'motion',
-                      4 => 'recording',
-                      5 => 'pictures',
-                      6 => 'mediafiles',
-                      7 => 'quality');
+$event_groups = array( 1 => 'capture',
+                       2 => 'client',
+                       3 => 'motion',
+                       4 => 'recording',
+                       5 => 'pictures',
+                       6 => 'mediafiles',
+                       7 => 'quality');
 $ROOT_RES_DEF='По умолчанию: <b>&quot;/&quot;</b> - корневой ресурс.';
 
 // $PAR_CATEGORY, $COMMENT, $VIEW_ON_DEF, $VIEW_ON_CAM, $MASTER_STATUS, $HELP_PAGE
@@ -1504,7 +1504,7 @@ array(
 
 /* EVENTS */
 array(
-   'name'    => 'db_events',
+   'name'    => 'events2db',
    'type'    => $CHECK_VAL,
    'def_val' => NULL,
    'desc'    => 'DB   По умолчанию: <b>Выкл.</b> - не сообщать о событиях на этой камере.',

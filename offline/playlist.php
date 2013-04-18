@@ -208,7 +208,7 @@ if ( isset($_SESSION) && isset($_SESSION['error'])/* ошибка */ )
 <?php 
 
 	//формируем список чекбоксов выбора камер
-	print getChkbxByAssocAr('cams', $conf_cams_array, 6, $cams_sel, true, FALSE);
+	print getChkbxByAssocAr('cams', $conf_cams_array, $cams_sel, 8);
 
 ?>
 </td>
@@ -257,7 +257,7 @@ print getSelectHtml('day2', $day_array, FALSE, 1, 1, $day_array[$day2], FALSE, F
 </td>
 <td align="center" style="width:150px;">
 <?php 
-	print getChkbxByAssocAr('dayofweek', $day_of_week, 0,'0,1,2,3,4,5,6', true, FALSE);
+	print getChkbxByAssocAr('dayofweek', $day_of_week, '0,1,2,3,4,5,6');
 ?>
 </td>
 <td align="left" nowrap>

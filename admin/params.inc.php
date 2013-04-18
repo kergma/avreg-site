@@ -238,8 +238,8 @@ function checkParam ( $parname, $parval )
       $ret = getSelectHtml('fields['.$parname.']', $GLOBALS['v4l_hacks'], FALSE, 1, 1, $sel, TRUE, FALSE);
       break;
 
-   case 'db_events':
-      $ret = getChkbxByAssocAr($parname, $GLOBALS['events_list'], 7, '1,3,4', TRUE, FALSE);
+   case 'events2db':
+      $ret = getChkbxByAssocAr($parname, $GLOBALS['event_groups'], '1,3,4');
       break;
 
    default:

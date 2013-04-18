@@ -116,13 +116,9 @@ if (isset($_COOKIE))
 <tr align="center" valign="top">
 <td>
 <?php
-	//формируем список чекбоксов
-	if(stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')){
-		print  getChkbxByAssocAr('cams', $conf_cams_array, 6, $cams_sel, TRUE, FALSE);
-	}else{
-		print  getChkbxByAssocAr('cams', $conf_cams_array, 6, $cams_sel, TRUE, FALSE);
-	}
- ?>
+  // формируем список чекбоксов
+  print getChkbxByAssocAr('cams', $conf_cams_array, $cams_sel, 6);
+?>
 </td>
 <td align="left">
 <input type="radio" checked name="timemode" id="timemode" value="1" onclick="switch_timemode();"><?php echo $strUnBreak; ?>
@@ -143,12 +139,8 @@ print getSelectHtml('day2', $day_array, FALSE, 1, 1, $tm2[3], FALSE, FALSE);
 </td>
 <td align="center">
 <?php 
-//формируем список чекбоксов
-if(stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')){
-	print  getChkbxByAssocAr('dayofweek', $day_of_week, 6, '0,1,2,3,4,5,6', true, FALSE);
-}else{
-	print  getChkbxByAssocAr('dayofweek', $day_of_week, 6, '0,1,2,3,4,5,6', true, FALSE);
-}
+   //формируем список чекбоксов
+   print  getChkbxByAssocAr('dayofweek', $day_of_week, '0,1,2,3,4,5,6', 6);
 ?>
 </td>
 <td align="left" nowrap>
@@ -164,12 +156,8 @@ print getSelectHtml('minute2', $minute_array, FALSE, 1, 0, $min2, FALSE, FALSE);
 <td>
 
 <?php 
-//формируем список чекбоксов
-if(stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')){
-	print  getChkbxByAssocAr('filter', $env_id_ar, 6, $filter_sel, true, FALSE);
-}else{
-	print  getChkbxByAssocAr('filter', $env_id_ar, 6, $filter_sel, true, FALSE);
-}
+  //формируем список чекбоксов
+  print  getChkbxByAssocAr('filter', $env_id_ar, $filter_sel, 6);
 ?>
 
 </td>

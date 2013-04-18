@@ -1338,21 +1338,21 @@ function getSelectByAssocAr($_name, $assoc_array, $_multiple=FALSE ,
  * Функция формирует разметку с набором чекбоксов для выбора значений
  * @param unknown_type $_name базовое имя для идентификации эл-тов
  * @param unknown_type $assoc_array ассоциативный массив с названиями и значениями чекбоксов
- * @param unknown_type $_size кол-во одновременно отображаемых чекбоксов(без учета "Выбрать все")
  * @param unknown_type $selected строка с номерами п/п чекнутых эл-тов
  * @param unknown_type $show_select_all выводить чекбокс выбора/сброса всех чекбоксов
+ * @param unknown_type $_size кол-во одновременно отображаемых чекбоксов(без учета "Выбрать все")
  * @param unknown_type $text_prefix строка, добавляемая вначало к названию всех чекбоксов 
  * @param unknown_type $reverse поменять местами использование ключей и значеий ассоц. массива при генерации разметки чекбоксов
   * @return string результирующая разметка
  */
 function getChkbxByAssocAr(
-$_name, 
-$assoc_array, 
-$_size = NULL, //кол-во отображаемых чекбоксов
-$selected=NULL, //выбранные значения
-$show_select_all=true, //Выбор всех значений
-$text_prefix = NULL,
-$reverse=FALSE //менеяет местами ключи со значениями в рез-й разметке
+   $_name, 
+   $assoc_array,
+   $selected = NULL, //выбранные значения
+   $show_select_all = true, //Выбор всех значений
+   $_size = NULL,  //кол-во отображаемых чекбоксов
+   $text_prefix = NULL,
+   $reverse=FALSE //меняет местами ключи со значениями в рез-й разметке
 ){
 
 	$dict=array(
