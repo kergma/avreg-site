@@ -9,6 +9,7 @@ $pageBgColor = '#D0DCE0';
 $body_style='margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; height:100%;';
 $lang_file = '_offline.php';
 $USE_JQUERY = true;
+$link_javascripts = array('lib/js/checkbox.js');
 require ('../head.inc.php');
 DENY($arch_status);
 ?>

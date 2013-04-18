@@ -9,6 +9,7 @@ $pageBgColor = '#D0DCE0';
 $body_onload='switch_timemode();';
 $lang_file = '_offline.php';
 $USE_JQUERY = true;
+$link_javascripts = array('lib/js/checkbox.js');
 require ('../head.inc.php');
 DENY($arch_status);
 ?>
@@ -19,7 +20,6 @@ DENY($arch_status);
 var ie = document.all;
 var t = null;
 var do_wait = false;
-
 
 function switch_timemode() {
 	if( typeof($('#timemode').attr('checked'))!='undefined' ){
