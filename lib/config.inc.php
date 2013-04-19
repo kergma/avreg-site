@@ -1354,7 +1354,6 @@ function getChkbxByAssocAr(
    $text_prefix = NULL,
    $reverse=FALSE //меняет местами ключи со значениями в рез-й разметке
 ){
-
 	$dict=array(
 		'select_all'=>"Выбрать все",
 		'deselect_all'=>"Снять выбор"
@@ -1363,10 +1362,9 @@ function getChkbxByAssocAr(
 	$array_cnt = count($assoc_array);
 	if ( $array_cnt == 0 ) return '';
 	
-   $_size=(int)$_size;
-   $id_prefix = 'id_' + str_replace(array('[',']'), '_', $_name);
+	$_size=(int)$_size;
 
-	$a = '<div id="id_main_'.$id_prefix_name.'" class="chkbx_lsl" >'."\n";
+	$a = '<div id="id_main_'.$_name.'" class="chkbx_lsl" >'."\n";
 	
 	$cnt_selected_itms=0; //счетчик чекнутых чекбоксов
 	//заголовок с чекбоксом "Выбрать все"
@@ -1374,17 +1372,17 @@ function getChkbxByAssocAr(
 		$a .= '<div id="id_head_'.$_name.'" class="chkbx_lsl_head" >'."\n";
 		$a .= '<div style="text-align:left; clear:both;">'."\n";
 		$a .='<div style="float:left; position:relative; top:-3px;">';
-      $a .='<input type="checkbox" id="'.$id_prefix.'_select_all" name="'.$_name.'_select_all" value="select_all" onclick="chbox_select_all(\''.$_name.'\')" /> '."\n";
+		$a .='<input type="checkbox" id="id_'.$_name.'_select_all" name="'.$_name.'_select_all" value="select_all" onclick="chbox_select_all(\''.$_name.'\')" /> '."\n";
 		$a .= '</div>'."\n";
 		$a .='<div>';
-		$a .= '<label for="'.$id_prefix.'_select_all" class="chbox_head " >'.$dict['select_all'].'</label><br />'."\n";
+		$a .= '<label for="id_'.$_name.'_select_all" class="chbox_head " >'.$dict['select_all'].'</label><br />'."\n";
 		$a .= '</div>'."\n";
 		$a .= '</div>'."\n";
 		$a .= '</div>'."\n";
 	}
 	
 	//контейнер набора чекбоксов
-	$a .='<div id="'.$id_prefix.'" style="text-align:left; overflow-y:auto; position:relative; width:100%;">'."\n";
+	$a .='<div id="id_'.$_name.'" style="text-align:left; overflow-y:auto; position:relative; width:100%;">'."\n";
 	
 	foreach ($assoc_array as $k => $v)	{
 		settype($key,'string');
@@ -1402,20 +1400,21 @@ function getChkbxByAssocAr(
 		$a .='<div style="float:left;">';
 		
 		//определяем чекнутые эл-ты
-		if ( $selected != '' ) {
+		if ( $selected != '' )
+		{
 			$_y = FALSE;
 			$ar = explode(',', $selected);
 
 			foreach ($ar as $sss) {
 				if ($key == $sss) {
-               $_y = TRUE;
-               break;
+					$_y = TRUE;
+						break;
 				}
 			}
 			
 			//генерируем разметку чекбоксов
 			if ($_y){
-				$a .= '<input type="checkbox" class="chbox_itm " id="id_'.$id_prefix.$key.'"  name="'.$_name.'[]" onclick="chbox_itm_clk(\''.$_name.'\')" value="'.$key.'" checked />'."\n"; 
+				$a .= '<input type="checkbox" class="chbox_itm " id="id_'.$_name.$key.'"  name="'.$_name.'[]" onclick="chbox_itm_clk(\''.$_name.'\')" value="'.$key.'" checked />'."\n"; 
 				$cnt_selected_itms++;
 			}else{
 				$a .= '<input type="checkbox" class="chbox_itm " id="id_'.$_name.$key.'" name="'.$_name.'[]" onclick="chbox_itm_clk(\''.$_name.'\')" value="'.$key.'" />'."\n";
@@ -1439,8 +1438,6 @@ function getChkbxByAssocAr(
 	$a .= '</script>'."\n";
 	return $a;
 }
-
-
 
 /**
  * 
