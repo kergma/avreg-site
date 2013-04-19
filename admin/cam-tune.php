@@ -39,9 +39,13 @@ if ( isset($cmd) )
          reset($fields);
          while (list($param, $value) = each($fields))
          {
+            // tohtml($value);
             if (!isset($types[$param]) && !isset($olds[$param]))
                die ('Error in post data!');
-            $value = trim(rawurldecode($value));
+            if ( is_array($value) ) {
+               $value = implode(',', array_map('rawurldecode', $value));
+            } else
+               $value = trim(rawurldecode($value));
             // print "<p>'$param'='$value' old='$olds[$param]' types='$types[$param]'</p>\n";
             if ( ($olds[$param] != $value) && CheckParVal($param, $value) )
             {

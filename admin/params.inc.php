@@ -239,7 +239,7 @@ function checkParam ( $parname, $parval )
       break;
 
    case 'events2db':
-      $ret = getChkbxByAssocAr($parname, $GLOBALS['event_groups'], '1,3,4');
+      $ret = getChkbxByAssocAr('fields['.$parname.']', $GLOBALS['event_groups'], $parval, FALSE /* не работает select_all для имен содержащих []*/);
       break;
 
    default:
