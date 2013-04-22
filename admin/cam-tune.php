@@ -33,35 +33,30 @@ if ( isset($cmd) )
    if ( $cmd == 'UPDATE_PARAM' ) 
    {
       require ('./upload.inc.php');
-      if ( isset($fields) && isset($types) && isset($olds)) 
-      {
+      if ( is_array($types) && (count($types) > 0) ) {
          $cmd = 'SHOW_PARAM';
-         reset($fields);
-         while (list($param, $value) = each($fields))
+         while (list($parname, $partype) = each($types))
          {
-            // tohtml($value);
-            if (!isset($types[$param]) && !isset($olds[$param]))
-               die ('Error in post data!');
-            if ( is_array($value) ) {
-               $value = implode(',', array_map('rawurldecode', $value));
+            if ( !isset($olds[$parname]) ) die ('Error in post data!');
+            $_value = isset($fields[$parname]) ? $fields[$parname] : '';
+
+            if ( is_array($_value) ) {
+               $value = implode(',', array_map('rawurldecode', $_value));
             } else
-               $value = trim(rawurldecode($value));
-            // print "<p>'$param'='$value' old='$olds[$param]' types='$types[$param]'</p>\n";
-            if ( ($olds[$param] != $value) && CheckParVal($param, $value) )
+               $value = trim(rawurldecode($_value));
+            // print "<p>'$parname'='$value' old='$olds[$parname]' types='$types[$parname]'</p>\n";
+            if ( ($olds[$parname] != $value) && CheckParVal($parname, $value) )
             {
-               CorrectParVal($param, $value);
-               if ($value == '')
-                  $_val = null;
-               else
-                  $_val =  html_entity_decode($value);
-               $adb->replace_camera('local', $cam_nr, $param, $_val, $remote_addr, $login_user);
+               CorrectParVal($parname, $value);
+               $_val = ($value == '') ? NULL : html_entity_decode($value);
+               $adb->replace_camera('local', $cam_nr, $parname, $_val, $remote_addr, $login_user);
 
                print_syslog(LOG_NOTICE,
                      sprintf('cam[%s]: update param "%s", set new value "%s", old value "%s"',
                      $cam_nr === 0 ? 'default' : (string)$cam_nr,
-                     $param,
+                     $parname,
                      empty($_val) ? "<empty>" : $_val,
-                     empty($olds[$param]) ? "<empty>" : $olds[$param] ));
+                     empty($olds[$parname]) ? "<empty>" : $olds[$parname] ));
             }
          }
       }
@@ -145,7 +140,7 @@ if ( isset($categories) )
       $parname1 = &$PARAMS[$i]['name'];
       $VAL_TYPE = &$PARAMS[$i]['type'];
       $VALID_PREG = &$PARAMS[$i]['valid_preg'];
-      $DEF_VAL_IN_SOFT = &$PARAMS[$i]['def_val'];
+      $DEF_VAL = &$PARAMS[$i]['def_val'];
       $COMMENT = &$PARAMS[$i]['desc'];
       $FLAGS = &$PARAMS[$i]['flags'];
       $PAR_CATEGORY = &$PARAMS[$i]['cats'];
@@ -245,7 +240,7 @@ if ( isset($categories) )
             print '<input type="password" name="fields['.$parname1.']" value="' . $a .'" size='.$str_f_len.' maxlength=' .$b .'>';
             break;
          case $CHECK_VAL:
-            print checkParam($parname1, $val);
+            print checkParam($parname1, $val, $DEF_VAL);
             break;
            
          default: /* BOOL*/
