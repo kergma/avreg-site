@@ -93,7 +93,7 @@ function CheckParVal($_param, $_value)
    return $ret;
 }
 
-function checkParam ( $parname, $parval )
+function checkParam ( $parname, $parval, $def_val = NULL )
 {
    switch ( $parname )
    {
@@ -239,7 +239,9 @@ function checkParam ( $parname, $parval )
       break;
 
    case 'events2db':
-      $ret = getChkbxByAssocAr('fields['.$parname.']', $GLOBALS['event_groups'], $parval, FALSE /* не работает select_all для имен содержащих []*/);
+   case 'events2pipe':
+      $ret = getChkbxByAssocAr('fields['.$parname.']', $GLOBALS['event_groups'],
+         $parval, FALSE /* не работает select_all для имен содержащих []*/);
       break;
 
    default:
