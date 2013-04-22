@@ -166,13 +166,6 @@ function checkParam ( $parname, $parval, $def_val = NULL )
          $sel = $GLOBALS['vid_standarts'][$parval];
       $ret = getSelectHtml('fields['.$parname.']', $GLOBALS['vid_standarts'], FALSE, 1, 0, $sel, TRUE, FALSE);
       break;
-   case 'deinterlacer':
-      if ( $parval == '' )
-         $sel = '';
-      else
-         $sel = $GLOBALS['deinterlacers'][$parval];
-      $ret = getSelectHtml('fields['.$parname.']', $GLOBALS['deinterlacers'], FALSE, 1, 0, $sel, TRUE, FALSE);
-      break;
    case 'mask_file':
       if (empty($parval) )
          $ret = $GLOBALS['strEmptied'] . '<br>';
