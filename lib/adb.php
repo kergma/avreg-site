@@ -972,15 +972,15 @@ class Adb {
       $query .= ", CHANGE_USER = '$user'";
 
       for ($i = 0; $i < count($vWINS); $i++) {
-         if (is_int($vWINS[$i]))
+         if ( !empty($vWINS[$i]) /* неважно что '0' даст true, 0-вой камеру тут не будет */ )
             $query .= ", {$fWINS[$i]} = {$vWINS[$i]}";
          else
-            $query .= ", {$fWINS[$i]} = '{$vWINS[$i]}'";
+            $query .= ", {$fWINS[$i]} = NULL";
       }
 
       $query .= " WHERE BIND_MAC ='$bind_mac'";
       $query .= " AND DISPLAY ='$display'";
-      $query .= " AND MON_NR = $mon_nr";		
+      $query .= " AND MON_NR = $mon_nr";
 
       $res = $this->_db->query($query);
       $this->_error($res);
