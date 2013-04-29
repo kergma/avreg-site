@@ -82,6 +82,7 @@ if ($GCP_cams_nr)
       }
    }
 }
+
 /*
 echo "<pre style='text-align: left;'>\n";
 var_dump($GCP_def_pars);

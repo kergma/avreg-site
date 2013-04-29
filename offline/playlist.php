@@ -78,29 +78,23 @@ function TimeModeHelp2() {
 
 
 <?php
+$GCP_query_param_list=array('work', 'text_left', 'rec_mode');
+require ('../lib/get_cams_params.inc.php');
+reset($GCP_cams_params);
+$recorded_cams = array();
+while ( list($_cam, $_opt) = each($GCP_cams_params) )
+{
+   if ( ((int)$_opt['rec_mode']) > 0 )
+      $recorded_cams[$_cam] = empty($_opt['text_left']) ? "cam $_cam" : "$_opt[text_left]($_cam)";
+}
 
-
-$result = $adb->get_cameras_name($GCP_cams_list);
-$num_rows = count ($result);
-
-if ( $num_rows > 0 ) {
-   $conf_cams_array = array();
-	foreach ($result as  $row )
-   {
-      if ( empty($row['text_left']) )
-         $_cam_short = "cam $row[CAM_NR]";
-		else
-         $_cam_short = "$row[text_left]($row[CAM_NR])";
-
-      $conf_cams_array[$row['CAM_NR']] = $_cam_short;
-	}
-} else {
-	print '<p><b>' . $strNotCamsDef2 . '</b></p>' . "\n";
-	
-	require ('../foot.inc.php');
-
+if ( ! count($recorded_cams) ) {
+   print '<p><b>' . $strNotCamsDef2 . '</b></p>' . "\n";
+   require ('../foot.inc.php');
 	exit;
 }
+
+/// tohtml($recorded_cams);
 
 /* presets */
 $range_checked='checked';
@@ -208,7 +202,7 @@ if ( isset($_SESSION) && isset($_SESSION['error'])/* ошибка */ )
 <?php 
 
 	//формируем список чекбоксов выбора камер
-	print getChkbxByAssocAr('cams', $conf_cams_array, $cams_sel, 8);
+	print getChkbxByAssocAr('cams', $recorded_cams, $cams_sel, 8);
 
 ?>
 </td>
