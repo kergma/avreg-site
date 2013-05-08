@@ -60,7 +60,7 @@ function obj_loaded(e) {
 }
 
 
-function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, s16_2, ftype_str, fduration, fname)
+function show_obj(cam_nr, evt_id, utime1, utime2, sess_nr, fsize, frames, alt1, alt2, ftype_str, fduration, fname)
 {
    var cdiv = ie?
                  document.all['content']:
@@ -95,11 +95,11 @@ function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, 
    if (evt_id==23 || evt_id==12) {
       icon_48x52 = WwwPrefix+'/img/mpeg4.gif';
       duration_info='<tr><td align="right">Продолжительность<\/td><td>'+fduration+'<\/td><\/tr>\n';
-      g_fname += '  [ ' + s16_1 + 'x' + s16_2 + ' ] ';
+      g_fname += '  [ ' + alt1 + 'x' + alt2 + ' ] ';
       g_fsize += ', ' + fduration + ', ' + frames + ' кадров';
    } else if ( evt_id == 32 ) {
       icon_48x52 = WwwPrefix+'/img/audio48x48.gif';
-      g_fname += '  [ ' + s16_1 + ' канал ] ';
+      g_fname += '  [ ' + alt1 + ' канал ] ';
       g_fsize += ', ' + fduration + ', битрейт ' + frames/1000 + 'kbps';
    }
 
@@ -116,12 +116,14 @@ function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, 
                  window.parent.frames['query'].document.getElementById('scale');
            var scale_factor = scale.options[scale.selectedIndex].text;
            var scaletext='';
-           if (scale_factor.length > 0)
+           if ( !scale_factor && ( !alt1 || !alt2 ) )
+              scale_factor = '100';
+           if ( scale_factor.length > 0 )
               scaletext = ' width="'+ scale_factor + '%" height="'+ scale_factor + '%"';
            else {
               TOTEM_CONTROLS_HEIGHT = 28; // FIXME if no Totems
-              if ( cdiv.clientWidth >= s16_1 && cdiv.clientHeight >= ( s16_2 + TOTEM_CONTROLS_HEIGHT) )
-                 scaletext = ' width="' + s16_1 + '" height="' + ( s16_2 + TOTEM_CONTROLS_HEIGHT) + '"';
+              if ( cdiv.clientWidth >= alt1 && cdiv.clientHeight >= ( alt2 + TOTEM_CONTROLS_HEIGHT) )
+                 scaletext = ' width="' + alt1 + '" height="' + ( alt2 + TOTEM_CONTROLS_HEIGHT) + '"';
            }
 
            g_player = ie?document.all['Player']:document.getElementById('Player');
@@ -171,7 +173,7 @@ function show_obj(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, 
      }
    } else {
      /* only signle jpeg ? */
-     g_fsize += '  [ ' + s16_1 + 'x' + s16_2 + ' ] ' ;
+     g_fsize += '  [ ' + alt1 + 'x' + alt2 + ' ] ' ;
      var scale = ie?
                  window.parent.frames['query'].document.all['scale']:
                  window.parent.frames['query'].document.getElementById('scale');
