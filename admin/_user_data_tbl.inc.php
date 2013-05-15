@@ -76,17 +76,19 @@ print '<td colspan="2">'.$SessionsPerUserInfo.'</td>'."\n";
 print '<td><input type="text" name="sessions_per_user" size="2" maxlength="2"  value="'.$sessions_per_user.'">'."\n";
 print '</tr>'."\n";
 print '<tr>'."\n";
-print '<td rowspan="3">'.$strRateLimitsInfo.'</td>'."\n";
+print '<td rowspan="2">'.$strRateLimitsInfo.'</td>'."\n";
 print '<td>'.$strLimitFps.'</td>'."\n";
 print '<td><input type="text" name="limit_fps" value="'.$limit_fps.'" size="5" maxlength="5">'."\n";
 print '<tr>'."\n";
 print '<td>'.$sNonMotionFps.'</td>'."\n";
 print '<td><input type="text" name="nonmotion_fps" value="'.$nonmotion_fps.'" size="5" maxlength="5">'."\n";
 print '</tr>'."\n";
+/*
 print '<tr>'."\n";
 print '<td>'.$strLimitKbps.'</td>'."\n";
 print '<td><input disabled readonly type="text" name="limit_kbps" value="'.$limit_kbps.'" size="6" maxlength="6">'."\n";
 print '</tr>'."\n";
+*/
 print '<tr>'."\n";
 print '<td rowspan="2">'.$sSessionLimitsInfo.'</td>'."\n";
 print '<td>'.$sSessionTime.'</td>'."\n";
