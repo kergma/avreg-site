@@ -141,8 +141,6 @@ function img_mouseover(cell, win_nr) {
  */
 
 function img_click(clicked_div) {
-
-//   var pl_cont = $('img',clicked_div);
 	var pl_cont = $('.pl_cont',clicked_div);
 	
    var tmp_div;
@@ -154,18 +152,16 @@ function img_click(clicked_div) {
 
    //устанавливаемый src
    var current_src=null;
-   
    //если номер камеры не определен
    if(win_nr == null ){ return;}
-
    if ( FS_WIN_DIV ) {
       // current - fullscreen
 	      //меняем на источник для ячейки
 	      if (active_cams_srcs[win_nr]['type']!='avregd'){
-	    	  if(active_cams_srcs[win_nr]['cell']!=null && active_cams_srcs[win_nr]['cell']!='')
+	    	  if(active_cams_srcs[win_nr]['cell']!=null && active_cams_srcs[win_nr]['cell']!=''
+                  && active_cams_srcs[win_nr]['cell'].toLowerCase() !== active_cams_srcs[win_nr]['fs'].toLowerCase())
 	    		  current_src = active_cams_srcs[win_nr]['cell']; // get_cam_alt_url(active_cams_srcs[win_nr]['cell'], win_nr, true) ;
 	      }
-	   
 
       if ( WIN_DIV_W == undefined ) {
     	  //в режиме FS был ресайз CANVAS'a
@@ -177,7 +173,6 @@ function img_click(clicked_div) {
 //          }else{
 //        	  if(current_src!=null) $('.pl_cont',clicked_div_jq).aplayerSetMjpegSrc( current_src );
 //          }
-
           //Переустанвливаем плеер для алтернативного источника
           if(current_src!=null){
               $('.pl_cont',clicked_div_jq).addPlayer({
@@ -197,7 +192,6 @@ function img_click(clicked_div) {
 
          
       } else {
-   
     	  //востанавливаем исходные размеры отображения камеры
      	 var border_w = clicked_div.offsetWidth - clicked_div.clientWidth;
           var border_h = clicked_div.offsetHeight - clicked_div.clientHeight;
@@ -295,7 +289,8 @@ function img_click(clicked_div) {
 	      .height(win_geo.cam_h+CORRECT_H);
       //меняем на источник для ячейки
       if (active_cams_srcs[win_nr]['type']!='avregd'){
-    	  if(active_cams_srcs[win_nr]['fs']!=null && active_cams_srcs[win_nr]['fs']!='')
+    	  if(active_cams_srcs[win_nr]['fs']!=null && active_cams_srcs[win_nr]['fs']!=''
+              && active_cams_srcs[win_nr]['cell'].toLowerCase() !== active_cams_srcs[win_nr]['fs'].toLowerCase())
     		  current_src = active_cams_srcs[win_nr]['fs']; //get_cam_alt_url(active_cams_srcs[win_nr]['fs'], win_nr ,true) ;
       }
 
@@ -346,7 +341,7 @@ function img_click(clicked_div) {
    //Устанавливаем текущий масштаб
    var aplayer_id=$('.aplayer',pl_cont).attr('id');
    
-   if( controls_handlers.original_size[aplayer_id]!=null && controls_handlers.original_size[aplayer_id] ){
+   if(controls_handlers.original_size[aplayer_id]!=null && controls_handlers.original_size[aplayer_id] ){
 	   $('#'+aplayer_id).parent().aplayerMediaSetSrcSizes();
    }
    
@@ -367,7 +362,6 @@ function img_click(clicked_div) {
 
     //проверка связи с камерами
     if(GECKO || WEBKIT)	checking_connection.init_check();
-
    
 } // img_click()
 
@@ -385,8 +379,6 @@ function set_win_header_size(clicked_div_jq, header_height){
 		$(header).find('img').height(ht); //ToolBar
 	}
 }
-
-
 
 /**
  * Функция осуществляет инициализацию и установку элемента,
@@ -1212,9 +1204,6 @@ function canvas_growth() {
    	
    	return html;
    }
-   
-   
-   
 
    /**
     * Смена раскладки
@@ -1504,7 +1493,6 @@ function canvas_growth() {
                  var ipcamhost_link_begin = '';
                  var ipcamhost_link_end = '';
                  var host = '';
-                console.log(GCP_cams_params[WINS_DEF[win_nr].cam.nr]);
                  if ( GCP_cams_params[WINS_DEF[win_nr].cam.nr].video_src == "rtsp" ||
                      GCP_cams_params[WINS_DEF[win_nr].cam.nr].video_src == "http"  ) {
                      if (CAMS_URLS[WINS_DEF[win_nr].cam.nr].ipcam_interface_url){
@@ -2002,13 +1990,3 @@ var controls_handlers = {
 	
    
 };
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
