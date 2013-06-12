@@ -52,7 +52,7 @@ if (isset($layouts_cookie))
     }
 }
 
-if (isset($tmp))
+if (isset($tmp)){
 	$cnt_client_lay = count($tmp);
     foreach ($tmp as $client_mon_nr=>$l_val){
         $_data = array();
@@ -80,7 +80,7 @@ if (isset($tmp))
                 'WINS' => $_data['w']
                 );
     }
-
+}
 //Загрузка установленных раскладок
 $result = $adb->web_get_layouts($login_user);
 
