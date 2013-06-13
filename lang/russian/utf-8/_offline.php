@@ -80,4 +80,6 @@ $PlaylistFormValidation=array(
 	'no_dayofweek'=>'  - необходимо выбрать дни недели интервала'
 );
 
+$strNotCamsDef2 = 'Нет ни одной видеокамеры сконфигурированной для записи (rec_mode=&quot;Без записи&quot;)';
+
 ?>
