@@ -46,7 +46,7 @@ $strOnlySelDet='Доступно <i>только при выборочном р�
 
 $_rate_lim_info = 'Ограничить этим значением скорость отдаваемого видеопотока, в кадрах в секунду.<br><br>Допустимые значения: [1..60]; по-умолчанию: <b>60 - не ограничивать</b>.';
 
-$recording_format   = array('avi', 'mov', 'mp4', 'flv', 'wav', 'mp2', 'amr');
+$recording_format   = array('avi', 'mov', 'mp4', 'flv', 'matroska', 'wav', 'mp2', 'amr');
 $rec_vcodec         = array('mpeg4', 'mjpeg', 'h263p', 'flv');
 $rec_acodec         = array('mp2', 'aac', 'pcm', 'adpcm', 'libgsm', 'libopencore_amrnb');
 

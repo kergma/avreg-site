@@ -796,7 +796,7 @@ var checking_connection = {
 			hideErrorMessage(index);
             $(im)
                 .unbind('load')
-                .unbind('error');//.attr('src','');
+                .unbind('error');
 			//восстановление воспроизведения
 
 			$(me).attr('src', self.me_list[index].src);
@@ -1997,8 +1997,6 @@ var controls_handlers = {
 		var aplayer_id = $('.aplayer', '#win'+cell_nr).attr('id');
 		$.aplayer.zoomOut(aplayer_id);
 	}
-	
-   
 };
 
 var timer = 0;
