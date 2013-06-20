@@ -529,12 +529,25 @@ var checking_connection = {
 			self.me_list = new Array();
 		}
 
+		// Регулярное выражение для парсинга ссылки на поток
+		var pattern = "^(([^:/\\?#]+):)?(//(([^:/\\?#]*)(?::([^/\\?#]*))?))?([^\\?#]*)(\\?([^#]*))?(#(.*))?$";
+		var rx = new RegExp(pattern);
+		var parts = rx.exec(me_src);
+		var ports = window.location.port;
+		if (!ports) ports = "80";
+
+		var checkUrl = me_src.search(window.location.hostname) < 0;
+
+		if (!checkUrl && parts[6] !== ports && parts[6] !== '874'){
+			checkUrl = true;
+		}
+
         var obj = {
 			'me' : me,
 			'me_id':me_id,
 			'src' : me_src,
 			'check_val' : timer,
-			'WEBKITCorsError' : typeof(me_src) !== "undefined" && me_src.search(window.location.hostname)  < 0 && WEBKIT && !GECKO  ,
+			'WEBKITCorsError' : typeof(me_src) !== "undefined" && checkUrl && WEBKIT && !GECKO,
 			'stoped' : false,
 			'connection_fail' : false,
 			//канвас и контекст для webkit
