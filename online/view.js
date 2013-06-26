@@ -469,6 +469,9 @@ var checking_connection = {
 		var self = this;
 		var timer_callback=null;
 
+   if (online_check_period < 2)
+      return;
+
 		//установка обработчиков по типу браузера
 		if(!WEBKIT && GECKO){
 			self.reconnect = self.reconnect_gecko;
