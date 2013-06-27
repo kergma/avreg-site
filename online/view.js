@@ -529,19 +529,22 @@ var checking_connection = {
 			self.me_list = new Array();
 		}
 
-		// Регулярное выражение для парсинга ссылки на поток
-		var pattern = "^(([^:/\\?#]+):)?(//(([^:/\\?#]*)(?::([^/\\?#]*))?))?([^\\?#]*)(\\?([^#]*))?(#(.*))?$";
-		var rx = new RegExp(pattern);
-		var parts = rx.exec(me_src);
-		var ports = window.location.port;
-		if (!ports) ports = "80";
-
 		var checkUrl = me_src.search(window.location.hostname) < 0;
+		if (!checkUrl){
+			if (me_src.search('avreg-cgi') > 1){
+				checkUrl = false;
+			}else{
+				// Регулярное выражение для парсинга ссылки на поток
+				var pattern = "^(([^:/\\?#]+):)?(//(([^:/\\?#]*)(?::([^/\\?#]*))?))?([^\\?#]*)(\\?([^#]*))?(#(.*))?$";
+				var rx = new RegExp(pattern);
+				var parts = rx.exec(me_src);
+				var ports = window.location.port;
+				if (!ports) ports = "80";
 
-		if (!checkUrl && parts[6] !== ports && parts[6] !== '874'){
-			checkUrl = true;
+				if (parts[6] !== ports)
+					checkUrl = true;
+			}
 		}
-
         var obj = {
 			'me' : me,
 			'me_id':me_id,
