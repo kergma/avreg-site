@@ -1339,12 +1339,16 @@ function canvas_growth() {
 
 	function showErrorMessage(indexCam, typeErr){
 		var aplayerElem =  $('#' + $.aplayer.idContainer + indexCam);
-		var textError = '';
 		switch(typeErr){
 			case 'error' :
-				textError += 'Ошибка подключения к камере';
+            /* по признаку видимости формы ошибки берёмся судить о признаке ошибки */
+            if ( $('.messageError', aplayerElem).is(':visible') )
+               break;
+            aplayerElem.last_error_date = new Date;
+            var textError = aplayerElem.last_error_date.toLocaleTimeString() + '<\/br>';
+				textError += 'Ошибка подключения к камере!';
 				if (checking_connection.is_reconnect_active){
-					textError += '<br/>Ожидание реконнекта';
+					textError += '<br\/>Ожидание реконнекта';
 				}
 				$('.messageError', aplayerElem).css('display', 'table');
 				$('.textError', aplayerElem).html(textError);
