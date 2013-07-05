@@ -532,12 +532,28 @@ var checking_connection = {
 			self.me_list = new Array();
 		}
 
+		var checkUrl = me_src.search(window.location.hostname) < 0;
+		if (!checkUrl){
+			if (me_src.search('avreg-cgi') > 1){
+				checkUrl = false;
+			}else{
+				// Регулярное выражение для парсинга ссылки на поток
+				var pattern = "^(([^:/\\?#]+):)?(//(([^:/\\?#]*)(?::([^/\\?#]*))?))?([^\\?#]*)(\\?([^#]*))?(#(.*))?$";
+				var rx = new RegExp(pattern);
+				var parts = rx.exec(me_src);
+				var ports = window.location.port;
+				if (!ports) ports = "80";
+
+				if (parts[6] !== ports)
+					checkUrl = true;
+			}
+		}
         var obj = {
 			'me' : me,
 			'me_id':me_id,
 			'src' : me_src,
 			'check_val' : timer,
-			'WEBKITCorsError' : typeof(me_src) !== "undefined" && me_src.search(window.location.hostname)  < 0 && WEBKIT && !GECKO  ,
+			'WEBKITCorsError' : typeof(me_src) !== "undefined" && checkUrl && WEBKIT && !GECKO,
 			'stoped' : false,
 			'connection_fail' : false,
 			//канвас и контекст для webkit
