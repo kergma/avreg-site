@@ -2,32 +2,29 @@
 
 ?>
 		<div id="page">
-		
-		
-		
-		
-		
-		
-		<?php 
+
+
+
+		<?php
 
 		?>
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
 		<div id="matrix_load" style="display: none;"><img src="gallery/img/loading.gif"></div>
-		
+
 			<div id="sidebar">
 
-				
+
 				<!-- sidebar inner block -->
 				<div class="block">
 					<div id="type_event">
-					
-						<?php 
+
+						<?php
 							if (isset($cookies['type_event'])) {
 								$type = explode(',', trim($cookies['type_event'], ','));
 							}
@@ -39,15 +36,15 @@
 						<label for="video_type" ><?php print $strvideotype; ?></label><br/>
 						<div class="borderBot"></div>
 						<span class="niceCheck"><input type="checkbox" id="audio_type" name="type_event" value="audio" <?php if (empty($type) || in_array('a', $type)) :?>checked="checked" <?php endif;?>/></span>
-						<label for="audio_type" ><?php print $straudiotype; ?></label>						
-						
+						<label for="audio_type" ><?php print $straudiotype; ?></label>
+
 					</div>
-				
+
 					<div id="tree">
 						<div id="tree_new">
 						</div>
 					</div>
-					
+
 					<div id="statistics">
 						<span><strong><?php print $strcount_files; ?></strong></span><br />
 						<span><strong><?php print $strsize_files; ?></strong></span><br />
@@ -56,10 +53,10 @@
 					</div>
 				</div>
 				<!-- end sidebar inner block -->
-				
+
 				<div class="handler" id="handler_vertical" style=""></div>
 			</div>
-			
+
 			<div id="content">
 				<div class="window">
 					<div id="win_top" >
@@ -76,12 +73,12 @@
 							</label>
 						</span>
 					</div>
-					
-					
+
+
 						<div id="cameras_selector" class="field checkboxes">
 							<div class="options">
-							
-							<?php 
+
+							<?php
 								if (isset($cookies['cameras'])) {
 									$cameras = explode(',', trim($cookies['cameras'], ','));
 								}
@@ -93,29 +90,29 @@
 									<input type="checkbox" id="camera_<?php print $CAM_NR;?>" name="cameras" value="<?php print $CAM_NR;?>" <?php if (empty($cameras) || in_array($CAM_NR, $cameras)) :?>checked="checked" <?php endif;?>></span>
 									<?php
 
-									$name = $name_orig = $PARAM['text_left']; 
+									$name = $name_orig = $PARAM['text_left'];
 									if(mb_strlen($name)>18) {
 										$name = mb_substr($name, 0, 15);
 										$name .= '...';
-									} 
+									}
 									?>
 									<label  style="float: none !important;" for="camera_<?php print $CAM_NR;?>"><a href="#<?php print $CAM_NR;?>" class="set_camera_color<?php if (isset($cookies['camera_'.$CAM_NR.'_color']) && !empty($cookies['camera_'.$CAM_NR.'_color']) ): print ' '.$cookies['camera_'.$CAM_NR.'_color'] . '_font'; endif;?>"<?php
 									if($name != $name_orig)
-										print ' title="'.$name_orig.'"';  
+										print ' title="'.$name_orig.'"';
 									?>><?php print $name; ?></a></label>
 								</span>
-								
+
 							<?php endforeach;?>
-					
+
 							</div>
 						</div>
 					<div id="more_cam">...</div>
-					
+
 					</div>
 					<div id="win_bot" class="matrix_mode selectBox">
 						<div id="list_panel">
 							<div id="scroll_content"></div>
-						</div>	
+						</div>
 						<div id="scroll_v">
 							<div class="scroll_top_v"></div>
 							<div class="scroll_body_v">
@@ -126,27 +123,27 @@
 								<!-- div class="scroll_polz_v_Bottom" id="scroll_polz_v_Bottom"></div -->
 								</div>
 
-									
-									
-								
+
+
+
 							</div>
 							<div class="scroll_bot_v"></div>
 						</div>
 											</div>
-				
+
 					<div id="win_bot_detail" class="matrix_mode">
 							<a href="#preview">
 								<img id="image_detail" src=""/>
 							</a>
 					</div>
-				
-					<div id="toolbar" >   
+
+					<div id="toolbar" >
 						<div id="toolbar_left">
 						<div class="propotion controls">
-						
+
 								<span class="niceCheck"><input type="checkbox" id="proportion" name="proportion" value="1" <?php if (isset($cookies['proportion']) && $cookies['proportion'] == 'checked') :?>checked="checked" <?php endif;?>></span>
 								<label for="proportion"><?php print $strproportion; ?></label>
-							
+
 						</div>
 						<div class="event_info preview controls">
 								<span class="niceCheck"><input type="checkbox" id="info" name="info" value="1" <?php if (!isset($cookies['info']) || $cookies['info'] == 'checked') :?>checked="checked" <?php endif;?>></span>
@@ -162,8 +159,8 @@
 								<div class="scale_max"></div>
 						</div>
 
-											
-						
+
+
 						<div  id="scale2" class="detail controls">
 								<div class="scale_min"></div>
 								<div class="scale_body">
@@ -171,16 +168,16 @@
 								</div>
 								<div class="scale_max"></div>
 						</div>
-						
+
 						<div class="controls prevnext">
 							<a class="next" href="#"><img src="gallery/img/arrow_right.png" /></a>
 							<a class="prew" href="#"><img src="gallery/img/arrow_left.png" /></a>
-						</div>	
+						</div>
 
 						</div>
-					</div>		
+					</div>
 				</div>
-			</div> 
+			</div>
 		</div>
 
 
@@ -239,21 +236,21 @@ var update_tree_timeout = <?php print isset($conf['gallery-update_tree_timeout']
 
 // формирование глобального объекта перевода
 var lang = {
-		
+
 		all : '<?php print $strall; ?>',
-		count_files: '<?php print $strcount_files; ?>',	
-		size_files: '<?php print $strsize_files; ?>',	
-		date_from: '<?php print $strdate_from; ?>',	
-		date_to: '<?php print $strdate_to; ?>',	
-		camera: '<?php print $strcamera; ?>',	
+		count_files: '<?php print $strcount_files; ?>',
+		size_files: '<?php print $strsize_files; ?>',
+		date_from: '<?php print $strdate_from; ?>',
+		date_to: '<?php print $strdate_to; ?>',
+		camera: '<?php print $strcamera; ?>',
 		color_cameras: '<?php print $strcolorcameras; ?>',
-		size: '<?php print $strsize; ?>',	
-		WH: '<?php print $strWH; ?>',	
-		date: '<?php print $strdate; ?>',	
+		size: '<?php print $strsize; ?>',
+		WH: '<?php print $strWH; ?>',
+		date: '<?php print $strdate; ?>',
 		empty_cameras: '<?php print $strempty_cameras; ?>',
 		empty_event: '<?php print $strempty_event; ?>',
 		empty_tree: '<?php print $strempty_tree; ?>',
-		ajax_timeout : '<?php print $strajax_timeout; ?>'	
+		ajax_timeout : '<?php print $strajax_timeout; ?>'
 	};
 	// обработка размера файлов
 var units = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
@@ -268,10 +265,10 @@ function readableFileSize(size) {
 
 $(function(){
 
-<?php if (isset($conf['aplayerConfig']) && !empty($conf['aplayerConfig']) && is_array($conf['aplayerConfig'])) :?>	
+<?php if (isset($conf['aplayerConfig']) && !empty($conf['aplayerConfig']) && is_array($conf['aplayerConfig'])) :?>
 	//$.aplayerConfiguration(< ?php print json_encode($conf['aplayerConfig']);?>);
 	$.aplayerConfiguration(
-		<?php 
+		<?php
 			$res_conf = aplayer_configurate($conf['aplayerConfig']);
 			print json_encode($res_conf);
 		?>);
@@ -283,7 +280,7 @@ $(function(){
 				limit : <?php print $conf['gallery-limit'];?>,
 				event_limit : <?php print isset($conf['gallery-cache_event_limit']) ? $conf['gallery-cache_event_limit'] : 20000;?>,
 				min_cell_width : <?php print $conf['gallery-min_cell_width'];?> ,
-				min_cell_height : <?php print $conf['gallery-min_cell_height'];?> 
+				min_cell_height : <?php print $conf['gallery-min_cell_height'];?>
 			},
 			show_timeout : <?php print isset($conf['gallery-show_timeout']) ? $conf['gallery-show_timeout'] : 1 ;?>
 	};
@@ -297,4 +294,3 @@ $(function(){
     }
 });
 </script>
-		
