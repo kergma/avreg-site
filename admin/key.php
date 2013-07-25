@@ -80,7 +80,6 @@ print $DEV_FIRMS."\n";
 print '<br /><a href="http://avreg.net/" target="_blank">http://avreg.net</a>'."\n";
 print '</p>'."\n";
 
-
 // phpinfo();
 require ('../foot.inc.php');
 ?>

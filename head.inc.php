@@ -269,7 +269,6 @@ if ( isset($include_javascripts) && is_array($include_javascripts)) {
 
 <?php
 
-
 if (!isset($NOBODY))
 {
    if ( isset($MENU) )

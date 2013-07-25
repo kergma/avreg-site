@@ -1,7 +1,6 @@
 var img_cursor=-1;
 var hint=null;
 
-
 function mark_row(theRowNum)
 {
 // _cam_nr, _evt_id, _utime1, _utime2, _ser_nr, _fsize, _frames, _s16_1, _s16_2, _ftype_str, _fduration, _fname
@@ -75,7 +74,6 @@ function on_body_load ()
    if ( window.parent.frames['query'].CAM_NAMES )
       first_img();
 }
-
 
 function mk_obj_hint(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, s16_2, ftype_str, fduration, fname)
 {
@@ -157,11 +155,9 @@ function mouse_img(theRowNum) {
     var fduration = img_info[10]
     var fname = img_info[11];
 
-
     mk_obj_hint(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, s16_2, ftype_str, fduration, fname);
     ddrivetip();
 }
-
 
 function absTop(e) {
    var rp = e.offsetParent;

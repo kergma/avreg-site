@@ -31,10 +31,8 @@ $link_javascripts=array(
 		'lib/js/json2.js'
 );
 
-
 require ('./head.inc.php');
 while (@ob_end_flush());
-
 
 print '<table id="main_tab" width="860" height="500"  cellspacing="20" border="0" cellpadding="0" align="center">'."\n";
 print '<tbody>'."\n";
@@ -70,7 +68,6 @@ if ( $admin_user /* config.inc.php */ ) {
 }
 print '</td>'."\n";
 
-
 print '</tr>'."\n";
 
 if ( $arch_user ) {
@@ -99,7 +96,6 @@ if ( $arch_user ) {
    print  '</div ></div >'."\n";
 
    print '</td>'."\n";
-
 
    print '</tr>'."\n";
 }

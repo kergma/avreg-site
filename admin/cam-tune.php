@@ -85,8 +85,6 @@ else  {
 $WE_IN_DEFS=($cam_nr===0)?true:false;
 require ('./param-grp.inc.php');
 
-
-
 // выводим таблицу параметров
 if ( isset($categories) )
 {
@@ -155,7 +153,6 @@ if ( isset($categories) )
          if (! ( $FLAGS & $F_IN_CAM)) continue;
       }
 
-
       if ( $par_filter === 0 && !( $FLAGS & $F_BASEPAR) ) continue;
 
                if ( $cam_nr>0 && array_key_exists($parname1, $def_params) ) {
@@ -172,7 +169,6 @@ if ( isset($categories) )
          $VALUE = NULL; $CHANGE_HOST=NULL; $CHANGE_USER=NULL; $CHANGE_TIME=NULL;
                }
                print '<tr><td valign="middle" nowrap><div>'."\n";
-
 
          if ( $FLAGS & $F_RELOADED )
                         print '<img src="'.$conf['prefix'].'/img/hotsync.gif" alt="Reloaded" border="0">&nbsp;';

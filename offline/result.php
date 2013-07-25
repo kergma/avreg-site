@@ -91,13 +91,10 @@ die;
    $row_start = $page * $row_max;
    /* Performing new SQL query */
 
-
-
    $date = array (
 		'from' => array($year_array[$year1],$month1,$day1,$hour1,$minute_array[$minute1]),
    		'to' => array($year_array[$year2],$month2,$day2,$hour2,$minute_array[$minute2]),
    );
-
 
    //Если ищем видео - добавляем в поиск video+audio (EVT_ID==12)
    $is_video = false;
@@ -120,7 +117,6 @@ die;
       $num_rows++;
    }
    unset($row);
-
 
 //   print "<pre>\n";
 //   var_dump($res_array);

@@ -14,8 +14,6 @@
  *
  */
 
-
-
 require_once('DB.php');
 
 if (empty($non_config)) {
@@ -76,7 +74,6 @@ class Adb {
       $db = new DB();
       $this->_db = $db->connect($dsn,true);
 
-
 //      $this->_db = DB::connect($dsn,true);
 
       $this->_error($this->_db);
@@ -119,7 +116,6 @@ class Adb {
 
          if ($die) die($r->getMessage());
          return true;
-
 
          echo $r->getDebugInfo();
          if ($die) die($r->getMessage());
@@ -187,7 +183,6 @@ class Adb {
       return $events;
    }
 
-
     /**
      *  Метод позволяет получить дату текущего события
      *
@@ -234,8 +229,6 @@ class Adb {
 
         return $date_events;
     }
-
-
 
    /**
     *  Метод позволяет получить последнюю дату события
@@ -286,7 +279,6 @@ class Adb {
       return $event;
    }
 
-
    /**
     *  Метод позволяет получить дерево событий
     *
@@ -299,7 +291,6 @@ class Adb {
 
    public function gallery_get_tree_events($param){
       $tree_events_result = array();
-
 
       $query = "SELECT *";
       $query .= ' FROM TREE_EVENTS';
@@ -475,7 +466,6 @@ class Adb {
       return array('status' => 'success');
    }
 
-
    /**
     *
     * Метод для удаления дублированных записей из EVENTS
@@ -528,10 +518,6 @@ class Adb {
 	   	}
    	return $cntr;
    }
-
-
-
-
 
 /**
  *  Метод получения событий
@@ -634,7 +620,6 @@ class Adb {
          $timebegin = sprintf('20%02s-%02u-%02u %02u:%02u:00',$date['from'][0],$date['from'][1],$date['from'][2],$date['from'][3],$date['from'][4]);
          $timeend   = sprintf('20%02s-%02u-%02u %02u:%02u:59',$date['to'][0],$date['to'][1],$date['to'][2],$date['to'][3],$date['to'][4]);
 
-
          if ( count($query_continuous_events) > 0 ) {
             $query .= " ( EVT_ID in (".implode(',', $query_continuous_events).") and ( (DT1 between '$timebegin' and '$timeend') or (DT2 between '$timebegin' and '$timeend') ))";
          }
@@ -700,7 +685,6 @@ class Adb {
       $res = $this->_db->query($query);
       $this->_error($res);
    }
-
 
    /**
     *
@@ -945,7 +929,6 @@ class Adb {
       $this->_error($res);
    }
 
-
 /**
  *
  * Метод позволяет обновить данные раскладки в БД
@@ -1009,8 +992,6 @@ class Adb {
       $query .= " WHERE BIND_MAC ='$bind_mac'";
       $query .= " AND MON_NR = $mon_nr";		
 
-
-
       $res = $this->_db->query($query);
       $this->_error($res);
    }
@@ -1061,7 +1042,6 @@ class Adb {
          $this->update_layouts($display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS);
    }	
 
-
    /**
    *
    * Метод добавляет или обновляет параметры раскладки для WEB
@@ -1096,8 +1076,6 @@ class Adb {
    	else
    	$this->web_update_layouts( $mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS);
    }
-
-
 
 /**
  *
@@ -1143,7 +1121,6 @@ class Adb {
       $res->fetchInto($line);
       return $line;
    }
-
 
 /**
  *
@@ -1250,7 +1227,6 @@ class Adb {
       }
       return  $mon;
    }
-
 
 /**
  * Метод добавляет пользователя

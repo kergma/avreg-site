@@ -33,7 +33,6 @@ function init() {
 	}
 }
 
-
 //preloading required images
 function preloadImages() {
 	preloads = new Object();

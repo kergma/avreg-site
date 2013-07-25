@@ -221,8 +221,6 @@ print "var layouts_defs = ".json_encode($layouts_defs).";\n";
 //Передаем в JS возможные аспекты раскладок
 print "var WellKnownAspects = ".json_encode($WellKnownAspects).";\n";
 
-
-
 function calcAspectForGeo($w,$h) {
 	
    foreach ($GLOBALS['WellKnownAspects'] as &$pair) {
@@ -257,9 +255,6 @@ $GCP_query_param_list=array('work', 'allow_networks', 'text_left', 'geometry', '
 if ( $operator_user )
 	array_push($GCP_query_param_list, 'video_src', 'InetCam_IP');
 require('../lib/get_cams_params.inc.php');
-
-
-
 
 if ( $GCP_cams_nr == 0 )
    die('There are no available cameras!');
@@ -426,7 +421,6 @@ if ( empty($AspectRatio) ) {
       print 'var CamsAspectRatio = \'fs\';'."\n";
 }
 
-
 printf("var BorderLeft   = %u;\n", empty($BorderLeft)   ? 2 : $BorderLeft);
 printf("var BorderRight  = %u;\n", empty($BorderRight)  ? 2 : $BorderRight);
 printf("var BorderTop    = %u;\n", empty($BorderTop)    ? 2 : $BorderTop);
@@ -454,12 +448,10 @@ print "var REF_MAIN = ".(($install_user || $admin_user || $arch_user )? 'true':'
 
 echo "</script>\n";
 
-
 if ( !empty($msie_addons_scripts) || is_array($msie_addons_scripts) )  {
    foreach ($msie_addons_scripts as $value)
       print "$value\n";
 }
-
 
 require ('../foot.inc.php');
 ?>

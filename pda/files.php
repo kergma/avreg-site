@@ -90,9 +90,6 @@ if($width=='FS'){
 
 <?php
 
-
-
-
 /* pagination */
 require_once('paginator.inc.php');
 $pagi = new PDA_Paginator($files,

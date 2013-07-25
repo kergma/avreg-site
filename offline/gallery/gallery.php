@@ -37,7 +37,6 @@
 *
 * */
 
-
 class Gallery {
     public 	
     	$method = '', // метод запроса
@@ -172,8 +171,6 @@ class Gallery {
 			$this->db->gallery_update_tree_events($last_tree_date, $last_event_date);
 		}
     }
-
-
 
     // отдача результата клиенту
     public function print_result() {

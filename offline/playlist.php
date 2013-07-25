@@ -75,8 +75,6 @@ function TimeModeHelp2() {
 // -->
 </script>
 
-
-
 <?php
 $GCP_query_param_list=array('work', 'text_left', 'rec_mode');
 require ('../lib/get_cams_params.inc.php');

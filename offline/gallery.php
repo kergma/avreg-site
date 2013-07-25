@@ -16,7 +16,6 @@
  *
  * */
 
-
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -65,7 +64,6 @@ if (!isset($_POST['method']) && !isset($_GET['method'])) {
 	require_once('gallery/index.php');
 	require_once('../foot.inc.php');
 } else {
-
 
 	/// Ответ аякс запроса
 	require_once('../lib/config.inc.php');

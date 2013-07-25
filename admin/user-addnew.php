@@ -40,8 +40,6 @@ if ( isset($cmd) && isset($u_host) && isset($u_name) && isset($groups) )
    }
    // print ($query);
 
-
-
 	if ( $result )
    {
       print '<p class="HiLiteWarn">' . sprintf ($fmtUserAdded, $u_name, $u_host) . '</p>' ."\n";
@@ -51,8 +49,6 @@ if ( isset($cmd) && isset($u_host) && isset($u_name) && isset($groups) )
       print '<div class="error">'.sprintf ($fmtUserAddErr2, $u_name, $u_host, "DB: error" ). "</div>\n";
       print_go_back();
    }
-
-
 
    require ('../foot.inc.php');
    exit;

@@ -9,7 +9,6 @@
  *
  */
 
-
 if ( isset($GCP_cams_list) && empty($GCP_cams_list))
    die('not set cam list');
 if (!isset($GCP_query_param_list) || !is_array($GCP_query_param_list))
@@ -29,8 +28,6 @@ $GCP_sql_in_par=NULL;
 /// ip пользователя
 $_sip=ip2long($sip);
 require_once ($params_module_name);
-
-
 
 for ($GCP_i=0;$GCP_i<$PARAMS_NR;$GCP_i++)
 {
@@ -57,14 +54,12 @@ foreach ( $result as $row )
 
 $result=NULL;
 
-
 // echo "</script> <pre style='text-align: left;'>\n";
 // var_dump($GCP_sql_in_par);
 //var_dump($GCP_def_pars);
 //var_dump($GCP_cams_params);
 //echo "</pre>\n";
 // exit();
-
 
 /// Список камер с параметрами
 $GCP_cams_list=array_keys($GCP_cams_params);

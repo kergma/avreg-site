@@ -59,7 +59,6 @@ function obj_loaded(e) {
    }
 }
 
-
 function show_obj(cam_nr, evt_id, utime1, utime2, sess_nr, fsize, frames, alt1, alt2, ftype_str, fduration, fname)
 {
    var cdiv = ie?

@@ -12,7 +12,6 @@ class Cache {
 		$prefix = 'gallery:',
 		$sufix = '';
 
-
 	public function __construct($server = 'localhost', $port = 11211) {
 		$this->server = $server;
 		$this->port = $port;

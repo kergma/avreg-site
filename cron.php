@@ -33,7 +33,6 @@
 *
 */
 
-
 $methods = array(
 	'update_tree_events',
 	'cron_update_tree_events',

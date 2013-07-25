@@ -66,7 +66,6 @@ if ( !isset($mon_nr) || $mon_nr =='')
 {
    /* Performing new SQL query */
 
-
    $result = $adb->get_layouts();
 
    $LD = array();

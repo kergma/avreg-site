@@ -20,12 +20,8 @@ $tm1 = localtime (strtotime ('-1 hours'));
 $min1 = $minute_array[0];
 $min2 = $minute_array[count($minute_array) - 1];
 
-
-
 $result = $adb->get_cameras_name($GCP_cams_list);
 $num_rows = count ($result);
-
-
 
 if ( $num_rows > 0 ) {
    $conf_cams_array = array();
@@ -201,7 +197,6 @@ var CAM_NAMES = [];
 var PlayTimer = null;
 var play_direction=0;
 
-
 function switch_timemode() {
 	if( typeof($('#timemode').attr('checked'))!='undefined' ){
 		$("#id_main_dayofweek input[type=checkbox]").attr('disabled',true);
@@ -245,7 +240,6 @@ function img_scroll(new_pos,old_pos)
     window.parent.frames['result'].onBody(img);
 }
 
-
 function set_first_img()
 {
     var img_cnt = get_links_array();
@@ -273,7 +267,6 @@ function set_last_img()
        window.parent.frames['result'].mark_row(img_cnt-1);
     }
 }
-
 
 function _jump_to_pos(step)
 {
@@ -340,7 +333,6 @@ $(document).ready(function() {
     	CAM_NAMES[$("#"+$(this).attr('for')).attr('value')]= $(this).text();
     });
 
-
  	$(window).resize(function(){
  		query_resize();
 	});
@@ -367,14 +359,9 @@ function query_resize(){
 	$('#id_dayofweek').height( frameHeight - $('#tab_head').height() - $('#id_head_dayofweek').height()*2-2);
 };
 
-
-
-
-
 function ietruebody(){
    return (document.compatMode && document.compatMode!='BackCompat')? document.documentElement : document.body;
 };
-
 
 // -->
 </script>

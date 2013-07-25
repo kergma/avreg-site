@@ -4,14 +4,11 @@ $strimagetype = 'Изображение';
 $strvideotype = 'Видео';
 $straudiotype = 'Аудио';
 
-
 $strproportion = 'Сохр. пропорции';
 $strinfo = 'Показывать информацию';
 
-
 $strcolorcameras = 'Выберите цвет камеры';
 $strclose = 'Закрыть';
-
 
 $strall='Все';
 $strcount_files= 'Всего файлов: ';	
@@ -32,6 +29,5 @@ $strno = 'Нет';
 $stryes = 'Да';
 
 $strajax_timeout = 'Запрос не выполнен. Превышен таймаут выполнения.';
-
 
 ?>

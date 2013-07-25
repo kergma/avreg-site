@@ -3,22 +3,13 @@
 ?>
 		<div id="page">
 
-
-
 		<?php
 
 		?>
 
-
-
-
-
-
-
 		<div id="matrix_load" style="display: none;"><img src="gallery/img/loading.gif"></div>
 
 			<div id="sidebar">
-
 
 				<!-- sidebar inner block -->
 				<div class="block">
@@ -74,7 +65,6 @@
 						</span>
 					</div>
 
-
 						<div id="cameras_selector" class="field checkboxes">
 							<div class="options">
 
@@ -123,9 +113,6 @@
 								<!-- div class="scroll_polz_v_Bottom" id="scroll_polz_v_Bottom"></div -->
 								</div>
 
-
-
-
 							</div>
 							<div class="scroll_bot_v"></div>
 						</div>
@@ -159,8 +146,6 @@
 								<div class="scale_max"></div>
 						</div>
 
-
-
 						<div  id="scale2" class="detail controls">
 								<div class="scale_min"></div>
 								<div class="scale_body">
@@ -179,7 +164,6 @@
 				</div>
 			</div>
 		</div>
-
 
 <div id="overlay"></div>
 
@@ -284,7 +268,6 @@ $(function(){
 			},
 			show_timeout : <?php print isset($conf['gallery-show_timeout']) ? $conf['gallery-show_timeout'] : 1 ;?>
 	};
-
 
 	$('body').css( 'overflow', 'hidden');
 

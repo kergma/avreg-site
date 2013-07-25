@@ -100,7 +100,6 @@ function img_evt(e_id)
    }
 };
 
-
 // function body_loaded() {
 //   IMG = document.getElementById('viewport');
 //   if ( refresh_mode < 0 /* manual */)

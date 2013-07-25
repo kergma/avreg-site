@@ -2476,8 +2476,6 @@
 						}
 					}, this)); */
 
-
-
 			var s = this._get_settings().dnd;
 			if(s.drag_target) {
 				$(document)

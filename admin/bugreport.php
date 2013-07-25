@@ -43,6 +43,5 @@ print "<span>$sMaxTailNum</span>\n";
 print '<br /><br /><input type="submit" id="btSubmit" name="getlog" value="'.$strGetLogs.'">'."\n";
 print '</form>'."\n";
 
-
 require ('../foot.inc.php');
 ?>

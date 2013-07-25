@@ -1,6 +1,5 @@
 <?php
 
-
 if (isset($_GET['cams'])){
 	$cams = explode(',', trim($_GET['cams']) );
 }
@@ -30,7 +29,6 @@ if($subscribe)
 	}
 }
 
-
 $status = array("cams"=>array() );
 
 foreach ($cams as $cam_nr) {
@@ -40,7 +38,6 @@ foreach ($cams as $cam_nr) {
 }
 
 echo json_encode($status) ;
-
 
 function get_subsystem_value($cam_nr, $subsys){
 	switch ($subsys){
@@ -56,7 +53,6 @@ function get_subsystem_value($cam_nr, $subsys){
 			return 'unknown subsystem';
 	}
 }
-
 
 function get_capture_status($cam_nr){
 	return array(
@@ -96,6 +92,5 @@ function get_client_status($cam_nr){
 			"url"=> "rtsp://axis/....",
 	);
 }
-
 
 ?>

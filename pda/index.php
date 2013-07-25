@@ -85,7 +85,6 @@ $until_minutes_a = array(
     60 => '+60',
 );
 
-
 print "<fieldset><legend>Поиск по архиву</legend>\n";
 print "<table cellpadding='2' border='0' cellspacing='0'>\n";
 print "<thead>\n";

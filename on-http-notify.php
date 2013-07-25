@@ -5,7 +5,6 @@
  *
  */
 
-
 /* need for auth */
 require_once('lib/config.inc.php');
 

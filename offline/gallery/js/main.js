@@ -252,7 +252,6 @@ var gallery = {
             $('.block','#sidebar').width($('#sidebar').width()-9);
             $('#statistics','#sidebar').width($('.block','#sidebar').width()-20);
 
-
             // обработка изменение ширины используя вертикальный разделитель
             $('#handler_vertical')
                 .mousedown(function(e){
@@ -631,7 +630,6 @@ var gallery = {
                         matrix.curent_tree_events[e[0]+'_'+e[1]+'_'+e[2]].to = hour_to+':00 ' + e[2] + ' ' + monthNames[month]+ ' ' + e[0];
                     }
 
-
                     //записываем новые данные о события
                     matrix.curent_tree_events[key] = {
                         size : size,
@@ -692,7 +690,6 @@ var gallery = {
                     if(matrix.keyBoardTree == tree) return;
 
                     matrix.keyBoardTree = tree;
-
 
                     var found = tree.split('_');
                     scroll.position = 0;
@@ -1029,8 +1026,6 @@ var gallery = {
         });
         $(cams_chek).width(wcheck);
 
-
-
         // организация увеличение размера списка камер
         if ($('#win_top').height() > 100) {
             $('#more_cam').show();
@@ -1070,7 +1065,6 @@ var gallery = {
                 $(this).children().attr('checked', 'checked');
             }
         });
-
 
         // обработка выбора чекбокса типа события
         $('#type_event input[name="type_event"]').change(function(){
@@ -1198,7 +1192,6 @@ var gallery = {
         // инициализация событий клавиатуры
         keyBoard.init();
 
-
         if(MSIE){
             var wt = $('#win_top');
             //установка высоты списка камер
@@ -1305,7 +1298,6 @@ var message_box = {
         //названия кнопок востанавливаем
         message_box.buttons_name = { OK:'OK', Yes:'Да', No:'Нет' };
     },
-
 
     //инициализация message_box
     init : function(){
@@ -1793,7 +1785,6 @@ var matrix = {
             matrix.cell_width = matrix.config.max_cell_width;
         }
 
-
         // обновляем элемент масштаба
         if (old_width != matrix.config.max_cell_width) {
             scale.reload(old_width);
@@ -1957,7 +1948,6 @@ var matrix = {
             } else {
                 html += ' style="display:none;"';
             }
-
 
             //Получить расширение файла
             var extension=value[2].match(reg);
@@ -2254,8 +2244,6 @@ var matrix = {
             if(matrix.cell_count != $("[id^="+$.aplayer.idContainer+"]").length)
             {
 
-
-
                 $('#scroll_content').empty();
                 var html = '<div id="scrollPopup" class="scrollPopup"></div>';
 
@@ -2293,7 +2281,6 @@ var matrix = {
                         } else {
                             html += ' style="display:none;"';
                         }
-
 
                         //Получить расширение файла
                         var extension=value[2].match(reg);
@@ -2458,7 +2445,6 @@ var matrix = {
                         matrix.loadsrc(key);
                     }
                 });
-
 
                 $(cells).each(function(i){
                     i=i+sp;
@@ -2881,7 +2867,6 @@ var scroll = {
                 scroll.polzh = scroll.min_height - h;
                 h = scroll.min_height;
             }
-
 
             // задаем параметры ползунка
             $(scroll.id + ' .scroll_polz_v').height(h);
@@ -3568,7 +3553,6 @@ var scale2 = {
 
     },
 
-
     reload : function() {
         var self = this;
         self.updateposition(self.position);
@@ -3652,7 +3636,6 @@ var scale2 = {
         else // HTML5-player
         {}
     }
-
 
 };
 
@@ -3740,8 +3723,6 @@ var keyBoard = {
         return $(keyBoard.currentSelector[keyBoard.currentSelectorChild]);
     },
     checkSelecBox: function () {
-
-
 
         if(MSIE){
 //			$('#win_top').addClass('selectBox');
@@ -3893,7 +3874,6 @@ var keyBoard = {
                 }
             }
 
-
             //work in views
             if(keyBoard.view==keyBoard.views.detail) { // DETAIL
 
@@ -3930,7 +3910,6 @@ var keyBoard = {
                 } else if(e.which == keyBoard.keys.plus || e.which == keyBoard.keys.plus2) {
                     scale.click_max();
                 }
-
 
                 if(keyBoard.boxesEnum.current()==keyBoard.boxesEnum.INSIDE) {
                     if (e.which == keyBoard.keys.left) {
@@ -4227,8 +4206,6 @@ var scrollPopUp = {
         self.topPopup = topPopup + $(scroll.id + ' .scroll_top_v').height();
         self.leftPopup = parseInt($("#list_panel").css('width')) - parseInt($(self.idScrollPopUp).width()) - 25;
         self.scrollPosition = sp;
-
-
 
         var htmlPopup_now = self.cachePopUp[self.scrollPosition];
         if (typeof(htmlPopup_now) !== 'undefined'){
