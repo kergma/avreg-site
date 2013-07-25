@@ -36,6 +36,5 @@ print '<td>'.$left_key_desc.'</td>'."\n";
 print '</tr>'."\n";
 print '</table>'."\n";
 
-
 require ('../foot.inc.php');
 ?>

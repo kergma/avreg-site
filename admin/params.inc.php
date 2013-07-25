@@ -29,7 +29,6 @@ function translit_ru($rustr)
    return preg_replace(array('/[^A-Za-z0-9\-_\.~]/u'), array('_'), $rustr);
 }
 
-
 function WhatViddev ( $dev_file )
 {
    $ret = -1;

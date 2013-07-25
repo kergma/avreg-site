@@ -13,7 +13,6 @@ $link_javascripts=array(
 // 						'lib/js/jquery.aplayer.js',
 );
 
-
 $pageTitle = sprintf('Камера №%u', $_GET['camera']);
 // $body_onload='body_loaded();';
 require ('head_pda.inc.php');
@@ -37,13 +36,11 @@ $scale=0;
 if(isset($_COOKIE['scl'])) $scale = $_COOKIE['scl'];
 if(isset($_GET['scl']))$scale = $_GET['scl'];
 
-
 if(!isset($refresh)) {
 	$show_scale_cntrl = true;
 }else{
 	$show_scl = false;
 }
-
 
 include_once ('scale.inc.php');
 
@@ -70,7 +67,6 @@ if($width=='FS'){
 	if($width==0) $reload='true';
 	$isFs = 'true';
 }
-
 
 ?>
 
@@ -125,7 +121,6 @@ if ( !isset($refresh) ) {
    $cam_name
    );
 
-
 //		//установка плеера
 //    $cam_src = sprintf('src="%s&width=%u&height=%u"',
 //    $cam_url,
@@ -134,13 +129,10 @@ if ( !isset($refresh) ) {
 //    $cam_name
 //    );
 
-
 ?>
 <div id="view_cam_" ></div>
 
 <script type="text/javascript">
-
-
 
 $(function(){
 	$('body').css({'overflow':'hidden'});
@@ -168,8 +160,6 @@ $(document).ready(function(){
 });
 
 </script>
-
-
 
 <form id="rf_frm" action="online.php" method="GET">
 <br>

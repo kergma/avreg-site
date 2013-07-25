@@ -23,7 +23,6 @@ $str_audio_force_fmt = array(
    'pcm_u8',
 );
 
-
 $syslog_levels = array(
    'EMERG',  /* system is unusable */
    'ALERT',  /* action must be taken immediately */
@@ -642,7 +641,6 @@ array(
    'mstatus' => 1,
 ),
 
-
 array(
    'name'    => 'rtsp_transport',
    'type'    => $CHECK_VAL,
@@ -813,7 +811,6 @@ array(
    'mstatus' => 1,
 ),
 
-
 /*
 array(
   'name'    => 'frequency',
@@ -904,7 +901,6 @@ array(
    'subcats' => '5.1.2',
    'mstatus' => 2,
 ),
-
 
 /*
 array(
@@ -1326,7 +1322,6 @@ array(
    'mstatus' => 1,
 ),
 
-
 array(
    'name'    => 'forced_saving_limit',
    'type'    => $INT_VAL,
@@ -1487,7 +1482,6 @@ array(
    'mstatus' => 1,
 ),
 
-
 /* EVENTS */
 array(
    'name'    => 'events2db',
@@ -1532,7 +1526,6 @@ array(
    'subcats' => NULL,
    'mstatus' => 1,
 ),
-
 
 );
 

@@ -47,7 +47,6 @@ require ('./mon-type.inc.php');
 // -->
 </script>
 
-
 <?php
 
 echo '<h1>' . sprintf($web_r_mons,$named,$sip) . '</h1>' ."\n";
@@ -162,8 +161,6 @@ if (isset($cmd)) {
       $row = $adb->web_get_monitor($mon_nr);
       $wins_cams = json_decode($row[4], true);
    	}
-
-
 
       //формирование массива альтернативных источников видео
       $cams_srcs = array();

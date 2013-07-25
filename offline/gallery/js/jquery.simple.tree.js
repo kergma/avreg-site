@@ -30,7 +30,6 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-
 $.fn.simpleTree = function(opt){
 	return this.each(function(){
 		var TREE = this;

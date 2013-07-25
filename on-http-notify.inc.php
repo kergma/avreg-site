@@ -98,7 +98,6 @@ if ( true && isset($AVREG_CAMS_NR)) {
    else
       $get_query = "nr=$cam_nr&param=alarm&action=$action_str";
 
-
    $file = fopen("$avreg_mon_url?$get_query", 'r');
 
    if (!$file) {

@@ -240,7 +240,6 @@ if (!isset($_SESSION['is_admin_mode']))
         //Выравниваем таблицы раскладок по центру элемента
         print '<script type="text/javascript"> $(".camlayout table").attr("align", "center");  </script>';
 
-
         $client_mon_nr = (int) $client_mon_nr;
         $client_mon_nr++;
 

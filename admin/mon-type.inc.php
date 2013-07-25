@@ -240,7 +240,6 @@ $wide_40_40_wins = array(
 		array(4,0,1,1), array(4,1,1,1), array(4,2,1,1), array(4,3,1,1), array(4,4,1,1), array(4,5,1,1), array(4,6,1,1), array(4,7,1,1)
 );
 
-
 //-->
 
 /// Список допустимы раскладок
@@ -330,7 +329,6 @@ function layout2table ( $mon_type, $max_width, $win_text_array = array(), $win_t
     	$tbl_start = '<table cellspacing="0" border="0" cellpadding="0" style="height:120px; " >'."\n";
     }
 
-
    $tbl_end = '</table>'."\n";
    $r_start = '<tr>'."\n";
    $r_end   = '</tr>'."\n";
@@ -351,8 +349,6 @@ function layout2table ( $mon_type, $max_width, $win_text_array = array(), $win_t
     }
 
    $t_end = '&nbsp;</b></font></td>'."\n";
-
-
 
 $max_width/$wins_in_layout = $l_defs[0];
    $rows = $l_defs[1];
@@ -396,6 +392,4 @@ $max_width/$wins_in_layout = $l_defs[0];
    print $tbl_end;
 }
 ?>
-
-
 

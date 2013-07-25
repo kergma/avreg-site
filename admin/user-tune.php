@@ -38,7 +38,6 @@ if ( isset($cmd) && isset($u_host) && isset($u_name) && isset($groups) )
       die('crack?');
    }
 
-
 	if ( $result )
    {
       print '<p class="HiLiteWarn">' . sprintf ($fmtUserUpdated, $u_name, $u_host) . '</p>' ."\n";
@@ -52,7 +51,6 @@ if ( isset($cmd) && isset($u_host) && isset($u_name) && isset($groups) )
          '" width="24" hspace="24" border="0"></a></center>' ."\n";
    }
 
-
    unset($u_name);
 }
 
@@ -61,7 +59,6 @@ if ( isset($u_name) && !empty($u_name) )
    $ui = get_user_info($u_host, $u_name);
    if ( $ui === FALSE )
       die('crack?');
-
 
    //tohtml($ui);
    $user2html = stripslashes (htmlspecialchars($ui['USER'], ENT_QUOTES, $chset));

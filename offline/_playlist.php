@@ -99,14 +99,12 @@ $_cams_csv   = implode(',', $cams);
    		'to' => array($year_array[$year2],$month2,$day2,$hour2,$minute_array[$minute2]),
    );
 
-
    //Если ищем видео - добавляем в поиск video+audio (EVT_ID==12)
    $is_video = false;
    foreach ($events as $val){
    	if($val==23) $is_video = true;
    }
    if($is_video)array_push($events, 12);
-
 
    $result = $adb->events_select($cams, $timemode, $date, $events, isset($dayofweek) ? $dayofweek : array());
 

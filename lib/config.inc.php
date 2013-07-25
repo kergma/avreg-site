@@ -54,7 +54,6 @@ function tohtml($var)
    print '</pre></div>'."\n";
 }
 
-
 /**
  * возвращает объект для конфигурации плеера для клиентской ОС
  * @param array $aplayer_config - массив $conf['aplayerConfig']
@@ -233,7 +232,6 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
       return FALSE;
    }
 } /* confparse() */
-
 
 function get_avreg_profiles($_conf)
 {
@@ -458,8 +456,6 @@ $WellKnownAspects = array(
    array(16,10),
    array( 5, 4)
 );
-
-
 
 require_once('adb.php');
 $result = $adb->get_users();
@@ -1094,7 +1090,6 @@ function getSelectHtml($_name, $value_array, $_multiple=FALSE , $_size = 1, $sta
    return $a;
 }
 
-
 /**
  *
  * Функция формирует и возвращает елемент select используя значения
@@ -1135,7 +1130,6 @@ function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
    }
    $_class = $_id;
 
-
    $a = sprintf('<select name="%s" id="%s" class="%s" %s size="%d" %s %s>'."\n",
       $_name,
       $_id,
@@ -1144,7 +1138,6 @@ function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
       $_size,
       $_title,
       $onch);
-
 
    if ($first_empty) $a .= '<option> </option>'."\n";
    $_cnt = $start_val;

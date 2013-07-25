@@ -19,8 +19,6 @@ DENY($admin_status);
 
 require ('./mon-type.inc.php');
 
-
-
 ?>
 
 <script type="text/javascript" language="javascript">

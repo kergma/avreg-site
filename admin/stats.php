@@ -8,7 +8,6 @@ require ('../head.inc.php');
 $upstart_used = file_exists('/etc/init/avreg.conf');
 require('_vidserv_status.inc.php');
 
-
 /**
  *
  * Функция определяющая критичность загрузки, возвращая цвет критичности

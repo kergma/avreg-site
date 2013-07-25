@@ -37,7 +37,6 @@ if ( FALSE !== $ua ) {
    echo '<p class="HiLiteErr">' . sprintf ($fmtEmptyF, $strHost) . '</p>' ."\n";
 }
 
-
 $u_longname = trim($u_longname);
 if ( empty($u_longname) ) {
    echo '<p class="HiLiteErr">' . sprintf ($fmtEmptyF, $FIO) . '</p>' ."\n";

@@ -37,8 +37,6 @@ while (list ( $gr_status, $groups ) = each ($grp_ar) )
 }
 print '</td>'."\n";
 
-
-
 //Гостевой режим
 print '</tr>'."\n";
 print '<tr>'."\n";

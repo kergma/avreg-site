@@ -20,7 +20,6 @@ avreg_ipv4_cmp($a1, $m1, $a2, $m2)
       return FALSE;
 } /* avreg_ipv4_cmp() */
 
-
 function
 avreg_inet_network($ip_addr_or_acl=NULL)
 {

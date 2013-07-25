@@ -168,7 +168,6 @@ elseif ($h==0){
 	$h = $w/$im_proportion;
 }
 
-
 // //resulted sizes
  $new_width = $w;
  $new_height = $h;

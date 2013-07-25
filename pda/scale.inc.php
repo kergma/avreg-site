@@ -53,15 +53,12 @@ function show_select_resolution($resolutions, $select ,$strName = "Resolutions" 
 
 ?>
 
-
-
 <style>
 <!-- -->
 #scale{
 	position:relative;
 }
 </style>
-
 
 <script type="text/javascript" >
 var scale=0;
@@ -201,7 +198,6 @@ var isFs = false;
 			}
 
 	};
-
 
 	function ietruebody(){
 		   return (document.compatMode &&

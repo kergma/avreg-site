@@ -32,7 +32,6 @@ if($storage=='client'){
 
 require ('../head.inc.php');
 
-
 //DENY($admin_status);
 if($storage!='client'){
 	DENY($admin_status);

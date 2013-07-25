@@ -53,7 +53,6 @@ function sel_change(sel) {
   return false;
 }
 
-
 //отображает эл-т селект для выбора типа источника камеры
 function show_sub_select(cam_select){
 	var el = $(cam_select).nextAll('.mon_wins_type');
@@ -73,10 +72,6 @@ function show_sub_select(cam_select){
 }
 // -->
 </script>
-
-
-
-
 
 <?php
 
@@ -114,7 +109,6 @@ $active_pipes_nr=0;
 
 $active_pipes_alt_src=array();
 
-
 if ( $GCP_cams_nr === 0 ) {
    print '<p class="HiLiteBigErr">' . $strNotViewCams . '</p>' ."\n";
 } else
@@ -144,7 +138,6 @@ if ( $GCP_cams_nr === 0 ) {
    $c_work=0;
    $c_allow_networks=0;
    $c_v4l_pipe='';
-
 
    reset($GCP_cams_params);
    while (list($__cam_nr, $cam_detail) = each($GCP_cams_params))
@@ -189,7 +182,6 @@ if ( $GCP_cams_nr === 0 ) {
    } // for
 
 //   print '<pre>'; var_export( $cam_detail );  print '</pre>';
-
 
    if ($pipes_show>0)
    {

@@ -183,7 +183,6 @@
 			</div>
 		</div>
 
-
 <div id="overlay"></div>
 
 <div id="cameras_color" class="mod_window">
@@ -287,7 +286,6 @@ $(function(){
 			},
 			show_timeout : <?php print isset($conf['gallery-show_timeout']) ? $conf['gallery-show_timeout'] : 1 ;?>
 	};
-
 
 	$('body').css( 'overflow', 'hidden');
 

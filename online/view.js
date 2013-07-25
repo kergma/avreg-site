@@ -5,7 +5,6 @@
  * осуществляет инициализацию страницы
  */
 
-
 /* global variables */
 ///Элемент, в который выводятся раскладка камер
 var CANVAS;
@@ -115,7 +114,6 @@ function img_mouseover(cell, win_nr) {
    var orig_h = WINS_DEF[win_nr].cam.orig_h;
 //   var url = WINS_DEF[win_nr].cam.url;
    var val = ((WINS_DEF[win_nr].cam.url).split('?'))[0];
-
 
    hint = '<table style="font-weight:bold;" cellspacing="0" border="0" cellpadding="1"><tbody><tr>\n' +
       '<td align="right">Камера:<\/td>\n' +
@@ -711,7 +709,6 @@ var checking_connection = {
 		return data;
 	},
 
-
 	//проверяет произшел ли сбой (для WEBKIT)
 	is_fail_connection_webkit : function(index){
 		var self = this;
@@ -926,7 +923,6 @@ function calc_win_geo(_canvas_w, _canvas_h, img_aspect_ratio, _rows_nr, _cols_nr
    if (_rowspan == undefined)
       _rowspan = 1;
 
-
    if ( MSIE ){
 	
 	   if ( img_aspect_ratio == undefined || img_aspect_ratio == 'fs' ) {
@@ -964,7 +960,6 @@ function calc_win_geo(_canvas_w, _canvas_h, img_aspect_ratio, _rows_nr, _cols_nr
 	   this.cam_h = cam_h;
 	
    }else{
-
 
    if ( img_aspect_ratio == undefined ||
          img_aspect_ratio == 'fs' ) {
@@ -1593,7 +1588,6 @@ function canvas_growth() {
 	                	 return false;
 	                 });
                  }
-
 
                  var plus = $('<img id="pl_plus_'+win_nr+'" class="pl_plus" title="'+strToolbarControls['zoom_in']+'" src='+imgs['pl_plus'].src+' />')
                  .click(function(e){

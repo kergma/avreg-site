@@ -104,4 +104,3 @@ printf('<body style="%s" %s %s>',$body_style, $_onload, $body_addons)."\n";
 Включите поддержку JavaScript и перегрузите/обновите эту страницу.</div></center>
 </noscript>
 
-

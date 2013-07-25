@@ -50,7 +50,6 @@ if ( isset($cmd) )
                            else
                             $hosts = array($u_host);
 
-
                               $user_passwd = $adb->get_user_passwd($u_name, $hosts);
                               var_dump($user_passwd);
                               if ($user_passwd === false) {
