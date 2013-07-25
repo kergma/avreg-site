@@ -48,7 +48,7 @@ if ( isset($_FILES) && is_array($_FILES) )
                      @unlink($_val);
                      echo ('<p class="HiLiteErr">MASK FILE `'.$uplfile['name'].'\': JPEG conversion error:');
                      if (is_array($output))
-                        foreach ($output as &$line) 
+                        foreach ($output as &$line)
                            echo '<br />'.$line."\n";
                      die('</p>');
                   }
@@ -64,7 +64,7 @@ if ( isset($_FILES) && is_array($_FILES) )
       if ( $clear_file ) {
       	
       		$adb->replace_camera ('local', $cam_nr, $_parname, null, $remote_addr, $login_user);
-       
+
             print_syslog(LOG_NOTICE, sprintf('cam[%s]: set param `%s\' to NULL, old value `%s\'',($cam_nr)?sprintf("%2d",$cam_nr):'ALL',$_parname, $olds[$_parname] ));
       } else {
       		$adb->replace_camera ('local', $cam_nr, $_parname, $_val, $remote_addr, $login_user);

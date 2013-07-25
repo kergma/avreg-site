@@ -1,11 +1,11 @@
 <?php
 /**
- * 
+ *
  * @file admin/mon-type.inc.php
  * @brief Параметры раскладок
- * 
+ *
  * Содержит базовые вариатны раскладок камер и функцию для построения раскладки
- * 
+ *
  */
 /*
  * array(0,1,1,1) - описывает ячейку
@@ -25,14 +25,14 @@ $quad_9_9_wins = array(
    array(1,0,1,1), array(1,1,1,1), array(1,2,1,1),
    array(2,0,1,1), array(2,1,1,1), array(2,2,1,1),
 );
-$quad_16_16_wins = array( 
+$quad_16_16_wins = array(
    array(0,0,1,1), array(0,1,1,1), array(0,2,1,1), array(0,3,1,1),
    array(1,0,1,1), array(1,1,1,1), array(1,2,1,1), array(1,3,1,1),
    array(2,0,1,1), array(2,1,1,1), array(2,2,1,1), array(2,3,1,1),
    array(3,0,1,1), array(3,1,1,1), array(3,2,1,1), array(3,3,1,1),
 );
 
-$quad_25_25_wins = array( 
+$quad_25_25_wins = array(
    array(0,0,1,1), array(0,1,1,1), array(0,2,1,1), array(0,3,1,1), array(0,4,1,1),
    array(1,0,1,1), array(1,1,1,1), array(1,2,1,1), array(1,3,1,1), array(1,4,1,1),
    array(2,0,1,1), array(2,1,1,1), array(2,2,1,1), array(2,3,1,1), array(2,4,1,1),
@@ -40,7 +40,7 @@ $quad_25_25_wins = array(
    array(4,0,1,1), array(4,1,1,1), array(4,2,1,1), array(4,3,1,1), array(4,4,1,1),
 );
 
-$multi_6_9_wins = array( 
+$multi_6_9_wins = array(
    array(0,0,2,2),                 array(0,2,1,1),
                                    array(1,2,1,1),
    array(2,0,1,1), array(2,1,1,1), array(2,2,1,1),
@@ -52,7 +52,7 @@ $multi_7_16_wins = array(
                               array(3,2,1,1), array(3,3,1,1),
 );
 
-$multi_8_16_wins = array( 
+$multi_8_16_wins = array(
    array(0,0,3,3),                                 array(0,3,1,1),
                                                    array(1,3,1,1),
                                                    array(2,3,1,1),
@@ -70,14 +70,14 @@ $multi_13_16_wins = array(
    array(2,0,1,1),                                 array(2,3,1,1),
    array(3,0,1,1), array(3,1,1,1), array(3,2,1,1), array(3,3,1,1),
 );
-$multi_13_25_wins = array( 
+$multi_13_25_wins = array(
    array(0,0,2,2),                 array(0,2,2,2),                 array(0,4,1,1),
                                                                    array(1,4,1,1),
    array(2,0,2,2),                 array(2,2,2,2),                 array(2,4,1,1),
                                                                    array(3,4,1,1),
    array(4,0,1,1), array(4,1,1,1), array(4,2,1,1), array(4,3,1,1), array(4,4,1,1),
 );
-$multi_16_25_wins = array( 
+$multi_16_25_wins = array(
 	array(0,0,1,1), array(0,1,1,1), array(0,2,2,2),                 array(0,4,1,1),
    array(1,0,1,1), array(1,1,1,1),                                 array(1,4,1,1),
    array(2,0,2,2),                 array(2,2,2,2),                 array(2,4,1,1),
@@ -113,20 +113,20 @@ $poly_3x4_wins = array(
    array(0,0,1,1), array(0,1,1,1), array(0,2,1,1),
    array(1,0,1,1), array(1,1,1,1), array(1,2,1,1),
 );
-$poly_2x4_wins = array( 
+$poly_2x4_wins = array(
    array(0,0,1,1), array(0,1,1,1), array(0,2,1,1), array(0,3,1,1),
    array(1,0,1,1), array(1,1,1,1), array(1,2,1,1), array(1,3,1,1),
 );
-$poly_3x4_wins = array( 
+$poly_3x4_wins = array(
    array(0,0,1,1), array(0,1,1,1), array(0,2,1,1), array(0,3,1,1),
    array(1,0,1,1), array(1,1,1,1), array(1,2,1,1), array(1,3,1,1),
    array(2,0,1,1), array(2,1,1,1), array(2,2,1,1), array(2,3,1,1),
 );
 
-//-->Wide layouts 
+//-->Wide layouts
 
 $wide_2_2_wins = array(
-array(0,0,1,1), 	array(0,1,1,1), 
+array(0,0,1,1), 	array(0,1,1,1),
 );
 
 $wide_3_6_wins = array(
@@ -246,7 +246,7 @@ $wide_40_40_wins = array(
 /// Список допустимы раскладок
 /*
  * 'layout's type name' => array()
- * [0] - кол-во действительных ячеек в раскладке 
+ * [0] - кол-во действительных ячеек в раскладке
  * [1] - колво ячеек в столбце матрицы раскладки
  * [2] - колво ячеек в строке матрицы раскладки
  * [3] - описание каждой ячейки в раскладке
@@ -289,11 +289,11 @@ $layouts_defs = array(
 );
 
 /**
- * 
+ *
  * Функция строит таблицу определенной раскладки
  * @param string $mon_type тип раскладки
  * @param int $max_width максимальная ширина раскладки
- * @param array $win_text_array 
+ * @param array $win_text_array
  * @param string $win_text
  */
 function layout2table ( $mon_type, $max_width, $win_text_array = array(), $win_text = '' )
@@ -306,7 +306,7 @@ function layout2table ( $mon_type, $max_width, $win_text_array = array(), $win_t
    }
 
    $l_defs = &$GLOBALS['layouts_defs'][$mon_type];
-   
+
    $brdcol = '#99FFFF';
    $bgcol = '#000099';
 
@@ -323,14 +323,14 @@ function layout2table ( $mon_type, $max_width, $win_text_array = array(), $win_t
 		$w4 = (int) floor ( $win / 4); $h4 = (int) floor ( $h / 4);
 		$w5 = (int) floor ( $win / 5); $h5 = (int) floor ( $h / 5);
     }	
-    
+
     if(preg_match('/WIDE_/', $mon_type)==1){
     	$tbl_start = '<table cellspacing="0" border="0" cellpadding="0" style="height:90px; " >'."\n";
     }else{
     	$tbl_start = '<table cellspacing="0" border="0" cellpadding="0" style="height:120px; " >'."\n";
     }
-    
-   
+
+
    $tbl_end = '</table>'."\n";
    $r_start = '<tr>'."\n";
    $r_end   = '</tr>'."\n";
@@ -351,9 +351,9 @@ function layout2table ( $mon_type, $max_width, $win_text_array = array(), $win_t
     }
 
    $t_end = '&nbsp;</b></font></td>'."\n";
-   
-   
-   
+
+
+
 $max_width/$wins_in_layout = $l_defs[0];
    $rows = $l_defs[1];
    $cols = $l_defs[2];

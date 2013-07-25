@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * @file offline/view-image.php
  * @brief Подробный просмотр события
  */
@@ -17,14 +17,14 @@ DENY($arch_status);
 <script type="text/javascript" language="JavaScript1.2">
 <!--
 if (ie||ns6)
-  tipobj=document.all? 
+  tipobj=document.all?
      document.all['tooltip'] :
      document.getElementById? document.getElementById('tooltip') : '';
 
 document.onmousemove=positiontip;
 
 <?php
-/* вычисляем протокол доступа к медиа-файлам 
+/* вычисляем протокол доступа к медиа-файлам
    на основании адреса клиента и правил в конфиге */
 require_once($wwwdir . 'lib/utils-inet.php');
 $remote_ip = ip2long($_SERVER['REMOTE_ADDR']);
@@ -69,7 +69,7 @@ if ( !$_found /* не нашли совпадения по ACL */ )
 <?php
 if (!isset ($src) || empty($src)) {
   print "<div style=\"padding: 50px 30px 5px 30px; font-size: 110%;\">$strViewFrame1</div><div style=\"padding: 5px 30px 30px 30px;  font-size: 110%;\">$strViewFrame2</div>\n";
-} 
+}
 print  '</div>'."\n";
 
 require ('../foot.inc.php');

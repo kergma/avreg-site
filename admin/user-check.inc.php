@@ -19,13 +19,13 @@ if ( FALSE !== $ua ) {
    if ( $ui !== FALSE )
    {
       /* есть такой */
-     if (isset($old_u_host) && isset($old_u_name) && 
+     if (isset($old_u_host) && isset($old_u_name) &&
          0 === strcasecmp($old_u_host, $ui['HOST']) &&
          0 === strcmp($old_u_name, $ui['USER']))
         $good++; // себя меняем
      else
         print '<p class="HiLiteErr">'.
-              sprintf($fmtDuplicateUserHost, 
+              sprintf($fmtDuplicateUserHost,
               stripslashes (htmlspecialchars($u_name, ENT_QUOTES, $chset)),
               stripslashes (htmlspecialchars($u_host, ENT_QUOTES, $chset)),
               $ui['USER'], $ui['HOST'],

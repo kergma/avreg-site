@@ -157,7 +157,7 @@ $PAR_GROUPS = array(
       'id'=>'5',
       'name'=>'Обработка',
       'desc'=>'Алгоритмы обработки аудио/видео данных',
-      'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,    
+      'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
       'mstatus'=> 2,
       'help_page'=> $conf['docs-prefix'].'apps-quick-conf.html'
    ),
@@ -279,7 +279,7 @@ array(
       'flags'=>$F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
       'mstatus'=> 1,
       'help_page'=> NULL
-   ), 
+   ),
 
    array(
       'id'=>'20',
@@ -841,7 +841,7 @@ array(
    'mstatus' => 1,
 ),
 
-/* 
+/*
 array(
    'name'    => 'alsa_dev_channels',
    'type'    => $INT_VAL,

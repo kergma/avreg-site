@@ -1,9 +1,9 @@
 <?php
 /**
- * 
+ *
  * @file admin/user-list.php
- * 
- * @brief Настройка доступа к веб-интерфейсу (http://...) видеосервера 
+ *
+ * @brief Настройка доступа к веб-интерфейсу (http://...) видеосервера
  * Группы пользователей
  */
 /// Файл переводов
@@ -50,7 +50,7 @@ if ( isset($cmd) )
 if ( !isset($u_name) || empty($u_name) )
 {
 	/* Performing new SQL query */
-    
+
 	/* Printing results in HTML */
 	echo '<h3>' . $r_user_groups . '</h3>' ."\n";
 	print '<table cellspacing=0 border=1 cellpadding=5>' . "\n";
@@ -115,7 +115,7 @@ if ( !isset($u_name) || empty($u_name) )
                 	if ( $admin_user && $user_status < $grp_status)
                     {
 				        print '<td><a href="'.$a_del.'">'. $strDelete . '</a></td>' . "\n";
-                        print '<td><a href="'.$a_change.'">'. $strChange . '</a></td>' . "\n";                              
+                        print '<td><a href="'.$a_change.'">'. $strChange . '</a></td>' . "\n";
                     } else {
                        print ('<td>&nbsp;</td>');
                        print ('<td>&nbsp;</td>');

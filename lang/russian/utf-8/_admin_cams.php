@@ -1,11 +1,11 @@
 <?php
 /**
  * @file lang/russian/utf-8/_admin_cams.php
- * @brief Файл переводов для страниц 
+ * @brief Файл переводов для страниц
  * - admin/cam-addnew.php
  * - admin/cam-list.php
  * - admin/cam-tune.php
- * 
+ *
  */
 $r_cam_list = 'Сконфигурированные видеокамеры на сервере &#171;<font color="Red">%s</font>&#187;.';
 $r_cam_tips_installers = 'Советы:<br/>

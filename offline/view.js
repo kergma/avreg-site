@@ -18,15 +18,15 @@ function obj_loaded(e) {
      if (play_direction < 0 )
         window.parent.frames['query'].PlayTimer = setTimeout("window.parent.frames['query'].do_play(-1)",
        play_tio);
-     else 
+     else
         window.parent.frames['query'].PlayTimer = setTimeout("window.parent.frames['query'].do_play(1)",
        play_tio);
    }
-  
+
    if (e!=null)
-   {  
+   {
         if (e.tagName == 'IMG')
-       { 
+       {
           hint = '<table cellspacing="0" border="0" cellpadding="1"><tbody><tr>\n' +
  '<td align="right">Камера:<\/td>\n' +
  '<td>'+g_camname+'<\/td>\n' +
@@ -149,8 +149,8 @@ function show_obj(cam_nr, evt_id, utime1, utime2, sess_nr, fsize, frames, alt1, 
            }
     } else {
         cdiv.innerHTML = '<div align="center">\n' +
- '<br /><br />\n' + 
- '<a href="'+link+'" '+link_target+'>\n' + 
+ '<br /><br />\n' +
+ '<a href="'+link+'" '+link_target+'>\n' +
  '<img src="'+ icon_48x52 +'" border="0">' +
  '<\/a>\n' +
  '<table class="help" cellspacing="0" border="1" cellpadding="2"><tbody><tr>\n' +
@@ -165,7 +165,7 @@ function show_obj(cam_nr, evt_id, utime1, utime2, sess_nr, fsize, frames, alt1, 
  '<\/tr><tr>\n' +
 '<td align="right">Начиная с <\/td><td>'+g_fdate2+'<\/td><\/tr>\n' +
 '<tr><td align="right">по <\/td><td>'+g_fdate1+'<\/td>\n' +
- '<\/tr><\/tbody><\/table>\n' + 
+ '<\/tr><\/tbody><\/table>\n' +
  '<br /><a href="'+link+'" '+link_target+'>загрузить файл ( ' + g_fsize +
  ' )<br />и открыть в медиа проигрывателе &gt;&gt;<\/a>\n' +
  '<\/div>';

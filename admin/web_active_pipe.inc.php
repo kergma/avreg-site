@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * @file admin/web_active_pipe.inc.php
  * @brief Содержит js-функции и инициализирует переменные <br />необхоимые для усановки камер в раскладке для WEB
@@ -10,7 +10,7 @@
 
 function validate(){
    var cams_selects = document.getElementsByName('mon_wins[]');
-   if (typeof(cams_selects) == 'undefined') 
+   if (typeof(cams_selects) == 'undefined')
      return false;
    var cams_select=null;
    var i;
@@ -34,7 +34,7 @@ function sel_change(sel) {
   if (sel.selectedIndex==0)
     return true;
   var cams_selects = document.getElementsByName('mon_wins[]');
-  if (typeof(cams_selects) == 'undefined') 
+  if (typeof(cams_selects) == 'undefined')
      return false;
    var cams_select=null;
    var i;
@@ -49,7 +49,7 @@ function sel_change(sel) {
             break;
          }
       }
-   }  
+   }
   return false;
 }
 
@@ -117,7 +117,7 @@ $active_pipes_alt_src=array();
 
 if ( $GCP_cams_nr === 0 ) {
    print '<p class="HiLiteBigErr">' . $strNotViewCams . '</p>' ."\n";
-} else 
+} else
 {
    // строим список активных для просмотра пайпов
    if ($pipes_show>0)
@@ -128,7 +128,7 @@ if ( $GCP_cams_nr === 0 ) {
     print '</pre></div>'. "\n";
  */
       print '<div>'. "\n";
-      
+
       print '<table cellspacing="0" border="1" cellpadding="3" >'. "\n";
       print '<tr bgcolor="'.$header_color.'">'."\n";
       print '<th>&nbsp;</th>'."\n";
@@ -145,9 +145,9 @@ if ( $GCP_cams_nr === 0 ) {
    $c_allow_networks=0;
    $c_v4l_pipe='';
 
-   
+
    reset($GCP_cams_params);
-   while (list($__cam_nr, $cam_detail) = each($GCP_cams_params)) 
+   while (list($__cam_nr, $cam_detail) = each($GCP_cams_params))
    {
       $cam_name = getCamName($GCP_cams_params[$__cam_nr]['text_left']);
       $c_work = intval($GCP_cams_params[$__cam_nr]['work']);
@@ -189,8 +189,8 @@ if ( $GCP_cams_nr === 0 ) {
    } // for
 
 //   print '<pre>'; var_export( $cam_detail );  print '</pre>';
-    
-   
+
+
    if ($pipes_show>0)
    {
       print '</table>'. "\n";

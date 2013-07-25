@@ -84,7 +84,7 @@ if ( !isset($cam_nr) )
 
       $r_count = 0;
       reset($GCP_cams_params);
-      
+
       //-->
       /*
       print '<pre>';
@@ -92,8 +92,8 @@ if ( !isset($cam_nr) )
       print '</pre>';
       */
       //-->
-      
-      while (list($__cam_nr, $cam_detail) = each($GCP_cams_params)) 
+
+      while (list($__cam_nr, $cam_detail) = each($GCP_cams_params))
       {
          $cam_name = getCamName($cam_detail['text_left']);
          $r_count++;
@@ -120,7 +120,7 @@ if ( !isset($cam_nr) )
          }
          //вывести инфу о камере
          print_cam_detail_row($conf, $__cam_nr, $cam_detail);
-         
+
          print "</tr>\n";
       }
       print "</table>\n";

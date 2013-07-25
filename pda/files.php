@@ -1,7 +1,7 @@
 <?php
 /**
  * @file pda/files.php
- * @brief 
+ * @brief
  */
 $USE_JQUERY = true;
 
@@ -37,7 +37,7 @@ if ( isset($_SESSION[$files_sess_var_name]) ) {
    $use_desc_order = empty($desc) ? '' : 'desc';
 
     $files = $adb->get_files($camera, $ser_nr, $timebegin, $timeend,  $use_desc_order);
-      
+
    if ( !$files ) {
       print "<div style='padding: 10px;'>Странно..., ничего не найдено :-0<br>\n";
       print "<a href='javascript:window.history.back();' title='$strBack'>$strBack</a></div>\n";
@@ -85,10 +85,10 @@ if($width=='FS'){
 	var reload = <?php print $reload."\n"; ?>;
 	var scale = <?php print $scale."\n"; ?>
 	var SELF_ADR = <?php print "\"".$_SERVER['REQUEST_URI']."\"" ; ?>;
-	var TOTAL_SCLS = <?php print sizeof($tumb_sizes); ?>; //кол-во предопределенных значений масштаба 
+	var TOTAL_SCLS = <?php print sizeof($tumb_sizes); ?>; //кол-во предопределенных значений масштаба
 </script>
 
-<?php 
+<?php
 
 
 
@@ -103,7 +103,7 @@ $pagi = new PDA_Paginator($files,
 $pagi->print_above();
 
 /* print objects <img> to page */
-foreach($pagi as $row) 
+foreach($pagi as $row)
 {
    $START  = (int)$row[0];
    $FINISH = (int)$row[1];
@@ -113,13 +113,13 @@ foreach($pagi as $row)
    $U16_1  = (int)$row[5];
    $U16_2  = (int)$row[6];
    $orig_src = $conf['prefix'] . $conf['media-alias'] . '/' . $row[7];
-   
+
    print "<div style='margin: 0px 0px 10px 0px; pad: 0px 0px 0px 0px; border-bottom: 1px dotted;'>\n";
    print strftime('&nbsp;%d(%a) %T<br>', $START);
    if ( $EVT_ID >= 15 && $EVT_ID <= 17 /* snapshot jpegs */ ) {
       $jpeg_info = "$FILESZ_KB kB, [$U16_1 x $U16_2]";
       printf("<a href='$orig_src' title='Открыть оригинал $jpeg_info'>\n");
-      
+
       printf('<img class="cam_snapshot" src="'.$conf['prefix'].'/lib/resize_img.php?prop=false&url=%s&w=%s&h=%s" alt="Ошибка загрузки">',
       urlencode("http://".$_SERVER["SERVER_NAME"].$orig_src),
       $width,

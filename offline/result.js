@@ -31,7 +31,7 @@ function mark_row(theRowNum)
     var fduration = img_info[10]
     var fname = img_info[11];
 
-    if ( img_cursor >= 0) 
+    if ( img_cursor >= 0)
     {
        ftype = document.images[img_cursor].id;
       if ( ftype == 23 )
@@ -42,7 +42,7 @@ function mark_row(theRowNum)
            document.images[img_cursor].src = WwwPrefix+'/img/audio-off.gif';
       else if (ftype >= 15 || ftype <= 21)
          document.images[img_cursor].src = WwwPrefix+'/img/camera.gif';
-      else 
+      else
           document.images[img_cursor].src = WwwPrefix+'/img/unknown.gif';
     }
 
@@ -55,7 +55,7 @@ function mark_row(theRowNum)
            document.images[theRowNum].src = WwwPrefix+'/img/audio.gif';
     else if (ftype >= 15 || ftype <= 21)
          document.images[theRowNum].src = WwwPrefix+'/img/camera-red.gif';
-    else 
+    else
           document.images[theRowNum].src = WwwPrefix+'/img/unknown.gif';
 
     img_cursor = theRowNum;
@@ -65,7 +65,7 @@ function mark_row(theRowNum)
 function first_img ()
 {
     var first_link = document.links[0];
-    if (!first_link) 
+    if (!first_link)
       return;
     mark_row(0);
 }
@@ -81,19 +81,19 @@ function mk_obj_hint(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_
 {
    var Date1 = new Date(utime1 * 1000);
    var Date2 = new Date(utime2 * 1000);
-   
+
    var fn = fname.substr(fname.lastIndexOf('/')+1);
    var link = 'http://' + location.host;
    if  (location.port !="" )
       link +=':'+location.port;
    link += fname;
- 
+
    var camname = window.parent.frames['query'].CAM_NAMES[cam_nr];
-  
+
    var dt_info='';
    var fs =  fsize;
 
-   if (evt_id == 23) 
+   if (evt_id == 23)
    {
       fn += ' [ ' + s16_1 + 'x' + s16_2 + ' ] ';
       icon_48x52 = WwwPrefix+'/img/mpeg4.gif';
@@ -103,7 +103,7 @@ function mk_obj_hint(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_
       fn += ' [ ' + s16_1 + ' канал ]';
       icon_48x52 = WwwPrefix+'/img/audio.gif';
       fs += ', битрейт ' + frames/1000 + 'kbps'; // + ', cэмплрейт ' + s16_2;
-      dt_info='<tr><td align="right">Начиная с:<\/td><td>'+Date2.toLocaleString()+'<\/td><\/tr><tr><td align="right">по:<\/td><td>'+Date1.toLocaleString()+'<\/td><\/tr>\n';     
+      dt_info='<tr><td align="right">Начиная с:<\/td><td>'+Date2.toLocaleString()+'<\/td><\/tr><tr><td align="right">по:<\/td><td>'+Date1.toLocaleString()+'<\/td><\/tr>\n';
   } else if ( evt_id >= 15 || evt_id <= 21 ) {
       /* jpeg */
       fs += '  [ ' + s16_1 + 'x' + s16_2 + ' ] ' ;
@@ -124,7 +124,7 @@ function mk_obj_hint(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_
  '<\/tr><tr>\n' +
  dt_info +
  '<\/tbody><\/table>\n';
-   
+
   return true;
 }
 
@@ -138,10 +138,10 @@ function mouse_img(theRowNum) {
 
     var link = document.links[theRowNum];
     var img = document.images[theRowNum];
-    
+
     if (link==null || img==null)
        return false;
-  
+
     var tmp = img.name;
     var img_info = tmp.split('~');
     var cam_nr = parseInt(img_info[0]);
@@ -156,8 +156,8 @@ function mouse_img(theRowNum) {
     var ftype_str = img_info[9]
     var fduration = img_info[10]
     var fname = img_info[11];
-    
- 
+
+
     mk_obj_hint(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, s16_2, ftype_str, fduration, fname);
     ddrivetip();
 }
@@ -184,24 +184,24 @@ function onBody(e) {
   var pbottom = ptop + e.clientHeight;
   var oConvas = ietruebody();
   if (pbottom >= oConvas.scrollTop + oConvas.clientHeight) {
-    /*alert(e.tagName + ' bottom = ' + pbottom + 
+    /*alert(e.tagName + ' bottom = ' + pbottom +
     "\n"+ 'ниже чем' +"\n"+
     oConvas.tagName + " clientHeight,scrollHeight = " + oConvas.clientHeight + ', ' + oConvas.scrollHeight);
     */
     scrollTo(0, ptop-3);
   } else if (ptop <= oConvas.scrollTop ) {
   /*
-    alert(e.tagName + ' ptop = ' + ptop + 
+    alert(e.tagName + ' ptop = ' + ptop +
     "\n"+ 'выше чем' +"\n"+
     oConvas.tagName +
-    "\nscrollTop=" + oConvas.scrollTop + 
-    "\nclientHeight=" + oConvas.clientHeight + 
+    "\nscrollTop=" + oConvas.scrollTop +
+    "\nclientHeight=" + oConvas.clientHeight +
     "\nscrollHeight=" + oConvas.scrollHeight);
   */
     scrollTo(0, pbottom - oConvas.clientHeight );
   }
   // if (ptop<)
-  
+
 }
 
 /*

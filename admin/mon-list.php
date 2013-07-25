@@ -30,7 +30,7 @@ if ( isset($cmd) )
       {
       	
       	$adb->delete_layouts($display, $mon_nr);
- 
+
          echo '<p><font color="' . $warn_color . '">' . sprintf ($strDeleteMon, $mon_nr, $mon_name, $display=='R'?$sRightDisplay1:$sLeftDisplay1) . '</font></p>' ."\n";
       }
       unset($mon_nr);
@@ -40,7 +40,7 @@ if ( isset($cmd) )
 
 echo '<h2>' . $r_mon_list . '</h2>' ."\n";
 /**
- * 
+ *
  * Функция выводит информацию о раскладке монитора
  * @param string $display правый или левый монитор
  * @param int $l_nr Номер монитора
@@ -54,7 +54,7 @@ function prt_l ($display, $l_nr, $l_def, $is_admin)
       print ' &#171;'.$l_def['layout_name']."&#187;\n";
    else
       print ' &#171;'.$l_def['layout_type']."&#187;\n";
-   if ( !empty($l_def['CHANGE_TIME']) ) 
+   if ( !empty($l_def['CHANGE_TIME']) )
       print '<br>'.$l_def['CHANGE_USER'] . '@' .$l_def['CHANGE_HOST'] . '<br>' . $l_def['CHANGE_TIME'];
    if ( $is_admin ) {
       print '<br><br><a href="'.$_SERVER['PHP_SELF'].'?cmd=DEL&display='.$display.'&mon_nr='.$l_nr.'&mon_name='.$l_def['layout_name'].'">'. $GLOBALS['strDelete'] . '</a>&nbsp;/&nbsp;<a href="'.$GLOBALS['conf']['prefix'].'/admin/mon-tune.php?display='.$display.'&mon_nr='.$l_nr.'&mon_name='.$l_def['layout_name'].'&mon_type='.$l_def['layout_type'].'">'. $GLOBALS['strEdit'] . '</a>' . "\n";
@@ -66,9 +66,9 @@ if ( !isset($mon_nr) || $mon_nr =='')
 {
    /* Performing new SQL query */
 
-   
+
    $result = $adb->get_layouts();
-   
+
    $LD = array();
    $RD = array();
    foreach ( $result as $row)	{
@@ -145,7 +145,7 @@ if ( !isset($mon_nr) || $mon_nr =='')
          prt_l('L', $mon_nr, $LD[$mon_nr], $admin_user);
          print '<td>'; layout2table ( $LD[$mon_nr]['layout_type'], 160, $LD[$mon_nr]['wins'] ); print '</td>'. "\n";
       } else {
-         if ( $admin_user ) 
+         if ( $admin_user )
             print '<td colspan="2" align="center"><a href="'.$conf['prefix'].'/admin/mon-addnew.php?display=L&mon_nr='.$mon_nr.'">'.$l_mon_addnew.'</a></td>'."\n";
          else
             print '<td colspan="2">&nbsp;</td>'."\n";
@@ -155,7 +155,7 @@ if ( !isset($mon_nr) || $mon_nr =='')
          print '<td>'; layout2table ( $RD[$mon_nr]['layout_type'], 160, $RD[$mon_nr]['wins'] ); print '</td>'. "\n";
          prt_l('R', $mon_nr, $RD[$mon_nr], $admin_user);
       } else {
-         if ( $admin_user ) 
+         if ( $admin_user )
             print '<td colspan="2" align="center"><a href="'.$conf['prefix'].'/admin/mon-addnew.php?display=R&mon_nr='.$mon_nr.'">'.$l_mon_addnew.'</a></td>'."\n";
          else
             print '<td colspan="2">&nbsp;</td>'."\n";

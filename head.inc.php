@@ -13,7 +13,7 @@
 *<li> Добавляется тег \<body\> со стилями
 *</ul>
 *
-* 
+*
 */
 
 ob_start();
@@ -90,7 +90,7 @@ if ( isset($link_javascripts) && is_array($link_javascripts))
 
 <script type="text/javascript" >
 <!--
-<?php 
+<?php
 printf("var StorageDir = '%s';\n", addcslashes($conf['storage-dir'], '\'"/\\'));
 printf("var MediaAlias = '%s';\n", addcslashes($conf['media-alias'], '\'"/\\'));
 
@@ -146,7 +146,7 @@ function ddrivetip(thetext, thecolor, thewidth) {
       } else {
          return false;
       }
-      if (thewidth || typeof thewidth!='undefined') 
+      if (thewidth || typeof thewidth!='undefined')
          tipobj.style.width=thewidth+'px';
       if (thecolor && typeof thecolor!='undefined' && thecolor!='')
          tipobj.style.backgroundColor=thecolor;
@@ -159,7 +159,7 @@ function positiontip(e) {
    if (enabletip){
       var curX=(ns6)?e.pageX : event.clientX+ietruebody().scrollLeft;
       var curY=(ns6)?e.pageY : event.clientY+ietruebody().scrollTop;
-      //Find out how close the mouse is to the corner of the window 
+      //Find out how close the mouse is to the corner of the window
       var rightedge=ie&&!window.opera?
          ietruebody().clientWidth-event.clientX-offsetxpoint :
          window.innerWidth-e.clientX-offsetxpoint-20;
@@ -247,9 +247,9 @@ function ReadCookie(cookieName)
       return "";
    var theCookie=""+document.cookie;
    var ind=theCookie.indexOf(cookieName);
-   if (ind==-1) ; 
+   if (ind==-1) ;
    var ind1=theCookie.indexOf(';',ind);
-   if (ind1==-1) ind1=theCookie.length; 
+   if (ind1==-1) ind1=theCookie.length;
    return unescape(theCookie.substring(ind+cookieName.length+1,ind1));
 }
 
@@ -299,7 +299,7 @@ if (!isset($NOBODY))
 /*
     if ( isset($body_onunload) && !empty($body_onunload) )
       $_onload = 'onunload="JavaScript:'.$body_onunload.'"';
- */ 
+ */
    print sprintf('<body style="%s" %s %s>',$body_style, $_onload, $body_addons)."\n";
    $custom_header = preg_replace('%^'.$conf['prefix'].'(/.+)\.php$%', '\1_header.inc.php', $_SERVER['SCRIPT_NAME']);
    if ( 0 != strcmp($_SERVER['SCRIPT_NAME'], $custom_header ) ) {

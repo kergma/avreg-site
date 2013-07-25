@@ -2,7 +2,7 @@
 /**
  * @file admin/user-addnew.php
  * @brief Настройка доступа к веб-интерфейсу (http://...) видеосервера
- * 
+ *
  * Добавление нового пользователя
  */
 /// Файл переводов
@@ -33,15 +33,15 @@ if ( isset($cmd) && isset($u_host) && isset($u_name) && isset($groups) )
    case 'ADD_NEW_USER':
    		$guest = isset($guest);
    		$pda = isset($pda);
-   		$result = $adb->add_user($u_host, $u_name, $u_pass, $groups, $guest, $pda, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_user,$limit_fps,$nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user);   
+   		$result = $adb->add_user($u_host, $u_name, $u_pass, $groups, $guest, $pda, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_user,$limit_fps,$nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user);
       break;
    default:
       die('crack');
    }
    // print ($query);
-   
-  
-    
+
+
+
 	if ( $result )
    {
       print '<p class="HiLiteWarn">' . sprintf ($fmtUserAdded, $u_name, $u_host) . '</p>' ."\n";
@@ -51,9 +51,9 @@ if ( isset($cmd) && isset($u_host) && isset($u_name) && isset($groups) )
       print '<div class="error">'.sprintf ($fmtUserAddErr2, $u_name, $u_host, "DB: error" ). "</div>\n";
       print_go_back();
    }
-     
-     
-     
+
+
+
    require ('../foot.inc.php');
    exit;
 } else if (isset($cmd)){
@@ -76,7 +76,7 @@ if ( !isset($u_name) || empty($u_name) )
    print '<table cellspacing=0 border=1 cellpadding=5>'."\n";
    $u_status = &$status;
    $user2html = $host2html = $longname2html = $passwd2html = $u_devacl = $u_forced_saving_limit = $guest = $pda = NULL;
-   $sessions_per_user = $limit_fps = $nonmotion_fps = $limit_kbps = $session_time = $session_volume = NULL; 
+   $sessions_per_user = $limit_fps = $nonmotion_fps = $limit_kbps = $session_time = $session_volume = NULL;
 
    require '_user_data_tbl.inc.php';
 

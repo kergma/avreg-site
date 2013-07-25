@@ -10,7 +10,7 @@ require('_vidserv_status.inc.php');
 
 
 /**
- * 
+ *
  * Функция определяющая критичность загрузки, возвращая цвет критичности
  * @param int $val текущее значение
  * @param int $warn_val предупреждающее значение
@@ -19,11 +19,11 @@ require('_vidserv_status.inc.php');
  */
 function color_level ($val, $warn_val, $max_val)
 {
-  if ($val >= $max_val ) 
+  if ($val >= $max_val )
     return 'color:Red; font-weight: bold;';
-  else if ( $val >= $warn_val ) 
+  else if ( $val >= $warn_val )
    return 'color:#CC6600; font-weight: bold;';
-  else 
+  else
    return 'color:#009900;';
 }
 
@@ -64,12 +64,12 @@ if ( $retval === 0 ) {
  	print '</table><br />'."\n";
 }
 /**
- * 
- * Функция выводящая информацию о процессе: cpu, mem... 
+ *
+ * Функция выводящая информацию о процессе: cpu, mem...
  * @param string $proc_name имя процесса
  * @param int $pid ид процесса
  */
-function pr_proc_stat($proc_name, $pid=NULL) 
+function pr_proc_stat($proc_name, $pid=NULL)
 {
    $p_info = proc_info($proc_name, $pid);
    if ($p_info === false) {

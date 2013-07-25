@@ -1,7 +1,7 @@
 <?php
 /**
  * @file pda/head_pda.inc.php
- * @brief 
+ * @brief
  */
 
 ob_start();

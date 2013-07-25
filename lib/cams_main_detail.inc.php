@@ -28,7 +28,7 @@ function _warn_emptied_param($param, $print_warn)
 /**
  * return NULL  if no video sorce
  *        TRUE  if has video and complete url
- *        FALSE if has video but not complete url 
+ *        FALSE if has video but not complete url
  */
 function cam_has_video($cam_detail, $print_warn, &$url)
 {
@@ -46,7 +46,7 @@ function cam_has_video($cam_detail, $print_warn, &$url)
       } else
          $url .= '/dev/video' . $cam_detail['v4l_dev'];
       $input = isset($cam_detail['input']) ? $cam_detail['input'] : 0;
-      $url .= ":$input"; 
+      $url .= ":$input";
       break;
    case 'http':
       $url = 'http://';
@@ -84,7 +84,7 @@ function cam_has_video($cam_detail, $print_warn, &$url)
 /**
  * return NULL  if no video sorce
  *        TRUE  if has video and complete url
- *        FALSE if has video but not complete url 
+ *        FALSE if has video but not complete url
  */
 function cam_has_audio($cam_detail, $print_warn, &$url)
 {

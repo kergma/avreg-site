@@ -2,11 +2,11 @@
 /**
  * @file offline/index.php
  * @brief Архив : поиск
- * 
- * 
+ *
+ *
  * @page offline Модуль Архив
  * Модуль просмотра записанного материала
- * 
+ *
  * Файлы модуля:
  * - offline/index.php	
  * - offline/query.php
@@ -24,7 +24,7 @@
  * - offline/gallery/js/jquery.mousewheel.min.js
  * - offline/gallery/js/jquery.tooltip.js
  * - offline/gallery/js/jquery.scrollTo-min.js
- * 
+ *
  */
 require('../lib/config.inc.php');
 

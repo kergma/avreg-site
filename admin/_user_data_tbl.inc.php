@@ -26,7 +26,7 @@ print '<td>'."\n";
 reset($grp_ar);
 while (list ( $gr_status, $groups ) = each ($grp_ar) )
 {
-   if ( $user_status > $gr_status ) 
+   if ( $user_status > $gr_status )
       $addons='disabled';
    else if ($u_status === $gr_status)
       $addons='checked';

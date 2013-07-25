@@ -20,7 +20,7 @@ function get_resolutions($strResolutions, $orderByWidth=true){
 
 	array_reverse($resol);
 
-	//сортировка 
+	//сортировка
 //	if($orderByWidth) usort($resol, 'sort_by_width');
 //	else usort($resol, 'sort_by_height');
 
@@ -47,7 +47,7 @@ function show_select_resolution($resolutions, $select ,$strName = "Resolutions" 
 			echo "<option ".($key==$select?' selected ':'' )." value='{$key}'>{$val['w']} x {$val['h']} </option>\n";
 		}
 	}
-	echo '</select>'."\n"; 
+	echo '</select>'."\n";
 	
 }
 
@@ -98,7 +98,7 @@ var isFs = false;
 			}
 			
 			if(isscl){
-				//если значение масштаба уже установлено 
+				//если значение масштаба уже установлено
 				act= act.replace(expr, "scl=" + scale );
 			}
 			else{
@@ -137,14 +137,14 @@ var isFs = false;
 			var is_ea_w = ea_w.test(SELF_ADR);
 	
 			if(is_ea_h){
-				//если значение масштаба уже установлено 
+				//если значение масштаба уже установлено
 				act= act.replace(ea_h, "ah=" +avail_h );
 			}
 			else{
 				act +=  "&ah=" + avail_h;
 			}
 			if(is_ea_w){
-				//если значение масштаба уже установлено 
+				//если значение масштаба уже установлено
 				act= act.replace(ea_w, "aw=" +avail_w );
 			}
 			else{

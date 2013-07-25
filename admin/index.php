@@ -3,13 +3,13 @@
 session_start();
 $_SESSION['is_admin_mode'] = true;
 /**
- * @file admin/index.php 
- * @brief Стартовая страница модуля 
- * 
- * 
+ * @file admin/index.php
+ * @brief Стартовая страница модуля
+ *
+ *
  * @page admin Модуль Админки
- * Админка проекта 
- *  
+ * Админка проекта
+ *
  * Подмодули	:
  * - @ref tune
  *
@@ -22,8 +22,8 @@ $_SESSION['is_admin_mode'] = true;
  * - admin/key.php
  * - admin/update.php
  * - admin/bugreport.php
- *  
- *  
+ *
+ *
  */
 require_once('../lib/config.inc.php');
 /// показывать body елемент

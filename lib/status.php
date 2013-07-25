@@ -25,8 +25,8 @@ if($subscribe)
 	$timeout = 30;
 	$start = time();
 	while((time() - $start) < $timeout) {
-		//if(IS_STATUSES_CHANGED) return status; 
-		sleep(1); 
+		//if(IS_STATUSES_CHANGED) return status;
+		sleep(1);
 	}
 }
 
@@ -52,7 +52,7 @@ function get_subsystem_value($cam_nr, $subsys){
 			return get_motion_status($cam_nr);
 		case 'client':
 			return get_client_status($cam_nr);
-		default : 
+		default :
 			return 'unknown subsystem';
 	}
 }
@@ -60,7 +60,7 @@ function get_subsystem_value($cam_nr, $subsys){
 
 function get_capture_status($cam_nr){
 	return array(
-	"status"=>true, 
+	"status"=>true,
 	"when"=> time(),
 	"video"=> true,
 	"audio"=> true,

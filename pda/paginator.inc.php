@@ -1,7 +1,7 @@
 <?php
 /**
  * @file pda/paginator.inc.php
- * @brief 
+ * @brief
  */
 /**
  * @class PDA_Paginator
@@ -47,7 +47,7 @@ class PDA_Paginator implements Iterator
       if(isset($_GET['aw']) && isset($_GET['ah'])){
       	$FS_size=sprintf('&aw=%s&ah=%s', $_GET['aw'], $_GET['ah']);
       }
-      
+
       $uri =  sprintf('%s&%s=%u&scl=%u%s', $this->uri_base,
          $this->offset_name, ($this->elems_per_page * ($this->cur_page - 2)), $scale, $FS_size);
 
@@ -62,7 +62,7 @@ class PDA_Paginator implements Iterator
    	  if(isset($_GET['aw']) && isset($_GET['ah'])){
    	  	$FS_size=sprintf('&aw=%s&ah=%s', $_GET['aw'], $_GET['ah']);
    	  }
-   	  
+   	
       if ( $this->cur_page < $this->all_pages_nb ) {
          printf("<div style='text-align: center; width:%upx;'>\n", $this->conf['pda-thumb-image-width']);
          $uri =  sprintf('%s&%s=%u&scl=%u%s', $this->uri_base,

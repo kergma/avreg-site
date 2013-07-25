@@ -85,9 +85,9 @@ if (isset($cmd)) {
    	$allWINS = json_encode($allWINS);
       if ( $allWINS!='' )	{
       	$PrintCamNames = ($PrintCamNames!=null)? 1 : 0;
-      	 
+      	
       	$adb->web_replace_layouts($mon_nr, $mon_type, $mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS );
-         
+
          print '<p class="HiLiteBigWarn">' . sprintf($web_r_mon_changed, $counter, empty($mon_name)?$mon_type:$mon_name ) . '</p>'."\n";
          print '<center><a href="'.$conf['prefix'].'/admin/web_mon_list.php" target="_self">'.$r_mon_goto_list.'</a></center>'."\n";
       } else {
@@ -162,9 +162,9 @@ if (isset($cmd)) {
       $row = $adb->web_get_monitor($mon_nr);
       $wins_cams = json_decode($row[4], true);
    	}
-      
 
-      
+
+
       //формирование массива альтернативных источников видео
       $cams_srcs = array();
       foreach ($GCP_cams_params as $key => $val){
@@ -176,7 +176,7 @@ if (isset($cmd)) {
       print '<script type="text/javascript">'."\n";
       print 'var cams_alt ='.json_encode($cams_srcs).";\n";
       print '</script>'."\n";
-      
+
       //Создание эл-та селект для ячеек раскладки
       for ($i=0; $i<MAX_CAMS_INTO_LAYOUT; $i++) {
       	
@@ -196,7 +196,7 @@ if (isset($cmd)) {
       }else{ //Если раскладка создается на сервере
       	print '<form action="'.$_SERVER['PHP_SELF'].'"  onSubmit="return validate();" method="POST">'."\n";
       }
-      
+
       // print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST"  onSubmit="return validate();">'."\n";
       print '<p class="HiLiteBigWarn">' . $strMonAddInfo2 . '</p>' ."\n";
       print '&nbsp;&nbsp;&nbsp;'.$strName.': <input type="text" name="mon_name" size=16 maxlength=16 value="'.$mon_name.'">'."\n";
@@ -205,31 +205,31 @@ if (isset($cmd)) {
       print '<input type="hidden" name="mon_nr" value="'.$mon_nr.'UL'.'">'."\n";
       print '<input type="hidden" name="counter" value="'.$counter.'">'."\n";
       print '<input type="hidden" name="mon_type" value="'.$mon_type.'">'."\n";
-      
+
       require_once ('../lang/russian/utf-8/_online.php');
       //Селектор сохранять пропорции/ на весь экран
       $AspectRatio =trim($row[9]);
       print '<br /><div><div style="float:left;" >'.$strAspectRatio.":&nbsp;&nbsp;</div> \n";
       print '<div >'.getSelectByAssocAr('AspectRatio', $AspectRatioArray, false , 1, 1, $AspectRatio, false)."</div></div>\n";
-      
+
       //Выводить имена камер
       $PrintCamNames = ($row[8]==1)? 'checked':'unchecked' ;
       print '<br /><div><div style="float:left;" >'.$strPrintCamNames.":&nbsp;&nbsp;</div>\n";
       print '<div><input type="checkbox" name="PrintCamNames" '.$PrintCamNames.' />'."</div></div>\n";
-      
-	  //Установить интервал попыток переподключения к камере при отсутствии соединения      
+
+	  //Установить интервал попыток переподключения к камере при отсутствии соединения
 	  $ReconnectTimeout = trim($row[10]);
       print '<br /><div><div style="float:left;" >'.$strReconnectTimeout.":&nbsp;&nbsp;</div> \n";
       print '<div >'.getSelectByAssocAr('ReconnectTimeout', $ReconnectTimeoutArray, false , 1, 1, $ReconnectTimeout, false)."</div></div>\n";
 
-      //Кнопки формы 
+      //Кнопки формы
       print '<br><input type="submit" name="btn" value="'.$strSave.'">'."\n";
       if($storage=='client'){//сохраняем изменения клиентской раскладки
       	print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="user_layouts.redirect(\''.$redirect_url.'\', true);">'."\n";
       }else{
 	      print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="reset_to_list();">'."\n";
       }
-      
+
       print '</form>'."\n";
    }
 }

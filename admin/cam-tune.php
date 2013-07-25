@@ -22,7 +22,7 @@ if ( !isset($cam_nr) || !settype($cam_nr,'int' ))  die ('Empty cameras number');
 if ( isset ($par_filter) )
    settype($par_filter,'int');
 else
-{ 
+{
    if ( isset($_COOKIE['avreg_par_filter']) )
       $par_filter = (int)$_COOKIE['avreg_par_filter'];
    else
@@ -30,7 +30,7 @@ else
 }
 if ( isset($cmd) )
 {
-   if ( $cmd == 'UPDATE_PARAM' ) 
+   if ( $cmd == 'UPDATE_PARAM' )
    {
       require ('./upload.inc.php');
       if ( is_array($types) && (count($types) > 0) ) {
@@ -69,11 +69,11 @@ echo '<h3>' . sprintf($r_cam_tune, $cam_nr, $cam_name, $named) . '</h3>' ."\n";
 else  {
    print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST" enctype="multipart/form-data">'."\n";
    if ($cam_nr===0)
-      echo '<h3>' . sprintf($r_cam_defaults, getSelectByAssocAr('cam_nr', $__cam_arr, FALSE, 1, 0, 0, FALSE, TRUE, ''), 
+      echo '<h3>' . sprintf($r_cam_defaults, getSelectByAssocAr('cam_nr', $__cam_arr, FALSE, 1, 0, 0, FALSE, TRUE, ''),
                         $named, $sip) . '</h3>' ."\n";
    else {
-      echo '<h3>' . sprintf($r_cam_tune,  $cam_nr, 
-            getSelectByAssocAr('cam_nr', $__cam_arr, FALSE, 1, 0, $cam_nr, FALSE, TRUE, ''), 
+      echo '<h3>' . sprintf($r_cam_tune,  $cam_nr,
+            getSelectByAssocAr('cam_nr', $__cam_arr, FALSE, 1, 0, $cam_nr, FALSE, TRUE, ''),
             $named, $sip) .  '</h3>' ."\n";
          print '<input type="hidden" name="cam_name" value="'.$__cam_arr[$cam_nr].'">'."\n";
    }
@@ -94,9 +94,9 @@ if ( isset($categories) )
 		
    $cam_params = array();
    $def_params   = array();
-   foreach ( $result as $row) 
+   foreach ( $result as $row)
    {
-      if ( $cam_nr === 0 ) 
+      if ( $cam_nr === 0 )
             $cam_params[$row['PARAM']] = $row['VALUE'].'~'.$row['CHANGE_HOST'].'~'.$row['CHANGE_USER'].'~'.$row['CHANGE_TIME'];
       else if ($row['CAM_NR'] > 0)
             $cam_params[$row['PARAM']] = $row['VALUE'].'~'.$row['CHANGE_HOST'].'~'.$row['CHANGE_USER'].'~'.$row['CHANGE_TIME'];
@@ -104,7 +104,7 @@ if ( isset($categories) )
             $def_params[$row['PARAM']] = $row['VALUE'].'~'.$row['CHANGE_HOST'].'~'.$row['CHANGE_USER'].'~'.$row['CHANGE_TIME'];
    }
    $result = NULL;
-   
+
       print '<br>'."\n";
       print '<table width="100%" cellspacing="0" border="1" cellpadding="5" bgcolor="#dcdcdc">'."\n";
       print '<tr>'."\n";
@@ -132,9 +132,9 @@ if ( isset($categories) )
       print '<th>'.$strDescription.'</th>'."\n";
       print '<th>'.$strUpdateControl.'</th>'."\n";
       print '</tr>'."\n";
-      
+
       $p_count = count($PARAMS);
-      
+
    for ($i=0;$i<$p_count;$i++)
       {
       $parname1 = &$PARAMS[$i]['name'];
@@ -208,7 +208,7 @@ if ( isset($categories) )
       print '</span><br /><br /><div>'."\n";
       $max_len = (isset($PARAMS[$i]['max_len'])) ? $PARAMS[$i]['max_len'] : 0;
       $str_f_len = ($max_len > 40)?40:$max_len;
-      
+
       switch ( $VAL_TYPE )
       {
          case $INT_VAL:
@@ -242,7 +242,7 @@ if ( isset($categories) )
          case $CHECK_VAL:
             print checkParam($parname1, $val, $DEF_VAL);
             break;
-           
+
          default: /* BOOL*/
             if ($val === '' || is_null($val))
                print getSelectHtml('fields['.$parname1.']',$flags, FALSE , 1, 0, NULL, TRUE, FALSE);

@@ -87,7 +87,7 @@ function CheckParVal($_param, $_value)
          break;
       }
    }
-   if ( !$ret ) 
+   if ( !$ret )
       print '<div class="error">'. sprintf($GLOBALS['strParInvalid'], $_value, $_param) .'</div>'."\n";
 
    return $ret;
@@ -121,7 +121,7 @@ function checkParam ( $parname, $parval, $def_val = NULL )
          $all_v4l_devs = glob('/dev/video[0-9]*');
          if ( FALSE === $all_v4l_devs ) {
             $ret = '<p style="color:'.$GLOBALS['error_color'].';">'. $GLOBALS['notVidDevs'] .'</p>'."\n";
-            break; 
+            break;
          }
 
          $all_v4l_devs_nrs = array();
@@ -131,7 +131,7 @@ function checkParam ( $parname, $parval, $def_val = NULL )
          }
          sort($all_v4l_devs_nrs, SORT_NUMERIC);
 
-         if ( isset($GLOBALS['conf']['v4loop-dev-offset']) ) 
+         if ( isset($GLOBALS['conf']['v4loop-dev-offset']) )
             $_v4loop_dev_offset = (int)$GLOBALS['conf']['v4loop-dev-offset'];
          else {
             $ret = '<p style="color:'.$GLOBALS['error_color'].';">not defined "v4loop-dev-offset"</p>'."\n";
@@ -156,7 +156,7 @@ function checkParam ( $parname, $parval, $def_val = NULL )
       if ( count($viddev_nums) > 0 ) {
          $ret = getSelectHtmlByName('fields['.$parname.']', $viddev_nums, FALSE, 1, 0, $parval, TRUE, FALSE,
             '/dev/video');
-      } else 
+      } else
          $ret = '<p style="color:"'.$GLOBALS['error_color'].';">'. $GLOBALS['notVidDevs'] .'</p>'."\n";
       break;
    case 'norm':

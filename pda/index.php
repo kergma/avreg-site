@@ -3,11 +3,11 @@
 /**
  * @file pda/index.php
  * @brief Страница PDA-версии
- * 
- * 
- * @page pda Модуль PDA-версии 
+ *
+ *
+ * @page pda Модуль PDA-версии
  * Модуль PDA-версии
- * 
+ *
  * Файлы модуля:
  * - pda/index.php	
  * - pda/files.php
@@ -19,7 +19,7 @@
  */
 
 /**
- * @page pda Модуль PDA-версии 
+ * @page pda Модуль PDA-версии
  * Модуль просмотра записанного материала на pda-устройствах
  */
 
@@ -55,7 +55,7 @@ $show_colums = array(
    'CAPS'     => false,
 );
 reset($GCP_cams_params);
-while (list($__cam_nr, $cam_detail) = each($GCP_cams_params)) 
+while (list($__cam_nr, $cam_detail) = each($GCP_cams_params))
 {
    print "<tr>\n";
    $checked = (!isset($cams) || in_array($__cam_nr, $cams)) ? 'checked' : '';

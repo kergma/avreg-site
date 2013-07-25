@@ -4,19 +4,19 @@
  *
  * @file index.php
  * @brief генерация стартовой страницы сайта Avreg
- * 
- * @mainpage AvregSite 
- * 
+ *
+ * @mainpage AvregSite
+ *
  * Веб-интерфейс
- * 
+ *
  * Состоит из следующих частей:
- * - @ref lib 
- * - @ref admin 
- * - @ref lang 
- * - @ref offline 
- * - @ref online 
- * - @ref pda 
- * 
+ * - @ref lib
+ * - @ref admin
+ * - @ref lang
+ * - @ref offline
+ * - @ref online
+ * - @ref pda
+ *
  */
 session_start();
 if (isset($_SESSION['is_admin_mode']))
@@ -82,7 +82,7 @@ if ( $arch_user ) {
    print '<p><a class="main_links" href="./offline/index.php">'.$a_archive.'</a></p>'."\n";
    print  '</div ></div >'."\n";
    print '</td>'."\n";
-   
+
    //Архив :: плейлист
    print '<td align="center" valign="top" class="main_td_ref" >'."\n";
    print  '<div style="position:relative;" ><div class="mode_item" style="position:absolute; " >'."\n";
@@ -90,17 +90,17 @@ if ( $arch_user ) {
    print '<p align="center"><a class="main_links" href="./offline/playlist.php">'.$a_archive_playlist.'</a></p>'."\n";
    print  '</div ></div >'."\n";
    print '</td>'."\n";
-   
+
    //Gallery
    print '<td align="center" valign="top" class="main_td_ref" >'."\n";
    print  '<div style="position:relative;" ><div class="mode_item" style="position:absolute; " >'."\n";
    print '<a class="main_links" href="./offline/gallery.php"><img src="./img/offline_gallery.png" width="251" height="165" border="0"></a>'."\n";
    print '<p align="center"><a class="main_links" href="./offline/gallery.php">'.$a_archive_gallery.'</a></p>'."\n";
    print  '</div ></div >'."\n";
-    
+
    print '</td>'."\n";
-    
-   
+
+
    print '</tr>'."\n";
 }
 print '</tbody>'."\n";

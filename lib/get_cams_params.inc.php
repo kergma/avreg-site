@@ -1,12 +1,12 @@
 <?php
 
 /**
- * 
+ *
  * @file lib/get_cams_params.inc.php
  * @brief Установка параметров настроек камер
- * 
+ *
  * Формирует список камер, доступных пользователю, параметры этих камер и настройки по умолчанию
- * 
+ *
  */
 
 
@@ -35,7 +35,7 @@ require_once ($params_module_name);
 for ($GCP_i=0;$GCP_i<$PARAMS_NR;$GCP_i++)
 {
    $GCP_parname=$PARAMS[$GCP_i]['name'];
-   if ( !in_array($GCP_parname, $GCP_query_param_list) ) 
+   if ( !in_array($GCP_parname, $GCP_query_param_list) )
       continue;
    $GCP_def_pars[$GCP_parname] = $PARAMS[$GCP_i]['def_val'];
    if ($GCP_sql_in_par===NULL)

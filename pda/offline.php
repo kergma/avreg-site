@@ -1,7 +1,7 @@
 <?php
 /**
  * @file pda/offline.php
- * @brief 
+ * @brief
  */
 $pageTitle = 'Сеансы записи';
 
@@ -44,17 +44,17 @@ $_SESSION['oims']  = !empty($oims);
 
 $recsess_sess_var_name = sprintf('offline_%s_%u_%u_%u_%u',
    implode('_', $cams),
-   $use_desc_order ? 1 : 0, 
-   empty($oims) ? 0 : 1, 
+   $use_desc_order ? 1 : 0,
+   empty($oims) ? 0 : 1,
    $timebegin_unix, $timeend_unix);
 
 $rec_sessions = null;
 if ( isset($_SESSION[$recsess_sess_var_name]) ) {
    $rec_sessions = &$_SESSION[$recsess_sess_var_name];
 } else {
-      
+
     $rec_sessions = $adb->get_pda_events($cams_csv,  $timebegin, $timeend,  $use_desc_order);
-    
+
    if ( !$rec_sessions ) {
       print "<div style='padding: 10px;'>Ничего не найдено за этот период.<br>\n";
       print "<a href='javascript:window.history.back();' title='$strBack'>$strBack</a></div>\n";
@@ -81,7 +81,7 @@ require_once('../lib/get_cams_params.inc.php');
 
 /* print record session info into page */
 print "<br>\n";
-foreach($pagi as $row) { 
+foreach($pagi as $row) {
    $START  = (int)$row[0];
    $FINISH = (int)$row[1];
    $CAM_NR = (int)$row[2];

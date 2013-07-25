@@ -1,10 +1,10 @@
 <?php
 /**
- * @file admin/menu-tune.php 
- * @brief Меню настроек 
- * 
+ * @file admin/menu-tune.php
+ * @brief Меню настроек
+ *
  * Создает содержимое фрейма menu для страницы настроек admin/tune.php
- * 
+ *
  */
 /// Заголовок страницы в файле переводов
 $pageTitle = 'tune_logo';

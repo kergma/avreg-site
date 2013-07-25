@@ -1,31 +1,31 @@
-<?php 
+<?php
 
 /**
 * @file cron.php
 * @brief Обновление данных в таблице TREE_EVENTS
 *
 * @param '-m' - имя вызываемого метода
-* значения: 
-* 1) -m cron_update_tree_events 
+* значения:
+* 1) -m cron_update_tree_events
 *	обновляет таблицу TREE_EVENTS c момента последнего необновленного события в дереве событий, без параметров
 * 	пример:	sudo php ~/workspace/avreg-site/cron.php -m cron_update_tree_events
-* 2) -m update_tree_events 
+* 2) -m update_tree_events
 *	частичное обновление таблицы TREE_EVENTS, используется совместно со следующими параметрами:
 *
 *@param '-s' - начало временного диапазона обновления. Если не указан - обновление будет произведено с момента первого соответстующего условиям события
 *	пример: sudo php ~/workspace/avreg-site/cron.php -m update_tree_events -s '2012-09-07 11:00:00'
-*	(будут обновлены все события и для всех камер, начиная с указанного даты и времени 
+*	(будут обновлены все события и для всех камер, начиная с указанного даты и времени
 *	(минуты и секунды игнорируются, т.е. диапазон начинается с указанного часа, 0 минут, 0 секунд)).
 *
 *@param '-e' - конец временного диапазона обновления.  Если не указан - обновление будет произведено до последнего соответстующего условиям события
 *	пример: sudo php ~/workspace/avreg-site/cron.php -m update_tree_events -e '2012-09-07 12:00:00'
-*	(будут обновлены все события и для всех камер, заканчивая указанной датой, и временем до конца указанного часа 
+*	(будут обновлены все события и для всех камер, заканчивая указанной датой, и временем до конца указанного часа
 *	(минуты и секунды игнорируются, т.е. диапазон заканчивается в указанный час, 59 минут, 59 секунд)).
 *
 *@param '-c' - номера камер для которых очсуществляется обновление.  Если не указан - обновление будет произведено для всех камер.
 *	пример:  sudo php ~/workspace/avreg-site/cron.php -m update_tree_events -c 2,3
 *	(будут обновлены все события для камер No. 2 и 3).
-* 
+*
 * 	комплексный пример:	sudo php ~/workspace/avreg-site/cron.php -m update_tree_events -s '2012-09-07 09:00:00' -e '2012-09-07 12:00:00' -c 2,3
 *	(будут обновлены все события для камер No. 2 и 3 в период времени начиная с 2012-09-07 09:00:00 и заканчивая 2012-09-07 12:59:59).
 *
@@ -40,7 +40,7 @@ $methods = array(
 );
 if (in_array('-m',$argv) && isset($argv[array_search('-m', $argv)+1]) && in_array($argv[array_search('-m', $argv)+1], $methods)) {
 	$method = $argv[array_search('-m', $argv)+1];
-	$params = array (); 
+	$params = array ();
 	if (in_array('-s',$argv) && isset($argv[array_search('-s', $argv)+1])) {
 		$params['start'] = 	$argv[array_search('-s', $argv)+1];	
 	}
@@ -61,8 +61,8 @@ if (in_array('-m',$argv) && isset($argv[array_search('-m', $argv)+1]) && in_arra
 	} else
 	   $conf = array_merge($conf, $res);
 	
-	if (!empty($profile) && $res = confparse($conf, 'avreg-site', $conf['profiles-dir'].'/'.$profile))   
-		$conf = array_merge($conf, $res);   
+	if (!empty($profile) && $res = confparse($conf, 'avreg-site', $conf['profiles-dir'].'/'.$profile))
+		$conf = array_merge($conf, $res);
 	
 	$link=NULL;
    	require_once($conf['site-dir'].'/offline/gallery/memcache.php');
@@ -76,7 +76,7 @@ if (in_array('-m',$argv) && isset($argv[array_search('-m', $argv)+1]) && in_arra
 	$gallery->{$method}($params);
 	// Возврат ответа запроса
 	
-} 
+}
 
 	/* $params строковый массив, список параметров, которые нужно читать из файла */
 function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params=NULL)
@@ -92,7 +92,7 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
    while (!feof($confile)) {
       $line = trim(fgets($confile, 1024));
       $linenr++;
-      if (empty($line)) 
+      if (empty($line))
          continue;
 
       if ( preg_match('/^\s*[;#]/', $line) )
@@ -136,7 +136,7 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
       // нашли параметр
       // printf('file %s:%d : %s => %s (%s)<br>', $path, $linenr, $param, $value, gettype(@$_conf[$param]));
       if ( 0 === strcasecmp($param, 'include') ) {
-         // вложенный файл 
+         // вложенный файл
          $res = confparse($_conf, $section, $value);
          if (!$res) {
             echo "ERROR INCLUDE FILE \"$value\" from $path:$linenr\n";

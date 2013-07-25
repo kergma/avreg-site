@@ -8,7 +8,7 @@ function br_spec_out() {
       document.write('Необходимо использовать браузеры: MS Internet Explorer или Firefox.');
 }
 </script>
-  
+
 <div id="toolbar" style="width:100%; margin:0; padding:0;" >
  <table width="100%" cellspacing="0" border="0" cellpadding="0">
 	<tr id="head" style="height: 35px; overflow: hidden;">

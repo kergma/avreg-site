@@ -98,16 +98,16 @@ $_cams_csv   = implode(',', $cams);
 		'from' => array($year_array[$year1],$month1,$day1,$hour1,$minute_array[$minute1]),
    		'to' => array($year_array[$year2],$month2,$day2,$hour2,$minute_array[$minute2]),
    );
-   
-   
+
+
    //Если ищем видео - добавляем в поиск video+audio (EVT_ID==12)
    $is_video = false;
    foreach ($events as $val){
    	if($val==23) $is_video = true;
    }
    if($is_video)array_push($events, 12);
-    
-      
+
+
    $result = $adb->events_select($cams, $timemode, $date, $events, isset($dayofweek) ? $dayofweek : array());
 
 $num_rows = 0;
@@ -138,7 +138,7 @@ function getDayName($n) {
   return $GLOBALS['day_of_week'][$n];
 }
 
-/* вычисляем протокол доступа к медиа-файлам 
+/* вычисляем протокол доступа к медиа-файлам
    на основании адреса клиента и правил в конфиге */
 require_once($wwwdir . 'lib/utils-inet.php');
 $remote_ip = ip2long($_SERVER['REMOTE_ADDR']);

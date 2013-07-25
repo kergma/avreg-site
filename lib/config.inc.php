@@ -3,7 +3,7 @@
 /**
  * @file lib/config.inc.php
  * @brief Файл обеспечивает инициализацию глобальных переменных,<br />а также содержит функции для установки параметров конфигурации
- * 
+ *
  * Файл реализует функции:
  * <ul>
  * 	<li> Инициализации глобальных переменных </li>
@@ -11,8 +11,8 @@
  * 	<li> Авторизации пользователя </li>
  * 	<li> Настройки параметров камер </li>
  * </ul>
- * 
- * 
+ *
+ *
  */
 
 require ('/etc/avreg/site-defaults.php');
@@ -42,10 +42,10 @@ $STRING200_VAL = 6;
 ///  7
 $PASSWORD_VAL = 7;
 
-/** 
+/**
  * @brief Форматирование и вывод дампа переменной
  * @param unknown_type $var переменная
- * 
+ *
  */
 function tohtml($var)
 {
@@ -74,7 +74,7 @@ function aplayer_configurate($aplayer_config){
 }
 
 /**
- *рекурсивно комбинирует конфигурационные общие(для всех ОС) настройки плеера с настройками для ОС пользователя 
+ *рекурсивно комбинирует конфигурационные общие(для всех ОС) настройки плеера с настройками для ОС пользователя
  * @param unknown_type $star_marked - общие настройки для всех ОС (с индексом ['*'] - $conf['aplayerConfig']['*'])
  * @param unknown_type $res_out - ссылка на результирующий массив с параметрами для клиентской ОС
  */
@@ -91,7 +91,7 @@ function config_merging_part($star_marked, &$res_out ) {
 }
 
 /**
- * 
+ *
  * Фуцнкция парсит строки в csv формате в масив
  * @param string $str csv строка
  * @return array
@@ -119,7 +119,7 @@ function parse_csv_numlist($str) {
 
 /* $params строковый массив, список параметров, которые нужно читать из файла */
 /**
- * 
+ *
  * Функция извлекает конфигурационные параметры из файла
  * @param array $_conf масив текущих параметров
  * @param string $section секция в которой искать параметры
@@ -140,7 +140,7 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
    while (!feof($confile)) {
       $line = trim(fgets($confile, 1024));
       $linenr++;
-      if (empty($line)) 
+      if (empty($line))
          continue;
 
       if ( preg_match('/^\s*[;#]/', $line) )
@@ -206,11 +206,11 @@ function confparse($_conf, $section=NULL, $path='/etc/avreg/avreg.conf', $params
                $res=FALSE;  break;
             }
             //$ret_array[$param][$key] = $value;
-            
+
             $str = '$ret_array[$param][$key]'.$match2[5].' = $value;';
 
             eval($str);
-            
+
          } else {
             /* простое параметр, не массив */
             /* пробуем установить тип значения с учётом дефолтного $conf[param] */
@@ -277,13 +277,13 @@ if ($conf['debug']) {
    ini_set ('display_errors', '1' );
    ini_set ('log_errors', '1');
    ini_set ('html_errors', '1');
-   error_reporting(E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_CORE_WARNING | 
-      E_COMPILE_ERROR | E_COMPILE_WARNING | E_USER_ERROR | E_USER_WARNING | 
+   error_reporting(E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_CORE_WARNING |
+      E_COMPILE_ERROR | E_COMPILE_WARNING | E_USER_ERROR | E_USER_WARNING |
       E_USER_NOTICE);
 }
 
 /**
- * 
+ *
  * Функция позволяет получить настройки камер
  * @param string $application
  * @return array масив настроек
@@ -391,7 +391,7 @@ $lang_module_name2  = $lang_dir . str_replace ('/', '_', $pt);
 
 if (isset($lang_file)) {
    $lang_module_name2  = $lang_dir . $lang_file;
-} 
+}
 
 if (file_exists ($lang_module_name2))
    require ($lang_module_name2);
@@ -399,7 +399,7 @@ if (file_exists ($lang_module_name2))
 if ( $_SERVER['REMOTE_ADDR'] === '::1' )
    $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 
-if ( $_SERVER['REMOTE_ADDR'] === '127.0.0.1' ) 
+if ( $_SERVER['REMOTE_ADDR'] === '127.0.0.1' )
    $remote_addr = 'localhost';
 else
    $remote_addr = &$_SERVER['REMOTE_ADDR'];
@@ -415,7 +415,7 @@ $font_family = 'sans-serif';
 $font_size = 'small';
 ///  цвет контента
 $ContentColor = '#F5F5F5';
-///  
+///
 $inactive_h_color = 'darkGray';
 ///  цвет ошибки
 $warn_color = '#003366';
@@ -493,7 +493,7 @@ foreach ($result as $row  )
 
 unset($result);
 /**
- * 
+ *
  * Функция позволяет получить информацию о пользователе
  * @param string $ipacl хосты
  * @param string $name логин
@@ -507,7 +507,7 @@ function get_user_info($ipacl, $name)
       return FALSE;
 
    foreach ($GLOBALS['users'] as $ui) {
-      if ( 0 === strcasecmp($ui['HOST'], $ipacl) && 
+      if ( 0 === strcasecmp($ui['HOST'], $ipacl) &&
          0 === strcmp($ui['USER'], $name) )
 
       return $ui;
@@ -539,7 +539,7 @@ function avreg_find_user($addr, $mask, $name)
       $found = avreg_ipv4_cmp( $addr, $mask,
          $ipacl['addr'],  $ipacl['mask']);
 /*
-      syslog(LOG_ERR,sprintf("equal = %d, 0x%X/0x%X 0x%X/0x%X", 
+      syslog(LOG_ERR,sprintf("equal = %d, 0x%X/0x%X 0x%X/0x%X",
                               $found,
                               $addr, $mask,
                               $ipacl['addr'],  $ipacl['mask']));
@@ -558,8 +558,8 @@ function avreg_find_user($addr, $mask, $name)
    return ($found)?$ui:FALSE;
 }
 /**
- * 
- * 
+ *
+ *
  * @param string $dev_acl_str
  */
 function parse_dev_acl($dev_acl_str=NULL)
@@ -586,7 +586,7 @@ function parse_dev_acl($dev_acl_str=NULL)
    return array_unique($ret);
 }
 /**
- * 
+ *
  * Функция позволяет получить информацию о процессе
  *@param string $proc_name имя процесса
  *@param int $__pid ид процесса
@@ -622,7 +622,7 @@ function proc_info($proc_name, $__pid=NULL)
    return array((float)$cpu,(float)$mem,(integer)$vsz,(integer)$rss);
 }
 /**
- * 
+ *
  * Функция формирует строку размера файла
  * @param int $fsize_KB размер в килобайтах
  * @return string
@@ -634,11 +634,11 @@ function filesizeHuman($fsize_KB) {
       return sprintf("%0.1f %s", $fsize_KB/1024,$GLOBALS['byteUnits'][2]);
    else if ($fsize_KB >= 1)
       return sprintf("%d %s", $fsize_KB,$GLOBALS['byteUnits'][1]);
-   else 
+   else
       return sprintf("%d %s", $fsize_KB*1024,$GLOBALS['byteUnits'][0]);
 }
 /**
- * 
+ *
  * Функция формирует строку времени
  * @param int $sec время в секундах
  * @return string
@@ -655,7 +655,7 @@ function DeltaTimeHuman($sec) {
       return sprintf('%d сек', $sec);
 }
 /**
- * 
+ *
  * Функция формирует строку времени
  * @param int $sec время в секундах
  * @return string
@@ -674,7 +674,7 @@ function ETA($sec) {
 
 /* $start,$finish - unix timestamp */
 /**
- * 
+ *
  * Функция формирует строку промежутка времени
  * @param int $start дата и время начала в unix timestamp
  * @param int $finish дата и время окончания в unix timestamp
@@ -730,7 +730,7 @@ function TimeRangeHuman($start, $finish, $print_year=FALSE, $print_sec=FALSE)
    return ($const_str . '[ ' . $diff_str . ' ]');
 }
 /**
- * 
+ *
  * Функция получает имя камеры
  * @param string $_text_left имя камеры
  * @return string имя камеры
@@ -750,7 +750,7 @@ function PrettyCamName($cam_desc=null)
 }
  */
 /**
- * 
+ *
  * Функция выводит ссылку нажатия назад в истории браузера
  */
 function print_go_back() {
@@ -760,7 +760,7 @@ function print_go_back() {
 }
 
 /**
- * 
+ *
  * Функция преобразовывает переменную в строку для sql запроса
  * @param  $val
  * @return string
@@ -769,7 +769,7 @@ function sql_format_str_val($val) {
    return empty($val)?'NULL':"'".addslashes($val)."'";
 }
 /**
- * 
+ *
  * Функция преобразовывает целое число в строку для sql запроса
  * @param  $val
  * @return string
@@ -778,7 +778,7 @@ function sql_format_int_val($val) {
    return empty($val)?'NULL':"'".(Int)$val."'";
 }
 /**
- * 
+ *
  * Функция преобразовывает число в строку для sql запроса
  * @param  $val
  * @return string
@@ -787,11 +787,11 @@ function sql_format_float_val($val) {
    return empty($val)?'NULL':"'".str_replace(',', '.', $val)."'";
 }
 /**
- * 
+ *
  * Функция получения камер
  * @param unknown_type $_sip
- * @param bool $first_defs 
- * @return array 
+ * @param bool $first_defs
+ * @return array
  */
 function getCamsArray($_sip,$first_defs=FALSE)
 {
@@ -814,10 +814,10 @@ function getCamsArray($_sip,$first_defs=FALSE)
       $arr[$_cam_nr] = $_cam_name;
    }
    unset ($result);
-   return $arr;  
+   return $arr;
 }
 /**
- * 
+ *
  * Функция выводящая ошибку
  * @param string $errstr строка ошибки
  * @param string $file файл
@@ -831,17 +831,17 @@ function MYDIE($errstr='internal error', $file='', $line='')
    printf ('Error in %s:%d<br>',$file, $line);
    print $errstr;
    print '</font></div>'."\n";
-   if ( !isset($GLOBALS['NOBODY']) ) 
+   if ( !isset($GLOBALS['NOBODY']) )
       print '</body>'."\n";
    print '</html>'."\n";
    exit(1);
 }
 /**
- * 
+ *
  * Функция записывает в системный лог собщение
  * @param unknown_type $priority Приоритет
  * @param string $message Сообщение
- * 
+ *
  */
 function print_syslog($priority, $message)
 {
@@ -864,10 +864,10 @@ function print_syslog($priority, $message)
    syslog($priority, sprintf ('%s@%s: %s', $luser, $raddr, $message));
 }
 /**
- * 
+ *
  * Функция доступа
  * @param int $good_status статус
- * @param int $http_status http статус 
+ * @param int $http_status http статус
  */
 function DENY($good_status=NULL, $http_status=403)
 {
@@ -925,7 +925,7 @@ function DENY($good_status=NULL, $http_status=403)
 }
 
 /**
- * 
+ *
  * функция проверяющая входит ли число в промежуток
  * @param unknown_type $int чило
  * @param unknown_type $min минимальное число
@@ -942,7 +942,7 @@ function checkIntRange ($int, $min, $max)
 }
 /**
  * Функция возвращает текстовое представление месяца
- * 
+ *
  * @param int $m месяц от 1 до 12
  * @return string
  */
@@ -957,7 +957,7 @@ function getMonth ($m)
 }
 /**
  * Функция возвращает текстовое представление дня
- * 
+ *
  * @param int $d день от 1 до 31
  * @return string
  */
@@ -972,7 +972,7 @@ function getDay ($d)
 }
 /**
  * Функция возвращает текстовое представление часа
- * 
+ *
  * @param int $h час от 1 до 23
  * @return string
  */
@@ -987,7 +987,7 @@ function getHour ($h)
 }
 /**
  * Функция возвращает текстовое представление минут
- * 
+ *
  * @param int $_min минуты от 1 до 59
  * @return string
  */
@@ -1002,7 +1002,7 @@ function getMinute ($_min)
 }
 /**
  * Функция возвращает текстовое представление дня недели
- * 
+ *
  * @param string $_weekday перечисление дней в неделе
  * @return string
  */
@@ -1021,7 +1021,7 @@ function getWeekday ($_weekday)
    return $retval;
 }
 /**
- * 
+ *
  * Функция формирует и возвращает елемент select
  * @param string $_name названи
  * @param array $value_array масив значений
@@ -1096,8 +1096,8 @@ function getSelectHtml($_name, $value_array, $_multiple=FALSE , $_size = 1, $sta
 
 
 /**
- * 
- * Функция формирует и возвращает елемент select используя значения 
+ *
+ * Функция формирует и возвращает елемент select используя значения
  * @param string $_name названиe
  * @param array $value_array масив значений
  * @param bool $_multiple разрешить множественный выбор
@@ -1106,7 +1106,7 @@ function getSelectHtml($_name, $value_array, $_multiple=FALSE , $_size = 1, $sta
  * @param string $selected выбранные значения
  * @param bool $first_empty пустое первое значение
  * @param string $onch функция onchange
- * @param string $text_prefix префикс 
+ * @param string $text_prefix префикс
  * @param string $TITLE заголовок
  * @return string
  */
@@ -1134,8 +1134,8 @@ function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
    	$_id = $_name;
    }
    $_class = $_id;
-   
-   
+
+
    $a = sprintf('<select name="%s" id="%s" class="%s" %s size="%d" %s %s>'."\n",
       $_name,
       $_id,
@@ -1145,11 +1145,11 @@ function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
       $_title,
       $onch);
 
-   
+
    if ($first_empty) $a .= '<option> </option>'."\n";
    $_cnt = $start_val;
-   
-   //Если для веб-раскладок => $cams_srcs - содержит алтернативные источники    
+
+   //Если для веб-раскладок => $cams_srcs - содержит алтернативные источники
 	if($cams_srcs!=null){
 		
 		foreach ($value_array as $_element)
@@ -1240,12 +1240,12 @@ function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
 	   }
 	   $a .= '</select>'."\n";
    }
-   
+
    return $a;
 }
 /**
- * 
- * Функция формирует и возвращает елемент select используя значения 
+ *
+ * Функция формирует и возвращает елемент select используя значения
  * @param string $_name названи
  * @param unknown_type $assoc_array
  * @param bool $_multiple разрешить множественный выбор
@@ -1254,7 +1254,7 @@ function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
  * @param string $selected выбранные значения
  * @param bool $first_empty пустое первое значение
  * @param string $onch функция onchange
- * @param string $text_prefix префикс 
+ * @param string $text_prefix префикс
  * @param string $TITLE заголовок
  * @param bool $reverse использовать обратные ключи-значения
  * @return string
@@ -1263,7 +1263,7 @@ function getSelectHtmlByName($_name, $value_array, $_multiple=FALSE ,
 function getSelectByAssocAr($_name, $assoc_array, $_multiple=FALSE ,
    $_size = 1, $start_val=NULL, $selected=NULL,
    $first_empty=TRUE, $onch=FALSE,
-   $text_prefix = NULL,$TITLE=NULL, 
+   $text_prefix = NULL,$TITLE=NULL,
    $reverse=FALSE)
 {
    $array_cnt = count($assoc_array);
@@ -1334,19 +1334,19 @@ function getSelectByAssocAr($_name, $assoc_array, $_multiple=FALSE ,
 }
 
 /**
- * 
+ *
  * Функция формирует разметку с набором чекбоксов для выбора значений
  * @param unknown_type $_name базовое имя для идентификации эл-тов
  * @param unknown_type $assoc_array ассоциативный массив с названиями и значениями чекбоксов
  * @param unknown_type $selected строка с номерами п/п чекнутых эл-тов
  * @param unknown_type $show_select_all выводить чекбокс выбора/сброса всех чекбоксов
  * @param unknown_type $_size кол-во одновременно отображаемых чекбоксов(без учета "Выбрать все")
- * @param unknown_type $text_prefix строка, добавляемая вначало к названию всех чекбоксов 
+ * @param unknown_type $text_prefix строка, добавляемая вначало к названию всех чекбоксов
  * @param unknown_type $reverse поменять местами использование ключей и значеий ассоц. массива при генерации разметки чекбоксов
   * @return string результирующая разметка
  */
 function getChkbxByAssocAr(
-   $_name, 
+   $_name,
    $assoc_array,
    $selected = NULL, //выбранные значения
    $show_select_all = true, //Выбор всех значений
@@ -1414,7 +1414,7 @@ function getChkbxByAssocAr(
 			
 			//генерируем разметку чекбоксов
 			if ($_y){
-				$a .= '<input type="checkbox" class="chbox_itm " id="id_'.$_name.$key.'"  name="'.$_name.'[]" onclick="chbox_itm_clk(\''.$_name.'\')" value="'.$key.'" checked />'."\n"; 
+				$a .= '<input type="checkbox" class="chbox_itm " id="id_'.$_name.$key.'"  name="'.$_name.'[]" onclick="chbox_itm_clk(\''.$_name.'\')" value="'.$key.'" checked />'."\n";
 				$cnt_selected_itms++;
 			}else{
 				$a .= '<input type="checkbox" class="chbox_itm " id="id_'.$_name.$key.'" name="'.$_name.'[]" onclick="chbox_itm_clk(\''.$_name.'\')" value="'.$key.'" />'."\n";
@@ -1440,9 +1440,9 @@ function getChkbxByAssocAr(
 }
 
 /**
- * 
- * Функция 
- * @param string $bin_str 
+ *
+ * Функция
+ * @param string $bin_str
  * @return string
  */
 function getBinString($bin_str)
@@ -1456,7 +1456,7 @@ function getBinString($bin_str)
    return $ret;
 }
 /**
- * 
+ *
  * Функция проверяющая доступ по паролю
  * @param string $saved_pw сохраненный пароль
  * @param string $pw проверяющий пароль
@@ -1489,7 +1489,7 @@ if ( !empty($logout) ) {
    }
    setcookie('as_guest', 0, -100);
    unset($_COOKIE['as_guest']);
-   
+
    exit();
 }
 
@@ -1554,7 +1554,7 @@ if(isset($as_guest)){
 		      DENY(null,403);
 		   }
 	   }
-	   
+	
 	   $login_user = &$_SERVER['REMOTE_USER'];
 	   $user_status = &$user_info['STATUS'];
 	   $login_user_name = &$row['LONGNAME'];
@@ -1569,9 +1569,9 @@ if(isset($as_guest)){
 	   if ( $user_status <= $arch_status  )     $arch_user     = TRUE;
 	   if ( $user_status <= $operator_status ) $operator_user = TRUE;
 	   if ( $user_status <= $viewer_status )   $viewer_user   = TRUE;
-	   
+	
 	   $allow_pda = $user_info['PDA'];
-	   
+	
 	} else{
 	   DENY(null,401);
 	}

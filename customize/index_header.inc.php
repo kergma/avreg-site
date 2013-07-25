@@ -48,10 +48,10 @@ print "<div  class='header' align='center'>$strYou: <a class='main_links' href='
 
 /*
 if (empty($_SERVER['SSL_PROTO']))
-  echo '<h2 align="center">' . sprintf($fmtVidServ, $named, $sip) . 
+  echo '<h2 align="center">' . sprintf($fmtVidServ, $named, $sip) .
   '.&nbsp;&nbsp;&nbsp;<a href="https://'.$_SERVER['SERVER_NAME'].'">Войти безопасно (OpenSSL) &gt;&gt;</a></h2>' ."\n";
 else
-   echo '<h2 align="center">' . sprintf($fmtVidServ, $named, $sip) . 
+   echo '<h2 align="center">' . sprintf($fmtVidServ, $named, $sip) .
       '&nbsp;&nbsp;'. $_SERVER['SSL_PROTO'] .'/'. $_SERVER['SSL_CHIPHER'].'</h2>' ."\n";
  */
 ?>
