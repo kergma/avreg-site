@@ -1,10 +1,10 @@
 <?php
 
 /**
- * 
+ *
  * @file lib/get_cam_url.php
  * @brief Формирование ссылки на видео с камеры сервера avregd
- * 
+ *
  */
 
 $cams_subconf = load_profiles_cams_confs();
@@ -35,7 +35,7 @@ function checkUrlParam($url = null, $conf=array(), $cam_nr=0, $media = 'mjpeg', 
 }
 
 /**
- * 
+ *
  * Функция, которая возвращает ссылку на просмотр видео с камеры
  * @param array $conf масив настроек
  * @param int $cam_nr номер камеры

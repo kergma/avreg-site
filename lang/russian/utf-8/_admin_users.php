@@ -1,7 +1,7 @@
 <?php
 /**
  * @file lang/russian/utf-8/_admin_users.php
- * @brief Файл переводов для страниц 
+ * @brief Файл переводов для страниц
  * - admin/user-addnew.php
  * - admin/user-list.php
  * - admin/user-tune.php
@@ -63,7 +63,7 @@ $strRateLimitsInfo='<strong>Ограничение скорости отдава
 $strLimitFps='<strong>limit_fps</strong>, кадров в секунду, [1-25] или sec/frames';
 $strLimitKbps='<strong>limit_kbps</strong>, Kбит/сек';
 $sNonMotionFps='<strong>nonmotion_fps</strong>,
-<br>примеры допустимых значений: &quot;1&quot; - 1 кадр в 1 сек.; &quot;2/1&quot; 
+<br>примеры допустимых значений: &quot;1&quot; - 1 кадр в 1 сек.; &quot;2/1&quot;
 - 1 кадр каждые 2 секунды.';
 $sSessionLimitsInfo='<strong>Ограничения длительности одного непрерывного сеанса просмотра камеры в реальном времени</strong>.<br />
 <em>Ограничения действуют на уровне каждой конкретной камеры</em>, т.е. <u>не</u> общее для всех просматриваемых одновременно камер и <u>не</u> общее для всех сеансов пользователя, если таких сеансов несколько.<br />

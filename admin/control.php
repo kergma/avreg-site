@@ -2,7 +2,7 @@
 /**
  * @file admin/control.php
  * @brief Управление основной программой «avregd» и контроль её состояния.
- * 
+ *
  */
 require ('../head.inc.php');
 DENY($admin_status);
@@ -19,7 +19,7 @@ if ( isset($AVREG_PROFILE) )
    $profile = &$AVREG_PROFILE;
 
 /**
- * 
+ *
  * Функция выводит информацию из лог-файла
  */
 function print_log_messages()
@@ -76,7 +76,7 @@ if ( !empty($cmd) ) {
    }
    if (!isset($cmd))
       print ('<p class="HiLiteBigErr">'.$wrn.'</p>');
-} 
+}
 
 if ( isset($cmd) ){
    $cmd = strtolower($cmd);

@@ -23,7 +23,7 @@ function prt_l ($display, $l_nr, $l_def, $is_admin, $layout_word, $counter, $Asp
 	print $l_def['layout_name']."</span>\n";
 	else
 	print $l_def['layout_type']."</span>\n";
-	 
+	
 	if ( !empty($l_def['CHANGE_TIME']) )
 	print '<br>'.$l_def['CHANGE_USER'] . '@' .$l_def['CHANGE_HOST'] . '<br>' . $l_def['CHANGE_TIME'];
 
@@ -88,14 +88,14 @@ function SetByDefault(layoutNum){
 		<div style=\"font-weight:bold; color:Yellow; border:2px solid black; padding:2px; float:right;\">X</div>\
 		<span style=\" font-size:14pt;  \">ERROR</span><br /> "+data+"</div>")
 			.appendTo("body")
-			.click(function(){ 
-				$(this).remove(); 
-				}) ;  
-			} 
+			.click(function(){
+				$(this).remove();
+				}) ;
+			}
 	});
 }
 </script>
-<?php 
+<?php
 }
 
 //Заголовок окна ($named,$sip - название и IP сервера; $r_mons - в lang/russian/utf-8/common.inc.php)
@@ -123,7 +123,7 @@ if ( isset($cmd) )
       print '</form>'."\n";
       require ('../foot.inc.php');
       exit;
-      break; 
+      break;
    case 'DEL_OK': //Удаление раскладки
       if ( ($mult_btn == $strYes) && isset($mon_nr) )
       {
@@ -268,8 +268,8 @@ if ( !isset($mon_nr) || $mon_nr =='')
 {
    /* Performing new SQL query */
 	//Загрузка установленных раскладок
-    $result = $adb->web_get_layouts(); 
-    
+    $result = $adb->web_get_layouts();
+
    $LD = array();
    // Print_Arr($layouts_defs);
    foreach ( $result as $row)	{
@@ -302,7 +302,7 @@ if ( !isset($mon_nr) || $mon_nr =='')
    $mon_nr=0;
    $counter = 1;
    print "<div id='admin_layouts'>";
-   
+
    //Если нет ни одной готовой раскладки
    if(!count($LD)){
    	$mon_nr=-1;
@@ -315,16 +315,16 @@ if ( !isset($mon_nr) || $mon_nr =='')
 	//левый монитор (правый вообще не используем)
         $def = $LD[$mon_nr]['isDefault'];
     	prt_l('L', $LD[$mon_nr]['MON_NR'], $LD[$mon_nr], $admin_user, $layout_word, $counter, $LD[$mon_nr]['AspectRatio'], $LD[$mon_nr]['ReconnectTimeout'] , $LD[$mon_nr]['PrintCamNames'], $def);
-        print '<div class=\'camlayout\' >'; 
+        print '<div class=\'camlayout\' >';
 
         //преобразование массива камер
         $cams_array = array();
         foreach ($LD[$mon_nr]['wins'] as $key=>$val){
         	$cams_array[$key] = $val[0];
         }
-        
-        layout2table ( $LD[$mon_nr]['layout_type'], 160 , $cams_array); 
-        
+
+        layout2table ( $LD[$mon_nr]['layout_type'], 160 , $cams_array);
+
         print '</div>'. "\n";
         if ( $admin_user ) {
         	print '<br><a href="'.$_SERVER['PHP_SELF'].'?cmd=DEL&display='.$display.'&mon_nr='.$LD[$mon_nr]['MON_NR'].'&mon_name='.$LD[$mon_nr]['layout_name'].'&counter='.$counter.'">'. $GLOBALS['strDelete'] . '</a>&nbsp;/&nbsp;';
@@ -337,7 +337,7 @@ if ( !isset($mon_nr) || $mon_nr =='')
    print "</div>\n";
    //Выравниваем таблицы раскладок по центру элемента
    print '<script type="text/javascript"> $(".camlayout table").attr("align", "center");  </script>';
-   
+
     // Выбираю максимальный индекс раскладки в базе данных
     $max_mon_nr = 0;
     foreach($LD as $key=>$value)

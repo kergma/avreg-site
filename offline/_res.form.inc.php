@@ -1,9 +1,9 @@
 <?php
 /**
- * 
+ *
  * @file offline/_res.form.inc.php
  * @brief Форма скрытых параметров фильтрации для просмотра предыдущих/следующих записей
- * 
+ *
  */
 if (isset($strLastSql) || isset($strNextSql))
 {
@@ -25,25 +25,25 @@ if (isset($strLastSql) || isset($strNextSql))
 	print '<input type="hidden" name="month2" value="'.$month2.'">'."\n";
 	print '<input type="hidden" name="day1" value="'.$day1.'">'."\n";
 	print '<input type="hidden" name="day2" value="'.$day2.'">'."\n";
-	if ( isset($dayofweek) && is_array($dayofweek) ) 
+	if ( isset($dayofweek) && is_array($dayofweek) )
 	{
 		$ii = 0;
-		while ($ii < count($dayofweek)) 
+		while ($ii < count($dayofweek))
 		{
 			print '<input type="hidden" name="dayofweek[]" value="'.$dayofweek[$ii].'">'."\n";
 			$ii++;
     	}
 	}
 		
-	if ( is_array($filter) ) 
+	if ( is_array($filter) )
 	{
 		$ii = 0;
-		while ($ii < count($filter)) 
+		while ($ii < count($filter))
 		{
 			print '<input type="hidden" name="filter[]" value="'.$filter[$ii].'">'."\n";
 			$ii++;
     	}
-	} else 
+	} else
 		print '<input type="hidden" name="filter[]" value="'.$filter.'">'."\n";
 		
 	print '<input type="hidden" name="hour1" value="'.$hour1.'">'."\n";

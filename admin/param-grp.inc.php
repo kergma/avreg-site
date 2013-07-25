@@ -53,7 +53,7 @@ function get_cat_name($cur_cat)
 function open_cat_tree ( $cur_cat_id, $_level )
 {
 	$_array1 = explode ('.', $cur_cat_id );
-	if ( isset($GLOBALS['categories']) ) 
+	if ( isset($GLOBALS['categories']) )
 		$_array2 = explode ('.', $GLOBALS['categories']);
 	else
 		$_array2 = array();
@@ -125,14 +125,14 @@ if ( isset($cam_name) && !empty($cam_name) )
 while ( $cat_nr < $r_cnt )
 {
 	$_level = $cats[$cat_nr]['cats_level'];
-    
+
     if ($WE_IN_DEFS && !($cats[$cat_nr]['flags'] & $F_IN_DEF)) {
-  	   $cat_nr++;     
+  	   $cat_nr++;
        continue;
     }
     if (!$WE_IN_DEFS && !($cats[$cat_nr]['flags'] & $F_IN_CAM)) {
        	$cat_nr++;
-       continue; 
+       continue;
     }
 	print '<div style="margin-left: '.(string)( 20 + $_level*20 ).';">';
 	if (  isset($categories) && !strcmp($cats[$cat_nr]['id'], $categories ) )

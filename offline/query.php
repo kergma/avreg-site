@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * @file offline/query.php
  * @brief Фильтр событий
  */
@@ -66,14 +66,14 @@ if (isset($_COOKIE))
      $scale_sel = $scale_array[$_i];
   } else
      $scale_sel = '';
-  
+
   if (isset($_COOKIE['avreg_row_max'])) {
     $_i = $_COOKIE['avreg_row_max'];
     settype($_i,'int');
     $row_max_sel = $_i;
   } else
     $row_max_sel=100;
-    
+
   if (isset($_COOKIE['avreg_play_tio'])) {
     $_i = $_COOKIE['avreg_play_tio'];
     settype($_i,'int');
@@ -98,7 +98,7 @@ if (isset($_COOKIE))
 <table cellspacing="0" border="1" cellpadding="3" width="100%" height="172px" style="margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;" >
 <?php } ?>
 <thead id="tab_head">
- 
+
 <?php print '<tr bgcolor="'.$header_color.'">'."\n"; ?>
 	<th class="query" valign="bottom"><?php echo $left_tune; ?></th>
 	<?php
@@ -139,7 +139,7 @@ print getSelectHtml('day2', $day_array, FALSE, 1, 1, $tm2[3], FALSE, FALSE);
 ?>
 </td>
 <td align="center">
-<?php 
+<?php
    //формируем список чекбоксов
    print  getChkbxByAssocAr('dayofweek', $day_of_week, '0,1,2,3,4,5,6', 6);
 ?>
@@ -156,7 +156,7 @@ print getSelectHtml('minute2', $minute_array, FALSE, 1, 0, $min2, FALSE, FALSE);
 </td>
 <td>
 
-<?php 
+<?php
   //формируем список чекбоксов
   print  getChkbxByAssocAr('filter', $env_id_ar, $filter_sel, 6);
 ?>
@@ -196,8 +196,8 @@ print $strEmbdedVideo.'<br><input type="checkbox" '.$embed_video_sel.' name="emb
 
 <script type="text/javascript" language="javascript">
 <!--
-/* global */   
-var CAM_NAMES = []; 
+/* global */
+var CAM_NAMES = [];
 var PlayTimer = null;
 var play_direction=0;
 
@@ -228,12 +228,12 @@ function OptionHelp(){
 
 function get_links_array()
 {
-   var img_link_array = window.parent.frames['result'].document.links; 
+   var img_link_array = window.parent.frames['result'].document.links;
    links_count = img_link_array.length;
 
    if ( links_count == 0  )
       alert ('<?php echo $strNotSavedPict; ?>');
-  
+
    return links_count;
 }
 
@@ -250,7 +250,7 @@ function set_first_img()
 {
     var img_cnt = get_links_array();
     var img_cursor = window.parent.frames['result'].img_cursor;
- 
+
     if (img_cursor<0)
        return false;
 	if ( img_cnt > 0 )
@@ -264,7 +264,7 @@ function set_last_img()
 {
     var img_cnt = get_links_array();
     var img_cursor = window.parent.frames['result'].img_cursor;
- 
+
     if (img_cursor<0)
        return false;
 	if ( img_cnt > 0 )
@@ -311,21 +311,21 @@ function do_play(direction)
 
     if (PlayTimer) {
       clearTimeout(PlayTimer);
-      PlayTimer = null;   
+      PlayTimer = null;
     }
     if ( ! _jump_to_pos(_direction) )
        playlist(0);
 }
 
 function playlist(direction) {
- 
+
    if (direction == 0) {
      // stop
-     if ( PlayTimer  ) { 
+     if ( PlayTimer  ) {
        clearTimeout(PlayTimer);
        PlayTimer = null;
      }
-     play_direction=0;     
+     play_direction=0;
      return;
    }
    play_direction = direction;
@@ -338,7 +338,7 @@ $(document).ready(function() {
 
     $('label.class_cams').each(function(i, val){
     	CAM_NAMES[$("#"+$(this).attr('for')).attr('value')]= $(this).text();
-    }); 
+    });
 
 
  	$(window).resize(function(){
@@ -346,9 +346,9 @@ $(document).ready(function() {
 	});
 
  	query_resize();
-    
+
    $('#btOk').removeAttr('disabled');
-   
+
 });
 
 function query_resize(){
@@ -358,7 +358,7 @@ function query_resize(){
 	     	//Non-IE
 	     	}else{
 	     	//IE 6+ in 'standards compliant mode'
-	     	frameWidth = $('body').width()-15; 
+	     	frameWidth = $('body').width()-15;
 	     	$('table').width(frameWidth+14);
 	     }
 

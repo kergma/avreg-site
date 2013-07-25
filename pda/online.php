@@ -1,7 +1,7 @@
 <?php
 /**
  * @file pda/online.php
- * @brief 
+ * @brief
  */
 
 $USE_JQUERY = true;
@@ -75,12 +75,12 @@ if($width=='FS'){
 ?>
 
 <script type="text/javascript">
-	//переменные масштаба изображений 
+	//переменные масштаба изображений
 	var isFs = <?php print  $isFs."\n"; ?>
 	var reload = <?php print $reload."\n"; ?>;
 	var scale = <?php print $scale."\n"; ?>;
 	var SELF_ADR = <?php print "\"".$_SERVER['REQUEST_URI']."\"" ; ?>;
-	var TOTAL_SCLS = <?php print sizeof($tumb_sizes); ?>; //кол-во предопределенных значений масштаба 
+	var TOTAL_SCLS = <?php print sizeof($tumb_sizes); ?>; //кол-во предопределенных значений масштаба
 
 function img_evt(e_id)
 {
@@ -125,16 +125,16 @@ if ( !isset($refresh) ) {
    $cam_name
    );
 
-   
-//		//установка плеера  
+
+//		//установка плеера
 //    $cam_src = sprintf('src="%s&width=%u&height=%u"',
 //    $cam_url,
 //    $width,
 //    $heigt,
 //    $cam_name
 //    );
-   
-   
+
+
 ?>
 <div id="view_cam_" ></div>
 
@@ -152,7 +152,7 @@ $(function(){
 
 $(document).ready(function(){
 /*
-	//Установка плеера 
+	//Установка плеера
 	$('#view_cam_')
 	.height(<?php print $heigt;?>)
 	.width(<?php print $width+5;?>)
@@ -176,7 +176,7 @@ $(document).ready(function(){
 <input type="hidden" name='camera' value="<?php echo $camera; ?>">
 <input type="hidden" name='scl' value="<?php echo $scale; ?>">
 <div>
-Обновлять изображение: 
+Обновлять изображение:
 <?php print getSelectByAssocAr('refresh', $refresh_img_a, false, 1, 1, $refresh, false); ?>
 </div>
 <div>
@@ -194,20 +194,20 @@ $(document).ready(function(){
    $cam_url.="&width=$width&height=$heigt&scl=&$scale";
    printf('<IMG class="cam_snapshot" id="viewport" src="%s"
       alt="Загружается изображение с %s ..."
-      border="1px" 
+      border="1px"
       onclick="refresh_img();" onload="img_evt(0);" onerror="img_evt(1);" oabort="img_evt(2);">',
-        $cam_url,  
+        $cam_url,
    		$cam_name);
 ?>
-   
+
 <script type="text/javascript">
 	$(function(){
 		$('body').css({'overflow':'hidden'});
 		CAM_INFO['url'] = $(IMG).attr('src');
 	});
-   
+
 </script>
-   
+
 <?php
 }
 ?>
@@ -223,7 +223,7 @@ var CAM_INFO = {
    'url'   : '<?php echo $cam_url; ?>'
 };
 
-var IMG = document.getElementById('viewport'); // FIXME if isn't DOM ready? 
+var IMG = document.getElementById('viewport'); // FIXME if isn't DOM ready?
 var BTSUBMIT = document.getElementById('btSubmit');
 var REFRESH  = document.getElementById('refresh');
 
@@ -232,7 +232,7 @@ function refresh_img()
    var now = new Date();
    var update_url = CAM_INFO['url'] + '&_=' + now.getTime(); // prevent local browser caching
    IMG.setAttribute('src', update_url);
-   
+
 	
 };
 
@@ -241,7 +241,7 @@ function img_evt2(e_id)
    var ms;
 
    if(typeof(tmr)!='undefined')clearTimeout(tmr);
-   
+
    switch(e_id)
    {
    case 0: // onload

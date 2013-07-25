@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * @file offline/result.php
  * @brief Просмотр списка отфильтованных событий
  */
@@ -35,7 +35,7 @@ DENY($arch_status);
 <script type="text/javascript" language="javascript">
 <!--
    if (ie||ns6)
-      tipobj=document.all? 
+      tipobj=document.all?
       document.all['tooltip'] :
       document.getElementById? document.getElementById('tooltip') : '';
 
@@ -61,7 +61,7 @@ if (!isset ($cams) || !isset ($filter))
          die('crack or hack?');
    }
 
-   if ((isset($timemode) && $timemode > 1) && (!isset($dayofweek) || count($dayofweek)===0)) 
+   if ((isset($timemode) && $timemode > 1) && (!isset($dayofweek) || count($dayofweek)===0))
    {
       print '<div class="help" style="font-size:125%">'.$strNotCamsChoice.'</div>'."\n";
       require ('../foot.inc.php');
@@ -78,7 +78,7 @@ if (!isset ($cams) || !isset ($filter))
          array_push($events, $val);
       }
    }
-   if (count($events)==0) 
+   if (count($events)==0)
    {
       print '<div class="help" style="font-size:125%">'.$strNotCamsChoice.'</div>'."\n";
       require ('../foot.inc.php');
@@ -91,13 +91,13 @@ die;
    $row_start = $page * $row_max;
    /* Performing new SQL query */
 
-  
-   
+
+
    $date = array (
 		'from' => array($year_array[$year1],$month1,$day1,$hour1,$minute_array[$minute1]),
    		'to' => array($year_array[$year2],$month2,$day2,$hour2,$minute_array[$minute2]),
    );
-   
+
 
    //Если ищем видео - добавляем в поиск video+audio (EVT_ID==12)
    $is_video = false;
@@ -105,9 +105,9 @@ die;
    	 if($val==23) $is_video = true;
    }
    if($is_video)array_push($events, 12);
-   
+
    $result = $adb->events_select($cams, $timemode, $date, $events, isset($dayofweek) ? $dayofweek : array(), array('limit' => $row_max, 'offset' => $row_start));
-   
+
    $num_rows = 0;
    $res_array=array();
    foreach ( $result as $row)
@@ -121,12 +121,12 @@ die;
    }
    unset($row);
 
-   
+
 //   print "<pre>\n";
 //   var_dump($res_array);
 //   print "</pre>\n";
 //    exit();
-   
+
    if ( $num_rows == 0 && $page == 0 ) {
       print '<div class="warn"><h3>'.$strNotSavedPict.'</h3></div>'."\n";
    } else {
@@ -180,7 +180,7 @@ die;
          if($EVT_ID==12){
          	$ftype_str = (isset($env_id_ar[23]))?$env_id_ar[23]:'unknown';
          }
-         
+
          if ($CAM_NR !==0 )
          {
 
@@ -207,7 +207,7 @@ die;
          }
          if ( $p_count % 2 )
             print '<tr bgcolor="#CCCCCC">'."\n";
-         else 
+         else
             print '<tr bgcolor="#C3C3C3">'."\n";
 
          if ( $CAM_NR !== 0 )
@@ -242,7 +242,7 @@ die;
          	$f_ext=substr(strrchr($EVT_CONT, '.'), 1);
          	print '<td class="small_text">'.$ftype_str.'&nbsp;('.$f_ext.', '.$f_duration_str.')</td>'."\n";
          }
-         else 
+         else
             print '<td class="small_text">'.$EVT_CONT.'</td>'."\n";
          print '</tr>'."\n";
       } // for ()

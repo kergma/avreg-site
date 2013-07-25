@@ -1,9 +1,9 @@
 <?php
 /**
- * 
+ *
  * @file lib/img_resize.php
  * @brief Изменение размеров изображения
- * 
+ *
  */
 require_once('../lib/config.inc.php');
 // TODO  rotate live image
@@ -11,7 +11,7 @@ require_once('../lib/config.inc.php');
 /// разрешить ресайз только локально
 $local = true; /* local or http only supported */
 /**
- * 
+ *
  * Функция отправляющая заголовки о 412 ошибке
  * @param string $msg сообщение
  */
@@ -22,7 +22,7 @@ function die412($msg)
    exit;
 }
 /**
- * 
+ *
  * Функция отправляющая заголовки о 403 ошибке
  * @param string $msg сообщение
  */
@@ -33,7 +33,7 @@ function die403($msg)
    exit;
 }
 /**
- * 
+ *
  * Функция отправляющая заголовки о 404 ошибке
  * @param string $msg сообщение
  */
@@ -44,7 +44,7 @@ function die404($msg)
    exit;
 }
 /**
- * 
+ *
  * Функция отправляющая заголовки о 500 ошибке
  * @param string $msg сообщение
  */
@@ -95,7 +95,7 @@ if ( $is_local ) {
    if ( (!empty($cached_etag)  and (($cached_etag === $etag) or ($cached_etag === '*'))) or
         (!empty($cached_mtime) and (($img_file_stat['mtime'] <= $cached_mtime) and ($now > $cached_mtime)))
       ) {
-        /* предполагаем что если клиент и спрашивает одним из 
+        /* предполагаем что если клиент и спрашивает одним из
          * то, у него в кеше есть уже файл и если всё норм. то отв. 304 */
          header("$_SERVER[SERVER_PROTOCOL] 304 Not Modified");
          exit;

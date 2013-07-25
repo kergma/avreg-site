@@ -2,10 +2,10 @@
 /**
  * @file offline/gallery.php
  * @brief Загрузка главной страницы галереи для просмотра записей
- * 
+ *
  * Выполняется:
  * <ul>
- * <li>подключение стилей 
+ * <li>подключение стилей
  * <li>подключение js-скриптов
  * <li>загрузка страницы галереи
  * <li>загрузка конфигурации
@@ -13,7 +13,7 @@
  * <li>загрузка параметров камер
  * <li>инициализация экземпляра класса Gallery
  * </ul>
- * 
+ *
  * */
 
 
@@ -34,7 +34,7 @@ if (!isset($_POST['method']) && !isset($_GET['method'])) {
 		$main_css = 'offline/gallery/css/main.css';
 	}
 
-	$css_links = array( 
+	$css_links = array(
 				'offline/gallery/css/html5reset-1.6.1.css',
 				$main_css,
 				'offline/gallery/css/jquery-ui-1.8.17.custom.css',

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * @file admin/active_pipe.inc.php
  * @brief Содержит js-функции и инициализирует переменные <br />необхоимые для усановки камер в раскладке
@@ -8,7 +8,7 @@
 <!--
 function validate(){
    var cams_selects = document.getElementsByName('mon_wins[]');
-   if (typeof(cams_selects) == 'undefined') 
+   if (typeof(cams_selects) == 'undefined')
      return false;
    var cams_select=null;
    var i;
@@ -32,7 +32,7 @@ function sel_change(sel) {
   if (sel.selectedIndex==0)
     return true;
   var cams_selects = document.getElementsByName('mon_wins[]');
-  if (typeof(cams_selects) == 'undefined') 
+  if (typeof(cams_selects) == 'undefined')
      return false;
    var cams_select=null;
    var i;
@@ -47,7 +47,7 @@ function sel_change(sel) {
             break;
          }
       }
-   }  
+   }
   return false;
 }
 // -->
@@ -75,7 +75,7 @@ if (isset($_POST) && is_array($_POST))
 }
 print '</form>'."\n";
 
-$GCP_query_param_list=array('work', 'video_src', 'audio_src', 'geometry', 
+$GCP_query_param_list=array('work', 'video_src', 'audio_src', 'geometry',
       'v4l_dev','input',
       'InetCam_IP', 'InetCam_http_port', 'InetCam_rtsp_port',
       'V.http_get', 'A.http_get', 'rtsp_play', 'alsa_dev_name',
@@ -87,7 +87,7 @@ $active_pipes_nr=0;
 
 if ( $GCP_cams_nr === 0 ) {
    print '<p class="HiLiteBigErr">' . $strNotViewCams . '</p>' ."\n";
-} else 
+} else
 {
    // строим список активных для просмотра пайпов
    if ($pipes_show>0)

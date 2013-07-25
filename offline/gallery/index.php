@@ -8,7 +8,7 @@
 		
 		
 		
-		<?php 
+		<?php
 
 		?>
 		
@@ -27,7 +27,7 @@
 				<div class="block">
 					<div id="type_event">
 					
-						<?php 
+						<?php
 							if (isset($cookies['type_event'])) {
 								$type = explode(',', trim($cookies['type_event'], ','));
 							}
@@ -81,7 +81,7 @@
 						<div id="cameras_selector" class="field checkboxes">
 							<div class="options">
 							
-							<?php 
+							<?php
 								if (isset($cookies['cameras'])) {
 									$cameras = explode(',', trim($cookies['cameras'], ','));
 								}
@@ -93,15 +93,15 @@
 									<input type="checkbox" id="camera_<?php print $CAM_NR;?>" name="cameras" value="<?php print $CAM_NR;?>" <?php if (empty($cameras) || in_array($CAM_NR, $cameras)) :?>checked="checked" <?php endif;?>></span>
 									<?php
 
-									$name = $name_orig = $PARAM['text_left']; 
+									$name = $name_orig = $PARAM['text_left'];
 									if(mb_strlen($name)>18) {
 										$name = mb_substr($name, 0, 15);
 										$name .= '...';
-									} 
+									}
 									?>
 									<label  style="float: none !important;" for="camera_<?php print $CAM_NR;?>"><a href="#<?php print $CAM_NR;?>" class="set_camera_color<?php if (isset($cookies['camera_'.$CAM_NR.'_color']) && !empty($cookies['camera_'.$CAM_NR.'_color']) ): print ' '.$cookies['camera_'.$CAM_NR.'_color'] . '_font'; endif;?>"<?php
 									if($name != $name_orig)
-										print ' title="'.$name_orig.'"';  
+										print ' title="'.$name_orig.'"';
 									?>><?php print $name; ?></a></label>
 								</span>
 								
@@ -140,7 +140,7 @@
 							</a>
 					</div>
 				
-					<div id="toolbar" >   
+					<div id="toolbar" >
 						<div id="toolbar_left">
 						<div class="propotion controls">
 						
@@ -180,7 +180,7 @@
 						</div>
 					</div>		
 				</div>
-			</div> 
+			</div>
 		</div>
 
 
@@ -271,7 +271,7 @@ $(function(){
 <?php if (isset($conf['aplayerConfig']) && !empty($conf['aplayerConfig']) && is_array($conf['aplayerConfig'])) :?>	
 	//$.aplayerConfiguration(< ?php print json_encode($conf['aplayerConfig']);?>);
 	$.aplayerConfiguration(
-		<?php 
+		<?php
 			$res_conf = aplayer_configurate($conf['aplayerConfig']);
 			print json_encode($res_conf);
 		?>);
@@ -283,7 +283,7 @@ $(function(){
 				limit : <?php print $conf['gallery-limit'];?>,
 				event_limit : <?php print isset($conf['gallery-cache_event_limit']) ? $conf['gallery-cache_event_limit'] : 20000;?>,
 				min_cell_width : <?php print $conf['gallery-min_cell_width'];?> ,
-				min_cell_height : <?php print $conf['gallery-min_cell_height'];?> 
+				min_cell_height : <?php print $conf['gallery-min_cell_height'];?>
 			},
 			show_timeout : <?php print isset($conf['gallery-show_timeout']) ? $conf['gallery-show_timeout'] : 1 ;?>
 	};

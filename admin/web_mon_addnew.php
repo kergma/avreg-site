@@ -114,7 +114,7 @@ if ( isset($cmd) ) {
 				
 				require_once ('../lang/russian/utf-8/_online.php');
 				//Селектор сохранять пропорции/ на весь экран
-				$AspectRatio      = 'calc'; 
+				$AspectRatio      = 'calc';
 				print '<br /><div><div style="float:left;" >'.$strAspectRatio.":&nbsp;&nbsp;</div> \n";
 				print '<div >'.getSelectByAssocAr('AspectRatio', $AspectRatioArray, false , 1, 1, $AspectRatio, false)."</div></div>\n";
 				//Выводить имена камер
@@ -157,10 +157,10 @@ if ( isset($cmd) ) {
 			}
 
 			$allWINS = json_encode($allWINS);
-			 
+			
 			if ( $allWINS!='') {
                 $PrintCamNames = ($PrintCamNames!=null)? 1 : 0;
-                
+
 				$adb->web_add_layouts($mon_nr,$mon_type,$mon_name, $remote_addr, $login_user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS);
 
 				print "Ok!\n'";
@@ -203,7 +203,7 @@ if ( isset($cmd) ) {
       print '</tr>'."\n";
    }
    print '</table>'."\n";
-   
+
    print '<input type="hidden" name="cmd" value="_ADD_NEW_MON_">'."\n";
    print '<input type="hidden" name="storage" value="'.$storage.'">'."\n";
    if($storage=='client'){
@@ -211,8 +211,8 @@ if ( isset($cmd) ) {
    }else{
        print '<input type="hidden" name="mon_nr" value="'.$mon_nr.'">'."\n";
    }
-   
-   //Кнопки формы 
+
+   //Кнопки формы
    print '<input type="submit" name="btn" value="'.$l_mon_addnew.'">'."\n";
    if($storage=='client'){
    		print '<input type="reset" name="btn" value="'.$strRevoke.'" onclick="user_layouts.redirect(\''.$conf['prefix'].'/admin/web_mon_list.php\', true);">'."\n";

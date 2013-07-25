@@ -29,7 +29,7 @@ var WIN_DIV_H;
 var IMG_IN_DIV_W;
 ///значение высоты в раскладке элемента отображения потокового видео
 var IMG_IN_DIV_H;
-///текущий режим отображения : полноэкранный/в ячейке раскладки  
+///текущий режим отображения : полноэкранный/в ячейке раскладки
 var FS_WIN_DIV;
 
 ///Высота элемента в кот. выводится название камеры
@@ -37,7 +37,7 @@ var NAME_DIV_H = PrintCamNames?25:0;
 var CUR_WIN_HEADER_H;
 
 ///корректировка размеров контейнера для плеера
-var CORRECT_H = 4; var CORRECT_W = 4; 
+var CORRECT_H = 4; var CORRECT_W = 4;
 
 /// Статусы камер
 var CAM_STATUSES;
@@ -85,7 +85,7 @@ $(document).ready( function() {
 	imgs['connection_fail'].src =  "../img/ConnectionFail.jpg";
 	
 	
-	//Запуск сценария	   
+	//Запуск сценария	
 	fill_canvas();
 	
 	if(MSIE){
@@ -162,7 +162,7 @@ function img_click(clicked_div) {
       if ( WIN_DIV_W == undefined ) {
     	  //в режиме FS был ресайз CANVAS'a
          change_wins_geo();
-         
+
 		   //если в режиме просмотра одной камеры происходил ресайз окна браузера
 //         if ( MSIE ){
 //        	 if(current_src!=null) $('.pl_cont',clicked_div_jq).aplayerSetMjpegSrc( current_src ) ;
@@ -191,7 +191,7 @@ function img_click(clicked_div) {
           $(clicked_div)
           .width(WIN_DIV_W + border_w )
           .height(WIN_DIV_H + border_h);
-          
+
           $('.pl_cont',clicked_div_jq)
  	      .width(IMG_IN_DIV_W)
  	      .height(IMG_IN_DIV_H);
@@ -223,7 +223,7 @@ function img_click(clicked_div) {
           }
 
           $(clicked_div).css({'left': WIN_DIV_LEFT + 'px', 'top': WIN_DIV_TOP + 'px' });
-         
+
       }
       for (i=0;i<WIN_DIVS.length;i++) {
           tmp_div=WIN_DIVS[i];
@@ -246,9 +246,9 @@ function img_click(clicked_div) {
       });
 
       set_win_header_size(clicked_div_jq, CUR_WIN_HEADER_H);
-      
+
        FS_WIN_DIV = undefined;
-      
+
    } else {
 	 //Если включен режим - просмотра камер в раскладке
       // current - NO fullscreen
@@ -282,7 +282,7 @@ function img_click(clicked_div) {
       //alert(win_geo.cam_h +'\n'+win_geo.cam_w);
       clicked_div_jq.css('top',  calc_win_top (win_geo, 0));
       clicked_div_jq.css('left', calc_win_left(win_geo, 0));
-  
+
       $('.pl_cont',clicked_div_jq)
 	      .width(win_geo.cam_w+CORRECT_W)
 	      .height(win_geo.cam_h+CORRECT_H);
@@ -333,16 +333,16 @@ function img_click(clicked_div) {
         	'src': imgs['tc'].src,
         	'title':strToolbarControls['min']
         });
-        
+
       FS_WIN_DIV = clicked_div;
    }
-   
+
    //Устанавливаем текущий масштаб
    var aplayer_id=$('.aplayer',pl_cont).attr('id');
    if(controls_handlers.original_size[aplayer_id]!=null && controls_handlers.original_size[aplayer_id] ){
 	   $('#'+aplayer_id).parent().aplayerMediaSetSrcSizes();
    }
-   
+
    var scl = $.aplayer.scale[aplayer_id];
    $.aplayer.scale[aplayer_id]=0;
    if(scl>0){
@@ -360,7 +360,7 @@ function img_click(clicked_div) {
 
     //проверка связи с камерами
     if(GECKO || WEBKIT)	checking_connection.init_check();
-   
+
 } // img_click()
 
 /**
@@ -394,15 +394,15 @@ function brout(win_nr, win_div, win_geo) {
 //   var orig_h = WINS_DEF[win_nr].cam.orig_h;
    var url = WINS_DEF[win_nr].cam.url;
 
-   //Установка плеера в элемент  // win_geo.cam_h 
+   //Установка плеера в элемент  // win_geo.cam_h
    var cont = $('<div class="pl_cont" />').width(win_geo.cam_w+CORRECT_W).height(win_geo.cam_h+CORRECT_H);
 
 	$(win_div).append(cont);
     $(cont).addPlayer({
 		'src': url ,
-		'controls': false, 
-		'scale':'on', 
-		'mediaType' : 'mjpeg', 
+		'controls': false,
+		'scale':'on',
+		'mediaType' : 'mjpeg',
 		'autostart':'on',
 		'aplayer_rtsp_php':'../lib/js/aplayer_rtsp.php',
 		'crossorigin' : (WEBKIT)? true:false,
@@ -418,7 +418,7 @@ function brout(win_nr, win_div, win_geo) {
     }else{
 	   $(cont).aplayerResizeToParent();
     }
-   
+
 	//установка обработчика клика по изображению камеры
 	$(win_div).click( function(e) {
 	if ( typeof(e.target) == "undefined" || typeof(e.target.tagName) == "undefined" )
@@ -428,16 +428,16 @@ function brout(win_nr, win_div, win_geo) {
         	return img_click(this);
         }
 	});
-	   
+	
 	   //установка тултипа
       $(win_div).bind('mouseover', function() { img_mouseover(this, win_nr);} );
-      win_div.mouseout( function() { hideddrivetip(); } ); 
-   
+      win_div.mouseout( function() { hideddrivetip(); } );
+
 }
 
    /**
-    * 
-    * Функция, которая возвращает ссылку на просмотр видео с альтернативных камер камеры 
+    *
+    * Функция, которая возвращает ссылку на просмотр видео с альтернативных камер камеры
     * аналог php-функции из lib/get_cam_url.php
     * @param alt_src альтернативный источник
     * @param bool append_abenc аутентификация пользователя
@@ -448,7 +448,7 @@ function brout(win_nr, win_div, win_geo) {
    	   if(url==null)return null;
    	   reg = /\?camera=\d*/;
    	  if(!reg.test(url)){
-   		 url += "?camera="+$cam_nr;  
+   		 url += "?camera="+$cam_nr;
    	   }
    	   if (append_abenc && user_info_USER.length>0 ) {
    		url += '&ab='+___abenc;
@@ -925,80 +925,80 @@ function calc_win_geo(_canvas_w, _canvas_h, img_aspect_ratio, _rows_nr, _cols_nr
    var cam_h;
    if (_rowspan == undefined)
       _rowspan = 1;
-   
-   
+
+
    if ( MSIE ){
-	   
+	
 	   if ( img_aspect_ratio == undefined || img_aspect_ratio == 'fs' ) {
-			   
+			
 		      // соотношение сторон видеоизображения нас не волнует,
-		      //  растягиваем окна камер и сами изображения по всему CANVAS 
+		      //  растягиваем окна камер и сами изображения по всему CANVAS
 		      cam_w = parseInt(_canvas_w/_cols_nr) ;
 		      cam_h = parseInt(_canvas_h/_rows_nr) - NAME_DIV_H*_rowspan ;
 		   } else {
 		      // create wins
 			   var calc_canvas_h = _canvas_h - ((NAME_DIV_H*_rowspan ) * _rows_nr);
-			   
+			
 			   if ( (_canvas_w/calc_canvas_h) >= (img_aspect_ratio.num*_cols_nr)/(img_aspect_ratio.den*_rows_nr) ) {
 		        cam_h = parseInt(calc_canvas_h/_rows_nr);
 		         cam_h = parseInt(cam_h/img_aspect_ratio.den);
 		         cam_w = cam_h*img_aspect_ratio.num;
 		         cam_h *= img_aspect_ratio.den;
-		         
+		
 		      } else {
-		    	  
+		    	
 		         cam_w = parseInt(_canvas_w/_cols_nr);
 		         cam_w = parseInt(cam_w/img_aspect_ratio.num);
 		         cam_h = cam_w*img_aspect_ratio.den;
 		         cam_w *= img_aspect_ratio.num;
 		      }
 		   }
-	   
+	
 	   this.win_w = cam_w ;
 	   this.win_h = cam_h + NAME_DIV_H*_rowspan ;
 
-	   this.offsetX = parseInt((_canvas_w - this.win_w * _cols_nr)/2);  
-	   this.offsetY = parseInt((_canvas_h - this.win_h* _rows_nr)/2);  
+	   this.offsetX = parseInt((_canvas_w - this.win_w * _cols_nr)/2);
+	   this.offsetY = parseInt((_canvas_h - this.win_h* _rows_nr)/2);
 
-	   this.cam_w = cam_w; 
+	   this.cam_w = cam_w;
 	   this.cam_h = cam_h;
-	   
+	
    }else{
-   
-   
-   if ( img_aspect_ratio == undefined || 
+
+
+   if ( img_aspect_ratio == undefined ||
          img_aspect_ratio == 'fs' ) {
-	   
+	
       // соотношение сторон видеоизображения нас не волнует,
-      //  растягиваем окна камер и сами изображения по всему CANVAS 
+      //  растягиваем окна камер и сами изображения по всему CANVAS
       cam_w = parseInt(_canvas_w/_cols_nr) - BorderLeft - BorderRight;
       cam_h = parseInt(_canvas_h/_rows_nr) - NAME_DIV_H*_rowspan - BorderTop - BorderBottom;
    } else {
       // create wins
 	   var calc_canvas_h = _canvas_h - ((NAME_DIV_H*_rowspan + BorderTop + BorderBottom) * _rows_nr);
-	   
+	
 	   if ( (_canvas_w/calc_canvas_h) >= (img_aspect_ratio.num*_cols_nr)/(img_aspect_ratio.den*_rows_nr) ) {
         cam_h = parseInt(calc_canvas_h/_rows_nr);
          cam_h = parseInt(cam_h/img_aspect_ratio.den);
          cam_w = cam_h*img_aspect_ratio.num;
          cam_h *= img_aspect_ratio.den;
-         
+
       } else {
-    	  
+    	
          cam_w = parseInt(_canvas_w/_cols_nr - BorderLeft - BorderRight);
          cam_w = parseInt(cam_w/img_aspect_ratio.num);
          cam_h = cam_w*img_aspect_ratio.den;
          cam_w *= img_aspect_ratio.num;
       }
    }
-   
+
    this.win_w = cam_w + BorderLeft + BorderRight;
    this.win_h = cam_h + NAME_DIV_H*_rowspan + BorderTop + BorderBottom;
 
-   this.offsetX = parseInt((_canvas_w - this.win_w * _cols_nr)/2);  
-   this.offsetY = parseInt((_canvas_h - this.win_h * _rows_nr)/2);  
+   this.offsetX = parseInt((_canvas_w - this.win_w * _cols_nr)/2);
+   this.offsetY = parseInt((_canvas_h - this.win_h * _rows_nr)/2);
 
-   this.cam_w = cam_w; 
+   this.cam_w = cam_w;
    this.cam_h = cam_h;
    }
 } // calc_win_geo()
@@ -1034,7 +1034,7 @@ function calc_win_left(win_geo, col) {
  */
 function calc_win_top(win_geo, row) {
    var _top = parseInt( row*win_geo.win_h + win_geo.offsetY );
-   return _top; 
+   return _top;
 }
 
 /**
@@ -1044,7 +1044,7 @@ function calc_win_top(win_geo, row) {
 function change_fs_win_geo(fs_win) {
    var win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, 1, 1, 1);
    var fs_win_div_jq = $(fs_win);
-   
+
    fs_win_div_jq.css('top',  calc_win_top (win_geo, 0));
    fs_win_div_jq.css('left', calc_win_left(win_geo, 0));
 
@@ -1052,7 +1052,7 @@ function change_fs_win_geo(fs_win) {
 	   $(fs_win_div_jq)
 	   .width(win_geo.win_w)
 	   .height(win_geo.win_h);
-	   
+	
 	   $('.pl_cont',fs_win_div_jq).width(win_geo.cam_w+CORRECT_W).height(win_geo.cam_h+CORRECT_H).aplayerResizeToParent();
          // .attr('alt',win_geo.cam_w + 'x' + win_geo.cam_h);
    } else if ( MSIE ) {
@@ -1063,7 +1063,7 @@ function change_fs_win_geo(fs_win) {
        	$('.pl_cont',fs_win_div_jq)
        	.width(win_geo.cam_w+CORRECT_W)
        	.height(win_geo.cam_h+CORRECT_H)
-       	.aplayerSetSize({'height':win_geo.cam_h+CORRECT_H , 'width': win_geo.cam_w+CORRECT_W}) ;   
+       	.aplayerSetSize({'height':win_geo.cam_h+CORRECT_H , 'width': win_geo.cam_w+CORRECT_W}) ;
          // .text(win_geo.cam_w + 'x' + win_geo.cam_h)
    }
 } // change_fs_win_geo()
@@ -1074,10 +1074,10 @@ function change_fs_win_geo(fs_win) {
 function change_wins_geo() {
 	
    var base_win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, ROWS_NR, COLS_NR, 1);
-   
+
    var win_geo;
    var i,tmp_div,win_def,win_nr,win_id;
-   
+
    for (i=WIN_DIVS.length-1; i>=0; i--) {
       win_id = WIN_DIVS[i].id;
       win_nr = parseInt(win_id.substr(3));
@@ -1088,9 +1088,9 @@ function change_wins_geo() {
       tmp_div=$(WIN_DIVS[i]);
 
       win_def = WINS_DEF[win_nr];
-      
+
       if(win_def == null) return;
-      
+
       if ( win_def.rowspan == 1 && win_def.colspan == 1 ){
          win_geo = base_win_geo;
       }
@@ -1107,7 +1107,7 @@ function change_wins_geo() {
       if ( GECKO || WEBKIT) {
           $(tmp_div)
           	.width(win_geo.win_w)
-          	.height(win_geo.win_h);    	  
+          	.height(win_geo.win_h);    	
           $('.pl_cont',tmp_div)
     	  	.width(win_geo.cam_w+CORRECT_W)
     	  	.height(win_geo.cam_h+CORRECT_H)
@@ -1127,10 +1127,10 @@ function change_wins_geo() {
  */
 function canvas_growth() {
    var canvas_changed = false;
-   
+
    var avail_h = (($.browser.msie)?ietruebody().clientHeight:window.innerHeight) - $('#toolbar').height()-5;
    var avail_w = (($.browser.msie)?ietruebody().clientWidth:window.innerWidth);
-   
+
    if ( avail_h !=  CANVAS_H) {
       CANVAS_H = avail_h;
       CANVAS.height(CANVAS_H);
@@ -1146,9 +1146,9 @@ function canvas_growth() {
       return;
    if ( WIN_DIVS == undefined )
       return;
-      
+
    WIN_DIV_W = undefined;
-   
+
    if ( FS_WIN_DIV ) {
       change_fs_win_geo(FS_WIN_DIV);
    } else {
@@ -1296,7 +1296,7 @@ function canvas_growth() {
    			    cam: {
    			    	nr:   cam_nr,
    			        name: GCP_cams_params[layout_wins[i][0]]['text_left'] ,
-   			        url:  cam_url, 
+   			        url:  cam_url,
    			        orig_w: cam_width,
    			        orig_h: cam_height,
    			        netcam_host: net_cam_host
@@ -1322,7 +1322,7 @@ function canvas_growth() {
    		      CamsAspectRatio = { num : ar[0] , den : ar[1] };
    		   //Если пропропорции заданы в БД
    		   } else if ( rex.test(AspectRatio) ) {
-   			   var m = AspectRatio.match(rex); 
+   			   var m = AspectRatio.match(rex);
    			   CamsAspectRatio = { 'num': m[0], 'den': m[1] };
    		   }
    		   else
@@ -1382,7 +1382,7 @@ function canvas_growth() {
    	});
    	var ar = new Array(w, h);
    	var _stop = (w > h)? h : w;
-   	for (var i=1; i<=_stop; i++) 
+   	for (var i=1; i<=_stop; i++)
    	{
    		if ( 0 == w % i && 0 == h % i ) {
    			ar[0] = w / i;
@@ -1391,8 +1391,8 @@ function canvas_growth() {
    	}
    	   return ar;
    	}
-   
-   	//переход на страницу просмотра и управления пользовательскими раскладками 
+
+   	//переход на страницу просмотра и управления пользовательскими раскладками
    	function clients_layouts_list(){
 		//Передаем параметры пользовательских раскладок
    		var url = '../admin/web_mon_list.php';
@@ -1424,9 +1424,9 @@ function canvas_growth() {
     * Выводит раскладку с он-лайн камерами в канвас
     */
    function fill_canvas(){
-	   
+	
        if (ie||ns6) {
-           tipobj=document.all? 
+           tipobj=document.all?
            document.all['tooltip'] :
            document.getElementById? document.getElementById('tooltip') : '';
            if (GECKO)
@@ -1447,13 +1447,13 @@ function canvas_growth() {
 		   }
 
            canvas_growth();
-           
+
            $(window).bind('resize', function() {
               canvas_growth();
               });
 
            $(window).bind('scroll', function(){return false;});
-           
+
            var base_win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, ROWS_NR, COLS_NR, 1);
            var win_geo;
            var win_nr;
@@ -1478,7 +1478,7 @@ function canvas_growth() {
               _top  = calc_win_top(base_win_geo, win_def.row);
               _left = calc_win_left(base_win_geo, win_def.col);
 
-              win_div = $('<div id="win' + win_nr + '" name="win" class="win '+(win_def['main']==1? 'main_cell':'')+'" ' + 
+              win_div = $('<div id="win' + win_nr + '" name="win" class="win '+(win_def['main']==1? 'main_cell':'')+'" ' +
                     ' style="position: absolute; '+
                     ' top:'+_top+'px;'+
                     ' left:'+_left+'px; '+
@@ -1503,8 +1503,8 @@ function canvas_growth() {
                                              '" target="_blank" style="color:inherit;" title="'+strToolbarControls['to_cam_interface']+'">';
                     ipcamhost_link_end   = ' &rarr;<\/a>';
                  }
-                 
-                 var hdr = $('<div id="cell_header_'+win_nr+'" class="cell_header"  style="cursor:default;'+ 
+
+                 var hdr = $('<div id="cell_header_'+win_nr+'" class="cell_header"  style="cursor:default;'+
                        ' padding:0px; margin:0px; overflow:hidden; border:0px; height:'+ NAME_DIV_H*win_def.rowspan +'px;">'+
                        '<span style="'+
                        'vertical-align: middle; position: absolute; top: '+(NAME_DIV_H*win_def.rowspan/2 - 14)+'px; padding-left:8px; padding-top:2px; padding-bottom:2px; padding-right:2px;'+
@@ -1512,7 +1512,7 @@ function canvas_growth() {
                        ipcamhost_link_begin + WINS_DEF[win_nr].cam.name + ipcamhost_link_end +
                        '<\/span><\/div>')
                        .appendTo(win_div);
-                 
+
                  //ToolBar
                  var ht = $(hdr).height()-4;
                  var toolbar = $('<div class="tool_bar"></div>')
@@ -1523,7 +1523,7 @@ function canvas_growth() {
                 	 'right':'1px'
                  })
                  .appendTo(hdr);
-                 
+
                  //свернуть/развернуть
                  $('<img src='+imgs['fs'].src+' class="tool fs_tc" title="'+strToolbarControls['max']+'">')
                  .height(ht-4)
@@ -1551,9 +1551,9 @@ function canvas_growth() {
                 	 return false;
                  })
                  .appendTo(toolbar);
-         
+
                  //панель контролов
-                 
+
                  var normal_size = $('<img id="normal_size_'+win_nr+'" class="normal_size" title="'+strToolbarControls['cell_size']+'" src='+imgs['normal_size'].src+' />')
                  .height(ht-4)
                  .click(function(e){
@@ -1571,7 +1571,7 @@ function canvas_growth() {
                 	 controls_handlers.original_size_click(e);
                 	 return false;
                  });
-                 
+
                  var start = $('<img id="pl_start_'+win_nr+'" class="pl_start" title="'+strToolbarControls['play']+'" src='+imgs['pl_start'].src+' />')
                  .height(ht-4)
                  .click(function(e){
@@ -1581,7 +1581,7 @@ function canvas_growth() {
                 	 return false;
                  })
                  .hide();
-                 
+
                  var stop = '';
                  if(!WEBKIT){
 	                 stop =  $('<img id="pl_stop_'+win_nr+'" class="pl_stop" title="'+strToolbarControls['stop']+'" src='+imgs['pl_stop'].src+' />')
@@ -1593,8 +1593,8 @@ function canvas_growth() {
 	                	 return false;
 	                 });
                  }
-                 
-                 
+
+
                  var plus = $('<img id="pl_plus_'+win_nr+'" class="pl_plus" title="'+strToolbarControls['zoom_in']+'" src='+imgs['pl_plus'].src+' />')
                  .click(function(e){
                 	 e.preventDefault();
@@ -1603,7 +1603,7 @@ function canvas_growth() {
                 	 return false;
                  })
                  .height(ht-4);
-                 
+
                  var minus = $('<img id="pl_minus_'+win_nr+'" class="pl_minus" title="'+strToolbarControls['zoom_out']+'" src='+imgs['pl_minus'].src+' />')
                  .click(function(e){
                 	 e.preventDefault();
@@ -1612,7 +1612,7 @@ function canvas_growth() {
                 	 return false;
                  })
                  .height(ht-4);
-                 
+
                  var plc = $('<div id="pl_controls_'+win_nr+'" class="pl_controls"></div>')
                  .height(ht)
                  .width($(hdr).width()-$(toolbar).width())
@@ -1642,12 +1642,12 @@ function canvas_growth() {
                  })
                  .hide()
                  .prependTo(hdr);
-                 
+
                  if(MSIE){
-                	 var offset_x = 2; 
+                	 var offset_x = 2;
                 	 $('#pl_stop_'+win_nr+', #pl_start_'+win_nr).css({'position':'absolute', 'top':'0', 'left':offset_x+'px'});
                 	 offset_x += ht;
-                	 
+                	
                 	 $('#original_size_'+win_nr).remove(); //не работает установка оригинального размера для MSIE
                 	 $('#normal_size_'+win_nr).css({'position':'absolute', 'top':'0', 'left':offset_x+'px'});
                 	 offset_x += ht;
@@ -1660,7 +1660,7 @@ function canvas_growth() {
               //Установка плеера
               brout(win_nr, win_div, win_geo);
            }
-           
+
            WIN_DIVS = $('div.win');
 
            $('#dialog').jqm({
@@ -1668,16 +1668,16 @@ function canvas_growth() {
            });
 
     //Убрать тултип при перетаскивании
-	$('.MediaCont').mousedown(function(e){ 
+	$('.MediaCont').mousedown(function(e){
 		e.preventDefault();
-		 hideddrivetip(); 
+		 hideddrivetip();
 		 $(e.currentTarget).addClass('cursorMove');
 		 return false;
 	});
 	$('#canvas').mouseup(function(e){
 		$('.MediaCont').removeClass('cursorMove');
 	});
-   
+
 	//прячем кнопки масштабирования для плагинного содержимого
 	$(".win").each(function(i, val){
 		if($('.pl_cont', this).aplayerIsEmbedOrObject()){
@@ -1708,7 +1708,7 @@ function canvas_growth() {
    	
    	
 	if(CAM_STATUS_REQ!=null){
-		CAM_STATUS_REQ.abort(); 
+		CAM_STATUS_REQ.abort();
 	}
 	//запуск запросов статуса камер
 //	CAM_STATUS_REQ = cam_status_request({
@@ -1719,24 +1719,24 @@ function canvas_growth() {
 	
 }//fill_canvas()
 
-var err_no = 0;   
+var err_no = 0;
 cam_status_request = function(params ){
 
 	return $.ajax({
 	    url: '../lib/status.php',
 	    dataType : "json",
 	    data : params,
-	    success: function (data, textStatus) { 
+	    success: function (data, textStatus) {
 	    	CAM_STATUSES = data;
-	    	if ( !MSIE ){ 
+	    	if ( !MSIE ){
 //	    		console.log(CAM_STATUSES);
 	    	}
 	    	if(SUBSCRIBE){
-				params['subscribe']='multipart'; 
+				params['subscribe']='multipart';
 				CAM_STATUS_REQ = cam_status_request(params);
 			}
 	    },
-	    error: function (XHR, textStatus, errorThrown) { 
+	    error: function (XHR, textStatus, errorThrown) {
 			window.setTimeout(function(){
 				if(err_no<5 && textStatus!='abort'){				
 					err_no++;
@@ -1744,7 +1744,7 @@ cam_status_request = function(params ){
 				}
 			}, 3000*err_no);
 			
-	    }    
+	    }
 	
 	});
 	
@@ -1755,7 +1755,7 @@ cam_status_request = function(params ){
  * Функция создает XHR-object
  * @returns  XHR-object
  */
-   
+
 getXmlHttp = function(){
 	var xmlhttp;
 	try {
@@ -1802,7 +1802,7 @@ var controls_handlers = {
 		//обнуляем масштаб
 	   $.aplayer.scale[aplayer_id]=0;
 	   controls_handlers.original_size[aplayer_id]=true;
-	   
+	
 	},
 	
 	normal_size_click : function(e){

@@ -1,17 +1,17 @@
-<?php 
+<?php
 
 /**
- * 
+ *
  * @file lib/adb.php
  * @brief В файле реализован класс, который обеспечивает взаимодействие с БД,<br />а также инициализируется экземпляр этого класса
- * 
+ *
  * Все обращения к БД должны быть реализованы посредством этого класса,
- * а работа с БД в обход этого класса крайне нежелательна. 
- * 
+ * а работа с БД в обход этого класса крайне нежелательна.
+ *
  * Для инициализации экземпляра класса используется объект конфигурации $conf из /etc/avreg/site-defaults.php
- * 
+ *
  * Для подключения к БД класс использует /usr/share/php/DB.php
- * 
+ *
  */
 
 
@@ -28,12 +28,12 @@ $adb = new Adb($conf);
 /**
  * @class Adb
  * @brief Класс взаимодействия с БД
- * 
+ *
  */
 
 class Adb {
 
-   private 
+   private
 		/// Название БД
       $_database = '',
       /// Пользователь БД
@@ -66,19 +66,19 @@ class Adb {
          $this->_host = $param['db-host'];
 
 //      $this->_host ='localhost';
-      
+
       $this->_pear= new PEAR();
-      
+
       $dsn = "{$this->_dbtype}://{$this->_user }:{$this->_password}@{$this->_host}/{$this->_database}";
 
       $this->_pear= new PEAR();
-      
+
       $db = new DB();
       $this->_db = $db->connect($dsn,true);
-      
-      
+
+
 //      $this->_db = DB::connect($dsn,true);
-      
+
       $this->_error($this->_db);
 
       if ($this->_dbtype == 'mysql')
@@ -88,7 +88,7 @@ class Adb {
       $this->_error($res);
       return true;
    }
-   
+
 	/**
 	 *  Деструктор по умолчанию
 	 * Закрывает соединение с БД
@@ -101,10 +101,10 @@ class Adb {
 
    /**
     *  Проверка на ошибку в запросе к БД.
-    * 
+    *
     * @param object $r Объект запроса
     * @param bool $die true - закончить скрипт, false - вывести ошибку
-    * 
+    *
     * @return true - если ошибка, false - если нет ошибок
     */
       public function _error($r, $die = true) {
@@ -127,21 +127,21 @@ class Adb {
       }
       return false;
    }
-   
+
    /**
     *  Метод позволяет получить события по указанным параметрам
-    * 
-    * 
+    *
+    *
     * @param array $param Параметры
     * - $param['events'] тип событий событий (изображения, аудио, видео)
     * - $param['cameras']  список камер
     * - $param['date'] дата событий
     * - $param['limit']
     * - $param['offset']
-    * 
+    *
     * @return array масив событий
     */
-   
+
    public function gallery_get_event($param) {
       $events = array();
       $query = "SELECT ".$this->_date_format('DT1').", DT1, EVT_CONT, ALT2, ALT1, CAM_NR, FILESZ_KB, EVT_ID, ".$this->_timediff('DT1', 'DT2').", DT2";
@@ -163,9 +163,9 @@ class Adb {
 
       // сортировать по дате, от текущей позиции с лимитом заданный в конфиге
       $query .= ' ORDER BY DT1 ASC LIMIT '.$param['limit']. ' OFFSET '.$param['offset'];
-      
+
       $res = $this->_db->query($query);
-      
+
       $this->_error($res);
       while ($res->fetchInto($line)) {
          $line[6] = filesizeHuman($line[6]);
@@ -178,12 +178,12 @@ class Adb {
          } else if ((int)$line[7] == 32 ) {
             $line[7] = 'audio';
          }
-         
+
          // формирование уникального индекса, для работы кэша в браузере пользователя
         // $events[str_replace(array('/', '.'),'_',$line[5].'_'.$line[2].'_'.$line[0] )] = $line;
          array_push($events, $line);
       }
-      
+
       return $events;
    }
 
@@ -235,14 +235,14 @@ class Adb {
         return $date_events;
     }
 
-   
-   
+
+
    /**
     *  Метод позволяет получить последнюю дату события
-    * 
+    *
     * @param array $param Параметры
     * - $param['cameras']  список камер
-    * 
+    *
     * @return string дата последнего события
     */
    public function gallery_get_last_event_date($param = array()) {
@@ -262,11 +262,11 @@ class Adb {
    }
    /**
     *  Метод позволяет получить последнюю дату события в дереве
-    * 
-    * 
+    *
+    *
     * @param array $param Параметры
     * - $param['cameras']  список камер
-    * 
+    *
     * @return string дата последнего события дерева
     */
    public function gallery_get_last_tree_event_data($param=array()){
@@ -286,17 +286,17 @@ class Adb {
       return $event;
    }
 
-   
+
    /**
     *  Метод позволяет получить дерево событий
-    * 
-    * 
+    *
+    *
     * @param array $param Параметры
     * - $param['cameras']  список камер
-    * 
+    *
     * @return array масив дерева событий со статистикой
-    */   
-   
+    */
+
    public function gallery_get_tree_events($param){
       $tree_events_result = array();
 
@@ -330,10 +330,10 @@ class Adb {
  * @param string $start Дата начала обновления дерева
  * @param string $end Дата окончания обновления дерева
  * @param string $cameras Список камер
- * @param string $on_dbld_evnts действие при обнаружении дублированных событий 
- * values: 
- * 'inform_user' - информировать пользователя, 
- * 'ignore' - корректно заполнть TREE_EVENTS без удаления дублей из EVENTS, 
+ * @param string $on_dbld_evnts действие при обнаружении дублированных событий
+ * values:
+ * 'inform_user' - информировать пользователя,
+ * 'ignore' - корректно заполнть TREE_EVENTS без удаления дублей из EVENTS,
  * 'clear' - удалить дублирующие записи из EVENTS и, после этого, заполнить TREE_EVENTS
  */
    public function gallery_update_tree_events($start, $end, $cameras = false, $on_dbld_evnts='ignore' ) {
@@ -357,7 +357,7 @@ class Adb {
       $evt_key = '';
       $tmp = array();
       $dbl_events = array();
-	  
+	
       $tree_events = array();
       while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
       	
@@ -403,7 +403,7 @@ class Adb {
          if (in_array( $line[$this->_key('EVT_ID')], array(15,16,17))) {
             $tree_events[$key]['IMAGE_COUNT']++;
             $tree_events[$key]['IMAGE_SIZE'] += $line[$this->_key('FILESZ_KB')];
-            
+
          } else if (in_array( $line[$this->_key('EVT_ID')], array(23, 12))) {
             $tree_events[$key]['VIDEO_COUNT']++;
             $tree_events[$key]['VIDEO_SIZE'] += $line[$this->_key('FILESZ_KB')];
@@ -420,9 +420,9 @@ class Adb {
       	if($on_dbld_evnts=='inform_user'){
       		//Собщаем пользователю
       		return  array(
-      			'status' => 'error', 
+      			'status' => 'error',
       			'code'=>'1',
-      			'description'=>'Doubled events detected', 
+      			'description'=>'Doubled events detected',
       			'qtty'=>sizeof($dbl_events),
 //      			'dbl_rows'=> $dbl_events,
       			'range_start'=>$dbl_events[0][$this->_key('DT1')],
@@ -435,9 +435,9 @@ class Adb {
       		if($cor_nr<sizeof($dbl_events)){
       			$rst_dbl_events = array_slice($dbl_events, $cor_nr);
       			return  array(
-      				'status' => 'error', 
+      				'status' => 'error',
       				'code'=>'2',
-      				'description'=>'Error during cleaning', 
+      				'description'=>'Error during cleaning',
       				'qtty'=>$cor_nr,
       				//'dbl_rows'=>$rst_dbl_events
       				'range_start'=>$rst_dbl_events[0][$this->_key('DT1')]  ,
@@ -450,7 +450,7 @@ class Adb {
       		//при проверке ключей дубли будут игнорироваться при заполнении TREE_EVENTS
       	}
       }
-      
+
       $query = 'DELETE FROM TREE_EVENTS';
       $query .= ' WHERE 1=1';
 
@@ -477,7 +477,7 @@ class Adb {
 
 
    /**
-    * 
+    *
     * Метод для удаления дублированных записей из EVENTS
     * @param array $dbl_evts параметры для удаления и востановления записей
     * @return кол-во исправленных записей
@@ -528,11 +528,11 @@ class Adb {
 	   	}
    	return $cntr;
    }
-   
-   
-   
-   
-   
+
+
+
+
+
 /**
  *  Метод получения событий
 
@@ -541,10 +541,10 @@ class Adb {
  * @param string $timebegin дата начала
  * @param string $timeend дата окончания
  * @param string $order сортировка
- * 
+ *
  * @return array масив событий
- */   
-   
+ */
+
    public function get_files($camera, $ser_nr, $timebegin, $timeend = false, $order = ''){
       $files = array();
       $query = 'SELECT '.$this->_date_part('timestamp', 'DT1').' as START, '.$this->_date_part('timestamp', 'DT1').' as FINISH,  EVT_ID, FILESZ_KB, FRAMES, ALT1 as U16_1, ALT2 as U16_2, EVT_CONT';
@@ -572,11 +572,11 @@ class Adb {
    /**
     *  Метод позволяет получить события для pda-версии
 
-    * @param string $cams_csv список камер 
+    * @param string $cams_csv список камер
 	* @param string $timebegin дата начала
 	* @param string $timeend дата окончания
 	* @param string $order сортировка
-	* 
+	*
 	* @return array масив событий
     */
    public function get_pda_events($cams_csv, $timebegin, $timeend , $order = ''){
@@ -589,9 +589,9 @@ class Adb {
       $query .= " AND E1.EVT_ID in (13)";
       $query .= " AND ((E1.DT1 between '$timebegin' and '$timeend') and (E2.DT1 is null or E2.DT1 between '$timebegin' and '$timeend'))";
       $query .= " ORDER BY E1.DT1 " .$order;
-      
+
       $res = $this->_db->query($query);
-      
+
       $this->_error($res);
       while($res->fetchInto($line)){
          $f = array();
@@ -613,7 +613,7 @@ class Adb {
  * @param array $evt_ids тип событий
  * @param array $dayofweek дни недели
  * @param array $page лимит и номер страницы
- * 
+ *
  * @return array масив событий
  */
    public function events_select($cams, $timemode = false, $date, $evt_ids, $dayofweek, $page = false){
@@ -669,7 +669,7 @@ class Adb {
          $query .= ' LIMIT '.$page['limit'];
          $query .= ' OFFSET '.$page['offset'];
       }
-      
+
       $res = $this->_db->query($query);
       $this->_error($res);
       while($res->fetchInto($line, DB_FETCHMODE_ASSOC)){
@@ -701,11 +701,11 @@ class Adb {
       $this->_error($res);
    }
 
-   
+
    /**
-    * 
+    *
     * Обновление параметров камеры
-    * 
+    *
  * @param string $bind_mac 'local'
  * @param int $cam_nr номер камеры
  * @param string $parname название параметра
@@ -750,7 +750,7 @@ class Adb {
       }
    }
 /**
- * 
+ *
  * Метод получает настройки камеры по умолчанию
  * @param int $cam_nr номер камеры
  * @param string $bind_mac 'local'
@@ -780,7 +780,7 @@ class Adb {
    }
 
 /**
- * 
+ *
  * Метод позволяет получить параметры камер
  * @param string $cams_list  список камер
  * @param string $param_list список параметров
@@ -808,7 +808,7 @@ class Adb {
       return  $cams;
    }
 /**
- * 
+ *
  * Метод позволяет получить названия камер
  * @param string $cams_list Список камер
  * @return array Список названий
@@ -841,7 +841,7 @@ class Adb {
 
    }
 /**
- * 
+ *
  * Метод позволяет получить последний номер камеры
  * @param string $bind_mac 'local'
  * @return int номер камеры
@@ -851,10 +851,10 @@ class Adb {
       $res = $this->_db->query($query);
       $this->_error($res);
       $res->fetchInto($line);
-      return isset($line[0]) ? $line[0] : false; 
+      return isset($line[0]) ? $line[0] : false;
    }	
 /**
- * 
+ *
  * Метод позволяет удалить камеру
  * @param int $cam_nr номер камеры
  * @param string $bind_mac 'local'
@@ -866,7 +866,7 @@ class Adb {
       $this->_error($res);
    }
 /**
- * 
+ *
  * Метод позволяет добавить раскладку
  * @param string $display
  * @param int $mon_nr
@@ -884,7 +884,7 @@ class Adb {
       $res = $this->_db->query($query);
       $this->_error($res);
    }
-   
+
    /**
    *
    * Метод позволяет добавить раскладку для WEB
@@ -912,9 +912,9 @@ class Adb {
    	$res = $this->_db->query($query);
    	$this->_error($res);
    }
-   
+
 /**
- * 
+ *
  * Метод позволяет удалить раскладку
  * @param string $display
  * @param int $mon_nr
@@ -928,9 +928,9 @@ class Adb {
       $res = $this->_db->query($query);
       $this->_error($res);
    }
-   
+
    /**
- * 
+ *
  * Метод позволяет удалить раскладку для WEB
  * @param string $display
  * @param int $mon_nr
@@ -945,9 +945,9 @@ class Adb {
       $this->_error($res);
    }
 
-   
+
 /**
- * 
+ *
  * Метод позволяет обновить данные раскладки в БД
  * @param string $display
  * @param unknown_type $mon_nr
@@ -982,7 +982,7 @@ class Adb {
    }
 
 /**
- * 
+ *
  * Метод позволяет обновить данные раскладки для WEB  в БД
  * @param string $display
  * @param unknown_type $mon_nr
@@ -1002,19 +1002,19 @@ class Adb {
       $query .= ", CHANGE_USER = '$user'";
       $query .= ", PRINT_CAM_NAME = '$PrintCamNames'";
       $query .= ", PROPORTION = '$AspectRatio'";
-      
+
       $query .= ", RECONNECT_TOUT = $ReconnectTimeout";
-      
+
       $query .= ", WINS = '$allWINS'";
       $query .= " WHERE BIND_MAC ='$bind_mac'";
       $query .= " AND MON_NR = $mon_nr";		
 
-      
-      
+
+
       $res = $this->_db->query($query);
       $this->_error($res);
    }
-   
+
    /**
    *
    * Метод позволяет установить раскладку по умолчанию для WEB
@@ -1029,13 +1029,13 @@ class Adb {
    	$query = 'UPDATE WEB_LAYOUTS SET ';
    	$query .= "IS_DEFAULT = 1";
    	$query .= " WHERE MON_NR = $mon_nr";
-   
+
    	$res = $this->_db->query($query);
    	$this->_error($res);
    }
 
 /**
- * 
+ *
  * Метод добавляет или обновляет параметры раскладки
  * @param string $display
  * @param unknown_type $mon_nr
@@ -1060,8 +1060,8 @@ class Adb {
       else
          $this->update_layouts($display,$mon_nr,$mon_type,$mon_name, $host, $user, $fWINS, $vWINS);
    }	
-   
-   
+
+
    /**
    *
    * Метод добавляет или обновляет параметры раскладки для WEB
@@ -1096,11 +1096,11 @@ class Adb {
    	else
    	$this->web_update_layouts( $mon_nr,$mon_type,$mon_name, $host, $user, $PrintCamNames, $AspectRatio, $ReconnectTimeout, $allWINS);
    }
-   
-   
-   
+
+
+
 /**
- * 
+ *
  * Метод позволяет получить параметры раскладки
  * @param string $display
  * @param int $mon_nr
@@ -1109,9 +1109,9 @@ class Adb {
  */
    public function get_monitor($display, $mon_nr, $bind_mac = 'local') {
       $query = 'SELECT MON_NR, MON_TYPE, MON_NAME, IS_DEFAULT, ' .
-         'WIN1, WIN2, WIN3, WIN4, WIN5, WIN6, WIN7, WIN8, WIN9, 
-         WIN10, WIN11, WIN12, WIN13, WIN14, WIN15, WIN16, 
-         WIN17, WIN18, WIN19, WIN20, WIN21, WIN22, WIN23, 
+         'WIN1, WIN2, WIN3, WIN4, WIN5, WIN6, WIN7, WIN8, WIN9,
+         WIN10, WIN11, WIN12, WIN13, WIN14, WIN15, WIN16,
+         WIN17, WIN18, WIN19, WIN20, WIN21, WIN22, WIN23,
          WIN24, WIN25, WIN26, WIN27, WIN28, WIN29, WIN30,
          WIN31, WIN32, WIN33, WIN34, WIN35, WIN36, WIN37,
          WIN38, WIN39, WIN40 '.
@@ -1123,9 +1123,9 @@ class Adb {
       $res->fetchInto($line);
       return $line;
    }
-   
+
    /**
- * 
+ *
  * Метод позволяет получить параметры раскладки для WEB
  * @param int $mon_nr
  * @param string $bind_mac
@@ -1137,16 +1137,16 @@ class Adb {
          'CHANGE_HOST, CHANGE_USER, CHANGE_TIME, PRINT_CAM_NAME, PROPORTION, RECONNECT_TOUT '.
          'FROM WEB_LAYOUTS '.
          'WHERE BIND_MAC=\''.$bind_mac.'\' AND MON_NR='.$mon_nr;
-      
+
       $res = $this->_db->query($query);
       $this->_error($res);
       $res->fetchInto($line);
       return $line;
    }
 
-   
+
 /**
- * 
+ *
  * Метод позволяет получить параметры всех раскладок
  * @param string $bind_mac
  * @return array раскладки
@@ -1169,11 +1169,11 @@ class Adb {
       }
       return  $mon;
    }
-   
+
 /**
- * 
+ *
  * Метод позволяет получить параметры всех раскладок для WEB
- * или WEB-раскладок, разрешенных для пользователя 
+ * или WEB-раскладок, разрешенных для пользователя
  * @param string $bind_mac
  * @return array раскладки
  */
@@ -1181,17 +1181,17 @@ class Adb {
    	
       $mon = array();
       $query = 'SELECT * FROM WEB_LAYOUTS';
-      
+
       $allowed_layouts=array();
       //номер раскладки, указанный в пользовательских настройках первым, устанавливается по умолчанию
       $def_num = null;
 
       //Если пользователь указан - формируем запрос о разрешенных раскладках
       if($user!=NULL){
-      	$sub_query = sprintf("SELECT ALLOW_LAYOUTS FROM USERS WHERE USER_LOGIN='%s'", $user); 
+      	$sub_query = sprintf("SELECT ALLOW_LAYOUTS FROM USERS WHERE USER_LOGIN='%s'", $user);
       	$sub_res = $this->_db->query($sub_query);
       	$this->_error($allowed_layouts);
-		//Определяем разрешенные раскладки 
+		//Определяем разрешенные раскладки
       	while ($sub_res->fetchInto($vl, DB_FETCHMODE_ASSOC)) {
       		$l = array();
       		foreach ($vl as $k=>$v) {
@@ -1214,7 +1214,7 @@ class Adb {
 		else{
 			
 			//определяем перечень разрешенных раскладок пользователя и формируем соотв. запрос
-			$lts = "'"; 
+			$lts = "'";
 			$lts =$lts.implode("', '", $allowed_layouts)."'";
 			
 			$query .= " WHERE BIND_MAC='$bind_mac' AND MON_NR IN ($lts)";
@@ -1222,12 +1222,12 @@ class Adb {
 		}
       }
 
-	  //Если пользователь не указан или не заданны конкретные раскладки - выбираем все раскладки     
+	  //Если пользователь не указан или не заданны конкретные раскладки - выбираем все раскладки
       if($user==NULL){
       	$query .= " WHERE BIND_MAC='$bind_mac'";
       	$query .= ' ORDER BY MON_NR';
       }
-      
+
       $res = $this->_db->query($query);
       $this->_error($res);
       while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
@@ -1250,11 +1250,11 @@ class Adb {
       }
       return  $mon;
    }
-   
-   
+
+
 /**
  * Метод добавляет пользователя
- * 
+ *
  * @param string $u_host Допустимые IP-адреса пользователького хоста.
  * @param string $u_name Логин
  * @param string $passwd пароль
@@ -1275,12 +1275,12 @@ class Adb {
  * @return bool результат добавления
  */
    public function add_user($u_host, $u_name, $passwd, $groups, $guest, $pda, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_user,$limit_fps,$nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user) {
-   	$query = sprintf('INSERT INTO USERS 
+   	$query = sprintf('INSERT INTO USERS
          ( ALLOW_FROM, USER_LOGIN, PASSWD, STATUS, GUEST, PDA, ALLOW_CAMS, ALLOW_LAYOUTS, MAX_FORCED_REC_MINUTES, MAX_MEDIA_SESSIONS_NB,
          MAX_VIDEO_FPS, MAX_VIDEO_NONMOTION_FPS, MAX_MEDIA_SESSION_RATE_KB,
          MAX_MEDIA_SESSION_MINUTES, MAX_MEDIA_SESSION_VOLUME_MB,
 
-         LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME) 
+         LONGNAME, CHANGE_HOST, CHANGE_USER, CHANGE_TIME)
          VALUES ( %s, %s, %s, %u, %b, %b, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())',
             sql_format_str_val($u_host),
             sql_format_str_val($u_name),
@@ -1301,11 +1301,11 @@ class Adb {
             sql_format_str_val($remote_addr),
             sql_format_str_val($login_user));
 
-      $res = $this->_db->query($query);   
+      $res = $this->_db->query($query);
       return !$this->_error($res, false);
    }
 /**
- * 
+ *
  * Метод позволяет обновить информацию о пользователе
  * @param string $u_host Допустимые IP-адреса пользователького хоста.
  * @param string $u_name Логин
@@ -1328,7 +1328,7 @@ class Adb {
  * @param string $old_u_name старый логин
  * @return bool результат обновления
  */
-    
+
    public function update_user($u_host,$u_name,$passwd, $groups, $guest, $pda, $u_devacl, $u_layouts, $u_forced_saving_limit, $sessions_per_user, $limit_fps, $nonmotion_fps, $limit_kbps, $session_time, $session_volume, $u_longname, $remote_addr, $login_user, $old_u_host,$old_u_name){
       $query = sprintf(
          'UPDATE USERS SET ALLOW_FROM=%s, USER_LOGIN=%s, PASSWD=%s, STATUS=%d, GUEST=%b, PDA=%b, ALLOW_CAMS=%s, ALLOW_LAYOUTS=%s ,MAX_FORCED_REC_MINUTES=%s, MAX_MEDIA_SESSIONS_NB=%s, MAX_VIDEO_FPS=%s, MAX_VIDEO_NONMOTION_FPS=%s, MAX_MEDIA_SESSION_RATE_KB=%s, MAX_MEDIA_SESSION_MINUTES=%s, MAX_MEDIA_SESSION_VOLUME_MB=%s, LONGNAME=%s, CHANGE_HOST=%s, CHANGE_USER=%s, CHANGE_TIME=NOW() WHERE ALLOW_FROM=%s AND USER_LOGIN=%s',
@@ -1352,29 +1352,29 @@ class Adb {
          sql_format_str_val($login_user),
          sql_format_str_val($old_u_host),
          sql_format_str_val($old_u_name));
-      $res = $this->_db->query($query);  
-      $res = $this->_db->query($query);   
+      $res = $this->_db->query($query);
+      $res = $this->_db->query($query);
       return !$this->_error($res, false);
    }
 
 /**
- * 
+ *
  * Метод позволяет удалить пользователя
  * @param string $u_name логин
- * @param string $u_host хост 
+ * @param string $u_host хост
  * @param int $u_status статус
- */   
+ */
    public function delete_user($u_name, $u_host, $u_status){
       $query = sprintf('DELETE FROM USERS WHERE USER_LOGIN=%s AND ALLOW_FROM=%s AND STATUS=%u',
    		sql_format_str_val($u_name),
       	sql_format_str_val( $u_host),
        	$u_status);
-      
-      $res = $this->_db->query($query);   
+
+      $res = $this->_db->query($query);
       $this->_error($res);
    }
 /**
- * 
+ *
  * Метод позволяет получить пароль пользователя
  * @param string $u_name логин
  * @param string $hosts хост
@@ -1382,13 +1382,13 @@ class Adb {
  */
    public function get_user_passwd($u_name, $hosts) {
       $query = sprintf("SELECT PASSWD FROM USERS WHERE ALLOW_FROM in(%s) AND USER_LOGIN='%s'", "'".implode("','",$hosts)."'", $u_name);
-      $res = $this->_db->query($query);  
+      $res = $this->_db->query($query);
       $this->_error($res);
       $res->fetchInto($line);
       return isset($line[0]) ? trim($line[0]) : false;
    }
 /**
- * 
+ *
  * Метод позволяет обновить пароль пользователя
  * @param string $u_name логин
  * @param string $u_pass пароль
@@ -1400,12 +1400,12 @@ class Adb {
          "'".implode("','",$hosts)."'",
          $u_name);		
       $res = $this->_db->query($query);
-      $this->_error($res);  
+      $this->_error($res);
       return true;
    }
 /**
  * Метод позволяет получить пользователей
- * 
+ *
  * @param int $status статус
  * @return array масив пользователей
  */
@@ -1416,7 +1416,7 @@ class Adb {
       if ($status)
          $query .= "WHERE STATUS = $status ";
       $query .=  'ORDER BY ALLOW_FROM, USER_LOGIN';
-      
+
       $res = $this->_db->query($query);
       $this->_error($res);
       while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
@@ -1442,7 +1442,7 @@ class Adb {
             'CHANGE_TIME' => trim($line[$this->_key('CHANGE_TIME')]),
          );
       }
-      
+
       return $users;
    }
 

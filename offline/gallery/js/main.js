@@ -1544,7 +1544,7 @@ var matrix = {
             matrix.proportionDetail = true;
             scale2.updateposition(scale2.position);
         }
-        else //Если в режиме preview 
+        else //Если в режиме preview
         {
             //установка ресайзеных какртинок
             scale.updateposition(scale.position);
@@ -1657,12 +1657,12 @@ var matrix = {
             $('#toolbar .detail').hide();
             $('#toolbar .preview').show();
 
-            //востанавливаем размер панели матрицы 
+            //востанавливаем размер панели матрицы
             $("#list_panel").width($("#list_panel").width() - $("#scroll_v").width());
             //отображаем скролл матрицы
             $("#scroll_v").show();
 
-            //отображаем все ячейки матрицы 
+            //отображаем все ячейки матрицы
             $(".content_item").each(function(){
                 if($(this).hasClass("active")){
                     //востанавливаем параметры активного элемента
@@ -1763,7 +1763,7 @@ var matrix = {
 
         $('#scroll_v').height(hc);
 
-        // исправление бага с высотой!!! придумать что то лучше 
+        // исправление бага с высотой!!! придумать что то лучше
         //if($('#list_panel').height()!==0) matrix.height = $('#list_panel').height();
         matrix.height = hc;
 
@@ -1903,7 +1903,7 @@ var matrix = {
             }
         }
 
-        // обновляем размеры и позиционирование ячеек в матрице  
+        // обновляем размеры и позиционирование ячеек в матрице
         $('#scroll_content .content_item').height(matrix.cell_height);
         $('#scroll_content .content_item').width(matrix.cell_width);
         $('#scroll_content .content_item').css({'padding' : matrix.cell_padding});
@@ -1916,7 +1916,7 @@ var matrix = {
         //Включаем тултип
         $(".elem .info_block").tooltip();
 
-        //установка активного элемента 
+        //установка активного элемента
         $('.active').removeClass('active');
         $('#cell_'+matrix.num).addClass('active');
 
@@ -1959,7 +1959,7 @@ var matrix = {
             }
 
 
-            //Получить расширение файла 
+            //Получить расширение файла
             var extension=value[2].match(reg);
             extension=extension[extension.length-1].slice(1);
 
@@ -2150,7 +2150,7 @@ var matrix = {
             //изображение не загрузилось
             // показываем картинку ошибки в ячейке
             var errorImgSrc = '../offline/gallery/img/error.jpg';
-            //Установка плеера 
+            //Установка плеера
             $('#cell_'+el+' .img_block a').css({ 'display':'block', 'width':'100%', 'height':'100%', 'type':'audio'}
             ).addPlayer({'src': errorImgSrc });
             // задаем новые размеры изображения
@@ -2250,7 +2250,7 @@ var matrix = {
         else
         {
 
-            //Если кол-во элтов матрицы не соответствует кол-ву установленных плееров- Пересоздаем матрицу 
+            //Если кол-во элтов матрицы не соответствует кол-ву установленных плееров- Пересоздаем матрицу
             if(matrix.cell_count != $("[id^="+$.aplayer.idContainer+"]").length)
             {
 
@@ -2295,7 +2295,7 @@ var matrix = {
                         }
 
 
-                        //Получить расширение файла 
+                        //Получить расширение файла
                         var extension=value[2].match(reg);
                         extension=extension[extension.length-1].slice(1);
 
@@ -2535,7 +2535,7 @@ var matrix = {
                             $(this).find('a.refBox').empty().addPlayer({'src': NewSRC, 'logoPlay':'true' }).aplayerResizeContanerOnlyToParent();
                         }
 
-                        //Получить расширение файла 
+                        //Получить расширение файла
                         var extension=value[2].match(reg);
                         extension=extension[extension.length-1].slice(1);
 
@@ -3549,7 +3549,7 @@ var scale2 = {
             }
 
             if(!is_fp){
-                sp+=3; //Несколько увеличиваем размер медиаэлемента 
+                sp+=3; //Несколько увеличиваем размер медиаэлемента
             }
             //Изменение размеров медиа-элемента плеера
             $(ref_box).aplayerSetSizeMediaElt({

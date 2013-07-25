@@ -1,7 +1,7 @@
 <?php
 /**
  * @file lang/russian/utf-8/_offline.php
- * @brief Файл переводов для страниц 
+ * @brief Файл переводов для страниц
  * - offline/index.php	
  * - offline/query.php
  * - offline/result.php

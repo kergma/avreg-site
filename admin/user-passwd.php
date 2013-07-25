@@ -24,7 +24,7 @@ echo '<h1>' . sprintf($r_users, $named, $sip) . '</h1>' ."\n";
 
 if ( isset($cmd) )
 {
-      if ( strcmp($u_name, $login_user) || strcmp($u_host, $login_host) ) 
+      if ( strcmp($u_name, $login_user) || strcmp($u_host, $login_host) )
          die ('Crack or hack???');
       $u_host = &$user_info['HOST'];
       switch ( $cmd ) {
@@ -49,8 +49,8 @@ if ( isset($cmd) )
                               $hosts = array('127.0.0.1', 'localhost');
                            else
                             $hosts = array($u_host);
-                            
-                              
+
+
                               $user_passwd = $adb->get_user_passwd($u_name, $hosts);
                               var_dump($user_passwd);
                               if ($user_passwd === false) {
@@ -64,7 +64,7 @@ if ( isset($cmd) )
                                        if ( strcmp($old_pass, $u_pass ) )
                                        {
                                        			$result = $adb->update_user_passwd($u_name, $u_pass, $hosts);
-                                                
+
                                                 //print ($query);
                                                       if ( $result )
                                                       {

@@ -115,7 +115,7 @@ function checkRadios(who) {
 }
 function changeRadios(who) {
 	if(radios[who].checked) {
-		for(var q = 0; q < radios.length; q++) {if(radios[q].name == radios[who].name) {radios[q].checked = false; radioLabels[q].className = "";}} 
+		for(var q = 0; q < radios.length; q++) {if(radios[q].name == radios[who].name) {radios[q].checked = false; radioLabels[q].className = "";}}
 		radios[who].checked = true; radioLabels[who].className = "chosen";
 		checkRadios(who);
 	}
@@ -226,7 +226,7 @@ function replaceSelects() {
 		selectArea.appendChild(right);
 		selectArea.appendChild(center);
 		//hide the select field
-        selects[q].style.display='none'; 
+        selects[q].style.display='none';
 		//insert select div
 		selects[q].parentNode.insertBefore(selectArea, selects[q]);
 		//build & place options div

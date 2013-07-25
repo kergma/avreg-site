@@ -2,7 +2,7 @@
 
 /**
 * @file offline/gallery/gallery.php
-* @brief класс служит для получения и обновления данных о событиях 
+* @brief класс служит для получения и обновления данных о событиях
 * инстанцируется:
 * <ol>
 * <li> в offline/gallery.php - при отображении галереи
@@ -13,25 +13,25 @@
 * галереи начиная с времени последнего обновления и заканчивая
 * последним событием в events.
 * Это осуществляется вызовом метода get_tree_events($param) в offline/gallery/js/main.js .
-* 
+*
 * cron.php при открытии галереи вообще не используется.
 *
 * cron.php - предоставляет возможность выполнять обновление этой
 * таблицы по некоторому расписанию, например в crontab.
 * Что это дает:
-* 
+*
 * 1. галерея открывается быстрей, поскольку для обновления надо
-* обработать меньшее кол-во данных 
+* обработать меньшее кол-во данных
 * (может быть актуально при редком открытии галереи и большом кол-ве камер).
-* Выполняется вызовом метода cron_update_tree_events(). 
-* 
+* Выполняется вызовом метода cron_update_tree_events().
+*
 * 2. после работы чистильщика, надо обновить tree_events для
-* того периода, для которого были удалены файлы. 
-* (это необходимо, поскольку, как было сказано, при открытии галереи 
+* того периода, для которого были удалены файлы.
+* (это необходимо, поскольку, как было сказано, при открытии галереи
 * таблица обновляется начиная с времени последнего обновления,
 * а не полностью с самого начала).
-* Выполняется вызовом метода update_tree_events($param), 
-* которому в качестве параметров передаются начало(start) и конец(end) временного диапазона, 
+* Выполняется вызовом метода update_tree_events($param),
+* которому в качестве параметров передаются начало(start) и конец(end) временного диапазона,
 * а так же номера камер(cameras) для которых надо выполнить обновление
 *
 *
@@ -42,7 +42,7 @@ class Gallery {
     public 	
     	$method = '', // метод запроса
     	$result = array(); // ответ запроса
-    private 
+    private
     	$cache,
     	$db = '',
         $limit = 0,
@@ -70,7 +70,7 @@ class Gallery {
 			$this->{$this->method}($param);
     	}
     }
- 	// Функция получения событий  
+ 	// Функция получения событий
     public function get_events($param) {
     	
     	$events = array();
@@ -78,7 +78,7 @@ class Gallery {
     	if (isset($param['cameras'])  && !empty($param['cameras'])) {
     		$cameras = trim($param['cameras'], ',');
     		$param['cameras'] = explode(",", $cameras);
- 
+
     		$type = explode(",", trim($param['type'], ','));
     		
 	    	// картинки
@@ -118,15 +118,15 @@ class Gallery {
             }
     	}
     }
-    
+
     // Функция построения дерева события
     public function get_tree_events($param) {
     	global $GCP_cams_params;
 	    $cameras = implode(',',array_keys($GCP_cams_params));
     	
-	    
+	
 	    $last_event_date = $this->db->gallery_get_last_event_date(array('cameras' => array_keys($GCP_cams_params)));
-	    
+	
     	$key = md5($cameras.'-'.$last_event_date);
     	
     	$tree_events_result = $this->cache->get($key);
@@ -140,7 +140,7 @@ class Gallery {
 				$evt_updt_rst = $this->db->gallery_update_tree_events($last_tree_date, $last_event_date, array(), $param["on_dbld_evt"]);
 				//проверка дублей событий
 				if($evt_updt_rst['status']=='error'){
-					$this->result = $evt_updt_rst;  
+					$this->result = $evt_updt_rst;
 					return;
 				}
 			}
@@ -158,7 +158,7 @@ class Gallery {
     		$this->result = array('status' => 'error', 'code'=>'0','description'=>'No events.', 'qtty'=>0 ) ;
     	}
     }
-    
+
     public function update_tree_events($param) {
     	$start = isset($param['start']) ? $param['start'] : false;
     	$end = isset($param['end']) ? $param['end'] : false;
@@ -172,9 +172,9 @@ class Gallery {
 			$this->db->gallery_update_tree_events($last_tree_date, $last_event_date);
 		}
     }
-    
 
-    
+
+
     // отдача результата клиенту
     public function print_result() {
         if ($this->limit > 1){

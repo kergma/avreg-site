@@ -27,7 +27,7 @@ if ( isset($cmd) && $cmd == '_ADD_NEW_CAM_' )
 {
 	if ( isset($cam_nr) && !empty($cam_nr) )
 	{
-		if ( ( $cam_nr < 1 ) || ( $cam_nr > $MAX_CAM ) ) 
+		if ( ( $cam_nr < 1 ) || ( $cam_nr > $MAX_CAM ) )
 		{
 			$str_err_fmt = "<font color=\"$error_color\"><p>" . $strError . ": " . $strField . " '%s' %s</p></font>\n";
 			printf ($str_err_fmt, $strCam_nr_Range, $cam_nr);
@@ -58,7 +58,7 @@ if ( isset($cmd) && $cmd == '_ADD_NEW_CAM_' )
 $cam_nr = $adb->max_cam_nr();
 if ( $cam_nr )
 	$cam_nr = $cam_nr + 1;
-else 
+else
 	$cam_nr = 1;
 
 echo '<h2>' . sprintf ($r_cam_addnew, $cam_nr, $named, $sip) . '</h2>' ."\n";

@@ -2,10 +2,10 @@
 /**
  * @file admin/tune.php
  * @brief Настройки параметров видеорегистратора
- * 
+ *
  * @page tune Настройки
  * Настройки параметров видеорегистратора
- * 
+ *
  * Файлы:
  * - admin/menu-tune.php
  * - admin/_index2.php
@@ -26,7 +26,7 @@
  * - admin/web_mon_tune.php
  * - admin/web_set_def.php
  * - admin/web_active_pipe.inc.php
- * 
+ *
  * @ref admin
  */
 $NOBODY=1;

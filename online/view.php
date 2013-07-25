@@ -2,9 +2,9 @@
 /**
  * @file online/view.php
  * @brief Наблюдение с камер online
- * 
+ *
  * Формирует страницу с раскладкой камер для наблюдения в режиме online
- * 
+ *
  */
 session_start();
 if (isset($_SESSION['is_admin_mode']))
@@ -19,7 +19,7 @@ $css_links=array(
 );
 $USE_JQUERY = true;
 $link_javascripts=array(
-						'lib/js/jqModal.js', 
+						'lib/js/jqModal.js',
 						'lib/js/jquery-ui-1.8.17.custom.min.js',
 						'lib/js/jquery.mousewheel.min.js',
 						'lib/js/jquery.aplayer.js',
@@ -173,7 +173,7 @@ if ( !isset($win_cams) || empty($win_cams))
 die('should use "$win_cams" cgi param');
 
 require('../admin/mon-type.inc.php');
-if (!isset($mon_type) || empty($mon_type) || !array_key_exists($mon_type, $layouts_defs) ) 
+if (!isset($mon_type) || empty($mon_type) || !array_key_exists($mon_type, $layouts_defs) )
    MYDIE("not set ot invalid \$mon_type=\"$mon_type\"",__FILE__,__LINE__);
 $l_defs = &$layouts_defs[$mon_type];
 $wins_nr = count($l_defs[3]);//определяет количество камер в раскладке
@@ -262,7 +262,7 @@ require('../lib/get_cams_params.inc.php');
 
 
 if ( $GCP_cams_nr == 0 )
-   die('There are no available cameras!'); 
+   die('There are no available cameras!');
 
 require_once('../lib/get_cam_url.php');
 
@@ -323,7 +323,7 @@ for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
    settype($width, 'integer'); settype($height, 'integer');
    if ( empty($width)  )  $width  = 640;
    if ( empty($height) )  $height = 480;
-   
+
    if ( !empty($GCP_cams_params[$cam_nr]['Hx2']) ) $height *= 2;
 
    if (is_null($major_win_cam_geo) || $major_win_nr === $win_nr )
@@ -365,7 +365,7 @@ for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
            break;
    }
   // $cam_url= get_cam_alt_url($cam_url,$cam_nr, true);
-    
+
    if ( $operator_user &&  (@$GCP_cams_params[$cam_nr]['video_src'] == 'rtsp' || @$GCP_cams_params[$cam_nr]['video_src'] == 'http') ){
       $netcam_host = '"' . $GCP_cams_params[$cam_nr]['InetCam_IP'] . '"';
    }
@@ -401,7 +401,7 @@ for ($win_nr=0; $win_nr<$wins_nr; $win_nr++)
 if ( $MSIE )
    $msie_addons_scripts[] = sprintf('<script for="cam%d" event="OnClick()">
    var amc = this;
-if (amc.FullScreen) 
+if (amc.FullScreen)
    amc.FullScreen=0;
 else
    amc.FullScreen=1;
@@ -449,7 +449,7 @@ print "var COLS_NR = $l_defs[2];\n";
 
 print "var REF_MAIN = ".(($install_user || $admin_user || $arch_user )? 'true':'false').";\n";
 
-//Подключаем файл 
+//Подключаем файл
  readfile('view.js');
 
 echo "</script>\n";

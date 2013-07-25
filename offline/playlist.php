@@ -31,7 +31,7 @@ function switch_timemode() {
 
 function on_submit(e)
 {
-	//валидация данных формы 
+	//валидация данных формы
 	$(".warn").remove();
 	var warn = 	"<div class='warn' style='position:relative;'>" + "<h3> <?php echo $PlaylistFormValidation['title']; ?> ";
 	var frmIsValide = true;
@@ -50,7 +50,7 @@ function on_submit(e)
 	}
 	warn+="</h3></div>";
 	if(!frmIsValide){
-		$('form:first').before(warn); 
+		$('form:first').before(warn);
 		return false;
 	}
 	
@@ -141,7 +141,7 @@ if (isset($_COOKIE))
 }
 
 if (isset($_SESSION))
-{ 
+{
    if ( isset($_SESSION['dayofweek']) &&
         is_array($_SESSION['dayofweek']) &&
         count($_SESSION['dayofweek']) > 0 )
@@ -199,7 +199,7 @@ if ( isset($_SESSION) && isset($_SESSION['error'])/* ошибка */ )
 <table cellspacing="0" border="0" cellpadding="5" >
 <tr valign="top">
 <td style="width:300px;" >
-<?php 
+<?php
 
 	//формируем список чекбоксов выбора камер
 	print getChkbxByAssocAr('cams', $recorded_cams, $cams_sel, true, 8);
@@ -250,7 +250,7 @@ print getSelectHtml('day2', $day_array, FALSE, 1, 1, $day_array[$day2], FALSE, F
 ?>
 </td>
 <td align="center" style="width:150px;">
-<?php 
+<?php
 	print getChkbxByAssocAr('dayofweek', $day_of_week, '0,1,2,3,4,5,6');
 ?>
 </td>

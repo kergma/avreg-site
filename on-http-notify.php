@@ -2,7 +2,7 @@
 /**
  * @file on-http-notify.php
  * @brief Генерирует уведомление
- * 
+ *
  */
 
 

@@ -1,7 +1,7 @@
 <?php
 /**
  * @file lang/russian/utf-8/_online.php
- * @brief Файл переводов для страниц 
+ * @brief Файл переводов для страниц
  * - online/index.php	
  * - online/build_mon.php
  * - online/view.php

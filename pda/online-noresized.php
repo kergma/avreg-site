@@ -1,7 +1,7 @@
 <?php
 /**
  * @file pda/online-noresized.php
- * @brief 
+ * @brief
  */
 $pageTitle = sprintf('Камера №%u', $_GET['camera']);
 // $body_onload='body_loaded();';
@@ -35,7 +35,7 @@ if ( !isset($refresh) ) {
 <br><br>
 <form action="online.php" method="GET">
 <input type="hidden" name='camera' value="<?php echo $camera; ?>">
-Обновлять изображение: 
+Обновлять изображение:
 <?php print getSelectByAssocAr('refresh', $refresh_img_a, false, 1, 1, 0, false); ?>
 <br><br>
 <input type="submit" id="btSubmit" value="<?php echo 'Наблюдать камеру'; ?>">
@@ -63,7 +63,7 @@ var CAM_INFO = {
 };
 
 var LOADING = true;
-var IMG = document.getElementById('viewport'); // FIXME if isn't DOM ready? 
+var IMG = document.getElementById('viewport'); // FIXME if isn't DOM ready?
 
 function refresh_img()
 {
