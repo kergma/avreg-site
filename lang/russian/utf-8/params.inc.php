@@ -38,6 +38,8 @@ $syslog_levels = array(
 
 // $flip_type = array('зеркально', 'вращение 180');
 
+$text_font_sizes = array('маленький', 'большой');
+
 $v4l_int_cntrl='<p>Допустимые значения: 0 или &#171;пусто&#187; - не&nbsp;устанавливать или не&nbsp;подстраивать значение этого параметра; или установить значение  [1(мин.)..5(средн.)..9(макс.)].</p>По умолчанию: &#171;<b>пусто</b>&#187; (не&nbsp;подстраивать).';
 
 $recording_mode = array('Без записи', 'Выборочно', 'Всё подряд');
@@ -1086,6 +1088,17 @@ array(
 ),
 
 array(
+   'name'    => 'text_font_size',
+   'type'    => $CHECK_VAL,
+   'def_val' => NULL,
+   'desc'    => 'Размер шрифта для &#171;врезаемого&#187; в кадр текста.
+   <br><br>По умолчанию: <b>не установлено</b>, т.е. &#171;авто&#187; - &#171большой&#187; если ширина кадра более 480 пикселей.',
+   'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
+   'cats'    => '5.1.1',
+   'subcats' => NULL,
+   'mstatus' => 1,
+),
+array(
    'name'    => 'text_left',
    'type'    => $STRING_VAL,
    'max_len' => 30,
@@ -1104,7 +1117,7 @@ array(
    'def_val' => NULL,
    'desc'    => 'Шаблон для <b>временной отметка кадра</b> в правом нижнем углу кадра.
    <br><br>По умолчанию: <b>%Y-%m-%d\n%H:%M:%S-%t</b>.',
-   'flags'   => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
+   'flags'   => $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
    'cats'    => '5.1.1',
    'subcats' => NULL,
    'mstatus' => 1,

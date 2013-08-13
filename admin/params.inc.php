@@ -235,6 +235,15 @@ function checkParam ( $parname, $parval, $def_val = NULL )
       $ret = getChkbxByAssocAr('fields['.$parname.']', $GLOBALS['event_groups'],
          $parval, FALSE /* не работает select_all для имен содержащих []*/);
       break;
+
+   case 'text_font_size':
+      if ( $parval == '' || is_null($parval) || $parval == '0' )
+         $sel = '';
+      else
+         $sel = $GLOBALS['text_font_sizes'][$parval-1];
+      $ret = getSelectHtml('fields['.$parname.']', $GLOBALS['text_font_sizes'], FALSE, 1, 1, $sel, TRUE, FALSE);
+      break;
+
    default:
       $ret = '<p style="color: '.$GLOBALS['error_color'].'">'. sprintf($GLOBALS['unknownCheckParams'], $parname) .'</p>'."\n";
    } // switch
