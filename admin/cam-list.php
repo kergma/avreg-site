@@ -130,9 +130,6 @@ if ( !isset($cam_nr) )
       print '<p><b>' . $strNotCamsDef . '</b></p>' . "\n";
    }
    /* choice number cam */
-} else {
-   /* defined cam with cam_nr */
-
 }
 
 // phpinfo ();
