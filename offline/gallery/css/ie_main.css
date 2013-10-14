@@ -389,11 +389,11 @@ a {
 	background:url(../img/scroll_top.png) no-repeat;
 	margin-left: -2px;
 }
-#scroll_v .scroll_body_v {
-	width:38px;
-	position:relative;
-	}
 
+#scroll_v .scroll_body_v {
+   position: relative;
+   background: url(../img/scrollR.png);
+}
 
 #scroll_v .scroll_polz_v {
 	width:38px; 
@@ -968,21 +968,12 @@ a, label,h2, button,span,div
 	/*margin: 2px auto; */
 }
 
-
-
-
-
 #content #win_top {
-	background-image: url('./images/BG.png');
-	background-size: cover;
-	background-position: top;
+	width:100%;
+	min-height:100px;
+	position:static;
 }
 
-#content #win_top{
-	min-height: 80px;
-	/*height:auto !important;
-	height:80px;*/
-}
 #content #win_top.selectBox {
 	background-image: url('./images/BG_light.png');
 	background-size: cover;
