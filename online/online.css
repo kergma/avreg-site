@@ -44,13 +44,7 @@
 	margin: 1 0 1 0;
 }
 
-.pl_stop, .pl_start{
-	cursor: pointer;
-	float: left;
-	margin-right: 15px;
-}
-
-.pl_plus, .pl_minus, .original_size, .normal_size{
+.pl_stop, .pl_start, .pl_plus, .pl_minus, .original_size, .normal_size{
 	cursor: pointer;
 	float: left;
 }

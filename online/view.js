@@ -144,7 +144,7 @@ function img_click(clicked_div) {
    var win_geo;
    var i;
    //номер ячейки
-   var win_nr = parseInt(($(clicked_div).attr('id')).match(/\d+/gi));
+   var win_nr = parseInt((clicked_div_jq.attr('id')).match(/\d+/gi));
    //устанавливаемый src
    var current_src=null;
    //если номер камеры не определен
@@ -189,10 +189,6 @@ function img_click(clicked_div) {
           $(clicked_div)
           .width(WIN_DIV_W + border_w )
           .height(WIN_DIV_H + border_h);
-
-          $('.pl_cont',clicked_div_jq)
- 	      .width(IMG_IN_DIV_W)
- 	      .height(IMG_IN_DIV_H);
 
           if ( MSIE ){
       		$('.pl_cont',clicked_div_jq)
@@ -282,8 +278,6 @@ function img_click(clicked_div) {
       clicked_div_jq.css('left', calc_win_left(win_geo, 0));
 
       $('.pl_cont',clicked_div_jq)
-	      .width(win_geo.cam_w+CORRECT_W)
-	      .height(win_geo.cam_h+CORRECT_H);
       //меняем на источник для ячейки
       if (active_cams_srcs[win_nr]['type']!='avregd'){
     	  if(active_cams_srcs[win_nr]['fs']!=null && active_cams_srcs[win_nr]['fs']!=''
@@ -393,7 +387,7 @@ function brout(win_nr, win_div, win_geo) {
    var url = WINS_DEF[win_nr].cam.url;
 
    //Установка плеера в элемент  // win_geo.cam_h
-   var cont = $('<div class="pl_cont" />').width(win_geo.cam_w+CORRECT_W).height(win_geo.cam_h+CORRECT_H);
+   var cont = $('<div class="pl_cont" />');
 
 	$(win_div).append(cont);
     $(cont).addPlayer({
@@ -410,6 +404,7 @@ function brout(win_nr, win_div, win_geo) {
 	});
 
 	if ( MSIE ){
+        // todo check for ie stuff
 		$(win_div).width(win_geo.win_w+CORRECT_W).height(win_geo.win_h+CORRECT_H);
 		$('.pl_cont',cont).aplayerSetSize({'height':win_geo.cam_h+CORRECT_H+2 , 'width': win_geo.cam_w+CORRECT_W+2});
 
@@ -418,7 +413,7 @@ function brout(win_nr, win_div, win_geo) {
     }
 
 	//установка обработчика клика по изображению камеры
-	$(win_div).click( function(e) {
+	$(win_div.parent()).click( function(e) {
 	if ( typeof(e.target) == "undefined" || typeof(e.target.tagName) == "undefined" )
     	return img_click(this);
 	else {
@@ -1104,8 +1099,6 @@ function change_wins_geo() {
           	.width(win_geo.win_w)
           	.height(win_geo.win_h);    	
           $('.pl_cont',tmp_div)
-    	  	.width(win_geo.cam_w+CORRECT_W)
-    	  	.height(win_geo.cam_h+CORRECT_H)
     	  	.aplayerResizeToParent();
       } else if (MSIE) {
          	$(tmp_div).width(win_geo.win_w+CORRECT_W).height(win_geo.win_h+CORRECT_H);
@@ -1500,7 +1493,7 @@ function canvas_growth() {
                  }
 
                  var hdr = $('<div id="cell_header_'+win_nr+'" class="cell_header"  style="cursor:default;'+
-                       ' padding:0px; margin:0px; overflow:hidden; border:0px; height:'+ NAME_DIV_H*win_def.rowspan +'px;">'+
+                       ' padding:0px; margin:0px; overflow:hidden; border:0px;">'+
                        '<span style="'+
                        'vertical-align: middle; position: absolute; top: '+(NAME_DIV_H*win_def.rowspan/2 - 14)+'px; padding-left:8px; padding-top:2px; padding-bottom:2px; padding-right:2px;'+
                        ' color:#e5e5e5; font-size:'+14+'px; font-weight: bold; width:100%; overflow:hidden;">'+
@@ -1512,11 +1505,6 @@ function canvas_growth() {
                  var ht = $(hdr).height()-4;
                  var toolbar = $('<div class="tool_bar"></div>')
                  .height(ht)
-                 .css({
-                	 'position':'absolute',
-                	 'top':'1px',
-                	 'right':'1px'
-                 })
                  .appendTo(hdr);
 
                  //свернуть/развернуть
@@ -1607,16 +1595,17 @@ function canvas_growth() {
                  })
                  .height(ht-4);
 
+					var ptz = $('<span data-win-index="'+ win_nr +'" class="pl_ptz" title="' + strToolbarControls['ptz'] + '">PTZ</span>')
+					.click(function (e) {
+						controls_handlers.pl_ptz_click(e);
+						return false;
+					})
+					.height(ht - 4);
+
                  var plc = $('<div id="pl_controls_'+win_nr+'" class="pl_controls"></div>')
                  .height(ht)
                  .width($(hdr).width()-$(toolbar).width())
-                 .css({
-                	 'position':'absolute',
-                	 'top':'1px',
-                	 'left':'1px',
-                	 'padding': '3 5'
-                 })
-                 .append(start, stop, minus, plus, normal_size, original_size)
+                 .append(start, stop, minus, plus, normal_size, original_size, ptz)
                  .click(function(e){
                 	 e.preventDefault();
                 	 e.stopPropagation();
@@ -1651,8 +1640,13 @@ function canvas_growth() {
                 	 offset_x += ht;
                  }
               }
-              //Установка плеера
-              brout(win_nr, win_div, win_geo);
+               //Установка плеера
+               var $player_wrapper = $("<div data-win-index="+ win_nr +"' class='pl_wrapper'></div>");
+               hdr.after($player_wrapper);
+               brout(win_nr, $player_wrapper, win_geo);
+               // append ptz areas containers
+               hdr.after($('<div class="ptz_area_right">right</div>').hide());
+               hdr.parent(":first").append($('<div class="ptz_area_bottom">bottom</div>').hide());
            }
 
            WIN_DIVS = $('div.win');
@@ -1904,8 +1898,8 @@ var controls_handlers = {
 		$(gw).attr({
 			'src':imgs['controlsOnOff_off'].src
 		});
-		
-		$('span',"#cell_header_"+cell_nr).addClass('hidden');
+		// hide camera name
+		$("#cell_header_"+cell_nr).children('span').addClass('hidden');
 		$('span',"#cell_header_"+cell_nr).fadeOut(200, function(){
 
 			$(".pl_controls", "#win"+cell_nr).fadeIn(200);
@@ -1977,6 +1971,21 @@ var controls_handlers = {
 		var cell_nr = parseInt(($(minus).attr('id')).replace('pl_minus_',''));
 		var aplayer_id = $('.aplayer', '#win'+cell_nr).attr('id');
 		$.aplayer.zoomOut(aplayer_id);
+	},
+
+	pl_ptz_click : function(e){
+		var $target = $(e.currentTarget);
+		var cell_nr = $target.data('win-index');
+		var aplayer_id = $('.aplayer', '#win'+cell_nr).attr('id');
+
+		// button style
+		$target.toggleClass('active');
+		// toggle ptz areas
+		if ($target.hasClass('active')) {
+            $.aplayer.togglePtzAreas(aplayer_id, true);
+		} else {
+            $.aplayer.togglePtzAreas(aplayer_id, false);
+		}
 	}
 };
 

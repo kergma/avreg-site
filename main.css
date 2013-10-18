@@ -255,7 +255,7 @@ div.error {
    padding-bottom:1px;
    padding-left:5px;
    padding-right:5px;
-   //background-color: #FFDCA8;
+   /*background-color: #FFDCA8;*/
    border: 1px solid black;
    font-weight: bold;
    font-family: monospace;
@@ -340,12 +340,72 @@ th.layout {
 	-moz-border-radius: 9px;
 }
 
-.pl_controls img {
-	margin: 0 5px;
+.pl_controls {
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    height: 10% !important; /* todo - to remove !important first need undo implicit height calculations in js code */
+    width: 80%;
+}
+
+.pl_controls > * {
+    height: 80% !important; /* todo - to remove !important first need undo implicit height calculations in js code */
+	margin: 1%;
+}
+
+.tool_bar {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    width: 20%;
+    height: 10% !important; /* todo - to remove !important first need undo implicit height calculations in js code */
+    white-space: nowrap;
+}
+
+.tool_bar img {
+    height: 80% !important; /* todo - to remove !important first need undo implicit height calculations in js code */
+	margin: 1%;
+}
+
+.pl_ptz {
+    color: #AAA;
+}
+.pl_ptz.active {
+    color: #D2292C;
 }
 
 .hidden {
 	visibility: hidden;
+}
+
+/* player areas layout */
+
+.cell_header {
+    height: 10% !important; /* todo - to remove !important first need undo implicit height calculations in js code */
+}
+
+.pl_cont {
+    background: #009900;
+ }
+.pl_wrapper {
+    float: left;
+    width: 100%;
+    height: 90%;
+    position: relative;
+}
+.pl_wrapper.with_ptz {
+    width: 80%;
+    height: 70%;
+}
+.ptz_area_right {
+    width: 20%;
+    float: right;
+    background: #0f7eff;
+}
+.ptz_area_bottom {
+    clear: both;
+    height: 20%;
+    background: #99defd;
 }
 
 
@@ -357,7 +417,7 @@ div.mode_item a img {
 	
 }
 
-#nav div.layout a {selectedLayout
+#nav div.layout a {/* selectedLayout ?? */
 	color: #FAFAFA;
 }
 
@@ -367,7 +427,7 @@ a:hover {
 }
 
 .main_links {
-	//color: #FAFAFA;
+	/*color: #FAFAFA;*/
 	text-decoration: none;
 }
 
