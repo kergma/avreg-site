@@ -387,7 +387,7 @@ th.layout {
 
 .cell_header {
     position: relative;
-    height: 5% !important; /* todo - to remove !important first need undo implicit height calculations in js code */
+    height: 8% !important; /* todo - to remove !important first need undo implicit height calculations in js code */
 }
 
 .pl_cont {
@@ -396,15 +396,16 @@ th.layout {
 .pl_wrapper {
     float: left;
     width: 100%;
-    height: 95%;
+    height: 92%;
     position: relative;
 }
 .pl_wrapper.with_ptz {
     width: 80%;
-    height: 75%;
+    height: 72%;
 }
 .ptz_area_right {
     width: 20%;
+    height: 72%;
     float: right;
     background: #0f7eff;
 }

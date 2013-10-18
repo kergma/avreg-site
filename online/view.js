@@ -1653,8 +1653,8 @@ function canvas_growth() {
                hdr.after($player_wrapper);
                brout(win_nr, $player_wrapper, win_geo);
                // append ptz areas containers
-               hdr.after($('<div class="ptz_area_right">right</div>').hide());
-               hdr.parent(":first").append($('<div class="ptz_area_bottom">bottom</div>').hide());
+               hdr.after($('<div class="ptz_area_right"></div>').hide());
+               hdr.parent(":first").append($('<div class="ptz_area_bottom"></div>').hide());
            }
 
            WIN_DIVS = $('div.win');
@@ -1982,21 +1982,36 @@ var controls_handlers = {
 	},
 
 	pl_ptz_click : function(e){
-		var $target = $(e.currentTarget);
-		var cell_nr = $target.data('win-index');
-		var aplayer_id = $('.aplayer', '#win'+cell_nr).attr('id');
+        var $target = $(e.currentTarget);
+        var cell_nr = $target.data('win-index');
+        var aplayer_id = $('.aplayer', '#win' + cell_nr).attr('id');
 
-		// button style
-		$target.toggleClass('active');
-		// toggle ptz areas
-		if ($target.hasClass('active')) {
-            $target.prop('src', imgs['pl_ptz_active'].src);
-            $.aplayer.togglePtzAreas(aplayer_id, true);
-		} else {
+        if ($target.data('async-in-progress')) {
+            // prevent multiple clicks / async operations
+            return
+        }
+
+        // toggle ptz areas
+        if (!$target.hasClass('active')) {
+            // flag that async operation is in progress
+            $target.data('async-in-progress', true);
+
+            $.aplayer.togglePtzAreas(aplayer_id, true, function (success) {
+                if (success) {
+                    $target.prop('src', imgs['pl_ptz_active'].src);
+                    // button style
+                    $target.addClass('active');
+                }
+
+                $target.data('async-in-progress', false);
+            });
+        }
+        else {
             $target.prop('src', imgs['pl_ptz'].src);
+            $target.removeClass('active');
             $.aplayer.togglePtzAreas(aplayer_id, false);
-		}
-	}
+        }
+    }
 };
 
 var timer = 0;
