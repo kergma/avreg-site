@@ -72,6 +72,10 @@ $(document).ready( function() {
 	imgs['pl_plus'].src =  "../img/ZoomIn.png";
 	imgs['pl_minus'] = new Image();
 	imgs['pl_minus'].src =  "../img/ZoomOut.png";
+	imgs['pl_ptz'] = new Image();
+	imgs['pl_ptz'].src =  "../img/ico_ptz.png";
+    imgs['pl_ptz_active'] = new Image();
+   	imgs['pl_ptz_active'].src =  "../img/ico_ptz_active.png";
 
 	imgs['original_size'] = new Image();
 	imgs['original_size'].src =  "../img/1to1.png";
@@ -349,6 +353,8 @@ function img_click(clicked_div) {
 	   }
 
    }
+
+    clicked_div_jq.find('.font-scaled').textfill(true); // force recalculation of scaled fonts
 
     //проверка связи с камерами
     if(GECKO || WEBKIT)	checking_connection.init_check();
@@ -1043,7 +1049,7 @@ function change_fs_win_geo(fs_win) {
 	   .width(win_geo.win_w)
 	   .height(win_geo.win_h);
 	
-	   $('.pl_cont',fs_win_div_jq).width(win_geo.cam_w+CORRECT_W).height(win_geo.cam_h+CORRECT_H).aplayerResizeToParent();
+	   $('.pl_cont',fs_win_div_jq).aplayerResizeToParent();
          // .attr('alt',win_geo.cam_w + 'x' + win_geo.cam_h);
    } else if ( MSIE ) {
      	$(fs_win_div_jq)
@@ -1494,12 +1500,14 @@ function canvas_growth() {
 
                  var hdr = $('<div id="cell_header_'+win_nr+'" class="cell_header"  style="cursor:default;'+
                        ' padding:0px; margin:0px; overflow:hidden; border:0px;">'+
-                       '<span style="'+
-                       'vertical-align: middle; position: absolute; top: '+(NAME_DIV_H*win_def.rowspan/2 - 14)+'px; padding-left:8px; padding-top:2px; padding-bottom:2px; padding-right:2px;'+
-                       ' color:#e5e5e5; font-size:'+14+'px; font-weight: bold; width:100%; overflow:hidden;">'+
+                       '<div class="camera_name_wrapper font-scaled">' +
+                       '<span class="camera_name">' +
                        ipcamhost_link_begin + WINS_DEF[win_nr].cam.name + ipcamhost_link_end +
-                       '<\/span><\/div>')
+                       '</span></div></div>')
                        .appendTo(win_div);
+
+                // font scaler
+                hdr.find('.font-scaled').textfill();
 
                  //ToolBar
                  var ht = $(hdr).height()-4;
@@ -1595,12 +1603,12 @@ function canvas_growth() {
                  })
                  .height(ht-4);
 
-					var ptz = $('<span data-win-index="'+ win_nr +'" class="pl_ptz" title="' + strToolbarControls['ptz'] + '">PTZ</span>')
-					.click(function (e) {
-						controls_handlers.pl_ptz_click(e);
-						return false;
-					})
-					.height(ht - 4);
+                var ptz = $('<img data-win-index="'+ win_nr +'" class="pl_ptz" title="' + strToolbarControls['ptz'] + '" src='+imgs['pl_ptz'].src+' />')
+                .click(function (e) {
+                    controls_handlers.pl_ptz_click(e);
+                    return false;
+                })
+                .height(ht - 4);
 
                  var plc = $('<div id="pl_controls_'+win_nr+'" class="pl_controls"></div>')
                  .height(ht)
@@ -1982,8 +1990,10 @@ var controls_handlers = {
 		$target.toggleClass('active');
 		// toggle ptz areas
 		if ($target.hasClass('active')) {
+            $target.prop('src', imgs['pl_ptz_active'].src);
             $.aplayer.togglePtzAreas(aplayer_id, true);
 		} else {
+            $target.prop('src', imgs['pl_ptz'].src);
             $.aplayer.togglePtzAreas(aplayer_id, false);
 		}
 	}

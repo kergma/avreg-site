@@ -24,7 +24,8 @@ $link_javascripts=array(
 						'lib/js/jquery.mousewheel.min.js',
 						'lib/js/jquery.aplayer.js',
 						'lib/js/user_layouts.js',
-						'lib/js/json2.js'
+						'lib/js/json2.js',
+						'lib/js/misc_utils.js',
 );
 
 $body_addons='scroll="no"';
