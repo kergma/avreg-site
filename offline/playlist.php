@@ -19,7 +19,6 @@ DENY($arch_status);
 
 var ie = document.all;
 var t = null;
-var do_wait = false;
 
 function switch_timemode() {
 	if( typeof($('#timemode').attr('checked'))!='undefined' ){
@@ -29,9 +28,20 @@ function switch_timemode() {
 	}
 }
 
-function on_submit(e)
+function unlock_submit_btn()
 {
-	//валидация данных формы
+   var btsubmit = ie? document.all['btSubmit']: document.getElementById('btSubmit');
+   var btclr = ie? document.all['btClear']: document.getElementById('btClear');
+   btsubmit.value="<?php echo $GetPlaylistStr; ?>";
+   btsubmit.disabled = false;
+   btclr.disabled = false;
+}
+
+/***
+ * Валидация данных и предотвращение частого многократного нажатия кнопки
+ */
+function submit_frm(e)
+{
 	$(".warn").remove();
 	var warn = 	"<div class='warn' style='position:relative;'>" + "<h3> <?php echo $PlaylistFormValidation['title']; ?> ";
 	var frmIsValide = true;
@@ -54,15 +64,12 @@ function on_submit(e)
 		return false;
 	}
 	
-   if ( do_wait )
-		return false;
    var btsubmit = ie? document.all['btSubmit']: document.getElementById('btSubmit');
    var btclr = ie? document.all['btClear']: document.getElementById('btClear');
    btsubmit.value='<?php echo $strWait; ?> ...';
-   btsubmit.style.backgroundColor = '#DCDCDC';
+   btsubmit.disabled = true;
    btclr.disabled = true;
-   t = setTimeout("window.location.reload()", 3000);
-   do_wait = true;
+   t = setTimeout("unlock_submit_btn()", 3000);
    return true;
 }
 
@@ -191,7 +198,7 @@ if ( isset($_SESSION) && isset($_SESSION['error'])/* ошибка */ )
 }
 ?>
 
-<form action="<?php echo $conf['prefix']; ?>/offline/_playlist.php" method="POST" onsubmit="return(on_submit())">
+<form action="<?php echo $conf['prefix']; ?>/offline/_playlist.php" method="POST" onsubmit="return submit_frm()">
 <fieldset>
 <legend><?php echo $left_tune; ?></legend>
 <table cellspacing="0" border="0" cellpadding="5" >
