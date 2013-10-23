@@ -383,36 +383,12 @@ th.layout {
     height: 100%;
 }
 
-/* player areas layout */
-
 .cell_header {
     position: relative;
     height: 8% !important; /* todo - to remove !important first need undo implicit height calculations in js code */
 }
-
-.pl_cont {
-    background: #009900;
- }
 .pl_wrapper {
-    float: left;
-    width: 100%;
-    height: 92%;
     position: relative;
-}
-.pl_wrapper.with_ptz {
-    width: 80%;
-    height: 72%;
-}
-.ptz_area_right {
-    width: 20%;
-    height: 72%;
-    float: right;
-    background: #0f7eff;
-}
-.ptz_area_bottom {
-    clear: both;
-    height: 20%;
-    background: #99defd;
 }
 
 
