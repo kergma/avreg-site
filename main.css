@@ -341,29 +341,27 @@ th.layout {
 }
 
 .pl_controls {
-    position: absolute;
-    top: 1px;
-    left: 1px;
-    height: 100% !important; /* todo - to remove !important first need undo implicit height calculations in js code */
-    width: 50% !important; /* todo - to remove !important first need undo implicit height calculations in js code */
+    overflow: hidden;
+    width: 80%;
+    height: 100%;
 }
 
 .pl_controls > * {
-    height: 80% !important; /* todo - to remove !important first need undo implicit height calculations in js code */
 	margin: 1%;
+    height: 80%;
 }
 
 .tool_bar {
     position: absolute;
     top: 1px;
     right: 1px;
-    width: 20% !important;
-    height: 100% !important; /* todo - to remove !important first need undo implicit height calculations in js code */
+    width: 20%;
+    height: 100%;
     white-space: nowrap;
 }
 
 .tool_bar img {
-    height: 80% !important; /* todo - to remove !important first need undo implicit height calculations in js code */
+    height: 90%;
 	margin: 1%;
 }
 
@@ -385,7 +383,7 @@ th.layout {
 
 .cell_header {
     position: relative;
-    height: 8% !important; /* todo - to remove !important first need undo implicit height calculations in js code */
+    height: 8%;
 }
 .pl_wrapper {
     position: relative;

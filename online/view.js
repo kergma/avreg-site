@@ -33,10 +33,6 @@ var FS_WIN_DIV;
 
 ///Высота элемента в кот. выводится название камеры
 var NAME_DIV_H = PrintCamNames?25:0;
-var CUR_WIN_HEADER_H;
-
-///корректировка размеров контейнера для плеера
-var CORRECT_H = 4; var CORRECT_W = 4;
 
 /// Статусы камер
 var CAM_STATUSES;
@@ -48,9 +44,6 @@ var SUBSCRIBE = true;
 var imgs = new Array();
 
 $(document).ready( function() {
-	if(MSIE){
-		CORRECT_H = CORRECT_W = 0;
-	}
 	//Кнопки свернуть/развернуть
 	imgs['fs'] = new Image();
 	imgs['fs'].src =  "../img/fs.png";
@@ -90,8 +83,9 @@ $(document).ready( function() {
 	
 	//Запуск сценария	
 	fill_canvas();
-	
+
 	if(MSIE){
+        // fallback for unsupported css property linear gradient
 		$('body').css({
 			'background-image': "url('../img/BG.png')",
 			'background-repeat': 'repeat',
@@ -231,13 +225,10 @@ function img_click(clicked_div) {
        }
   	//меняем кнопку на Развернуть
       $('img.fs_tc', '#cell_header_'+win_nr)
-      .height($('#cell_header_'+win_nr).height()-4)
       .attr({
       	'src': imgs['fs'].src,
       	'title':strToolbarControls['max']
       });
-
-      set_win_header_size(clicked_div_jq, CUR_WIN_HEADER_H);
 
        FS_WIN_DIV = undefined;
 
@@ -263,12 +254,8 @@ function img_click(clicked_div) {
       WIN_DIV_TOP=clicked_div.offsetTop;
       IMG_IN_DIV_W=pl_cont.width();
       IMG_IN_DIV_H=pl_cont.height();
-      //Сохраняем текущее значение высоты хидера
-      CUR_WIN_HEADER_H = $('.cell_header', clicked_div_jq).height();
-      if(CUR_WIN_HEADER_H==null)CUR_WIN_HEADER_H=0;
 
       if(NAME_DIV_H==null)NAME_DIV_H=0;
-      set_win_header_size(clicked_div_jq, NAME_DIV_H);
 
       win_geo = new calc_win_geo(CANVAS_W, CANVAS_H, CamsAspectRatio, 1, 1, 1);
       //alert(win_geo.cam_h +'\n'+win_geo.cam_w);
@@ -308,7 +295,6 @@ function img_click(clicked_div) {
 
     	//меняем кнопку на Свернуть
         $('img.fs_tc', '#cell_header_'+win_nr)
-        .height($('#cell_header_'+win_nr).height()-4)
         .attr({
         	'src': imgs['tc'].src,
         	'title':strToolbarControls['min']
@@ -344,21 +330,6 @@ function img_click(clicked_div) {
     if(GECKO || WEBKIT)	checking_connection.init_check();
 
 } // img_click()
-
-/**
- * Изменяет высоту заголовка ячейки при смене режима полноэкранный/раскладка
- * @param clicked_div_jq
- * @param header_height
- */
-function set_win_header_size(clicked_div_jq, header_height){
-	if (PrintCamNames && $('.cell_header', clicked_div_jq).height()!= header_height ) {
-		var header = $('.cell_header', clicked_div_jq);
-		$(header).height(header_height); //Высота заголовка
-		$('span', header).css({'top': (header_height/2 - 14)+'px'}).end(); //Название камеры
-		var ht =header_height -6;
-		$(header).find('img').height(ht); //ToolBar
-	}
-}
 
 /**
  * Функция осуществляет инициализацию и установку элемента,
@@ -896,84 +867,46 @@ var checking_connection = {
  * @param _rowspan - сколько позиций элемент занимает в раскладке
  */
 function calc_win_geo(_canvas_w, _canvas_h, img_aspect_ratio, _rows_nr, _cols_nr, _rowspan) {
-   var cam_w;
-   var cam_h;
-   if (_rowspan == undefined)
-      _rowspan = 1;
+    var cam_w;
+    var cam_h;
+    if (_rowspan == undefined) {
+        _rowspan = 1;
+    }
 
-   if ( MSIE ){
+    if (img_aspect_ratio == undefined || img_aspect_ratio == 'fs') {
+        // соотношение сторон видеоизображения нас не волнует,
+        //  растягиваем окна камер и сами изображения по всему CANVAS
+        cam_w = parseInt(_canvas_w / _cols_nr);
+        cam_h = parseInt(_canvas_h / _rows_nr) - NAME_DIV_H * _rowspan;
+    }
+    else {
+        // create wins
+        var calc_canvas_h = _canvas_h - ((NAME_DIV_H * _rowspan ) * _rows_nr);
 
-	   if ( img_aspect_ratio == undefined || img_aspect_ratio == 'fs' ) {
+        if ((_canvas_w / calc_canvas_h) >= (img_aspect_ratio.num * _cols_nr) / (img_aspect_ratio.den * _rows_nr)) {
+            cam_h = parseInt(calc_canvas_h / _rows_nr);
+            cam_h = parseInt(cam_h / img_aspect_ratio.den);
+            cam_w = cam_h * img_aspect_ratio.num;
+            cam_h *= img_aspect_ratio.den;
 
-		      // соотношение сторон видеоизображения нас не волнует,
-		      //  растягиваем окна камер и сами изображения по всему CANVAS
-		      cam_w = parseInt(_canvas_w/_cols_nr) ;
-		      cam_h = parseInt(_canvas_h/_rows_nr) - NAME_DIV_H*_rowspan ;
-		   } else {
-		      // create wins
-			   var calc_canvas_h = _canvas_h - ((NAME_DIV_H*_rowspan ) * _rows_nr);
+        }
+        else {
 
-			   if ( (_canvas_w/calc_canvas_h) >= (img_aspect_ratio.num*_cols_nr)/(img_aspect_ratio.den*_rows_nr) ) {
-		        cam_h = parseInt(calc_canvas_h/_rows_nr);
-		         cam_h = parseInt(cam_h/img_aspect_ratio.den);
-		         cam_w = cam_h*img_aspect_ratio.num;
-		         cam_h *= img_aspect_ratio.den;
+            cam_w = parseInt(_canvas_w / _cols_nr);
+            cam_w = parseInt(cam_w / img_aspect_ratio.num);
+            cam_h = cam_w * img_aspect_ratio.den;
+            cam_w *= img_aspect_ratio.num;
+        }
+    }
 
-		      } else {
+    this.win_w = cam_w;
+    this.win_h = cam_h + NAME_DIV_H * _rowspan;
 
-		         cam_w = parseInt(_canvas_w/_cols_nr);
-		         cam_w = parseInt(cam_w/img_aspect_ratio.num);
-		         cam_h = cam_w*img_aspect_ratio.den;
-		         cam_w *= img_aspect_ratio.num;
-		      }
-		   }
+    this.offsetX = parseInt((_canvas_w - this.win_w * _cols_nr) / 2);
+    this.offsetY = parseInt((_canvas_h - this.win_h * _rows_nr) / 2);
 
-	   this.win_w = cam_w ;
-	   this.win_h = cam_h + NAME_DIV_H*_rowspan ;
-
-	   this.offsetX = parseInt((_canvas_w - this.win_w * _cols_nr)/2);
-	   this.offsetY = parseInt((_canvas_h - this.win_h* _rows_nr)/2);
-
-	   this.cam_w = cam_w;
-	   this.cam_h = cam_h;
-
-   }else{
-
-   if ( img_aspect_ratio == undefined ||
-         img_aspect_ratio == 'fs' ) {
-
-      // соотношение сторон видеоизображения нас не волнует,
-      //  растягиваем окна камер и сами изображения по всему CANVAS
-      cam_w = parseInt(_canvas_w/_cols_nr) - BorderLeft - BorderRight;
-      cam_h = parseInt(_canvas_h/_rows_nr) - NAME_DIV_H*_rowspan - BorderTop - BorderBottom;
-   } else {
-      // create wins
-	   var calc_canvas_h = _canvas_h - ((NAME_DIV_H*_rowspan + BorderTop + BorderBottom) * _rows_nr);
-
-	   if ( (_canvas_w/calc_canvas_h) >= (img_aspect_ratio.num*_cols_nr)/(img_aspect_ratio.den*_rows_nr) ) {
-        cam_h = parseInt(calc_canvas_h/_rows_nr);
-         cam_h = parseInt(cam_h/img_aspect_ratio.den);
-         cam_w = cam_h*img_aspect_ratio.num;
-         cam_h *= img_aspect_ratio.den;
-
-      } else {
-
-         cam_w = parseInt(_canvas_w/_cols_nr - BorderLeft - BorderRight);
-         cam_w = parseInt(cam_w/img_aspect_ratio.num);
-         cam_h = cam_w*img_aspect_ratio.den;
-         cam_w *= img_aspect_ratio.num;
-      }
-   }
-
-   this.win_w = cam_w + BorderLeft + BorderRight;
-   this.win_h = cam_h + NAME_DIV_H*_rowspan + BorderTop + BorderBottom;
-
-   this.offsetX = parseInt((_canvas_w - this.win_w * _cols_nr)/2);
-   this.offsetY = parseInt((_canvas_h - this.win_h * _rows_nr)/2);
-
-   this.cam_w = cam_w;
-   this.cam_h = cam_h;
-   }
+    this.cam_w = cam_w;
+    this.cam_h = cam_h;
 } // calc_win_geo()
 
 /**
@@ -1471,19 +1404,15 @@ function canvas_growth() {
                 hdr.find('.font-scaled').textfill();
 
                  //ToolBar
-                 var ht = $(hdr).height()-4;
                  var toolbar = $('<div class="tool_bar"></div>')
-                 .height(ht)
                  .appendTo(hdr);
 
                  //свернуть/развернуть
                  $('<img src='+imgs['fs'].src+' class="tool fs_tc" title="'+strToolbarControls['max']+'">')
-                 .height(ht-4)
                  .appendTo(toolbar);
 
                  //Кнопка включить/выключить toolbar
                  $('<img src='+imgs['controlsOnOff_on'].src+' id="controlsOnOff_'+win_nr+'" class="tool controlsOnOff" title="'+strToolbarControls['on']+'" >')
-                 .height(ht-4)
                  .click(function(e){
                 	 e.preventDefault();
                 	 e.stopPropagation();
@@ -1507,7 +1436,6 @@ function canvas_growth() {
                  //панель контролов
 
                  var normal_size = $('<img id="normal_size_'+win_nr+'" class="normal_size" title="'+strToolbarControls['cell_size']+'" src='+imgs['normal_size'].src+' />')
-                 .height(ht-4)
                  .click(function(e){
                 	 e.preventDefault();
                 	 e.stopPropagation();
@@ -1516,7 +1444,6 @@ function canvas_growth() {
                  });
 
                  var original_size = $('<img id="original_size_'+win_nr+'" class="original_size" title="'+strToolbarControls['orig_size']+'" src='+imgs['original_size'].src+' />')
-                 .height(ht-4)
                  .click(function(e){
                 	 e.preventDefault();
                 	 e.stopPropagation();
@@ -1525,7 +1452,6 @@ function canvas_growth() {
                  });
 
                  var start = $('<img id="pl_start_'+win_nr+'" class="pl_start" title="'+strToolbarControls['play']+'" src='+imgs['pl_start'].src+' />')
-                 .height(ht-4)
                  .click(function(e){
                 	 e.preventDefault();
                 	 e.stopPropagation();
@@ -1537,7 +1463,6 @@ function canvas_growth() {
                  var stop = '';
                  if(!WEBKIT){
 	                 stop =  $('<img id="pl_stop_'+win_nr+'" class="pl_stop" title="'+strToolbarControls['stop']+'" src='+imgs['pl_stop'].src+' />')
-	                 .height(ht-4)
 	                 .click(function(e){
 	                	 e.preventDefault();
 	                	 e.stopPropagation();
@@ -1553,7 +1478,6 @@ function canvas_growth() {
                 	 controls_handlers.pl_plus_click(e);
                 	 return false;
                  })
-                 .height(ht-4);
 
                  var minus = $('<img id="pl_minus_'+win_nr+'" class="pl_minus" title="'+strToolbarControls['zoom_out']+'" src='+imgs['pl_minus'].src+' />')
                  .click(function(e){
@@ -1562,18 +1486,14 @@ function canvas_growth() {
                 	 controls_handlers.pl_minus_click(e);
                 	 return false;
                  })
-                 .height(ht-4);
 
                 var ptz = $('<img data-win-index="'+ win_nr +'" class="pl_ptz" title="' + strToolbarControls['ptz'] + '" src='+imgs['pl_ptz'].src+' />')
                 .click(function (e) {
                     controls_handlers.pl_ptz_click(e);
                     return false;
                 })
-                .height(ht - 4);
 
                  var plc = $('<div id="pl_controls_'+win_nr+'" class="pl_controls"></div>')
-                 .height(ht)
-                 .width($(hdr).width()-$(toolbar).width())
                  .append(start, stop, minus, plus, normal_size, original_size, ptz)
                  .click(function(e){
                 	 e.preventDefault();

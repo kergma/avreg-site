@@ -422,11 +422,6 @@ if ( empty($AspectRatio) ) {
       print 'var CamsAspectRatio = \'fs\';'."\n";
 }
 
-printf("var BorderLeft   = %u;\n", empty($BorderLeft)   ? 2 : $BorderLeft);
-printf("var BorderRight  = %u;\n", empty($BorderRight)  ? 2 : $BorderRight);
-printf("var BorderTop    = %u;\n", empty($BorderTop)    ? 2 : $BorderTop);
-printf("var BorderBottom = %u;\n", empty($BorderBottom) ? 2 : $BorderBottom);
-
 // $user_info config.inc.php
 print 'var ___u="'.$user_info['USER']."\"\n";
 if (empty($user_info['PASSWD']) /* задан пароль */)
