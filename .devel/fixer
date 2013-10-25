@@ -1,0 +1,17 @@
+#!/bin/sh
+# Code style fixer
+# Now use php-cs-fixer --level=PSR2
+
+FIXER='php-cs-fixer'
+
+if [ ! -x "`which $FIXER 2>/dev/null`" ]; then
+    echo "Style fixer/formatter bin not found or executable -> $FIXER" 1>&2
+    exit 2
+fi
+
+if [ $# -lt 1 ]; then
+    echo "empty required argument: dir or files list" 1>&2
+    exit 1
+fi
+
+$FIXER fix $@ --level='PSR2'

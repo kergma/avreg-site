@@ -1,0 +1,5 @@
+#!/bin/sh
+
+REPO=`git rev-parse --show-toplevel`
+rm $REPO/.git/hooks/pre-commit
+ln -s ../../.devel/git-pre-commit $REPO/.git/hooks/pre-commit

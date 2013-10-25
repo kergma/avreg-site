@@ -1,0 +1,22 @@
+#!/bin/sh
+# Code style validator, now use phpcs --standard=PSR2
+
+VALIDATOR='phpcs'
+
+if [ ! -x "`which $VALIDATOR 2>/dev/null`" ]; then
+    echo "Style validator bin not found or executable -> $VALIDATOR" 1>&2
+    exit 2
+fi
+
+if [ $# -lt 1 ]; then
+    echo "empty required argument: dir or files list" 1>&2
+    exit 1
+fi
+
+$VALIDATOR \
+   --standard='PSR2' \
+   --encoding='utf-8' \
+   --extensions='php,phtml,inc,css,js' \
+   --ignore='.*' \
+   --tab-width=4 \
+   $@
