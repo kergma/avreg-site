@@ -1,152 +1,147 @@
 @CHARSET "UTF-8";
 
-.messageError{
-	position: absolute;
-	bottom: 7px;
-	left: 15%;
-	width: 70%;
-	height : 20%;
-	opacity : 0;
-	background: cornflowerblue;
-	border: 2px solid darkblue;
-	border-radius: 7px;
-	text-align: center;
-	opacity: 0.7;
-	display: none;
+.messageError {
+    position: absolute;
+    bottom: 7px;
+    left: 15%;
+    width: 70%;
+    height: 20%;
+    background: cornflowerblue;
+    border: 2px solid darkblue;
+    border-radius: 7px;
+    text-align: center;
+    opacity: 0.7;
+    display: none;
 }
 
-.textError{
-	display: table-cell;
-	font-weight: bold;
-	font-size: 1em;
-	color: black;
-	opacity: 1;
-	vertical-align:middle;
+.textError {
+    display: table-cell;
+    font-weight: bold;
+    font-size: 1em;
+    color: black;
+    opacity: 1;
+    vertical-align: middle;
 }
 
-.layout{
-	float:left; 
-	margin: 6px;
+.layout {
+    float: left;
+    margin: 6px;
     width: auto;
 }
 
-.cursorMove{
-	cursor:move;
-}
-
-.win{
-	overflow: hidden; 
-}
-
-.tool{
-	float: right;
-	cursor: pointer;
-	margin: 1 0 1 0;
-}
-
-.pl_stop, .pl_start{
-	cursor: pointer;
-	float: left;
-	margin-right: 15px;
-}
-
-.pl_plus, .pl_minus, .original_size, .normal_size{
-	cursor: pointer;
-	float: left;
-}
-
-.cell_header {
-	background: #303030;
+.cursorMove {
+    cursor: move;
 }
 
 .win {
-	border: 2px solid #070707;
-}
-div.win.main_cell {
-	border: 2px solid  #FFB742
+    overflow: hidden;
 }
 
-.toolbar_style table td{ 
-	background: #333;
-	background: -moz-linear-gradient(top, #222 0%, #777 50%, #222 100%);
+.tool {
+    float: right;
+    cursor: pointer;
+    margin: 1% 0 1% 0;
+}
+
+.pl_stop, .pl_start {
+    cursor: pointer;
+    float: left;
+    margin-right: 15px;
+}
+
+.pl_plus, .pl_minus, .original_size, .normal_size {
+    cursor: pointer;
+    float: left;
+}
+
+.cell_header {
+    background: #303030;
+}
+
+.win {
+    border: 2px solid #070707;
+}
+div.win.main_cell {
+    border: 2px solid #FFB742
+}
+
+.toolbar_style table td {
+    background: #333;
+    background: -moz-linear-gradient(top, #222 0%, #777 50%, #222 100%);
     background: -webkit-linear-gradient(top, #222 0%, #777 50%, #222 100%);
-    background: -o-linear-gradient(top, #222 0%, #777 50%, #222 100%); 
-    background: -ms-linear-gradient(top, #222 0%, #777 50%, #222 100%); 
-    background: linear-gradient(top, #222 0%, #777 50%, #222 100%); 
+    background: -o-linear-gradient(top, #222 0%, #777 50%, #222 100%);
+    background: -ms-linear-gradient(top, #222 0%, #777 50%, #222 100%);
+    background: linear-gradient(top, #222 0%, #777 50%, #222 100%);
     background-position: top;
     background-repeat: repeat-x;
     background-size: cover;
 }
 
 #tb_contn td {
-	background: none;
+    background: none;
 }
 
 #canvas {
-	background : #555;
-	background-image: url('../img/BG.png');
-	background-repeat: repeat-x;
-	background-size: cover;
-	background-position: center;
-	background: -moz-linear-gradient(top, #555 0%, #999 50%, #555 100%);
+    background: #555;
+    background-image: url('../img/BG.png');
+    background-repeat: repeat-x;
+    background-size: cover;
+    background-position: center;
+    background: -moz-linear-gradient(top, #555 0%, #999 50%, #555 100%);
     background: -webkit-linear-gradient(top, #555 0%, #999 50%, #555 100%);
-    background: -o-linear-gradient(top, #555 0%, #999 50%, #555 100%); 
-    background: -ms-linear-gradient(top, #555 0%, #999 50%, #555 100%); 
-    background: linear-gradient(top, #555 0%, #999 50%, #555 100%);   
+    background: -o-linear-gradient(top, #555 0%, #999 50%, #555 100%);
+    background: -ms-linear-gradient(top, #555 0%, #999 50%, #555 100%);
+    background: linear-gradient(top, #555 0%, #999 50%, #555 100%);
 }
 
 div.cell_header span a:hover {
-	text-decoration: none;
-	color: #0f7eff !important;
+    text-decoration: none;
+    color: #0f7eff !important;
 }
 
 #toolbar {
-	border-bottom: 2px solid #ababab;
+    border-bottom: 2px solid #ababab;
 }
-
 
 .layout a {
-	padding: 5px;
-	margin: 2px;
-	color: #FAFAFA;
+    padding: 5px;
+    margin: 2px;
+    color: #FAFAFA;
 }
 
-.layout a:hover,.selectedLayout a {
-	outline: 1px outset #111;
+.layout a:hover, .selectedLayout a {
+    outline: 1px outset #111;
     cursor: pointer;
 }
 
-
-
 #nav div.selectedLayout a, #nav div.layout:hover a {
-	text-decoration: none;
-	color: red;	
+    text-decoration: none;
+    color: red;
 }
 
-.to_main a, .user_layouts a{
-	display: block;
-	text-align: center;
-	margin: 0;
-	padding: 5px 10px;
-	border: 2px solid #1e1e1e;
-	border-radius: 4px;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-  	background: rgba(220,220,220,0.4);
-   	color: #FAFAFA;	
-   	text-decoration: none;
- 	margin: 0 auto;
-   	width: 120px;
+.to_main a, .user_layouts a {
+    display: block;
+    text-align: center;
+    padding: 5px 10px;
+    border: 2px solid #1e1e1e;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    background: rgba(220, 220, 220, 0.4);
+    color: #FAFAFA;
+    text-decoration: none;
+    margin: 0 auto;
+    width: 120px;
     height: 20px;
 }
 
 .to_main a:focus, .user_layouts a:focus {
-	box-shadow: inset 1px 1px 1px rgba(0,0,0,0.7);
-	-moz-box-shadow: inset 1px 1px 1px rgba(0,0,0,0.7);
-	-webkit-box-shadow: inset 1px 1px 1px rgba(0,0,0,0.7);
+    box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.7);
+    -moz-box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.7);
+    -webkit-box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.7);
 }
 
-.user_layouts a{
-	width: auto;
+.user_layouts a {
+    width: auto;
 }
 
