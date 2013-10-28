@@ -171,7 +171,7 @@ if (isset($AVREG_PROFILE)) {
     $sel_profile = & $AVREG_PROFILE;
     echo $r_conrol_control . ' &#171;' . $conf['daemon-name'] . '&#187;';
 } else {
-    $profiles_names = array_map(basename, $EXISTS_PROFILES);
+    $profiles_names = array_map('basename', $EXISTS_PROFILES);
     if (count($profiles_names) === 1) {
         echo $r_conrol_control . ' ' . '&#171;' . $conf['daemon-name'] . '&#187;';
     } else {
