@@ -79,7 +79,6 @@ if (!isset($refresh)) {
         IMG.setAttribute('src', update_url);
         LOADING = true;
     }
-    ;
 
     function img_evt(e_id) {
         LOADING = false;
@@ -108,7 +107,6 @@ if (!isset($refresh)) {
                 alert('unknown event id ' + e_id);
         }
     }
-    ;
 
     // function body_loaded() {
     //   IMG = document.getElementById('viewport');

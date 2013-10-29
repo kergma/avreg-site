@@ -82,7 +82,7 @@ if ($width == 'FS') {
 <script type="text/javascript">
     //переменные масштаба изображений
     var isFs =
-    <?php print  $isFs."\n"; ?>
+    <?php print  $isFs."\n"; ?>;
     var reload = <?php print $reload."\n"; ?>;
     var scale = <?php print $scale."\n"; ?>;
     var SELF_ADR = <?php print "\"".$_SERVER['REQUEST_URI']."\"" ; ?>;
@@ -96,7 +96,6 @@ if ($width == 'FS') {
             IMG_EVT_OCCURED = e_id;
         }
     }
-    ;
 </script>
 
 <?php
@@ -247,11 +246,7 @@ if (!isset($refresh)) {
 
 
     }
-    ;
-
     function img_evt2(e_id) {
-        var ms;
-
         if (typeof(tmr) != 'undefined') {
             clearTimeout(tmr);
         }
@@ -277,8 +272,6 @@ if (!isset($refresh)) {
                 alert('unknown event id ' + e_id);
         }
     }
-    ;
-
     /* если img_evt() успел сработать до загрузки страницы FIXME правильней исп. ready или хотя бы body_onload */
     if ((typeof IMG_EVT_OCCURED).charAt(0) != 'u') {
         img_evt2(IMG_EVT_OCCURED);

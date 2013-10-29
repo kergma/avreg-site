@@ -82,7 +82,7 @@ function show_select_resolution($resolutions, $select, $strName = "Resolutions")
             scale = parseInt(scale.replace('scl=', ''));
         }
 
-        if ($.trim($('#resolution option:selected').html()) == 'FS') {
+        if ($.trim($('#resolution').find('option:selected').html()) == 'FS') {
             isFs = true;
         }
 
@@ -191,9 +191,7 @@ function show_select_resolution($resolutions, $select, $strName = "Resolutions")
                 if (x == c_name) {
                     return unescape(y);
                 }
-                ;
             }
-            ;
         },
 
         setCookie: function (c_name, value, exdays) {

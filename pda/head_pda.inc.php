@@ -66,7 +66,7 @@ header('Content-Type: text/html; charset=' . $chset);
         }
 
         th, td {
-            padding: 1;
+            padding: 1%;
             border-collapse: collapse
         }
 

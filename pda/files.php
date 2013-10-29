@@ -97,7 +97,7 @@ if ($width == 'FS') {
 <script type="text/javascript">
     var reload = <?php print $reload."\n"; ?>;
     var scale =
-    <?php print $scale."\n"; ?>
+    <?php print $scale."\n"; ?>;
     var SELF_ADR = <?php print "\"".$_SERVER['REQUEST_URI']."\"" ; ?>;
     var TOTAL_SCLS = <?php print sizeof($tumb_sizes); ?>; //кол-во предопределенных значений масштаба
 </script>
@@ -106,7 +106,7 @@ if ($width == 'FS') {
 
 /* pagination */
 require_once('paginator.inc.php');
-$pagi = new PdaPaginator(
+$pagi = new \PDA\PdaPaginator(
     $files,
     isset($off) ? (int)($off) : 0,
     sprintf('files.php?camera=%u&ser_nr=%u&s=%u&f=%u', $camera, $ser_nr, $s, $f),

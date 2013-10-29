@@ -74,7 +74,7 @@ session_write_close();
 
 /* pagination */
 require_once('paginator.inc.php');
-$pagi = new PdaPaginator(
+$pagi = new \PDA\PdaPaginator(
     $rec_sessions,
     isset($off) ? (int)($off) : 0,
     sprintf(
