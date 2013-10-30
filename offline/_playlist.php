@@ -12,7 +12,8 @@ session_start();
 
 function input_data_invalid($err_code)
 {
-    $backurl = (!empty($_SERVER['HTTPS']) ? 'https://' : 'http://') . $GLOBALS['_SERVER']['SERVER_NAME'] . ':' . $GLOBALS['_SERVER']['SERVER_PORT'] . $GLOBALS['conf']['prefix'] . '/offline/playlist.php';
+    $backurl = (!empty($_SERVER['HTTPS']) ? 'https://' : 'http://') . $GLOBALS['_SERVER']['SERVER_NAME'] . ':' .
+        $GLOBALS['_SERVER']['SERVER_PORT'] . $GLOBALS['conf']['prefix'] . '/offline/playlist.php';
     header("Location: $backurl");
     $_SESSION['error'] = $err_code;
     ob_end_flush();
@@ -278,8 +279,8 @@ for ($i = 1; $i <= $num_rows; $i++) {
         echo "\t\t\t<title>$title</title>$CRLF";
         printf("\t\t\t<creator>cam #%02u %s</creator>$CRLF", (int)$row['CAM_NR'], $_media_str);
         echo "\t\t\t<annotation>" . filesizeHuman(
-                (int)$row['FILESZ_KB']
-            ) . ', ' . $row['FRAMES'] . " frames</annotation>$CRLF";
+            (int)$row['FILESZ_KB']
+        ) . ', ' . $row['FRAMES'] . " frames</annotation>$CRLF";
         echo "\t\t\t<duration>$duration</duration>$CRLF";
         // echo "\t\t\t<album>". $row['EVT_ID'] ."</album>$CRLF";
         echo "\t\t\t<trackNum>$i</trackNum>$CRLF";
@@ -287,9 +288,9 @@ for ($i = 1; $i <= $num_rows; $i++) {
     } else {
         if ($pl_fmt === 'M3U') {
             $title = sprintf('cam #%02u %s - ', (int)$row['CAM_NR'], $_media_str) . date(
-                    'Y-m-d H:i:s',
-                    (int)$row['UDT2']
-                );
+                'Y-m-d H:i:s',
+                (int)$row['UDT2']
+            );
             echo "#EXTINF:$duration,$title$CRLF";
         }
         echo "$location$CRLF";

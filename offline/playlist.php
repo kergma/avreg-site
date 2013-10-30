@@ -41,7 +41,8 @@ DENY($arch_status);
      */
     function submit_frm(e) {
         $(".warn").remove();
-        var warn = "<div class='warn' style='position:relative;'>" + "<h3> <?php echo $PlaylistFormValidation['title']; ?> ";
+        var warn = "<div class='warn' style='position:relative;'>" +
+            "<h3> <?php echo $PlaylistFormValidation['title']; ?> ";
         var frmIsValide = true;
         if ($('#id_cams input.chbox_itm:checked').length == 0) {
             frmIsValide = false;
@@ -52,7 +53,8 @@ DENY($arch_status);
             warn += "<br> <?php echo $PlaylistFormValidation['no_media_type']; ?> ";
         }
 
-        if ($("input[name=timemode]:checked").attr('value') == 2 && $('#id_dayofweek input.chbox_itm:checked').length == 0) {
+        if ($("input[name=timemode]:checked").attr('value') == 2
+                && $('#id_dayofweek input.chbox_itm:checked').length == 0) {
             frmIsValide = false;
             warn += "<br> <?php echo $PlaylistFormValidation['no_dayofweek']; ?> ";
         }
@@ -248,11 +250,12 @@ if (isset($_SESSION) && isset($_SESSION['error']) /* ошибка */) {
         <table cellspacing="0" border="0" cellpadding="5">
             <?php print '<tr bgcolor="' . $header_color . '">' . "\n"; ?>
             <?php
-            print '<th class="query" valign="bottom">' . $strTimeMode . '&nbsp;<a href="javascript:void(0);" onclick="TimeModeHelp();"><sup>help</sup></a></th>' . "\n";
+            print '<th class="query" valign="bottom">' . $strTimeMode .
+                '&nbsp;<a href="javascript:void(0);" onclick="TimeModeHelp();"><sup>help</sup></a></th>' . "\n";
             ?>
             <th class="query" valign="bottom"><?php echo "$strYear / $strMonth / $strDay"; ?></th>
-            <th class="query" valign="bottom"><?php echo $strDayOfWeek; ?>&nbsp;<a href="javascript:void(0);"
-                                                                                   onclick="TimeModeHelp2();"><sup>help</sup></a>
+            <th class="query" valign="bottom"><?php echo $strDayOfWeek; ?>&nbsp;
+                <a href="javascript:void(0);" onclick="TimeModeHelp2();"><sup>help</sup></a>
             </th>
             <th class="query" valign="bottom"><?php echo "$strHour:$strMinute"; ?></th>
             </tr>
@@ -298,11 +301,14 @@ if (isset($_SESSION) && isset($_SESSION['error']) /* ошибка */) {
     <br>
     <fieldset>
         <legend><?php echo $strPlFmtTitle; ?></legend>
-        <input type="radio" <?php echo $xspf_checked; ?>  name="pl_fmt" value="XSPF"><?php echo $strXSPF; ?>
+        <input type="radio" <?php echo $xspf_checked; ?>  name="pl_fmt"
+               value="XSPF"><?php echo $strXSPF; ?>
         <br>
-        <input type="radio" name="pl_fmt" <?php echo $m3u_checked; ?> value="M3U"><?php echo $strM3U; ?>
+        <input type="radio" name="pl_fmt" <?php echo $m3u_checked; ?>
+               value="M3U"><?php echo $strM3U; ?>
         <br>
-        <input type="radio" name="pl_fmt" <?php echo $txt_checked; ?> value="TXT"><?php echo $strTXT; ?>
+        <input type="radio" name="pl_fmt" <?php echo $txt_checked; ?>
+               value="TXT"><?php echo $strTXT; ?>
         <br>
         <?php echo $strLinesEnding ?>
         <input type="radio" checked name="lineending" value="AUTO"> Auto
@@ -317,7 +323,8 @@ if (isset($_SESSION) && isset($_SESSION['error']) /* ошибка */) {
         &nbsp;&nbsp;
         <input type="reset" id="btClear" value="<?php echo $strReset; ?>">
         &nbsp;&nbsp;
-        <a href="<?php echo $conf['prefix']; ?>/" target="_parent"><?php echo $MainPage; ?></a>
+        <a href="<?php echo $conf['prefix']; ?>/"
+           target="_parent"><?php echo $MainPage; ?></a>
     </fieldset>
 </form>
 <div class="help">
@@ -329,4 +336,3 @@ if (isset($_SESSION) && isset($_SESSION['error']) /* ошибка */) {
 
 <?php
 require('../foot.inc.php');
-?>

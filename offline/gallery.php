@@ -83,4 +83,3 @@ if (!isset($_POST['method']) && !isset($_GET['method'])) {
     // Возврат ответа запроса
     $gallery->print_result();
 }
-?>

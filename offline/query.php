@@ -26,10 +26,11 @@ $num_rows = count($result);
 if ($num_rows > 0) {
     $conf_cams_array = array();
     foreach ($result as $row) {
-        if (empty($row['text_left']))
+        if (empty($row['text_left'])) {
             $_cam_short = "cam $row[CAM_NR]";
-        else
+        } else {
             $_cam_short = "$row[text_left]($row[CAM_NR])";
+        }
 
         $conf_cams_array[$row['CAM_NR']] = $_cam_short;
     }
@@ -43,76 +44,87 @@ if ($num_rows > 0) {
 }
 
 if (isset($_COOKIE)) {
-    if (isset($_COOKIE['avreg_cams']))
+    if (isset($_COOKIE['avreg_cams'])) {
         $cams_sel = str_replace('-', ',', $_COOKIE['avreg_cams'][0]);
-    else {
+    } else {
         $cams_sel = '0,1,2,3';
     }
-    if (isset($_COOKIE['avreg_filter']))
+    if (isset($_COOKIE['avreg_filter'])) {
         $filter_sel = str_replace('-', ',', $_COOKIE['avreg_filter'][0]);
-    else {
-//     $filter_sel = implode(',', array_keys($env_id_ar));
+    } else {
+        //     $filter_sel = implode(',', array_keys($env_id_ar));
         $filter_sel = '';
     }
     if (isset($_COOKIE['avreg_scale'])) {
         $_i = $_COOKIE['avreg_scale'];
         settype($_i, 'int');
         $scale_sel = $scale_array[$_i];
-    } else
+    } else {
         $scale_sel = '';
+    }
 
     if (isset($_COOKIE['avreg_row_max'])) {
         $_i = $_COOKIE['avreg_row_max'];
         settype($_i, 'int');
         $row_max_sel = $_i;
-    } else
+    } else {
         $row_max_sel = 100;
+    }
 
     if (isset($_COOKIE['avreg_play_tio'])) {
         $_i = $_COOKIE['avreg_play_tio'];
         settype($_i, 'int');
         $play_tio_sel = $play_tio_ar[$_i];
-    } else
+    } else {
         $play_tio_sel = $play_tio_ar[2];
+    }
 
     $embed_video_sel = '';
     if (isset($_COOKIE['avreg_embed_video'])) {
         $_i = $_COOKIE['avreg_embed_video'];
-        if (settype($_i, 'int') && $_i > 0)
+        if (settype($_i, 'int') && $_i > 0) {
             $embed_video_sel = ' checked ';
+        }
     }
 }
 ?>
 
 <form action="<?php echo $conf['prefix']; ?>/offline/result.php" method="POST" target="result" onsubmit="playlist(0);">
 
-    <?php if (stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')){ ?>
-    <table cellspacing="0" border="1" cellpadding="3" width="100%" height="100%"
+    <?php
+    if (stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')) {
+        ?>
+        <table cellspacing="0" border="1" cellpadding="3" width="100%" height="100%"
            style="margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;">
-        <?php }else{ ?>
+    <?php
+    } else {
+        ?>
         <table cellspacing="0" border="1" cellpadding="3" width="100%" height="172px"
                style="margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;">
-            <?php } ?>
+    <?php
+    }
+    ?>
             <thead id="tab_head">
 
             <?php print '<tr bgcolor="' . $header_color . '">' . "\n"; ?>
             <th class="query" valign="bottom"><?php echo $left_tune; ?></th>
             <?php
-            print '<th class="query" valign="bottom">' . $strTimeMode . '&nbsp;<a href="javascript:void(0);" onclick="TimeModeHelp();"><sup>help</sup></a></th>' . "\n";
+            print '<th class="query" valign="bottom">' . $strTimeMode
+                . '&nbsp;<a href="javascript:void(0);" onclick="TimeModeHelp();"><sup>help</sup></a></th>' . "\n";
             ?>
             <th class="query" valign="bottom"><?php echo "$strYear / $strMonth / $strDay"; ?></th>
-            <th class="query" valign="bottom"><?php echo $strDayOfWeek; ?>&nbsp;<a href="javascript:void(0);"
-                                                                                   onclick="TimeModeHelp2();"><sup>help</sup></a>
+            <th class="query" valign="bottom"><?php echo $strDayOfWeek; ?>&nbsp;
+                <a href="javascript:void(0);" onclick="TimeModeHelp2();"><sup>help</sup></a>
             </th>
             <th class="query" valign="bottom"><?php echo "$strHour:$strMinute"; ?></th>
-            <th class="query" valign="bottom"><?php echo $strFilter; ?>&nbsp;<a href="javascript:void(0);"
-                                                                                onclick="FilterHelp();"><sup>help</sup></a>
+            <th class="query" valign="bottom"><?php echo $strFilter; ?>&nbsp;
+                <a href="javascript:void(0);" onclick="FilterHelp();"><sup>help</sup></a>
             </th>
-            <th class="query" valign="bottom"><?php echo $strOptions; ?>&nbsp;<a href="javascript:void(0);"
-                                                                                 onclick="OptionHelp();"><sup>help</sup></a>
+            <th class="query" valign="bottom"><?php echo $strOptions; ?>&nbsp;
+                <a href="javascript:void(0);" onclick="OptionHelp();"><sup>help</sup></a>
             </th>
-            <th class="query" valign="bottom"><?php echo $strAction; ?>&nbsp;<a href="javascript:void(0);"
-                                                                                onclick="ActionHelp();"><sup>help</sup></a>
+            <th class="query" valign="bottom"><?php echo $strAction; ?>&nbsp;
+                <a href="javascript:void(0);" onclick="ActionHelp();"><sup>help</sup></a>
             </th>
             <th class="query" valign="bottom"><a href="<?php echo $conf['prefix']; ?>/"
                                                  target="_parent"><?php echo $MainPage; ?></a></th>
@@ -171,33 +183,35 @@ if (isset($_COOKIE)) {
                 <td>
                     <?php
                     print $strScale . '<br>' . getSelectHtml(
-                            'scale',
-                            $scale_array,
-                            false,
-                            1,
-                            0,
-                            $scale_sel,
-                            true,
-                            false,
-                            $strScaleTitle
-                        );
-                    print '<br><hr size="1" noshade>';
-                    print $strEmbdedVideo . '<br><input type="checkbox" ' . $embed_video_sel . ' name="embed_video" id="embed_video" title="' . $str_embed_Title . '">' . "\n";
-                    ?>
-                </td>
-                <td>
-                    <?php print getSelectHtmlByName(
-                        'row_max',
-                        $row_max_ar,
+                        'scale',
+                        $scale_array,
                         false,
                         1,
                         0,
-                        $row_max_sel,
+                        $scale_sel,
+                        true,
                         false,
-                        false,
-                        null,
-                        $str_row_maxTitle
-                    ); ?>
+                        $strScaleTitle
+                    );
+                    print '<br><hr size="1" noshade>';
+                    print $strEmbdedVideo . '<br><input type="checkbox" ' . $embed_video_sel .
+                        ' name="embed_video" id="embed_video" title="' . $str_embed_Title . '">' . "\n";
+                    ?>
+                </td>
+                <td>
+                <?php
+                print getSelectHtmlByName(
+                    'row_max',
+                    $row_max_ar,
+                    false,
+                    1,
+                    0,
+                    $row_max_sel,
+                    false,
+                    false,
+                    null,
+                    $str_row_maxTitle
+                ); ?>
                     <br><input type="submit" id="btOk" name="btOk" disabled value="<?php echo $strDisplay; ?>">
                     <br><br>
                     <input type="reset" name="btClear" value="<?php echo $strReset; ?>">
@@ -205,26 +219,35 @@ if (isset($_COOKIE)) {
                 <td nowrap>
                     &nbsp;
                     <a href="javascript:void(0);" onclick="set_first_img();" title="В начало списка"><img
-                            src="<?php echo $conf['prefix']; ?>/img/2leftarrow.gif" width="22" height="22"
+                            src="<?php echo $conf['prefix']; ?>/img/2leftarrow.gif"
+                            width="22" height="22"
                             border="0"></a>
                     <a href="javascript:void(0);" onclick="set_last_img();" title="В конец списка"><img
-                            src="<?php echo $conf['prefix']; ?>/img/2rightarrow.gif" width="22" height="22" border="0"></a>
+                            src="<?php echo $conf['prefix']; ?>/img/2rightarrow.gif"
+                            width="22" height="22" border="0"></a>
                     <br>
                     &nbsp;
                     <a href="javascript:void(0);" onclick="jump_to_pos(-1);" title="Предыдущая ссылка"><img
-                            src="<?php echo $conf['prefix']; ?>/img/player_start.gif" width="22" height="22" border="0"></a>
+                            src="<?php echo $conf['prefix']; ?>/img/player_start.gif"
+                            width="22" height="22" border="0"></a>
                     <a href="javascript:void(0);" onclick="jump_to_pos(1);" title="Следующая ссылка"><img
-                            src="<?php echo $conf['prefix']; ?>/img/player_end.gif" width="22" height="22"
+                            src="<?php echo $conf['prefix']; ?>/img/player_end.gif"
+                            width="22" height="22"
                             border="0"></a>
                     <hr size="1" noshade>
                     <a href="javascript:void(0);" onclick="playlist(-1);" title="Автопросмотр назад"><img
-                            src="<?php echo $conf['prefix']; ?>/img/player_playback.gif" width="22" height="22"
+                            src="<?php echo $conf['prefix']; ?>/img/player_playback.gif"
+                            width="22" height="22"
                             border="0"></a>
                     <a href="javascript:void(0);" onclick="playlist(0);" title="Остановить"><img
-                            src="<?php echo $conf['prefix']; ?>/img/player_stop.gif" width="22" height="22" border="0"></a>
+                            src="<?php echo $conf['prefix']; ?>/img/player_stop.gif"
+                            width="22" height="22" border="0"></a>
                     <a href="javascript:void(0);" onclick="playlist(1);" title="Автопросмотр вперед"><img
-                            src="<?php echo $conf['prefix']; ?>/img/player_play.gif" width="22" height="22" border="0"></a>
-                    <br><?php print getSelectHtml(
+                            src="<?php echo $conf['prefix']; ?>/img/player_play.gif"
+                            width="22" height="22" border="0"></a>
+                    <br>
+                    <?php
+                    print getSelectHtml(
                         'play_tio',
                         $play_tio_ar,
                         false,
@@ -411,4 +434,3 @@ if (isset($_COOKIE)) {
 
 <?php
 require('../foot.inc.php');
-?>

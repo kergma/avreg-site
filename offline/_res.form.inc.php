@@ -6,7 +6,8 @@
  *
  */
 if (isset($strLastSql) || isset($strNextSql)) {
-    print '<form action="' . $_SERVER['PHP_SELF'] . '" method="POST" enctype="application/x-www-form-urlencoded">' . "\n";
+    print '<form action="' . $_SERVER['PHP_SELF'] . '" method="POST" enctype="application/x-www-form-urlencoded">'
+        . "\n";
     if (is_array($cams)) {
         $ii = 0;
         while ($ii < count($cams)) {
@@ -67,4 +68,3 @@ if (isset($strLastSql) || isset($strNextSql)) {
 
     print '</form>' . "\n";
 }
-?>

@@ -36,17 +36,13 @@ function mark_row(theRowNum) {
         ftype = document.images[img_cursor].id;
         if (ftype == 23) {
             document.images[img_cursor].src = WwwPrefix + '/img/movie.gif';
-        }
-        else if (ftype == 12) {
+        } else if (ftype == 12) {
             document.images[img_cursor].src = WwwPrefix + '/img/movie.gif';
-        }
-        else if (ftype == 32) {
+        } else if (ftype == 32) {
             document.images[img_cursor].src = WwwPrefix + '/img/audio-off.gif';
-        }
-        else if (ftype >= 15 || ftype <= 21) {
+        } else if (ftype >= 15 || ftype <= 21) {
             document.images[img_cursor].src = WwwPrefix + '/img/camera.gif';
-        }
-        else {
+        } else {
             document.images[img_cursor].src = WwwPrefix + '/img/unknown.gif';
         }
     }
@@ -54,17 +50,13 @@ function mark_row(theRowNum) {
     ftype = document.images[theRowNum].id;
     if (ftype == 23) {
         document.images[theRowNum].src = WwwPrefix + '/img/movie.on.gif';
-    }
-    else if (ftype == 12) {
+    } else if (ftype == 12) {
         document.images[theRowNum].src = WwwPrefix + '/img/movie.on.gif';
-    }
-    else if (ftype == 32) {
+    } else if (ftype == 32) {
         document.images[theRowNum].src = WwwPrefix + '/img/audio.gif';
-    }
-    else if (ftype >= 15 || ftype <= 21) {
+    } else if (ftype >= 15 || ftype <= 21) {
         document.images[theRowNum].src = WwwPrefix + '/img/camera-red.gif';
-    }
-    else {
+    } else {
         document.images[theRowNum].src = WwwPrefix + '/img/unknown.gif';
     }
 

@@ -18,8 +18,7 @@ function obj_loaded(e) {
         if (play_direction < 0) {
             window.parent.frames['query'].PlayTimer = setTimeout("window.parent.frames['query'].do_play(-1)",
                 play_tio);
-        }
-        else {
+        } else {
             window.parent.frames['query'].PlayTimer = setTimeout("window.parent.frames['query'].do_play(1)",
                 play_tio);
         }
@@ -74,8 +73,7 @@ function show_obj(cam_nr, evt_id, utime1, utime2, sess_nr, fsize, frames, alt1, 
 
     if (embed_chkbox == null) {
         var embed_video = false;
-    }
-    else {
+    } else {
         var embed_video = embed_chkbox.checked;
     }
 
@@ -121,8 +119,7 @@ function show_obj(cam_nr, evt_id, utime1, utime2, sess_nr, fsize, frames, alt1, 
             }
             if (scale_factor.length > 0) {
                 scaletext = ' width="' + scale_factor + '%" height="' + scale_factor + '%"';
-            }
-            else {
+            } else {
                 TOTEM_CONTROLS_HEIGHT = 28; // FIXME if no Totems
                 if (cdiv.clientWidth >= alt1 && cdiv.clientHeight >= ( alt2 + TOTEM_CONTROLS_HEIGHT)) {
                     scaletext = ' width="' + alt1 + '" height="' + ( alt2 + TOTEM_CONTROLS_HEIGHT) + '"';
