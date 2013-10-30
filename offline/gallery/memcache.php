@@ -18,7 +18,7 @@ class Cache
     {
         $this->server = $server;
         $this->port = $port;
-        $this->memcache = new Memcache;
+        $this->memcache = new \Memcache;
         if ($this->pconnect) {
             $this->memcache->pconnect($this->server, $this->port);
         } else {
