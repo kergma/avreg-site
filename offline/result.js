@@ -28,8 +28,8 @@ function mark_row(theRowNum) {
     var frames = parseInt(img_info[6]);
     var s16_1 = parseInt(img_info[7]);
     var s16_2 = parseInt(img_info[8]);
-    var ftype_str = img_info[9]
-    var fduration = img_info[10]
+    var ftype_str = img_info[9];
+    var fduration = img_info[10];
     var fname = img_info[11];
 
     if (img_cursor >= 0) {
@@ -155,8 +155,8 @@ function mouse_img(theRowNum) {
     var frames = parseInt(img_info[6]);
     var s16_1 = parseInt(img_info[7]);
     var s16_2 = parseInt(img_info[8]);
-    var ftype_str = img_info[9]
-    var fduration = img_info[10]
+    var ftype_str = img_info[9];
+    var fduration = img_info[10];
     var fname = img_info[11];
 
     mk_obj_hint(cam_nr, evt_id, utime1, utime2, ser_nr, fsize, frames, s16_1, s16_2, ftype_str, fduration, fname);

@@ -8,14 +8,14 @@
     background: #777;
     height: 30px;
     position: relative;
-    top: 0px;
+    top: 0;
     float: right;
 }
 
 .backToMainDiv a {
     display: block;
     text-align: center;
-    margin: 0px;
+    margin: 0;
     padding: 5px 10px;
     border: 2px solid #1e1e1e;
     border-radius: 4px;
@@ -223,7 +223,7 @@ a {
     background: #303030;
     padding: 10px;
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     width: 100%;
     border: 2px solid #676767;
     border-radius: 4px 0 0;
@@ -310,7 +310,7 @@ a {
     width: 88.5%;
     margin: 10px;
     background: none repeat scroll 0 0 #A29DB3;
-    border-radius: 0px 0px 10px 10px;
+    border-radius: 0 0 10px 10px;
     min-width: 240px;
     border-top: 1px solid #fff;
 }
@@ -334,7 +334,6 @@ a {
 }
 
 #list_panel {
-    overflow: auto;
     float: left;
     height: 100%;
     width: 100%;
@@ -376,7 +375,7 @@ a {
     min-height: 14px; /*height:36px; background:url(../img/scrolll.png) repeat-x;*/
     position: relative;
     left: -1px;
-    top: 0px;
+    top: 0;
 }
 
 #scroll_v .scroll_bot_v {
@@ -389,7 +388,7 @@ a {
 #scroll_v .scroll_polz_v_Top {
     width: 38px;
     margin: auto;
-    height: 0px;
+    height: 0;
     background: url(../img/topScrolll.png) no-repeat;
 }
 
@@ -404,7 +403,7 @@ a {
 #scroll_v .scroll_polz_v_Bottom {
     width: 38px;
     margin: auto;
-    height: 0px;
+    height: 0;
     background: url(../img/bottomScrolll.png) no-repeat;
 }
 
@@ -437,7 +436,7 @@ a {
     width: 29px;
     height: 28px;
     position: relative;
-    left: 0px;
+    left: 0;
     top: 1px; /*background:#ffffff; border:2px solid #fff;*/
     /*-moz-border-radius:5px; -webkit-border-radius:5px;*/
 }
@@ -479,7 +478,7 @@ a {
     width: 29px;
     height: 28px;
     position: relative;
-    left: 0px;
+    left: 0;
     top: 1px; /*background:#ffffff; border:2px solid #fff;*/
     /*-moz-border-radius:5px; -webkit-border-radius:5px;*/
 }
@@ -549,11 +548,9 @@ a {
 
 .scrollPopup {
     position: absolute;
-    top: 0px;
-    left: 0px;
-    background: white;
-    background-repeat: no-repeat;
-    background-position: center;
+    top: 0;
+    left: 0;
+    background: white no-repeat center;
     color: black;
     display: none;
     width: 155px;
@@ -866,10 +863,9 @@ a {
 
 .mod_window .window_button button {
     float: right;
-    margin-right: 55px;
     background: url(../img/pushbutton.png) no-repeat;
     color: #fff;
-/ / padding : 6 px 8 px 6 px 8 px;
+    /*padding : 6 px 8 px 6 px 8 px;*/
     border: none;
     margin: 0 35px 4px 0;
     cursor: pointer;
@@ -974,7 +970,7 @@ div.propotion, div.event_info {
 
 .info_block {
     color: #FFFFFF !important;
-    margin-top: 0px;
+    margin-top: 0;
 }
 
 .niceCheck {
@@ -1055,10 +1051,8 @@ a, label, h2, button, span, div {
 }
 
 #scroll_content .active .elem {
-    background-image: url("./images/BGlist_panel.png");
     background-origin: padding-box;
-    background-position: center center;
-    background-repeat: repeat;
+    background: url("./images/BGlist_panel.png") repeat center center;
     background-size: cover;
     padding: 0;
 }
@@ -1181,7 +1175,6 @@ a.set_camera_color:hover {
 }
 
 .mod_window .window_button button.close, .mod_window .window_button {
-    diplay: block;
     float: none;
     margin: 0 auto;
     position: relative;
@@ -1216,7 +1209,7 @@ a.set_camera_color:hover {
 }
 
 #toolbar .prevnext a.next img {
-    margin: 10px 0px;
+    margin: 10px 0;
 }
 
 #toolbar .prevnext a.prew img {
@@ -1249,7 +1242,7 @@ a.set_camera_color:hover {
     background: linear-gradient(top, #121212 0%, #555 50%, #121212 100%);
     z-index: 999;
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     height: 30px;
 }
 

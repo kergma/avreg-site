@@ -18,14 +18,16 @@ jQuery(document).ready(function () {
 
 });
 
-function changeCheck(el)
-    /*
-     функция смены вида и значения чекбокса
-     el - span контейнер дял обычного чекбокса
-     input - чекбокс
-     */ {
-    var el = el,
-        input = el.find("input").eq(0);
+/**
+ * функция смены вида и значения чекбокса
+ * el - span контейнер дял обычного чекбокса
+ * input - чекбокс
+ * @param el
+ * @returns {boolean}
+ */
+function changeCheck(el) {
+    var input = el.find("input").eq(0);
+
     if (!input.attr("checked")) {
         el.css("background-position", "0 -14px");
         input.attr("checked", true)
@@ -36,12 +38,14 @@ function changeCheck(el)
     return true;
 }
 
-function changeCheckStart(el)
-    /*
-     если установлен атрибут checked, меняем вид чекбокса
-     */ {
-    var el = el,
-        input = el.find("input").eq(0);
+/**
+ * если установлен атрибут checked, меняем вид чекбокса
+ * @param el
+ * @returns {boolean}
+ */
+function changeCheckStart(el) {
+    var input = el.find("input").eq(0);
+
     if (input.attr("checked")) {
         el.css("background-position", "0 -14px");
     }

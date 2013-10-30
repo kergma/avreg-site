@@ -95,12 +95,12 @@ if (isset($_COOKIE)) {
     if (stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')) {
         ?>
         <table cellspacing="0" border="1" cellpadding="3" width="100%" height="100%"
-           style="margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;">
+           style="margin: 0 0 0 0; padding: 0 0 0 0;">
     <?php
     } else {
         ?>
         <table cellspacing="0" border="1" cellpadding="3" width="100%" height="172px"
-               style="margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;">
+               style="margin: 0 0 0 0; padding: 0 0 0 0;">
     <?php
     }
     ?>
@@ -422,12 +422,10 @@ if (isset($_COOKIE)) {
         $('#id_cams').height(frameHeight - $('#tab_head').height() - $('#id_head_cams').height() * 2 - 2);
         $('#id_dayofweek').height(frameHeight - $('#tab_head').height() - $('#id_head_dayofweek').height() * 2 - 2);
     }
-    ;
 
     function ietruebody() {
         return (document.compatMode && document.compatMode != 'BackCompat') ? document.documentElement : document.body;
     }
-    ;
 
     // -->
 </script>

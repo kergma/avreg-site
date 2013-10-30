@@ -5,7 +5,7 @@ function Enum() {
         this[arguments[i]] = parseInt(i);
         this.allValues.push(arguments[i]);
     }
-};
+}
 Enum.prototype.values = function () {
     return this.allValues;
 };
@@ -171,7 +171,7 @@ $(function () {
 
 // основной объект галереи
 var gallery = {
-    images: new Array(),
+    images: [],
     // Объект дерева
     treeObject: null,
     // Конфигурация
@@ -2008,7 +2008,7 @@ var matrix = {
 
             var ResizedImgSrc = MediaUrlPref + value[2];
             //Установка прямой ссылки на ресурс
-            $('#cell_' + el_num + ' a').attr({'href': ResizedImgSrc })
+            $('#cell_' + el_num + ' a').attr({'href': ResizedImgSrc });
             if (value[7] == 'image') {
 
                 //определяем размеры изображения
@@ -2278,11 +2278,7 @@ var matrix = {
                         html += '<div class="img_block"><a class="refBox" ' + matrix.reference + '="#cell_' + i + '"></a></div>';
 
                         if (value[7] == 'image') {
-                            if (typeof( value.image_chache) != 'undefined' && value.image_chache) {
-                                loadimage[i] = true;
-                            } else {
-                                loadimage[i] = false;
-                            }
+                            loadimage[i] = typeof( value.image_chache) != 'undefined' && value.image_chache;
                         } else { //ad hoc
                             loadimage[i] = true;
                         }
@@ -2367,7 +2363,7 @@ var matrix = {
 
                         var ResizedImgSrc = MediaUrlPref + value[2];
                         //Установка прямой ссылки на ресурс
-                        $('#cell_' + i + ' a').attr({'href': ResizedImgSrc })
+                        $('#cell_' + i + ' a').attr({'href': ResizedImgSrc });
                         if (value[7] == 'image') {
 
                             //определяем размеры изображения
@@ -2417,11 +2413,7 @@ var matrix = {
                         value = matrix.events[i];
                         var cont = $(this).attr({'id': 'cell_' + (i)}).find('div.elem a').attr({reference: '#cell_' + (i) });
                         if (value[7] == 'image') {
-                            if (typeof( value.image_chache) != 'undefined' && value.image_chache) {
-                                loadimage[i] = true;
-                            } else {
-                                loadimage[i] = false;
-                            }
+                            loadimage[i] = typeof( value.image_chache) != 'undefined' && value.image_chache;
                         } else { //Не картинка //ad hoc
                             loadimage[i] = true;
                         }
@@ -2468,7 +2460,7 @@ var matrix = {
                         var NewSRC = MediaUrlPref + matrix.events[i][2];
 
                         //Установка прямой ссылки на ресурс
-                        $('#cell_' + (i) + ' a').attr({'href': NewSRC })
+                        $('#cell_' + (i) + ' a').attr({'href': NewSRC });
 
                         if (value[7] == 'image') {
                             //определяем размеры изображения
@@ -2637,13 +2629,7 @@ var matrix = {
                                 value = matrix.events[i];
 
                                 if (value[7] == 'image') {
-
-                                    if (typeof( value.image_chache) != 'undefined' && value.image_chache) {
-                                        loadimage[i] = true;
-
-                                    } else {
-                                        loadimage[i] = false;
-                                    }
+                                    loadimage[i] = typeof( value.image_chache) != 'undefined' && value.image_chache;
                                 } else { // ad hoc
                                     loadimage[i] = true;
                                 }
@@ -2900,7 +2886,7 @@ var scroll = {
             keyBoard.setFocusListPanel();
             e.preventDefault();
             return false;
-        })
+        });
 
         // обработка перемещения ползунка
 
@@ -3990,7 +3976,7 @@ var keyBoard = {
                     $('#nextwindow .yes').removeClass('select');
                     $('#nextwindow .no').removeClass('select');
 
-                    keyBoard.boxesEnum.current() == keyBoard.boxesEnum.INSIDE
+                    keyBoard.boxesEnum.current() == keyBoard.boxesEnum.INSIDE;
                     keyBoard.chooseDialogTab.next();
                     if (keyBoard.chooseDialogTab.current() == keyBoard.chooseDialogTab.check) {
                         $('#checknextwindow').parent().addClass('select');
@@ -4288,4 +4274,4 @@ var scrollPopUp = {
         }
     }
 
-}
+};
