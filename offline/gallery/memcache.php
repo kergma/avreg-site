@@ -1,5 +1,7 @@
 <?php
 
+namespace Avreg;
+
 class Cache
 {
     private $memcache;

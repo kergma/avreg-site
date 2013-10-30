@@ -756,7 +756,7 @@ var gallery = {
             self.holder = holder;
 
             if (ajax_params == null) {
-                ajax_params = {'method': 'get_tree_events', 'on_dbld_evt': 'inform_user'};
+                ajax_params = {'method': 'getTreeEvents', 'on_dbld_evt': 'inform_user'};
             }
 
             // получаем данные о постройке дерева события
@@ -806,11 +806,11 @@ var gallery = {
                         //+"</table>";
 
                         message_box.yes_delegate = function (event) {
-                            gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt': 'clear'});
+                            gallery.tree_event.init(holder, {'method': 'getTreeEvents', 'on_dbld_evt': 'clear'});
                         };
 
                         message_box.no_delegate = function (event) {
-                            gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt': 'ignore'});
+                            gallery.tree_event.init(holder, {'method': 'getTreeEvents', 'on_dbld_evt': 'ignore'});
                         };
 
                         message_box.buttons_name.No = "Игнорировать";
@@ -850,11 +850,11 @@ var gallery = {
                         //+"</table>";
 
                         message_box.yes_delegate = function (event) {
-                            gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt': 'clear'});
+                            gallery.tree_event.init(holder, {'method': 'getTreeEvents', 'on_dbld_evt': 'clear'});
                         };
 
                         message_box.no_delegate = function (event) {
-                            gallery.tree_event.init(holder, {'method': 'get_tree_events', 'on_dbld_evt': 'ignore'});
+                            gallery.tree_event.init(holder, {'method': 'getTreeEvents', 'on_dbld_evt': 'ignore'});
                         };
 
                         message_box.buttons_name.No = "Игнорировать";
@@ -2615,7 +2615,7 @@ var matrix = {
 
             // делаем запрос
             $.post(WwwPrefix + '/offline/gallery.php',
-                {'method': 'get_events',
+                {'method': 'getEvents',
                     'tree': matrix.tree,
                     'sp': get_sp,
                     'type': type,
@@ -4249,7 +4249,7 @@ var scrollPopUp = {
         });
 
         $.post(WwwPrefix + '/offline/gallery.php',
-            {'method': 'get_events',
+            {'method': 'getEvents',
                 'tree': matrix.tree,
                 'sp': scrollPopUp.scrollPosition,
                 'limit': 1,

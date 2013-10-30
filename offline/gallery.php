@@ -79,7 +79,7 @@ if (!isset($_POST['method']) && !isset($_GET['method'])) {
     require_once('gallery/gallery.php');
     /// Инициализация класа галереи
     $params = !empty($_POST) ? $_POST : $_GET;
-    $gallery = new Gallery($params);
+    $gallery = new \Avreg\Gallery($params);
     // Возврат ответа запроса
-    $gallery->print_result();
+    $gallery->printResult();
 }

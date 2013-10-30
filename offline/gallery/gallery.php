@@ -12,7 +12,7 @@
  * информация в таблице tree_events обновляется при открытии
  * галереи начиная с времени последнего обновления и заканчивая
  * последним событием в events.
- * Это осуществляется вызовом метода get_tree_events($param) в offline/gallery/js/main.js .
+ * Это осуществляется вызовом метода getTreeEvents($param) в offline/gallery/js/main.js .
  *
  * cron.php при открытии галереи вообще не используется.
  *
@@ -23,19 +23,21 @@
  * 1. галерея открывается быстрей, поскольку для обновления надо
  * обработать меньшее кол-во данных
  * (может быть актуально при редком открытии галереи и большом кол-ве камер).
- * Выполняется вызовом метода cron_update_tree_events().
+ * Выполняется вызовом метода cronUpdateTreeEvents().
  *
  * 2. после работы чистильщика, надо обновить tree_events для
  * того периода, для которого были удалены файлы.
  * (это необходимо, поскольку, как было сказано, при открытии галереи
  * таблица обновляется начиная с времени последнего обновления,
  * а не полностью с самого начала).
- * Выполняется вызовом метода update_tree_events($param),
+ * Выполняется вызовом метода updateTreeEvents($param),
  * которому в качестве параметров передаются начало(start) и конец(end) временного диапазона,
  * а так же номера камер(cameras) для которых надо выполнить обновление
  *
  *
  * */
+
+namespace Avreg;
 
 class Gallery
 {
@@ -72,7 +74,7 @@ class Gallery
     }
 
     // Функция получения событий
-    public function get_events($param)
+    public function getEvents($param)
     {
         $events = array();
         // если есть список камер, то выполняем запрос
@@ -121,7 +123,7 @@ class Gallery
     }
 
     // Функция построения дерева события
-    public function get_tree_events($param)
+    public function getTreeEvents($param)
     {
         global $GCP_cams_params;
         $cameras = implode(',', array_keys($GCP_cams_params));
@@ -170,7 +172,7 @@ class Gallery
         }
     }
 
-    public function update_tree_events($param)
+    public function updateTreeEvents($param)
     {
         $start = isset($param['start']) ? $param['start'] : false;
         $end = isset($param['end']) ? $param['end'] : false;
@@ -178,7 +180,7 @@ class Gallery
         $this->db->gallery_update_tree_events($start, $end, $cameras);
     }
 
-    public function cron_update_tree_events()
+    public function cronUpdateTreeEvents()
     {
         $last_event_date = $this->db->gallery_get_last_event_date();
         $last_tree_date = $this->db->gallery_get_last_tree_event_data();
@@ -188,7 +190,7 @@ class Gallery
     }
 
     // отдача результата клиенту
-    public function print_result()
+    public function printResult()
     {
         if ($this->limit > 1) {
             echo json_encode($this->result);
