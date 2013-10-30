@@ -1121,7 +1121,7 @@ a, label, h2, button, span, div {
     background-image: url('./images/BG.png');
     background-size: cover;
     background-position: top center;
-    /*background: -ms-linear-gradient(top, #555 0%, #999 50%, #555 100%); 
+    /*background: -ms-linear-gradient(top, #555 0%, #999 50%, #555 100%);
     background: linear-gradient(top, #555 0%, #999 50%, #555 100%);*/
 }
 
