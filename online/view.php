@@ -15,17 +15,17 @@ $NO_OB_END_FLUSH = true; // for setcookie()
 $pageTitle = 'WebCam';
 $body_style = 'overflow: hidden;  overflow-y: hidden !important; padding: 0; margin: 0; width: 100%; height: 100%;';
 $css_links = array(
-    'lib/js/jqModal.css',
+    'lib/js/third-party/jqModal.css',
     'online/online.css'
 );
 $USE_JQUERY = true;
 $link_javascripts = array(
-    'lib/js/jqModal.js',
-    'lib/js/jquery-ui-1.8.17.custom.min.js',
-    'lib/js/jquery.mousewheel.min.js',
+    'lib/js/third-party/jqModal.js',
+    'lib/js/third-party/jquery-ui-1.8.17.custom.min.js',
+    'lib/js/third-party/jquery.mousewheel.min.js',
     'lib/js/jquery.aplayer.js',
     'lib/js/user_layouts.js',
-    'lib/js/json2.js'
+    'lib/js/third-party/json2.js'
 );
 
 $body_addons = 'scroll="no"';

@@ -30,7 +30,7 @@ if (isset($_GET['storage'])) {
 if ($storage == 'client') {
     $link_javascripts = array(
         'lib/js/user_layouts.js',
-        'lib/js/json2.js'
+        'lib/js/third-party/json2.js'
     );
 }
 

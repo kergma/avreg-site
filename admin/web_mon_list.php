@@ -82,7 +82,7 @@ $USE_JQUERY = true;
 
 $link_javascripts = array(
     'lib/js/user_layouts.js',
-    'lib/js/json2.js'
+    'lib/js/third-party/json2.js'
 );
 
 /* Если не установлено ни одной раскладки (как клиентом, так и администратором),
