@@ -73,7 +73,7 @@ class Adb
 
         $dsn = "{$this->dbtype}://{$this->user }:{$this->password}@{$this->host}/{$this->database}";
 
-        $this->pear = \new PEAR();
+        $this->pear = new \PEAR();
 
         $db = new \DB();
         $this->db = $db->connect($dsn, true);
