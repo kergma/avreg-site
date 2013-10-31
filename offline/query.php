@@ -20,7 +20,7 @@ $tm1 = localtime(strtotime('-1 hours'));
 $min1 = $minute_array[0];
 $min2 = $minute_array[count($minute_array) - 1];
 
-$result = $adb->get_cameras_name($GCP_cams_list);
+$result = $adb->getCamNames($GCP_cams_list);
 $num_rows = count($result);
 
 if ($num_rows > 0) {

@@ -15,6 +15,8 @@
  *
  */
 
+namespace Avreg;
+
 require_once('DB.php');
 
 if (empty($non_config)) {
@@ -29,64 +31,63 @@ $adb = new Adb($conf);
  * @brief Класс взаимодействия с БД
  *
  */
-
 class Adb
 {
     // Название БД
-    private $_database = '';
+    private $database = '';
     /// Пользователь БД
-    private $_user = '';
+    private $user = '';
     /// Пароль БД
-    private $_password = '';
+    private $password = '';
     /// Тип БД mysql - MySql, pgsql - PostgreSql
-    private $_dbtype = 'mysql';
+    private $dbtype = 'mysql';
     /// Хост БД
-    private $_host = 'localhost';
+    private $host = 'localhost';
     /// Объект для работы с БД
-    private $_db = false;
+    private $db = false;
     ///Объект PEAR
-    private $_pear = false;
+    private $pear = false;
 
 
     /**
      *  Конструктор по умолчанию
      * Устанавливает соединение с БД
      * @param array $param масив конфигурации класса
-     * @return true если соединение с баззой успешно, false если произошла ошибка.
+     * @return \Avreg\Adb если соединение с баззой успешно, false если произошла ошибка.
      */
     public function __construct($param)
     {
-        $this->_database = $param['db-name'];
-        $this->_user = $param['db-user'];
-        $this->_password = $param['db-passwd'];
+        $this->database = $param['db-name'];
+        $this->user = $param['db-user'];
+        $this->password = $param['db-passwd'];
         if (isset($param['db-type']) && !empty($param['db-type'])) {
-            $this->_dbtype = $param['db-type'];
+            $this->dbtype = $param['db-type'];
         }
         if (isset($param['db-host']) && !empty($param['db-host'])) {
-            $this->_host = $param['db-host'];
+            $this->host = $param['db-host'];
         }
 
         //$this->_host ='localhost';
 
-        $this->_pear = new PEAR();
+        $this->pear = new \PEAR();
 
-        $dsn = "{$this->_dbtype}://{$this->_user }:{$this->_password}@{$this->_host}/{$this->_database}";
+        $dsn = "{$this->dbtype}://{$this->user }:{$this->password}@{$this->host}/{$this->database}";
 
-        $this->_pear = new PEAR();
+        $this->pear = \new PEAR();
 
-        $db = new DB();
-        $this->_db = $db->connect($dsn, true);
+        $db = new \DB();
+        $this->db = $db->connect($dsn, true);
 
         //$this->_db = DB::connect($dsn,true);
 
-        $this->_error($this->_db);
+        $this->error($this->db);
 
-        if ($this->_dbtype == 'mysql') {
-            $res = $this->_db->query("SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
+        if ($this->dbtype == 'mysql') {
+            $res = $this->db->query("SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
         } else {
-            $res = $this->_db->query("SET NAMES 'utf8'");
+            $res = $this->db->query("SET NAMES 'utf8'");
         }
-        $this->_error($res);
+        $this->error($res);
         return true;
     }
 
@@ -97,8 +98,8 @@ class Adb
     public function __destruct()
     {
         //if (!PEAR::isError($this->_db))
-        if (!$this->_pear->isError($this->_db)) {
-            $this->_db->disconnect();
+        if (!$this->pear->isError($this->db)) {
+            $this->db->disconnect();
         }
     }
 
@@ -110,10 +111,10 @@ class Adb
      *
      * @return true - если ошибка, false - если нет ошибок
      */
-    public function _error($r, $die = true)
+    public function error($r, $die = true)
     {
         // if (PEAR::isError($r)) {
-        if ($this->_pear->isError($r)) {
+        if ($this->pear->isError($r)) {
             @header('Content-Type: text/html; charset=' . $GLOBALS['chset']);
 
             echo 'Standard Message: ' . $r->getMessage() . "<br>";
@@ -121,15 +122,12 @@ class Adb
             echo 'DBMS/User Message: ' . $r->getUserInfo() . "<br>";
             echo 'DBMS/Debug Message: ' . $r->getDebugInfo() . "<br>";
 
-            if ($die) {
-                die($r->getMessage());
-            }
-            return true;
+            // echo $r->getDebugInfo();
 
-            echo $r->getDebugInfo();
             if ($die) {
                 die($r->getMessage());
             }
+
             return true;
         }
         return false;
@@ -149,38 +147,38 @@ class Adb
      * @return array масив событий
      */
 
-    public function gallery_get_event($param)
+    public function galleryGetEvent($param)
     {
         $events = array();
-        $query = "SELECT " . $this->_date_format(
+        $query = "SELECT " . $this->dateFormat(
             'DT1'
-        ) . ", DT1, EVT_CONT, ALT2, ALT1, CAM_NR, FILESZ_KB, EVT_ID, " . $this->_timediff('DT1', 'DT2') . ", DT2";
+        ) . ", DT1, EVT_CONT, ALT2, ALT1, CAM_NR, FILESZ_KB, EVT_ID, " . $this->timediff('DT1', 'DT2') . ", DT2";
         $query .= ' FROM EVENTS';
         $query .= ' WHERE EVT_ID in (' . implode(",", $param['events']) . ')';
         $query .= ' AND EVENTS.CAM_NR in (' . implode(",", $param['cameras']) . ')';
 
         if (isset($param['date'][0])) {
-            $query .= ' AND ' . $this->_date_part('year', 'DT1') . '= ' . $param['date'][0];
+            $query .= ' AND ' . $this->datePart('year', 'DT1') . '= ' . $param['date'][0];
         }
 
         if (isset($param['date'][1])) {
-            $query .= ' AND ' . $this->_date_part('month', 'DT1') . '= ' . $param['date'][1];
+            $query .= ' AND ' . $this->datePart('month', 'DT1') . '= ' . $param['date'][1];
         }
 
         if (isset($param['date'][2])) {
-            $query .= ' AND ' . $this->_date_part('day', 'DT1') . '= ' . $param['date'][2];
+            $query .= ' AND ' . $this->datePart('day', 'DT1') . '= ' . $param['date'][2];
         }
 
         if (isset($param['date'][3])) {
-            $query .= ' AND ' . $this->_date_part('hour', 'DT1') . '= ' . $param['date'][3];
+            $query .= ' AND ' . $this->datePart('hour', 'DT1') . '= ' . $param['date'][3];
         }
 
         // сортировать по дате, от текущей позиции с лимитом заданный в конфиге
         $query .= ' ORDER BY DT1 ASC LIMIT ' . $param['limit'] . ' OFFSET ' . $param['offset'];
 
-        $res = $this->_db->query($query);
+        $res = $this->db->query($query);
 
-        $this->_error($res);
+        $this->error($res);
         while ($res->fetchInto($line)) {
             $line[6] = filesizeHuman($line[6]);
             if (in_array((int)$line[7], array(15, 16, 17, 18, 19, 20, 21))) {
@@ -215,36 +213,36 @@ class Adb
      * @return array масив событий
      */
 
-    public function gallery_get_event_date($param)
+    public function galleryGetEventDate($param)
     {
         $events = array();
-        $query = "SELECT " . $this->_date_format('DT2') . ", DT2";
+        $query = "SELECT " . $this->dateFormat('DT2') . ", DT2";
         $query .= ' FROM EVENTS';
         $query .= ' WHERE EVT_ID in (' . implode(",", $param['events']) . ')';
         $query .= ' AND EVENTS.CAM_NR in (' . implode(",", $param['cameras']) . ')';
 
         if (isset($param['date'][0])) {
-            $query .= ' AND ' . $this->_date_part('year', 'DT1') . '= ' . $param['date'][0];
+            $query .= ' AND ' . $this->datePart('year', 'DT1') . '= ' . $param['date'][0];
         }
 
         if (isset($param['date'][1])) {
-            $query .= ' AND ' . $this->_date_part('month', 'DT1') . '= ' . $param['date'][1];
+            $query .= ' AND ' . $this->datePart('month', 'DT1') . '= ' . $param['date'][1];
         }
 
         if (isset($param['date'][2])) {
-            $query .= ' AND ' . $this->_date_part('day', 'DT1') . '= ' . $param['date'][2];
+            $query .= ' AND ' . $this->datePart('day', 'DT1') . '= ' . $param['date'][2];
         }
 
         if (isset($param['date'][3])) {
-            $query .= ' AND ' . $this->_date_part('hour', 'DT1') . '= ' . $param['date'][3];
+            $query .= ' AND ' . $this->datePart('hour', 'DT1') . '= ' . $param['date'][3];
         }
 
         // сортировать по дате, от текущей позиции с лимитом заданный в конфиге
         $query .= ' ORDER BY DT1 ASC LIMIT ' . $param['limit'] . ' OFFSET ' . $param['offset'];
 
-        $res = $this->_db->query($query);
+        $res = $this->db->query($query);
 
-        $this->_error($res);
+        $this->error($res);
 
         $res->fetchInto($line);
 
@@ -261,7 +259,7 @@ class Adb
      *
      * @return string дата последнего события
      */
-    public function gallery_get_last_event_date($param = array())
+    public function galleryGetLastEventDate($param = array())
     {
         $event = '1970-01-01 00:00:00';
 
@@ -271,8 +269,8 @@ class Adb
         }
         // групировать и сортировать по дате
         $query .= ' ORDER BY DT1 DESC LIMIT 1';
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
         if ($res->fetchInto($line)) {
             $event = $line[0];
         }
@@ -288,7 +286,7 @@ class Adb
      *
      * @return string дата последнего события дерева
      */
-    public function gallery_get_last_tree_event_data($param = array())
+    public function galleryGetLastTreeEventDate($param = array())
     {
         $event = '1970-01-01 00:00:00';
 
@@ -299,8 +297,8 @@ class Adb
             $query .= ' TREE_EVENTS.CAM_NR in (' . implode(",", $param['cameras']) . ')';
         }
         $query .= ' ORDER BY LAST_UPDATE DESC LIMIT 1';
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
         if ($res->fetchInto($line)) {
             $event = $line[0];
         }
@@ -317,35 +315,35 @@ class Adb
      * @return array масив дерева событий со статистикой
      */
 
-    public function gallery_get_tree_events($param)
+    public function galleryGetTreeEvents($param)
     {
         $tree_events_result = array();
 
         $query = "SELECT *";
         $query .= ' FROM TREE_EVENTS';
         $query .= ' WHERE TREE_EVENTS.CAM_NR in (' . implode(",", $param['cameras']) . ')';
-        $query .= ' ORDER BY ' . $this->_date_part('year', 'LAST_UPDATE') . ' DESC, LAST_UPDATE ASC';
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $query .= ' ORDER BY ' . $this->datePart('year', 'LAST_UPDATE') . ' DESC, LAST_UPDATE ASC';
+        $res = $this->db->query($query);
+        $this->error($res);
         while ($res->fetchInto($v, DB_FETCHMODE_ASSOC)) {
-            $date = $v[$this->_key('BYHOUR')];
+            $date = $v[$this->key('BYHOUR')];
             if (!isset($tree_events_result[$date])) {
                 $tree_events_result[$date] = array(
                     'date' => $date,
                 );
             }
-            $tree_events_result[$date]['image_' . $v[$this->_key('CAM_NR')] . '_count'] = $v[$this->_key(
+            $tree_events_result[$date]['image_' . $v[$this->key('CAM_NR')] . '_count'] = $v[$this->key(
                 'IMAGE_COUNT'
             )];
-            $tree_events_result[$date]['image_' . $v[$this->_key('CAM_NR')] . '_size'] = $v[$this->_key('IMAGE_SIZE')];
-            $tree_events_result[$date]['video_' . $v[$this->_key('CAM_NR')] . '_count'] = $v[$this->_key(
+            $tree_events_result[$date]['image_' . $v[$this->key('CAM_NR')] . '_size'] = $v[$this->key('IMAGE_SIZE')];
+            $tree_events_result[$date]['video_' . $v[$this->key('CAM_NR')] . '_count'] = $v[$this->key(
                 'VIDEO_COUNT'
             )];
-            $tree_events_result[$date]['video_' . $v[$this->_key('CAM_NR')] . '_size'] = $v[$this->_key('VIDEO_SIZE')];
-            $tree_events_result[$date]['audio_' . $v[$this->_key('CAM_NR')] . '_count'] = $v[$this->_key(
+            $tree_events_result[$date]['video_' . $v[$this->key('CAM_NR')] . '_size'] = $v[$this->key('VIDEO_SIZE')];
+            $tree_events_result[$date]['audio_' . $v[$this->key('CAM_NR')] . '_count'] = $v[$this->key(
                 'AUDIO_COUNT'
             )];
-            $tree_events_result[$date]['audio_' . $v[$this->_key('CAM_NR')] . '_size'] = $v[$this->_key('AUDIO_SIZE')];
+            $tree_events_result[$date]['audio_' . $v[$this->key('CAM_NR')] . '_size'] = $v[$this->key('AUDIO_SIZE')];
         }
         return $tree_events_result;
     }
@@ -355,14 +353,15 @@ class Adb
      *
      * @param string $start Дата начала обновления дерева
      * @param string $end Дата окончания обновления дерева
-     * @param string $cameras Список камер
+     * @param bool|string $cameras Список камер
      * @param string $on_dbld_evnts действие при обнаружении дублированных событий
      * values:
      * 'inform_user' - информировать пользователя,
      * 'ignore' - корректно заполнть TREE_EVENTS без удаления дублей из EVENTS,
      * 'clear' - удалить дублирующие записи из EVENTS и, после этого, заполнить TREE_EVENTS
+     * @return array
      */
-    public function gallery_update_tree_events($start, $end, $cameras = false, $on_dbld_evnts = 'ignore')
+    public function galleryUpdateTreeEvents($start, $end, $cameras = false, $on_dbld_evnts = 'ignore')
     {
         $query = 'SELECT * FROM EVENTS WHERE EVT_ID in (12, 15,16,17, 23, 32)';
         if ($start) {
@@ -378,8 +377,8 @@ class Adb
         }
         $query .= ' ORDER BY DT1 ASC';
 
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
 
 
         $evt_key = '';
@@ -391,16 +390,16 @@ class Adb
 
 
             //проверка на наличие дублирующих записей
-            $evt_key = 'DT1=' . $line[$this->_key('DT1')] . "&"
-                . 'DT2=' . $line[$this->_key('DT2')] . "&"
-                . 'CAM_NR=' . $line[$this->_key('CAM_NR')] . '&'
-                . 'EVT_ID=' . $line[$this->_key('EVT_ID')] . '&'
-                . 'SESS_NR=' . $line[$this->_key('SESS_NR')] . '&'
-                . 'FILESZ_KB=' . $line[$this->_key('FILESZ_KB')] . "&"
-                . 'FRAMES=' . $line[$this->_key('FRAMES')] . "&"
-                . 'ALT1=' . $line[$this->_key('ALT1')] . "&"
-                . 'ALT2=' . $line[$this->_key('ALT2')] . "&"
-                . 'EVT_CONT=' . $line[$this->_key('EVT_CONT')];
+            $evt_key = 'DT1=' . $line[$this->key('DT1')] . "&"
+                . 'DT2=' . $line[$this->key('DT2')] . "&"
+                . 'CAM_NR=' . $line[$this->key('CAM_NR')] . '&'
+                . 'EVT_ID=' . $line[$this->key('EVT_ID')] . '&'
+                . 'SESS_NR=' . $line[$this->key('SESS_NR')] . '&'
+                . 'FILESZ_KB=' . $line[$this->key('FILESZ_KB')] . "&"
+                . 'FRAMES=' . $line[$this->key('FRAMES')] . "&"
+                . 'ALT1=' . $line[$this->key('ALT1')] . "&"
+                . 'ALT2=' . $line[$this->key('ALT2')] . "&"
+                . 'EVT_CONT=' . $line[$this->key('EVT_CONT')];
             //проверяем уникальность ключей
             if (isset($tmp[$evt_key])) {
                 //сохраняем дублированое значение
@@ -411,35 +410,35 @@ class Adb
             $tmp[$evt_key] = 1;
 
 
-            $date = date('Y_m_d_H', strtotime($line[$this->_key('DT1')]));
-            $key = $date . '_' . $line[$this->_key('CAM_NR')];
+            $date = date('Y_m_d_H', strtotime($line[$this->key('DT1')]));
+            $key = $date . '_' . $line[$this->key('CAM_NR')];
             if (!isset($tree_events[$key])) {
                 $tree_events[$key] = array(
                     'DATE' => $date,
-                    'CAM_NR' => $line[$this->_key('CAM_NR')],
+                    'CAM_NR' => $line[$this->key('CAM_NR')],
                     'IMAGE_COUNT' => 0,
                     'IMAGE_SIZE' => 0,
                     'VIDEO_COUNT' => 0,
                     'VIDEO_SIZE' => 0,
                     'AUDIO_COUNT' => 0,
                     'AUDIO_SIZE' => 0,
-                    'LAST_UPDATE' => $line[$this->_key('DT1')],
+                    'LAST_UPDATE' => $line[$this->key('DT1')],
                 );
             }
 
-            if (in_array($line[$this->_key('EVT_ID')], array(15, 16, 17))) {
+            if (in_array($line[$this->key('EVT_ID')], array(15, 16, 17))) {
                 $tree_events[$key]['IMAGE_COUNT']++;
-                $tree_events[$key]['IMAGE_SIZE'] += $line[$this->_key('FILESZ_KB')];
+                $tree_events[$key]['IMAGE_SIZE'] += $line[$this->key('FILESZ_KB')];
 
-            } elseif (in_array($line[$this->_key('EVT_ID')], array(23, 12))) {
+            } elseif (in_array($line[$this->key('EVT_ID')], array(23, 12))) {
                 $tree_events[$key]['VIDEO_COUNT']++;
-                $tree_events[$key]['VIDEO_SIZE'] += $line[$this->_key('FILESZ_KB')];
-            } elseif (in_array($line[$this->_key('EVT_ID')], array(32))) {
+                $tree_events[$key]['VIDEO_SIZE'] += $line[$this->key('FILESZ_KB')];
+            } elseif (in_array($line[$this->key('EVT_ID')], array(32))) {
 
                 $tree_events[$key]['AUDIO_COUNT']++;
-                $tree_events[$key]['AUDIO_SIZE'] += $line[$this->_key('FILESZ_KB')];
+                $tree_events[$key]['AUDIO_SIZE'] += $line[$this->key('FILESZ_KB')];
             }
-            $tree_events[$key]['LAST_UPDATE'] = $line[$this->_key('DT1')];
+            $tree_events[$key]['LAST_UPDATE'] = $line[$this->key('DT1')];
         }
 
         //если обнаружены дублированые события
@@ -452,12 +451,12 @@ class Adb
                     'description' => 'Doubled events detected',
                     'qtty' => sizeof($dbl_events),
                     // 'dbl_rows'=> $dbl_events,
-                    'range_start' => $dbl_events[0][$this->_key('DT1')],
-                    'range_end' => $dbl_events[sizeof($dbl_events) - 1][$this->_key('DT1')]
+                    'range_start' => $dbl_events[0][$this->key('DT1')],
+                    'range_end' => $dbl_events[sizeof($dbl_events) - 1][$this->key('DT1')]
                 );
             } elseif ($on_dbld_evnts == 'clear') {
                 //устраиваем чистку таблицы EVENTS от дублирующих записей
-                $cor_nr = $this->clear_dubled_evnts($dbl_events);
+                $cor_nr = $this->clearDoubledEvents($dbl_events);
 
                 if ($cor_nr < sizeof($dbl_events)) {
                     $rst_dbl_events = array_slice($dbl_events, $cor_nr);
@@ -467,8 +466,8 @@ class Adb
                         'description' => 'Error during cleaning',
                         'qtty' => $cor_nr,
                         //'dbl_rows'=>$rst_dbl_events
-                        'range_start' => $rst_dbl_events[0][$this->_key('DT1')],
-                        'range_end' => $rst_dbl_events[sizeof($rst_dbl_events) - 1][$this->_key('DT1')]
+                        'range_start' => $rst_dbl_events[0][$this->key('DT1')],
+                        'range_end' => $rst_dbl_events[sizeof($rst_dbl_events) - 1][$this->key('DT1')]
                     );
                 }
 
@@ -493,8 +492,8 @@ class Adb
             $query .= ' AND CAM_NR in (' . $cameras . ')';
         }
 
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
         foreach ($tree_events as $row) {
             $query = 'INSERT INTO TREE_EVENTS ';
             $query .= '(BYHOUR, CAM_NR, IMAGE_COUNT, IMAGE_SIZE, VIDEO_COUNT, ' .
@@ -502,8 +501,8 @@ class Adb
             $query .= " VALUES ('" . $row['DATE'] . "'," . $row['CAM_NR'] . ',' . $row['IMAGE_COUNT'] . ','
                 . $row['IMAGE_SIZE'] . ',' . $row['VIDEO_COUNT'] . ',' . $row['VIDEO_SIZE'] . ','
                 . $row['AUDIO_COUNT'] . ',' . $row['AUDIO_SIZE'] . ",'" . $row['LAST_UPDATE'] . "')";
-            $res = $this->_db->query($query);
-            $this->_error($res);
+            $res = $this->db->query($query);
+            $this->error($res);
         }
         return array('status' => 'success');
     }
@@ -512,9 +511,9 @@ class Adb
      *
      * Метод для удаления дублированных записей из EVENTS
      * @param array $dbl_evts параметры для удаления и востановления записей
-     * @return кол-во исправленных записей
+     * @return int кол-во исправленных записей
      */
-    private function clear_dubled_evnts($dbl_evts)
+    private function clearDoubledEvents($dbl_evts)
     {
         $cntr = 0;
         foreach ($dbl_evts as $key => $val) {
@@ -532,8 +531,8 @@ class Adb
                 . " AND EVT_CONT='" . $val['EVT_CONT'] . "'; ";
 
             try {
-                $res = $this->_db->query($query);
-                $this->_error($res);
+                $res = $this->db->query($query);
+                $this->error($res);
             } catch (Exception $err) {
                 return $cntr;
             }
@@ -552,8 +551,8 @@ class Adb
                 . ", '" . $val['EVT_CONT'] . "'); ";
 
             try {
-                $res = $this->_db->query($query);
-                $this->_error($res);
+                $res = $this->db->query($query);
+                $this->error($res);
             } catch (Exception $err) {
                 return $cntr;
             }
@@ -573,10 +572,10 @@ class Adb
      * @return array масив событий
      */
 
-    public function get_files($camera, $ser_nr, $timebegin, $timeend = false, $order = '')
+    public function getFiles($camera, $ser_nr, $timebegin, $timeend = false, $order = '')
     {
         $files = array();
-        $query = 'SELECT ' . $this->_date_part('timestamp', 'DT1') . ' as START, ' . $this->_date_part(
+        $query = 'SELECT ' . $this->datePart('timestamp', 'DT1') . ' as START, ' . $this->datePart(
             'timestamp',
             'DT1'
         ) . ' as FINISH,  EVT_ID, FILESZ_KB, FRAMES, ALT1 as U16_1, ALT2 as U16_2, EVT_CONT';
@@ -589,8 +588,8 @@ class Adb
             $query .= " AND((DT1 between '$timebegin' and '$timeend') or (DT2 between '$timebegin' and '$timeend'))";
         }
         $query .= " ORDER BY DT1 " . $order;
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
         while ($res->fetchInto($line)) {
             $f = array();
             foreach ($line as $k => $v) {
@@ -611,11 +610,11 @@ class Adb
      *
      * @return array масив событий
      */
-    public function get_pda_events($cams_csv, $timebegin, $timeend, $order = '')
+    public function getPdaEvents($cams_csv, $timebegin, $timeend, $order = '')
     {
 
         $files = array();
-        $query = 'SELECT ' . $this->_date_part('timestamp', 'E1.DT1') . ' as START, ' . $this->_date_part(
+        $query = 'SELECT ' . $this->datePart('timestamp', 'E1.DT1') . ' as START, ' . $this->datePart(
             'timestamp',
             'E2.DT1'
         ) . ' as FINISH,  E1.CAM_NR, E1.SESS_NR AS SESS_NR';
@@ -628,9 +627,9 @@ class Adb
             "(E2.DT1 is null or E2.DT1 between '$timebegin' and '$timeend'))";
         $query .= " ORDER BY E1.DT1 " . $order;
 
-        $res = $this->_db->query($query);
+        $res = $this->db->query($query);
 
-        $this->_error($res);
+        $this->error($res);
         while ($res->fetchInto($line)) {
             $f = array();
             foreach ($line as $k => $v) {
@@ -645,15 +644,15 @@ class Adb
     /**
      *  Метод позволяет получить масив событий для offline модуля
      * @param array $cams список камер
-     * @param int $timemode фильтр даты
      * @param array $date дата
      * @param array $evt_ids тип событий
      * @param array $dayofweek дни недели
-     * @param array $page лимит и номер страницы
+     * @param bool|int $timemode фильтр даты
+     * @param array|bool $page лимит и номер страницы
      *
      * @return array масив событий
      */
-    public function events_select($cams, $timemode = false, $date, $evt_ids, $dayofweek, $page = false)
+    public function eventsSelect($cams, $date, $evt_ids, $dayofweek, $timemode = false, $page = false)
     {
 
         $all_continuous_events = array(12, 23, 32);
@@ -661,7 +660,7 @@ class Adb
         $query_noncontinuous_events = array_diff($evt_ids, $all_continuous_events);
 
         $events = array();
-        $query = 'SELECT ' . $this->_date_part('timestamp', 'DT1') . ' as UDT1, ' . $this->_date_part(
+        $query = 'SELECT ' . $this->datePart('timestamp', 'DT1') . ' as UDT1, ' . $this->datePart(
             'timestamp',
             'DT2'
         ) . ' as UDT2,';
@@ -716,17 +715,17 @@ class Adb
                     ',',
                     $query_continuous_events
                 ) . ") and ( ( DT1 between '$timebegin' and '$timeend' )";
-                $query .= " or ( DT2 between '$timebegin' and '$timeend' ) ) and ( " . $this->_date_part(
+                $query .= " or ( DT2 between '$timebegin' and '$timeend' ) ) and ( " . $this->datePart(
                     'weekday',
                     'DT1'
-                ) . " in (" . implode(',', $dayofweek) . ") or " . $this->_date_part(
+                ) . " in (" . implode(',', $dayofweek) . ") or " . $this->datePart(
                     'weekday',
                     'DT2'
                 ) . " in (" . implode(',', $dayofweek) . ") )";
-                $query .= " and ( ( " . $this->_date_part(
+                $query .= " and ( ( " . $this->datePart(
                     'time',
                     'DT1'
-                ) . " between '$time_in_day_begin' and '$time_in_day_end' ) or ( " . $this->_date_part(
+                ) . " between '$time_in_day_begin' and '$time_in_day_end' ) or ( " . $this->datePart(
                     'time',
                     'DT2'
                 ) . " between '$time_in_day_begin' and '$time_in_day_end' ) ))";
@@ -740,10 +739,10 @@ class Adb
                     ',',
                     $query_noncontinuous_events
                 ) . ")and ( DT1 between '$timebegin' and '$timeend' )";
-                $query .= " and ( " . $this->_date_part('weekday', 'DT1') . " in (" . implode(
+                $query .= " and ( " . $this->datePart('weekday', 'DT1') . " in (" . implode(
                     ',',
                     $dayofweek
-                ) . ") ) and ( (" . $this->_date_part(
+                ) . ") ) and ( (" . $this->datePart(
                     'time',
                     'DT1'
                 ) . " between '$time_in_day_begin' and '$time_in_day_end') ))";
@@ -757,8 +756,8 @@ class Adb
             $query .= ' OFFSET ' . $page['offset'];
         }
 
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
         while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
             $f = array();
             foreach ($line as $k => $v) {
@@ -779,15 +778,15 @@ class Adb
      * @param string $host для какого хоста
      * @param string $user для какого пользователя
      */
-    public function add_camera($bind_mac, $cam_nr, $parname, $parval, $host, $user)
+    public function addCamera($bind_mac, $cam_nr, $parname, $parval, $host, $user)
     {
         $parval = $parval == null ? 'NULL' : "'$parval'";
         $query = 'INSERT INTO CAMERAS ';
         $query .= '(BIND_MAC, CAM_NR, PARNAME, PARVAL, CHANGE_HOST, CHANGE_USER)';
         $query .= " VALUES ('" . $bind_mac . "'," . $cam_nr . ",'" . $parname . "'," . $parval . ",'" .
             $host . "','" . $user . "')";
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
     }
 
     /**
@@ -801,7 +800,7 @@ class Adb
      * @param string $host для какого хоста
      * @param string $user для какого пользователя
      */
-    public function update_camera($bind_mac, $cam_nr, $parname, $parval, $host, $user)
+    public function updateCamera($bind_mac, $cam_nr, $parname, $parval, $host, $user)
     {
         $parval = $parval == null ? 'NULL' : "'$parval'";
         $query = 'UPDATE CAMERAS SET';
@@ -811,8 +810,8 @@ class Adb
         $query .= " WHERE BIND_MAC = '$bind_mac'";
         $query .= " AND CAM_NR = $cam_nr";
         $query .= " AND PARNAME = '$parname'";
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
     }
 
     /**
@@ -824,19 +823,19 @@ class Adb
      * @param string $host для какого хоста
      * @param string $user для какого пользователя
      */
-    public function replace_camera($bind_mac, $cam_nr, $parname, $parval, $host, $user)
+    public function replaceCamera($bind_mac, $cam_nr, $parname, $parval, $host, $user)
     {
         $query = 'SELECT * FROM CAMERAS ';
         $query .= " WHERE BIND_MAC = '$bind_mac'";
         $query .= " AND CAM_NR = $cam_nr";
         $query .= " AND PARNAME = '$parname'";
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
         $res->fetchInto($line);
         if (empty($line)) {
-            $this->add_camera($bind_mac, $cam_nr, $parname, $parval, $host, $user);
+            $this->addCamera($bind_mac, $cam_nr, $parname, $parval, $host, $user);
         } else {
-            $this->update_camera($bind_mac, $cam_nr, $parname, $parval, $host, $user);
+            $this->updateCamera($bind_mac, $cam_nr, $parname, $parval, $host, $user);
         }
     }
 
@@ -847,24 +846,24 @@ class Adb
      * @param string $bind_mac 'local'
      * @return array параметры камеры
      */
-    public function get_def_cam_params($cam_nr = 0, $bind_mac = 'local')
+    public function getDefCamParams($cam_nr = 0, $bind_mac = 'local')
     {
         $cams = array();
         $query = 'SELECT CAM_NR, PARNAME, PARVAL, CHANGE_HOST, CHANGE_USER, CHANGE_TIME FROM CAMERAS';
         $query .= ' WHERE BIND_MAC=\'' . $bind_mac . '\' AND (CAM_NR=0 OR CAM_NR=' . $cam_nr . ')';
 
-        $res = $this->_db->query($query);
+        $res = $this->db->query($query);
 
-        $this->_error($res);
+        $this->error($res);
 
         while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
             $cams[] = array(
-                'CAM_NR' => trim($line[$this->_key('CAM_NR')]),
-                'PARAM' => trim($line[$this->_key('PARNAME')]),
-                'VALUE' => trim($line[$this->_key('PARVAL')]),
-                'CHANGE_HOST' => trim($line[$this->_key('CHANGE_HOST')]),
-                'CHANGE_USER' => trim($line[$this->_key('CHANGE_USER')]),
-                'CHANGE_TIME' => trim($line[$this->_key('CHANGE_TIME')]),
+                'CAM_NR' => trim($line[$this->key('CAM_NR')]),
+                'PARAM' => trim($line[$this->key('PARNAME')]),
+                'VALUE' => trim($line[$this->key('PARVAL')]),
+                'CHANGE_HOST' => trim($line[$this->key('CHANGE_HOST')]),
+                'CHANGE_USER' => trim($line[$this->key('CHANGE_USER')]),
+                'CHANGE_TIME' => trim($line[$this->key('CHANGE_TIME')]),
 
             );
         }
@@ -879,7 +878,7 @@ class Adb
      * @param string $bind_mac 'local'
      * @return array параметры камер
      */
-    public function get_cam_params($cams_list = '', $param_list = '', $bind_mac = 'local')
+    public function getCamParams($cams_list = '', $param_list = '', $bind_mac = 'local')
     {
         $cams = array();
         $query = 'SELECT CAM_NR, PARNAME, PARVAL FROM CAMERAS';
@@ -889,13 +888,13 @@ class Adb
         }
         $query .= ' AND PARNAME IN (' . $param_list . ') AND  PARVAL<>\'\' AND PARVAL IS NOT NULL ';
         $query .= ' ORDER BY CAM_NR';
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
         while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
             $cams[] = array(
-                'CAM_NR' => trim($line[$this->_key('CAM_NR')]),
-                'PARAM' => trim($line[$this->_key('PARNAME')]),
-                'VALUE' => trim($line[$this->_key('PARVAL')]),
+                'CAM_NR' => trim($line[$this->key('CAM_NR')]),
+                'PARAM' => trim($line[$this->key('PARNAME')]),
+                'VALUE' => trim($line[$this->key('PARVAL')]),
             );
         }
         return $cams;
@@ -904,10 +903,10 @@ class Adb
     /**
      *
      * Метод позволяет получить названия камер
-     * @param string $cams_list Список камер
+     * @param bool|string $cams_list Список камер
      * @return array Список названий
      */
-    public function get_cameras_name($cams_list = false)
+    public function getCamNames($cams_list = false)
     {
         $cams = array();
         /* Performing new SQL query */
@@ -924,13 +923,13 @@ class Adb
 
         $query .= ' AND c1.PARNAME = \'work\' ' .
             'ORDER BY c1.CAM_NR';
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
         while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
             $cams[] = array(
-                'CAM_NR' => trim($line[$this->_key('CAM_NR')]),
-                'work' => trim($line[$this->_key('work')]),
-                'text_left' => trim($line[$this->_key('text_left')]),
+                'CAM_NR' => trim($line[$this->key('CAM_NR')]),
+                'work' => trim($line[$this->key('work')]),
+                'text_left' => trim($line[$this->key('text_left')]),
             );
         }
         return $cams;
@@ -943,11 +942,11 @@ class Adb
      * @param string $bind_mac 'local'
      * @return int номер камеры
      */
-    public function max_cam_nr($bind_mac = 'local')
+    public function maxCamNr($bind_mac = 'local')
     {
         $query = 'SELECT MAX(CAM_NR) AS LAST_NUM FROM CAMERAS WHERE BIND_MAC=\'' . $bind_mac . '\'';
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
         $res->fetchInto($line);
         return isset($line[0]) ? $line[0] : false;
     }
@@ -959,11 +958,11 @@ class Adb
      * @param string $bind_mac 'local'
      */
 
-    public function delete_camera($cam_nr, $bind_mac = 'local')
+    public function deleteCamera($cam_nr, $bind_mac = 'local')
     {
         $query = sprintf('DELETE FROM CAMERAS WHERE BIND_MAC=\'' . $bind_mac . '\' AND CAM_NR=%d', $cam_nr);
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
     }
 
     /**
@@ -979,7 +978,7 @@ class Adb
      * @param array $vWINS
      * @param string $bind_mac
      */
-    public function add_layouts(
+    public function addLayouts(
         $display,
         $mon_nr,
         $mon_type,
@@ -1002,8 +1001,8 @@ class Adb
             $remote_addr,
             $login_user
         );
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
     }
 
     /**
@@ -1014,11 +1013,15 @@ class Adb
      * @param string $mon_name
      * @param string $remote_addr
      * @param string $login_user
-     * @param array $fWINS
-     * @param array $vWINS
+     * @param $PrintCamNames
+     * @param $AspectRatio
+     * @param $ReconnectTimeout
+     * @param $allWINS
      * @param string $bind_mac
+     * @internal param array $fWINS
+     * @internal param array $vWINS
      */
-    public function web_add_layouts(
+    public function webAddLayouts(
         $mon_nr,
         $mon_type,
         $mon_name,
@@ -1052,8 +1055,8 @@ class Adb
             $remote_addr,
             $login_user
         );
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
     }
 
     /**
@@ -1063,14 +1066,14 @@ class Adb
      * @param int $mon_nr
      * @param string $bind_mac
      */
-    public function delete_layouts($display, $mon_nr, $bind_mac = 'local')
+    public function deleteLayouts($display, $mon_nr, $bind_mac = 'local')
     {
         $query = 'DELETE FROM LOCAL_LAYOUTS';
         $query .= " WHERE BIND_MAC ='$bind_mac'";
         $query .= " AND DISPLAY ='$display'";
         $query .= " AND MON_NR = $mon_nr";
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
     }
 
     /**
@@ -1080,14 +1083,14 @@ class Adb
      * @param int $mon_nr
      * @param string $bind_mac
      */
-    public function web_delete_layouts($display, $mon_nr, $bind_mac = 'local')
+    public function webDeleteLayouts($display, $mon_nr, $bind_mac = 'local')
     {
         $query = 'DELETE FROM WEB_LAYOUTS';
         $query .= " WHERE BIND_MAC ='$bind_mac'";
         //$query .= " AND DISPLAY ='$display'";
         $query .= " AND MON_NR = $mon_nr";
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
     }
 
     /**
@@ -1103,7 +1106,7 @@ class Adb
      * @param array $vWINS
      * @param string $bind_mac
      */
-    public function update_layouts(
+    public function updateLayouts(
         $display,
         $mon_nr,
         $mon_type,
@@ -1132,24 +1135,28 @@ class Adb
         $query .= " AND DISPLAY ='$display'";
         $query .= " AND MON_NR = $mon_nr";
 
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
     }
 
     /**
      *
      * Метод позволяет обновить данные раскладки для WEB  в БД
-     * @param string $display
      * @param unknown_type $mon_nr
      * @param string $mon_type
      * @param string $mon_name
      * @param string $host
      * @param string $user
-     * @param array $fWINS
-     * @param array $vWINS
+     * @param $PrintCamNames
+     * @param $AspectRatio
+     * @param $ReconnectTimeout
+     * @param $allWINS
      * @param string $bind_mac
+     * @internal param string $display
+     * @internal param array $fWINS
+     * @internal param array $vWINS
      */
-    public function web_update_layouts(
+    public function webUpdateLayouts(
         $mon_nr,
         $mon_type,
         $mon_name,
@@ -1175,8 +1182,8 @@ class Adb
         $query .= " WHERE BIND_MAC ='$bind_mac'";
         $query .= " AND MON_NR = $mon_nr";
 
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
     }
 
     /**
@@ -1184,19 +1191,19 @@ class Adb
      * Метод позволяет установить раскладку по умолчанию для WEB
      * @param unknown_type $mon_nr - номер раскладки, устанавливаемый по умолчанию
      */
-    public function web_set_def_layout($mon_nr)
+    public function webSetDefLayout($mon_nr)
     {
         $query = 'UPDATE WEB_LAYOUTS SET ';
         $query .= "IS_DEFAULT = 0";
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
 
         $query = 'UPDATE WEB_LAYOUTS SET ';
         $query .= "IS_DEFAULT = 1";
         $query .= " WHERE MON_NR = $mon_nr";
 
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
     }
 
     /**
@@ -1212,7 +1219,7 @@ class Adb
      * @param array $vWINS
      * @param string $bind_mac
      */
-    public function replace_layouts(
+    public function replaceLayouts(
         $display,
         $mon_nr,
         $mon_type,
@@ -1227,30 +1234,34 @@ class Adb
         $query .= " WHERE BIND_MAC = '$bind_mac'";
         $query .= " AND MON_NR = $mon_nr";
         $query .= " AND DISPLAY = '$display'";
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
         $res->fetchInto($line);
         if (empty($line)) {
-            $this->add_layouts($display, $mon_nr, $mon_type, $mon_name, $host, $user, $fWINS, $vWINS);
+            $this->addLayouts($display, $mon_nr, $mon_type, $mon_name, $host, $user, $fWINS, $vWINS);
         } else {
-            $this->update_layouts($display, $mon_nr, $mon_type, $mon_name, $host, $user, $fWINS, $vWINS);
+            $this->updateLayouts($display, $mon_nr, $mon_type, $mon_name, $host, $user, $fWINS, $vWINS);
         }
     }
 
     /**
      *
      * Метод добавляет или обновляет параметры раскладки для WEB
-     * @param string $display
      * @param unknown_type $mon_nr
      * @param string $mon_type
      * @param string $mon_name
      * @param string $host
      * @param string $user
-     * @param array $fWINS
-     * @param array $vWINS
+     * @param $PrintCamNames
+     * @param $AspectRatio
+     * @param $ReconnectTimeout
+     * @param $allWINS
      * @param string $bind_mac
+     * @internal param string $display
+     * @internal param array $fWINS
+     * @internal param array $vWINS
      */
-    public function web_replace_layouts(
+    public function webReplaceLayouts(
         $mon_nr,
         $mon_type,
         $mon_name,
@@ -1274,11 +1285,11 @@ class Adb
         $query .= " WHERE BIND_MAC = '$bind_mac'";
         $query .= " AND MON_NR = $mon_nr";
 
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
         $res->fetchInto($line);
         if (empty($line)) {
-            $this->web_add_layouts(
+            $this->webAddLayouts(
                 $mon_nr,
                 $mon_type,
                 $mon_name,
@@ -1290,7 +1301,7 @@ class Adb
                 $allWINS
             );
         } else {
-            $this->web_update_layouts(
+            $this->webUpdateLayouts(
                 $mon_nr,
                 $mon_type,
                 $mon_name,
@@ -1312,7 +1323,7 @@ class Adb
      * @param string $bind_mac
      * @return array параметры
      */
-    public function get_monitor($display, $mon_nr, $bind_mac = 'local')
+    public function getMonitor($display, $mon_nr, $bind_mac = 'local')
     {
         $query = 'SELECT MON_NR, MON_TYPE, MON_NAME, IS_DEFAULT, ' .
             'WIN1, WIN2, WIN3, WIN4, WIN5, WIN6, WIN7, WIN8, WIN9,
@@ -1324,8 +1335,8 @@ class Adb
             'CHANGE_HOST, CHANGE_USER, CHANGE_TIME ' .
             'FROM LOCAL_LAYOUTS ' .
             'WHERE BIND_MAC=\'' . $bind_mac . '\' AND DISPLAY=\'' . $display . '\' AND MON_NR=' . $mon_nr;
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
         $res->fetchInto($line);
         return $line;
     }
@@ -1337,7 +1348,7 @@ class Adb
      * @param string $bind_mac
      * @return array параметры
      */
-    public function web_get_monitor($mon_nr, $bind_mac = 'local')
+    public function webGetMonitor($mon_nr, $bind_mac = 'local')
     {
 
         $query = 'SELECT MON_NR, MON_TYPE, SHORT_NAME, IS_DEFAULT, WINS,' .
@@ -1345,8 +1356,8 @@ class Adb
             'FROM WEB_LAYOUTS ' .
             'WHERE BIND_MAC=\'' . $bind_mac . '\' AND MON_NR=' . $mon_nr;
 
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
         $res->fetchInto($line);
         return $line;
     }
@@ -1357,15 +1368,15 @@ class Adb
      * @param string $bind_mac
      * @return array раскладки
      */
-    public function get_layouts($bind_mac = 'local')
+    public function getLayouts($bind_mac = 'local')
     {
         $mon = array();
         $query = 'SELECT * FROM LOCAL_LAYOUTS';
         $query .= " WHERE BIND_MAC='$bind_mac'";
         $query .= ' ORDER BY MON_NR';
 
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
         while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
             $m = array();
             foreach ($line as $k => $v) {
@@ -1381,10 +1392,11 @@ class Adb
      *
      * Метод позволяет получить параметры всех раскладок для WEB
      * или WEB-раскладок, разрешенных для пользователя
+     * @param null $user
      * @param string $bind_mac
      * @return array раскладки
      */
-    public function web_get_layouts($user = null, $bind_mac = 'local')
+    public function webGetLayouts($user = null, $bind_mac = 'local')
     {
 
         $mon = array();
@@ -1397,8 +1409,8 @@ class Adb
         //Если пользователь указан - формируем запрос о разрешенных раскладках
         if ($user != null) {
             $sub_query = sprintf("SELECT ALLOW_LAYOUTS FROM USERS WHERE USER_LOGIN='%s'", $user);
-            $sub_res = $this->_db->query($sub_query);
-            $this->_error($allowed_layouts);
+            $sub_res = $this->db->query($sub_query);
+            $this->error($allowed_layouts);
             //Определяем разрешенные раскладки
             while ($sub_res->fetchInto($vl, DB_FETCHMODE_ASSOC)) {
                 $l = array();
@@ -1436,8 +1448,8 @@ class Adb
             $query .= ' ORDER BY MON_NR';
         }
 
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
         while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
             $m = array();
             foreach ($line as $k => $v) {
@@ -1469,6 +1481,7 @@ class Adb
      * @param unknown_type $guest - гостевой доступ
      * @param unknown_type $pda - доступ к PDA версии
      * @param string $u_devacl Доступные камеры
+     * @param $u_layouts
      * @param string $u_forced_saving_limit Максимальная длительность принудительной записи (по команде) в минутах
      * @param string $sessions_per_user Ограничение количества одновременных просмотров (камер) пользователем
      * @param string $limit_fps limit_fps, кадров в секунду, [1-25] или sec/frames
@@ -1482,7 +1495,7 @@ class Adb
      * @param string $login_user пользователь, который добавляет
      * @return bool результат добавления
      */
-    public function add_user(
+    public function addUser(
         $u_host,
         $u_name,
         $passwd,
@@ -1513,7 +1526,7 @@ class Adb
                      VALUES ( %s, %s, %s, %u, %b, %b, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())',
             sql_format_str_val($u_host),
             sql_format_str_val($u_name),
-            $this->_crypt($passwd),
+            $this->crypt($passwd),
             $groups,
             $guest,
             $pda,
@@ -1531,8 +1544,8 @@ class Adb
             sql_format_str_val($login_user)
         );
 
-        $res = $this->_db->query($query);
-        return !$this->_error($res, false);
+        $res = $this->db->query($query);
+        return !$this->error($res, false);
     }
 
     /**
@@ -1545,6 +1558,7 @@ class Adb
      * @param unknown_type $guest - гостевой доступ
      * @param unknown_type $pda - доступ к PDA версии
      * @param string $u_devacl Доступные камеры
+     * @param $u_layouts
      * @param string $u_forced_saving_limit Максимальная длительность принудительной записи (по команде) в минутах
      * @param string $sessions_per_user Ограничение количества одновременных просмотров камер пользователем
      * @param string $limit_fps limit_fps, кадров в секунду, [1-25] или sec/frames
@@ -1561,7 +1575,7 @@ class Adb
      * @return bool результат обновления
      */
 
-    public function update_user(
+    public function updateUser(
         $u_host,
         $u_name,
         $passwd,
@@ -1583,11 +1597,16 @@ class Adb
         $old_u_host,
         $old_u_name
     ) {
+        $str = 'UPDATE USERS SET ALLOW_FROM=%s, USER_LOGIN=%s, PASSWD=%s, STATUS=%d, GUEST=%b, PDA=%b, ' .
+            'ALLOW_CAMS=%s, ALLOW_LAYOUTS=%s ,MAX_FORCED_REC_MINUTES=%s, MAX_MEDIA_SESSIONS_NB=%s, MAX_VIDEO_FPS=%s, ' .
+            'MAX_VIDEO_NONMOTION_FPS=%s, MAX_MEDIA_SESSION_RATE_KB=%s, MAX_MEDIA_SESSION_MINUTES=%s, ' .
+            'MAX_MEDIA_SESSION_VOLUME_MB=%s, LONGNAME=%s, CHANGE_HOST=%s, CHANGE_USER=%s, ' .
+            'CHANGE_TIME=NOW() WHERE ALLOW_FROM=%s AND USER_LOGIN=%s';
         $query = sprintf(
-            'UPDATE USERS SET ALLOW_FROM=%s, USER_LOGIN=%s, PASSWD=%s, STATUS=%d, GUEST=%b, PDA=%b, ALLOW_CAMS=%s, ALLOW_LAYOUTS=%s ,MAX_FORCED_REC_MINUTES=%s, MAX_MEDIA_SESSIONS_NB=%s, MAX_VIDEO_FPS=%s, MAX_VIDEO_NONMOTION_FPS=%s, MAX_MEDIA_SESSION_RATE_KB=%s, MAX_MEDIA_SESSION_MINUTES=%s, MAX_MEDIA_SESSION_VOLUME_MB=%s, LONGNAME=%s, CHANGE_HOST=%s, CHANGE_USER=%s, CHANGE_TIME=NOW() WHERE ALLOW_FROM=%s AND USER_LOGIN=%s',
+            $str,
             sql_format_str_val($u_host),
             sql_format_str_val($u_name),
-            $this->_crypt($passwd),
+            $this->crypt($passwd),
             $groups,
             $guest,
             $pda,
@@ -1606,9 +1625,8 @@ class Adb
             sql_format_str_val($old_u_host),
             sql_format_str_val($old_u_name)
         );
-        $res = $this->_db->query($query);
-        $res = $this->_db->query($query);
-        return !$this->_error($res, false);
+        $res = $this->db->query($query);
+        return !$this->error($res, false);
     }
 
     /**
@@ -1618,7 +1636,7 @@ class Adb
      * @param string $u_host хост
      * @param int $u_status статус
      */
-    public function delete_user($u_name, $u_host, $u_status)
+    public function deleteUser($u_name, $u_host, $u_status)
     {
         $query = sprintf(
             'DELETE FROM USERS WHERE USER_LOGIN=%s AND ALLOW_FROM=%s AND STATUS=%u',
@@ -1627,8 +1645,8 @@ class Adb
             $u_status
         );
 
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
     }
 
     /**
@@ -1638,15 +1656,15 @@ class Adb
      * @param string $hosts хост
      * @return string пароль
      */
-    public function get_user_passwd($u_name, $hosts)
+    public function getUserPassword($u_name, $hosts)
     {
         $query = sprintf(
             "SELECT PASSWD FROM USERS WHERE ALLOW_FROM in(%s) AND USER_LOGIN='%s'",
             "'" . implode("','", $hosts) . "'",
             $u_name
         );
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
         $res->fetchInto($line);
         return isset($line[0]) ? trim($line[0]) : false;
     }
@@ -1657,27 +1675,28 @@ class Adb
      * @param string $u_name логин
      * @param string $u_pass пароль
      * @param string $hosts хост
+     * @return bool
      */
-    public function update_user_passwd($u_name, $u_pass, $hosts)
+    public function updateUserPassword($u_name, $u_pass, $hosts)
     {
         $query = sprintf(
             "UPDATE USERS SET PASSWD=%s	 WHERE ALLOW_FROM in(%s) AND USER_LOGIN='%s'",
-            $this->_crypt($u_pass),
+            $this->crypt($u_pass),
             "'" . implode("','", $hosts) . "'",
             $u_name
         );
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
         return true;
     }
 
     /**
      * Метод позволяет получить пользователей
      *
-     * @param int $status статус
+     * @param bool|int $status статус
      * @return array масив пользователей
      */
-    public function get_users($status = false)
+    public function getUsers($status = false)
     {
         $users = array();
         $query = 'SELECT ALLOW_FROM, USER_LOGIN, GUEST, PDA, PASSWD, STATUS, ALLOW_CAMS, ALLOW_LAYOUTS, ' .
@@ -1690,46 +1709,46 @@ class Adb
         }
         $query .= 'ORDER BY ALLOW_FROM, USER_LOGIN';
 
-        $res = $this->_db->query($query);
-        $this->_error($res);
+        $res = $this->db->query($query);
+        $this->error($res);
         while ($res->fetchInto($line, DB_FETCHMODE_ASSOC)) {
             $users[] = array(
-                'HOST' => trim($line[$this->_key('ALLOW_FROM')]),
-                'USER' => trim($line[$this->_key('USER_LOGIN')]),
-                'PASSWD' => trim($line[$this->_key('PASSWD')]),
-                'GUEST' => trim($line[$this->_key('GUEST')]),
-                'PDA' => trim($line[$this->_key('PDA')]),
-                'STATUS' => trim($line[$this->_key('STATUS')]),
-                'ALLOW_CAMS' => trim($line[$this->_key('ALLOW_CAMS')]),
-                'ALLOW_LAYOUTS' => trim($line[$this->_key('ALLOW_LAYOUTS')]),
-                'MAX_FORCED_REC_MINUTES' => trim($line[$this->_key('MAX_FORCED_REC_MINUTES')]),
-                'MAX_MEDIA_SESSIONS_NB' => trim($line[$this->_key('MAX_MEDIA_SESSIONS_NB')]),
-                'MAX_VIDEO_FPS' => trim($line[$this->_key('MAX_VIDEO_FPS')]),
-                'MAX_VIDEO_NONMOTION_FPS' => trim($line[$this->_key('MAX_VIDEO_NONMOTION_FPS')]),
-                'MAX_MEDIA_SESSION_RATE_KB' => trim($line[$this->_key('MAX_MEDIA_SESSION_RATE_KB')]),
-                'MAX_MEDIA_SESSION_MINUTES' => trim($line[$this->_key('MAX_MEDIA_SESSION_MINUTES')]),
-                'MAX_MEDIA_SESSION_VOLUME_MB' => trim($line[$this->_key('MAX_MEDIA_SESSION_VOLUME_MB')]),
-                'LONGNAME' => trim($line[$this->_key('LONGNAME')]),
-                'CHANGE_HOST' => trim($line[$this->_key('CHANGE_HOST')]),
-                'CHANGE_USER' => trim($line[$this->_key('CHANGE_USER')]),
-                'CHANGE_TIME' => trim($line[$this->_key('CHANGE_TIME')]),
+                'HOST' => trim($line[$this->key('ALLOW_FROM')]),
+                'USER' => trim($line[$this->key('USER_LOGIN')]),
+                'PASSWD' => trim($line[$this->key('PASSWD')]),
+                'GUEST' => trim($line[$this->key('GUEST')]),
+                'PDA' => trim($line[$this->key('PDA')]),
+                'STATUS' => trim($line[$this->key('STATUS')]),
+                'ALLOW_CAMS' => trim($line[$this->key('ALLOW_CAMS')]),
+                'ALLOW_LAYOUTS' => trim($line[$this->key('ALLOW_LAYOUTS')]),
+                'MAX_FORCED_REC_MINUTES' => trim($line[$this->key('MAX_FORCED_REC_MINUTES')]),
+                'MAX_MEDIA_SESSIONS_NB' => trim($line[$this->key('MAX_MEDIA_SESSIONS_NB')]),
+                'MAX_VIDEO_FPS' => trim($line[$this->key('MAX_VIDEO_FPS')]),
+                'MAX_VIDEO_NONMOTION_FPS' => trim($line[$this->key('MAX_VIDEO_NONMOTION_FPS')]),
+                'MAX_MEDIA_SESSION_RATE_KB' => trim($line[$this->key('MAX_MEDIA_SESSION_RATE_KB')]),
+                'MAX_MEDIA_SESSION_MINUTES' => trim($line[$this->key('MAX_MEDIA_SESSION_MINUTES')]),
+                'MAX_MEDIA_SESSION_VOLUME_MB' => trim($line[$this->key('MAX_MEDIA_SESSION_VOLUME_MB')]),
+                'LONGNAME' => trim($line[$this->key('LONGNAME')]),
+                'CHANGE_HOST' => trim($line[$this->key('CHANGE_HOST')]),
+                'CHANGE_USER' => trim($line[$this->key('CHANGE_USER')]),
+                'CHANGE_TIME' => trim($line[$this->key('CHANGE_TIME')]),
             );
         }
 
         return $users;
     }
 
-    private function _key($str)
+    private function key($str)
     {
-        if ($this->_dbtype == 'pgsql') {
+        if ($this->dbtype == 'pgsql') {
             return strtolower($str);
         }
         return $str;
     }
 
-    private function _date_part($type, $value)
+    private function datePart($type, $value)
     {
-        if ($this->_dbtype == 'pgsql') {
+        if ($this->dbtype == 'pgsql') {
             switch ($type) {
                 case 'year':
                     $str = "date_part('year', %%)";
@@ -1786,9 +1805,9 @@ class Adb
         return $str;
     }
 
-    private function _date_format($value)
+    private function dateFormat($value)
     {
-        if ($this->_dbtype == 'pgsql') {
+        if ($this->dbtype == 'pgsql') {
             $str = "to_char(%%, 'yyyy_mm_dd_hh24')";
         } else {
             $str = "DATE_FORMAT(%%, '%Y_%m_%d_%H')";
@@ -1797,9 +1816,9 @@ class Adb
         return $str;
     }
 
-    private function _timediff($d1, $d2)
+    private function timediff($d1, $d2)
     {
-        if ($this->_dbtype == 'pgsql') {
+        if ($this->dbtype == 'pgsql') {
             $str = $d1 . "-" . $d2;
         } else {
             $str = "TIMEDIFF(" . $d1 . " , " . $d2 . ")";
@@ -1807,13 +1826,13 @@ class Adb
         return $str;
     }
 
-    private function _crypt($value)
+    private function crypt($value)
     {
         if (empty($value)) {
             return "''";
         }
 
-        if ($this->_dbtype == 'pgsql') {
+        if ($this->dbtype == 'pgsql') {
             $str = "crypt('%%', 'av')";
         } else {
             $str = "encrypt('%%')";

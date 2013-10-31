@@ -206,7 +206,7 @@ if (isset($cmd)) {
             if ($allWINS != '') {
                 $PrintCamNames = ($PrintCamNames != null) ? 1 : 0;
 
-                $adb->web_add_layouts(
+                $adb->webAddLayouts(
                     $mon_nr,
                     $mon_type,
                     $mon_name,

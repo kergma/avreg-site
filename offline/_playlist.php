@@ -133,7 +133,7 @@ if ($is_video) {
     array_push($events, 12);
 }
 
-$result = $adb->events_select($cams, $timemode, $date, $events, isset($dayofweek) ? $dayofweek : array());
+$result = $adb->eventsSelect($cams, $date, $events, isset($dayofweek) ? $dayofweek : array(), $timemode);
 
 $num_rows = 0;
 $res_array = array();

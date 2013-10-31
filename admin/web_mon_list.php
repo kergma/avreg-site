@@ -158,7 +158,7 @@ if (isset($cmd)) {
             break;
         case 'DEL_OK': //Удаление раскладки
             if (($mult_btn == $strYes) && isset($mon_nr)) {
-                $adb->web_delete_layouts($display, $mon_nr);
+                $adb->webDeleteLayouts($display, $mon_nr);
                 echo '<p><font color="' . $warn_color . '">' . sprintf(
                     $fmtLayoutDeleted,
                     $counter,
@@ -314,7 +314,7 @@ if ($admin_user) {
     if (!isset($mon_nr) || $mon_nr == '') {
         /* Performing new SQL query */
         //Загрузка установленных раскладок
-        $result = $adb->web_get_layouts();
+        $result = $adb->webGetLayouts();
 
         $LD = array();
         // Print_Arr($layouts_defs);

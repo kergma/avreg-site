@@ -51,7 +51,7 @@ if (isset($cmd)) {
                 if (($olds[$parname] != $value) && CheckParVal($parname, $value)) {
                     CorrectParVal($parname, $value);
                     $_val = ($value == '') ? null : html_entity_decode($value);
-                    $adb->replace_camera('local', $cam_nr, $parname, $_val, $remote_addr, $login_user);
+                    $adb->replaceCamera('local', $cam_nr, $parname, $_val, $remote_addr, $login_user);
 
                     print_syslog(
                         LOG_NOTICE,
@@ -102,7 +102,7 @@ require('./param-grp.inc.php');
 
 // выводим таблицу параметров
 if (isset($categories)) {
-    $result = $adb->get_def_cam_params($cam_nr);
+    $result = $adb->getDefCamParams($cam_nr);
 
     $cam_params = array();
     $def_params = array();

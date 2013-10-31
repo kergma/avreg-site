@@ -61,7 +61,7 @@ if (isset($_SESSION[$recsess_sess_var_name])) {
     $rec_sessions = & $_SESSION[$recsess_sess_var_name];
 } else {
 
-    $rec_sessions = $adb->get_pda_events($cams_csv, $timebegin, $timeend, $use_desc_order);
+    $rec_sessions = $adb->getPdaEvents($cams_csv, $timebegin, $timeend, $use_desc_order);
 
     if (!$rec_sessions) {
         print "<div style='padding: 10px;'>Ничего не найдено за этот период.<br>\n";

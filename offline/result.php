@@ -119,12 +119,12 @@ if (!isset ($cams) || !isset ($filter)) {
         array_push($events, 12);
     }
 
-    $result = $adb->events_select(
+    $result = $adb->eventsSelect(
         $cams,
-        $timemode,
         $date,
         $events,
         isset($dayofweek) ? $dayofweek : array(),
+        $timemode,
         array('limit' => $row_max, 'offset' => $row_start)
     );
 

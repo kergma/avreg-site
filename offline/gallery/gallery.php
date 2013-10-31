@@ -109,13 +109,13 @@ class Gallery
                 'limit' => $this->limit,
                 'offset' => $param['sp'],
             );
-            //$events = $this->db->gallery_get_event($p);
+            //$events = $this->db->galleryGetEvent($p);
             if ($this->limit > 1) {
-                $events = $this->db->gallery_get_event($p);
+                $events = $this->db->galleryGetEvent($p);
                 // Сохранение результата
                 $this->result = array('events' => $events);
             } else {
-                $date = $this->db->gallery_get_event_date($p);
+                $date = $this->db->galleryGetEventDate($p);
                 // Сохранение результата
                 $this->result = $date;
             }
@@ -128,20 +128,20 @@ class Gallery
         global $GCP_cams_params;
         $cameras = implode(',', array_keys($GCP_cams_params));
 
-        $last_event_date = $this->db->gallery_get_last_event_date(array('cameras' => array_keys($GCP_cams_params)));
+        $last_event_date = $this->db->galleryGetLastEventDate(array('cameras' => array_keys($GCP_cams_params)));
 
         $key = md5($cameras . '-' . $last_event_date);
 
         $tree_events_result = $this->cache->get($key);  // todo fix cache or remove
         $tree_events_result = false;
         if (empty($tree_events_result)) {
-            $last_tree_date = $this->db->gallery_get_last_tree_event_data(
+            $last_tree_date = $this->db->galleryGetLastTreeEventDate(
                 array('cameras' => array_keys($GCP_cams_params))
             );
 
             if ($last_tree_date < $last_event_date) {
 
-                $evt_updt_rst = $this->db->gallery_update_tree_events(
+                $evt_updt_rst = $this->db->galleryUpdateTreeEvents(
                     $last_tree_date,
                     $last_event_date,
                     array(),
@@ -154,7 +154,7 @@ class Gallery
                 }
             }
 
-            $tree_events_result = $this->db->gallery_get_tree_events(array('cameras' => array_keys($GCP_cams_params)));
+            $tree_events_result = $this->db->galleryGetTreeEvents(array('cameras' => array_keys($GCP_cams_params)));
             if (!$this->cache->check($key)) {
                 $this->cache->lock($key);
                 $this->cache->set($key, $tree_events_result);
@@ -177,15 +177,15 @@ class Gallery
         $start = isset($param['start']) ? $param['start'] : false;
         $end = isset($param['end']) ? $param['end'] : false;
         $cameras = isset($param['cameras']) ? $param['cameras'] : false;
-        $this->db->gallery_update_tree_events($start, $end, $cameras);
+        $this->db->galleryUpdateTreeEvents($start, $end, $cameras);
     }
 
     public function cronUpdateTreeEvents()
     {
-        $last_event_date = $this->db->gallery_get_last_event_date();
-        $last_tree_date = $this->db->gallery_get_last_tree_event_data();
+        $last_event_date = $this->db->galleryGetLastEventDate();
+        $last_tree_date = $this->db->galleryGetLastTreeEventDate();
         if ($last_tree_date < $last_event_date) {
-            $this->db->gallery_update_tree_events($last_tree_date, $last_event_date);
+            $this->db->galleryUpdateTreeEvents($last_tree_date, $last_event_date);
         }
     }
 

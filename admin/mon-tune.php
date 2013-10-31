@@ -77,7 +77,7 @@ if (isset($cmd)) {
             }
             if (count($fWINS) > 0) {
 
-                $adb->replace_layouts(
+                $adb->replaceLayouts(
                     $display,
                     $mon_nr,
                     $mon_type,
@@ -116,7 +116,7 @@ if (isset($cmd)) {
     } else {
         $aaa = array();
 
-        $row = $adb->get_monitor($display, $mon_nr);
+        $row = $adb->getMonitor($display, $mon_nr);
         for ($i = 4; $i < intval(MAX_CAMS_INTO_LAYOUT + 6); $i++) {
             $a = getSelectHtmlByName('mon_wins[]', $wins_array, false, 1, 1, $row[$i], true, 'sel_change(this);');
             array_push($aaa, $a);

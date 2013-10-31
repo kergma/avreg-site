@@ -32,7 +32,7 @@ if (isset($cmd)) {
         case 'DEL_OK':
             if (($mult_btn == $strYes) && isset($mon_nr)) {
 
-                $adb->delete_layouts($display, $mon_nr);
+                $adb->deleteLayouts($display, $mon_nr);
 
                 echo '<p><font color="' . $warn_color . '">' . sprintf(
                     $strDeleteMon,
@@ -79,7 +79,7 @@ function prt_l($display, $l_nr, $l_def, $is_admin)
 if (!isset($mon_nr) || $mon_nr == '') {
     /* Performing new SQL query */
 
-    $result = $adb->get_layouts();
+    $result = $adb->getLayouts();
 
     $LD = array();
     $RD = array();

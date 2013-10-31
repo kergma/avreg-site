@@ -45,7 +45,7 @@ for ($GCP_i = 0; $GCP_i < $PARAMS_NR; $GCP_i++) {
 }
 
 /// получить данные из БД
-$result = $adb->get_cam_params($GCP_cams_list, $GCP_sql_in_par);
+$result = $adb->getCamParams($GCP_cams_list, $GCP_sql_in_par);
 foreach ($result as $row) {
     $__cam_nr = intval($row['CAM_NR']);
     if ($__cam_nr === 0) {

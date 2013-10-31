@@ -7,5 +7,5 @@
 
 $layout_num = $_GET['layout'];
 require_once('../lib/config.inc.php');
-$res = $adb->web_set_def_layout($layout_num);
+$res = $adb->webSetDefLayout($layout_num);
 var_export($res);

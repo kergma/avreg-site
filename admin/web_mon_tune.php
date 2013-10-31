@@ -91,7 +91,7 @@ if (isset($cmd)) {
             if ($allWINS != '') {
                 $PrintCamNames = ($PrintCamNames != null) ? 1 : 0;
 
-                $adb->web_replace_layouts(
+                $adb->webReplaceLayouts(
                     $mon_nr,
                     $mon_type,
                     $mon_name,
@@ -177,7 +177,7 @@ if (isset($cmd)) {
             $mon_type = $row[1];
             $mon_name = $row[2];
         } else {
-            $row = $adb->web_get_monitor($mon_nr);
+            $row = $adb->webGetMonitor($mon_nr);
             $wins_cams = json_decode($row[4], true);
         }
 

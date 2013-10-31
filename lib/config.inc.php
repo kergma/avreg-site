@@ -491,7 +491,7 @@ $WellKnownAspects = array(
 );
 
 require_once('adb.php');
-$result = $adb->get_users();
+$result = $adb->getUsers();
 
 foreach ($result as $row) {
 
@@ -884,7 +884,7 @@ function sql_format_float_val($val)
 function getCamsArray($_sip, $first_defs = false)
 {
     global $adb;
-    $result = $adb->get_cameras_name();
+    $result = $adb->getCamNames();
     $num_rows = count($result);
     if ($num_rows == 0) {
         unset ($result);

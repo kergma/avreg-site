@@ -79,7 +79,7 @@ if (isset($_FILES) && is_array($_FILES)) {
         // save to database
         if ($clear_file) {
 
-            $adb->replace_camera('local', $cam_nr, $_parname, null, $remote_addr, $login_user);
+            $adb->replaceCamera('local', $cam_nr, $_parname, null, $remote_addr, $login_user);
 
             print_syslog(
                 LOG_NOTICE,
@@ -91,7 +91,7 @@ if (isset($_FILES) && is_array($_FILES)) {
                 )
             );
         } else {
-            $adb->replace_camera('local', $cam_nr, $_parname, $_val, $remote_addr, $login_user);
+            $adb->replaceCamera('local', $cam_nr, $_parname, $_val, $remote_addr, $login_user);
             print_syslog(
                 LOG_NOTICE,
                 sprintf(

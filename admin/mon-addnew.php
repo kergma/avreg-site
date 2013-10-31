@@ -100,7 +100,7 @@ if (isset($cmd)) {
                 $i++;
             }
             if (count($fWINS) > 0) {
-                $adb->add_layouts($display, $mon_nr, $mon_type, $mon_name, $remote_addr, $login_user, $fWINS, $vWINS);
+                $adb->addLayouts($display, $mon_nr, $mon_type, $mon_name, $remote_addr, $login_user, $fWINS, $vWINS);
                 print "Ok!\n'";
                 print '<script type="text/javascript" language="javascript">reset_to_list();</script>' . "\n";
             } else {
