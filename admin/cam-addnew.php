@@ -33,12 +33,12 @@ if (isset($cmd) && $cmd == '_ADD_NEW_CAM_') {
         /* insert CAMS with min PARAMS */
         settype($cam_nr, 'integer');
 
-        $adb->add_camera('local', $cam_nr, 'work', 0, $remote_addr, $login_user);
+        $adb->addCamera('local', $cam_nr, 'work', 0, $remote_addr, $login_user);
 
         if (isset($cam_text) && !empty($cam_text)) {
 
 
-            $adb->add_camera('local', $cam_nr, 'text_left', $cam_text, $remote_addr, $login_user);
+            $adb->addCamera('local', $cam_nr, 'text_left', $cam_text, $remote_addr, $login_user);
 
 
         }
@@ -54,7 +54,7 @@ if (isset($cmd) && $cmd == '_ADD_NEW_CAM_') {
 }
 
 /// Номер добавляемой камеры
-$cam_nr = $adb->max_cam_nr();
+$cam_nr = $adb->maxCamNr();
 if ($cam_nr) {
     $cam_nr = $cam_nr + 1;
 } else {

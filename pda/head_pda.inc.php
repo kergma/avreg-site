@@ -111,10 +111,10 @@ if (isset($css_links) && is_array($css_links)) {
 if (isset($USE_JQUERY)) {
     if ($conf['debug']) {
         print '<script type="text/javascript" src="' . $conf['prefix']
-            . '/lib/js/jquery-1.7.1.min.js"></script>' . "\n";
+            . '/lib/js/third-party/jquery-1.7.1.min.js"></script>' . "\n";
     } else {
         print '<script type="text/javascript" src="' . $conf['prefix']
-            . '/lib/js/jquery-1.7.1.min.js"></script>' . "\n";
+            . '/lib/js/third-party/jquery-1.7.1.min.js"></script>' . "\n";
     }
 }
 if (isset($link_javascripts) && is_array($link_javascripts)) {

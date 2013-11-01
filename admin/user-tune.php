@@ -29,7 +29,7 @@ if (isset($cmd) && isset($u_host) && isset($u_name) && isset($groups)) {
         case 'UPDATE_USER':
             $guest = isset($guest);
             $pda = isset($pda);
-            $result = $adb->update_user(
+            $result = $adb->updateUser(
                 $u_host,
                 $u_name,
                 $u_pass,

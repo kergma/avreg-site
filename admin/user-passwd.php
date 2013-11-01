@@ -49,7 +49,7 @@ if (isset($cmd)) {
                     $hosts = array($u_host);
                 }
 
-                $user_passwd = $adb->get_user_passwd($u_name, $hosts);
+                $user_passwd = $adb->getUserPassword($u_name, $hosts);
                 var_dump($user_passwd);
                 if ($user_passwd === false) {
                     die ("Error\n");
@@ -60,7 +60,7 @@ if (isset($cmd)) {
                     $z === $user_passwd
                 ) {
                     if (strcmp($old_pass, $u_pass)) {
-                        $result = $adb->update_user_passwd($u_name, $u_pass, $hosts);
+                        $result = $adb->updateUserPassword($u_name, $u_pass, $hosts);
 
                         //print ($query);
                         if ($result) {

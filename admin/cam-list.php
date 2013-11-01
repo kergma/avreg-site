@@ -34,7 +34,7 @@ if (isset($cmd)) {
         case 'DEL_OK':
             if (($mult_btn == $strYes) && isset($cam_nr)) {
 
-                $adb->delete_camera($cam_nr);
+                $adb->deleteCamera($cam_nr);
 
                 echo '<p class="HiLiteWarn">' . sprintf($strDeleteCam, $cam_nr, $cam_name) . '</p>' . "\n";
             }

@@ -30,7 +30,7 @@ if (isset($_GET['storage'])) {
 if ($storage == 'client') {
     $link_javascripts = array(
         'lib/js/user_layouts.js',
-        'lib/js/json2.js'
+        'lib/js/third-party/json2.js'
     );
 }
 
@@ -206,7 +206,7 @@ if (isset($cmd)) {
             if ($allWINS != '') {
                 $PrintCamNames = ($PrintCamNames != null) ? 1 : 0;
 
-                $adb->web_add_layouts(
+                $adb->webAddLayouts(
                     $mon_nr,
                     $mon_type,
                     $mon_name,

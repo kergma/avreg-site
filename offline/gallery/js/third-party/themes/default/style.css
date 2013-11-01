@@ -6,7 +6,7 @@
 
 .jstree-default li,
 .jstree-default ins {
-    background-image: url("../img/d.png");
+    background-image: url("d.png");
     background-repeat: no-repeat;
     background-color: transparent;
 }
@@ -49,7 +49,7 @@
 }
 
 .jstree-default a.jstree-loading .jstree-icon {
-    background: url("../img/throbber.gif") center center no-repeat !important;
+    background: url("throbber.gif") center center no-repeat !important;
 }
 
 .jstree-default.jstree-focused {
@@ -114,15 +114,15 @@
 }
 
 #vakata-dragged.jstree-default .jstree-ok {
-    background: url("../img/d.png") -2px -53px no-repeat !important;
+    background: url("d.png") -2px -53px no-repeat !important;
 }
 
 #vakata-dragged.jstree-default .jstree-invalid {
-    background: url("../img/d.png") -18px -53px no-repeat !important;
+    background: url("d.png") -18px -53px no-repeat !important;
 }
 
 #jstree-marker.jstree-default {
-    background: url("../img/d.png") -41px -57px no-repeat !important;
+    background: url("d.png") -41px -57px no-repeat !important;
     text-indent: -100px;
 }
 
@@ -186,14 +186,16 @@
 #vakata-dragged.jstree-default .jstree-invalid,
 #vakata-dragged.jstree-default .jstree-ok,
 #jstree-marker.jstree-default {
-    _background-image: url("../img/d.gif");
+    _background-image: url("d.gif");
 }
 
 .jstree-default .jstree-open ins {
+    cursor: pointer;
     _background-position: -72px 0;
 }
 
 .jstree-default .jstree-closed ins {
+    cursor: pointer;
     _background-position: -54px 0;
 }
 

@@ -11,13 +11,13 @@ if (!defined('PMA_GRAB_GLOBALS_INCLUDED')) {
 
     if (!empty($_GET)) {
         extract($_GET, EXTR_OVERWRITE);
-    } else if (!empty($HTTP_GET_VARS)) {
+    } elseif (!empty($HTTP_GET_VARS)) {
         extract($HTTP_GET_VARS, EXTR_OVERWRITE);
     } // end if
 
     if (!empty($_POST)) {
         extract($_POST, EXTR_OVERWRITE);
-    } else if (!empty($HTTP_POST_VARS)) {
+    } elseif (!empty($HTTP_POST_VARS)) {
         extract($HTTP_POST_VARS, EXTR_OVERWRITE);
     } // end if
 
@@ -25,7 +25,7 @@ if (!defined('PMA_GRAB_GLOBALS_INCLUDED')) {
         while (list($name, $value) = each($_FILES)) {
             $$name = $value['tmp_name'];
         }
-    } else if (!empty($HTTP_POST_FILES)) {
+    } elseif (!empty($HTTP_POST_FILES)) {
         while (list($name, $value) = each($HTTP_POST_FILES)) {
             $$name = $value['tmp_name'];
         }
@@ -33,7 +33,7 @@ if (!defined('PMA_GRAB_GLOBALS_INCLUDED')) {
 
     if (!empty($_SERVER) && isset($_SERVER['PHP_SELF'])) {
         $PHP_SELF = $_SERVER['PHP_SELF'];
-    } else if (!empty($HTTP_SERVER_VARS) && isset($HTTP_SERVER_VARS['PHP_SELF'])) {
+    } elseif (!empty($HTTP_SERVER_VARS) && isset($HTTP_SERVER_VARS['PHP_SELF'])) {
         $PHP_SELF = $HTTP_SERVER_VARS['PHP_SELF'];
     } // end if
 
@@ -43,4 +43,3 @@ if (!defined('PMA_GRAB_GLOBALS_INCLUDED')) {
     } // end if
 
 } // $__PMA_GRAB_GLOBALS_LIB__
-?>

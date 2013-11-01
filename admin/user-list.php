@@ -43,7 +43,7 @@ if (isset($cmd)) {
             if (($mult_btn == $strYes) && isset($u_host) && isset($u_name) && isset($u_status)) {
 
 
-                $adb->delete_user($u_name, $u_host, $u_status);
+                $adb->deleteUser($u_name, $u_host, $u_status);
 
                 echo '<p class="HiLiteBigWarn">' . sprintf($fmtDeleteUser, $u_name, $u_host) . '</p>' . "\n";
                 print '<div class="warn">' . $strOnUsersUpdateMsg . "</div>\n";
@@ -70,7 +70,7 @@ if (!isset($u_name) || empty($u_name)) {
     while (list ($grp_status, $groups) = each($grp_ar)) {
         // next($grps);
         // print '<pre>'.$grp_status.'/'.$groups.'</pre>'."\n";
-        $result = $adb->get_users($grp_status);
+        $result = $adb->getUsers($grp_status);
 
         $num_rows = count($result);
         switch ($grp_status) {

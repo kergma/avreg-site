@@ -41,7 +41,7 @@ if (isset($_SESSION[$files_sess_var_name])) {
     }
     $use_desc_order = empty($desc) ? '' : 'desc';
 
-    $files = $adb->get_files($camera, $ser_nr, $timebegin, $timeend, $use_desc_order);
+    $files = $adb->getFiles($camera, $ser_nr, $timebegin, $timeend, $use_desc_order);
 
     if (!$files) {
         print "<div style='padding: 10px;'>Странно..., ничего не найдено :-0<br>\n";
@@ -106,7 +106,7 @@ if ($width == 'FS') {
 
 /* pagination */
 require_once('paginator.inc.php');
-$pagi = new \PDA\PdaPaginator(
+$pagi = new \Avreg\PdaPaginator(
     $files,
     isset($off) ? (int)($off) : 0,
     sprintf('files.php?camera=%u&ser_nr=%u&s=%u&f=%u', $camera, $ser_nr, $s, $f),
