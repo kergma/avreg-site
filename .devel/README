@@ -25,7 +25,7 @@ https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style
 
 Для "js" и "css" в максимальной степени пересечения с "PSR-2".
 
-1.3 Требования к именам файлов и каталогов.
+1.3 Требования к новым файлам и каталогам.
 
 * Регистр имён файлов и каталогов - нижний.
 * Расширение для php скриптов - ".php",
@@ -38,6 +38,93 @@ https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style
   б) если лицензия исходного кода: BSD,MIT,APACHE и т.п.,
      допускающая использования в комерческих целях без каких либо условий.
 * Добавление новых каталогов - по согласованию.
+
+1.4 Требования к PHP.
+
+* Добавляемые php-файлы должны всключать "head.inc.php",
+  перед включением которого нужно определить некоторые переменные
+  обрабатываемые в нём.
+  Для примеров см. "index.php" и "online/view.php" и сам "head.inc.php".
+  TODO: задокументировать переменные и перечислить здесь.
+
+1.5 Требования к JS.
+
+<example>
+$USE_JQUERY = true; // подключить jQuery.
+
+/*
+   каждый файл из $link_javascripts будет подлинкован через
+   <head><script type="text/javascript" href="js-файл"></script></head>
+*/
+$link_javascripts = array(
+    'index.js',
+    'lib/js/user_layouts.js',
+    'lib/js/third-party/json2.js'
+            ^^^^^^^^^^^ - именно в такие каталоги нужно записывать сторонние модули 
+);
+
+/*
+   код из файлов перечисленных в $include_javascripts
+   будет включен в <head><script>вот сюда</script></head>
+   (можно включить php-генератор js-кода)
+*/
+$include_javascripts = array('offline/view.js');
+
+
+require('./head.inc.php');
+</example>
+
+
+1.6 Требования к CSS.
+
+<example>
+$pageTitle = 'WebCam';
+$body_style = 'overflow: hidden;  overflow-y: hidden !important; padding: 0; margin: 0; width: 100%; height: 100%;';
+$body_addons = 'scroll="no"';
+
+/*
+   каждый файл из $css_links будет подлинкован через
+   <head><link href="css-файл" rel="stylesheet" type="text/css"/></head>
+*/
+$css_links = array(
+    'lib/js/third-party/jqModal.css',
+    'online/online.css'
+);
+
+require('../head.inc.php');
+</example>
+
+1.7 Локализация.
+
+PHP: для вывода локализованного текста на веб-страницы интерфейса
+нужно использовать php переменные, объявляемые в php языковых модулях
+"lang/{язык}/{кодировка}/{нормализованное_имя_php_файла}",
+где {нормализованное_имя_php_файла} на примере:
+offine/gallery/foo.php => _offline_gallery_foo.php
+
+Для нескольких страниц одного логического интерфейса допустимо использовать
+1 языковый модуль,
+например "_online.php", однако каждая такая php страница
+должна использовать переменную $lang_file до включения "head.inc.php":
+<example>
+$lang_file = '_online.php';
+require('../head.inc.php');
+</example>
+
+Пример:
+в языковом модуле:
+   $sError1Msg = 'бла бла бла';
+   $fError2Msg = 'было сделано %d ошибок';
+в php-коде страницы:
+  echo($sError1Msg);
+  printf($fError2Msg, 123);
+
+JS: TODO, пока обсудить с нами
+
+1.8 Документирования кода.
+
+Каждые новый файл, функция, глобальная переменная или константа в JS и PHP коде
+должны быть закомментированы в стиле DOXYGEN.
 
 2 Порядок работы.
 -----------------
@@ -82,5 +169,5 @@ avreg-site-root $ .devel/fixer dir
 Сообщаете нам об этом событии (push) посредством эл-почты.
 
 Мы, переключившись на вашу ветку devel, проверяем работу
-и, если всё в порядке, вы делаете "merge request" в веб-интерфейсе github.
+и, если всё в порядке, вы делаете "pull request" в веб-интерфейсе github.
 
