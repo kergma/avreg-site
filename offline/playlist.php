@@ -104,8 +104,8 @@ if (!count($recorded_cams)) {
 /* presets */
 $range_checked = 'checked';
 $intervals_checked = '';
-$xspf_checked = 'checked';
-$m3u_checked = '';
+$xspf_checked = '';
+$m3u_checked = 'checked';
 $txt_checked = '';
 $ftype_video_checked = 'checked';
 $ftype_audio_checked = 'checked';
@@ -301,11 +301,11 @@ if (isset($_SESSION) && isset($_SESSION['error']) /* ошибка */) {
     <br>
     <fieldset>
         <legend><?php echo $strPlFmtTitle; ?></legend>
-        <input type="radio" <?php echo $xspf_checked; ?>  name="pl_fmt"
-               value="XSPF"><?php echo $strXSPF; ?>
-        <br>
         <input type="radio" name="pl_fmt" <?php echo $m3u_checked; ?>
                value="M3U"><?php echo $strM3U; ?>
+        <br>
+        <input type="radio" <?php echo $xspf_checked; ?>  name="pl_fmt"
+               value="XSPF"><?php echo $strXSPF; ?>
         <br>
         <input type="radio" name="pl_fmt" <?php echo $txt_checked; ?>
                value="TXT"><?php echo $strTXT; ?>
@@ -336,3 +336,5 @@ if (isset($_SESSION) && isset($_SESSION['error']) /* ошибка */) {
 
 <?php
 require('../foot.inc.php');
+/* vim: set expandtab smartindent tabstop=4 shiftwidth=4: */
+

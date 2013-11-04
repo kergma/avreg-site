@@ -133,19 +133,14 @@ if ($is_video) {
     array_push($events, 12);
 }
 
-$result = $adb->eventsSelect($cams, $date, $events, isset($dayofweek) ? $dayofweek : array(), $timemode);
-
-$num_rows = 0;
-$res_array = array();
-foreach ($result as $row) {
-    $res_array[$num_rows] = $row;
-    $num_rows++;
-}
+$res_array = $adb->eventsSelect($cams, $date, $events, isset($dayofweek) ? $dayofweek : array(), $timemode);
 
 if ($conf['debug']) {
     $_SESSION['sql'] = $query;
 }
-if ($num_rows === 0) {
+$num_rows = @count($res_array);
+
+if (!$num_rows) {
     input_data_invalid('0');
 }
 
@@ -219,21 +214,21 @@ if ($pl_fmt === 'XSPF') {
     if ($timemode === 2) {
         printf(
             "\t<title>time: [%s - %s], [%s], [%s-%s]</title>$CRLF",
-            substr($timebegin, 0, -9),
-            substr($timeend, 0, -9),
-            implode(',', array_map("getDayName", $dayofweek)),
-            substr($time_in_day_begin, 0, -3),
-            substr($time_in_day_end, 0, -3)
+            substr($GLOBALS['__EVENTS_QUERY_INFO']['timebegin'], 0, -9),
+            substr($GLOBALS['__EVENTS_QUERY_INFO']['timeend'], 0, -9),
+            implode(',', array_map("getDayName", $GLOBALS['__EVENTS_QUERY_INFO']['dayofweek'])),
+            substr($GLOBALS['__EVENTS_QUERY_INFO']['time_in_day_begin'], 0, -3),
+            substr($GLOBALS['__EVENTS_QUERY_INFO']['time_in_day_end'], 0, -3)
         );
     } else {
         printf(
             "\t<title>[%s - %s]</title>$CRLF",
-            substr($timebegin, 0, -3),
-            substr($timeend, 0, -3)
+            substr($GLOBALS['__EVENTS_QUERY_INFO']['timebegin'], 0, -3),
+            substr($GLOBALS['__EVENTS_QUERY_INFO']['timeend'], 0, -3)
         );
     }
     echo "\t<creator>cams: [" . $_cams_csv . "]</creator>$CRLF";
-    echo "\t<annotation>$query</annotation>$CRLF";
+    echo "\t<annotation>" . $GLOBALS['__EVENTS_QUERY_INFO']['query'] . "</annotation>$CRLF";
     echo "\t<info>http://avreg.net</info>$CRLF";
     $main_date = gmdate("Y-m-d\TH:i:s", $now_ts);
     $tz = date("O", $timestamp);
@@ -305,3 +300,4 @@ if ($pl_fmt === 'XSPF') {
 if (isset($_SESSION) && isset($_SESSION['error'])) {
     unset($_SESSION['error']);
 }
+/* vim: set expandtab smartindent tabstop=4 shiftwidth=4: */

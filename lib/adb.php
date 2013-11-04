@@ -654,7 +654,7 @@ class Adb
      */
     public function eventsSelect($cams, $date, $evt_ids, $dayofweek, $timemode = false, $page = false)
     {
-
+        global $__EVENTS_QUERY_INFO; // for _playlist.php
         $all_continuous_events = array(12, 23, 32);
         $query_continuous_events = array_intersect($all_continuous_events, $evt_ids);
         $query_noncontinuous_events = array_diff($evt_ids, $all_continuous_events);
@@ -766,6 +766,12 @@ class Adb
             }
             $events[] = $f;
         }
+        $__EVENTS_QUERY_INFO['query'] = $query;
+        $__EVENTS_QUERY_INFO['timebegin'] = $timebegin;
+        $__EVENTS_QUERY_INFO['timeend'] = $timeend;
+        $__EVENTS_QUERY_INFO['dayofweek'] = $dayofweek;
+        $__EVENTS_QUERY_INFO['time_in_day_begin'] = $time_in_day_begin;
+        $__EVENTS_QUERY_INFO['time_in_day_end'] = $time_in_day_end;
         return $events;
     }
 
