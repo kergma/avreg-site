@@ -34,11 +34,8 @@ header('Content-Type: text/html; charset=' . $chset);
 if (isset($ie6_quirks_mode) && $ie6_quirks_mode && preg_match('/MSIE\s*6/', $_SERVER['HTTP_USER_AGENT'])) {
     print '<?xml version="1.0" encoding="' . $chset . '"?>' . "\n";
 }
-if (strstr($_SERVER['SCRIPT_NAME'], "gallery.php")) {
-    print "<!DOCTYPE HTML>\n";
-} else {
-    print '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">' . "\n";
-}
+print "<!DOCTYPE HTML>\n";
+print "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\">\n";
 print '<html><head>' . "\n";
 print '<link rel="SHORTCUT ICON" href="' . $conf['prefix'] . '/favicon.ico">' . "\n";
 print '<title>';
@@ -100,6 +97,8 @@ if (isset($link_javascripts) && is_array($link_javascripts)) {
     }
 }
 ?>
+
+<script type="text/javascript" src="/avreg/lib/js/utils.js"></script>
 
 <script type="text/javascript">
     <!--
