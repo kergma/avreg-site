@@ -151,7 +151,7 @@ while ($cat_nr < $r_cnt) {
         $cat_nr++;
         continue;
     }
-    print '<div style="margin-left: ' . (string)(20 + $_level * 20) . ';">';
+    print '<div style="margin-left: ' . (string)(20 + $_level * 20) . 'px;">';
     if (isset($categories) && !strcmp($cats[$cat_nr]['id'], $categories)) {
         print '<img src="' . $conf['prefix'] . '/img/folder.open.gif" border="0">&nbsp;';
         print '<span class="HiLite" title="' . $cats[$cat_nr]['desc'] . '">' . $cats[$cat_nr]['name'] . '</span>';
