@@ -34,7 +34,7 @@ header('Content-Type: text/html; charset=' . $chset);
 if (isset($ie6_quirks_mode) && $ie6_quirks_mode && preg_match('/MSIE\s*6/', $_SERVER['HTTP_USER_AGENT'])) {
     print '<?xml version="1.0" encoding="' . $chset . '"?>' . "\n";
 }
-print "<!DOCTYPE HTML>\n";
+print "<!DOCTYPE html>\n";
 print "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\">\n";
 print '<html><head>' . "\n";
 print '<link rel="SHORTCUT ICON" href="' . $conf['prefix'] . '/favicon.ico">' . "\n";
