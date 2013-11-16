@@ -61,13 +61,8 @@ if (isset($css_links) && is_array($css_links)) {
     }
 }
 if (isset($USE_JQUERY)) {
-    if ($conf['debug']) {
-        print '<script type="text/javascript" src="' .
-            $conf['prefix'] . '/lib/js/third-party/jquery-1.7.1.js"></script>' . "\n";
-    } else {
-        print '<script type="text/javascript" src="' .
-            $conf['prefix'] . '/lib/js/third-party/jquery-1.7.1.min.js"></script>' . "\n";
-    }
+    print '<script type="text/javascript" src="' .
+            $conf['prefix'] . '/lib/js/third-party/jquery.js"></script>' . "\n";
 }
 ?>
 
