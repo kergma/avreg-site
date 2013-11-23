@@ -133,7 +133,6 @@ class Gallery
         $key = md5($cameras . '-' . $last_event_date);
 
         $tree_events_result = $this->cache->get($key);  // todo fix cache or remove
-        $tree_events_result = false;
         if (empty($tree_events_result)) {
             $last_tree_date = $this->db->galleryGetLastTreeEventDate(
                 array('cameras' => array_keys($GCP_cams_params))
