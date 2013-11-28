@@ -34,12 +34,13 @@ header('Content-Type: text/html; charset=' . $chset);
 if (isset($ie6_quirks_mode) && $ie6_quirks_mode && preg_match('/MSIE\s*6/', $_SERVER['HTTP_USER_AGENT'])) {
     print '<?xml version="1.0" encoding="' . $chset . '"?>' . "\n";
 }
-if (strstr($_SERVER['SCRIPT_NAME'], "gallery.php")) {
-    print "<!DOCTYPE HTML>\n";
-} else {
-    print '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">' . "\n";
-}
+print "<!DOCTYPE html>\n";
 print '<html><head>' . "\n";
+print '<meta http-equiv="Content-Type" content="text/html; charset=' . $chset . '" />' . "\n";
+if (!empty($IE_COMPAT)) {
+    print '<meta http-equiv="X-UA-Compatible" content="IE=' . $IE_COMPAT . '" />' . "\n";
+}
+print '<meta name="author" content="Andrey Nikitin &lt;nik-a at mail dot ru&gt;" />' . "\n";
 print '<link rel="SHORTCUT ICON" href="' . $conf['prefix'] . '/favicon.ico">' . "\n";
 print '<title>';
 if (isset($GLOBALS['pageTitle'])) {
@@ -48,8 +49,6 @@ if (isset($GLOBALS['pageTitle'])) {
     print($conf['server-name'] . '[' . $named . ']');
 }
 print '</title>' . "\n";
-print '<meta http-equiv="Content-Type" content="text/html; charset=' . $chset . '">' . "\n";
-print '<meta name="author" content="Andrey Nikitin &lt;nik-a at mail dot ru&gt;">' . "\n";
 if (isset($BaseTarget)) {
     print '<base target="' . $BaseTarget . '">' . "\n";
 }
@@ -64,13 +63,8 @@ if (isset($css_links) && is_array($css_links)) {
     }
 }
 if (isset($USE_JQUERY)) {
-    if ($conf['debug']) {
-        print '<script type="text/javascript" src="' .
-            $conf['prefix'] . '/lib/js/third-party/jquery-1.7.1.js"></script>' . "\n";
-    } else {
-        print '<script type="text/javascript" src="' .
-            $conf['prefix'] . '/lib/js/third-party/jquery-1.7.1.min.js"></script>' . "\n";
-    }
+    print '<script type="text/javascript" src="' .
+            $conf['prefix'] . '/lib/js/third-party/jquery.js"></script>' . "\n";
 }
 ?>
 
@@ -101,6 +95,8 @@ if (isset($link_javascripts) && is_array($link_javascripts)) {
 }
 ?>
 
+<script type="text/javascript" src="/avreg/lib/js/utils.js"></script>
+
 <script type="text/javascript">
     <!--
     <?php
@@ -121,18 +117,16 @@ if (isset($link_javascripts) && is_array($link_javascripts)) {
     );
     ?>
 
-    var MSIE = false; // FIXME double calc with php
+    var MSIE = false;
     var GECKO = false;
     var WEBKIT = false;
 
     var UA = navigator.userAgent.toLowerCase();
-    if (UA.indexOf('msie') >= 0) {
+    if (UA.indexOf('msie') >= 0 || UA.indexOf('trident') >= 0) {
         MSIE = true;
-    }
-    if (UA.indexOf('webkit') >= 0) {
+    } else if (UA.indexOf('webkit') >= 0) {
         WEBKIT = true;
-    }
-    else if (UA.indexOf('gecko') >= 0) {
+    } else if (UA.indexOf('gecko') >= 0) {
         GECKO = true;
     }
 

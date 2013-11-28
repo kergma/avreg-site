@@ -31,6 +31,7 @@ $link_javascripts = array(
 
 $body_addons = 'scroll="no"';
 $ie6_quirks_mode = true;
+$IE_COMPAT='10';
 $lang_file = '_online.php';
 require('../head.inc.php');
 
