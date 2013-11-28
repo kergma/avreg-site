@@ -350,10 +350,9 @@ function brout(win_nr, win_div, win_geo) {
     var url = WINS_DEF[win_nr].cam.url;
 
     //Установка плеера в элемент  // win_geo.cam_h
-   var cont = $('<div class="pl_cont" />');
+    var $cont = $(win_div);
 
-    $(win_div).append(cont);
-    $(cont).addPlayer({
+    $cont.addPlayer({
         'src': url,
         'controls': false,
         'scale': 'on',
@@ -366,10 +365,10 @@ function brout(win_nr, win_div, win_geo) {
         }
     });
 
-    $(cont).aplayerResizeToParent();
+    $cont.aplayerResizeToParent();
 
     //установка обработчика клика по изображению камеры
-    $(win_div.parent()).click( function(e) {
+    $cont.parent().click( function(e) {
         if (typeof(e.target) == "undefined" || typeof(e.target.tagName) == "undefined") {
             return img_click(this);
         } else {
@@ -380,13 +379,12 @@ function brout(win_nr, win_div, win_geo) {
     });
 
     //установка тултипа
-    $(win_div).bind('mouseover', function () {
+    $cont.bind('mouseover', function () {
         img_mouseover(this, win_nr);
     });
-    win_div.mouseout(function () {
+    $cont.mouseout(function () {
         hideddrivetip();
     });
-
 }
 
 /**
@@ -1516,9 +1514,9 @@ function fill_canvas() {
             }
         }
                //Установка плеера
-               var $player_wrapper = $("<div data-win-index="+ win_nr +"' class='pl_wrapper'></div>");
-               hdr.after($player_wrapper);
-               brout(win_nr, $player_wrapper, win_geo);
+               var $win = $("<div data-win-index="+ win_nr +"'></div>");
+               hdr.after($win);
+               brout(win_nr, $win, win_geo);
                // append ptz areas containers
                hdr.after($('<div class="ptz_area_right"></div>').hide());
                hdr.parent(":first").append($('<div class="ptz_area_bottom"></div>').hide());

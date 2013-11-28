@@ -2041,7 +2041,7 @@ var matrix = {
                     .aplayerResizeToParent();
             } else {
                 $('#cell_' + el_num).find(".elem .info_block").attr('tooltip', ttl).end()
-                    .find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'logoPlay': 'true' })
+                    .find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'logoPlay': true })
                     .aplayerResizeToParent();
             }
         }
@@ -2397,7 +2397,7 @@ var matrix = {
                                 .aplayerResizeToParent();
                         } else {
                             $('#cell_' + i).find(".elem .info_block").attr('tooltip', ttl).end()
-                                .find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'logoPlay': 'true' })
+                                .find('a.refBox').empty().addPlayer({'src': ResizedImgSrc, 'logoPlay': true })
                                 .aplayerResizeToParent();
                         }
                     }
@@ -2504,7 +2504,7 @@ var matrix = {
                             matrix.setimagesize(i);
 
                             //пересоздаем плеер
-                            $(this).find('a.refBox').empty().addPlayer({'src': NewSRC, 'logoPlay': 'true' }).aplayerResizeContanerOnlyToParent();
+                            $(this).find('a.refBox').empty().addPlayer({'src': NewSRC, 'logoPlay': true }).aplayerResizeContanerOnlyToParent();
                         }
 
                         //Получить расширение файла
