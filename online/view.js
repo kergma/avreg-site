@@ -1518,8 +1518,8 @@ function fill_canvas() {
                hdr.after($win);
                brout(win_nr, $win, win_geo);
                // append ptz areas containers
-               hdr.after($('<div class="ptz_area_right"></div>').hide());
-               hdr.parent(":first").append($('<div class="ptz_area_bottom"></div>').hide());
+               hdr.after($('<div class="ptz_area_right"></div>'));
+               hdr.parent(":first").append($('<div class="ptz_area_bottom"></div>'));
     }
 
     WIN_DIVS = $('div.win');
@@ -1847,36 +1847,91 @@ var controls_handlers = {
     },
 
     pl_ptz_click : function(e){
-        var $target = $(e.currentTarget);
-        var cell_nr = $target.data('win-index');
-        var aplayer_id = $('.aplayer', '#win' + cell_nr).attr('id');
+        var $button = $(e.currentTarget);                   // header button
+        var $win = $('#win' + $button.data('win-index'));
+        var $player = $win.find('.aplayer');
 
-        if ($target.data('async-in-progress')) {
+        if ($button.data('async-in-progress')) {
             // prevent multiple clicks / async operations
             return
         }
 
-        // toggle ptz areas
-        if (!$target.hasClass('active')) {
+        if (!$button.hasClass('active')) {
             // flag that async operation is in progress
-            $target.data('async-in-progress', true);
+            $button.data('async-in-progress', true);
 
-            $.aplayer.togglePtzAreas(aplayer_id, true, function (success) {
+            loadPtzAreasContent($win, function (success) {
                 if (success) {
-                    $target.prop('src', imgs['pl_ptz_active'].src);
+                    $button.prop('src', imgs['pl_ptz_active'].src);
                     // button style
-                    $target.addClass('active');
+                    $button.addClass('active');
                 }
 
-                $target.data('async-in-progress', false);
+                $button.data('async-in-progress', false);
             });
         } else {
-            $target.prop('src', imgs['pl_ptz'].src);
-            $target.removeClass('active');
-            $.aplayer.togglePtzAreas(aplayer_id, false);
+            // скрываем PTZ области
+            $win
+                .removeClass('with_ptz_right')
+                .removeClass('with_ptz_bottom');
+
+            $player.parent().aplayerResizeToParent();
+            $button.prop('src', imgs['pl_ptz'].src);
+            $button.removeClass('active');
+
         }
     }
 };
+
+/**
+ * Загружает HTML содержимое областей PTZ и вставляет в соответствующие контейнеры.
+ *
+ * @param {Function} callback       callback асинхронной операции, передается boolean флаг (успех/неудача)
+ *                                  в качестве первого агрумента
+ * @param $win
+ */
+function loadPtzAreasContent($win, callback) {
+    var $player = $win.find('.aplayer');
+
+    var dfdPtzGet = $.get('./ptz.php');
+
+    dfdPtzGet
+        .done(function (response) {
+            var $ptzContent = $(response),
+                $right = $ptzContent.filter('.ptz_area_right'),
+                $bottom = $ptzContent.filter('.ptz_area_bottom');
+
+            if ($right.size()) {
+                $win
+                    .addClass('with_ptz_right')
+                    .find('.ptz_area_right')
+                    .html($right.html());
+            } else {
+                $win
+                    .removeClass('with_ptz_right')
+                    .find('.ptz_area_right')
+            }
+
+            if ($bottom.size()) {
+                $win
+                    .addClass('with_ptz_bottom')
+                    .find('.ptz_area_bottom')
+                    .html($bottom.html())
+            } else {
+                $win
+                    .removeClass('with_ptz_bottom')
+                    .find('.ptz_area_bottom');
+            }
+
+            callback && callback(true);
+        })
+        .fail(function () {
+            callback && callback(false);
+        })
+        .always(function () {
+            $player.parent().aplayerResizeToParent();
+        });
+}
 
 var timer = 0;
 
