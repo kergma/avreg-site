@@ -165,6 +165,7 @@ function img_click(clicked_div) {
             //Переустанвливаем плеер для алтернативного источника
             if (current_src != null) {
                 $('.pl_cont', clicked_div_jq).addPlayer({
+                    hasExtraWrapper: true,
                     'src': current_src,
                     'controls': false,
                     'scale': 'on',
@@ -190,6 +191,7 @@ function img_click(clicked_div) {
             //Переустанвливаем плеер для алтернативного источника
             if (current_src != null) {
                 $('.pl_cont', clicked_div_jq).addPlayer({
+                    hasExtraWrapper: true,
                     'src': current_src,
                     'controls': false,
                     'scale': 'on',
@@ -279,6 +281,7 @@ function img_click(clicked_div) {
         //Переустанвливаем плеер для алтернативного источника
         if (current_src != null) {
             $('.pl_cont', clicked_div_jq).addPlayer({
+                hasExtraWrapper: true,
                 'src': current_src,
                 'controls': false,
                 'scale': 'on',
@@ -353,6 +356,7 @@ function brout(win_nr, win_div, win_geo) {
     var $cont = $(win_div);
 
     $cont.addPlayer({
+        hasExtraWrapper: true,
         'src': url,
         'controls': false,
         'scale': 'on',
