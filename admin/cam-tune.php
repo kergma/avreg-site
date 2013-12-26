@@ -13,9 +13,15 @@ if (isset($_POST)) {
 $lang_file = '_admin_cams.php';
 $USE_JQUERY = true;
 $link_javascripts = array(
+    'lib/js/misc_utils.js',
     'lib/js/checkbox.js',
     'lib/js/onvif-helpers.js',
+    'lib/js/third-party/jqModal.js'
  );
+$css_links = array(
+    'lib/js/third-party/jqModal.css',
+    'admin/admin.css',
+);
 require('../head.inc.php');
 DENY($admin_status);
 require_once($params_module_name);
@@ -116,24 +122,24 @@ if (isset($categories)) {
         }
         if ($cam_nr === 0) {
             // if user choose "group" camera - use $CAM_PARAMS instead $DEF_CAM_PARAMS
-            $CAM_PARAMS[$row['PARAM']] = [
+            $CAM_PARAMS[$row['PARAM']] = array(
                 'value'        => $row['VALUE'],
                 'changed_by'   => $row['CHANGE_USER'] . '@' . $row['CHANGE_HOST'],
                 'changed_time' => $row['CHANGE_TIME'],
-                ];
+            );
         } else {
             if ($row['CAM_NR'] > 0) {
-                $CAM_PARAMS[$row['PARAM']] = [
+                $CAM_PARAMS[$row['PARAM']] = array(
                     'value'        => $row['VALUE'],
                     'changed_by'   => $row['CHANGE_USER'] . '@' . $row['CHANGE_HOST'],
                     'changed_time' => $row['CHANGE_TIME'],
-                    ];
+                );
             } else {
-                $DEF_CAM_PARAMS[$row['PARAM']] = [
+                $DEF_CAM_PARAMS[$row['PARAM']] = array(
                     'value'        => $row['VALUE'],
                     'changed_by'   => $row['CHANGE_USER'] . '@' . $row['CHANGE_HOST'],
                     'changed_time' => $row['CHANGE_TIME'],
-                    ];
+                );
             }
         }
     }
@@ -355,7 +361,7 @@ if (isset($categories)) {
 
     // объединяем оба массива
     $all = array_merge($DEF_CAM_PARAMS, $CAM_PARAMS);
-    $cam_main_info = [
+    $cam_main_info = array(
         'cam_nr' => (int)$cam_nr,
         'cam_name' => empty($all['text_left']['value']) ? '' : $all['text_left']['value'],
         'video_src' => empty($all['video_src']['value']) ? null : $all['video_src']['value'],
@@ -364,11 +370,14 @@ if (isset($categories)) {
         'InetCam_http_port' => empty($all['InetCam_port']['value']) ? 80 : (int)($all['InetCam_port']['value']),
         'InetCam_USER' => empty($all['InetCam_USER']['value']) ? null : $all['InetCam_USER']['value'],
         'InetCam_PASSWORD' => empty($all['InetCam_PASSWORD']['value']) ? null : $all['InetCam_PASSWORD']['value'],
-        ];
+    );
 
     print "<script type='text/javascript'>\n";
     print 'var cam_tune_info = '. json_encode($cam_main_info) . ";\n";
     print "</script>\n";
+
+    require('./modal_onvif_connect.php');
+    require('./modal_onvif_profiles.php');
 }
 
 require('../foot.inc.php');
