@@ -12,7 +12,8 @@
                     <div class="left">
                         <p>Имя профиля: $name</p>
 
-                        <p>Видео кодек: $videoEncoding $videoProfile $videoResolution $frameRateLimit $videoBitRateLimit</p>
+                        <p>Видео кодек: $videoEncoding $videoProfile $videoResolution $frameRateLimit
+                            $videoBitRateLimit</p>
 
                         <p>Аудио кодек: $audio</p>
                     </div>
@@ -24,13 +25,21 @@
     </div>
 </div>
 
+<div id="modal-profiles-loading" class="jqmWindow">
+    <div class="modal-body">
+        <p>Загружаем профили..</p>
+    </div>
+</div>
+
 <script type="text/javascript">
     window.onvifProfiles = new (function ($container) {
         var profilesList = $container.find('.onvif-profile-list'),
             tplProfileEntry = profilesList.html(),
-            __onProfileSelect = null;
+            __onProfileSelect = null,
+            $modalLoading = $("#modal-profiles-loading");
 
         $container.jqm();
+        $modalLoading.jqm();
 
         /**
          * @param {Object} data
@@ -47,7 +56,11 @@
             return this.connectionInfo;
         }
 
-        this.connect = function () {
+        /**
+         * @param {Boolean} showLoadingState
+         * @returns {*}
+         */
+        this.connect = function (showLoadingState) {
             var self = this,
                 connectionInfo = this.getConnectionInfo();
 
@@ -66,10 +79,17 @@
                 dataType: 'json'
             });
 
+            if (showLoadingState) {
+                $modalLoading.jqmShow();
+            }
+
             request
                 .done(function (response) {
                     if (window.console) window.console.log(response);
                     self.renderProfiles(response['Profiles']['Profiles']);
+                })
+                .always(function () {
+                    $modalLoading.jqmHide();
                 });
 
             return request;
@@ -102,8 +122,8 @@
                                 profile['VideoEncoderConfiguration']['RateControl']['BitrateLimit'] + 'kbps'
                                 : '')
                         .replace('$videoResolution',
-                            profile['VideoEncoderConfiguration']['Resolution']['Width']  + 'x' +
-                            profile['VideoEncoderConfiguration']['Resolution']['Height']  + 'px')
+                            profile['VideoEncoderConfiguration']['Resolution']['Width'] + 'x' +
+                                profile['VideoEncoderConfiguration']['Resolution']['Height'] + 'px')
                         .replace('$audio', profile['AudioEncoderConfiguration'] ?
                             profile['AudioEncoderConfiguration']['Encoding']
                                 + profile['AudioEncoderConfiguration']['Encoding'] + 'kbps'
@@ -116,7 +136,7 @@
             }
         }
 
-        profilesList.on('click', 'input', function(e){
+        profilesList.on('click', 'input', function (e) {
             __onProfileSelect($(this).parents('li').data('profile'));
         });
 

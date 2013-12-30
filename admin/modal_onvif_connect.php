@@ -43,7 +43,6 @@
 
             request
                 .done(function (response, status, data) {
-                    if (window.console) window.console.log('DONE DONE');
                     onvifConnector.onConnectionCallback && onvifConnector.onConnectionCallback(response, onvifConnector.getConnectionInfo());
                 }).always(function () {
                     $button.prop('disabled', false).val('Подключиться к камере');
