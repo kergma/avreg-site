@@ -490,6 +490,32 @@ function checkParam($parname, $parval, $def_val = null)
             );
             break;
 
+        case 'ptz':
+            $all_ptz_handler_files = glob($GLOBALS['conf']['site-dir'] . '/online/ptz/*.php');
+            if (empty($all_ptz_handler_files)) {
+                $ret = '<p style="color:' . $GLOBALS['error_color'] . ';">no PTZ handlers installed</p>' . "\n";
+                break;
+            }
+
+            $all_ptz_handlers = array();
+            foreach ($all_ptz_handler_files as $file) {
+                if (preg_match('/.*\/([^\/\.]*)\.php$/', $file, $matches)) {
+                    $all_ptz_handlers[] = $matches[1];
+                }
+            }
+
+            $ret = getSelectHtmlByName(
+                'fields[' . $parname . ']',
+                $all_ptz_handlers,
+                false,
+                1,
+                0,
+                $parval,
+                true,
+                false
+            );
+            break;
+
         default:
             $ret = '<p style="color: ' . $GLOBALS['error_color'] . '">' . sprintf(
                 $GLOBALS['unknownCheckParams'],
@@ -510,3 +536,4 @@ function CorrectParVal($parname, $parval)
             break;
     }
 }
+/* vim: set expandtab smartindent tabstop=4 shiftwidth=4: */
