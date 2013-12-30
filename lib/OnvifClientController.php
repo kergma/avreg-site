@@ -7,7 +7,7 @@ require './OnvifClient/OnvifClient.php';
 class AjaxController
 {
     /**
-     * @type OnvifClient
+     * @type \OnvifClient
      */
     private $onvifClient;
 
@@ -24,7 +24,7 @@ class AjaxController
         try {
             // todo harden security - allow to call only white-listed methods
             $this->{$method}($data);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
     }
@@ -32,7 +32,7 @@ class AjaxController
     public function connect($data = array())
     {
         if (!isset($data['host'])) {
-            throw new Exception('Host not set');
+            throw new \Exception('Host not set');
         }
         if (!isset($data['path'])) {
             $data['path'] = '';
@@ -41,7 +41,7 @@ class AjaxController
             $credentials = true;
         }
 
-        $this->onvifClient = new OnvifClient(
+        $this->onvifClient = new \OnvifClient(
             $data['host'] . $data['path'],
             "http://$_SERVER[HTTP_HOST]/avreg/lib/OnvifClient/wsdl", // todo - remove hardcode
             array(
@@ -57,7 +57,7 @@ class AjaxController
     private function checkAuthData()
     {
         // dumb way of checking authorization
-        $capabilities = $this->onvifClient->doSoapRequest(OnvifServices::DeviceManagement, 'GetCapabilities');
+        $capabilities = $this->onvifClient->doSoapRequest(\OnvifServices::DEVICEMANAGEMENT, 'GetCapabilities');
         return $capabilities['isOk'];
     }
 
@@ -77,15 +77,15 @@ class AjaxController
         $this->connect($data);
 
         $dateTime = $this->onvifClient->doSoapRequest(
-            OnvifServices::DeviceManagement,
+            \OnvifServices::DEVICEMANAGEMENT,
             'GetSystemDateAndTime',
             array(),
             false
         );
-        $capabilities = $this->onvifClient->doSoapRequest(OnvifServices::DeviceManagement, 'GetCapabilities');
-        $deviceInfo = $this->onvifClient->doSoapRequest(OnvifServices::DeviceManagement, 'GetDeviceInformation');
+        $capabilities = $this->onvifClient->doSoapRequest(\OnvifServices::DEVICEMANAGEMENT, 'GetCapabilities');
+        $deviceInfo = $this->onvifClient->doSoapRequest(\OnvifServices::DEVICEMANAGEMENT, 'GetDeviceInformation');
         $services = $this->onvifClient->doSoapRequest(
-            OnvifServices::DeviceManagement,
+            \OnvifServices::DEVICEMANAGEMENT,
             'GetServices',
             array('IncludeCapability' => true)
         );
@@ -107,7 +107,7 @@ class AjaxController
             return;
         }
 
-        $profiles = $this->onvifClient->doSoapRequest(OnvifServices::Media, 'GetProfiles');
+        $profiles = $this->onvifClient->doSoapRequest(\OnvifServices::MEDIA, 'GetProfiles');
 
         if ($profiles['isOk']) {
             $this->success(array(
@@ -120,18 +120,18 @@ class AjaxController
 
     /**
      * @param array $data
-     * @throws Exception
+     * @throws \Exception
      */
     public function getMediaUri($data = array())
     {
         $this->connect($data);
 
         if (!isset($data['StreamType'])) {
-            throw new Exception('StreamType not set');
+            throw new \Exception('StreamType not set');
         }
 
         if (!isset($data['TransportProtocol'])) {
-            throw new Exception('TransportProtocol not set');
+            throw new \Exception('TransportProtocol not set');
         }
 
         if (!$this->checkAuthData()) {
@@ -141,7 +141,7 @@ class AjaxController
 
         $result = array();
 
-        $profiles = $this->onvifClient->doSoapRequest(OnvifServices::Media, 'GetProfiles');
+        $profiles = $this->onvifClient->doSoapRequest(\OnvifServices::MEDIA, 'GetProfiles');
 
         if ($profiles['isOk']) {
             foreach ($profiles['result']->Profiles as $profile) {
@@ -149,7 +149,7 @@ class AjaxController
 
                 foreach ($protocols as $protocol) {
                     $streamUri = $this->onvifClient->doSoapRequest(
-                        OnvifServices::Media,
+                        \OnvifServices::MEDIA,
                         'GetStreamUri',
                         array(
                             'StreamSetup' => array(

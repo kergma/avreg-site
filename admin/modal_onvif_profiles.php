@@ -12,7 +12,7 @@
                     <div class="left">
                         <p>Имя профиля: $name</p>
 
-                        <p>Видео кодек: $videoEncoding $videoProfile $frameRateLimit $videoBitRateLimit</p>
+                        <p>Видео кодек: $videoEncoding $videoProfile $videoResolution $frameRateLimit $videoBitRateLimit</p>
 
                         <p>Аудио кодек: $audio</p>
                     </div>
@@ -101,6 +101,9 @@
                             profile['VideoEncoderConfiguration']['RateControl']['BitrateLimit'] ?
                                 profile['VideoEncoderConfiguration']['RateControl']['BitrateLimit'] + 'kbps'
                                 : '')
+                        .replace('$videoResolution',
+                            profile['VideoEncoderConfiguration']['Resolution']['Width']  + 'x' +
+                            profile['VideoEncoderConfiguration']['Resolution']['Height']  + 'px')
                         .replace('$audio', profile['AudioEncoderConfiguration'] ?
                             profile['AudioEncoderConfiguration']['Encoding']
                                 + profile['AudioEncoderConfiguration']['Encoding'] + 'kbps'

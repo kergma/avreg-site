@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** Prettifies an XML string into a human-readable and indented work of art
  * @param string $xml The XML as a string
@@ -39,10 +39,12 @@ function xmlpp($xml, $html_output = false)
     return ($html_output) ? htmlentities($xml) : $xml;
 }
 
-function prettyprint($xml) {
+function prettyprint($xml)
+{
     print '<code>' . highlight_string(xmlpp($xml, false), true) . '</code>';
 }
 
-function object2array($object) { return @json_decode(@json_encode($object),1); }
-
-?>
+function object2array($object)
+{
+    return @json_decode(@json_encode($object), 1);
+}
