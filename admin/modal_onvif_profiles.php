@@ -39,7 +39,9 @@
             $modalLoading = $("#modal-profiles-loading");
 
         $container.jqm();
-        $modalLoading.jqm();
+        $modalLoading.jqm({
+            modal: true
+        });
 
         /**
          * @param {Object} data
