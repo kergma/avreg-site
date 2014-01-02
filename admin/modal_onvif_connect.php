@@ -78,7 +78,7 @@
                 data: {
                     method: 'checkConnection',
                     data: {
-                        host: 'http://' + formData['InetCam_IP'] + ':' + formData['InetCam_http_port'],
+                        origin: 'http://' + formData['InetCam_IP'] + ':' + formData['InetCam_http_port'],
                         path: '/onvif/device_service',
                         username: formData['InetCam_USER'],
                         password: formData['InetCam_PASSWORD']
