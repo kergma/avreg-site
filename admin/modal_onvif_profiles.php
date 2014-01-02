@@ -68,7 +68,7 @@
 
             var request = $.ajax({
                 type: "POST",
-                url: '/avreg/lib/OnvifClientController.php',
+                url: WwwPrefix + '/lib/OnvifClientController.php',
                 data: {
                     method: 'getProfiles',
                     data: {

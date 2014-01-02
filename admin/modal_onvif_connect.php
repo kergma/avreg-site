@@ -43,7 +43,8 @@
 
             request
                 .done(function (response, status, data) {
-                    onvifConnector.onConnectionCallback && onvifConnector.onConnectionCallback(response, onvifConnector.getConnectionInfo());
+                    onvifConnector.onConnectionCallback &&
+                        onvifConnector.onConnectionCallback(response, onvifConnector.getConnectionInfo());
                 }).always(function () {
                     $button.prop('disabled', false).val('Подключиться к камере');
                 });
@@ -71,10 +72,9 @@
 
         this.connect = function () {
             var formData = this.getConnectionInfo();
-
             var request = $.ajax({
                 type: "POST",
-                url: '/avreg/lib/OnvifClientController.php',
+                url: WwwPrefix + '/lib/OnvifClientController.php',
                 data: {
                     method: 'checkConnection',
                     data: {
@@ -98,7 +98,8 @@
                         );
                     } else {
                         onvifConnector.setValidationMessage(
-                            'Не удалось подключиться к камере. Проверьте правильность заполнения формы и повторите запрос.'
+                            'Не удалось подключиться к камере.' +
+                            'Проверьте правильность заполнения формы и повторите запрос.'
                         );
                     }
                 });

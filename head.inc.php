@@ -95,7 +95,7 @@ if (isset($link_javascripts) && is_array($link_javascripts)) {
 }
 ?>
 
-<script type="text/javascript" src="/avreg/lib/js/utils.js"></script>
+<script type="text/javascript" src="<?php echo $conf['prefix']; ?>/lib/js/utils.js"></script>
 
 <script type="text/javascript">
     <!--
