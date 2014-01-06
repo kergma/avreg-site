@@ -87,7 +87,6 @@
 
             request
                 .done(function (response) {
-                    if (window.console) window.console.log(response);
                     self.renderProfiles(response['Profiles']['Profiles']);
                 })
                 .always(function () {

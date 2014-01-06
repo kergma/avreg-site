@@ -32,10 +32,10 @@ class AjaxController
     public function connect($data = array())
     {
         if (!isset($data['origin'])) {
-            throw new \Exception('Host not set');
+            throw new \Exception('Origin not set');
         }
         if (!isset($data['path'])) {
-            $data['path'] = '';
+            $data['path'] = '/onvif/device_service';
         }
         if (isset($data['username']) && !empty($data['username'])) {
             $credentials = true;
@@ -127,6 +127,10 @@ class AjaxController
     {
         $this->connect($data);
 
+        if (!isset($data['ProfileToken'])) {
+            throw new \Exception('ProfileToken not set');
+        }
+
         if (!isset($data['StreamType'])) {
             throw new \Exception('StreamType not set');
         }
@@ -140,44 +144,27 @@ class AjaxController
             return;
         }
 
-        $result = array();
+        $streamUri = $this->onvifClient->doSoapRequest(
+            \OnvifServices::MEDIA,
+            'GetStreamUri',
+            array(
+                'StreamSetup' => array(
+                    'Stream' => $data['StreamType'],
+                    'Transport' => array(
+                        'Protocol' => $data['TransportProtocol']
+                    )
+                ),
+                'ProfileToken' => $data['ProfileToken']
+            )
+        );
 
-        $profiles = $this->onvifClient->doSoapRequest(\OnvifServices::MEDIA, 'GetProfiles');
-
-        if ($profiles['isOk']) {
-            foreach ($profiles['result']->Profiles as $profile) {
-                $protocols = array($data['TransportProtocol']);
-
-                foreach ($protocols as $protocol) {
-                    $streamUri = $this->onvifClient->doSoapRequest(
-                        \OnvifServices::MEDIA,
-                        'GetStreamUri',
-                        array(
-                            'StreamSetup' => array(
-                                'Stream' => $data['StreamType'],
-                                'Transport' => array(
-                                    'Protocol' => $protocol
-                                )
-                            ),
-                            'ProfileToken' => $profile->token
-                        )
-                    );
-
-                    if ($streamUri['isOk']) {
-                        $result[] = array(
-                            'profile' => $profile->token,
-                            'protocol' => $protocol,
-                            'stream' => $streamUri['result']->MediaUri
-                        );
-                    }
-
-                }
-            }
+        if ($streamUri['isOk']) {
+            $this->success(array(
+                'MediaUri' => $streamUri['result']->MediaUri
+            ));
+        } else {
+            $this->error();
         }
-
-        $this->success(array(
-            'MediaUri' => $result
-        ));
     }
 
     public function doRequest($data = array())
