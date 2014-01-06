@@ -73,30 +73,19 @@ class AjaxController
         };
     }
 
-    public function getBasicInfo($data = array())
+    public function getDeviceInfo($data = array())
     {
         $this->connect($data);
 
-        $dateTime = $this->onvifClient->doSoapRequest(
-            \OnvifServices::DEVICEMANAGEMENT,
-            'GetSystemDateAndTime',
-            array(),
-            false
-        );
-        $capabilities = $this->onvifClient->doSoapRequest(\OnvifServices::DEVICEMANAGEMENT, 'GetCapabilities');
         $deviceInfo = $this->onvifClient->doSoapRequest(\OnvifServices::DEVICEMANAGEMENT, 'GetDeviceInformation');
-        $services = $this->onvifClient->doSoapRequest(
-            \OnvifServices::DEVICEMANAGEMENT,
-            'GetServices',
-            array('IncludeCapability' => true)
-        );
 
-        $this->success(array(
-            'GetSystemDateAndTime' => $dateTime['isOk'] ? $dateTime['result'] : null,
-            'GetCapabilities' => $capabilities['isOk'] ? $capabilities['result'] : null,
-            'GetDeviceInformation' => $deviceInfo['isOk'] ? $deviceInfo['result'] : null,
-            'GetServices' => $services['isOk'] ? $services['result'] : null
-        ));
+        if ($deviceInfo['isOk']) {
+            $this->success(array(
+                'DeviceInformation' => $deviceInfo['result']
+            ));
+        } else {
+            $this->error();
+        }
     }
 
     public function getProfiles($data = array())
