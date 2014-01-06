@@ -11,7 +11,7 @@
     margin-left: -160px;
 }
 
-#modal-onvif-connector .modal-head a {
+#modal-onvif-connector .modal-head .jqmClose {
     float: right;
 }
 
@@ -37,7 +37,7 @@
     top: 10%;
 }
 
-#modal-onvif-profiles .modal-head a {
+#modal-onvif-profiles .modal-head .jqmClose {
     float: right;
 }
 

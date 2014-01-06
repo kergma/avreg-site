@@ -1,6 +1,9 @@
 <div id="modal-onvif-profiles" class="jqmWindow">
     <div class="modal-head">
-        <span>Подключение медиа профиля</span>
+        <!-- template start -->
+        <span>Сконфигурированные медиа-профили камеры модели <a href='$cameraUri' target='_blank'
+                title='открыть веб-интерфейс камеры'>$cameraName</a></span>
+        <!-- template end -->
         <a href="#" class="jqmClose">X</a>
     </div>
     <hr>
@@ -35,6 +38,7 @@
     window.onvifProfiles = new (function ($container) {
         var profilesList = $container.find('.onvif-profile-list'),
             tplProfileEntry = profilesList.html(),
+            tplTitle = $container.find('.modal-head span').html(),
             __onProfileSelect = null,
             $modalLoading = $("#modal-profiles-loading");
 
@@ -64,19 +68,30 @@
          */
         this.connect = function (showLoadingState) {
             var self = this,
-                connectionInfo = this.getConnectionInfo();
+                connectionInfo = this.getConnectionInfo(),
+                postData = {
+                    origin: 'http://' + connectionInfo['InetCam_IP'] + ':' + connectionInfo['InetCam_http_port'],
+                    username: connectionInfo['InetCam_USER'],
+                    password: connectionInfo['InetCam_PASSWORD']
+                };
 
-            var request = $.ajax({
+            var jqxhrGetDeviceInfo = $.ajax({
+                type: "POST",
+                url: WwwPrefix + '/lib/OnvifClientController.php',
+                data: {
+                    method: 'getDeviceInfo',
+                    data: postData
+                },
+                dataType: 'json'
+            });
+
+
+            var jqxhrGetProfiles = $.ajax({
                 type: "POST",
                 url: WwwPrefix + '/lib/OnvifClientController.php',
                 data: {
                     method: 'getProfiles',
-                    data: {
-                        origin: 'http://' + connectionInfo['InetCam_IP'] + ':' + connectionInfo['InetCam_http_port'],
-                        path: '/onvif/device_service',
-                        username: connectionInfo['InetCam_USER'],
-                        password: connectionInfo['InetCam_PASSWORD']
-                    }
+                    data: postData
                 },
                 dataType: 'json'
             });
@@ -85,15 +100,16 @@
                 $modalLoading.jqmShow();
             }
 
-            request
-                .done(function (response) {
-                    self.renderProfiles(response['Profiles']['Profiles']);
+            $.when(jqxhrGetDeviceInfo, jqxhrGetProfiles)
+                .done(function (responseDeviceInfo, responseGetProfiles) {
+                    self.renderTitle(responseDeviceInfo[0]);
+                    self.renderProfiles(responseGetProfiles[0]['Profiles']['Profiles']);
                 })
                 .always(function () {
                     $modalLoading.jqmHide();
                 });
 
-            return request;
+            return jqxhrGetProfiles;
         }
 
         this.renderProfiles = function (profiles) {
@@ -135,6 +151,18 @@
 
                 profilesList.append($tplEntry)
             }
+        }
+
+        this.renderTitle = function(deviceInfo) {
+            var connectionInfo = this.getConnectionInfo();
+
+            $container
+                .find('.modal-head span')
+                .empty()
+                .html(tplTitle
+                    .replace('$cameraName', deviceInfo['DeviceInformation']['Model'])
+                    .replace('$cameraUri', 'http://' + connectionInfo['InetCam_IP'] + ':' + connectionInfo['InetCam_http_port'])
+                )
         }
 
         profilesList.on('click', 'input', function (e) {
