@@ -68,11 +68,11 @@
 
             var request = $.ajax({
                 type: "POST",
-                url: '/avreg/lib/OnvifClientController.php',
+                url: WwwPrefix + '/lib/OnvifClientController.php',
                 data: {
                     method: 'getProfiles',
                     data: {
-                        host: 'http://' + connectionInfo['InetCam_IP'] + ':' + connectionInfo['InetCam_http_port'],
+                        origin: 'http://' + connectionInfo['InetCam_IP'] + ':' + connectionInfo['InetCam_http_port'],
                         path: '/onvif/device_service',
                         username: connectionInfo['InetCam_USER'],
                         password: connectionInfo['InetCam_PASSWORD']

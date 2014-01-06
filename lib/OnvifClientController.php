@@ -31,7 +31,7 @@ class AjaxController
 
     public function connect($data = array())
     {
-        if (!isset($data['host'])) {
+        if (!isset($data['origin'])) {
             throw new \Exception('Host not set');
         }
         if (!isset($data['path'])) {
@@ -41,9 +41,10 @@ class AjaxController
             $credentials = true;
         }
 
+        $site_prefix = substr($_SERVER['PHP_SELF'], 0, strpos($_SERVER['PHP_SELF'], '/lib/OnvifClientController.php'));
         $this->onvifClient = new \OnvifClient(
-            $data['host'] . $data['path'],
-            "http://$_SERVER[HTTP_HOST]/avreg/lib/OnvifClient/wsdl", // todo - remove hardcode
+            $data['origin'] . $data['path'],
+            "http://127.0.0.1$site_prefix/lib/OnvifClient/wsdl",
             array(
                 'logSoapRequests' => true
             )
