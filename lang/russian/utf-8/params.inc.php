@@ -666,7 +666,7 @@ $PARAMS = array(
         <li>или обратитесь к нам.</li>
         </ul>
         Для проверки можете воспользоваться плеером VLC, открыв в нём URL вида
-        <nobr>rtsp://{InetCam_USER}:{InetCam_PASSWORD}@{InetCam_IP}:{InetCam_rtsp_port}{rtsp_play}</nobr>
+        <nobr>rtsp://{InetCam_USER}:{InetCam_PASSWD}@{InetCam_IP}:{InetCam_rtsp_port}{rtsp_play}</nobr>
         <br /><br />' . $ROOT_RES_DEF,
         'flags' => $F_BASEPAR | $F_RELOADED | $F_IN_DEF | $F_IN_CAM,
         'cats' => '3.1.2',

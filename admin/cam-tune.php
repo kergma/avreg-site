@@ -369,7 +369,7 @@ if (isset($categories)) {
         'InetCam_IP' => empty($all['InetCam_IP']['value']) ? null : $all['InetCam_IP']['value'],
         'InetCam_http_port' => empty($all['InetCam_port']['value']) ? 80 : (int)($all['InetCam_port']['value']),
         'InetCam_USER' => empty($all['InetCam_USER']['value']) ? null : $all['InetCam_USER']['value'],
-        'InetCam_PASSWORD' => empty($all['InetCam_PASSWORD']['value']) ? null : $all['InetCam_PASSWORD']['value'],
+        'InetCam_PASSWD' => empty($all['InetCam_PASSWD']['value']) ? null : $all['InetCam_PASSWD']['value'],
     );
 
     print "<script type='text/javascript'>\n";

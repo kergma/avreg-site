@@ -19,7 +19,7 @@
                 <label>Логин:</label><input name="InetCam_USER" type="text"/>
             </div>
             <div>
-                <label>Пароль:</label><input name="InetCam_PASSWORD" type="password"/>
+                <label>Пароль:</label><input name="InetCam_PASSWD" type="password"/>
             </div>
         </form>
     </div>
@@ -54,7 +54,7 @@
         /**
          * @param {Object} data
          * @param data.InetCam_IP
-         * @param data.InetCam_PASSWORD
+         * @param data.InetCam_PASSWD
          * @param data.InetCam_USER
          * @param data.InetCam_http_port
          */
@@ -81,7 +81,7 @@
                         origin: 'http://' + formData['InetCam_IP'] + ':' + formData['InetCam_http_port'],
                         path: '/onvif/device_service',
                         username: formData['InetCam_USER'],
-                        password: formData['InetCam_PASSWORD']
+                        password: formData['InetCam_PASSWD']
                     }
                 },
                 dataType: 'json'

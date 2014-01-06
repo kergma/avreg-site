@@ -46,7 +46,7 @@
         /**
          * @param {Object} data
          * @param data.InetCam_IP
-         * @param data.InetCam_PASSWORD
+         * @param data.InetCam_PASSWD
          * @param data.InetCam_USER
          * @param data.InetCam_http_port
          */
@@ -75,7 +75,7 @@
                         origin: 'http://' + connectionInfo['InetCam_IP'] + ':' + connectionInfo['InetCam_http_port'],
                         path: '/onvif/device_service',
                         username: connectionInfo['InetCam_USER'],
-                        password: connectionInfo['InetCam_PASSWORD']
+                        password: connectionInfo['InetCam_PASSWD']
                     }
                 },
                 dataType: 'json'
