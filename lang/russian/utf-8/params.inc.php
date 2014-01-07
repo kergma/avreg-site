@@ -650,15 +650,15 @@ $PARAMS = array(
         'name' => 'rtsp_play',
         'type' => $STRING200_VAL,
         'def_val' => '/',
-        'desc' => '<b>Строка RTSP-запроса &quot;PLAY&quot;</b> (завершающая часть rtsp URL-а), адресующая конкретный
-        медиа-поток камеры:<br /><br />
+        'desc' => '<b>Строка RTSP-запроса &quot;PLAY&quot;</b> (завершающая часть rtsp URL-а),
+        адресующая медиа-поток камеры:<br /><br />
         Например, для камер Axis с прошивками версий от 5.00 и выше:
         <br /><b>/axis-media/media.amp?resolution=640x480&amp;videocodec=h264&amp;audio=0</b>
         <br /><br />Не знаете запрос для вашей камеры?
         <ul>
         <li> 
         <div class="href" onclick="do_onvif_uri_req(cam_tune_info);">
-        Спросите саму ONVIF-совместимую камеру &gt;&gt;
+        Спросить у камеры если она поддерживает ONVIF &gt;&gt;
         </div>
         </li>
         <li>поищите тут <a href="http://www.soleratec.com/rtsp/"

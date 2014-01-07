@@ -15,6 +15,7 @@ $USE_JQUERY = true;
 $link_javascripts = array(
     'lib/js/misc_utils.js',
     'lib/js/checkbox.js',
+    'lib/js/third-party/URI.js',
     'lib/js/onvif-helpers.js',
     'lib/js/third-party/jqModal.js'
  );
@@ -364,12 +365,12 @@ if (isset($categories)) {
     $cam_main_info = array(
         'cam_nr' => (int)$cam_nr,
         'cam_name' => empty($all['text_left']['value']) ? '' : $all['text_left']['value'],
-        'video_src' => empty($all['video_src']['value']) ? null : $all['video_src']['value'],
-        'audio_src' => empty($all['audio_src']['value']) ? null : $all['video_src']['value'],
-        'InetCam_IP' => empty($all['InetCam_IP']['value']) ? null : $all['InetCam_IP']['value'],
+        'video_src' => empty($all['video_src']['value']) ? '' : $all['video_src']['value'],
+        'audio_src' => empty($all['audio_src']['value']) ? '' : $all['video_src']['value'],
+        'InetCam_IP' => empty($all['InetCam_IP']['value']) ? '' : $all['InetCam_IP']['value'],
         'InetCam_http_port' => empty($all['InetCam_port']['value']) ? 80 : (int)($all['InetCam_port']['value']),
-        'InetCam_USER' => empty($all['InetCam_USER']['value']) ? null : $all['InetCam_USER']['value'],
-        'InetCam_PASSWD' => empty($all['InetCam_PASSWD']['value']) ? null : $all['InetCam_PASSWD']['value'],
+        'InetCam_USER' => empty($all['InetCam_USER']['value']) ? '' : $all['InetCam_USER']['value'],
+        'InetCam_PASSWD' => empty($all['InetCam_PASSWD']['value']) ? '' : $all['InetCam_PASSWD']['value'],
     );
 
     print "<script type='text/javascript'>\n";
