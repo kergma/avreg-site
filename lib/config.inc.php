@@ -348,12 +348,13 @@ $MSIE = $GECKO = $PRESTO = $WEBKIT = false;
 
 if (false !== strpos($ua, 'msie') || false !== strpos($ua, 'trident')) {
     $MSIE = true;
-} elseif (false !== strpos($ua, 'gecko')) {
-    $GECKO = true;
 } elseif (false !== strpos($ua, 'presto')) {
     $PRESTO = true;
 } elseif (false !== strpos($ua, 'webkit') || false !== strpos($ua, 'khtml')) {
     $WEBKIT = true;
+} elseif (false !== strpos($ua, 'gecko')) {
+    /* gecko последним т.к. многие добавляют gecko в U-A в дополнение к основному движку */
+    $GECKO = true;
 }
 
 ///  логин пользователя
