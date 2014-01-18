@@ -1517,13 +1517,17 @@ function fill_canvas() {
                 $('#original_size_' + win_nr).remove(); //не работает установка оригинального размера для MSIE
             }
         }
-               //Установка плеера
-               var $win = $("<div data-win-index="+ win_nr +"'></div>");
-               hdr.after($win);
-               brout(win_nr, $win, win_geo);
-               // append ptz areas containers
-               hdr.after($('<div class="ptz_area_right"></div>'));
-               hdr.parent(":first").append($('<div class="ptz_area_bottom"></div>'));
+        //Установка плеера
+        var $win = $("<div data-win-index="+ win_nr +"'></div>");
+        if (PrintCamNames) {
+             hdr.after($win);
+        }
+        brout(win_nr, $win, win_geo);
+        if (PrintCamNames) {
+           // append ptz areas containers
+           hdr.after($('<div class="ptz_area_right"></div>'));
+           hdr.parent(":first").append($('<div class="ptz_area_bottom"></div>'));
+        }
     }
 
     WIN_DIVS = $('div.win');
