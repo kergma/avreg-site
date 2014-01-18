@@ -1024,7 +1024,7 @@ function DENY($good_status = null, $http_status = 403)
                 break;
             case 403:
             default:
-                header('Content-Type: text/html; charset=' . $chset);
+                header('Content-Type: text/html; charset=' .$GLOBALS['chset']);
                 header('Connection: close', true, 403);
         }
     }
@@ -1032,7 +1032,7 @@ function DENY($good_status = null, $http_status = 403)
     print_syslog(LOG_CRIT, 'access denided: ' . basename($_SERVER['SCRIPT_FILENAME']));
     print '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">' . "\n";
     print '<html><head>' . "\n";
-    print '<link rel="SHORTCUT ICON" href="' . $conf['prefix'] . '/favicon.ico">' . "\n";
+    print '<link rel="SHORTCUT ICON" href="' . $GLOBALS['conf']['prefix'] . '/favicon.ico">' . "\n";
     print '<title>403 error::Access Denided</title>' . "\n";
     print '<meta http-equiv="Content-Type" content="text/html; charset=' . $GLOBALS['chset'] . '">' . "\n";
     print "</head><body>\n";
