@@ -255,7 +255,8 @@ $GCP_query_param_list = array(
     'fs_url_alt_1',
     'cell_url_alt_1',
     'fs_url_alt_2',
-    'cell_url_alt_2'
+    'cell_url_alt_2',
+    'ptz'
 );
 if ($operator_user) {
     array_push($GCP_query_param_list, 'video_src', 'InetCam_IP');
@@ -371,7 +372,6 @@ for ($win_nr = 0; $win_nr < $wins_nr; $win_nr++) {
             $stop_url = false;
             break;
         case 3: //используем камеру "alt 2"
-
             $active_cams_srcs[$win_nr]['type'] = 'alt_2';
             $cam_url = ($new_url = checkUrlParam($GCP_cams_params[$cam_nr]['cell_url_alt_2'], $conf, $key, 'mjpeg')) ?
                 $new_url : get_cam_http_url($conf, $cam_nr, 'mjpeg', true, $cams_urls);
@@ -395,6 +395,12 @@ for ($win_nr = 0; $win_nr < $wins_nr; $win_nr++) {
         $netcam_host = 'null';
     }
 
+    if ($operator_user && !empty($GCP_cams_params[$cam_nr]['ptz'])) {
+        $ptz_handler = '"' . $GCP_cams_params[$cam_nr]['ptz'] . '"';
+    } else {
+        $ptz_handler = 'null';
+    }
+
     printf(
         'WINS_DEF[%d]={
            row: %u,
@@ -409,7 +415,8 @@ for ($win_nr = 0; $win_nr < $wins_nr; $win_nr++) {
               orig_w: %u,
               orig_h: %u,
               netcam_host: %s,
-              stop_url: "%s"
+              stop_url: "%s",
+              ptz: %s
            }
         };%s',
         $win_nr,
@@ -425,6 +432,7 @@ for ($win_nr = 0; $win_nr < $wins_nr; $win_nr++) {
         $height,
         $netcam_host,
         $stop_url,
+        $ptz_handler,
         "\n"
     );
 

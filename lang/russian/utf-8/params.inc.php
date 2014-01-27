@@ -1583,6 +1583,19 @@ avregd HTTP CGI-интерфейс</a>).</li>
         'mstatus' => 1,
     ),
     array(
+        'name' => 'ptz',
+        'type' => $CHECK_VAL,
+        'def_val' => null,
+        'desc' => '<div>Вариант системы команд <b>PAN/TILT/ZOOM</b>.</div>
+        <br><div>Если установлено, в шапке окна камеры на странице просмотра в реальном времени при открытии
+        &quot;панели управления&quot; появится кнопка &quot;PTZ&quot;.</div>
+        <br>По умолчанию: не установлено.',
+        'flags' => $F_RELOADED | $F_BASEPAR | $F_IN_DEF | $F_IN_CAM,
+        'cats' => '15.2',
+        'subcats' => null,
+        'mstatus' => 1,
+    ),
+    array(
         'name' => 'ipcam_interface_url',
         'type' => $STRING200_VAL,
         'def_val' => null,
@@ -1712,3 +1725,5 @@ event-collector</span>&#187;</b>.
 );
 
 $PARAMS_NR = count($PARAMS);
+
+/* vim: set expandtab smartindent tabstop=4 shiftwidth=4: */

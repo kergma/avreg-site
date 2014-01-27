@@ -1489,32 +1489,37 @@ function fill_canvas() {
                 return false;
                  })
 
-                var ptz = $('<img data-win-index="'+ win_nr +'" class="pl_ptz" title="' + strToolbarControls['ptz'] + '" src='+imgs['pl_ptz'].src+' />')
-                .click(function (e) {
-                    controls_handlers.pl_ptz_click(e);
-                    return false;
+            var ptz;
+            if ( typeof(WINS_DEF[win_nr].cam.ptz) === 'string' && WINS_DEF[win_nr].cam.ptz !== '' ) {
+                ptz = $('<img data-win-index="'+ win_nr +'" class="pl_ptz" title="' + strToolbarControls['ptz'] + '" src='+imgs['pl_ptz'].src+' />')
+                    .click(function (e) {
+                        controls_handlers.pl_ptz_click(e);
+                        return false;
                 })
+            } else {
+               ptz = null;
+            }
 
-                 var plc = $('<div id="pl_controls_'+win_nr+'" class="pl_controls"></div>')
-                 .append(start, stop, minus, plus, normal_size, original_size, ptz)
-                 .click(function(e){
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return false;
-                }).mouseover(function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    controls_handlers.controls_panel_mouseover(e);
-                    return false;
-                }).mouseout(function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    controls_handlers.controls_panel_mouseout(e);
-                    return false;
-                }).hide().prependTo(hdr);
+            var plc = $('<div id="pl_controls_'+win_nr+'" class="pl_controls"></div>')
+               .append(start, stop, minus, plus, normal_size, original_size, ptz)
+               .click(function(e){
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return false;
+               }).mouseover(function (e) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  controls_handlers.controls_panel_mouseover(e);
+                  return false;
+               }).mouseout(function (e) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  controls_handlers.controls_panel_mouseout(e);
+                  return false;
+               }).hide().prependTo(hdr);
 
             if (MSIE) {
-                $('#original_size_' + win_nr).remove(); //не работает установка оригинального размера для MSIE
+               $('#original_size_' + win_nr).remove(); //не работает установка оригинального размера для MSIE
             }
         }
         //Установка плеера
@@ -1856,8 +1861,11 @@ var controls_handlers = {
 
     pl_ptz_click : function(e){
         var $button = $(e.currentTarget);                   // header button
+        var win_nr = parseInt($button.data('win-index'));
         var $win = $('#win' + $button.data('win-index'));
         var $player = $win.find('.aplayer');
+        var ptz_handler = WINS_DEF[win_nr].cam.ptz;
+        var cam_nr = WINS_DEF[win_nr].cam.nr;
 
         if ($button.data('async-in-progress')) {
             // prevent multiple clicks / async operations
@@ -1868,7 +1876,7 @@ var controls_handlers = {
             // flag that async operation is in progress
             $button.data('async-in-progress', true);
 
-            loadPtzAreasContent($win, function (success) {
+            loadPtzAreasContent($win, cam_nr, ptz_handler, function (success) {
                 if (success) {
                     $button.prop('src', imgs['pl_ptz_active'].src);
                     // button style
@@ -1893,15 +1901,15 @@ var controls_handlers = {
 
 /**
  * Загружает HTML содержимое областей PTZ и вставляет в соответствующие контейнеры.
- *
- * @param {Function} callback       callback асинхронной операции, передается boolean флаг (успех/неудача)
- *                                  в качестве первого агрумента
- * @param $win
+ * @param $win                 окно камеры
+ * @param ptz_hadnler          строка - идентификатор ptz, online/ptz/{ptz_handler}.php
+ * @param {Function} callback  callback асинхронной операции, передается boolean флаг (успех/неудача)
+ *                             в качестве первого агрумента
  */
-function loadPtzAreasContent($win, callback) {
+function loadPtzAreasContent($win, cam_nr, ptz_handler, callback) {
     var $player = $win.find('.aplayer');
 
-    var dfdPtzGet = $.get('./ptz.php');
+    var dfdPtzGet = $.get('./ptz/' + ptz_handler + '.php', { 'cam_nr': cam_nr });
 
     dfdPtzGet
         .done(function (response) {

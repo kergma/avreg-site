@@ -35,7 +35,12 @@ print '<meta name="author" content="Andrey Nikitin &lt;nik-a at mail dot ru&gt;"
 print '<link rel="SHORTCUT ICON" href="' . $conf['prefix'] . '/favicon.ico">' . "\n";
 print '<title>';
 if (isset($GLOBALS['pageTitle'])) {
-    print($conf['server-name'] . '[' . $named . ']::' . $GLOBALS[$GLOBALS['pageTitle']]);
+    if (isset($GLOBALS[$GLOBALS['pageTitle']])) {
+        // use localized version onto lang file
+        print($conf['server-name'] . '[' . $named . ']::' . $GLOBALS[$GLOBALS['pageTitle']]);
+    } else {
+        print($conf['server-name'] . '[' . $named . ']::' . $GLOBALS['pageTitle']);
+    }
 } else {
     print($conf['server-name'] . '[' . $named . ']');
 }
