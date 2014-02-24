@@ -16,7 +16,8 @@ $pageTitle = 'WebCam';
 $body_style = 'overflow: hidden;  overflow-y: hidden !important; padding: 0; margin: 0; width: 100%; height: 100%;';
 $css_links = array(
     'lib/js/third-party/jqModal.css',
-    'online/online.css'
+    'online/online.css',
+    'offline/gallery/css/jquery-ui-1.8.17.custom.css'
 );
 $USE_JQUERY = true;
 $link_javascripts = array(

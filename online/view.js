@@ -1937,7 +1937,11 @@ function loadPtzAreasContent($win, cam_nr, ptz_handler, callback) {
                 $win
                     .removeClass('with_ptz_bottom')
                     .find('.ptz_area_bottom');
-            }
+            };
+	    $win.append('<div class="zzzzz">asdadfasdfa</div>');
+	    ptztemp_win=$win;
+	    $('.zzzzz',$win).html($ptzContent);
+	    $('.zzzzz',$win).remove();
 
             callback && callback(true);
         })
