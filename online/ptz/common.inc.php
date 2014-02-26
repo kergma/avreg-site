@@ -66,6 +66,11 @@ if (!empty($_REQUEST['get']))
 	print json_encode($result);
 	exit;
 };
+function is_capable($cap)
+{
+	global $ptz_caps;
+	return (in_array($cap,$ptz_caps) and !isset($ptz_caps[$cap])) or !empty($ptz_caps[$cap]);
+}
 ?>
 <script type="text/javascript">
 var $win;
@@ -97,28 +102,6 @@ $(function() {
 		});
 		//$('.ptz-slider.pan',$win).slider({ range:min});
 	},'json');
-	/*
-	var $fh=$('.ptz-slider',$win).first();
-	alert($fh.length);
-	alert($win);
-	$fh.data('test','adfadf');
-	$win.data('test','adfadf');
-	$fh.data('ptz-update-func',function(){
-		$.get('ptz/acti.php',{cam_nr:$cam_nr,get:'ptzf'},function(data){
-			$('.ptz-slider.pan',$win).slider({ value:data.pan});
-			$('.ptz-slider.tilt',$win).slider({ value:data.tilt});
-			$('.ptz-slider.zoom',$win).slider({ value:data.zoom});
-			$('.ptz-slider.focus',$win).slider({ value:data.focus});
-		},'json');
-
-	});
-	alert($fh.data('test'));
-	alert($win.data('test'));
-	setInterval($fh.data('ptz-update-func'),2000);
-	 */
-
-
-	
 });
 
 </script>
@@ -126,14 +109,19 @@ $(function() {
 <div class="ptz_area_right">
 <table height="100%">
 <tr>
-<td height="10px"><button><img src="ptz/u.png"></img></button>
-<td rowspan="2">
+<?php if (is_capable('tilt')) {?>
+<td height="10px"><button><img src="ptz/u.png"></img></button></td>
+<?php };?>
+<?php if (is_capable('home')) {?>
+<td rowspan="2" style="vertical-align:top">
 <div class=".ptz-home">
 <button>HOME</button>
-<div> <button><img src="ptz/sh.png"></button> <button><img src="ptz/rh.png"></button> </div>
+<div style="display:inline-block"> <button><img src="ptz/sh.png"></button> <button><img src="ptz/rh.png"></button> </div>
 </div><!-- ptz-home -->
 </td>
+<?php };?>
 </tr>
+<?php if (is_capable('tilt')) {?>
 <tr>
 <td height="10px"><button><img src="ptz/uu.png"></img></button>
 </tr>
@@ -148,6 +136,7 @@ $(function() {
 <tr>
 <td height="10px"><button><img src="ptz/d.png"></button>
 </tr>
+<?php };?>
 </table>
 </div><!-- ptz_area_right -->
 
@@ -157,6 +146,7 @@ $(function() {
 <tr height="100%">
 <td height="100%">
 <table width="100%" height="100%">
+<?php if (is_capable('pan')) {?>
 <tr>
 <td width="10px"><button><img src="ptz/l.png"></button></td>
 <td width="10px"><button><img src="ptz/ll.png"></button></td>
@@ -164,6 +154,8 @@ $(function() {
 <td width="20px"><button><img src="ptz/rr.png"></button></td>
 <td width="20px"><button><img src="ptz/r.png"></button></td>
 </tr>
+<?php };?>
+<?php if (is_capable('zoom')) {?>
 <tr>
 <td width="10px"><button><img src="ptz/l.png"></button></td>
 <td width="10px"><button><img src="ptz/ll.png"></button></td>
@@ -171,6 +163,8 @@ $(function() {
 <td width="20px"><button><img src="ptz/rr.png"></button></td>
 <td width="20px"><button><img src="ptz/r.png"></button></td>
 </tr>
+<?php };?>
+<?php if (is_capable('focus')) {?>
 <tr>
 <td width="10px"><button><img src="ptz/l.png"></button></td>
 <td width="10px"><button><img src="ptz/ll.png"></button></td>
@@ -178,11 +172,14 @@ $(function() {
 <td width="20px"><button><img src="ptz/rr.png"></button></td>
 <td width="20px"><button><img src="ptz/r.png"></button></td>
 </tr>
+<?php };?>
 </table>
 </td>
+<?php if (is_capable('stop')) {?>
 <td width="20%" style="text-align:center">
 <div class=".ptz-home"><button>STOP</button></div>
 </td>
+<?php };?>
 </tr>
 </table>
 </div><!-- ptz_area_bottom -->

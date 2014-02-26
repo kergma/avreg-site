@@ -5,4 +5,5 @@
  */
 
 $pageTitle = 'ACTi PTZ';
+$ptz_caps=array('pan','tilt','zoom','focus','home','stop');
 require('common.inc.php');
