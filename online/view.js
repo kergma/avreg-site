@@ -1909,7 +1909,7 @@ var controls_handlers = {
 function loadPtzAreasContent($win, cam_nr, ptz_handler, callback) {
     var $player = $win.find('.aplayer');
 
-    var dfdPtzGet = $.get('./ptz/' + ptz_handler + '.php', { 'cam_nr': cam_nr });
+    var dfdPtzGet = $.get('./ptz/common.inc.php', { 'cam_nr': cam_nr });
 
     dfdPtzGet
         .done(function (response) {
