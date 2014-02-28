@@ -86,14 +86,14 @@ function cpkeys(&$dest,$src)
 }
 ?>
 <script type="text/javascript">
-var $win;
-var $cam_nr;
 
 $(function() {
+	var $win;
+	var $cam_nr;
 	
 	$cam_nr=<?php echo $_REQUEST['cam_nr']?>;
-	$win=window.ptztemp_win;
-	delete window.ptztemp_win;
+	$win=ptztemp_win;
+	delete ptztemp_win;
 	$('button img',$win).height('7px');
 	$('button',$win).css('padding','0px');
 	//$('button',$win).css('border','0px');
@@ -115,6 +115,23 @@ $(function() {
 		});
 		//$('.ptz-slider.pan',$win).slider({ range:min});
 	},'json');
+
+	if ($win.data('ptz-timer'))
+		clearInterval($win.data('ptz-timer'));
+	$win.data('ptz-timer',setInterval(function() {
+		if (!$('.pl_ptz',$win).hasClass('active'))
+		{
+			clearInterval($win.data('ptz-timer'));
+			return;
+		};
+		$.get('ptz/<?php print basename($_SERVER['SCRIPT_NAME']) ?>',{cam_nr:$cam_nr,get:'ptzf'},function(data){
+			$('.ptz-slider.pan',$win).slider({ value:data.pan});
+			$('.ptz-slider.tilt',$win).slider({ value:data.tilt});
+			$('.ptz-slider.zoom',$win).slider({ value:data.zoom});
+			$('.ptz-slider.focus',$win).slider({ value:data.focus});
+			document.title=$win.attr('id')+' '+data.pan;
+		},'json');
+	},1000));
 });
 
 </script>
