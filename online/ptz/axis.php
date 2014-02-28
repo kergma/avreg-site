@@ -25,6 +25,21 @@ class AXIS extends PTZi
 		return array('pan'=>$r['pan'],'tilt'=>$r['tilt'],'zoom'=>$r['zoom']);
 
 	}
+	function pan($value)
+	{
+		$re=file_get_contents("$this->camurl/axis-cgi/com/ptz.cgi?pan=$value");
+		print $re;
+	}
+	function tilt($value)
+	{
+		$re=file_get_contents("$this->camurl/axis-cgi/com/ptz.cgi?tilt=$value");
+		print $re;
+	}
+	function zoom($value)
+	{
+		$re=file_get_contents("$this->camurl/axis-cgi/com/ptz.cgi?zoom=$value");
+		print $re;
+	}
 };
 
 $ptzi=new AXIS();

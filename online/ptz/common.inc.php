@@ -46,13 +46,13 @@ $GCP_query_param_list = array(
 require('../../lib/get_cams_params.inc.php');
 $cam_http_params = array_merge($GCP_def_pars, $GCP_cams_params[$cam_nr]);
 
+if (!isset($ptzi)) {
+	include_once("ptzi.inc.php");
+	$ptzi=new PTZi();
+};
+$ptzi->camurl="http://{$cam_http_params['InetCam_USER']}:{$cam_http_params['InetCam_PASSWD']}@{$cam_http_params['InetCam_IP']}:{$cam_http_params['InetCam_http_port']}";
 if (!empty($_REQUEST['get']))
 {
-	if (!isset($ptzi)) {
-		include_once("ptzi.inc.php");
-		$ptzi=new PTZi();
-	};
-	$ptzi->camurl="http://{$cam_http_params['InetCam_USER']}:{$cam_http_params['InetCam_PASSWD']}@{$cam_http_params['InetCam_IP']}:{$cam_http_params['InetCam_http_port']}";
 	$result=array();
 	$g=explode(',',$_REQUEST['get']);
 
@@ -71,6 +71,14 @@ if (!empty($_REQUEST['get']))
 	if (in_array('focus',$g)) cpkeys($result,$r,'focus','zoom');
 
 	print json_encode($result);
+	exit;
+};
+if (array_intersect(array('pan','tilt','zoom','focus'),array_keys($_REQUEST)))
+{
+	if (!empty($_REQUEST['pan'])) $ptzi->pan($_REQUEST['pan']);
+	if (!empty($_REQUEST['tilt'])) $ptzi->tilt($_REQUEST['tilt']);
+	if (!empty($_REQUEST['zoom'])) $ptzi->zoom($_REQUEST['zoom']);
+	if (!empty($_REQUEST['focus'])) $ptzi->focus($_REQUEST['focus']);
 	exit;
 };
 function is_capable($cap)
@@ -101,17 +109,21 @@ $(function() {
 	$('button',$win).click(function(e){
 		e.stopPropagation();
 	});
-	$.get('ptz/<?php print basename($_SERVER['SCRIPT_NAME']) ?>',{cam_nr:$cam_nr,get:'ptzf_bounds,ptzf'},function(data){
+	var script='ptz/<?php print basename($_SERVER['SCRIPT_NAME']) ?>';
+	var slider_change=function() {
+		var v=$(this).slider('value');
+		if ($(this).hasClass('pan')) $.get(script,{cam_nr:$cam_nr,pan:v});
+		if ($(this).hasClass('tilt')) $.get(script,{cam_nr:$cam_nr,tilt:v});
+		if ($(this).hasClass('zoom')) $.get(script,{cam_nr:$cam_nr,zoom:v});
+		if ($(this).hasClass('focus')) $.get(script,{cam_nr:$cam_nr,focus:v});
+	};
+	$.get(script,{cam_nr:$cam_nr,get:'ptzf_bounds,ptzf'},function(data){
 		$('.ptz-slider.pan',$win).slider({ min:data.pan_start, max:data.pan_end, value:data.pan});
 		$('.ptz-slider.tilt',$win).slider({ min:data.tilt_start, max:data.tilt_end, value:data.tilt, orientation: 'vertical'});
 		$('.ptz-slider.zoom',$win).slider({ min:data.zoom_start, max:data.zoom_end, value:data.zoom});
 		$('.ptz-slider.focus',$win).slider({ min:data.focus_start, max:data.focus_end, value:data.focus});
 		$('.ptz-slider',$win).slider({
-			change: function (event, ui) {
-				var v=$(this).slider('value');
-				window.document.title=v;
-			},
-
+			change: slider_change
 		});
 		//$('.ptz-slider.pan',$win).slider({ range:min});
 	},'json');
@@ -124,11 +136,13 @@ $(function() {
 			clearInterval($win.data('ptz-timer'));
 			return;
 		};
-		$.get('ptz/<?php print basename($_SERVER['SCRIPT_NAME']) ?>',{cam_nr:$cam_nr,get:'ptzf'},function(data){
+		$.get(script,{cam_nr:$cam_nr,get:'ptzf'},function(data){
+			$('.ptz-slider',$win).slider({ change:null});
 			$('.ptz-slider.pan',$win).slider({ value:data.pan});
 			$('.ptz-slider.tilt',$win).slider({ value:data.tilt});
 			$('.ptz-slider.zoom',$win).slider({ value:data.zoom});
 			$('.ptz-slider.focus',$win).slider({ value:data.focus});
+			$('.ptz-slider',$win).slider({ change:slider_change});
 		},'json');
 	},1000));
 });

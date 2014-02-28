@@ -14,6 +14,18 @@ class PTZi
 	{
 		return array();
 	}
+	function pan($value)
+	{
+	}
+	function tilt($value)
+	{
+	}
+	function zoom($value)
+	{
+	}
+	function focus($valut)
+	{
+	}
 
 };
 
