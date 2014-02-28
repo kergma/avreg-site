@@ -12,14 +12,20 @@ class AXIS extends PTZi
 {
 	function get_bounds()
 	{
-		return array('pan_start'=>1,'pan_end'=>300,'tilt_start'=>0,'tilt_end'=>100,'zoom_start'=>1,'zoom_end'=>20);
+		$re=file_get_contents("$this->camurl/axis-cgi/com/ptz.cgi?query=limits");
+		preg_match_all('/([^=\s]+)=([^=\s]+)/',$re,$r);
+		$r=array_combine($r[1],array_map('floatval',$r[2]));
+		return array('pan_start'=>$r['MinPan'],'pan_end'=>$r['MaxPan'],'tilt_start'=>$r['MinTilt'],'tilt_end'=>$r['MaxTilt'],'zoom_start'=>$r['MinZoom'],'zoom_end'=>$r['MaxZoom']);
 	}
 	function get_pos()
 	{
-		return array('pan'=>rand(0,300),'tilt'=>rand(0,100),'zoom'=>rand(0,20));
+		$re=file_get_contents("$this->camurl/axis-cgi/com/ptz.cgi?query=position");
+		preg_match_all('/([^=\s]+)=([^=\s]+)/',$re,$r);
+		$r=array_combine($r[1],array_map('floatval',$r[2]));
+		return array('pan'=>$r['pan'],'tilt'=>$r['tilt'],'zoom'=>$r['zoom']);
 
 	}
 };
 
-$ptzi=new AXIS($camurl);
+$ptzi=new AXIS();
 include "common.inc.php";
