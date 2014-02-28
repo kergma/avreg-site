@@ -129,7 +129,6 @@ $(function() {
 			$('.ptz-slider.tilt',$win).slider({ value:data.tilt});
 			$('.ptz-slider.zoom',$win).slider({ value:data.zoom});
 			$('.ptz-slider.focus',$win).slider({ value:data.focus});
-			document.title=$win.attr('id')+' '+data.pan;
 		},'json');
 	},1000));
 });
