@@ -6,3 +6,5 @@
 
 $pageTitle = 'ACTi PTZ';
 $ptz_caps=array('pan','tilt','zoom','focus','home','stop');
+
+include "common.inc.php";
