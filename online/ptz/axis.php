@@ -6,6 +6,11 @@
 
 $pageTitle = 'AXIS PTZ';
 $ptz_caps=array('pan','tilt','zoom','home','stop');
+$movements=array(
+	'pan_step'=>10,'pan_fast'=>30,
+	'tilt_step'=>5,'tilt_fast'=>15,
+	'zoom_step'=>500,'zoom_fast'=>1500,
+);
 
 include "ptzi.inc.php";
 class AXIS extends PTZi
@@ -27,20 +32,24 @@ class AXIS extends PTZi
 	}
 	function pan($value)
 	{
+		$value=preg_replace('/,/','.',$value);
 		$re=file_get_contents("$this->camurl/axis-cgi/com/ptz.cgi?pan=$value");
 		print $re;
 	}
 	function tilt($value)
 	{
+		$value=preg_replace('/,/','.',$value);
 		$re=file_get_contents("$this->camurl/axis-cgi/com/ptz.cgi?tilt=$value");
 		print $re;
 	}
 	function zoom($value)
 	{
+		$value=preg_replace('/,/','.',$value);
 		$re=file_get_contents("$this->camurl/axis-cgi/com/ptz.cgi?zoom=$value");
 		print $re;
 	}
 };
 
 $ptzi=new AXIS();
+$ptzi->movements=$movements;
 include "common.inc.php";

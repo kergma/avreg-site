@@ -81,6 +81,14 @@ if (array_intersect(array('pan','tilt','zoom','focus'),array_keys($_REQUEST)))
 	if (!empty($_REQUEST['focus'])) $ptzi->focus($_REQUEST['focus']);
 	exit;
 };
+if (!empty($_REQUEST['move']))
+{
+	if (in_array($_REQUEST['move'],array('left','right'))) $ptzi->move($_REQUEST['move'],isset($_REQUEST['fast'])?'pan_fast':'pan_step');
+	if (in_array($_REQUEST['move'],array('up','down'))) $ptzi->move($_REQUEST['move'],isset($_REQUEST['fast'])?'tilt_fast':'tilt_step');
+	if (in_array($_REQUEST['move'],array('wide','tele'))) $ptzi->move($_REQUEST['move'],isset($_REQUEST['fast'])?'zoom_fast':'zoom_step');
+	if (in_array($_REQUEST['move'],array('close','far'))) $ptzi->move($_REQUEST['move'],isset($_REQUEST['fast'])?'focus_fast':'focus_step');
+	exit;
+};
 function is_capable($cap)
 {
 	global $ptz_caps;
@@ -106,9 +114,6 @@ $(function() {
 	$('button',$win).css('padding','0px');
 	//$('button',$win).css('border','0px');
 	$('td',$win).css('padding','0px');
-	$('button',$win).click(function(e){
-		e.stopPropagation();
-	});
 	var script='ptz/<?php print basename($_SERVER['SCRIPT_NAME']) ?>';
 	var slider_change=function() {
 		var v=$(this).slider('value');
@@ -145,6 +150,27 @@ $(function() {
 			$('.ptz-slider',$win).slider({ change:slider_change});
 		},'json');
 	},1000));
+	$('button.move',$win).click(function(e){
+		if ($(this).hasClass('left')) $.get(script,{cam_nr:$cam_nr,move:'left'});
+		if ($(this).hasClass('left-fast')) $.get(script,{cam_nr:$cam_nr,move:'left','fast':'1'});
+		if ($(this).hasClass('right')) $.get(script,{cam_nr:$cam_nr,move:'right'});
+		if ($(this).hasClass('right-fast')) $.get(script,{cam_nr:$cam_nr,move:'right','fast':'1'});
+		if ($(this).hasClass('up')) $.get(script,{cam_nr:$cam_nr,move:'up'});
+		if ($(this).hasClass('up-fast')) $.get(script,{cam_nr:$cam_nr,move:'up','fast':'1'});
+		if ($(this).hasClass('down')) $.get(script,{cam_nr:$cam_nr,move:'down'});
+		if ($(this).hasClass('down-fast')) $.get(script,{cam_nr:$cam_nr,move:'down','fast':'1'});
+		if ($(this).hasClass('wide')) $.get(script,{cam_nr:$cam_nr,move:'wide'});
+		if ($(this).hasClass('wide-fast')) $.get(script,{cam_nr:$cam_nr,move:'wide','fast':'1'});
+		if ($(this).hasClass('tele')) $.get(script,{cam_nr:$cam_nr,move:'tele'});
+		if ($(this).hasClass('tele-fast')) $.get(script,{cam_nr:$cam_nr,move:'tele','fast':'1'});
+		if ($(this).hasClass('close')) $.get(script,{cam_nr:$cam_nr,move:'close'});
+		if ($(this).hasClass('close-fast')) $.get(script,{cam_nr:$cam_nr,move:'close','fast':'1'});
+		if ($(this).hasClass('far')) $.get(script,{cam_nr:$cam_nr,move:'far'});
+		if ($(this).hasClass('far-fast')) $.get(script,{cam_nr:$cam_nr,move:'far','fast':'1'});
+	});
+	$('button',$win).click(function(e){
+		e.stopPropagation();
+	});
 });
 
 </script>
@@ -153,7 +179,7 @@ $(function() {
 <table height="100%">
 <tr>
 <?php if (is_capable('tilt')) {?>
-<td height="10px"><button><img src="ptz/u.png"></img></button></td>
+<td height="10px"><button class="move up"><img src="ptz/u.png"></img></button></td>
 <?php };?>
 <?php if (is_capable('home')) {?>
 <td rowspan="2" style="vertical-align:top">
@@ -166,7 +192,7 @@ $(function() {
 </tr>
 <?php if (is_capable('tilt')) {?>
 <tr>
-<td height="10px"><button><img src="ptz/uu.png"></img></button>
+<td height="10px"><button class="move up-fast"><img src="ptz/uu.png"></img></button>
 </tr>
 <tr>
 <td height="100%" style="text-align:center"> <div class="ptz-slider tilt" style="height:90%"/></td>
@@ -174,10 +200,10 @@ $(function() {
 <tr>
 </tr>
 <tr>
-<td height="10px"><button><img src="ptz/dd.png"></button>
+<td height="10px"><button class="move down-fast"><img src="ptz/dd.png"></button>
 </tr>
 <tr>
-<td height="10px"><button><img src="ptz/d.png"></button>
+<td height="10px"><button class="move down"><img src="ptz/d.png"></button>
 </tr>
 <?php };?>
 </table>
@@ -191,29 +217,29 @@ $(function() {
 <table width="100%" height="100%">
 <?php if (is_capable('pan')) {?>
 <tr>
-<td width="10px"><button><img src="ptz/l.png"></button></td>
-<td width="10px"><button><img src="ptz/ll.png"></button></td>
+<td width="10px"><button class="move left"><img src="ptz/l.png"></button></td>
+<td width="10px"><button class="move left-fast"><img src="ptz/ll.png"></button></td>
 <td><div class="ptz-slider pan" style="margin-left:10px;margin-right:10px"/></td>
-<td width="20px"><button><img src="ptz/rr.png"></button></td>
-<td width="20px"><button><img src="ptz/r.png"></button></td>
+<td width="20px"><button class="move right-fast"><img src="ptz/rr.png"></button></td>
+<td width="20px"><button class="move right"><img src="ptz/r.png"></button></td>
 </tr>
 <?php };?>
 <?php if (is_capable('zoom')) {?>
 <tr>
-<td width="10px"><button><img src="ptz/l.png"></button></td>
-<td width="10px"><button><img src="ptz/ll.png"></button></td>
+<td width="10px"><button class="move wide"><img src="ptz/l.png"></button></td>
+<td width="10px"><button class="move wide-fast"><img src="ptz/ll.png"></button></td>
 <td><div class="ptz-slider zoom" style="margin-left:10px;margin-right:10px"/></td>
-<td width="20px"><button><img src="ptz/rr.png"></button></td>
-<td width="20px"><button><img src="ptz/r.png"></button></td>
+<td width="20px"><button class="move tele-fast"><img src="ptz/rr.png"></button></td>
+<td width="20px"><button class="move tele"><img src="ptz/r.png"></button></td>
 </tr>
 <?php };?>
 <?php if (is_capable('focus')) {?>
 <tr>
-<td width="10px"><button><img src="ptz/l.png"></button></td>
-<td width="10px"><button><img src="ptz/ll.png"></button></td>
+<td width="10px"><button class="move close"><img src="ptz/l.png"></button></td>
+<td width="10px"><button class="move close-fast"><img src="ptz/ll.png"></button></td>
 <td><div class="ptz-slider focus" style="margin-left:10px;margin-right:10px"/></td>
-<td width="20px"><button><img src="ptz/rr.png"></button></td>
-<td width="20px"><button><img src="ptz/r.png"></button></td>
+<td width="20px"><button class="move far-fast"><img src="ptz/rr.png"></button></td>
+<td width="20px"><button class="move far"><img src="ptz/r.png"></button></td>
 </tr>
 <?php };?>
 </table>
