@@ -191,7 +191,7 @@ $(function() {
 <table height="100%">
 <tr>
 <?php if (is_capable('tilt')) {?>
-<td height="10px"><button class="move up"><img src="ptz/u.png"></img></button></td>
+<td height="10px"><button class="move up" title="Look up"><img src="ptz/u.png"></img></button></td>
 <?php };?>
 <?php if (is_capable('home')) {?>
 <td rowspan="2" style="vertical-align:top">
@@ -204,18 +204,18 @@ $(function() {
 </tr>
 <?php if (is_capable('tilt')) {?>
 <tr>
-<td height="10px"><button class="move up-fast"><img src="ptz/uu.png"></img></button>
+<td height="10px"><button class="move up-fast" title="Look upper"><img src="ptz/uu.png"></img></button>
 </tr>
 <tr>
-<td height="100%" style="text-align:center"> <div class="ptz-slider tilt" style="height:90%"/></td>
+<td height="100%" style="text-align:center"> <div class="ptz-slider tilt" style="height:90%" title="Adjust tilt"/></td>
 </tr>
 <tr>
 </tr>
 <tr>
-<td height="10px"><button class="move down-fast"><img src="ptz/dd.png"></button>
+<td height="10px"><button class="move down-fast" title="Look downer"><img src="ptz/dd.png"></button>
 </tr>
 <tr>
-<td height="10px"><button class="move down"><img src="ptz/d.png"></button>
+<td height="10px"><button class="move down" title="Look down"><img src="ptz/d.png"></button>
 </tr>
 <?php };?>
 </table>
@@ -229,20 +229,20 @@ $(function() {
 <table width="100%" height="100%">
 <?php if (is_capable('pan')) {?>
 <tr>
-<td width="10px"><button class="move left"><img src="ptz/l.png"></button></td>
-<td width="10px"><button class="move left-fast"><img src="ptz/ll.png"></button></td>
-<td><div class="ptz-slider pan" style="margin-left:10px;margin-right:10px"/></td>
-<td width="20px"><button class="move right-fast"><img src="ptz/rr.png"></button></td>
-<td width="20px"><button class="move right"><img src="ptz/r.png"></button></td>
+<td width="10px"><button class="move left" title="Look left"><img src="ptz/l.png"></button></td>
+<td width="10px"><button class="move left-fast" title="Look more left"><img src="ptz/ll.png"></button></td>
+<td><div class="ptz-slider pan" style="margin-left:10px;margin-right:10px" title="Adjust pan"/></td>
+<td width="20px"><button class="move right-fast" title="Look more right"><img src="ptz/rr.png"></button></td>
+<td width="20px"><button class="move right" title="Look right"><img src="ptz/r.png"></button></td>
 </tr>
 <?php };?>
 <?php if (is_capable('zoom')) {?>
 <tr>
-<td width="10px"><button class="move wide"><img src="ptz/l.png"></button></td>
-<td width="10px"><button class="move wide-fast"><img src="ptz/ll.png"></button></td>
-<td><div class="ptz-slider zoom" style="margin-left:10px;margin-right:10px"/></td>
-<td width="20px"><button class="move tele-fast"><img src="ptz/rr.png"></button></td>
-<td width="20px"><button class="move tele"><img src="ptz/r.png"></button></td>
+<td width="10px"><button class="move wide" title="Zoom out"><img src="ptz/l.png"></button></td>
+<td width="10px"><button class="move wide-fast" title="Zoom outer"><img src="ptz/ll.png"></button></td>
+<td><div class="ptz-slider zoom" style="margin-left:10px;margin-right:10px" title="Adjust zoom level"/></td>
+<td width="20px"><button class="move tele-fast" title="Zoom inner"><img src="ptz/rr.png"></button></td>
+<td width="20px"><button class="move tele" title="Zoom in"><img src="ptz/r.png"></button></td>
 </tr>
 <?php };?>
 <?php if (is_capable('focus')) {?>
