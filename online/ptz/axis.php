@@ -48,6 +48,13 @@ class AXIS extends PTZi
 		$re=file_get_contents("$this->camurl/axis-cgi/com/ptz.cgi?zoom=$value");
 		print $re;
 	}
+	function home($action)
+	{
+		if ($action=='go') $re=file_get_contents("$this->camurl/axis-cgi/com/ptz.cgi?move=home");
+		if ($action=='set') $re=file_get_contents("$this->camurl/axis-cgi/com/ptzconfig.cgi?setserverpresetname=home&home=yes");
+		if ($action=='reset') $re=file_get_contents("$this->camurl/axis-cgi/com/ptzconfig.cgi?removeserverpresetname=home");
+		print $re;
+	}
 };
 
 $ptzi=new AXIS();

@@ -26,9 +26,12 @@ class PTZi
 	function focus($value)
 	{
 	}
+	function home($action)
+	{
+	}
 	function move($direction,$mode)
 	{
-		global $moves;
+		if ($direction=="home") return $this->home('go');
 		$pos=$this->get_pos();
 		if ($direction=="left") $this->pan($pos['pan']-$this->movements[$mode]);
 		if ($direction=="right") $this->pan($pos['pan']+$this->movements[$mode]);

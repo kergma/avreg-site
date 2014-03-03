@@ -87,6 +87,12 @@ if (!empty($_REQUEST['move']))
 	if (in_array($_REQUEST['move'],array('up','down'))) $ptzi->move($_REQUEST['move'],isset($_REQUEST['fast'])?'tilt_fast':'tilt_step');
 	if (in_array($_REQUEST['move'],array('wide','tele'))) $ptzi->move($_REQUEST['move'],isset($_REQUEST['fast'])?'zoom_fast':'zoom_step');
 	if (in_array($_REQUEST['move'],array('close','far'))) $ptzi->move($_REQUEST['move'],isset($_REQUEST['fast'])?'focus_fast':'focus_step');
+	if (in_array($_REQUEST['move'],array('home'))) $ptzi->move($_REQUEST['move']);
+	exit;
+};
+if (!empty($_REQUEST['home']))
+{
+	$ptzi->home($_REQUEST['home']);
 	exit;
 };
 function is_capable($cap)
@@ -168,6 +174,11 @@ $(function() {
 		if ($(this).hasClass('far')) $.get(script,{cam_nr:$cam_nr,move:'far'});
 		if ($(this).hasClass('far-fast')) $.get(script,{cam_nr:$cam_nr,move:'far','fast':'1'});
 	});
+	$('button.home',$win).click(function(e){
+		if ($(this).hasClass('go')) $.get(script,{cam_nr:$cam_nr,move:'home'});
+		if ($(this).hasClass('set')) $.get(script,{cam_nr:$cam_nr,home:'set'});
+		if ($(this).hasClass('reset')) $.get(script,{cam_nr:$cam_nr,home:'reset'});
+	});
 	$('button',$win).click(function(e){
 		e.stopPropagation();
 	});
@@ -184,8 +195,8 @@ $(function() {
 <?php if (is_capable('home')) {?>
 <td rowspan="2" style="vertical-align:top">
 <div class=".ptz-home">
-<button>HOME</button>
-<div style="display:inline-block"> <button><img src="ptz/sh.png"></button> <button><img src="ptz/rh.png"></button> </div>
+<button class="home go" title="Go home">HOME</button>
+<div style="display:inline-block"> <button class="home set" title="Set as home"><img src="ptz/sh.png"></button> <button class="home reset" title="Reset home"><img src="ptz/rh.png"></button> </div>
 </div><!-- ptz-home -->
 </td>
 <?php };?>
@@ -246,7 +257,7 @@ $(function() {
 </td>
 <?php if (is_capable('stop')) {?>
 <td width="20%" style="text-align:center">
-<div class=".ptz-home"><button>STOP</button></div>
+<div class=".ptz-stop"><button>STOP</button></div>
 </td>
 <?php };?>
 </tr>
