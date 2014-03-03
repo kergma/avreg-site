@@ -29,9 +29,10 @@ class PTZi
 	function home($action)
 	{
 	}
-	function move($direction,$mode)
+	function move($direction,$mode='')
 	{
 		if ($direction=="home") return $this->home('go');
+		if ($direction=="stop") return $this->stop();
 		$pos=$this->get_pos();
 		if ($direction=="left") $this->pan($pos['pan']-$this->movements[$mode]);
 		if ($direction=="right") $this->pan($pos['pan']+$this->movements[$mode]);
@@ -41,6 +42,9 @@ class PTZi
 		if ($direction=="tele") $this->zoom($pos['zoom']+$this->movements[$mode]);
 		if ($direction=="close") $this->zoom($pos['focus']-$this->movements[$mode]);
 		if ($direction=="far") $this->zoom($pos['focus']+$this->movements[$mode]);
+	}
+	function stop()
+	{
 	}
 };
 

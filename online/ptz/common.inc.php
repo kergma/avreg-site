@@ -87,7 +87,7 @@ if (!empty($_REQUEST['move']))
 	if (in_array($_REQUEST['move'],array('up','down'))) $ptzi->move($_REQUEST['move'],isset($_REQUEST['fast'])?'tilt_fast':'tilt_step');
 	if (in_array($_REQUEST['move'],array('wide','tele'))) $ptzi->move($_REQUEST['move'],isset($_REQUEST['fast'])?'zoom_fast':'zoom_step');
 	if (in_array($_REQUEST['move'],array('close','far'))) $ptzi->move($_REQUEST['move'],isset($_REQUEST['fast'])?'focus_fast':'focus_step');
-	if (in_array($_REQUEST['move'],array('home'))) $ptzi->move($_REQUEST['move']);
+	if (in_array($_REQUEST['move'],array('home','stop'))) $ptzi->move($_REQUEST['move']);
 	exit;
 };
 if (!empty($_REQUEST['home']))
@@ -173,6 +173,7 @@ $(function() {
 		if ($(this).hasClass('close-fast')) $.get(script,{cam_nr:$cam_nr,move:'close','fast':'1'});
 		if ($(this).hasClass('far')) $.get(script,{cam_nr:$cam_nr,move:'far'});
 		if ($(this).hasClass('far-fast')) $.get(script,{cam_nr:$cam_nr,move:'far','fast':'1'});
+		if ($(this).hasClass('stop')) $.get(script,{cam_nr:$cam_nr,move:'stop'});
 	});
 	$('button.home',$win).click(function(e){
 		if ($(this).hasClass('go')) $.get(script,{cam_nr:$cam_nr,move:'home'});
@@ -257,7 +258,7 @@ $(function() {
 </td>
 <?php if (is_capable('stop')) {?>
 <td width="20%" style="text-align:center">
-<div class=".ptz-stop"><button>STOP</button></div>
+<div class=".ptz-stop"><button class="move stop" title="Stop movement">STOP</button></div>
 </td>
 <?php };?>
 </tr>
