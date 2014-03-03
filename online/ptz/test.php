@@ -5,11 +5,17 @@
 <script>
 $(function(){
 	$('#add_youtube').click(function(){
-		$('#video_container').append('<div class="youtube">'+'<iframe width="420" height="315" src="//www.youtube.com/embed/wZZ7oFKsKzY" frameborder="0" allowfullscreen></iframe>'+'</div>');
+		$('#video_container').append('<div class="youtube">'+
+			'<iframe width="420" height="315" src="//www.youtube.com/embed/wZZ7oFKsKzY" frameborder="0" allowfullscreen>'+'
+			'</iframe></div>'
+		);
 
 	});
 	$('#add_video').click(function(){
-		$('#video_container').append('<div class="video"><video src="http://www.w3schools.com/html/movie.ogg" autoplay loop preload="none" ></video></div>');
+		$('#video_container').append(
+			'<div class="video"><video src="http://www.w3schools.com/html/movie.ogg" autoplay loop preload="none">'+
+			'</video></div>'
+		);
 
 	});
 	$('#add_websocket').click(function(){
