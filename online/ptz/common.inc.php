@@ -48,7 +48,7 @@ $cam_http_params = array_merge($GCP_def_pars, $GCP_cams_params[$cam_nr]);
 
 if (!isset($ptzi)) {
     include_once("ptzi.inc.php");
-    $ptzi=new PTZi();
+    $ptzi=new AVReg\PTZi();
 };
 $ptzi->camurl="http://{$cam_http_params['InetCam_USER']}:{$cam_http_params['InetCam_PASSWD']}@" .
     "{$cam_http_params['InetCam_IP']}:{$cam_http_params['InetCam_http_port']}";
